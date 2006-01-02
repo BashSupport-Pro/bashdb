@@ -1,0 +1,89 @@
+(dbg-test1.sh:22):
+22:	x=22
+Breakpoint 1 set in file dbg-test1.sh, line 22.
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:22
+No watch expressions have been set.
+*** Test enable/disable...
+Breakpoint entry 1 already enabled so nothing done.
+Breakpoint entry 1 disabled.
+*** Try setting breakpoints outside of the file range...
+Line 99 is too large. File dbg-test1.sh has only 39 lines.
+There is no line 0 to break at.
+Num Type       Disp Enb What
+1   breakpoint keep n   dbg-test1.sh:22
+No watch expressions have been set.
+No actions have been set.
+*** Try Deleting a non-existent breakpoint...
+Didn't find any breakpoints to remove at 10.
+There is no line 0 to clear.
+** Test display status...
+Removed 1 breakpoint(s).
+No breakpoints have been set.
+No watch expressions have been set.
+Breakpoint 2 set in file dbg-test1.sh, line 22.
+Num Type       Disp Enb What
+2   breakpoint keep y   dbg-test1.sh:22
+No watch expressions have been set.
+*** Test using file:line format on break...
+Breakpoint 3 set in file dbg-test1.sh, line 23.
+There is no line 0 to break at.
+Line 1955 is too large. File dbg-test1.sh has only 39 lines.
+Breakpoint 4 set in file dbg-test1.sh, line 23.
+Num Type       Disp Enb What
+2   breakpoint keep y   dbg-test1.sh:22
+3   breakpoint keep y   dbg-test1.sh:23
+4   breakpoint keep y   dbg-test1.sh:23
+No watch expressions have been set.
+Removed 1 breakpoint(s).
+*** Test breakpoints with conditions...
+Breakpoint 5 set in file dbg-test1.sh, line 23.
+Breakpoint 6 set in file dbg-test1.sh, line 24.
+Num Type       Disp Enb What
+2   breakpoint keep y   dbg-test1.sh:22
+4   breakpoint keep y   dbg-test1.sh:23
+5   breakpoint keep y   dbg-test1.sh:23
+	stop only if x==0
+6   breakpoint keep y   dbg-test1.sh:24
+	stop only if y > 25
+No watch expressions have been set.
+Breakpoint entry 23 is not set. Condition not changed.
+Argument required (breakpoint number).
+Num Type       Disp Enb What
+2   breakpoint keep y   dbg-test1.sh:22
+4   breakpoint keep y   dbg-test1.sh:23
+5   breakpoint keep y   dbg-test1.sh:23
+	stop only if x==0
+6   breakpoint keep y   dbg-test1.sh:24
+	stop only if y > 25
+No watch expressions have been set.
+Bad breakpoint number: x==1
+Bad breakpoint number: bad
+Breakpoint entry 30 is not set. Condition not changed.
+Breakpoint entry 2 disabled.
+Breakpoint entry 5 disabled.
+Num Type       Disp Enb What
+2   breakpoint keep n   dbg-test1.sh:22
+4   breakpoint keep y   dbg-test1.sh:23
+	stop only if x==1
+5   breakpoint keep n   dbg-test1.sh:23
+	stop only if x==0
+6   breakpoint keep y   dbg-test1.sh:24
+	stop only if y > 25
+No watch expressions have been set.
+Breakpoint entry 2 enabled.
+Breakpoint entry 6 already enabled so nothing done.
+Removed 2 breakpoint(s).
+*** Test info break...
+Breakpoint entry 11 is not set.
+No watch expressions have been set.
+Bad breakpoint number foo.
+No watch expressions have been set.
+Num Type       Disp Enb What
+5   breakpoint keep n   dbg-test1.sh:23
+	stop only if x==0
+No watch expressions have been set.
+Removed 2 breakpoint(s).
+No breakpoints have been set.
+No watch expressions have been set.
+No actions have been set.

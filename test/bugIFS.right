@@ -1,0 +1,8 @@
+(bugIFS.sh:3):
+3:	interface_names='qfe0 qfe3'
+Going to the location where IFS should be reset in the code...
+One-time breakpoint 1 set in file bugIFS.sh, line 5.
+(bugIFS.sh:5):
+5:	IFS="$IFS."
+(bugIFS.sh:5):
+5:	IFS="$IFS."

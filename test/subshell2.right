@@ -1,0 +1,15 @@
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+Test quit inside multi-statement line...
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+y=2
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+z=3
+(subshell.sh:7):
+7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+x=`builtin echo *`
+Should now be inside a subshell. Test from here...
+BASH_SUBSHELL: 1
+Test quit 0 2...

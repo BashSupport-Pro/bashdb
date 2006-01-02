@@ -1,0 +1,41 @@
+#!/bin/sh
+#$Id: run-sig,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+
+# Reinstate brkpt3 when BASH_COMMAND works again.
+exit 77
+
+if test -z "$srcdir"  ; then
+  srcdir=`pwd`
+fi
+
+if test -z "$builddir"  ; then
+  builddir=`pwd`
+fi
+
+. ${builddir}/check_common
+
+TEST_NAME='sig'
+TEST_FILE="/tmp/${TEST_NAME}.check"
+TEST2_FILE="/tmp/${TEST_NAME}.check2"
+RIGHT_FILE="/tmp/${TEST_NAME}.right"
+(cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+set -o noglob
+grep -v "bashdbeval" ${srcdir}/${TEST_NAME}.right >${RIGHT_FILE}
+grep -v "bashdbeval" ${TEST_FILE} >${TEST2_FILE}
+
+check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
+
+check_output $TEST2_FILE ${RIGHT_FILE} && {
+  rm -f $TEST_FILE
+}
+
+rc=$?
+rm $RIGHT_FILE
+
+# Return code tells testing mechanism whether passed or not.
+exit $rc
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

@@ -1,0 +1,22 @@
+#!/bin/sh
+#$Id: run-brkpt1,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+
+if test -z "$srcdir"  ; then
+  srcdir=`pwd`
+fi
+
+. ${srcdir}/check_common
+
+TEST_NAME='brkpt1'
+TEST_FILE="${TEST_NAME}.check"
+(cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+
+check_output $TEST_FILE ${TEST_NAME}.right
+
+# Return code tells testing mechanism whether passed or not.
+exit $?
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

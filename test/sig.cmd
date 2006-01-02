@@ -1,0 +1,23 @@
+# Test that debugged program's signals are savend and restored across
+# debug calls.
+print "*** Testing that we have our signal set up..."
+info signals
+print "*** Testing handle command..."
+handle TERM nostack
+handle foo
+handle 1000
+handle TERM bogus 
+eval kill -TERM $$
+print "*** Should not have printed a stack trace above..."
+handle TERM noprint
+handle TERM stack
+handle INT nostop
+eval kill -TERM $$
+info signals
+continue
+print "*** Should have printed a stack trace above..."
+continue
+where
+continue
+quit
+

@@ -1,0 +1,3444 @@
+\input texinfo      @c -*-texinfo-*-
+@c Copyright 2002, 2003, 2004
+@c Rocky Bernstein for the Free Software Foundation
+@c
+@c TODO: 
+@c   - add examples for commands
+@c   - clean up/improve sample session
+@c   - help text is inaccurate and formatted too much to right.
+@c 
+
+@c Sets version and release names and dates. Frees us from changing
+@c this file when a new release comes along.
+
+@c %**start of header
+@c makeinfo ignores cmds prev to setfilename, so its arg cannot make use
+@c of @set vars.  However, you can override filename with makeinfo -o.
+@setfilename bashdb.info
+@c 
+@c Name of Bash program.  Used in running text.
+@set BASH @acronym{BASH}
+
+@c
+@c Name of debugger program.  Used also for prompt string.
+@set DBG the @value{BASH} debugger
+@set dBGP The @value{BASH} debugger
+@set DDD @acronym{DDD}
+
+@settitle @value{BASH} Debugger
+@setchapternewpage odd
+@c %**end of header
+
+@include version.texi
+
+@c A simple macro for optional variables.
+@macro ovar{varname}
+@r{[}@var{\varname\}@r{]}
+@end macro
+
+@macro DDD {}
+@acronym{DDD}
+@end macro
+
+@macro BASH {}
+@acronym{@value{BASH}}
+@end macro
+
+@macro DBG {}
+@value{DBG}
+@end macro
+
+@iftex
+@c @smallbook
+@c @cropmarks
+@end iftex
+
+@finalout
+
+@c readline appendices use @vindex, @findex and @ftable,
+@c annotate.texi and gdbmi use @findex.
+@c @syncodeindex vr cp
+@c @syncodeindex fn cp
+
+@c THIS MANUAL REQUIRES TEXINFO 4.0 OR LATER.
+
+@c This is a dir.info fragment to support semi-automated addition of
+@c manuals to an info tree.
+@dircategory Programming & development tools.
+@direntry
+* @value{DBG}: (@value{DBG}).                     The @sc{bash} debugger.
+@end direntry
+
+@ifinfo
+This file documents the @sc{bash} debugger @value{BASH}.
+
+
+This is the @value{EDITION} Edition, @value{UPDATED-MONTH},
+of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
+for REBASH
+
+Copyright (C) 2002, 2003, 2004 Rocky Bernstein for the Free Software Foundation.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+@ifset DEBIANHASBECOMEREASONABLE
+@c From Matthias Klose <doko@debian.org> a Debian maintainer on
+@c Sat, 23 Aug 2003 14:24:44 +0200
+@c
+@c  I personally see the invariant sections as the thing in the
+@c  GFDL, which hinders me in uploading the package to the archives.
+@c  I don't have any problem, if some other Debian developer makes a
+@c  bashdb package built from separate sources.
+@c
+@c  I am aware that Debian ships other packages containing documentation
+@c  covered by the GFDL (and one of them for which I do the packaging as
+@c  well), but I won't add a new package, which I maintain. So before an
+@c  upload of a bashdb package built from the bash sources either
+@c
+@c
+@c  - Debian has a position on the GFDL, which allows inclusion
+@c
+@c  - the bashdb manual does not have invariant sections, or is
+@c    relicensed, or dual licensed.
+@c
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU
+Manual,'' and with the Back-Cover Texts as in (a) below.
+
+(a) The Free Software Foundation's Back-Cover Text is: ``You have
+freedom to copy and modify this GNU Manual, like GNU software.  Copies
+published by the Free Software Foundation raise funds for GNU
+development.''
+@end ifset
+@ifclear DEBIANHASBECOMEREASONABLE
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+@end ifclear
+@end ifinfo
+
+@titlepage
+@title Debugging with BASHDB
+@sp 1
+@subtitle @value{EDITION} Edition, for BASH
+@subtitle @value{UPDATED-MONTH}
+@author Rocky Bernstein
+@page
+@tex
+{\parskip=0pt
+\hfill (Send bugs and comments on bashdb to bug-bashdb\@sourceforge.net.)\par
+\hfill {\it Debugging with BASH}\par
+\hfill \TeX{}info \texinfoversion\par
+}
+@end tex
+
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2002, 2003, 2004 Rocky Bernstein for the Free Software
+Foundation.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+@ifset DEBIANHASBECOMEREASONABLE
+@c From Matthias Klose <doko@debian.org> a Debian maintainer on
+@c Sat, 23 Aug 2003 14:24:44 +0200
+@c
+@c  I personally see the invariant sections as the thing in the
+@c  GFDL, which hinders me in uploading the package to the archives.
+@c  I don't have any problem, if some other Debian developer makes a
+@c  bashdb package built from separate sources.
+@c
+@c  I am aware that Debian ships other packages containing documentation
+@c  covered by the GFDL (and one of them for which I do the packaging as
+@c  well), but I won't add a new package, which I maintain. So before an
+@c  upload of a bashdb package built from the bash sources either
+@c
+@c
+@c  - Debian has a position on the GFDL, which allows inclusion
+@c
+@c  - the bashdb manual does not have invariant sections, or is
+@c    relicensed, or dual licensed.
+@c
+@c
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``Free Software'' and ``Free Software Needs
+Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
+and with the Back-Cover Texts as in (a) below.
+
+(a) The Free Software Foundation's Back-Cover Text is: ``You have
+freedom to copy and modify this GNU Manual, like GNU software.  Copies
+published by the Free Software Foundation raise funds for GNU
+development.''
+@end ifset
+@ifclear DEBIANHASBECOMEREASONABLE
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+@end ifclear
+@end titlepage
+@page
+
+@ifnottex
+@node Top, Summary, (dir), (dir)
+
+@top Debugging with @DBG
+
+This file describes @value{DBG}, the @sc{bash} symbolic debugger.
+
+This is the @value{EDITION} Edition, @value{UPDATED-MONTH}, for REBASH.
+
+Copyright (C) 2002, 2003, 2004 Rocky Bernstein
+
+@menu
+* Summary::                     Overview of Debugger with a sample session
+
+* Invocation::                  Getting in and out
+* Running::                     Script setup inside the BASH debugger
+* Debugger Command Reference::  BASH debugger command reference
+
+* Front Ends::                  Using @DBG from a front-end user interface
+
+* BASH Debugger Bugs::          Reporting bugs
+* History and Acknowledgments:: History and Acknowledgments
+
+Appendices
+* Copying::			GNU General Public License says
+                                how you can copy and share bashdb
+* GNU Free Documentation License::  The license for this documentation
+
+Indexes (nodes containing large menus)
+* Function Index::            An item for each function name.
+* Command Index::             An item for each command name.
+* Variable Index::            An item for each documented variable.
+* General Index::             An item for each concept.
+@end menu
+
+@end ifnottex
+
+@contents
+
+@node Summary
+@chapter Summary of the BASH Debugger
+
+The purpose of a debugger such as @DBG is to allow you to see what is
+going on ``inside'' a bash script while it executes.
+
+@DBG can do four main kinds of things (plus other things in support of
+these) to help you catch bugs in the act:
+
+@itemize @bullet
+@item
+Start your script, specifying anything that might affect its behavior.
+
+@item
+Make your script stop on specified conditions.
+
+@item
+Examine what has happened, when your script has stopped.
+
+@item
+Change things in your script, so you can experiment with correcting the
+effects of one bug and go on to learn about another.
+@end itemize
+
+Although you can use the BASH debugger to debug scripts written in
+BASH, it can also be used just as a front-end for learning more
+about programming in BASH. As an additional aid, the debugger can
+be used within the context of an existing script with its functions
+and variables that have already been initialized; fragments of the
+existing can be experimented with by entering them inside the debugger.
+
+@menu
+* Sample Session::              A Sample BASH Debugger session
+* Free Software::               Freely redistributable software
+@end menu
+
+@node Sample Session
+@section A Sample BASH Debugger Session
+
+You can use this manual at your leisure to read all about @value{DBG}.
+However, a handful of commands are enough to get started using the
+debugger.  This chapter illustrates those commands.
+
+@iftex
+In this sample session, we emphasize user input like this: @b{input},
+to make it easier to pick out from the surrounding output.
+@end iftex
+
+Below we will debug a script that contains a function to compute the
+factorial of a number: fact(0) is 1 and fact(n) is n*fact(n-1).
+
+@smallexample
+@cartouche
+$ @b{bashdb -L .  fact.sh}
+Bourne-Again Shell Debugger, release bash-@value{VERSION}
+Copyright 2002, 2003, 2004 Rocky Bernstein
+This is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+
+(fact.sh:9):
+9:	echo fact 0 is: `fact 0`
+bashdb<0> @b{-}
+  1:    #!@prefix@/bin/bash
+  2:    fact() @{
+  3:    ((n==0)) && echo 1 && return
+  4:    ((nm1=n-1))
+  5:    ((result=n*`fact $nm1`))
+  6:    return $result
+  7:    @}
+  8:    
+  9:==> echo fact 0 is: `fact 0`
+bashdb<1> @b{l}
+ 10:   echo fact 3 is: $(fact 3)
+@end cartouche
+@end smallexample 
+
+@noindent
+
+The command invocation uses the option ``-L .'' Here we assume that
+the @command{bashdb} script and the debugger files are in the same
+location. If you are running from the source code, this will be the
+case. However if bashdb has been installed this probably won't be true
+and here you probably don't need to use ``-L .'' Instead you would
+type simply @code{bashdb fact.sh}.
+
+The first debugger command we gave @kbd{-}, we listed a window of
+lines @emph{before} where we were executing. Because the window, 10
+lines, is larger than the number of lines to the top of the file we
+printed only 9 lines here. The next command list starting from the
+current line and again wants to print 10 lines but because there are
+only one remaining line, that is what is printed.
+
+@smallexample
+bashdb<2> @b{step}
+(fact.sh:9):
+9:	echo fact 0 is: `fact 0`
+bashdb<3> @b{@key{RET}}
+2:	fact() @{
+bashdb<4> @b{@key{RET}}
+3:	((n==0)) && echo 1 && return
+bashdb<5> @b{print $n}
+
+@end smallexample
+
+Ooops... The variable @kbd{n} isn't initialized. 
+
+The first @kbd{step} command steps the script one instruction. It may
+seem odd that the line printed is exactly the same one as before. What
+has happened though is that we've ``stepped'' into the subshell needed
+to run @kbd{`fact 0`}; we haven't however started running anything
+inside that subshell yet though---the function call.
+
+The first @kbd{step} command steps the script one instruction; it
+didn't advance the line number at all. That is because we were
+stopping before the command substitution or backtick is to take
+place. The second command we entered was just hitting the return key;
+bashdb remembers that you entered @code{step} previously, so it runs
+the step rather than @kbd{next}, the other alternative when you hit
+@key{RET}. Step one more instruction and we are just before running
+the first statement of the function.
+
+Next, we print the value of the variable @kbd{n}. Notice we need to add
+a preceding dollar simple to get the substitution or value of n. As we
+will see later, if the @kbd{pe} command were used this would not be
+necessary. 
+
+We now modify the file to add an assignment to local variable @kbd{n} and
+restart.
+
+@smallexample
+bashdb<6> @b{restart}
+Restarting with: @prefix@/bin/bashdb -L . fact.sh
+(fact.sh:10):
+10:	echo fact 0 is: `fact 0`
+bashdb<0> @b{list 1}
+  1:    #!@prefix@/bin/bash
+  2:    fact() @{
+  3:    local -i n=$@{1:0@}
+  4:    ((n==0)) && echo 1 && return
+  5:    ((nm1=n-1))
+  6:    ((result=n*`fact $nm1`))
+  7:    return $result
+  8:    @}
+  9:    
+ 10:==> echo fact 0 is: `fact 0`
+bashdb<1> @b{s 3}
+(fact.sh:3):
+3:	local -i n=$@{1:0@}
+bashdb<2> @b{step}
+(fact.sh:4):
+4:	((n==0)) && echo 1 && return
+bashdb<3> @b{print $n}
+print $n
+0
+@end smallexample 
+
+@noindent
+This time we use the @code{list} debugger command to list the lines in
+the file. From before we know it takes three @code{steps} commands
+before we get into the fact() function, so we add a count onto the
+@code{step} command. Notice we abbreviate @code{step} with @code{s};
+we could have done likewise and abbreviated @code{list} with @code{l}.
+
+@smallexample
+bashdb<4> @b{@key{RET}}
+(fact.sh:4):
+4:	((n==0)) && echo 1 && return
+echo 1
+bashdb<5> @b{@key{RET}}
+(fact.sh:4): 
+4:	((n==0)) && echo 1 && return
+return
+@end smallexample 
+
+@noindent
+Again we just use @key{RET} to repeat the last @code{step}
+commands. And again the fact that we are staying on the same line 4
+means that the next condition in the line is about to be
+executed. Notice that we see the command (@code{echo 1} or
+@code{return}) listed when we stay on the same line which has multiple
+stopping points in it. Given the information above, we know that the
+value echo'ed on return will be 1.
+
+@smallexample
+bashdb<6> @b{@key{RET}}
+fact 0 is: 1
+(fact.sh:12): 
+12:	echo fact 3 is: $(fact 3)
+bashdb<7> @b{break 5}
+Breakpoint 1 set in file fact.sh, line 5.
+bashdb<8> @b{continue}
+@end smallexample 
+
+@noindent
+We saw that we could step with a count into the function
+fact(). However above took another approach: we set a stopping point or
+``breakpoint'' at line 5 to get us a little ways into the fact()
+subroutine. Just before line 5 is to executed, we will get back into
+the debugger. The @code{continue} command just resumes execution until
+the next stopping point which has been set up in some way.
+
+@smallexample
+(fact.sh:5):
+5:      ((nm1=n-1))
+Breakpoint 1 hit(1 times).
+bashdb<8> @b{x n-1}
+2
+bashdb<9> @b{s}
+(fact.sh:5):
+6:     ((result=n*`fact $nm1`))
+bashdb<10> @b{c}
+fact.sh: line 6: ((: result=n*: syntax error: operand expected (error token is "*")
+bashdb<7> @b{R}
+Restarting with: bash --debugger fact.sh 
+11:	echo fact 0 is: `fact 0`
+bashdb<0> @b{l fact}
+ 2:    fact () 
+ 3:    @{ 
+ 4:       local -i n=$@{1:0@};
+ 5:       (( "n==0" )) && echo 1 && return;
+ 6:       (( nm1=n-1 ));
+ 7:       ((fact_nm1=`fact $nm1`))
+ 8:       (( "result=n*fact_nm1" ));
+ 9:       echo $result
+10:    @}
+@end smallexample
+
+@noindent
+In addition to listing by line numbers, we can also list giving a
+function name. Below, instead of setting a breakpoint at line 5 and
+running ``continue'' as we did above, we try something slightly shorter
+and slightly different. We give the line number on the ``continue''
+statement. This is a little different in that a one-time break is made
+on line 5. Once that statement is reached the breakpoint is removed. 
+
+@smallexample
+bashdb<1> @b{continue 5}
+One-time breakpoint 1 set in file fact.sh, line 5.
+fact 0 is: 1
+(fact.sh:5):
+5:	((nm1=n-1))
+bashdb<2> @b{s}
+6:	((fact_nm1=`fact $nm1`))
+bashdb<2> @b{s}
+2:	fact() @{
+bashdb<3> @b{T}
+->0 in file `fact.sh' at line 2
+##1 fact("3") called from file `fact.sh' at line 12
+##2 source("fact.sh") called from file `@prefix@/bin/bashdb' at line 154
+##3 main("fact.sh") called from file `@prefix@/bin/bashdb' at line 0
+bashdb<4> @b{c}
+fact 3 is: 6
+Debugged program terminated normally. Use q to quit or R to restart.
+@end smallexample
+
+@noindent
+When we stop at line 5 above, we have already run fact(0) and output
+the correct results. The output from the program ``fact 0 is: 1'' is
+intermixed with the debugger output. The @code{T} command above
+requests call stack output and this confirms that we are not in the
+fact(0) call but in the fact(3) call. There are 4 lines listed in the
+stack trace even though there is just one call from the main
+program. The top line of the trace doesn't really represent a call,
+it's just where we currently are in the program. That last line is an
+artifact of invoking bash from the bashdb script rather than running
+@code{bash --debugger}.
+
+The last message in the output above @samp{Debugged program exited
+normally.} is from @value{DBG}; it indicates script has finished
+executing.  We can end our bashdb session with the bashdb
+@code{quit} command.
+
+Above we did our debugging session on the command line. If you are a
+GNU Emacs user, you can do your debugging inside that. Also there is
+a(nother) GUI interface called DDD that supports @value{DBG}.
+
+@node Free Software
+@unnumberedsec Free software
+
+@DBG is @dfn{free software}, protected by the @sc{gnu}
+General Public License
+(GPL).  The GPL gives you the freedom to copy or adapt a licensed
+program---but every person getting a copy also gets with it the
+freedom to modify that copy (which means that they must get access to
+the source code), and the freedom to distribute further copies.
+Typical software companies use copyrights to limit your freedoms; the
+Free Software Foundation uses the GPL to preserve these freedoms.
+
+Fundamentally, the General Public License is a license which says that
+you have these freedoms and that you cannot take these freedoms away
+from anyone else.
+
+@unnumberedsec Free Software Needs Free Documentation
+
+The biggest deficiency in the free software community today is not in
+the software---it is the lack of good free documentation that we can
+include with the free software.  Many of our most important
+programs do not come with free reference manuals and free introductory
+texts.  Documentation is an essential part of any software package;
+when an important free software package does not come with a free
+manual and a free tutorial, that is a major gap.  We have many such
+gaps today.
+
+Consider Perl, for instance.  The tutorial manuals that people
+normally use are non-free.  How did this come about?  Because the
+authors of those manuals published them with restrictive terms---no
+copying, no modification, source files not available---which exclude
+them from the free software world.
+
+That wasn't the first time this sort of thing happened, and it was far
+from the last.  Many times we have heard a GNU user eagerly describe a
+manual that he is writing, his intended contribution to the community,
+only to learn that he had ruined everything by signing a publication
+contract to make it non-free.
+
+Free documentation, like free software, is a matter of freedom, not
+price.  The problem with the non-free manual is not that publishers
+charge a price for printed copies---that in itself is fine.  (The Free
+Software Foundation sells printed copies of manuals, too.)  The
+problem is the restrictions on the use of the manual.  Free manuals
+are available in source code form, and give you permission to copy and
+modify.  Non-free manuals do not allow this.
+
+The criteria of freedom for a free manual are roughly the same as for
+free software.  Redistribution (including the normal kinds of
+commercial redistribution) must be permitted, so that the manual can
+accompany every copy of the program, both on-line and on paper.
+
+Permission for modification of the technical content is crucial too.
+When people modify the software, adding or changing features, if they
+are conscientious they will change the manual too---so they can
+provide accurate and clear documentation for the modified program.  A
+manual that leaves you no choice but to write a new manual to document
+a changed version of the program is not really available to our
+community.
+
+Some kinds of limits on the way modification is handled are
+acceptable.  For example, requirements to preserve the original
+author's copyright notice, the distribution terms, or the list of
+authors, are ok.  It is also no problem to require modified versions
+to include notice that they were modified.  Even entire sections that
+may not be deleted or changed are acceptable, as long as they deal
+with nontechnical topics (like this one).  These kinds of restrictions
+are acceptable because they don't obstruct the community's normal use
+of the manual.
+
+However, it must be possible to modify all the @emph{technical}
+content of the manual, and then distribute the result in all the usual
+media, through all the usual channels.  Otherwise, the restrictions
+obstruct the use of the manual, it is not free, and we need another
+manual to replace it.
+
+Please spread the word about this issue.  Our community continues to
+lose manuals to proprietary publishing.  If we spread the word that
+free software needs free reference manuals and free tutorials, perhaps
+the next person who wants to contribute by writing documentation will
+realize, before it is too late, that only free manuals contribute to
+the free software community.
+
+If you are writing documentation, please insist on publishing it under
+the GNU Free Documentation License or another free documentation
+license.  Remember that this decision requires your approval---you
+don't have to let the publisher decide.  Some commercial publishers
+will use a free license if you insist, but they will not propose the
+option; it is up to you to raise the issue and say firmly that this is
+what you want.  If the publisher you are dealing with refuses, please
+try other publishers.  If you're not sure whether a proposed license
+is free, write to @email{licensing@@gnu.org}.
+
+You can encourage commercial publishers to sell more free, copylefted
+manuals and tutorials by buying them, and particularly by buying
+copies from the publishers that paid for their writing or for major
+improvements.  Meanwhile, try to avoid buying non-free documentation
+at all.  Check the distribution terms of a manual before you buy it,
+and insist that whoever seeks your business must respect your freedom.
+Check the history of the book, and try to reward the publishers that
+have paid or pay the authors to work on it.
+
+The Free Software Foundation maintains a list of free documentation
+published by other publishers, at
+@url{http://www.fsf.org/doc/other-free-books.html}.
+
+@node Invocation
+@chapter Getting in and out
+
+This chapter discusses how to start @value{DBG}, and how to get out of it.
+The essentials are:
+@itemize @bullet
+@item
+type @samp{bash --debugger @emph{script-name}} or @samp{bashdb
+@emph{script-name}} to start @value{DBG}.
+@item
+type @kbd{quit} or @kbd{C-d} inside the debugger to exit.
+@end itemize
+
+But also note there are two front-ends available as well. One can also
+enter the debugger inside emacs via the command @code{M-x bashdb}
+after loading Emacs' Grand Unified Debugger, @code{gud}. See
+@ref{Emacs,,Using the BASH debugger from @sc{gnu} Emacs}. And there is
+support in a @value{DDD} for bash.
+
+@menu
+* Starting the BASH debugger::    How to enter the BASH debugger
+* Quitting the BASH debugger::    How to leave the BASH debugger
+@end menu
+
+@node Starting the BASH debugger
+@section Starting the BASH debugger
+
+@emph{Note: it is important to use a debugger-enabled bash. You will
+get an error message if the debugger is run under a version of BASH
+that does not have debugging support.}
+
+As mentioned above, one can enter @DBG via Emacs or
+DDD. However you don't have to use either of these. And these still
+need a way on their own to get things started.
+
+There are in fact two @emph{other} ways to start @value{DBG}.  The
+first way is to pass the @samp{--debugger} option to bash with the
+name of your script the scripts arguments following that, or with a
+command string (@code{-c}).
+
+@example
+bash --debugger @var{script} @var{script-arguments...}
+bash --debugger -c @var{command-string}...
+@end example
+
+This calls a debugger initialization script. It works much like a
+@BASH login profile which may set variables and define
+functions. But this shell profile is customized for debugging and as
+such arranges for itself to get called before each statement is
+executed. Although there are some problems at present in I/O
+redirection that the method described next doesn't have, it is
+expected that over time more features will be enabled in bash when the
+@samp{--debugger} option is in effect. By default, both debugging in
+Emacs via GUD (@ref{Emacs,,Using the BASH debugger under Emacs}) and
+debugging via @value{DDD} work via this method.
+
+The form @samp{bash --debugger -c ...} can be used to get into the
+debugger without having to give a script name to debug. Sometimes you
+may want to do this just to see how the debugger works: try some
+debugger commands or maybe get online help. If you run @code{ddd
+--bash} without giving a script name, it in fact uses this form.
+
+In order for the @samp{--debugger} option to work however, you must
+have the debugger scripts installed in a place where @DBG can
+find them. For this reason, in developing @value{DBG}, I use a second
+method more often; it doesn't require the bash debugger to be
+installed. This method uses another script called @code{bashdb} which
+after taking its own options takes the name of the script to debugged
+and the arguments to pass to that script.  Using this method, one
+would start the debugger like this:
+
+@example
+bash @var{path-to-bashdb}/bashdb @var{bashdb-options} @var{script} @var{script-arguments...}
+@end example
+
+As with the first method, @code{bash} should be a debugger-enabled
+bash. If @code{bashdb} has the path to bash in it at the top (e.g. via
+@code{#!}), and @code{bashdb} can be found in your program-search
+path, then this might be equivalent to the above:
+
+@example
+bashdb @var{bashdb-options} @var{script} @var{script-arguments...}
+@end example
+
+There are two or three disadvantages however of running a debugger
+this way. First @code{$0} will have the value @code{bashdb} rather
+than the script you are trying to run. For some scripts this may
+change the behavior of the debugged script. Second a traceback will
+contain additional lines showing the ``source''-ing of the debugged
+script from @code{bashdb}. And third, although this way works better
+than the first method, over time this way may come into disuse. 
+
+An option that you'll probably need to use if bashdb isn't installed
+but run out of the source code directory is @samp{-L} which specifies
+the directory that contains the debugger script files.
+
+You can further control how bashdb starts up by using command-line
+options. bashdb itself can remind you of the options available.
+
+@noindent
+Type
+
+@example
+bashdb -h
+@end example
+
+@noindent
+to display all available options and briefly describe their use.
+
+When the bash debugger is invoked either by the @code{bashdb}
+front-end script or @code{bash --debugging}, the first argument that
+does not have an associated option flag for @code{bashdb} or
+@code{bash} (as the case may be) is used as the name a the script file
+to be debugged, and any following options get passed the debugged
+script.
+
+Options for the @code{bashdb} front-end are shown in the
+following list.  
+
+@menu
+* Options for the bashdb script::   Options you can pass in starting bashdb
+@end menu
+
+@node Options for the bashdb script
+@subsection Command-line options for @code{bashdb} script
+
+You can run @DBG in various alternative modes---for example, in
+batch mode or quiet mode.
+
+@table @code
+@item -h 
+@cindex @code{-h}
+This option causes @value{DBG} to print some basic help and exit.
+
+@item -V
+@cindex @code{-V}
+This option causes @DBG to print its version number and
+no-warranty blurb, and exit.
+
+@item -n
+@cindex @code{-n}
+Do not execute commands found in any initialization files.  Normally,
+@BASH executes the commands in these files after all the command
+options and arguments have been processed.  @xref{Command Files,,Command
+files}.
+
+@item -q
+@cindex @code{-q}
+``Quiet''.  Do not print the introductory and copyright messages.  These
+messages are also suppressed in batch mode.
+
+@item -t
+@cindex @code{-t}
+``Terminal output''.  Set the file or terminal that you want debugger command
+output to go to. Note that the debugger output is independent of the
+debugged script output.
+
+@item -L @var{directory}
+@cindex @code{-L}
+Set directory where debugger files reside to @var{directory}. The
+default location is @code{../lib/bashdb} relative to the place that
+the bashdb script is located. For example if bashdb is located in
+@code{@prefix@/bin/bashdb}, the default library location will be
+@code{@prefix@/lib/bashdb} which may or may not exist. If it doesn't
+you'll get an error when you run bashdb. Only if the default location
+is incorrect, should you need to use the @code{-L} option.
+
+@item -T @var{directory}
+@cindex @code{-T}
+Set directory to use for writing temporary files.
+
+@end table
+
+@node Quitting the BASH debugger
+@section Quitting the BASH debugger
+
+@cindex interrupt
+An interrupt (often @kbd{C-c}) does not exit from @value{DBG}, but
+rather terminates the action of any @DBG command that is in
+progress and returns to @value{DBG} command level.  Inside a debugger
+command interpreter, use @code{quit} command (@pxref{Quit, ,Quitting
+the BASH debugger}).
+
+@node Running
+@chapter Script Setup inside the BASH Debugger
+
+@menu
+* Starting::                    Starting your script
+* Command Files::               Command files
+* Arguments::                   Your script's arguments
+* Input/Output::                Your script's input and output
+* Script/Debugger Interaction::   Keeping out of each other's harm
+@end menu
+
+@need 2000
+@node Starting
+@section Starting your script
+@cindex starting
+@cindex running
+
+@table @code
+@kindex restart
+@kindex run @r{(@code{restart})}
+@kindex R @r{(@code{restart})}
+@item restart @ovar{options to debugged script}
+@itemx run
+@itemx R
+Use the @code{restart} command to restart your script under
+@value{DBG}. Without any arguments, the script name and parameters
+from the last invocation are used. @value{dBGP} tries to maintain the
+settings, watchpoints, breakpoints, actions and so on. Internally it
+uses line numbers and filenames to record he position of interesting
+places in your porgram; so if your program changes some or all of
+these numbers may be off. Environment variable
+@code{BASHDB_RESTART_FILE} is and a temporary file are used to signal
+a restart, so you shouldn't uset @code{BASHDB_RESTART_FILE} (or any
+environment variable starting with @code{BASHDB_}.
+
+@end table
+
+@node Command Files
+@section Command files
+
+@cindex command files
+A command file for @DBG is a file of lines that are @DBG
+commands.  Comments (lines starting with @kbd{#}) may also be included.
+An empty line in a command file does nothing; it does not mean to repeat
+the last command, as it would from the terminal.
+
+@cindex init file
+@cindex @file{.bashdbinit}
+@cindex @file{bashdb.ini}
+When you start @value{DBG}, it automatically executes commands from its
+@dfn{init files}, normally called @file{.bashdbinit}@footnote{The DJGPP
+port of @DBG uses the name @file{bashdb.ini} instead, due to the
+limitations of file names imposed by DOS filesystems.}.
+During startup, @DBG does the following:
+
+@enumerate
+@item
+Reads the init file (if any) in your home directory@footnote{On
+DOS/Windows systems, the home directory is the one pointed to by the
+@code{HOME} environment variable.}.
+
+@item
+Processes command line options and operands.
+
+@item
+Reads the init file (if any) in the current working directory.
+
+@item
+Reads command files specified by the @samp{-x} option.
+@end enumerate
+
+The init file in your home directory can set options (such as @samp{set
+complaints}) that affect subsequent processing of command line options
+and operands.  Init files are not executed if you use the @samp{-x}
+option (@pxref{Options for the bashdb script, ,bashdb script options}).
+
+@cindex init file name
+On some configurations of @value{DBG}, the init file is known by a
+different name (these are typically environments where a specialized
+form of @DBG may need to coexist with other forms, hence a
+different name for the specialized version's init file).  These are the
+environments with special init file names:
+
+You can also request the execution of a command file with the
+@code{source} command:
+
+@table @code
+@kindex source
+@item source @var{filename}
+Execute the command file @var{filename}.
+@end table
+
+The lines in a command file are executed sequentially.  They are not
+printed as they are executed.  If there is an error, execution
+proceeds to the next command in the file.
+
+@node Arguments
+@section Your script's arguments
+
+@cindex arguments (to your script)
+The arguments to your script can be specified by the arguments of the
+@code{restart} command.
+They are passed to a shell, which expands wildcard characters and
+performs redirection of I/O, and thence to your script.  
+
+@code{restart} with no arguments uses the same arguments used by the previous
+@code{restart}, or those set by the @code{set args} command.. 
+
+@table @code
+@kindex set args
+@item set args
+Specify the arguments to be used the next time your program is run.  If
+@code{set args} has no arguments, @code{restart} executes your program
+with no arguments.  Once you have run your program with arguments,
+using @code{set args} before the next @code{restart} is the only way to run
+it again without arguments.
+
+@kindex show args
+@item show args
+Show the arguments to give your program when it is started.
+@end table
+
+@node Input/Output
+@section Your script's input and output
+
+@cindex redirection
+@cindex I/O
+@cindex terminal
+By default, the script you run under the BASH debugger does input and
+output to the same terminal that BASH uses.  Before running the script
+to be debugged, the debugger records the tty that was in effect. All
+of its output is then written to that.  However you can change this
+when using the @samp{bashdb} script using the @samp{-t} option.
+
+
+@table @code
+@kindex info terminal
+@item info terminal
+Displays information recorded by @DBG about the terminal modes your
+program is using.
+@end table
+
+@kindex tty
+@cindex controlling terminal
+Another way to specify where your script should do input and output is
+with the @code{tty} command.  This command accepts a file name as
+argument, and causes this file to be the default for future @code{restart}
+commands.  It also resets the controlling terminal for the child
+process, for future @code{restart} commands.  For example,
+
+@example
+tty /dev/ttyb
+@end example
+
+@noindent
+directs that processes started with subsequent @code{restart} commands
+default to do input and output on the terminal @file{/dev/ttyb} and have
+that as their controlling terminal.
+
+An explicit redirection in @code{restart} overrides the @code{tty} command's
+effect on the input/output device, but not its effect on the controlling
+terminal.
+
+When you use the @code{tty} command or redirect input in the @code{restart}
+command, only the input @emph{for your script} is affected.  The input
+for @DBG still comes from your terminal.
+
+@node Script/Debugger Interaction
+@section Script/Debugger Interaction
+
+@value{dBGP} and your program live in the same variable space so
+to speak. @BASH does not have a notion of module scoping or lexical
+hiding (yet) and this then imposes some additional care and awareness.
+
+Most of the variables and functions used inside @DBG start
+@code{_Dbg_}, so please don't use variables or functions with these
+names in your program. 
+
+@emph{Note: there are some other variables that begin with just an
+underscore (@code{_}); over time these will be phased out. But until
+then, avoid those or consult what is used by the debugger. Run
+@samp{bashdb --debugger -c 'declare -p'} to list all the variables in
+use including those used by the debugger.}
+
+A number of @DBG environment variables are also reserved for
+use; these start with @code{BASHDB_}. For example:
+@env{BASHDB_INPUT}, @env{BASHDB_LEVEL} and,
+@env{BASHDB_QUIT_ON_QUIT} (@pxref{Debug, ,Debug}),
+@env{BASHDB_RESTART_FILE} (@pxref{Starting, ,Starting}), to name a
+few.  Finally, there are some @BASH environment dynamic
+variables and these start with @env{BASH_}. For example
+@env{BASH_SUBSHELL} (@pxref{Debug, ,Debug}), @env{BASH_COMMAND}
+(@pxref{Command Display, ,Command Display}), @env{BASH_LINENO}, and
+@env{BASH_SOURCE} to name a few.
+
+In order to do its work @value{dBGP} sets up a @code{DEBUG}
+trap. Consequently a script shouldn't reset this or the debugger will
+lose control. @value{dBGP} also sets up an @code{EXIT} handler so that
+it can gain control after the script finishes. Another signal
+intercepted is the an interrupt or @code{INT} signal. For more
+information about signal handling, @pxref{Signals, ,Signals} 
+
+@node Debugger Command Reference
+@chapter BASH Debugger Command Reference
+
+You can abbreviate the long name of @DBG command to the first
+few letters of the command name, if that abbreviation is unambiguous;
+and you can repeat the @code{next} o r@code{step} commands by typing
+just @key{RET}. Some commands which require a parameter, such as 
+@code{print} remember the argument that was given to them. 
+
+@menu
+* Command Syntax::       How to give commands to the BASH debugger
+* Help::                 How to ask for help (help)
+* Quit::                 Leaving the debugger (quit)
+* Information::          Status and Debugger settings (info, show)
+* Stopping::             Stopping and continuing (break, watch, step, cont...)
+* Stack::                Examining the stack (where, up, down, frame)
+* List::                 Printing source files (list)
+* Search::               Searching source files (/pat/ ?pat?)
+* Data::                 Examining data (print, examine, info variables)
+* Evaluation/Execution:: Arbitrary execution (eval, shell)
+* Auto Display::         Executing expressions on stop (display, undisplay)
+* Controlling bashdb::   Controlling bashdb (annotate, file, prompt, history...)
+@end menu
+
+@node Command Syntax
+@section Command syntax
+
+A BASH debugger command is a single line of input.  There is no limit on
+how long it can be.  It starts with a command name, which is followed by
+arguments whose meaning depends on the command name.  For example, the
+command @code{step} accepts an argument which is the number of times to
+step, as in @samp{step 5}.  You can also use the @code{step} command
+with no arguments.  Some commands do not allow any arguments.
+
+@cindex repeating next/step commands
+@kindex RET @r{(repeat last command)}
+A blank line as input to @DBG (typing just @key{RET}) means to
+repeat the previous next or step command.  
+
+@kindex # @r{(a comment)}
+@cindex comment
+Any text from a @kbd{#} to the end of the line is a comment; it does
+nothing.  This is useful mainly in command files (@pxref{Command
+Files,,Command files}).
+
+@node Help
+@section Getting help (@samp{help})
+@cindex online documentation
+
+Once inside the BASH debugger, you can always ask it for information on its
+commands, using the command @code{help}.
+
+@table @code
+@kindex h @r{(@code{help})}
+@item help
+@itemx h
+You can use @code{help} (abbreviated @code{h}) with no arguments to
+display a short list of named classes of commands:
+@end table 
+
+@flushleft
+@smallexample
+bashdb<0> @b{help}
+bashdb commands:
+List/search source lines:                 Control script execution:
+-------------------------                 -------------------------
+ l [start|.] [cnt] List cnt lines         T [n]        Stack trace
+                   from line start        s [n]        Single step [n times]
+ l sub       List source code fn          n [n]        Next, steps over subs
+ - or .      List previous/current line   <CR>/<Enter> Repeat last n or s 
+ w [line]    List around line             c [linespec] Continue [to linespec]
+ f filename  View source in file          L            List all breakpoints
+ /pat/       Search forward for pat       b linespec   Set breakpoint
+ ?pat?       Search backward for pat      del [n].. or D Delete a/all breaks
+                                                         by entry number
+Debugger controls:                        skip         skip execution of cmd
+-------------------------                 cl linespec  Delete breakpoints by
+ H [num]         Show last num commands                line spec
+ q [exp] or ^D   Quit returning exp       R [args]     Attempt a restart
+ info [cmd]      Get info on cmd.         u [n]        Go up stack by n or 1.
+ !n or hi n      Run debugger history n   do [n]       Go down stack by n or 1.
+ h or ? [cmd]    Get help on command      W [var]      Add watchpoint. If no
+ info [cmd]      Get info on cmd                       no expr, delete all
+ show [cmd]      Show settings            We [expr]    Add Watchpoint arith 
+                                                       expr
+ so file         read in dbg commands     t            Toggle trace
+                                          en/di n      enable/disable brkpt,
+ set x y         set a debugger variable               watchpoint, or display
+ e bash-cmd      evaluate a bash command  tb linespec  Add one-time break
+ disp expr       add a display expr       a linespec cmd eval "cmd" at linespec
+ M               Show module versions     A            delete all actions
+ x expr          evaluate expression      ret          jump out of fn or source
+                 (via declare, let, eval) finish       execute until return
+ deb             debug into another       cond n exp   set breakpoint condition
+                 shell script
+ !! cmd [args]   execute shell command "cmd" with "args"
+ file filename   Set script filename to read for current source.
+
+Data Examination: also see e, t, x
+-------------------------                 
+ p variable      Print variable 
+ V [[!]pat]      List variable(s) matching or not (!) matching pattern pat
+ S [[!]pat]      List subroutine names [not] matching pattern pat
+
+Readline command line editing (emacs/vi mode) is available.
+For more help, type h <cmd> or consult online-documentation.
+@end smallexample
+@end flushleft
+@c the above line break eliminates huge line overfull...
+
+@table @code
+@item help @var{command}
+With a command name as @code{help} argument, the BASH debugger displays 
+short information on how to use that command.
+
+@example
+bashdb<0> @b{help list}
+l linespec      List window lines starting at linespec.
+l min incr      List incr lines starting at 'min' linespec.
+l               List next window of lines.
+l .             Same as above.
+                Long command name: list.
+@end example
+
+In addition to @code{help}, you can use the debugger command
+@code{info} to inquire about the state of your script, or the state of
+@DBG itself.  The listings under @code{info} in the Index
+point to all the sub-commands.  @xref{Command Index}.
+@end table
+
+@c @group
+@table @code
+@kindex info
+@kindex i @r{(@code{info})}
+@item info
+This command (abbreviated @code{i}) is for describing the state of
+your program.  For example, you can list the arguments given to your
+script with @code{info args}, or list the breakpoints you have set
+with @code{info breakpoints}.  You can get a complete list of the
+@code{info} sub-commands with @w{@code{help info}}.
+
+@example
+bashdb<0> @b{help info}
+Info subcommands are: args breakpoints display files source sources stack terminal variables watchpoints
+bashdb<1> @b{info source}
+Current script file is parm.sh
+Contains 34 lines.
+@end example
+@end table
+
+
+@node Quit
+@section Quitting the BASH debugger (@samp{quit})
+
+@table @code
+@kindex quit @r{[}@var{expression} @ovar{subshell-levels}@r{]}
+@kindex q @r{(@code{quit})}
+@item quit @ovar{expression}
+@item quit @r{[}@var{expression} @ovar{subshell-levels}@r{]}
+@itemx q
+
+To exit @value{DBG}, use the @code{quit} command (abbreviated
+@code{q}), or type an end-of-file character (usually @kbd{C-d}).  If
+you do not supply @var{expression}, @DBG will try to terminate
+normally or with exit code 0. Otherwise it will terminate using the
+result of @var{expression} as the exit code. 
+
+A simple @code{quit} tries to terminate all nested subshells that may
+be in effect.  If you are nested a subshell, this is normally
+indicated in a debugger prompt by the number of parentheses that the
+history number is inside --- no parenthesis means there is no subshell
+in effect. The dynamic variable @env{BASH_SUBSHELL} also contains the
+number of subshells in effect. 
+
+If you want only to terminate some number of subshells but not all of
+them, you can give a count of the number of subshells to leave after
+the return-code expression. To leave just one level of subshell
+@code{return} does almost the same thing. (See @pxref{Returning,
+,Returning}) There is a subtle difference between the two though:
+@code{return} will leave you at the beginning of the next statement
+while @code{quit} may leave you at the place the subshell was invoked
+which may be in the middle of another command such as an assingment
+statement or condition test.
+
+If the environment variable @code{BASHDB_QUIT_ON_QUIT} is set, when the
+program terminates, the debugger will also terminate too. This may be
+useful if you are debugging a script which calls another script and
+you want this inner script just to return to the outer script.
+@end table
+
+@node Stopping
+@section Stopping and Resuming Execution (@samp{break}, @samp{watch}, @samp{step}, @samp{cont})
+
+One important use of a debugger is to stop your program before it
+terminates so that, if your script might run into trouble, you can
+investigate and find out why. However should your script accidently
+continue to termination, @DBG has arranged for it not to leave the
+debugger without your explicit instruction. That way, you can restart
+the program using the same command arguments.
+
+Inside @value{DBG}, your script may stop for any of several reasons,
+such as a signal, a breakpoint, or reaching a new line after a
+debugger command such as @code{step}.  You may then examine and
+change variables, set new breakpoints or remove old ones, and then
+continue execution.  
+
+@menu
+* Breakpoints::          Breakpoints, watchpoints (break, watch, clear)
+* Resuming Execution::   Resuming execution (continue, step, next, skip, debug)
+* Signals::              Signals
+@end menu
+
+@node Breakpoints
+@subsection Breakpoints, watchpoints
+
+@cindex breakpoints
+A @dfn{breakpoint} makes your script stop whenever a certain point in
+the program is reached.  For each breakpoint, you can add conditions to
+control in finer detail whether your script stops.  
+
+You can set breakpoints with the @code{break} command and its variants
+(@pxref{Set Breaks, ,Setting breakpoints}), to specify the place where
+your script should stop by line number.  or function name in the
+debugged script.
+
+@cindex watchpoints
+@cindex breakpoint on variable modification
+A @dfn{watchpoint} is a special breakpoint that stops your script when
+the value of an expression changes.  There is a different command to
+set watchpoints (@pxref{Set Watchpoints, ,Setting watchpoints}). 
+
+But aside from that, you can manage a watchpoint like any other
+breakpoint: you delete enable, and disable both breakpoints and
+watchpoints using the same commands.
+
+You can arrange to have values from your program displayed automatically
+whenever @value{BASH} stops at a breakpoint.  @xref{Auto Display,,
+Automatic display}.
+
+@cindex breakpoint numbers
+@cindex numbers for breakpoints
+@DBG assigns a number to each breakpoint and watchpoint when
+you create it; these numbers are successive integers starting with
+one.  In many of the commands for controlling various features of
+breakpoints you use the breakpoint number to say which breakpoint you
+want to change.  Each breakpoint may be @dfn{enabled} or
+@dfn{disabled}; if disabled, it has no effect on your script until you
+enable it again.
+
+@cindex watchpoints numbers
+@cindex numbers for watchpoints
+Watchpoint numbers however are distiguished from breakpoint numbers by
+virtue of their being suffixed with the either an upper- or lower-case
+`W'.  For example, to enable breakpoint entry 0 along with watchpoint
+entry 1 you would write @samp{enable 1 2w}, the ``2w'' refers to the
+watchpoint; ``2W'' would work just as well.
+
+@ifset FINISHED
+@cindex breakpoint ranges
+@cindex ranges of breakpoints
+Some @DBG commands accept a range of breakpoints on which to
+operate.  A breakpoint range is either a single breakpoint number, like
+@samp{5}, or two such numbers, in increasing order, separated by a
+hyphen, like @samp{5-7}.  When a breakpoint range is given to a command,
+all breakpoint in that range are operated on.
+@end ifset
+
+@menu
+* Set Breaks::                      Setting breakpoints (break, tbreak)
+* Set Watchpoints::                 Setting watchpoints (watch, watche)
+* Delete Breaks::                   Deleting breakpoints (delete, clear)
+* Disabling::                       Disabling breakpoints (disable, enable)
+* Conditions::                      Break conditions (condition)
+@end menu
+
+@node Set Breaks
+@subsubsection Setting breakpoints (@samp{break} @samp{tbreak})
+
+@kindex break
+@kindex b @r{(@code{break})}
+@cindex latest breakpoint
+Breakpoints are set with the @code{break} command (abbreviated
+@code{b}).  
+
+@table @code
+@item break @var{function}
+Set a breakpoint at entry to function @var{function}.
+
+@item break @var{linenum}
+Set a breakpoint at line @var{linenum} in the current source file.
+The current source file is the last file whose source text was printed.
+The breakpoint will stop your script just before it executes any of the
+code on that line.
+
+@item break @var{filename}:@var{linenum}
+Set a breakpoint at line @var{linenum} in source file @var{filename};
+@var{filename} has to be one of the files previously read in and has
+to be specified exactly as the name used when read in. For a list of
+read-in files, use the @samp{info files} command.
+
+@ifset FINISHED
+@item break
+When called without any arguments, @code{break} sets a breakpoint at
+the next instruction to be executed in the selected stack frame
+(@pxref{Stack, ,Examining the Stack}).  In any selected frame but the
+innermost, this makes your script stop as soon as control returns to
+that frame.  If you use @code{break} without an argument in the
+innermost frame, @DBG stops the next time it reaches the
+current location; this may be useful inside loops.
+@end ifset
+
+@item break @dots{} if @var{cond}
+Set a breakpoint with condition @var{cond}; evaluate the expression
+@var{cond} each time the breakpoint is reached, and stop only if the
+value is nonzero---that is, if @var{cond} evaluates as true. The
+expression is evaluated via the @code{let} builtin funtion.
+@samp{@dots{}} stands for one of the possible arguments described
+above (or no argument) specifying where to break. The word ``if'' is
+often optional and is necessary only @samp{@dots{}} is
+omitted. @xref{Conditions, ,Break conditions}, for more information on
+breakpoint conditions.
+
+Examples:
+@example
+bashdb<0> @b{break fn1}
+Breakpoint 1 set in file parm.sh, line 3.
+bashdb<1> @b{break 28}
+Breakpoint 2 set in file parm.sh, line 28.
+bashdb<2> @b{break parm.sh:29}
+Breakpoint 3 set in file parm.sh, line 29.
+bashdb<3> @b{break 28 if x==5}
+Breakpoint 4 set in file parm.sh, line 28.
+@end example
+
+@kindex tbreak
+@item tbreak @var{args}
+Set a breakpoint enabled only for one stop.  @var{args} are the
+same as for the @code{break} command, and the breakpoint is set in the same
+way, but the breakpoint is automatically deleted after the first time your
+program stops there.  @xref{Disabling, ,Disabling breakpoints}.
+
+@kindex info breakpoints
+@cindex @code{$_} and @code{info breakpoints}
+@item info breakpoints @ovar{n}
+@itemx info break @ovar{n}
+@itemx info watchpoints @ovar{n}
+Print a table of all breakpoints, watchpoints set and not deleted,
+with the following columns for each breakpoint:
+
+@table @emph
+@item Breakpoint Numbers (@samp{Num})
+@item Enabled or Disabled (@samp{Enb})
+Enabled breakpoints are marked with @samp{1}.  @samp{0} marks breakpoints
+that are disabled (not enabled).
+@item Count
+The number of times that breakpoint or watchpoint has been hit.
+@item Condition
+The arithmetic expression
+@item File and Line (@samp{file:line})
+The filename and line number inside that file where of breakpoint in
+the script. The file and line are separated with a colon.
+@end table
+
+@noindent
+If a breakpoint is conditional, @code{info break} shows the condition on
+the line following the affected breakpoint; breakpoint commands, if any,
+are listed after that.
+
+@noindent
+@code{info break} displays a count of the number of times the breakpoint
+has been hit.  
+
+@code{info break} with a breakpoint number @var{n} as argument lists
+only that breakpoint.
+
+Examples:
+@example
+bashdb<4> @b{info break}
+Breakpoints at following places:
+Num Type       Disp Enb What
+1   breakpoint keep y   parm.sh:3
+2   breakpoint keep y   parm.sh:28
+3   breakpoint keep y   parm.sh:29
+4   breakpoint keep y   parm.sh:28
+No watch expressions have been set.
+bashdb<5> @b{info break 4}
+Num Type       Disp Enb What
+4   breakpoint keep y   parm.sh:28
+No watch expressions have been set.
+@end example
+@end table
+
+
+@ifset FINISHED
+This is especially useful in conjunction with the
+@code{ignore} command.  You can ignore a large number of breakpoint
+hits, look at the breakpoint info to see how many times the breakpoint
+was hit, and then run again, ignoring one less than that number.  This
+will get you quickly to the last hit of that breakpoint.
+@end ifset
+
+@DBG allows you to set any number of breakpoints at the same place in
+your script.  There is nothing silly or meaningless about this.  When
+the breakpoints are conditional, this is even useful
+(@pxref{Conditions, ,Break conditions}).
+
+@node Set Watchpoints
+@subsubsection Setting watchpoints (@samp{watch}, @samp{watche})
+
+@cindex setting watchpoints
+You can use a watchpoint to stop execution whenever the value of an
+expression changes, without having to predict a particular place where
+this may happen. As with the @code{print} (@pxref{Data,,Examining
+Data}), the idiosyncracies of a BASH or any POSIX shell derivative
+suggest using two commands. The @code{watch} command is just for a
+single variables; the @code{watche} command uses the builtin ``let''
+command to evaluate an expression. If the variable you are tracking
+can take a string value, issuing something like @samp{watch foo} will
+not have the desired effect---any string assignment to @code{foo} will
+have a value 0 when it is assigned via ``let.''
+
+@table @code
+@kindex watch
+@item watch @var{var}
+Set a watchpoint for a variable.  @DBG will break when the
+value of @var{var} changes. In this command do not add a leading
+dollar symbol to @var{var}.
+
+@item watche @var{expr}
+Set a watchpoint for an expression via the builtin ``let'' command.
+@DBG will break when @var{expr} is written into by the program
+and its value changes. Not that this may not work for tracking
+arbitrary string value changes. For that use @code{watch} described
+earlier.
+@end table
+
+@node Delete Breaks
+@subsubsection Deleting breakpoints (@samp{clear}, @samp{delete})
+
+@cindex clearing breakpoints, watchpoints
+@cindex deleting breakpoints, watchpoints
+It may desirable to eliminate a breakpoint or watchpoint once it
+has done its job and you no longer want your script to stop there.
+This is called @dfn{deleting} the breakpoint.  A breakpoint that has
+been deleted no longer exists; it is forgotten.
+
+With the @code{clear} command you can delete breakpoints according to
+where they are in your script.  With the @code{delete} command you can
+delete individual breakpoints, or watchpoints by specifying their
+breakpoint numbers. @emph{Note: as described below under the ``clear''
+command, ``d'' is an alias for ``clear'', not ``delete''. }
+
+It is not necessary to delete a breakpoint to proceed past it.  @DBG
+automatically ignores breakpoints on the first instruction to be executed
+when you continue execution.
+
+@table @code
+@kindex clear
+@kindex d @r{(@code{clear})}
+@item clear
+Delete any breakpoints at the next instruction to be executed in the
+selected stack frame (@pxref{Selection, ,Selecting a frame}).  When
+the innermost frame is selected, this is a good way to delete a
+breakpoint where your script just stopped.
+
+It may seem odd that we have an alias ``d'' for ``clear.'' It so
+happens that Perl's debugger use ``d'' for its delete command and the
+delete concept in Perl's debugger corresponds to ``clear'' in
+GDB. (Perl doesn't have a notion of breakpoint entry numbers). So in
+order to be compatible with both debugger interfaces, ``d'' is used as
+an alias for ``clear.'' Clear? 
+
+@item clear @var{function}
+@itemx clear @var{filename}:@var{function}
+Delete any breakpoints set at entry to the function @var{function}.
+
+@item clear @var{linenum}
+@itemx d @var{linenum}
+@ifset FINISHED
+@itemx clear @var{filename}:@var{linenum}
+@end ifset
+Delete any breakpoints set at or within the code of the specified line.
+
+@cindex delete breakpoints
+@kindex delete
+@kindex de @r{(@code{delete})}
+@item delete @ovar{breakpoints}
+Delete the breakpoints, watchpoints specified as arguments. 
+
+If no argument is specified, delete all breakpoints (@DBG asks
+confirmation, unless you have @code{set confirm off}).  You can
+abbreviate this command as @code{de}.
+
+
+Note that for compatibility with Perl's debugger, @code{d} means
+something else: @code{clear}.
+
+@end table
+
+@node Disabling
+@subsubsection Disabling breakpoints (@samp{disable}, @samp{enable})
+
+Rather than deleting a breakpoint or watchpoint, you might
+prefer to @dfn{disable} it.  This makes the breakpoint inoperative as if
+it had been deleted, but remembers the information on the breakpoint so
+that you can @dfn{enable} it again later.
+
+You disable and enable breakpoints, watchpoints, and catchpoints with
+the @code{enable} and @code{disable} commands, optionally specifying one
+or more breakpoint numbers as arguments.  Use @code{info break} or
+@code{info watch} to print a list of breakpoints, watchpoints, and
+catchpoints if you do not know which numbers to use.
+
+A breakpoint, watchpoint, or catchpoint can have any of four different
+states of enablement:
+
+@itemize @bullet
+@item
+Enabled.  The breakpoint stops your program.  A breakpoint set
+with the @code{break} command starts out in this state.
+@item
+Disabled.  The breakpoint has no effect on your program.
+@item
+Enabled once.  The breakpoint stops your program, but then becomes
+disabled.
+@item
+Enabled for deletion.  The breakpoint stops your program, but
+immediately after it does so it is deleted permanently.  A breakpoint
+set with the @code{tbreak} command starts out in this state.
+@end itemize
+
+You can use the following commands to enable or disable breakpoints,
+watchpoints, and catchpoints:
+
+@table @code
+@kindex disable breakpoints
+@kindex disable
+@kindex dis @r{(@code{disable})}
+@item disable @ovar{breakpoints}
+Disable the specified breakpoints---or all breakpoints, if none are
+listed.  A disabled breakpoint has no effect but is not forgotten.  All
+options such as ignore-counts, conditions and commands are remembered in
+case the breakpoint is enabled again later.  You may abbreviate
+@code{disable} as @code{dis}.
+
+@kindex enable breakpoints
+@kindex enable
+@item enable @ovar{breakpoints}
+Enable the specified breakpoints (or all defined breakpoints).  They
+become effective once again in stopping your program.
+@end table
+
+@c FIXME: I think the following ``Except for [...] @code{tbreak}'' is
+@c confusing: tbreak is also initially enabled.
+Except for a breakpoint set with @code{tbreak} (@pxref{Set Breaks,
+,Setting breakpoints}), breakpoints that you set are initially enabled;
+subsequently, they become disabled or enabled only when you use one of
+the commands above.  (The command @code{until} can set and delete a
+breakpoint of its own, but it does not change the state of your other
+breakpoints; see @ref{Resuming Execution, ,Resuming Execution}.)
+
+@node Conditions
+@subsubsection Break conditions (@samp{condition})
+@cindex conditional breakpoints
+@cindex breakpoint conditions
+
+The simplest sort of breakpoint breaks every time your script reaches
+a specified place.  You can also specify a @dfn{condition} for a
+breakpoint.  A condition is just a BASH expression.  
+
+Break conditions can be specified when a breakpoint is set, by using
+@samp{if} in the arguments to the @code{break} command.  @xref{Set
+Breaks, ,Setting breakpoints}.  A breakpoint with a condition
+evaluates the expression each time your script reaches it, and your
+script stops only if the condition is @emph{true}.
+
+@cindex one-time breakpoints
+There is also a notion of a ``one-time'' breakpoint which gets deleted
+as soon as it is hit, so that that breakpoint is executed once only. 
+
+Conditions are also accepted for watchpoints; you may not need them,
+since a watchpoint is inspecting the value of an expression anyhow---but
+it might be simpler, say, to just set a watchpoint on a variable name,
+and specify a condition that tests whether the new value is an interesting
+one.
+
+Break conditions can be specified when a breakpoint is set, by using
+@samp{if} in the arguments to the @code{break} command.  @xref{Set
+Breaks, ,Setting breakpoints}.  They can also be changed at any time
+with the @code{condition} command.
+
+@ifset FINISHED
+You can also use the @code{if} keyword with the @code{watch} command.
+The @code{catch} command does not recognize the @code{if} keyword;
+@code{condition} is the only way to impose a further condition on a
+catchpoint.
+@end ifset
+
+@table @code
+@kindex condition
+@item condition @var{bnum} @var{expression}
+Specify @var{expression} as the break condition for breakpoint
+@var{bnum}.  After you set a condition, breakpoint @var{bnum} stops
+your program only if the value of @var{expression} is true (nonzero).
+
+@item condition @var{bnum}
+Remove the condition from breakpoint number @var{bnum}.  It becomes
+an ordinary unconditional breakpoint.
+@end table
+
+@ifset FINISHED
+When you use @code{condition}, @DBG checks @var{expression}
+immediately for syntactic correctness, and to determine whether
+symbols in it have referents in the context of your breakpoint.  If
+@var{expression} uses symbols not referenced in the context of the
+breakpoint, @DBG prints an error message:
+
+@example
+No symbol "foo" in current context.
+@end example
+@end ifset
+
+@noindent
+@BASH does
+not actually evaluate @var{expression} at the time the @code{condition}
+command (or a command that sets a breakpoint with a condition, like
+@code{break if @dots{}}) is given, however.
+
+Examples;
+@example
+condition 1 x>5   # Stop on breakpoint 0 only if x>5 is true.
+condition 1       # Change that! Unconditinally stop on breakpoint 1.
+@end example
+
+@node Resuming Execution
+@subsection Resuming Execution
+
+@cindex stepping
+@cindex continuing
+@cindex resuming execution
+@dfn{Continuing} means resuming program execution until your script
+completes normally.  In contrast, @dfn{stepping} means executing just
+one more ``step'' of your script, where ``step'' may mean either one
+line of source code.  Either when continuing or when stepping,
+your script may stop even sooner, due to a breakpoint or a signal.
+
+@menu
+* Step::          running the next statement (step)
+* Next::          running the next statement skipping over functions (skip)
+* Finish::        running until the return of a function or ``source'' (finish)
+* Skip::          skipping the next statement (skip)
+* Continue::      continuing execution (continue)
+* Debug::         debugging into another program (debug)
+* Returning::     returning
+@end menu
+
+@node Step
+@subsubsection Step (@samp{step})
+@table @code
+@kindex step
+@kindex s @r{(@code{step})}
+@item step
+Continue running your script until control reaches a different source
+line, then stop it and return control to @value{DBG}.  This command is
+abbreviated @code{s}.
+
+The @code{step} command only stops at the first instruction of a source
+line.  This prevents the multiple stops that could otherwise occur in
+@code{switch} statements, @code{for} loops, etc.  @code{step} continues
+to stop if a function that has debugging information is called within
+the line.  In other words, @code{step} @emph{steps inside} any functions
+called within the line.
+
+@item step @ovar{count}
+Continue running as in @code{step}, but do so @var{count} times.  If a
+breakpoint is reached, or a signal not related to stepping occurs before
+@var{count} steps, stepping stops right away.
+@end table
+
+@node Next
+@subsubsection Next (@samp{next})
+@table @code
+@kindex next
+@kindex n @r{(@code{next})}
+@item next @ovar{count}
+Continue to the next source line in the current (innermost) stack frame.
+This is similar to @code{step}, but function calls that appear within
+the line of code are executed without stopping.  Execution stops when
+control reaches a different line of code at the original stack level
+that was executing when you gave the @code{next} command.  This command
+is abbreviated @code{n}.
+
+An argument @var{count} is a repeat count, as for @code{step}.
+@end table
+
+@node Finish
+@subsubsection Finish (@samp{finish})
+@table @code
+@kindex finish
+@item finish
+Continue running until just after function returns.  @emph{Currently,
+the line shown on a return is the function header, unless the
+@code{return} builtin function is executed in which case it is the
+line number of the @code{return} function.}
+
+Contrast this with the @code{return} command (@pxref{Returning,
+,Returning from a function}) and the @code{quit} (@pxref{Quitting the
+BASH debugger, ,Quitting the BASH debugger}).
+
+@end table
+
+@node Skip
+@subsubsection Skip (@samp{skip})
+@table @code
+@kindex skip
+@item skip @ovar{count}
+Skip execution of the next source line. 
+This may be useful if you have an action that ``fixes'' existing code in
+the script. The @code{debug} command internally uses the @code{skip} command
+to skip over existing non-debugged invocation that was presumably just
+run.
+@end table
+
+@node Continue
+@subsubsection Continue (@samp{continue})
+@table @code
+@kindex continue
+@kindex c @r{(@code{continue})}
+@item continue @ovar{linespec}
+@itemx c @ovar{line-number}
+Resume program execution, at the address where your script last
+stopped; any breakpoints set at that address are bypassed.  The
+optional argument @var{linespec} allows you to specify a linespec (a
+line number, function, or filename linenumber combination) to set. A
+one-time breakpoint is deleted when that breakpoint is reached. Should
+the program stop before that breakpoint is reached, for example,
+perhaps another breakpoint or watchpoint is reached first, in a
+listing of the breakpoints you will see this entry with the condition
+9999 which indicates a one-time breakpoint.
+@end table
+
+To resume execution at a different place, you can use @code{return}
+(@pxref{Returning, ,Returning from a function}) to go back to the
+calling function or sourced script. If you are nested inside a
+subshell, @code{quit} with a value for the number of subshells to
+exit also functions like a return.
+
+A typical technique for using stepping is to set a breakpoint
+(@pxref{Breakpoints, ,Breakpoints; watchpoints}) at the
+beginning of the function or the section of your script where a problem
+is believed to lie, run your script until it stops at that breakpoint,
+and then step through the suspect area, examining the variables that are
+interesting, until you see the problem happen.
+
+@node Debug
+@subsubsection Debug (@samp{debug})
+@table @code
+@kindex debug
+@item debug @ovar{script-name}
+Debug into @var{script-name}. If no name is given the current source line
+is used. In either case the options are prepended to cause the
+debugger to run.
+
+The nesting level of the debugger is saved inside environment variable
+@code{BASHDB_LEVEL}. The debugger prompt indicates the level of nesting
+by enclosing the history in that many nestings of @code{<>} symbols.
+
+@end table
+
+@node Returning
+@subsubsection Returning from a function, sourced file, or subshell (@samp{return})
+
+@table @code
+@cindex returning from a function, sourced file or subshell
+@kindex return
+@item return
+@itemx return
+You can cancel execution of a function call or a subshell with the
+@code{return} command.
+@end table
+
+The @code{return} command does not resume execution; it leaves the
+program stopped in the state that would exist if the function had just
+returned.  See also the @code{quit} command (@ref{Quit, ,Quitting the
+BASH debugger}). In some situations @code{return} is similar to
+@code{quit}: in particular when the script is @emph{not} currenlty
+inside in a function and the number of subshells in effect is 0, or
+when a subshell count of 1 is given on the @code{quit} command.
+
+@ifset FINISHED
+In contrast, the @code{finish} command (@pxref{Continuing
+and Stepping, ,Continuing and stepping}) resumes execution until the
+selected stack frame returns naturally.
+@end ifset
+
+@node Signals
+@subsection Signals
+@cindex signals
+
+A signal is an asynchronous event that can happen in a program.  The
+operating system defines the possible kinds of signals, and gives each
+kind a name and a number.  For example, in Unix @code{SIGINT} is the
+signal a program gets when you type an interrupt character (often
+@kbd{C-c}); @code{SIGALRM} occurs when the alarm clock timer goes off
+(which happens only if your program has requested an alarm).
+
+Some signal handlers are installed and changed for @value{DBG}'s
+normal use: @code{SIGDEBUG} and @code{SIGEXIT}. @code{SIGDEBUG} is
+used by the debugger to potentially stop your program before execution
+of each statement occurs, and @code{SIGEXIT} is used to catch your
+program just before it is set to leave so you have the option of
+restarting the program with the same options (and not leave the
+debugger) or let the program quit.
+
+Signal handlers that the debugged script might have installed are
+saved and called before the corresponding debugger handler. Thus, the
+debugged program should work roughly in the same fashion as when it is
+not debugged. However there are some call-stack variables which
+inevitably will differ. To try to hedge this a little so the behaviour
+is the same, @value{DBG} will modify arguments to the traps if it
+finds one of the call-stack that change as a result of the debugger
+being in place. In particluar @env{$LINENO} will get replaced with
+@env{$@{BASH_LINENO[0]@}}; also @env{$@{BASH_LINENO[0]@}} and
+@env{$@{BASH_SOURCE[0]@}} get replaced with
+@env{$@{BASH_LINENO[1]@}} and @env{$@{BASH_SOURCE[1]@}}
+respectively.
+
+The debugger also installs an interrupt handler @code{SIGINT} so that
+errant programs can be interrupted and you can find out where the
+program was when you interrupted it.
+
+@cindex fatal signals
+Some signals, including @code{SIGALRM}, are a normal part of the
+functioning of your program.  Others, such as @code{SIGSEGV}, indicate
+errors; these signals are @dfn{fatal} (they kill your program immediately) if the
+program has not specified in advance some other way to handle the signal.
+@code{SIGINT} does not indicate an error in your program, but it is normally
+fatal so it can carry out the purpose of the interrupt: to kill the program.
+
+@BASH has the ability to detect any occurrence of a signal in your
+program.  You can tell @BASH in advance what to do for each kind of
+signal.
+
+@cindex handling signals
+Normally, @BASH is set up to let the non-erroneous signals like
+@code{SIGALRM} be silently passed to your program
+(so as not to interfere with their role in the program's functioning)
+but to stop your program immediately whenever an error signal happens.
+You can change these settings with the @code{handle} command.
+
+@table @code
+@kindex info signals
+@item info signals
+@itemx info handle
+Print a table of all the kinds of signals and how @BASH has been told to
+handle each one.  You can use this to see the signal numbers of all
+the defined types of signals.
+
+@code{info handle} is an alias for @code{info signals}.
+
+@kindex handle
+@item handle @var{signal} @var{keywords}@dots{}
+Change the way @BASH handles signal @var{signal}.  @var{signal}
+can be the number of a signal or its name (with or without the
+@samp{SIG} at the beginning); a list of signal numbers of the form
+@samp{@var{low}-@var{high}}; or the word @samp{all}, meaning all the
+known signals.  The @var{keywords} say what change to make.
+@end table
+
+@c @group
+The keywords allowed by the @code{handle} command can be abbreviated.
+Their full names are:
+
+@table @code
+@item stop
+@BASH should stop your program when this signal happens.  This implies
+the @code{print} keyword as well.
+
+@item nostop
+@BASH should not stop your program when this signal happens.  It may
+still print a message telling you that the signal has come in.
+
+@item print
+@BASH should print a message when this signal happens.
+
+@item noprint
+@BASH should not mention the occurrence of the signal at all.  
+
+@item stack
+@BASH should print a stack trace when this signal happens.
+
+@item nostack
+@BASH should not print a stack trace when this signal occurs.  
+
+@ifset FINISHED
+@item pass
+@itemx noignore
+@BASH should allow your program to see this signal; your program
+can handle the signal, or else it may terminate if the signal is fatal
+and not handled.  @code{pass} and @code{noignore} are synonyms.
+
+@item nopass
+@itemx ignore
+@BASH should not allow your program to see this signal.
+@code{nopass} and @code{ignore} are synonyms.
+@end ifset
+@end table
+@c @end group
+
+@ifset FINISHED
+When a signal stops your program, the signal is not visible to the
+program until you
+continue.  Your program sees the signal then, if @code{pass} is in
+effect for the signal in question @emph{at that time}.  In other words,
+after @BASH reports a signal, you can use the @code{handle}
+command with @code{pass} or @code{nopass} to control whether your
+program sees that signal when you continue.
+
+The default is set to @code{nostop}, @code{noprint}, @code{pass} for
+non-erroneous signals such as @code{SIGALRM}, @code{SIGWINCH} and
+@code{SIGCHLD}, and to @code{stop}, @code{print}, @code{pass} for the
+erroneous signals.
+
+You can also use the @code{signal} command to prevent your program from
+seeing a signal, or cause it to see a signal it normally would not see,
+or to give it any signal at any time.  For example, if your program stopped
+due to some sort of memory reference error, you might store correct
+values into the erroneous variables and continue, hoping to see more
+execution; but your program would probably terminate immediately as
+a result of the fatal signal once it saw the signal.  To prevent this,
+you can continue with @samp{signal 0}.  @xref{Signaling, ,Giving your
+program a signal}.
+@end ifset
+
+@node Information
+@section Status and Debugger Settings (@samp{info}, @samp{show}, @samp{set})
+
+In addition to @code{help}, you can use the @BASH commands @code{info}
+and @code{show} to inquire about the state of your program, or the
+state of @BASH itself.  Each command supports many topics of inquiry;
+here we introduce each of them in the appropriate context.  The
+listings under @code{info} and under @code{show} in the Index point to
+all the sub-commands.  @xref{Command Index}.
+
+@c @group
+@table @code
+@kindex info
+@kindex i @r{(@code{info})}
+@item info
+This command (abbreviated @code{i}) is for describing the state of
+your program.  For example, you can list the current @code{$1}, @code{$2}
+parameters with @code{info args}, or list the breakpoints you have set
+with @code{info breakpoints} or @code{info watchpoints}.  You can get
+a complete list of the @code{info} sub-commands with @w{@code{help
+info}}.
+
+@kindex set
+@item set
+You can assign the result of an expression to an environment variable
+with @code{set}.  For example, you can set the number of lines
+@BASH will list by default to 20 with @code{set listsize 20}.
+
+@kindex show
+@item show
+In contrast to @code{info}, @code{show} is for describing the state of
+@BASH itself.
+You can change most of the things you can @code{show}, by using the
+related command @code{set}; 
+
+The distinction between @code{info} and @code{show} however is a bit
+fuzzy and is kept here to try to follow the GDB interface.
+For example, to list the arguments given to your script use
+@code{show args}; @code{info args} does something different.
+
+@kindex info set
+To display all the settable parameters and their current
+values, you can use @code{show} with no arguments; you may also use
+@code{info set}.  Both commands produce the same display.
+@c FIXME: "info set" violates the rule that "info" is for state of
+@c FIXME...program.  Ck w/ GNU: "info set" to be called something else,
+@c FIXME...or change desc of rule---eg "state of prog and debugging session"?
+@end table
+@c @end group
+
+Here are three miscellaneous @code{show} subcommands, all of which are
+exceptional in lacking corresponding @code{set} commands:
+
+@table @code
+@kindex show version
+@cindex version number
+@item show version
+Show what version of @BASH is running.  You should include this
+information in @BASH bug-reports.  If multiple versions of
+@BASH are in use at your site, you may need to determine which
+version of @BASH you are running; as @BASH evolves, new
+commands are introduced, and old ones may wither away.  Also, many
+system vendors ship variant versions of @value{BASH}, and there are
+variant versions of @BASH in @sc{gnu}/Linux distributions as well.
+The version number is the same as the one announced when you start
+@value{BASH}.
+
+@kindex show copying
+@item show copying
+Display information about permission for copying @value{BASH}.
+
+@kindex show warranty
+@item show warranty
+Display the @sc{gnu} ``NO WARRANTY'' statement, or a warranty,
+if your version of @DBG comes with one.
+
+@end table
+
+@node Stack
+@section Examining the Stack (@samp{where}, @samp{frame}, @samp{up}, @samp{down})
+
+When your script has stopped, one thing you'll probably want to know
+is where it stopped and some idea of how it got there.
+
+@cindex call stack
+Each time your script performs a function call (either as part of a
+command substitution or not), or `source's a file, information about
+this action is saved.  The call stack then is this a history of the
+calls that got you to the point that you are currently stopped at.
+
+@cindex selected frame
+One of the stack frames is @dfn{selected} by @DBG and many
+@DBG commands refer implicitly to the selected frame.  In
+particular, whenever you ask @DBG to list lines without giving
+a line number or location the value is found in the selected frame.
+There are special @DBG commands to select whichever frame you
+are interested in. @xref{Selection, ,Selecting a frame}.
+
+When your program stops, @BASH automatically selects the
+currently executing frame and describes it briefly, similar to the
+@code{frame} command.
+
+
+@menu
+* Frames::                      Stack frames
+* Backtrace::                   Backtraces (where)
+* Selection::                   Selecting a frame (up, down, frame)
+
+@end menu
+
+@node Frames
+@subsection Stack frames
+
+@cindex frame, definition
+@cindex stack frame
+The call stack is divided up into contiguous pieces called @dfn{stack
+frames}, or @dfn{frames} for short; each frame is the data associated
+with one call to one function.  The frame contains the line number of
+the caller of the function, the source-file name that the line refers
+to a function name (which could be the built-in name ``source'')..
+
+@cindex initial frame
+@cindex outermost frame
+@cindex innermost frame
+When your script is started, the stack has only one frame, that of the
+function @code{main}.  This is called the @dfn{initial} frame or the
+@dfn{outermost} frame.  Each time a function is called, a new frame is
+made.  Each time a function returns, the frame for that function invocation
+is eliminated.  If a function is recursive, there can be many frames for
+the same function.  The frame for the function in which execution is
+actually occurring is called the @dfn{innermost} frame.  This is the most
+recently created of all the stack frames that still exist.
+
+@cindex frame number
+@value{DBG} assigns numbers to all existing stack frames, starting with
+zero for the innermost frame, one for the frame that called it,
+and so on upward.  These numbers do not really exist in your script;
+they are assigned by @value{DBG} to give you a way of designating stack
+frames in @value{DBG} commands.
+
+@node Backtrace
+@subsection Backtraces (@samp{where})
+
+@cindex backtraces
+@cindex tracebacks
+@cindex stack traces
+A backtrace is essentially the same as the call stack: a summary of
+how your script got where it is.  It shows one line per frame, for
+many frames, starting with the place that you sare stopped at (frame
+zero), followed by its caller (frame one), and on up the stack.
+
+@table @code
+@kindex backtrace
+@kindex bt @r{(@code{backtrace})}
+@item backtrace
+@itemx bt
+@itemx where
+@itemx T
+Print a backtrace of the entire stack: one line per frame for all
+frames in the stack.
+
+@item backtrace @var{n}
+@itemx bt @var{n}
+@itemx where @var{n}
+@itemx T @var{n}
+Similar, but print only the innermost @var{n} frames.
+
+@ifset FINISHED
+@item backtrace -@var{n}
+@itemx bt -@var{n}
+@itemx where -@var{n}
+@itemx T -@var{n}
+Similar, but print only the outermost @var{n} frames.
+@end ifset
+@end table
+
+@kindex where
+The names @code{where} and @code{T} are additional aliases for
+@code{backtrace}.
+
+Each line in the backtrace shows the frame number and the function
+name, the source file name and line number, as well as the function name.
+
+Here is an example of a backtrace taken a program in the
+regression-tests @file{parm.sh}.
+
+@smallexample
+@group
+% ../bashdb -n -L .. parm.sh
+Bourne-Again Shell Debugger, release @value{VERSION}
+Copyright 2002, 2003, 2004 Rocky Bernstein
+This is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+
+(./parm.sh:21):
+21:	fn1 5
+bashdb<0> @b{continue fn3}
+One-time breakpoint 1 set in file ./parm.sh, line 17.
+fn2: testing 1 2 3
+(./parm.sh:17):
+17:	fn3() @{
+bashdb<1> @b{where}
+->0 in file `./parm.sh' at line 14
+##1 fn3() called from file `./parm.sh' at line 14
+##2 fn2("testing 1", "2 3") called from file `parm.sh' at line 5
+##3 fn1("0") called from file `parm.sh' at line 9
+##4 fn1("1") called from file `parm.sh' at line 9
+##5 fn1("2") called from file `parm.sh' at line 9
+##6 fn1("3") called from file `parm.sh' at line 9
+##7 fn1("4") called from file `parm.sh' at line 9
+##8 fn1("5") called from file `parm.sh' at line 21
+##9 source("parm.sh") called from file `bashdb' at line 143
+##10 main("-n", "-L", "..", "parm.sh") called from file `bashdb' at line 0
+@end group
+@end smallexample
+
+@noindent
+The display for ``frame'' zero isn't a frame at all, although it has
+the same information minus a function name; it just indicates that
+your script has stopped at the code for line @code{14}
+of @code{./parm.sh}.
+
+@node Selection
+@subsection Selecting a frame (@samp{up}, @samp{down}, @samp{frame})
+
+Commands for listing source code in your script work on whichever
+stack frame is selected at the moment.  Here are the commands for
+selecting a stack frame; all of them finish by printing a brief
+description of the stack frame just selected.
+
+@table @code
+@kindex up
+@item up @var{n}
+Move @var{n} frames up the stack.  For positive numbers @var{n}, this
+advances toward the outermost frame, to higher frame numbers, to frames
+that have existed longer.  @var{n} defaults to one.
+
+@kindex down
+@kindex do @r{(@code{down})}
+@item down @var{n}
+Move @var{n} frames down the stack.  For positive numbers @var{n}, this
+advances toward the innermost frame, to lower frame numbers, to frames
+that were created more recently.  @var{n} defaults to one.  You may
+abbreviate @code{down} as @code{do}.
+@end table
+
+All of these commands end by printing two lines of output describing the
+frame.  The first line shows the frame number, the function name, the
+arguments, and the source file and line number of execution in that
+frame.  The second line shows the text of that source line.
+
+@need 100
+For example:
+
+@smallexample
+@group
+bashdb<8> @b{up}
+19:	sourced_fn
+bashdb<8> @b{T}
+##0 in file `./bashtest-sourced' at line 8
+->1 sourced_fn() called from file `bashtest-sourced' at line 19
+##2 source() called from file `bashdb-test1' at line 23
+##3 fn2() called from file `bashdb-test1' at line 33
+##4 fn1() called from file `bashdb-test1' at line 42
+##5 main() called from file `bashdb-test1' at line 0
+@end group
+@end smallexample
+
+After such a printout, the @code{list} command with no arguments
+prints ten lines centered on the point of execution in the frame.
+@xref{List, ,Printing source lines}.
+
+@table @code
+@kindex frame
+@cindex current stack frame
+@item frame @var{args}
+The @code{frame} command allows you to move from one stack frame to
+another, and to print the stack frame you select.  @var{args} is the
+the stack frame number.  Without an argument, @code{frame} prints the
+current stack frame.
+@end table
+
+@node List
+@section Examining Source Files (@samp{list})
+
+@value{DBG} can print parts of your script's source.  When your
+script stops, @value{DBG} spontaneously prints the line where it
+stopped.  Likewise, when you select a stack frame (@pxref{Selection,
+,Selecting a frame}), @value{DBG} prints the line where execution in
+that frame has stopped.  You can print other portions of source files
+by explicit command.
+
+If you use @value{DBG} through its @sc{gnu} Emacs interface, you may
+prefer to use Emacs facilities to view source; see @ref{Emacs, ,Using
+@value{DBG} under @sc{gnu} Emacs}.
+
+@kindex list
+@kindex l @r{(@code{list})}
+To print lines from a source file, use the @code{list} command
+(abbreviated @code{l}).  By default, ten lines are printed.
+There are several ways to specify what part of the file you want to print.
+
+Here are the forms of the @code{list} command most commonly used:
+
+@table @code
+@item list @var{linenum}
+@itemx l @var{linenum}
+Print lines centered around line number @var{linenum} in the
+current source file.
+
+@item list @var{function}
+@itemx l @var{function}
+Print the text of @var{function}.
+
+@item list
+@itemx l
+Print more lines.  If the last lines printed were printed with a
+@code{list} command, this prints lines following the last lines
+printed; however, if the last line printed was a solitary line printed
+as part of displaying a stack frame (@pxref{Stack, ,Examining the
+Stack}), this prints lines centered around that line.
+
+@item list -
+@itemx l -
+Print lines just before the lines last printed.
+@end table
+
+By default, @value{DBG} prints ten source lines with any of these forms of
+the @code{list} command.  
+You can change this using @code{set listsize}:
+
+@table @code
+@kindex set listsize
+@item set listsize @var{count}
+Make the @code{list} command display @var{count} source lines (unless
+the @code{list} argument explicitly specifies some other number).
+
+@kindex show listsize
+@item show listsize
+Display the number of lines that @code{list} prints.
+@end table
+
+Repeating a @code{list} command with @key{RET} discards the argument,
+so it is equivalent to typing just @code{list}.  This is more useful
+than listing the same lines again.  An exception is made for an
+argument of @samp{-}; that argument is preserved in repetition so that
+each repetition moves up in the source file.
+
+@cindex linespec
+In general, the @code{list} command expects you to supply a
+@dfn{linespecs}.  Linespecs specify source lines; there are several ways
+of writing them, but the effect is always to specify some source line.
+
+Here is a complete description of the possible arguments for @code{list}:
+
+@table @code
+@item list @var{linespec}
+Print lines centered around the line specified by @var{linespec}.
+
+@item list @var{first} @var{increment}
+Print @var{increment} lines starting from @var{first}
+
+@item list @var{first}
+Print lines starting with @var{first}.
+
+@item list -
+Print lines just before the lines last printed.
+
+@item list .
+Print lines after where the script is stopped.
+
+@item list
+As described in the preceding table.
+@end table
+
+Here are the ways of specifying a single source line---all the
+kinds of linespec.
+
+@table @code
+@item @var{number}
+Specifies line @var{number} of the current source file.
+When a @code{list} command has two linespecs, this refers to
+the same source file as the first linespec.
+
+@item @var{filename}:@var{number}
+Specifies line @var{number} in the source file @var{filename}.
+
+@item @var{function}
+Specifies the line that function @var{function} is listed on.
+
+@ifset FINISHED
+@item @var{filename}:@var{function}
+Specifies the line of function @var{function} in the file
+@var{filename}.  You only need the file name with a function name to
+avoid ambiguity when there are identically named functions in
+different source files.
+@end ifset
+@end table
+
+@node Search
+@section Searching source files (@samp{search}, @samp{reverse}, @samp{/.../}, @samp{?..?})
+@cindex searching
+@kindex reverse-search
+
+There are two commands for searching through the current source file for a
+BASH extended pattern-matching expression.
+
+@table @code
+@kindex search
+@kindex forward
+@item forward @var{bash-pattern}
+@itemx search @var{bash-pattern}
+The command @samp{forward @var{bash-pattern}} checks each line,
+starting with the one following the current line, for a match for
+@var{bash-pattern} which is an extended bash pattern-matching
+expression.  It lists the line that is found.  You can use the synonym
+@samp{search @var{bash-pattern}} or abbreviate the command name as
+@code{fo} or @code{/@var{pat}/}.
+
+@item reverse @var{bash-pattern}
+The command @samp{reverse @var{bash-pattern}} checks each line, starting
+with the one before the last line listed and going backward, for a match
+for @var{bash-pattern}.  It lists the line that is found.  You can abbreviate
+this command as @code{rev} or @code{?@var{bash-pattern}?}.
+@end table
+
+@node Data
+@section Examining Data (@samp{print}, @samp{examine}, @samp{info variables})
+
+@cindex printing data
+@cindex examining data
+@kindex print
+
+One way to examine string data in your script is with the @code{print}
+command (abbreviated @code{p}). However a more versatile print command
+is @code{x}; it can print variable and function definitions and can do
+arithmetic computations. Finally, the most general method would be
+via @code{eval echo}.
+
+@table @code
+@kindex print
+@kindex p @r{(@code{print})}
+@item print @var{expr}
+
+Use @code{print} to display strings as you would from @code{echo}. And
+as such, variable names to be substituted have to be preceded with a
+dollar sign. As with echo, filename expansion, e.g. tilde expansion,
+is performed on unquoted strings. So for example if you want to print
+a *, you would write @samp{print "*"}, not @samp{print *}. If you want
+to have the special characters dollars sign appear, use a backslash.
+
+@smallexample
+@group
+bashdb<0> @b{print the value of x is $x}
+the value of x is 22
+bashdb<1> @b{p The home directory for root is ~root}
+The home directory for root is /root
+bashdb<2> @b{p '*** You may have won $$$ ***'}
+*** You may have won $$$ ***
+bashdb<3> # Note the use of the single quotes.
+bashdb<3> # Compare what happens with double quotes or no quotes
+@end group
+@end smallexample
+
+@item print
+@itemx p
+If you omit @var{expr}, @value{DBG} displays the last expression again.
+
+@item x @var{variable1} @ovar{variable2...}
+@item x @var{expr}
+@kindex x @r{(@code{examine})}
+@kindex examine
+
+This is a smarter, more versatile ``print'' command, and although sometimes
+it might not be what you want, and you may want to resort to either
+@code{print} or @code{eval echo...}. 
+
+As with @code{print}, if you omit @var{expr}, @value{DBG} displays
+the last expression again.
+
+The @code{x} command first checks if @var{expr} is variable or a list
+of variables delimited by spaces. If it is, the definition(s) and
+value(s) of each printed via @value{BASH}'s @code{declare -p}
+command. This will show the variable's attributes such as if it is
+read only or if it is an integer. If the variable is an array, that is
+show and the array values are printed.
+
+If instead @var{expr} is a function, the function definition is
+printed via @value{BASH}'s @code{declare -f} command. If @var{expr}
+was neither a variable nor an expression, then we try to get a value
+via @code{let}. And if this returns an error, as a last resort we call
+@code{print} and give what it outputs.
+
+Since @code{let} may be used internally and since (to my thinking)
+@code{let} does funny things, the results may seem odd unless you
+understand the sequence tried above and how @code{let} works. For
+``example if the variable @code{foo} has value 5, then @samp{x foo}
+shows the definition of foo with value 5, and @samp{x foo+5} prints 10
+as expected. So far so good. However if @code{foo} is has the value
+@samp{alpha}, @samp{x foo+5} prints 5 because @code{let} has converted
+the string @samp{alpha} into the numeric value 0. So @samp{p foo+5} will
+simply print ``foo+5''; if you want the value of ``foo'' substituted
+inside a string, for example you expect ``the value of foo is $foo''
+to come out ``the value of foo is 5'', then the right command to use
+is @code{print} rather than @code{x}, making sure you add the dollar
+onto the beginning of the variable.
+
+@smallexample
+@group
+bashdb<0> @b{examine x y}
+declare -- x="22"
+declare -- y="23"
+bashdb<1> @b{examine x+y}
+45
+bashdb<2> @b{x fn1}
+fn1 () 
+@{ 
+    echo "fn1 here";
+    x=5;
+    fn3
+@}
+bashdb<2> @b{x FUNCNAME}
+declare -a FUNCNAME='([0]="_Dbg_cmd_x" [1]="_Dbg_cmdloop" [2]="_Dbg_debug_trap_handler" [3]="main")'
+@end group
+@end smallexample
+
+@item V @ovar{!}@ovar{pattern}
+@kindex V @r{(@code{info variables})}
+@kindex info variables
+
+If you want to all list variables and values or a set of
+variables by pattern, use this command.
+
+@smallexample
+@group
+bashdb<0> @b{V dq*}
+dq_args="dq_*"
+dq_cmd="V"
+bashdb<1> @b{V FUNCNAME}
+FUNCNAME='([0]="_Dbg_cmd_list_variables" [1]="_Dbg_cmdloop" [2]="_Dbg_debug_trap_handler" [3]="main")'
+@end group
+@end smallexample
+
+@end table
+
+@node Evaluation/Execution
+@section Running Arbitrary BASH and Shell commands (@samp{eval}, @samp{shell})
+
+The two most general commands and most ``low-level'' are @code{eval}
+and @code{shell}.
+
+@table @code
+@item eval
+@itemx e
+@kindex e @r{(@code{eval})}
+@kindex eval
+
+In contrast to the commands of the last section the most general way
+to examine data is through @code{eval}. But you do much more with
+this; you can change the values of variables, since, you are just
+evaluating BASH code. 
+
+If you expect output, you should arrange that in the command, such as
+via @code{echo} or @code{printf}. For example, to print the value of
+@var{foo}, you would type @samp{e echo $foo}. This is bit longer than
+@samp{p $foo} or (when possible) @samp{x foo}. However suppose you
+wanted to find out how the builtin test operator @samp{[} works with
+the @samp{-z} test condition. You could use @code{eval} to do this
+such as @samp{e [ -z "$foo"] && echo "yes"}.
+
+@kindex shell
+@kindex !! @r{(@code{shell})}
+@cindex shell escape
+@item shell @var{command string}
+@itemx !!
+
+If you need to execute occasional shell commands during your
+debugging session, there is no need to leave or suspend @value{DBG}; you can
+just use the @code{shell} command or its alias @code{!!}.
+
+Invoke a shell to execute @var{command string}.
+
+@end table
+
+@node Auto Display
+@section Automatic display (@samp{display}, @samp{undisplay})
+@cindex automatic display
+@cindex display of expressions
+
+If you find that you want to print the value of an expression
+frequently (to see how it changes), you might want to add it to the
+@dfn{automatic display list} so that @value{DBG} evaluates a
+statement each time your program stops.  Each expression added to the
+list is given a number to identify it; to remove an expression from
+the list, you specify that number.  The automatic display looks like
+this:
+
+@example
+2 (echo $x): 38
+@end example
+
+@noindent
+This display shows item numbers, expressions and their current values.  
+
+@table @code
+@kindex display
+@item display @var{expr}
+Add the expression @var{expr} to the list of expressions to display
+each time your program stops.
+@end table
+
+@table @code
+@kindex delete display
+@kindex undisplay
+@item undisplay @var{dnums}@dots{}
+@itemx delete display @var{dnums}@dots{}
+Remove item numbers @var{dnums} from the list of expressions to display.
+
+@code{undisplay} does not repeat if you press @key{RET} after using it.
+(Otherwise you would just get the error @samp{No display number @dots{}}.)
+
+@kindex disable display
+@item disable display @var{dnums}@dots{}
+Disable the display of item numbers @var{dnums}.  A disabled display
+item is not printed automatically, but is not forgotten.  It may be
+enabled again later.
+
+@kindex enable display
+@item enable display @var{dnums}@dots{}
+Enable display of item numbers @var{dnums}.  It becomes effective once
+again in auto display of its expression, until you specify otherwise.
+
+@item display
+Display the current values of the expressions on the list, just as is
+done when your program stops.
+
+@kindex info display
+@item info display
+Print the list of expressions previously set up to display
+automatically, each one with its item number, but without showing the
+values.  This includes disabled expressions, which are marked as such.
+It also includes expressions which would not be displayed right now
+because they refer to automatic variables not currently available.
+@end table
+
+@node Controlling bashdb
+@section Controlling @DBG (@samp{set}, @samp{file}, @samp{prompt}, @samp{history}...)
+
+You can alter the way @BASH 
+interacts with you in various ways given below. 
+
+@menu
+* Annotate::             Annotation Level (set annotate)
+* File::                 Specifying a Script-File Associaton (file)
+* Prompt::               Prompt (set prompt, show prompt)
+* Editing::              Command editing (set editing, show editing)
+* Command Display::      Command display (set showcommand)
+* History::              Command history (history, !, H)
+@end menu
+
+@node Annotate
+@subsection Annotation Level (@samp{set annotate})
+
+@table @code
+@kindex set annotate
+@item set annotate @var{integer}
+The annotation level controls how much information @value{DBG} prints
+in its prompt; right new it just controls whether we show full
+filenames in output or the base part of the filename without path
+information.  Level 0 is the normal, level 1 is for use when
+@value{DBG} is run as a subprocess of @sc{gnu} Emacs of @value{DDD},
+level 2 is the maximum annotation suitable for programs that control
+@value{DBG}.
+@end table
+
+@node File
+@subsection Specifying a Script-File Association (@samp{file})
+
+Sometimes @value{DBG} gets confused about where to find the script
+source file for the name reported to it by bash. To resolve relative
+file names that bash supplies via @env{BASH_SOURCE}, @value{DBG} uses
+the current working directory when the debugged script was started as
+well as the current working directory now (which might be different
+if a ``cd'' command was issued to change the working directory).
+
+However somethimes this doesn't work and there is a way to 
+override this.
+
+@table @code
+@kindex file
+@item file @var{script-file}
+Directs @value{DBG} to use @var{script-file} whenever bash would have
+it refers to the filename given in @env{BASH_SOURCE}. The filename
+specified in @env{BASH_SOURCE} that gets overriden is shown when is
+this command is issued.
+@end table
+
+@node Prompt
+@subsection Prompt (@samp{set prompt}, @samp{show prompt})
+
+@cindex prompt
+
+@value{dBGP} indicates its readiness to read a command by printing a
+string called the @dfn{prompt}.  This string is normally:
+@example
+bashdb$@{_Dbg_less@}$@{#_Dbg_history[@@]@}$@{_Dbg_greater@}$_Dbg_space
+@end example
+
+When variables inside the the prompt string are evaluated, the above
+becomes something like @samp{bashdb<5>} if this is the fifth command
+executed or perhaps @samp{bashdb<<2>>} if you have called the debugger
+from inside a debugger session and this is the second command inside
+the debugger session or perhaps @samp{bashdb<(6)>} if you 
+entered a subshell after the fifth command.
+
+You can change the prompt string with the @code{set prompt} command,
+although it is not normally advisable to do so without understanding
+the implications. If you are using the @value{DDD} GUI, it changes the
+changes the prompt and should not do so.  In certain other
+circumstances (such as writing a GUI like @value{DDD}), it may be is useful
+to change the prompt.
+
+@emph{Note:} @code{set prompt} does not add a space for you after the
+prompt you set.  This allows you to set a prompt which ends in a space
+or a prompt that does not. Furthermore due to a implementation
+limitation (resulting from a limitation of the bash built-in function
+``read''), to put a space at the end of the prompt use the
+@samp{$_Dbg_space} variable. 
+
+@table @code
+@kindex set prompt
+@item set prompt @var{newprompt}
+Directs @value{DBG} to use @var{newprompt} as its prompt string
+henceforth.
+
+@emph{Warning: changing the prompt can @value{DDD}'s ability to
+understand when the debugger is waiting for input.}
+
+@kindex show prompt
+@item show prompt
+Prints a line of the form: @samp{bashdb's prompt is: @var{your-prompt}}
+@end table
+
+@node Editing
+@subsection Command editing (@samp{set editing}, @samp{show editing})
+@cindex readline
+@cindex command line editing
+
+@value{DBG} reads its input commands through bash which uses via the
+@dfn{readline} interface.  This @sc{gnu} library provides consistent
+behavior for programs which provide a command line interface to the
+user.  Advantages are @sc{gnu} Emacs-style or @dfn{vi}-style inline
+editing of commands, @code{csh}-like history substitution, and a
+storage and recall of command history across debugging sessions.
+
+You may control the behavior of command line editing in @BASH with the
+command @code{set}.
+
+@table @code
+@kindex set editing
+@cindex editing
+@item set editing
+@itemx set editing on
+Enable command line editing (enabled by default).
+
+@item set editing off
+Disable command line editing.
+
+@kindex show editing
+@item show editing
+Show whether command line editing is enabled.
+@end table
+
+
+@node Command Display
+@subsection Command Display (@samp{set showcommand})
+
+The debugger normally lists the line number and source line of the for
+the statement to be next executed. Often this line contains one
+expression or one statement and it is clear from this line what's
+going to happen. However @BASH allows many expressions or
+statements to be put on a single source line; some lines
+contain several units of execution. Some examples of this
+behavior are listed below:
+
+@smallexample
+x=1; y=2; x=3
+(( x > 5 )) && x=5
+y=`echo *`
+@end smallexample
+
+In the first line of the example above, we have three assignment
+statements on a single line. In the second line of the example above
+we have a statement which gets run only if a condition tests true. And
+in the third line of the example above, we have a command that gets
+run and then the output of that is substituted in an assignemnt
+statement.  If you were single stepping inside the debugger, each line
+might get listed more than once before each of the actions that might
+get performed. (In the case of the conditional statement, the 
+line gets listed only once when the condition is false.)
+
+In order to assist understanding where you are, the enhanced version
+of @BASH maintains a dynamic variable @env{BASH_COMMAND} that
+contains piece of code next to be run (or is currently being run). The
+debugger has arranged to save this and can display this information
+or not. This is controlled by @code{set showcommand}. 
+
+@table @code
+@kindex set showcommand
+@item set showcommand @r{[}auto | on | off @r{]}
+controls whether or not to show the saved @env{BASH_COMMAND} for the
+command next to be executed.
+@end table
+
+When the value is @code{auto} the following heuristic is used to
+determine whether or not to display the saved @env{BASH_COMMAND}. If
+the last time you stopped you were at the same place and the command
+string has changed, then show the command. When the value @code{on} is
+used, the debugger always shows @env{BASH_COMMAND} and when
+@code{off} is used, the debugger nevers shows
+@env{BASH_COMMAND}. Note that listing the text of the source line is
+independent of whether or not the command is also listed.
+
+Some examples:
+@smallexample
+set showcommand auto      @b{This is the default}
+set showcommand on        @b{Always show the next command to be executed}
+set showcommand off       @b{Never show the next command to be executed}
+@end smallexample
+
+@node History
+@subsection Command history (@samp{H}, @samp{history}, @samp{!})
+
+@value{dBGP} can keep track of the commands you type during your
+debugging sessions, so that you can be certain of precisely what
+happened.  If the prompt has not been changed (see @ref{Prompt,
+,Prompt}), the history number that will be in use next is by default
+listed in the debugger prompt. Invalid commands and history commands
+are not saved on the history stack.
+
+@table @code
+@kindex H @r{[}@var{start-number} @ovar{end-number}@r{]}
+@item H @r{[}@var{start-number} @ovar{end-number}@r{]}
+@item H @ovar{-count}
+@itemx !@r{[}-@r{]}@var{n}:p
+
+You can list what is in the history stack with @code{H}. Debugger
+commands in ths history stack are listed from most recent to least recent.
+If no @var{start-number} is given we start with the most recently
+executed command and end with the first entry in the history stack.
+If @var{start-number} is given, that history number is listed first. If
+@var{end-number} is given, that history number is listed last. If a
+single negative number is given list that many history commands.
+
+An alternate form is @code{!@emph{n}:p} or @code{!-@emph{n}:p} where
+@emph{n} is an integer. If a minus sign is used, @emph{n} is taken as
+the count to go back from the end rather than as a absolute history
+number. In contrast @code{H}, this form only prints a @emph{single}
+history item.
+
+Some examples:
+@smallexample
+H      @b{List entire history}
+H -2   @b{List the last two history items}
+!-2:p  @b{List a single history item starting at the same place as above}
+H 5    @b{List history from history number 5 to the begining (number 0)}
+H 5 0  @b{Same as above}
+H 5 3  @b{List history from history number 5 down to history number 3}
+!5:p   @b{List a single history item 5}
+@end smallexample
+
+@kindex history @r{[}-@r{]}@r{[}@var{n}@r{]}
+@kindex !@r{[}-@r{]}@var{n} @r{(@code{history})}
+@item history @r{[}@r{[}-@r{]}@var{n}@r{]}
+@itemx !@r{[}-@r{]}@var{n}
+
+Use this command to reexecute a given history number. If no number is
+given, the last debugger command in the history is executed.
+
+An alternate form is @code{!@emph{n}} or @code{!-@emph{n}} where
+@emph{n} is an integer. 
+
+If a minus sign is used in in either form, @emph{n} is taken as the
+count to go back from the end rather than as a absolute history
+number.
+
+@end table
+
+@ifset FINISHED
+Use these commands to manage the @value{DBGN} command
+history facility.
+
+@table @code
+@cindex history substitution
+@cindex history file
+@kindex set history filename
+@kindex GDBHISTFILE
+@item set history filename @var{fname}
+Set the name of the @BASH command history file to @var{fname}.
+This is the file where @BASH reads an initial command history
+list, and where it writes the command history from this session when it
+exits.  You can access this list through history expansion or through
+the history command editing characters listed below.  This file defaults
+to the value of the environment variable @code{GDBHISTFILE}, or to
+@file{./.gdb_history} (@file{./_gdb_history} on MS-DOS) if this variable
+is not set.
+
+@cindex history save
+@kindex set history save
+@item set history save
+@itemx set history save on
+Record command history in a file, whose name may be specified with the
+@code{set history filename} command.  By default, this option is disabled.
+
+@item set history save off
+Stop recording command history in a file.
+
+@cindex history size
+@kindex set history size
+@item set history size @var{size}
+Set the number of commands which @BASH keeps in its history list.
+This defaults to the value of the environment variable
+@code{HISTSIZE}, or to 256 if this variable is not set.
+@end table
+
+@cindex history expansion
+History expansion assigns special meaning to the character @kbd{!}.
+
+Since @kbd{!} is also the logical not operator in C, history expansion
+is off by default. If you decide to enable history expansion with the
+@code{set history expansion on} command, you may sometimes need to
+follow @kbd{!} (when it is used as logical not, in an expression) with
+a space or a tab to prevent it from being expanded.  The readline
+history facilities do not attempt substitution on the strings
+@kbd{!=} and @kbd{!(}, even when history expansion is enabled.
+
+The commands to control history expansion are:
+
+@table @code
+@kindex set history expansion
+@item set history expansion on
+@itemx set history expansion
+Enable history expansion.  History expansion is off by default.
+
+@item set history expansion off
+Disable history expansion.
+
+The readline code comes with more complete documentation of
+editing and history expansion features.  Users unfamiliar with @sc{gnu} Emacs
+or @code{vi} may wish to read it.
+
+@c @group
+@kindex show history
+@item show history
+@itemx show history filename
+@itemx show history save
+@itemx show history size
+@itemx show history expansion
+These commands display the state of the @BASH history parameters.
+@code{show history} by itself displays all four states.
+@c @end group
+@end table
+
+@table @code
+@kindex shows
+@item show commands
+Display the last ten commands in the command history.
+
+@item show commands @var{n}
+Print ten commands centered on command number @var{n}.
+
+@item show commands +
+Print ten commands just after the commands last printed.
+@end table
+@end ifset
+
+@node Front Ends
+@chapter Using @value{DBG} from a front-end user interface
+
+There are two front-ends available that can use @value{DBG} as a back-end
+debugger are @sc{gnu} Emacs and @value{DDD}.
+
+@menu
+* Emacs::      Using @value{DBG} from @sc{gnu} Emacs
+* DDD::        Using @value{DBG} from @value{DDD}
+@end menu
+
+
+@node Emacs
+@section Using @value{DBG} from @sc{gnu} Emacs
+
+@cindex Emacs
+@cindex @sc{gnu} Emacs
+A special interface allows you to use @sc{gnu} Emacs to view (and
+edit) the source files for the program you are debugging with
+@value{DBG}.
+
+To use this interface, use the command @kbd{M-x bashdb} in @sc{gnu}
+Emacs.  Give the executable file you want to debug as an argument.
+This command starts @value{DBG} as a subprocess of Emacs, with input
+and output through a newly created Emacs buffer.
+
+Using @value{DBG} under Emacs is just like using @value{DBG}
+normally except for two things:
+
+@itemize @bullet
+@item
+All ``terminal'' input and output goes through the GNU Emacs buffer.
+@end itemize
+
+This applies both to @value{DBG} commands and their output, and to the input
+and output done by the program you are debugging.
+
+This is useful because it means that you can copy the text of previous
+commands and input them again; you can even use parts of the output
+in this way.
+
+All the facilities of GNU Emacs' Shell mode are available for interacting
+with your script.  In particular, you can send signals the usual
+way---for example, @kbd{C-c C-c} for an interrupt, @kbd{C-c C-z} for a
+stop.
+
+@itemize @bullet
+@item
+@value{DBG} displays source code through Emacs.
+@end itemize
+
+Each time @value{DBG} displays a stack frame, Emacs automatically finds the
+source file for that frame and puts an arrow (@samp{=>}) at the
+left margin of the current line.  Emacs uses a separate buffer for
+source display, and splits the screen to show both your @value{DBG} session
+and the source.
+
+Explicit @value{DBG} @code{list} or search commands still produce output as
+usual, but you probably have no reason to use them from GNU Emacs.
+
+@quotation
+@emph{Warning:} If the directory where your script resides is not your
+current directory, it can be easy to confuse Emacs about the location of
+the source files, in which case the auxiliary display buffer does not
+appear to show your source.  @value{DBG} can find programs by searching your
+environment's @code{PATH} variable, so the @value{DBG} input and output
+session proceeds normally; but Emacs does not get enough information
+back from @value{DBG} to locate the source files in this situation.  To
+avoid this problem, either start @value{DBG} mode from the directory where
+your script resides, or specify an absolute file name when prompted for the
+@kbd{M-x gdb} argument.
+
+A similar confusion can result if you use the @value{DBG} @code{file} command to
+switch to debugging a program in some other location, from an existing
+@value{DBG} buffer in Emacs.
+@end quotation
+
+By default, @kbd{M-x bashdb} calls the @code{bash --debugger}.  If you
+need to call @value{DBG} by a different name (for example, if you
+keep several configurations around, with different names) you can set
+the Emacs variable @code{gud-bashdb-command-name}; for example,
+
+@example
+(setq gud-bashdb-command-name "bash --debugger")
+@end example
+
+@noindent
+(preceded by @kbd{M-:} or @kbd{ESC :}, or typed in the @code{*scratch*} buffer, or
+in your @file{.emacs} file) makes Emacs call the program named
+``@code{bash-debugger}'' instead.
+
+In the @value{DBG} I/O buffer, you can use these special Emacs commands in
+addition to the standard Shell mode commands:
+
+@table @kbd
+@item C-h m
+Describe the features of Emacs' @value{DBG} Mode.
+
+@item M-s
+Execute to another source line, like the @value{DBG} @code{step} command; also
+update the display window to show the current file and location.
+
+@item M-n
+Execute to next source line in this function, skipping all function
+calls, like the @value{DBG} @code{next} command.  Then update the display window
+to show the current file and location.
+
+@item C-c C-f
+Execute until exit from the selected stack frame, like the @value{DBG}
+@code{finish} command.
+
+@item M-c
+Continue execution of your script, like the @value{DBG} @code{continue}
+command.
+
+@emph{Warning:} In Emacs v19, this command is @kbd{C-c C-p}.
+
+@item M-u
+Go up the number of frames indicated by the numeric argument
+(@pxref{Arguments, , Numeric Arguments, Emacs, The @sc{gnu} Emacs Manual}),
+like the @value{DBG} @code{up} command.
+
+@emph{Warning:} In Emacs v19, this command is @kbd{C-c C-u}.
+
+@item M-d
+Go down the number of frames indicated by the numeric argument, like the
+@value{DBG} @code{down} command.
+
+@emph{Warning:} In Emacs v19, this command is @kbd{C-c C-d}.
+
+@item C-x &
+Read the number where the cursor is positioned, and insert it at the end
+of the @value{DBG} I/O buffer.  For example, if you wish to disassemble code
+around an address that was displayed earlier, type @kbd{disassemble};
+then move the cursor to the address display, and pick up the
+argument for @code{disassemble} by typing @kbd{C-x &}.
+
+You can customize this further by defining elements of the list
+@code{gdb-print-command}; once it is defined, you can format or
+otherwise process numbers picked up by @kbd{C-x &} before they are
+inserted.  A numeric argument to @kbd{C-x &} indicates that you
+wish special formatting, and also acts as an index to pick an element of the
+list.  If the list element is a string, the number to be inserted is
+formatted using the Emacs function @code{format}; otherwise the number
+is passed as an argument to the corresponding list element.
+@end table
+
+In any source file, the Emacs command @kbd{C-x SPC} (@code{gud-break})
+tells @value{DBG} to set a breakpoint on the source line point is on.
+
+If you accidentally delete the source-display buffer, an easy way to get
+it back is to type the command @code{frame} in the @value{DBG} buffer, to
+request a frame display; when you run under Emacs, this recreates
+the source buffer if necessary to show you the context of the current
+frame.
+
+The source files displayed in Emacs are in ordinary Emacs buffers
+which are visiting the source files in the usual way.  You can edit
+the files with these buffers if you wish; but keep in mind that @value{DBG}
+communicates with Emacs in terms of line numbers.  If you add or
+delete lines from the text, the line numbers that @value{DBG} knows cease
+to correspond properly with the code.
+
+@node DDD
+@section Using @value{DBG} from @value{DDD}
+@cindex DDD
+
+@value{DBG} support is rather new in @value{DDD}. As a programming
+language, @value{DBG} is not feature rich: there are no record
+structures or hash tables (yet), no pointers, package variable scoping
+or methods. So much of the data display and visualization features of
+@value{DDD} are disabled.
+
+As with any scripting or interpreted language (e.g. Perl), one can't
+step by a single machine-language instruction. So the ddd Stepi/Nexti
+commands are disabled.
+
+Some @value{BASH} settings are essential for @value{DDD} to work
+correctly.  These settings with their correct values are:
+
+@example
+set annotate 1
+set prompt set prompt bashdb$_Dbg_less$_Dbg_greater$_Dbg_space
+@end example
+
+@value{DDD} sets these values automatically when invoking
+@value{BASH}; if these values are changed, there may be some
+malfunctions.
+
+Pay special attention when the prompt has extra angle brackets (a
+nested shell) or has any parenthesis (is in a subshell). Quitting may
+merely exit out of one of these nested (sub)shells rather than leave
+the program.
+
+@node BASH Debugger Bugs
+@chapter Reporting Bugs
+@cindex bugs
+@cindex reporting bugs
+
+Your bug reports play an essential role in making the BASH debugger reliable.
+
+Reporting a bug may help you by bringing a solution to your problem, or it
+may not.  But in any case the principal function of a bug report is to help
+the entire community by making the next version of @value{DBG} work better.  Bug
+reports are your contribution to the maintenance of @value{DBG}.
+
+In order for a bug report to serve its purpose, you must include the
+information that enables us to fix the bug.
+
+@menu
+* Bug Criteria::                Have you found a bug?
+* Bug Reporting::               How to report bugs
+@end menu
+
+@node Bug Criteria
+@section Have you found a bug?
+@cindex bug criteria
+
+If you are not sure whether you have found a bug, here are some guidelines:
+
+@itemize @bullet
+@cindex fatal signal
+@cindex debugger crash
+@cindex crash of debugger
+@item
+If the debugger gets a fatal signal, for any input whatever, that is a
+@value{DBG} bug.  Reliable debuggers never crash.
+
+@cindex error on valid input
+@item
+If @value{DBG} produces an error message for valid input, that is a
+bug.  (Note that if you're cross debugging, the problem may also be
+somewhere in the connection to the target.)
+
+@cindex invalid input
+@item
+If @value{DBG} does not produce an error message for invalid input,
+that is a bug.  However, you should note that your idea of
+``invalid input'' might be our idea of ``an extension'' or ``support
+for traditional practice''.
+
+@item
+If you are an experienced user of debugging tools, your suggestions
+for improvement of @value{DBG} are welcome in any case.
+@end itemize
+
+@node Bug Reporting
+@section How to report bugs
+@cindex bug reports
+@cindex BASH debugger bugs, reporting
+
+Submit bug reports for @value{DBG}.  Until better mechanism is set up
+the prefered method is to submit them directly using
+@email{rocky@@panix.com}. There are also a bug tracking system
+and, help, developer and open discussion forums which can be found via
+@uref{http://http://sourceforge.net/forum/?group_id=37260}.
+
+Although this code shares a lot with BASH, the debugger is of course
+not yet supported by the BASH team, so if there is a debugger problem 
+reporting it via bashbug or to @email{bug-bash@@gnu.org} or posted to
+the newsgroup @code{gnu.bash.bug} probably won't help, unless you are
+sure the bug resides in the vanilla bash code and and show that. 
+
+The fundamental principle of reporting bugs usefully is this:
+@strong{report all the facts}.  If you are not sure whether to state a
+fact or leave it out, state it!
+
+Often people omit facts because they think they know what causes the
+problem and assume that some details do not matter.  Thus, you might
+assume that the name of the variable you use in an example does not matter.
+Well, probably it does not, but one cannot be sure.  Perhaps the bug is a
+stray memory reference which happens to fetch from the location where that
+name is stored in memory; perhaps, if the name were different, the contents
+of that location would fool the debugger into doing the right thing despite
+the bug.  Play it safe and give a specific, complete example.  That is the
+easiest thing for you to do, and the most helpful.
+
+Keep in mind that the purpose of a bug report is to enable us to fix the
+bug.  It may be that the bug has been reported previously, but neither
+you nor we can know that unless your bug report is complete and
+self-contained.
+
+Sometimes people give a few sketchy facts and ask, ``Does this ring a
+bell?''  Those bug reports are useless, and we urge everyone to
+@emph{refuse to respond to them} except to chide the sender to report
+bugs properly.
+
+To enable us to fix the bug, you should include all these things:
+
+@itemize @bullet
+@item
+The version of @value{DBG}.  @value{DBG} announces it if you start
+with no arguments; you can also print it at any time using @code{version}
+command.
+
+Without this, we will not know whether there is any point in looking for
+the bug in the current version of @value{DBG}.
+
+@item
+The type of machine you are using, and the operating system name and
+version number.
+
+@item
+What compiler (and its version) was used to compile BASH---e.g.
+``gcc 3.4''.
+
+@item
+The command arguments you gave the compiler to compile your example and
+observe the bug.  For example, did you use @samp{-O}?  To guarantee
+you will not omit something important, list them all.  A copy of the
+Makefile (or the output from make) is sufficient.
+
+If we were to try to guess the arguments, we would probably guess wrong
+and then we might not encounter the bug.
+
+@item
+A complete input script, and all necessary source files, that will
+reproduce the bug.
+
+@item
+A description of what behavior you observe that you believe is
+incorrect.  For example, ``It gets a fatal signal.''
+
+Of course, if the bug is that @value{DBG} gets a fatal signal, then we
+will certainly notice it.  But if the bug is incorrect output, we might
+not notice unless it is glaringly wrong.  You might as well not give us
+a chance to make a mistake.
+
+Even if the problem you experience is a fatal signal, you should still
+say so explicitly.  Suppose something strange is going on, such as, your
+copy of @value{DBG} is out of synch, or you have encountered a bug in
+the C library on your system.  (This has happened!)  Your copy might
+crash and ours would not.  If you told us to expect a crash, then when
+ours fails to crash, we would know that the bug was not happening for
+us.  If you had not told us to expect a crash, then we would not be able
+to draw any conclusion from our observations.
+
+@item
+If you wish to suggest changes to the @value{DBG} source, send us context
+diffs.  If you even discuss something in the @value{DBG} source, refer to
+it by context, not by line number.
+
+The line numbers in our development sources will not match those in your
+sources.  Your line numbers would convey no useful information to us.
+
+@end itemize
+
+Here are some things that are not necessary:
+
+@itemize @bullet
+@item
+A description of the envelope of the bug.
+
+Often people who encounter a bug spend a lot of time investigating
+which changes to the input file will make the bug go away and which
+changes will not affect it.
+
+This is often time consuming and not very useful, because the way we
+will find the bug is by running a single example under the debugger
+with breakpoints, not by pure deduction from a series of examples.
+We recommend that you save your time for something else.
+
+Of course, if you can find a simpler example to report @emph{instead}
+of the original one, that is a convenience for us.  Errors in the
+output will be easier to spot, running under the debugger will take
+less time, and so on.
+
+However, simplification is not vital; if you do not want to do this,
+report the bug anyway and send us the entire test case you used.
+
+@item
+A patch for the bug.
+
+A patch for the bug does help us if it is a good one.  But do not omit
+the necessary information, such as the test case, on the assumption that
+a patch is all we need.  We might see problems with your patch and decide
+to fix the problem another way, or we might not understand it at all.
+
+Sometimes with a program as complicated as @value{DBG} it is very hard to
+construct an example that will make the program follow a certain path
+through the code.  If you do not send us the example, we will not be able
+to construct one, so we will not be able to verify that the bug is fixed.
+
+And if we cannot understand what bug you are trying to fix, or why your
+patch should be an improvement, we will not install it.  A test case will
+help us to understand.
+
+@item
+A guess about what the bug is or what it depends on.
+
+Such guesses are usually wrong.  Even we cannot guess right about such
+things without first using the debugger to find the facts.
+@end itemize
+
+@node History and Acknowledgments
+@chapter History and Acknowledgments
+
+The suggestion for a debugger for a Bourne-like shell came from the book
+``Learning the Korn Shell'', by Bill Rosenblatt Copyright (C) 1993 by
+O'Reilly and Associates, Inc. Others such as Cigy Cyriac, Chet Ramey,
+Rocky Bernstein, and Gary V. Vaughan expanded and improved on that.
+
+However Bourne-Shell debuggers rely on a signal mechanism
+(@code{SIGDEBUG}) to call a debugger routine. In the Korn shell as
+well as @sc{bash} in versions prior to 2.05, there was a fundamental
+flaw: the routine that you registered in the trap, got called
+@emph{after} the statement was executed. It takes little imagination
+to realize that this is a bit too late to find and correct errors,
+especially if the offending command happens to do serious damage like
+remove filesystems or reboot a server. As a horrible hack, these
+debuggers added one to the line number that was just executed on the
+wishful thinking that this would then be the line of next statement to
+execute. Sometimes this was correct, but it was too often wrong, such
+as in loops and conditionals, comments, or commands that are continued
+on the next line.
+
+Another failing of these debuggers was the inability to debug into
+functions or into sourced files, provide a stack trace, dynamically
+skip a statement to be run, unconditionally trace into a function or
+subshell, or stop when a subroutine, sourced file, or subshell
+completed. In truth, the crux of the problem lay in debugging support
+in BASH. Given that there was limited bash debugging support, it is
+not surprising that these debuggers could not do any of the things
+listed above and could debug only a single shell in a single source
+file: lines could be listed only from a single text, breakpoints were
+set into the text which was in fact a copy of the script name
+prepended with debugger routines.
+
+In version 2.04 of BASH, Rocky Bernstein started hacking on BASH to
+add call-stack information, source file information, allow for
+debugging into functions and for reporting line numbers in functions
+as relative to the file rather than the beginning of a function whose
+origin line number was not accessible from BASH. He started changing
+the user commands in bashdb to be like other more-advanced debuggers,
+in particular @code{perl5db} and @code{gdb}. However he gave up on
+this project when realizing that stopping before a line was crucial. A
+patch for this was nontrivial and wildly changed
+semantics. Furthermore the chance of getting his other patches into
+BASH was was not going to happen in version 2.04.
+
+In version 2.05, the fundamental necessary change to the semantics of
+@code{SIGDEBUG} trap handling (suggested at least two years earlier)
+was made. Also, version 2.05 changed the line-number reporting in a
+function to be relative to the beginning of the file rather than the
+beginning of a function---sometimes. Rocky then picked up where he
+left off and this then became this debugger. A complete rewrite of the
+debugger, some of which started in 2.04 was undertaken. Debugger
+internals were changed to support multiple file names, save and
+restore the calling environment (such as variables @code{$1} and
+@code{$?}) and install debugger signal handlers. Work was also done on
+the BASH in conjunction with the debugger to save stack trace
+information, provide a means for stopping after a routine finished,
+debugging into a subshell and so on. And a number of changes were made
+to BASH just to improve the accuracy of the line number reporting
+which is crucial in a debugger.
+
+This documentation was modified from the GNU Debugger (GDB) Reference
+manual.
+
+@quotation
+Additions to this section are particularly welcome.  If you or your
+friends (or enemies, to be evenhanded) have been unfairly omitted from
+this list, we would like to add your names!
+@end quotation
+
+The following have contributed directly or indrectly to bashdb:
+
+Rocky Bernstein (initial full-featured bashdb with stack tracing and
+multi-file support)
+
+Masatake YAMATO (help to merge Rocky's hack to the official bash source tree)
+
+Bill Rosenblatt (kshdb),
+Michael Loukides (kshdb),
+Cigy Cyriac (proto bashdb), 
+Chet Ramey (proto bashdb), 
+and
+Gary V. Vaughan (proto bashdb).
+
+Authors of per5ldb:
+
+Ray Lischner, 
+Johan Vromans, 
+and
+Ilya Zakharevich.
+
+Authors of GDB:
+
+Richard Stallman, 
+Andrew Cagney, 
+Jim Blandy,
+Jason Molenda,
+Stan Shebs,
+Fred Fish,
+Stu Grossman,
+John Gilmore,
+Jim Kingdon,
+and
+Randy Smith (to name just a few).
+
+Authors of GUD:
+
+Eric S. Raymond.
+
+@c The readline documentation is distributed with the readline code
+@c and consists of the two following files:
+@c     rluser.texinfo
+@c     inc-hist.texinfo
+@c Use -I with makeinfo to point to the appropriate directory,
+@c environment var TEXINPUTS with TeX.
+@c @include rluser.texinfo
+@c @include hsuser.texinfo
+
+@include gpl.texi
+
+@include fdl.texi
+
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+
+@node Command Index
+@unnumbered Command Index
+@printindex ky
+
+@node Variable Index
+@unnumbered Variable Index
+@printindex vr
+
+@node General Index
+@unnumbered General Index
+@printindex cp
+
+@tex
+% I think something like @colophon should be in texinfo.  In the
+% meantime:
+\long\def\colophon{\hbox to0pt{}\vfill
+\centerline{The body of this manual is set in}
+\centerline{\fontname\tenrm,}
+\centerline{with headings in {\bf\fontname\tenbf}}
+\centerline{and examples in {\tt\fontname\tentt}.}
+\centerline{{\it\fontname\tenit\/},}
+\centerline{{\bf\fontname\tenbf}, and}
+\centerline{{\sl\fontname\tensl\/}}
+\centerline{are used for emphasis.}\vfill}
+\page\colophon
+% Blame: doc@cygnus.com, 1991.
+@end tex
+
+@bye

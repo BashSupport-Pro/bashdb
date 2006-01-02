@@ -1,0 +1,15 @@
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+Test step inside multi-statement line...
+BASH_SUBSHELL: 0
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+y=2
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+z=3
+(subshell.sh:7):
+7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+Should now be inside a subshell...
+BASH_SUBSHELL: 1
+Test unconditional quit...

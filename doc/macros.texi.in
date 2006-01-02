@@ -1,0 +1,20 @@
+@c A simple macro for optional variables.
+@macro ovar{varname}
+@r{[}@var{\varname\}@r{]}
+@end macro
+
+@macro DDD {}
+@acronym{DDD}
+@end macro
+
+@macro BASH {}
+@acronym{@value{BASH}}
+@end macro
+
+@macro DBG {}
+@value{DBG}
+@end macro
+
+@set libdir @prefix@/lib
+@set bindir @prefix@/bin
+

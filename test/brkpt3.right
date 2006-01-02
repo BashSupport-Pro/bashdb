@@ -1,0 +1,24 @@
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+Breakpoint 1 set in file subshell.sh, line 15.
+(subshell.sh:7):
+7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+x=`builtin echo *`
+*** Try a setting and removing break inside a subshell...
+BASH_SUBSHELL: 1
+Removed 1 breakpoint(s).
+Breakpoint 2 set in file subshell.sh, line 17.
+ho
+ho
+Breakpoint 2 hit (1 times).
+(subshell.sh:17):
+17:	x=5; y=6;
+Breakpoint 2 hit (2 times).
+(subshell.sh:17):
+17:	x=5; y=6;
+y=6
+*** Try canonicalization of filenames in the break command...
+Breakpoint 3 set in file subshell.sh, line 1.
+Breakpoint 4 set in file subshell.sh, line 2.
+Breakpoint 5 set in file subshell.sh, line 3.
+*** quitting...

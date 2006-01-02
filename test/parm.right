@@ -1,0 +1,100 @@
+(parm.sh:26):
+26:	x="main"
+** Try a simple stack command...
+->0 in file `parm.sh' at line 26
+##1 source("parm.sh") called from file `bashdb' at line 153
+##2 main() called from file `bashdb' at line 0
+(parm.sh:3):
+3:	fn1() {
+->0 in file `parm.sh' at line 3
+##1 fn1("5") called from file `parm.sh' at line 27
+##2 source("parm.sh") called from file `bashdb' at line 153
+##3 main() called from file `bashdb' at line 0
+** Try printing a dollar variable...
+5
+** Same thing using eval...
+5
+** Setting an action to print 5
+Breakpoint 0 set at parm.sh:4.
+One-time breakpoint 1 set in file parm.sh, line 14.
+$1 at line 4 has value 5
+$1 at line 4 has value 4
+$1 at line 4 has value 3
+$1 at line 4 has value 2
+$1 at line 4 has value 1
+$1 at line 4 has value 0
+(parm.sh:14):
+14:	fn2() {
+** First parameter should have embedded blanks...
+->0 in file `parm.sh' at line 14
+##1 fn2("testing 1", "2 3") called from file `parm.sh' at line 6
+##2 fn1("0") called from file `parm.sh' at line 10
+##3 fn1("1") called from file `parm.sh' at line 10
+##4 fn1("2") called from file `parm.sh' at line 10
+##5 fn1("3") called from file `parm.sh' at line 10
+##6 fn1("4") called from file `parm.sh' at line 10
+##7 fn1("5") called from file `parm.sh' at line 27
+##8 source("parm.sh") called from file `bashdb' at line 153
+##9 main() called from file `bashdb' at line 0
+dollar 1: testing 1
+** Same thing using eval...
+$1 is testing 1
+** Should have embedded blanks...
+2 3
+$2 is 2 3
+One-time breakpoint 2 set in file parm.sh, line 21.
+fn2: testing 1 2 3
+(parm.sh:21):
+21:	fn3() {
+** Test return. Should go back to fn2 and then fn1...
+(parm.sh:18):
+18:	x="fn2 returning"
+(parm.sh:7):
+7:	return
+** Should not have done above-listed x=fn2 assignment
+fn2 started
+->0 in file `parm.sh' at line 7
+##1 fn1("0") called from file `parm.sh' at line 10
+##2 fn1("1") called from file `parm.sh' at line 10
+##3 fn1("2") called from file `parm.sh' at line 10
+##4 fn1("3") called from file `parm.sh' at line 10
+##5 fn1("4") called from file `parm.sh' at line 10
+##6 fn1("5") called from file `parm.sh' at line 27
+##7 source("parm.sh") called from file `bashdb' at line 153
+##8 main() called from file `bashdb' at line 0
+(parm.sh:11):
+11:	x="fn1 returning"
+->0 in file `parm.sh' at line 11
+##1 fn1("1") called from file `parm.sh' at line 10
+##2 fn1("2") called from file `parm.sh' at line 10
+##3 fn1("3") called from file `parm.sh' at line 10
+##4 fn1("4") called from file `parm.sh' at line 10
+##5 fn1("5") called from file `parm.sh' at line 27
+##6 source("parm.sh") called from file `bashdb' at line 153
+##7 main() called from file `bashdb' at line 0
+(parm.sh:11):
+11:	x="fn1 returning"
+->0 in file `parm.sh' at line 11
+##1 fn1("2") called from file `parm.sh' at line 10
+##2 fn1("3") called from file `parm.sh' at line 10
+##3 fn1("4") called from file `parm.sh' at line 10
+##4 fn1("5") called from file `parm.sh' at line 27
+##5 source("parm.sh") called from file `bashdb' at line 153
+##6 main() called from file `bashdb' at line 0
+(parm.sh:11):
+11:	x="fn1 returning"
+(parm.sh:11):
+11:	x="fn1 returning"
+->0 in file `parm.sh' at line 11
+##1 fn1("4") called from file `parm.sh' at line 10
+##2 fn1("5") called from file `parm.sh' at line 27
+##3 source("parm.sh") called from file `bashdb' at line 153
+##4 main() called from file `bashdb' at line 0
+*** Testing that exit status preserved on eval and print...
+One-time breakpoint 3 set in file parm.sh, line 29.
+(parm.sh:29):
+29:	exit 0
+eval says exit was 5
+print says exit was 5
+parm.sh
+*** quitting...

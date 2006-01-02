@@ -1,0 +1,26 @@
+(restartbug.sh:4):
+4:	x=1
+  4:==>x=1
+  5:   cd /
+  6:   y=2
+  7:   z=0
+  8:   
+(restartbug.sh:5):
+5:	cd /
+(restartbug.sh:6):
+6:	y=2
+Breakpoint 1 set in file restartbug.sh, line 7.
+Restarting with: -B -q -L .. -x restart2.cmd restartbug.sh
+(restartbug.sh:4):
+4:	x=1
+  4:==>x=1
+  5:   cd /
+  6:   y=2
+  7:   z=0
+  8:   
+Num Type       Disp Enb What
+1   breakpoint keep y   restartbug.sh:7
+No watch expressions have been set.
+Breakpoint 1 hit (1 times).
+(restartbug.sh:7):
+7:	z=0

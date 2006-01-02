@@ -1,0 +1,8 @@
+#!@prefix@/bin/bash
+# $Id: bugIFS.sh.in,v 1.1 2006/01/02 23:34:27 rockyb Exp $
+interface_names='qfe0 qfe3'
+ORIGIFS="$IFS"
+IFS="$IFS."
+set -- $interface_names
+IFS="$ORIGIFS"
+exit 0

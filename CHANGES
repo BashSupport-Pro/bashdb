@@ -1,0 +1,132 @@
+-------------------------------
+CHANGES TO THE BASH INTERPRETER
+-------------------------------
+
+Added timestamped history and customized display via strftime and the 
+HISTTIMEFORMAT environment variable.
+
+Added --debugger option which sources debugger startup script.
+
+Extended FUNCNAME variable to be an array indicating the call stack of
+function names in effect. The top-level "function" name is "main."
+
+Extended "declare -F fn" to return the source file name and the line number
+inside that of fn.
+
+Added dynamic BASH_ARGC and BASH_ARGV arrays which store all of the
+parameters.  ARGC gives the number of parameters in a call. BASH_ARGV
+are the parameters in stack like fashion. Last parameter of last call
+is on top, first parameter of initial call is on the bottom (index 0).
+
+Added dynamic BASH_SOURCE array variable to give the file names associated 
+with FUNCNAME.
+
+Using BASH_SOURCE we now report the right filename when you have an
+evaluation error in a sourced file.
+
+Added dynamic BASH_LINENO array variable to give the source file line
+numbers names associated with FUNCNAME.
+
+LINENO: All line numbers are now relative to the beginning of a file,
+not relative to a function name.
+
+Added dynamic BASH_COMMAND variable which is the command to be
+executed (or is executing) unless the command is a "trap" in which
+case it is the command that will be executed after the trap completes.
+
+Added dynamic BASH_SUBSHELL variable gives the number of subshells
+that you are nested in.
+
+Added a set shell option (set -o fntrace or set -d) which
+causes the TRAP DEBUG setting (whether the value is on or off) to
+persist when entering a function. It also does likewise for the
+"source" builtin and command substitution.
+
+Added a new trap "RETURN" which calls a handler every time a
+function or sourced file is returned. 
+
+Added a new trap "SUBEXIT" which calls a handler every time a
+subshell exits.
+
+Added caller() builtin function which works like Perl's builtin. 
+
+trap DEBUG will skip the next statement to be executed if the
+handler returns 2 (or sets $? to 2).
+
+Line number on command substitution `` $() and { } is the line number
+of the source file, and not relative to the beginning of the
+substitution (which is usually 1). For debugging absolute line numbers
+are useful. Even outside of debugging, when reporting errors it's hard
+to see how error messages like these generated from errors.tests in the previous versions of bash (<=2.05):
+
+./errors.tests: line 1: /bin/sh + 0: syntax error: operand expected (error token is "/bin/sh + 0")
+./errors.tests: line 1: /bin/sh + 0: syntax error: operand expected (error token is "/bin/sh + 0")
+
+are as helpful than what we get now with absolute line numbers:
+
+./errors.tests: line 212: /bin/sh + 0: syntax error: operand expected (error token is "/bin/sh + 0")
+./errors.tests: line 213: /bin/sh + 0: syntax error: operand expected (error token is "/bin/sh + 0")
+
+Line numbers probably a little more accurate on tracing and
+LINENO. 
+
+"for" variables, and "case" conditions and "select" selectors are
+listed on "set -x" tracing and debugging. 
+
+---------
+CHANGES TO EXTERNAL BASH DEBUGGER AND ITS LIBRARY CODE
+
+First I've tried to make this look more like gdb and perldb which are
+much richer debuggers. Probably the easiest part was to hack into the
+Emacs GUD (Grand Unified Debugger) code to work with bashdb. Making
+bashdb work with DDD, a debugger GUI front end was likewise
+straightforward (although requiring copious additions to many files -
+the changes were basically, "do this like Perl or do this like GDB"). 
+
+By now (Aug 2002), most of Michael Loukides' and Bill Rosenblatt's ksh
+debugger code (circa 1995 and before) has been replaced.
+
+The hackery of creating and running a concatenated file with debugging
+routines include (bashdb.pre and bashdb.fns) has been eliminated. Now
+we just source the debugged file or, better, do a funny "source"
+inside bash itself to get $0 correct and the the call stack correct.
+
+There is now some option processing in bashdb script.  In particular
+use -L to tell bashdb where the directory of the debugger code. There
+is more verbose usage reporting.
+
+There is now an internal source-line array for *each* source file seen
+in debugger execution. The original code always retrieved from a text
+file (and it was presumed that there was only one). Since changes to
+the source after the program is running aren't reflected in the
+execution of the code, reading the source file to retrieve source text
+if that text was modified in the midst of debugging may give the wrong
+source line text. In this respect caching source lines may be more
+accurate. 
+
+There had been a variable which stored breakpoints as a string of line
+numbers, e.g. "3|23|45|". Using "|" as a field separator perhaps was
+convenient since one could then call egrep (without the trailing "|")
+to list a line number. Such was life in days when arrays were not a
+considered to be standard in POSIX-like shells, and bash still has
+provisions for conditionally compiling array support in.  However,
+nowadays I think it safe to assume the array datatype standard; it is
+POSIX.
+
+So I've removed this breakpoint variable and replaced it with an
+array. As for finding the line associated with the breakpoint, I added
+another array to store the source line for that.
+
+I've added watchpoints as are found in perl5db or gdb.
+
+With the breakpoint array, I also added breakpoint conditions and
+one-time breakpoints, whether the breakpoint is enabled or disabled,
+all analogous to gdb.
+
+Signal handling was added, and saving and restoring $?, $1, $2, the
+"set" options.
+
+With this, I think we've gotten over the main hurdle of getting a
+decent debugger for bash.
+
+$Id: CHANGES,v 1.1 2006/01/02 23:34:17 rockyb Exp $

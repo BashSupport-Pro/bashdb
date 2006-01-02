@@ -1,0 +1,9 @@
+The following kind people have contributed to this debugger. 
+
+Eric Blake <ebb9 at byu dot edu> - packaging/build fixes. cygwin packaging
+Manfred Tremmel <Manfred.Tremmel at iiv.de> - RPM building for SuSE
+Masatake YAMATO <jet a@gyve.org> - Emacs support, screenshots, progress meter
+Matthias Klose <doko at cs dot tu-berlin dot de> - making build system and 
+                                                   package more industrial 
+                                                   strength.
+Mikael Andersson <snikkt@telia.com> - "V" command auto* fixes

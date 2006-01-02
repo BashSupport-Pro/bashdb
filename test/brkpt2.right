@@ -1,0 +1,194 @@
+(dbg-test1.sh:22):
+22:	x=22
+*** Try a simple line number breakpoint...
+Breakpoint 1 set in file dbg-test1.sh, line 23.
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+No watch expressions have been set.
+Breakpoint 1 hit (1 times).
+(dbg-test1.sh:23):
+23:	y=23
+*** Try watch...
+ 0: ($x)==22 arith: 0
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+	breakpoint already hit 1 time
+Watch expressions:
+0   watchpoint y    $x
+Watchpoint 1: $x changed:
+  old value: '22'
+  new value: '23'
+(dbg-test1.sh:24):
+24:	for i in 0 1 3 ; do
+*** Try disable expression...
+Watchpoint entry 0 disabled.
+ 1: (x > 26)==0 arith: 1
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+	breakpoint already hit 1 time
+Watch expressions:
+0   watchpoint n    $x
+	breakpoint already hit 1 time
+1   watchpoint y    x > 26
+*** Continuing with a one-time line break (but will watch expression)...
+One-time breakpoint 2 set in file dbg-test1.sh, line 30.
+Watchpoint 3: x > 26 changed:
+  old value: '0'
+  new value: '1'
+(dbg-test1.sh:28):
+28:	y=b
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+	breakpoint already hit 1 time
+2   breakpoint del  y   dbg-test1.sh:30
+Watch expressions:
+0   watchpoint n    $x
+	breakpoint already hit 1 time
+1   watchpoint y    x > 26
+	breakpoint already hit 1 time
+No actions have been set.
+*** Try deleting a watchpoint...
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+	breakpoint already hit 1 time
+2   breakpoint del  y   dbg-test1.sh:30
+Watch expressions:
+0   watchpoint n    $x
+	breakpoint already hit 1 time
+No actions have been set.
+*** Try break with a function...
+Breakpoint 3 set in file dbg-test1.sh, line 5.
+*** Stepping 2...
+(dbg-test1.sh:30):
+30:	echo $(fn3 30)
+*** Try continue with a line number...
+One-time breakpoint 4 set in file dbg-test1.sh, line 34.
+
+Breakpoint 3 hit (1 times).
+(dbg-test1.sh:5):
+5:	fn1() {
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+	breakpoint already hit 1 time
+3   breakpoint keep y   dbg-test1.sh:5
+	breakpoint already hit 1 time
+4   breakpoint del  y   dbg-test1.sh:34
+Watch expressions:
+0   watchpoint n    $x
+	breakpoint already hit 1 time
+No actions have been set.
+*** List stack frame...
+->0 in file `dbg-test1.sh' at line 5
+##1 fn1() called from file `dbg-test1.sh' at line 32
+##2 source("dbg-test1.sh") called from file `bashdb' at line 153
+##3 main() called from file `bashdb' at line 0
+*** Try up...
+(dbg-test1.sh:32):
+32:	fn1;
+ 32:   fn1;
+ 33:   fn3 33
+ 34:   source dbg-test1.sub
+ 35:   exit 0;
+ 36:   #;;; Local Variables: ***
+ 37:   #;;; mode:shell-script ***
+ 38:   #;;; End: ***
+ 39:   
+*** Try down 1...
+(dbg-test1.sh:5):
+5:	fn1() {
+  5:==>fn1() {
+  6:   echo "fn1 here"
+  7:   x=5
+  8:   fn3
+  9:   }
+ 10:   
+ 11:   fn2() {
+ 12:   name="fn2"
+ 13:   echo "$name here"
+ 14:   x=6
+*** frame 0...
+->0 in file `dbg-test1.sh' at line 5
+(dbg-test1.sh:5):
+5:	fn1() {
+*** Try step (twice)...
+(dbg-test1.sh:6):
+6:	echo "fn1 here"
+fn1 here
+(dbg-test1.sh:7):
+7:	x=5
+*** Try next and check that it jumps over fn3
+(dbg-test1.sh:8):
+8:	fn3
+*** Try continue file:line (but will hit another breakpoint)...
+One-time breakpoint 5 set in file dbg-test1.sh, line 35.
+(dbg-test1.sh:34):
+34:	source dbg-test1.sub
+SOURCED LINENO 19
+(dbg-test1.sub:20):
+20:	filename=${BASH_SOURCE[0]##*/}
+->0 in file `dbg-test1.sub' at line 20
+##1 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
+##2 source("dbg-test1.sh") called from file `bashdb' at line 153
+##3 main() called from file `bashdb' at line 0
+SOURCED BASH_SOURCE[0] dbg-test1.sub
+SOURCED FN LINENO 5
+(dbg-test1.sub:11):
+11:	local -i j=i+1
+->0 in file `dbg-test1.sub' at line 11
+##1 sourced_fn() called from file `dbg-test1.sub' at line 22
+##2 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
+##3 source("dbg-test1.sh") called from file `bashdb' at line 153
+##4 main() called from file `bashdb' at line 0
+*** Try x command...
+j
+*** Try continue break no args (here)...
+Breakpoint 6 set in file dbg-test1.sub, line 11.
+FUNCNAME[0]: sourced_fn called from dbg-test1.sub at line 22
+Breakpoint 6 hit (1 times).
+(dbg-test1.sub:11):
+11:	local -i j=i+1
+*** another x command...
+declare -i j="1"
+*** another x command (+5 than value above) ...
+6
+*** x command of string y
+declare -- y="b"
+*** x of a function ...
+fn2 () 
+{ 
+    name="fn2";
+    echo "$name here";
+    x=6
+}
+*** Bad x expressions ...
+bogus
+bogus+
+fn2+fn3
+3
+*** another continue. Count on breakpoint should go up.
+FUNCNAME[1]: source called from dbg-test1.sh at line 34
+Breakpoint 6 hit (2 times).
+(dbg-test1.sub:11):
+11:	local -i j=i+1
+j: 2, name: fn2
+*** Try disable of break 
+Breakpoint entry 5 disabled.
+Num Type       Disp Enb What
+1   breakpoint keep y   dbg-test1.sh:23
+	breakpoint already hit 1 time
+3   breakpoint keep y   dbg-test1.sh:5
+	breakpoint already hit 1 time
+5   breakpoint del  n   dbg-test1.sh:35
+6   breakpoint keep y   dbg-test1.sub:11
+Watch expressions:
+0   watchpoint n    $x
+	breakpoint already hit 1 time
+No actions have been set.
+FUNCNAME[2]: source called from bashdb at line 153
+Breakpoint 6 hit (3 times).
+(dbg-test1.sub:11):
+11:	local -i j=i+1
+*** Should hit end of script but stay in debugger...
+dbg-test1.sh
+dbg-test1.sub
+*** quitting...

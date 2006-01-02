@@ -1,0 +1,15 @@
+#!/bin/sh
+#$Id: multi2.tests,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+if test -z $srcdir  ; then
+  srcdir=`pwd`
+fi
+
+cmdfile=multi2.cmd
+debugged_script=multi.sh
+
+$bASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile $debugged_script
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

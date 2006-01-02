@@ -1,0 +1,39 @@
+(skip.sh:22):
+22:	x=22
+(skip.sh:23):
+23:	x=23
+x is 22
+** Try a skip command...
+(skip.sh:24):
+24:	for i in 1 ; do
+x is still 22
+** Try skipping over a for loop...
+(skip.sh:27):
+27:	x=27
+x is still 22
+** Try 'skip 3'...
+(skip.sh:30):
+30:	fn1;
+x is still 22
+(skip.sh:31):
+31:	fn3 31
+x is still 22
+(skip.sh:32):
+32:	case x in
+(skip.sh:33):
+33:	* ) x = 33
+x is still 22
+(skip.sh:35):
+35:	[[ -z "x" ]] && x=35
+(skip.sh:35):
+35:	[[ -z "x" ]] && x=35
+x=35
+(skip.sh:36):
+36:	((x += 1))
+x is now 35
+(skip.sh:37):
+37:	source dbg-test1.sub
+x is still 35
+(skip.sh:38):
+38:	exit 0;
+*** quitting...

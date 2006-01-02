@@ -1,0 +1,49 @@
+(dbg-test1.sh:22):
+22:	x=22
+*** Try a simple display...
+ 0: echo $x
+Breakpoint 1 set in file dbg-test1.sh, line 23.
+Breakpoint 2 set in file dbg-test1.sh, line 25.
+Breakpoint 1 hit (1 times).
+(dbg-test1.sh:23):
+23:	y=23
+ 0 (echo $x): 22
+Breakpoint 2 hit (1 times).
+(dbg-test1.sh:25):
+25:	((x += i))
+ 0 (echo $x): 22
+*** Try disabling display ...
+Display entry 0 disabled.
+Display expressions:
+Num Enb Expression          
+0     0 echo $x
+(dbg-test1.sh:24):
+24:	for i in 0 1 3 ; do
+Breakpoint 2 hit (2 times).
+(dbg-test1.sh:25):
+25:	((x += i))
+*** Try enabling display ...
+Display entry 0 enabled.
+Display expressions:
+Num Enb Expression          
+0     1 echo $x
+*** Try display to show again status ...
+ 0 (echo $x): 22
+One-time breakpoint 3 set in file dbg-test1.sh, line 28.
+Breakpoint 2 hit (3 times).
+(dbg-test1.sh:25):
+25:	((x += i))
+ 0 (echo $x): 23
+Display expressions:
+Num Enb Expression          
+0     1 echo $x
+(dbg-test1.sh:28):
+28:	y=b
+ 0 (echo $x): 27
+*** Try undisplay to delete ...
+No display expressions have been set.
+(dbg-test1.sh:29):
+29:	x=29
+(dbg-test1.sh:30):
+30:	echo $(fn3 30)
+*** quitting...

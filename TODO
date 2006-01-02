@@ -1,0 +1,65 @@
+For Debian release:
+- bashdb manual page
+- GFDL or GPL for documentation? 
+- install lib in /usr/share. Have bashdb fallback to 
+ "@DEBUGGER_START_FILE@"? if no -L and no ../lib? 
+
+BUGS
+
+- *New to bash 3.x: The $BASH_COMMAND variable no longer works.
+
+- Source can have parameters but that doesn't appear in ARGC, ARGV.
+  RETURN trap should signal when leaving source'd file.
+
+- Stack trace on rare occasions can get the wrong line number. 
+
+- Interrupts to program sometimes are delayed. Seems like a bash thing. Why? 
+
+- Darwin compilation problem in siglist
+
+- Check that all global variables are changed via "journal"
+
+-------------------------------------
+
+NECESSARY TO DO:
+
+  - Documentation:
+      update sample session ?
+      Info for calling from inside script. Developer's handbook?
+
+FEATURES TO ADD:
+
+  0. bash should maintain a list of line numbers that one can
+     set breaks on.
+
+  1. perl5db actions
+
+ *2. Debugger should handle errors better. (Does this need bash?)
+     Might be able to somehow cascade onto existing Error routine.
+     Same might be done with SIGDEBUG.
+
+  3. Add the gdb signal mechanism - it's partly there
+
+  4. "finish" or "return" where frame has been changed from top. 
+
+  Gdb commands that could be added: 
+    backtrace -n
+    set history filename
+    set history name
+    set history size
+    ignore
+
+
+FUTURE:
+
+ *More support in bash: list of valid line numbers
+ *Rewrite so debugger lives outside of process
+   - will not be subject to subshell environment discards. 
+   - will have its own global state, but it needs to have access to debugger
+     environment 
+   - will support remote debugging
+
+
+*=Things that bash might help out with.
+-------------------------------------
+$Id: TODO,v 1.1 2006/01/02 23:34:21 rockyb Exp $

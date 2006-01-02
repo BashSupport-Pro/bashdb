@@ -1,0 +1,22 @@
+This is a complete rewrite of the Korn Shell debugger from Bill
+Rosenblatt's `Learning the Korn Shell', published by O'Reilly and
+Associates (ISBN 1-56592-054-6). Michael Loukides and Cigy Cyriac made
+some additional changes.
+
+The original `kshdb' is available for anonymous FTP with the URL
+
+ftp://ftp.uu.net/published/oreilly/nutshell/ksh/ksh.tar.Z
+
+However this code now depends on a number of debugging support
+features that are neither part of the POSIX standard and are probably
+not in many POSIX-like shells. I added support for debugging in bash
+2.05b, which has been encorporated with changes into bash 3.0 with
+some change. Note though that you can't use the bashdb code from 2.05b
+in bash 3.0 since not all of the changes are upward
+compatible. Instead you need the code here. 
+
+See INSTALL for installation instructions.
+
+R. Bernstein (rocky@panix.com)
+
+$Id: README,v 1.1 2006/01/02 23:34:21 rockyb Exp $

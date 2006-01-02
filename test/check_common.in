@@ -1,0 +1,26 @@
+# $Id: check_common.in,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+
+if test -z "$THIS_SH" ; then 
+  THIS_SH=@BASH_PROG@
+fi
+
+# Could/short probably replace all uses of THIS_SH with BASH.
+BASH=$THIS_SH
+
+TOP_BUILDDIR=`pwd`/../
+
+export BASH TOP_BUILDDIR
+
+check_output() {
+  testfile="$1"
+  rightfile="$2"
+  # Bourne sh
+  # set -o noglob
+  @DIFF@ @DIFF_OPTS@ $testfile $rightfile && rm -f $testfile
+  return $?
+}
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

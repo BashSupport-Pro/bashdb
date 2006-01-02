@@ -1,0 +1,35 @@
+(dbg-test1.sh:22):
+22:	x=22
+*** Should fail since xyxxy is not defined...
+Can't set watch: no such variable xyxxy.
+No breakpoints have been set.
+No watch expressions have been set.
+*** Test a simple breakpoint...
+ 0: ($xx)==1 arith: 0
+No breakpoints have been set.
+Watch expressions:
+0   watchpoint y    $xx
+*** Try testing enable/disable...
+Watchpoint entry 0 already enabled so nothing done.
+No breakpoints have been set.
+Watch expressions:
+0   watchpoint y    $xx
+No actions have been set.
+Watchpoint entry 0 disabled.
+No breakpoints have been set.
+Watch expressions:
+0   watchpoint n    $xx
+No actions have been set.
+*** Try deleting nonexistent watchpoint...
+Watchpoint entry 10 doesn't exist so nothing done.
+*** Test display of watchpoints...
+ 1: (y > 25)==0 arith: 1
+No breakpoints have been set.
+Watch expressions:
+0   watchpoint n    $xx
+1   watchpoint y    y > 25
+No breakpoints have been set.
+Watch expressions:
+1   watchpoint y    y > 25
+No breakpoints have been set.
+No watch expressions have been set.

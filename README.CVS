@@ -1,0 +1,27 @@
+Things are a little more complicated than usual. In bash 2.05b we
+provided a patched version of bash and their was a "debugger"
+directory under this. In bash 3.0, this "debugger" directory is and
+independant package, and does not come with the source. However the
+sources in CVS still live in that "debugger" directory. In CVS, we have
+branched sources. The 3.00 sources are in the bash-3-00 branch while
+the 2.05b sources are in teh bash-2-05b branch.
+
+So to check out: 
+   cvs -d ...:/cvsroot/bashdb checkout -r bash-3-00 bashdb/debugger
+
+where ... is the cvs-root-directory location. For example, for me it
+is :ext:rockyb@cvs.sourceforge.net
+
+After checking out initially you may want to move this to a better name.
+For example I ran:
+
+   mv bashdb/debugger bashdb-3.00
+
+Whether or not you rename the directory in that "cd" into that directory 
+and run 
+   ./autogen.sh
+
+Then you are ready to run 
+  configure && make && make check
+
+$Id: README.CVS,v 1.1 2006/01/02 23:34:21 rockyb Exp $

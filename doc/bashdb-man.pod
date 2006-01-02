@@ -1,0 +1,192 @@
+=pod
+
+=head1 NAME
+
+bashdb - bash debugger script
+
+=head1 SYNOPSIS
+
+B<bashdb> [I<options>] I<script-name>
+
+B<bashdb> [I<options>] -c I<execution-string>
+
+B<bash --debugger> [I<bash-options>...] I<script-name>
+
+=head1 DESCRIPTION
+
+C<bashdb> is a bash script to which arranges for another bash script
+to be debugged. The debugger has a similar command interface as L<gdb>
+or Perl's L<perl5db> debugger. The way this script arranges debugging
+to occur is by including (or actually "source"-ing) some debug-support
+code and then sourcing the given script or command string.
+
+One problem with sourcing a debugged script is that the program name
+stored in $0 will be C<bashdb> rather than the name of the script to
+be debugged. The debugged script will appear in a call stack not as
+the top item but as the item below C<bashdb>. If this is of concern,
+use the last form given above, C<bash ---debugger> I<script-name>.  
+
+A downside of invoking bash with the C<--debugger> option is any of
+the options below that are not bash options don't work, and those that
+I<are> bash options have the bash meaning rather than the bash
+debugger meaning. For example, C<-n> in bash means don't run a bash
+script but just syntax check it which is different from what is listed
+below.
+
+=head1 OPTIONS
+
+=over 4
+
+=item -h
+
+Print a usage message on standard error and exit with a return code
+of 100.
+
+Z<>
+
+=item -B
+
+In places where a filename appears in debugger output give just the
+basename only. This is needed in for regression testing. Using this
+option is equivalent to issuing:
+
+  set basename on 
+
+inside the debugger.
+
+Z<>
+
+=item -n
+
+Normally the debugger will read debugger commands in C<~/.bashdbinit>
+if that file exists before accepting user interaction.
+C<.bashdbinit> is analogus to Perl's C<.perldb> or GNU gdb's
+C<.gdbinit>: a user might want to create such a debugger profile to
+add various user-specific customizations.
+
+Using the C<-n> option this initialization file will not be read. This
+is useful in regression testing or in tracking down a problem with
+one's C<.bashdbinit> profile. 
+
+Z<>
+
+=item -c I<command-string>
+
+Instead of specifying the name of a bash script file, one can give an
+execution string that is to be debugged. Use this option to do that.
+
+If you invoke the debugger via C<bash --debugger>, the filename that will
+appear in source listing or in a call stack trace will be the artifical name
+*BOGUS*.
+
+Z<>
+
+=item -q
+
+Do not print introductory version and copyright information. This is
+again useful in regression testing where we don't want to include a
+changeable copyright date in the regression-test matching.
+
+Z<>
+
+=item -x I<debugger-cmdfile>
+
+Run the debugger commands I<debugger-cmdfile> before accepting user
+input.  These commands are read however after any C<.bashdbinit>
+commands. Again this is useful running regression-testing debug
+scripts.
+
+Z<>
+
+=item -L I<debugger-library>
+
+The debugger needs to source or include a number of functions and
+these reside in a library. If this option is not given the default location
+of library is relative to the installed bashdb script: C<../lib/bashdb>.
+
+Z<>
+
+=item -T I<temporary-file-directory>
+
+The debugger needs to make use of some temporary filesystem storage to
+save persistent information across a subshell return or in order to
+evaluate an expression. The default directory is C</tmp> but you can
+use this option to set the directory where debugger temporary files
+will be created.
+
+Z<>
+
+=item -t I<tty-name>
+
+Debugger output usually goes to a terminal rather than stdout or stdin
+which the debugged program may use. Determination of the tty or
+pseudo-tty is normally done automatically. However if you want to
+control where the debugger output goes, use this option.
+
+Z<>
+
+=item -V
+
+Show version number and no-warranty and exit with return code 1.
+
+=back
+
+=head1 BUGS
+
+The C<bashdb> script and C<--debugger> option assume a patched version
+of bash. That is you can't debug bash scripts using the standard-issue
+version 2.05 bash or earlier versions. If you try to run the bashdb
+script on such as shell, may get the message:
+
+  Sorry, you need to use a debugger-enabled version of bash.
+
+This is not a bug in the debugger so much as a bug in bash itself or
+the lack of debugging support thereof.
+
+Debugging can be slow especially on large bash scripts. Scripts
+created by GNU autoconf are at a minimum hundreds of lines and it is
+not uncommon for them to be tens of thousands of lines.
+
+Part of the reason of the debugger slowness is that the debugger has
+to intercept every line and check to see if some action is to be taken
+for this and this is all in bash code. A better and faster
+architecture would be for the debugger to register a list of
+conditions or stopping places inside the bash code itself and have it
+arrange to call the debugger only when a condition requiring the
+debugger arises. Checks would be faster as this would be done in C
+code and access to internal structures would make this moe
+efficient. Did I mention the lack of debug support in bash (and other
+POSIX shells)?
+
+Another place you may find slowness is in initial startup of such
+large debugger scripts. The source code has to be read into internal
+arrays and this apparently takes time.
+
+=head1 SEE ALSO
+
+L<bash>. There also an extensive debugger reference manual. 
+
+=head1 AUTHOR
+
+The current version is maintained (or not) by C<rocky@panix.com>.
+
+=head1 COPYRIGHT
+
+  Copyright (C) 2003 Rocky Bernstein, email: rocky@panix.com.
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+I<$Id: bashdb-man.pod,v 1.1 2006/01/02 23:34:23 rockyb Exp $>
+
+=cut

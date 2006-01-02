@@ -1,0 +1,15 @@
+(multi.sh:6):
+6:	x=1; y=2; z=3
+Test step inside multi-statement line...
+One-time breakpoint 1 set in file multi.sh, line 15.
+ho
+(multi.sh:15):
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+builtin cd .
+(multi.sh:15):
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+x=`builtin echo *`
+(multi.sh:15):
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+builtin echo "ho"
+BASH_SUBSHELL 2

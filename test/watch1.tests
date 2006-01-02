@@ -1,0 +1,21 @@
+#!/bin/sh
+#$Id: watch1.tests,v 1.1 2006/01/02 23:34:27 rockyb Exp $
+
+if test -z $srcdir  ; then
+  srcdir=`pwd`
+fi
+d="$srcdir/.."
+
+if test -z $top_builddir ; then
+  top_builddir=..
+fi
+
+cmdfile="$srcdir/watch1.cmd"
+debugged_script="$srcdir/dbg-test1.sh"
+
+$BASH $top_builddir/bashdb -B -q -L $d -x $cmdfile $debugged_script
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

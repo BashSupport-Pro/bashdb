@@ -1,0 +1,30 @@
+#!/bin/sh
+#$Id: run-multi,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+
+# Reinstate brkpt3 when BASH_COMMAND works again.
+exit 77
+
+if test -z "$srcdir"  ; then
+  srcdir=`pwd`
+fi
+
+. ${builddir}/check_common
+
+for SUBTEST in multi1 multi2 multi3 multi4 ; do
+  TEST_FILE="${SUBTEST}.check"
+  (cd $srcdir && ${THIS_SH} ${SUBTEST}.tests > $TEST_FILE 2>&1 < /dev/null)
+
+  check_output $TEST_FILE ${srcdir}/${SUBTEST}.right 
+  typeset -i rc=$?
+  if (( rc != 0 )) ; then 
+    exit $rc
+  fi
+done
+
+# Return code tells testing mechanism whether passed or not.
+exit 0
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***
