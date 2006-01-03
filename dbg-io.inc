@@ -205,8 +205,8 @@ _Dbg_readin() {
 	# No readarray. Do things the long way.
 	local -i i
 	for (( i=1; 1 ; i++ )) ; do 
-	  local -r source_entry="${source_array}[$i]"
-	  local -r readline_cmd="read -r $source_entry; rc=\$?";
+	  local source_entry="${source_array}[$i]"
+	  local readline_cmd="read -r $source_entry; rc=\$?";
 	  local -i rc=1
 	  if (( i % 1000 == 0 )) ; then
 	    if (( i==NOT_SMALLFILE )) ; then
@@ -246,7 +246,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.2 2006/01/03 04:58:06 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

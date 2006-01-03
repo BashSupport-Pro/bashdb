@@ -60,9 +60,9 @@ _Dbg_resolve_expand_filename() {
     local -i i
     for (( i=0 ; i < n; i++ )) ; do
       local basename="${_Dbg_dir[i]}"
-      if [[  $basename == '$cdir' ]] ; then
+      if [[  $basename == '\$cdir' ]] ; then
 	basename=$_Dbg_cdir
-      elif [[ $basename == '$cwd' ]] ; then
+      elif [[ $basename == '\$cwd' ]] ; then
 	basename=$(pwd)
       fi
       if [[ -f "$basename/$find_file" ]] ; then
@@ -111,9 +111,9 @@ _Dbg_is_file() {
       local -i i
       for (( i=0 ; i < n; i++ )) ; do
 	local basename="${_Dbg_dir[i]}"
-	if [  $basename = '\$cdir' ] ; then
+	if [[  $basename = '\$cdir' ]] ; then
 	  basename=$_Dbg_cdir
-	elif [ $basename = '\$cwd' ] ; then
+	elif [[ $basename = '\$cwd' ]] ; then
 	  basename=$(pwd)
 	fi
 	if [[ "$basename/$find_file" == $try_file ]] ; then
@@ -236,7 +236,7 @@ _Dbg_source_journal() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.2 2006/01/03 04:58:06 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
