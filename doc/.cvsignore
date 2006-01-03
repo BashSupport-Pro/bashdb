@@ -28,9 +28,8 @@ Makefile
 Makefile.in
 bashdb.1
 bashdb.tmp
-doc/macros.texi
+macros.texi
 pod2htm*.tmp
 stamp-vti
 version-bashdb.texi
 version.texi
-
