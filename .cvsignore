@@ -7,6 +7,7 @@ bash
 bash-*.tar.gz
 bashdb
 bashdb-pre.inc
+config.h
 config.log
 config.status
 configure
