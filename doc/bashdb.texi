@@ -30,23 +30,7 @@
 @c %**end of header
 
 @include version.texi
-
-@c A simple macro for optional variables.
-@macro ovar{varname}
-@r{[}@var{\varname\}@r{]}
-@end macro
-
-@macro DDD {}
-@acronym{DDD}
-@end macro
-
-@macro BASH {}
-@acronym{@value{BASH}}
-@end macro
-
-@macro DBG {}
-@value{DBG}
-@end macro
+@include macros.texi
 
 @iftex
 @c @smallbook
@@ -277,7 +261,7 @@ welcome to change it and/or distribute copies of it under certain conditions.
 (fact.sh:9):
 9:	echo fact 0 is: `fact 0`
 bashdb<0> @b{-}
-  1:    #!@prefix@/bin/bash
+  1:    #!/usr/local/bin/bash
   2:    fact() @{
   3:    ((n==0)) && echo 1 && return
   4:    ((nm1=n-1))
@@ -346,11 +330,11 @@ restart.
 
 @smallexample
 bashdb<6> @b{restart}
-Restarting with: @prefix@/bin/bashdb -L . fact.sh
+Restarting with: /usr/local/bin/bashdb -L . fact.sh
 (fact.sh:10):
 10:	echo fact 0 is: `fact 0`
 bashdb<0> @b{list 1}
-  1:    #!@prefix@/bin/bash
+  1:    #!/usr/local/bin/bash
   2:    fact() @{
   3:    local -i n=$@{1:0@}
   4:    ((n==0)) && echo 1 && return
@@ -463,8 +447,8 @@ bashdb<2> @b{s}
 bashdb<3> @b{T}
 ->0 in file `fact.sh' at line 2
 ##1 fact("3") called from file `fact.sh' at line 12
-##2 source("fact.sh") called from file `@prefix@/bin/bashdb' at line 154
-##3 main("fact.sh") called from file `@prefix@/bin/bashdb' at line 0
+##2 source("fact.sh") called from file `/usr/local/bin/bashdb' at line 154
+##3 main("fact.sh") called from file `/usr/local/bin/bashdb' at line 0
 bashdb<4> @b{c}
 fact 3 is: 6
 Debugged program terminated normally. Use q to quit or R to restart.
@@ -759,8 +743,8 @@ debugged script output.
 Set directory where debugger files reside to @var{directory}. The
 default location is @code{../lib/bashdb} relative to the place that
 the bashdb script is located. For example if bashdb is located in
-@code{@prefix@/bin/bashdb}, the default library location will be
-@code{@prefix@/lib/bashdb} which may or may not exist. If it doesn't
+@code{@value{bindir}/bashdb}, the default library location will be
+@code{@value{libdir}/bashdb} which may or may not exist. If it doesn't
 you'll get an error when you run bashdb. Only if the default location
 is incorrect, should you need to use the @code{-L} option.
 
