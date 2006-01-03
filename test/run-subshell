@@ -1,8 +1,5 @@
 #!/bin/sh
-#$Id: run-subshell,v 1.1 2006/01/02 23:34:26 rockyb Exp $
-
-# Reinstate brkpt3 when BASH_COMMAND works again.
-# exit 77
+#$Id: run-subshell,v 1.2 2006/01/03 05:13:22 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`

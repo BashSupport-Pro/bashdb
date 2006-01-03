@@ -1,6 +1,6 @@
 # Things related to file handling.
 #
-#   Copyright (C) 2002, 2003, 2004 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein rocky@panix.com
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -236,7 +236,7 @@ _Dbg_source_journal() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.2 2006/01/03 04:58:06 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.3 2006/01/03 05:13:22 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
