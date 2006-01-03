@@ -179,6 +179,9 @@ _Dbg_readin() {
     source_array="_Dbg_source_${filevar}"
     local cmd="${source_array}[1]=\"$BASH_EXECUTION_STRING\""
     eval $cmd
+
+    local -r line_count_cmd="line_count=\${#$source_array[@]}+1"
+    eval $line_count_cmd
   else 
     local fullname=$(_Dbg_resolve_expand_filename $filename)
     filevar=`_Dbg_file2var $filename`
@@ -201,6 +204,9 @@ _Dbg_readin() {
 
 	(( line_count > BIGFILE)) && _Dbg_progess_done
 	
+	local -r line_count_cmd="line_count=\${#$source_array[@]}+1"
+	eval $line_count_cmd
+
       else
 	# No readarray. Do things the long way.
 	local -i i
@@ -228,13 +234,12 @@ _Dbg_readin() {
 	  fi
 	done  < $fullname
 	(( line_count != 0 )) && _Dbg_progess_done
+	line_count=i
       fi
     fi
   fi
 
-  local -r line_count_cmd="line_count=\${#$source_array[@]}+1"
-  eval $line_count_cmd
-  (( linecount >= NOT_SMALLFILE )) && _Dbg_msg "done."
+  (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
 
   _Dbg_set_assoc_scalar_entry "_Dbg_read_" $filevar 1
   _Dbg_set_assoc_scalar_entry "_Dbg_maxline_" $filevar $line_count
@@ -246,7 +251,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.3 2006/01/03 05:13:22 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.4 2006/01/03 05:35:14 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
