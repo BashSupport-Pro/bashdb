@@ -8,7 +8,7 @@ No watch expressions have been set.
 Breakpoint entry 1 already enabled so nothing done.
 Breakpoint entry 1 disabled.
 *** Try setting breakpoints outside of the file range...
-Line 99 is too large. File dbg-test1.sh has only 39 lines.
+Line 99 is too large. File dbg-test1.sh has only 38 lines.
 There is no line 0 to break at.
 Num Type       Disp Enb What
 1   breakpoint keep n   dbg-test1.sh:22
@@ -28,7 +28,7 @@ No watch expressions have been set.
 *** Test using file:line format on break...
 Breakpoint 3 set in file dbg-test1.sh, line 23.
 There is no line 0 to break at.
-Line 1955 is too large. File dbg-test1.sh has only 39 lines.
+Line 1955 is too large. File dbg-test1.sh has only 38 lines.
 Breakpoint 4 set in file dbg-test1.sh, line 23.
 Num Type       Disp Enb What
 2   breakpoint keep y   dbg-test1.sh:22

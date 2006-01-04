@@ -180,8 +180,6 @@ _Dbg_readin() {
     local cmd="${source_array}[1]=\"$BASH_EXECUTION_STRING\""
     eval $cmd
 
-    local -r line_count_cmd="line_count=\${#$source_array[@]}+1"
-    eval $line_count_cmd
   else 
     local fullname=$(_Dbg_resolve_expand_filename $filename)
     filevar=`_Dbg_file2var $filename`
@@ -204,9 +202,6 @@ _Dbg_readin() {
 
 	(( line_count > BIGFILE)) && _Dbg_progess_done
 	
-	local -r line_count_cmd="line_count=\${#$source_array[@]}+1"
-	eval $line_count_cmd
-
       else
 	# No readarray. Do things the long way.
 	local -i i
@@ -233,11 +228,17 @@ _Dbg_readin() {
 	    break;
 	  fi
 	done  < $fullname
+	# The last read in the loop above failed. So we've actually 
+	# read one more than the number of lines.
+	local -r remove_last_index_cmd="unset $source_array[$i]"
+	eval $remove_last_index_cmd
 	(( line_count != 0 )) && _Dbg_progess_done
-	line_count=i
       fi
     fi
   fi
+
+  local -r line_count_cmd="line_count=\${#$source_array[@]}"
+  eval $line_count_cmd
 
   (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
 
@@ -251,7 +252,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.4 2006/01/03 05:35:14 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.5 2006/01/04 07:45:11 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

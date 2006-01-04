@@ -1,8 +1,5 @@
 #!/bin/sh
-#$Id: run-sig,v 1.1 2006/01/02 23:34:26 rockyb Exp $
-
-# Reinstate brkpt3 when BASH_COMMAND works again.
-exit 77
+#$Id: run-sig,v 1.2 2006/01/04 07:45:12 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`

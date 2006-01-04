@@ -92,33 +92,32 @@ No actions have been set.
  36:   #;;; Local Variables: ***
  37:   #;;; mode:shell-script ***
  38:   #;;; End: ***
- 39:   
 *** Try down 1...
 (dbg-test1.sh:5):
 5:	fn1() {
   5:==>fn1() {
-  6:   echo "fn1 here"
-  7:   x=5
-  8:   fn3
-  9:   }
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
  10:   
  11:   fn2() {
- 12:   name="fn2"
- 13:   echo "$name here"
- 14:   x=6
+ 12:       name="fn2"
+ 13:       echo "$name here"
+ 14:       x=6
 *** frame 0...
 ->0 in file `dbg-test1.sh' at line 5
 (dbg-test1.sh:5):
 5:	fn1() {
 *** Try step (twice)...
 (dbg-test1.sh:6):
-6:	echo "fn1 here"
+6:	    echo "fn1 here"
 fn1 here
 (dbg-test1.sh:7):
-7:	x=5
+7:	    x=5
 *** Try next and check that it jumps over fn3
 (dbg-test1.sh:8):
-8:	fn3
+8:	    fn3
 *** Try continue file:line (but will hit another breakpoint)...
 One-time breakpoint 5 set in file dbg-test1.sh, line 35.
 (dbg-test1.sh:34):
@@ -133,7 +132,7 @@ SOURCED LINENO 19
 SOURCED BASH_SOURCE[0] dbg-test1.sub
 SOURCED FN LINENO 5
 (dbg-test1.sub:11):
-11:	local -i j=i+1
+11:	        local -i j=i+1
 ->0 in file `dbg-test1.sub' at line 11
 ##1 sourced_fn() called from file `dbg-test1.sub' at line 22
 ##2 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
@@ -146,7 +145,7 @@ Breakpoint 6 set in file dbg-test1.sub, line 11.
 FUNCNAME[0]: sourced_fn called from dbg-test1.sub at line 22
 Breakpoint 6 hit (1 times).
 (dbg-test1.sub:11):
-11:	local -i j=i+1
+11:	        local -i j=i+1
 *** another x command...
 declare -i j="1"
 *** another x command (+5 than value above) ...
@@ -169,7 +168,7 @@ fn2+fn3
 FUNCNAME[1]: source called from dbg-test1.sh at line 34
 Breakpoint 6 hit (2 times).
 (dbg-test1.sub:11):
-11:	local -i j=i+1
+11:	        local -i j=i+1
 j: 2, name: fn2
 *** Try disable of break 
 Breakpoint entry 5 disabled.
@@ -187,7 +186,7 @@ No actions have been set.
 FUNCNAME[2]: source called from bashdb at line 153
 Breakpoint 6 hit (3 times).
 (dbg-test1.sub:11):
-11:	local -i j=i+1
+11:	        local -i j=i+1
 *** Should hit end of script but stay in debugger...
 dbg-test1.sh
 dbg-test1.sub

@@ -4,7 +4,7 @@
  22:==>x=22
  23:   y=23
  24:   for i in 0 1 3 ; do
- 25:   ((x += i))
+ 25:     ((x += i))
  26:   done
  27:   x=27
  28:   y=b
@@ -19,26 +19,25 @@
  36:   #;;; Local Variables: ***
  37:   #;;; mode:shell-script ***
  38:   #;;; End: ***
- 39:   
 *** Trying 'list 999'...
-Line 999 is too large. File dbg-test1.sh has only 39 lines.
+Line 999 is too large. File dbg-test1.sh has only 38 lines.
 *** Trying 'list file:line' and canonicalization of filenames...
   1:   #!../../bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
   4:   
   5:   fn1() {
-  6:   echo "fn1 here"
-  7:   x=5
-  8:   fn3
-  9:   }
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
  10:   
- 20:   }
+ 20:   }    
  21:   
  22:==>x=22
  23:   y=23
  24:   for i in 0 1 3 ; do
- 25:   ((x += i))
+ 25:     ((x += i))
  26:   done
  27:   x=27
  28:   y=b
@@ -52,32 +51,31 @@ Line 999 is too large. File dbg-test1.sh has only 39 lines.
  36:   #;;; Local Variables: ***
  37:   #;;; mode:shell-script ***
  38:   #;;; End: ***
- 39:   
-Line 999 is too large. File dbg-test1.sh has only 39 lines.
+Line 999 is too large. File dbg-test1.sh has only 38 lines.
 File ./badfile not found in read-in files.
 See 'info files' for a list of known files.
 *** Trying list of functions...
   5:   fn1() {
-  6:   echo "fn1 here"
-  7:   x=5
-  8:   fn3
-  9:   }
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
  10:   
  11:   fn2() {
- 12:   name="fn2"
- 13:   echo "$name here"
- 14:   x=6
+ 12:       name="fn2"
+ 13:       echo "$name here"
+ 14:       x=6
 Invalid linespec 
 *** Testing window command...
  17:   fn3() {
- 18:   name="fn3"
- 19:   x=$1
- 20:   }
+ 18:       name="fn3"
+ 19:       x=$1
+ 20:   }    
  21:   
  22:==>x=22
  23:   y=23
  24:   for i in 0 1 3 ; do
- 25:   ((x += i))
+ 25:     ((x += i))
  26:   done
 *** Testing '.'
  27:   x=27
@@ -91,14 +89,14 @@ Invalid linespec
  35:   exit 0;
  36:   #;;; Local Variables: ***
 *** Trying '-'...
- 13:   echo "$name here"
- 14:   x=6
- 15:   }
+ 13:       echo "$name here"
+ 14:       x=6
+ 15:   }    
  16:   
  17:   fn3() {
- 18:   name="fn3"
- 19:   x=$1
- 20:   }
+ 18:       name="fn3"
+ 19:       x=$1
+ 20:   }    
  21:   
  22:==>x=22
 *** Testing set/show listsize
@@ -106,28 +104,28 @@ Number of source lines bashdb will list by default is 10.
 *** Setting listsize to 3...
  10:   
  11:   fn2() {
- 12:   name="fn2"
+ 12:       name="fn2"
 *** Window command...
  21:   
  22:==>x=22
  23:   y=23
 - command...
- 20:   }
+ 20:   }    
  21:   
  22:==>x=22
 *** Setting listsize to 4...
 Number of source lines bashdb will list by default is 4.
  10:   
  11:   fn2() {
- 12:   name="fn2"
- 13:   echo "$name here"
+ 12:       name="fn2"
+ 13:       echo "$name here"
 *** Window command...
- 20:   }
+ 20:   }    
  21:   
  22:==>x=22
  23:   y=23
 *** '-' command...
- 19:   x=$1
- 20:   }
+ 19:       x=$1
+ 20:   }    
  21:   
  22:==>x=22

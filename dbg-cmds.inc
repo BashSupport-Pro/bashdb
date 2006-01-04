@@ -1,6 +1,6 @@
 # dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein rocky@panix.com
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -22,11 +22,14 @@
 # Main-line debugger read/execute command loop
 
 # ==================== VARIABLES =======================================
-# input_start_descriptor is the lowest descriptor we use for reading.
-# input_desc is the current descriptor in use. "sourc"ing other
-# command files will increase this descriptor
+# _Dbg_INPUT_START_DESC is the lowest descriptor we use for reading.
+# _Dbg_MAX_INPUT_DESC   is the maximum input descriptor that can be 
+#                       safely used (as per the bash manual on redirection)
+# _Dbg-input_desc       is the current descriptor in use. "sourc"ing other
+#                       command files will increase this descriptor
 
-typeset -ir _Dbg_INPUT_START_DESC=9
+typeset -ir _Dbg_INPUT_START_DESC=4
+typeset -ir _Dbg_MAX_INPUT_DESC=9
 typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
 
 # Are we inside the middle of a "skip" command?
@@ -743,10 +746,16 @@ _Dbg_cmd_source() {
     return
   fi
   if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
-    ((_Dbg_input_desc++))
-    _Dbg_input[$_Dbg_input_desc]=$filename
-    local _Dbg_redirect_cmd="exec $_Dbg_input_desc<$filename"
-    eval $_Dbg_redirect_cmd
+    if ((_Dbg_input_desc < _Dbg_MAX_INPUT_DESC )) ; then 
+      ((_Dbg_input_desc++))
+      _Dbg_input[$_Dbg_input_desc]=$filename
+      local _Dbg_redirect_cmd="exec $_Dbg_input_desc<$filename"
+      eval $_Dbg_redirect_cmd
+    else 
+      local -i max_nesting
+      ((max_nesting=_Dbg_MAX_INPUT_DESC-_Dbg_INPUT_START_DESC+1))
+      _Dbg_msg "Source nesting too deep; nesting can't be greater than $max_nesting."
+    fi
   else
     _Dbg_msg "Source file $filename is not readable."
   fi
@@ -868,7 +877,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.2 2006/01/04 07:45:11 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
