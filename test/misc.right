@@ -10,7 +10,7 @@ _Dbg_arg#: 2
 $1: testarg1
 $2: testarg2
 *** Testing script args...
-$1 = ./dbg-test2.sh
+$1 = dbg-test2.sh
 *** Testing Invalid commands...
 Don't know how to show badcommand.
 Undefined command: "another-bad-command". Try "help".

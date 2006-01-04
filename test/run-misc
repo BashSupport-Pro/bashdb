@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-misc,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+#$Id: run-misc,v 1.2 2006/01/04 14:48:13 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -15,12 +15,17 @@ TOP_BUILDDIR=`pwd`/../
 export TOP_BUILDDIR
 TEST_NAME='misc'
 TEST_FILE="/tmp/${TEST_NAME}.check"
+TEST_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.check"
 OUT1_NAME='misc-output'
 OUT1_FILE="/tmp/${OUT1_NAME}.check"
 rm -f $OUT1_FILE 
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
+# Different OS's handle ARGV differently, and "info args" may come out
+# differently depending on that.
+cat ${TEST_FILE} | sed -e "s:1 = ./dbg-test2.sh:1 = dbg-test2.sh:" >${TEST_FILTERED_FILE}
+
+check_output $TEST_FILTERED_FILE ${srcdir}/${TEST_NAME}.right
 rc=$?
 
 if test $rc -eq  0 ; then
