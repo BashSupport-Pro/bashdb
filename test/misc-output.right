@@ -16,7 +16,6 @@
  38:   #;;; Local Variables: ***
  39:   #;;; mode:shell-script ***
  40:   #;;; End: ***
- 41:   
 *** Testing file command...
 File misc.cmd will be used when dbg-test2.sh is referenced.
 *** info variables (V) command...
