@@ -5,7 +5,7 @@ dnl report bugs to rocky@panix.com
 dnl
 dnl Process this file with autoconf to produce a configure script.
 
-# Copyright (C) 2002, 2003, 2004, 2005 Rocky Bernstein <rocky@panix.com>
+# Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein <rocky@panix.com>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.1 2006/01/02 23:34:21 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.2 2006/01/04 19:39:51 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
 
@@ -94,7 +94,6 @@ AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 dnl See if we build readarray.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
 		  [location of bash 3.0 source code]), BASH_SRC=$withval)
-AM_CONDITIONAL(BUILD_READARRAY, test x"$BASH_SRC" != "x")
 AC_SUBST(BASH_SRC)
 
 dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
@@ -168,9 +167,17 @@ AC_SUBST(DIFF_OPTS)
 
 AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
 
-if test -n "$BASH_SRC" ; then
-   AC_CHECK_HEADERS(unistd.h string.h)
+build_readarray=$BASH_SRC
+if test x"$build_readarray" != x; then
+   AC_CHECK_HEADERS(unistd.h string.h,,
+   [AC_MSG_WARN([Missing some C headers. Disabling readarray])
+   build_readarray=])
+   AC_CHECK_FUNC(getline,,
+   [AC_MSG_WARN([Missing GNU getline. Disabling readarray])
+   build_readarray=])
 fi
+
+AM_CONDITIONAL(BUILD_READARRAY, test x"$build_readarray" != x)
 
 #Makefiles
 AC_CONFIG_FILES([Makefile \
