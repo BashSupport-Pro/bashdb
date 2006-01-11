@@ -1,4 +1,4 @@
-#   Copyright (C) 2002, 2003 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein rocky@panix.com
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -13,10 +13,10 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.1 2006/01/02 23:34:27 rockyb Exp $
+#$Id: Makefile.am,v 1.2 2006/01/11 09:24:33 rockyb Exp $
 
-EXTRA_DIST = bashdb.el
-ELCFILES  =
+EXTRA_DIST := bashdb.el
+ELCFILES  :=  bashdb.elc
 if INSTALL_EMACS_LISP
-lisp_LISP = bashdb.el 
+lisp_LISP := bashdb.el
 endif
