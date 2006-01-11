@@ -1,8 +1,15 @@
-Version 3.00 0.04cvs
+Version 3.1 0.04 (initial 3.1 release)
+2006-01-16
 
 - Add a loadable routine to read a script into an array fast. This
   speeds up the startup on reading large scripts very much.
 
+- Install compiled GNU emacs lisp
+
+- We were reporting script line sizes as one larger than the actual size
+
+- Showing which command on a line with multiple commmands works again.
+  Reinstate regression tests which use that.
 
 Version 3.00 0.03 (bugfix and palindromic-version-number release)
 2005-12-10
@@ -469,4 +476,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.1 2006/01/02 23:34:21 rockyb Exp $
+$Id: NEWS,v 1.2 2006/01/11 10:26:56 rockyb Exp $

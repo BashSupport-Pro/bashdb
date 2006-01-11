@@ -1,11 +1,12 @@
+.deps
 Makefile
 Makefile.in
 acinclude.m4
 aclocal.m4
 autom4te*.cache
 bash
-bash-*.tar.gz
 bashdb
+bashdb-*.tar.gz
 bashdb-pre.inc
 config.h
 config.log
@@ -14,6 +15,7 @@ configure
 dbg-main.inc
 dbg-pre.inc
 install-sh
+libtool
 missing
 mkinstalldirs
 readarray
