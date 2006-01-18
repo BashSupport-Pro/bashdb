@@ -1,5 +1,5 @@
 \input texinfo      @c -*-texinfo-*-
-@c Copyright 2002, 2003, 2004
+@c Copyright 2002, 2003, 2004, 2006
 @c Rocky Bernstein for the Free Software Foundation
 @c
 @c TODO: 
@@ -17,7 +17,6 @@
 @setfilename bashdb.info
 @c 
 @c Name of Bash program.  Used in running text.
-@set BASH @acronym{BASH}
 
 @c
 @c Name of debugger program.  Used also for prompt string.
@@ -57,11 +56,11 @@
 This file documents the @sc{bash} debugger @value{BASH}.
 
 
-This is the @value{EDITION} Edition, @value{UPDATED-MONTH},
+This is the @value{EDITION} Edition, @value{UPDATED},
 of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
 for REBASH
 
-Copyright (C) 2002, 2003, 2004 Rocky Bernstein for the Free Software Foundation.
+Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein for the Free Software Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -117,7 +116,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @end tex
 
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2002, 2003, 2004 Rocky Bernstein for the Free Software
+Copyright @copyright{} 2002, 2003, 2004, 2006 Rocky Bernstein for the Free Software
 Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -167,9 +166,9 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 
 This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
-This is the @value{EDITION} Edition, @value{UPDATED-MONTH}, for REBASH.
+This is the @value{EDITION} Edition, @value{UPDATED}, for REBASH.
 
-Copyright (C) 2002, 2003, 2004 Rocky Bernstein
+Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein
 
 @menu
 * Summary::                     Overview of Debugger with a sample session
@@ -223,12 +222,13 @@ Change things in your script, so you can experiment with correcting the
 effects of one bug and go on to learn about another.
 @end itemize
 
-Although you can use the BASH debugger to debug scripts written in
-BASH, it can also be used just as a front-end for learning more
-about programming in BASH. As an additional aid, the debugger can
-be used within the context of an existing script with its functions
-and variables that have already been initialized; fragments of the
-existing can be experimented with by entering them inside the debugger.
+Although you can use the @acronym{BASH} debugger to debug scripts
+written in @acronym{BASH}, it can also be used just as a front-end
+for learning more about programming in @acronym{BASH}. As an
+additional aid, the debugger can be used within the context of an
+existing script with its functions and variables that have already
+been initialized; fragments of the existing can be experimented with
+by entering them inside the debugger.
 
 @menu
 * Sample Session::              A Sample BASH Debugger session
@@ -292,6 +292,7 @@ current line and again wants to print 10 lines but because there are
 only one remaining line, that is what is printed.
 
 @smallexample
+@cartouche
 bashdb<2> @b{step}
 (fact.sh:9):
 9:	echo fact 0 is: `fact 0`
@@ -300,7 +301,7 @@ bashdb<3> @b{@key{RET}}
 bashdb<4> @b{@key{RET}}
 3:	((n==0)) && echo 1 && return
 bashdb<5> @b{print $n}
-
+@end cartouche
 @end smallexample
 
 Ooops... The variable @kbd{n} isn't initialized. 
@@ -329,6 +330,7 @@ We now modify the file to add an assignment to local variable @kbd{n} and
 restart.
 
 @smallexample
+@cartouche
 bashdb<6> @b{restart}
 Restarting with: /usr/local/bin/bashdb -L . fact.sh
 (fact.sh:10):
@@ -353,6 +355,7 @@ bashdb<2> @b{step}
 bashdb<3> @b{print $n}
 print $n
 0
+@end cartouche
 @end smallexample 
 
 @noindent
@@ -363,6 +366,7 @@ before we get into the fact() function, so we add a count onto the
 we could have done likewise and abbreviated @code{list} with @code{l}.
 
 @smallexample
+@cartouche
 bashdb<4> @b{@key{RET}}
 (fact.sh:4):
 4:	((n==0)) && echo 1 && return
@@ -371,6 +375,7 @@ bashdb<5> @b{@key{RET}}
 (fact.sh:4): 
 4:	((n==0)) && echo 1 && return
 return
+@end cartouche
 @end smallexample 
 
 @noindent
@@ -383,6 +388,7 @@ stopping points in it. Given the information above, we know that the
 value echo'ed on return will be 1.
 
 @smallexample
+@cartouche
 bashdb<6> @b{@key{RET}}
 fact 0 is: 1
 (fact.sh:12): 
@@ -390,6 +396,7 @@ fact 0 is: 1
 bashdb<7> @b{break 5}
 Breakpoint 1 set in file fact.sh, line 5.
 bashdb<8> @b{continue}
+@end cartouche
 @end smallexample 
 
 @noindent
@@ -401,6 +408,7 @@ the debugger. The @code{continue} command just resumes execution until
 the next stopping point which has been set up in some way.
 
 @smallexample
+@cartouche
 (fact.sh:5):
 5:      ((nm1=n-1))
 Breakpoint 1 hit(1 times).
@@ -424,6 +432,7 @@ bashdb<0> @b{l fact}
  8:       (( "result=n*fact_nm1" ));
  9:       echo $result
 10:    @}
+@end cartouche
 @end smallexample
 
 @noindent
@@ -435,6 +444,7 @@ statement. This is a little different in that a one-time break is made
 on line 5. Once that statement is reached the breakpoint is removed. 
 
 @smallexample
+@cartouche
 bashdb<1> @b{continue 5}
 One-time breakpoint 1 set in file fact.sh, line 5.
 fact 0 is: 1
@@ -452,6 +462,7 @@ bashdb<3> @b{T}
 bashdb<4> @b{c}
 fact 3 is: 6
 Debugged program terminated normally. Use q to quit or R to restart.
+@end cartouche
 @end smallexample
 
 @noindent
@@ -627,7 +638,7 @@ bash --debugger -c @var{command-string}...
 @end example
 
 This calls a debugger initialization script. It works much like a
-@BASH login profile which may set variables and define
+@acronym{BASH} login profile which may set variables and define
 functions. But this shell profile is customized for debugging and as
 such arranges for itself to get called before each statement is
 executed. Although there are some problems at present in I/O
@@ -723,7 +734,7 @@ no-warranty blurb, and exit.
 @item -n
 @cindex @code{-n}
 Do not execute commands found in any initialization files.  Normally,
-@BASH executes the commands in these files after all the command
+@acronym{BASH} executes the commands in these files after all the command
 options and arguments have been processed.  @xref{Command Files,,Command
 files}.
 
@@ -892,11 +903,12 @@ Show the arguments to give your program when it is started.
 @cindex redirection
 @cindex I/O
 @cindex terminal
-By default, the script you run under the BASH debugger does input and
-output to the same terminal that BASH uses.  Before running the script
-to be debugged, the debugger records the tty that was in effect. All
-of its output is then written to that.  However you can change this
-when using the @samp{bashdb} script using the @samp{-t} option.
+By default, the script you run under the @acronym{BASH} debugger does
+input and output to the same terminal that @acronym{BASH} uses.
+Before running the script to be debugged, the debugger records the tty
+that was in effect. All of its output is then written to that.
+However you can change this when using the @samp{bashdb} script using
+the @samp{-t} option.
 
 
 @table @code
@@ -935,7 +947,7 @@ for @DBG still comes from your terminal.
 @section Script/Debugger Interaction
 
 @value{dBGP} and your program live in the same variable space so
-to speak. @BASH does not have a notion of module scoping or lexical
+to speak. @acronym{BASH} does not have a notion of module scoping or lexical
 hiding (yet) and this then imposes some additional care and awareness.
 
 Most of the variables and functions used inside @DBG start
@@ -953,7 +965,7 @@ use; these start with @code{BASHDB_}. For example:
 @env{BASHDB_INPUT}, @env{BASHDB_LEVEL} and,
 @env{BASHDB_QUIT_ON_QUIT} (@pxref{Debug, ,Debug}),
 @env{BASHDB_RESTART_FILE} (@pxref{Starting, ,Starting}), to name a
-few.  Finally, there are some @BASH environment dynamic
+few.  Finally, there are some @acronym{BASH} environment dynamic
 variables and these start with @env{BASH_}. For example
 @env{BASH_SUBSHELL} (@pxref{Debug, ,Debug}), @env{BASH_COMMAND}
 (@pxref{Command Display, ,Command Display}), @env{BASH_LINENO}, and
@@ -993,12 +1005,13 @@ just @key{RET}. Some commands which require a parameter, such as
 @node Command Syntax
 @section Command syntax
 
-A BASH debugger command is a single line of input.  There is no limit on
-how long it can be.  It starts with a command name, which is followed by
-arguments whose meaning depends on the command name.  For example, the
-command @code{step} accepts an argument which is the number of times to
-step, as in @samp{step 5}.  You can also use the @code{step} command
-with no arguments.  Some commands do not allow any arguments.
+A @acronym{BASH} debugger command is a single line of input.  There is
+no limit on how long it can be.  It starts with a command name, which
+is followed by arguments whose meaning depends on the command name.
+For example, the command @code{step} accepts an argument which is the
+number of times to step, as in @samp{step 5}.  You can also use the
+@code{step} command with no arguments.  Some commands do not allow any
+arguments.
 
 @cindex repeating next/step commands
 @kindex RET @r{(repeat last command)}
@@ -1015,8 +1028,8 @@ Files,,Command files}).
 @section Getting help (@samp{help})
 @cindex online documentation
 
-Once inside the BASH debugger, you can always ask it for information on its
-commands, using the command @code{help}.
+Once inside the @acronym{BASH} debugger, you can always ask it for
+information on its commands, using the command @code{help}.
 
 @table @code
 @kindex h @r{(@code{help})}
@@ -1078,8 +1091,8 @@ For more help, type h <cmd> or consult online-documentation.
 
 @table @code
 @item help @var{command}
-With a command name as @code{help} argument, the BASH debugger displays 
-short information on how to use that command.
+With a command name as @code{help} argument, the @acronym{BASH}
+debugger displays short information on how to use that command.
 
 @example
 bashdb<0> @b{help list}
@@ -1379,13 +1392,14 @@ the breakpoints are conditional, this is even useful
 You can use a watchpoint to stop execution whenever the value of an
 expression changes, without having to predict a particular place where
 this may happen. As with the @code{print} (@pxref{Data,,Examining
-Data}), the idiosyncracies of a BASH or any POSIX shell derivative
-suggest using two commands. The @code{watch} command is just for a
-single variables; the @code{watche} command uses the builtin ``let''
-command to evaluate an expression. If the variable you are tracking
-can take a string value, issuing something like @samp{watch foo} will
-not have the desired effect---any string assignment to @code{foo} will
-have a value 0 when it is assigned via ``let.''
+Data}), the idiosyncracies of a @acronym{BASH} or any POSIX shell
+derivative suggest using two commands. The @code{watch} command is
+just for a single variables; the @code{watche} command uses the
+builtin ``let'' command to evaluate an expression. If the variable you
+are tracking can take a string value, issuing something like
+@samp{watch foo} will not have the desired effect---any string
+assignment to @code{foo} will have a value 0 when it is assigned via
+``let.''
 
 @table @code
 @kindex watch
@@ -1534,7 +1548,7 @@ breakpoints; see @ref{Resuming Execution, ,Resuming Execution}.)
 
 The simplest sort of breakpoint breaks every time your script reaches
 a specified place.  You can also specify a @dfn{condition} for a
-breakpoint.  A condition is just a BASH expression.  
+breakpoint.  A condition is just a @acronym{BASH} expression.  
 
 Break conditions can be specified when a breakpoint is set, by using
 @samp{if} in the arguments to the @code{break} command.  @xref{Set
@@ -1589,7 +1603,7 @@ No symbol "foo" in current context.
 @end ifset
 
 @noindent
-@BASH does
+@acronym{BASH} does
 not actually evaluate @var{expression} at the time the @code{condition}
 command (or a command that sets a breakpoint with a condition, like
 @code{break if @dots{}}) is given, however.
@@ -1805,12 +1819,12 @@ program has not specified in advance some other way to handle the signal.
 @code{SIGINT} does not indicate an error in your program, but it is normally
 fatal so it can carry out the purpose of the interrupt: to kill the program.
 
-@BASH has the ability to detect any occurrence of a signal in your
-program.  You can tell @BASH in advance what to do for each kind of
+@acronym{BASH} has the ability to detect any occurrence of a signal in your
+program.  You can tell @acronym{BASH} in advance what to do for each kind of
 signal.
 
 @cindex handling signals
-Normally, @BASH is set up to let the non-erroneous signals like
+Normally, @acronym{BASH} is set up to let the non-erroneous signals like
 @code{SIGALRM} be silently passed to your program
 (so as not to interfere with their role in the program's functioning)
 but to stop your program immediately whenever an error signal happens.
@@ -1820,7 +1834,7 @@ You can change these settings with the @code{handle} command.
 @kindex info signals
 @item info signals
 @itemx info handle
-Print a table of all the kinds of signals and how @BASH has been told to
+Print a table of all the kinds of signals and how @acronym{BASH} has been told to
 handle each one.  You can use this to see the signal numbers of all
 the defined types of signals.
 
@@ -1828,7 +1842,7 @@ the defined types of signals.
 
 @kindex handle
 @item handle @var{signal} @var{keywords}@dots{}
-Change the way @BASH handles signal @var{signal}.  @var{signal}
+Change the way @acronym{BASH} handles signal @var{signal}.  @var{signal}
 can be the number of a signal or its name (with or without the
 @samp{SIG} at the beginning); a list of signal numbers of the form
 @samp{@var{low}-@var{high}}; or the word @samp{all}, meaning all the
@@ -1841,35 +1855,35 @@ Their full names are:
 
 @table @code
 @item stop
-@BASH should stop your program when this signal happens.  This implies
+@acronym{BASH} should stop your program when this signal happens.  This implies
 the @code{print} keyword as well.
 
 @item nostop
-@BASH should not stop your program when this signal happens.  It may
+@acronym{BASH} should not stop your program when this signal happens.  It may
 still print a message telling you that the signal has come in.
 
 @item print
-@BASH should print a message when this signal happens.
+@acronym{BASH} should print a message when this signal happens.
 
 @item noprint
-@BASH should not mention the occurrence of the signal at all.  
+@acronym{BASH} should not mention the occurrence of the signal at all.  
 
 @item stack
-@BASH should print a stack trace when this signal happens.
+@acronym{BASH} should print a stack trace when this signal happens.
 
 @item nostack
-@BASH should not print a stack trace when this signal occurs.  
+@acronym{BASH} should not print a stack trace when this signal occurs.  
 
 @ifset FINISHED
 @item pass
 @itemx noignore
-@BASH should allow your program to see this signal; your program
+@acronym{BASH} should allow your program to see this signal; your program
 can handle the signal, or else it may terminate if the signal is fatal
 and not handled.  @code{pass} and @code{noignore} are synonyms.
 
 @item nopass
 @itemx ignore
-@BASH should not allow your program to see this signal.
+@acronym{BASH} should not allow your program to see this signal.
 @code{nopass} and @code{ignore} are synonyms.
 @end ifset
 @end table
@@ -1880,7 +1894,7 @@ When a signal stops your program, the signal is not visible to the
 program until you
 continue.  Your program sees the signal then, if @code{pass} is in
 effect for the signal in question @emph{at that time}.  In other words,
-after @BASH reports a signal, you can use the @code{handle}
+after @acronym{BASH} reports a signal, you can use the @code{handle}
 command with @code{pass} or @code{nopass} to control whether your
 program sees that signal when you continue.
 
@@ -1903,9 +1917,9 @@ program a signal}.
 @node Information
 @section Status and Debugger Settings (@samp{info}, @samp{show}, @samp{set})
 
-In addition to @code{help}, you can use the @BASH commands @code{info}
+In addition to @code{help}, you can use the @acronym{BASH} commands @code{info}
 and @code{show} to inquire about the state of your program, or the
-state of @BASH itself.  Each command supports many topics of inquiry;
+state of @acronym{BASH} itself.  Each command supports many topics of inquiry;
 here we introduce each of them in the appropriate context.  The
 listings under @code{info} and under @code{show} in the Index point to
 all the sub-commands.  @xref{Command Index}.
@@ -1926,12 +1940,12 @@ info}}.
 @item set
 You can assign the result of an expression to an environment variable
 with @code{set}.  For example, you can set the number of lines
-@BASH will list by default to 20 with @code{set listsize 20}.
+@acronym{BASH} will list by default to 20 with @code{set listsize 20}.
 
 @kindex show
 @item show
 In contrast to @code{info}, @code{show} is for describing the state of
-@BASH itself.
+@acronym{BASH} itself.
 You can change most of the things you can @code{show}, by using the
 related command @code{set}; 
 
@@ -1957,13 +1971,13 @@ exceptional in lacking corresponding @code{set} commands:
 @kindex show version
 @cindex version number
 @item show version
-Show what version of @BASH is running.  You should include this
-information in @BASH bug-reports.  If multiple versions of
-@BASH are in use at your site, you may need to determine which
-version of @BASH you are running; as @BASH evolves, new
+Show what version of @acronym{BASH} is running.  You should include this
+information in @acronym{BASH} bug-reports.  If multiple versions of
+@acronym{BASH} are in use at your site, you may need to determine which
+version of @acronym{BASH} you are running; as @acronym{BASH} evolves, new
 commands are introduced, and old ones may wither away.  Also, many
 system vendors ship variant versions of @value{BASH}, and there are
-variant versions of @BASH in @sc{gnu}/Linux distributions as well.
+variant versions of @acronym{BASH} in @sc{gnu}/Linux distributions as well.
 The version number is the same as the one announced when you start
 @value{BASH}.
 
@@ -1998,7 +2012,7 @@ a line number or location the value is found in the selected frame.
 There are special @DBG commands to select whichever frame you
 are interested in. @xref{Selection, ,Selecting a frame}.
 
-When your program stops, @BASH automatically selects the
+When your program stops, @acronym{BASH} automatically selects the
 currently executing frame and describes it briefly, similar to the
 @code{frame} command.
 
@@ -2155,6 +2169,7 @@ frame.  The second line shows the text of that source line.
 For example:
 
 @smallexample
+@cartouche
 @group
 bashdb<8> @b{up}
 19:	sourced_fn
@@ -2166,6 +2181,7 @@ bashdb<8> @b{T}
 ##4 fn1() called from file `bashdb-test1' at line 42
 ##5 main() called from file `bashdb-test1' at line 0
 @end group
+@end cartouche
 @end smallexample
 
 After such a printout, the @code{list} command with no arguments
@@ -2304,8 +2320,8 @@ different source files.
 @cindex searching
 @kindex reverse-search
 
-There are two commands for searching through the current source file for a
-BASH extended pattern-matching expression.
+There are two commands for searching through the current source file
+for a @acronym{BASH} extended pattern-matching expression.
 
 @table @code
 @kindex search
@@ -2382,13 +2398,13 @@ the last expression again.
 
 The @code{x} command first checks if @var{expr} is variable or a list
 of variables delimited by spaces. If it is, the definition(s) and
-value(s) of each printed via @value{BASH}'s @code{declare -p}
+value(s) of each printed via @acronym{BASH}'s @code{declare -p}
 command. This will show the variable's attributes such as if it is
 read only or if it is an integer. If the variable is an array, that is
 show and the array values are printed.
 
 If instead @var{expr} is a function, the function definition is
-printed via @value{BASH}'s @code{declare -f} command. If @var{expr}
+printed via @acronym{BASH}'s @code{declare -f} command. If @var{expr}
 was neither a variable nor an expression, then we try to get a value
 via @code{let}. And if this returns an error, as a last resort we call
 @code{print} and give what it outputs.
@@ -2460,7 +2476,7 @@ and @code{shell}.
 In contrast to the commands of the last section the most general way
 to examine data is through @code{eval}. But you do much more with
 this; you can change the values of variables, since, you are just
-evaluating BASH code. 
+evaluating @acronym{BASH} code. 
 
 If you expect output, you should arrange that in the command, such as
 via @code{echo} or @code{printf}. For example, to print the value of
@@ -2546,13 +2562,15 @@ because they refer to automatic variables not currently available.
 @end table
 
 @node Controlling bashdb
-@section Controlling @DBG (@samp{set}, @samp{file}, @samp{prompt}, @samp{history}...)
+@section Controlling bashdb (@samp{set}, @samp{file}, @samp{prompt}, @samp{history}...)
 
-You can alter the way @BASH 
+You can alter the way @acronym{BASH} 
 interacts with you in various ways given below. 
 
 @menu
 * Annotate::             Annotation Level (set annotate)
+* Basename::             Show basenames of file names only (set basename)
+* Debugger::             Allow debugging the debugger (set debugger)
 * File::                 Specifying a Script-File Associaton (file)
 * Prompt::               Prompt (set prompt, show prompt)
 * Editing::              Command editing (set editing, show editing)
@@ -2573,6 +2591,31 @@ information.  Level 0 is the normal, level 1 is for use when
 @value{DBG} is run as a subprocess of @sc{gnu} Emacs of @value{DDD},
 level 2 is the maximum annotation suitable for programs that control
 @value{DBG}.
+@end table
+
+@node Basename
+@subsection File basename (@samp{set basename})
+
+@table @code
+@kindex set basename
+@item set basename @r{[} on | 1 @r{]}
+Source filenames are shown as the basename only. This is useful in
+running the regression tests.
+
+@item set basename @r{[} off | 0 @r{]}
+Source filenames are shown as with their full path. This is the default.
+@end table
+
+@node Debugger
+@subsection Allow Debugging the debugger (@samp{set debugger})
+
+@table @code
+@kindex set debugger
+@item set debugger @r{[} on | 1 @r{]}
+Allow the possibility of debugging this debugger. Somewhat of an
+arcane thing to do.
+@item set debugger @r{[} off | 0 @r{]}
+Don't allow debugging into the debugger. This is the default.
 @end table
 
 @node File
@@ -2655,17 +2698,17 @@ user.  Advantages are @sc{gnu} Emacs-style or @dfn{vi}-style inline
 editing of commands, @code{csh}-like history substitution, and a
 storage and recall of command history across debugging sessions.
 
-You may control the behavior of command line editing in @BASH with the
+You may control the behavior of command line editing in @acronym{BASH} with the
 command @code{set}.
 
 @table @code
 @kindex set editing
 @cindex editing
 @item set editing
-@itemx set editing on
+@itemx set editing @r{[} on | 1 @r{]}
 Enable command line editing (enabled by default).
 
-@item set editing off
+@item set editing @r{[} off | 0 @r{]}
 Disable command line editing.
 
 @kindex show editing
@@ -2680,7 +2723,7 @@ Show whether command line editing is enabled.
 The debugger normally lists the line number and source line of the for
 the statement to be next executed. Often this line contains one
 expression or one statement and it is clear from this line what's
-going to happen. However @BASH allows many expressions or
+going to happen. However @acronym{BASH} allows many expressions or
 statements to be put on a single source line; some lines
 contain several units of execution. Some examples of this
 behavior are listed below:
@@ -2702,14 +2745,14 @@ get performed. (In the case of the conditional statement, the
 line gets listed only once when the condition is false.)
 
 In order to assist understanding where you are, the enhanced version
-of @BASH maintains a dynamic variable @env{BASH_COMMAND} that
+of @acronym{BASH} maintains a dynamic variable @env{BASH_COMMAND} that
 contains piece of code next to be run (or is currently being run). The
 debugger has arranged to save this and can display this information
 or not. This is controlled by @code{set showcommand}. 
 
 @table @code
 @kindex set showcommand
-@item set showcommand @r{[}auto | on | off @r{]}
+@item set showcommand @r{[}auto | on | 1 | off | 0 @r{]}
 controls whether or not to show the saved @env{BASH_COMMAND} for the
 command next to be executed.
 @end table
@@ -2798,8 +2841,8 @@ history facility.
 @kindex set history filename
 @kindex GDBHISTFILE
 @item set history filename @var{fname}
-Set the name of the @BASH command history file to @var{fname}.
-This is the file where @BASH reads an initial command history
+Set the name of the @acronym{BASH} command history file to @var{fname}.
+This is the file where @acronym{BASH} reads an initial command history
 list, and where it writes the command history from this session when it
 exits.  You can access this list through history expansion or through
 the history command editing characters listed below.  This file defaults
@@ -2810,17 +2853,17 @@ is not set.
 @cindex history save
 @kindex set history save
 @item set history save
-@itemx set history save on
+@itemx set history save @r{[} on | 1 @r{]}
 Record command history in a file, whose name may be specified with the
 @code{set history filename} command.  By default, this option is disabled.
 
-@item set history save off
+@item set history save @r{[} off | 0 @r{]}
 Stop recording command history in a file.
 
 @cindex history size
 @kindex set history size
 @item set history size @var{size}
-Set the number of commands which @BASH keeps in its history list.
+Set the number of commands which @acronym{BASH} keeps in its history list.
 This defaults to the value of the environment variable
 @code{HISTSIZE}, or to 256 if this variable is not set.
 @end table
@@ -2858,7 +2901,7 @@ or @code{vi} may wish to read it.
 @itemx show history save
 @itemx show history size
 @itemx show history expansion
-These commands display the state of the @BASH history parameters.
+These commands display the state of the @acronym{BASH} history parameters.
 @code{show history} by itself displays all four states.
 @c @end group
 @end table
@@ -3075,7 +3118,8 @@ the program.
 @cindex bugs
 @cindex reporting bugs
 
-Your bug reports play an essential role in making the BASH debugger reliable.
+Your bug reports play an essential role in making the @acronym{BASH}
+debugger reliable.
 
 Reporting a bug may help you by bringing a solution to your problem, or it
 may not.  But in any case the principal function of a bug report is to help
@@ -3127,17 +3171,10 @@ for improvement of @value{DBG} are welcome in any case.
 @cindex bug reports
 @cindex BASH debugger bugs, reporting
 
-Submit bug reports for @value{DBG}.  Until better mechanism is set up
-the prefered method is to submit them directly using
-@email{rocky@@panix.com}. There are also a bug tracking system
-and, help, developer and open discussion forums which can be found via
-@uref{http://http://sourceforge.net/forum/?group_id=37260}.
-
-Although this code shares a lot with BASH, the debugger is of course
-not yet supported by the BASH team, so if there is a debugger problem 
-reporting it via bashbug or to @email{bug-bash@@gnu.org} or posted to
-the newsgroup @code{gnu.bash.bug} probably won't help, unless you are
-sure the bug resides in the vanilla bash code and and show that. 
+Bug reports can sent via the sourceforge bug tracking mechansim at
+@url{http://sourceforge.net/tracker/?group_id=61395&atid=497159}. Of
+course patches are very much welcome too. Those can also be sent via
+the same mechanism.
 
 The fundamental principle of reporting bugs usefully is this:
 @strong{report all the facts}.  If you are not sure whether to state a
