@@ -1,6 +1,6 @@
 # dbg-set.inc - Bourne Again Shell Debugger Set Routines
 #
-#   Copyright (C) 2002,2003 Rocky Bernstein
+#   Copyright (C) 2002,2003,2006 Rocky Bernstein
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -59,10 +59,10 @@ _Dbg_cmd_set() {
     b | ba | bas | base | basen | basena | basenam | basename )
       local onoff=${1:-'off'}
       case $onoff in 
-	on ) 
+	on | 1 ) 
 	  _Dbg_write_journal_eval "_Dbg_basename_only=1"
 	  ;;
-	off )
+	off | 0 )
 	  _Dbg_write_journal_eval "_Dbg_basename_only=0"
 	  ;;
 	* )
@@ -72,10 +72,10 @@ _Dbg_cmd_set() {
     e | ed | edi | edit | editi | editin | editing )
       local onoff=${1:-'on'}
       case $onoff in 
-	on ) 
+	on | 1 ) 
 	  _Dbg_edit='-e'
 	  ;;
-	off )
+	off | 0 )
 	  _Dbg_edit=''
 	  ;;
 	* )
@@ -85,10 +85,10 @@ _Dbg_cmd_set() {
     d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
       local onoff=${1:-'on'}
       case $onoff in 
-	on ) 
+	on | 1 ) 
 	  _Dbg_write_journal_eval "_Dbg_debug_debugger=1"
 	  ;;
-	off )
+	off | 0 )
 	  _Dbg_write_journal_eval "_Dbg_debug_debugger=0"
 	  ;;
 	* )
@@ -112,6 +112,12 @@ _Dbg_cmd_set() {
       ;;
     sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
       case $1 in 
+	1 )
+	  _Dbg_write_journal_eval "_Dbg_show_command=on"
+	  ;;
+	0 )
+	  _Dbg_write_journal_eval "_Dbg_show_command=off"
+	  ;;
 	on | off | auto )
 	  _Dbg_write_journal_eval "_Dbg_show_command=$1"
 	  ;;
@@ -517,7 +523,7 @@ _Dbg_cmd_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.1 2006/01/02 23:34:23 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.2 2006/01/18 02:04:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

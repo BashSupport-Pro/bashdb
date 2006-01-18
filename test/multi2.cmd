@@ -1,4 +1,4 @@
-set showcommand on
+set showcommand 1
 print "Test step inside multi-statement line..."
 step 
 step
