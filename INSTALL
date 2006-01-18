@@ -92,8 +92,8 @@ instructions.
    Should you have several bash binaries around, you can tell configure 
    which one you want to use for the debugger via the option --with-bash. 
 
-   For both --with-bash-source and --with-bash use absolute paths, not 
-   relative paths. For the latter regression tests will fail. 
+   For --with-bash use absolute paths, not relative paths or the 
+   regression tests will fail.
 
 4. configure the debugger to suit your needs:
      ./configure  # you may want to add options gleened from step 3 above.
@@ -123,4 +123,4 @@ instructions.
    
 No, really. that's it!
 
-$Id: INSTALL,v 1.3 2006/01/18 03:51:14 rockyb Exp $
+$Id: INSTALL,v 1.4 2006/01/18 03:54:11 rockyb Exp $
