@@ -167,7 +167,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 
 This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
-This is the @value{EDITION} Edition, @value{UPDATED}, for REBASH.
+This is the @value{EDITION} Edition, @value{UPDATED}, for BASH.
 
 Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein
 
