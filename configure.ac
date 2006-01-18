@@ -32,7 +32,7 @@ AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.4 2006/01/11 10:30:30 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.5 2006/01/18 09:43:54 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
 
@@ -72,9 +72,11 @@ else
   fi
 fi
 
-dnl We use a path for perl so the #! line in autoscan will work.
+## --with bash can be used to tell the bashdb script and the regression
+## test which bash to run. It can be omitted too in which case we'll
+## look for a bash binary.
 AC_ARG_WITH(bash, AC_HELP_STRING([--with-bash], 
-		  [location of bash 3.0 program]), BASH_PROG=$withval)
+		  [location of bash 3.1 program]), BASH_PROG=$withval)
 
 if test "$BASH_PROG" = "yes" || test "$BASH_PROG" = "no" || test -z "$BASH_PROG"
 then
