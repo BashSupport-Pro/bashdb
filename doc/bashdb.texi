@@ -20,6 +20,7 @@
 
 @c
 @c Name of debugger program.  Used also for prompt string.
+@set BASH the @acronym{BASH} debugger
 @set DBG the @value{BASH} debugger
 @set dBGP The @value{BASH} debugger
 @set DDD @acronym{DDD}
@@ -58,7 +59,7 @@ This file documents the @sc{bash} debugger @value{BASH}.
 
 This is the @value{EDITION} Edition, @value{UPDATED},
 of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
-for REBASH
+for BASH
 
 Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein for the Free Software Foundation.
 
