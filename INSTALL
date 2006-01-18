@@ -8,11 +8,18 @@ SHORT INSTRUCTIONS:
    and ungzip/untar it. If you are reading this, you've
    probably done that already.
 
-1. Make your current directory the debugger directory.
+1. Make your current directory the debugger directory. If you want
+   the bash extension command readarray that speeds up loading of
+   large scripts than read step 3 of the long instructions especially
+   down at the bottom. Basically to speed up the initialy debugger
+   loading, you need the bash source code compiled and need to run
+   configure using --with-bash-src. 
+
    configure, build, test, and install the debugger:
 
-       cd bashdb-3.x... # <-- put name of realease for 3.x...
-       ./configure && make && make check 
+       cd bashdb-3.x... # <-- put name of release for 3.x...
+       ./configure      # use --with-bash-src to speed up bash debugging
+       make && make check 
        su -c 'make install'
 
 That's it!   
@@ -73,8 +80,24 @@ instructions.
 
    is your friend here.
 
+   On those OS's that support it, you will probably want the extension 
+   which enables reading large arrays fast and makes loading of large
+   scripts (e.g. configure) much quicker. For this you need the bash
+   compiled source since we need to link against that. And you need to
+   tell configure where to use it via --with-bash-src. 
+
+   It is important that the source match the bash that is going to be
+   used when debugger. For example using bash release 3.1 source for
+   an installed bash 3.0 binary will not work as there are incompatiblities. 
+   Should you have several bash binaries around, you can tell configure 
+   which one you want to use for the debugger via the option --with-bash. 
+
+   For both --with-bash-source and --with-bash use absolute paths, not 
+   relative paths. For the latter regression tests will fail. 
+
 4. configure the debugger to suit your needs:
      ./configure  # you may want to add options gleened from step 3 above.
+                  # in particular --with-bash-src.
 
    There is a lot of verbiage, but do pay attention to any errors or
    warning you see here.
@@ -100,4 +123,4 @@ instructions.
    
 No, really. that's it!
 
-$Id: INSTALL,v 1.1 2006/01/02 23:34:20 rockyb Exp $
+$Id: INSTALL,v 1.2 2006/01/18 03:19:14 rockyb Exp $
