@@ -32,7 +32,7 @@ AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.5 2006/01/18 09:43:54 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.6 2006/01/18 09:45:45 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
 
@@ -95,7 +95,7 @@ AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 
 dnl See if we build readarray.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
-		  [location of bash 3.0 source code]), BASH_SRC=$withval)
+		  [location of bash 3.1 source code]), BASH_SRC=$withval)
 AC_SUBST(BASH_SRC)
 
 dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
