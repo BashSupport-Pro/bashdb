@@ -32,7 +32,7 @@ AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.6 2006/01/18 09:45:45 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.7 2006/01/23 04:09:45 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
 
@@ -188,13 +188,13 @@ AC_CONFIG_FILES([Makefile \
 	test/Makefile])
 
 # Additional files needing substitution of values (not Makefiles).
+AC_CONFIG_FILES([bashdb], [chmod +x bashdb])
 AC_CONFIG_FILES([ \
-	bashdb \
 	dbg-pre.inc \
 	dbg-main.inc \
 	test/check_common \
 	doc/macros.texi \
-        test/bugIFS.sh],[chmod +x bashdb])
+        test/bugIFS.sh])
 
 
 AC_CONFIG_COMMANDS([default],[[
