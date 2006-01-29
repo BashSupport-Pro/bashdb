@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.2 2006/01/29 05:58:12 rockyb Exp $
+;;; $Id: bashdb.el,v 1.3 2006/01/29 18:40:52 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -157,15 +157,15 @@ and source-file directory for your debugger."
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
   (gud-def gud-break  "break %l"   "\C-b" "Set breakpoint at current line.")
-  (gud-def gud-tbreak "tbreak %l"  "\C-t" "Set temporary breakpoint at current line.")
-  (gud-def gud-remove "clear %l"   "\C-d" "Remove breakpoint at current line")
-  (gud-def gud-step   "step"       "\C-s" "Step one source line with display.")
-  (gud-def gud-next   "next"       "\C-n" "Step one line (skip functions).")
+  (gud-def gud-tbreak "tbreak %f:%l"  "\C-t" "Set temporary breakpoint at current line.")
+  (gud-def gud-remove "clear %f:%l"   "\C-d" "Remove breakpoint at current line")
+  (gud-def gud-step   "step %p"       "\C-s" "Step one source line with display.")
+  (gud-def gud-next   "next %p"       "\C-n" "Step one line (skip functions).")
   (gud-def gud-cont   "continue"   "\C-r" "Continue with display.")
   (gud-def gud-finish "finish"     "\C-f" "Finish executing current function.")
   (gud-def gud-up     "up %p"      "<" "Up N stack frames (numeric arg).")
   (gud-def gud-down   "down %p"    ">" "Down N stack frames (numeric arg).")
-  (gud-def gud-print  "pe %e"      "\C-p" "Evaluate bash expression at point.")
+  (gud-def gud-print  "p %e"      "\C-p" "Evaluate bash expression at point.")
 
   ;; Is this right?
   (gud-def gud-statement "eval %e" "\C-e" "Execute Bash statement at point.")
