@@ -1,7 +1,7 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.1 2006/01/02 23:34:27 rockyb Exp $
+;;; $Id: bashdb.el,v 1.2 2006/01/29 05:58:12 rockyb Exp $
 
-;; Copyright (C) 2002 Rocky Bernstein (rocky@panix.com) 
+;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,10 @@
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
-;; "--debugger" in inserted as the first switch.
+;; "--debugger" in inserted as the first switch, unless the 
+;; command is bashdb which doesn't need and can't parse --debugger.
+;; Note: bashdb will be fixed up so that it *does* bass --debugger
+;; eventually.
 
 (defun gud-bashdb-massage-args (file args)
   (let* ((new-args (list "--debugger"))
@@ -45,24 +48,29 @@
 	 (shift (lambda ()
 		  (setq new-args (cons (car args) new-args))
 		  (setq args (cdr args)))))
-    
-    ;; Pass all switches and -e scripts through.
-    (while (and args
-		(string-match "^-" (car args))
-		(not (equal "-" (car args)))
-		(not (equal "--" (car args))))
-      (funcall shift))
-    
-    (if (or (not args)
-	    (string-match "^-" (car args)))
-	(error "Can't use stdin as the script to debug"))
-    ;; This is the program name.
-    (funcall shift)
 
-  (while args
-    (funcall shift))
-  
-  (nreverse new-args)))
+    ; If we are invoking using the bashdb command, no need to 
+    ; add --debugger
+    (if (string-match "bashdb" command-line) 
+	args
+    
+      ;; Pass all switches and -e scripts through.
+      (while (and args
+		  (string-match "^-" (car args))
+		  (not (equal "-" (car args)))
+		  (not (equal "--" (car args))))
+	(funcall shift))
+      
+      (if (or (not args)
+	      (string-match "^-" (car args)))
+	  (error "Can't use stdin as the script to debug"))
+      ;; This is the program name.
+      (funcall shift)
+      
+      (while args
+	(funcall shift))
+      
+      (nreverse new-args))))
 
 ;; There's no guarantee that Emacs will hand the filter the entire
 ;; marker at once; it could be broken up across several strings.  We
