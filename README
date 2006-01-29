@@ -13,10 +13,11 @@ not in many POSIX-like shells. I added support for debugging in bash
 2.05b, which has been encorporated with changes into bash 3.0 with
 some change. Note though that you can't use the bashdb code from 2.05b
 in bash 3.0 since not all of the changes are upward
-compatible. Instead you need the code from a 3.x bashdb distribution.
+compatible. Instead you need the code from the correct 3.x bashdb
+distribution.
 
 See INSTALL for installation instructions.
 
 R. Bernstein (rocky@panix.com)
 
-$Id: README,v 1.2 2006/01/18 09:48:00 rockyb Exp $
+$Id: README,v 1.3 2006/01/29 14:53:07 rockyb Exp $

@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.3 2006/01/29 14:48:50 rockyb Exp $'
+'$Id: bashdb.in,v 1.4 2006/01/29 14:53:07 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -38,7 +38,7 @@ options:
     -h | --help      print this help
     -n | --no-init   Don't run initialization files
     -c cmd | --command cmd
-                     Run this passed command of a script
+                     Run this passed command as a script
     -q | --quiet     Quiet. Do not print introductory and quiet messages.
     -x cmdfile | --cmdfile cmdfiles
                      execute debugger commands from cmdfile
@@ -65,9 +65,9 @@ options:
     -B           basename only on source listings. (Needed in regression tests)
     -h           print this help
     -n           Don't run initialization files
-    -c command   Run this passed command of a script
+    -c command   Run this passed command as a script
     -q           Quiet. Do not print introductory and quiet messages.
-    -x cmdfile   execute commands from cmdfile
+    -x cmdfile   execute debugger commands from cmdfile
     -L libdir    set directory location of library helper file: $_Dbg_main
                  the default directory is: $_Dbg_libdir
     -T tmpdir    set directory location for temporary files: $_Dbg_tmpdir
