@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.5 2006/01/29 14:56:01 rockyb Exp $'
+'$Id: bashdb.in,v 1.6 2006/01/29 17:58:24 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -35,7 +35,8 @@ options:
     -B | --basename  basename only on source listings. 
                      (Needed in regression tests)
     -h | --help      print this help
-    -n | --no-init   Don't run initialization files
+    -n | | -nx |--no-init   
+                     Don't run initialization files
     -c cmd | --command cmd
                      Run this passed command as a script
     -q | --quiet     Quiet. Do not print introductory and quiet messages.
@@ -127,7 +128,7 @@ if [ 0 = $? ] ; then
       --debugger) ;;  # This option is for compatibility with bash --debugger
       -h|--help) _Dbg_usage_long; exit 100 ;;
       -L|--library) _Dbg_libdir=$2; shift ;;
-      -n|--no-init) _Dbg_no_init=1 ;;
+      -n|--nx|--no-init) _Dbg_no_init=1 ;;
       -q|--quiet) _Dbg_quiet=1 ;;
       -x) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
       -T|--tempdir) _Dbg_tmpdir=$2; shift ;;
