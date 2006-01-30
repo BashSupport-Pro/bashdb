@@ -1,0 +1,35 @@
+_Dbg_usage:
+    bashdb [OPTIONS] <script_file>
+
+Runs script_file under a debugger.
+
+options: 
+    -B | --basename  basename only on source listings. 
+                     (Needed in regression tests)
+    -h | --help      print this help
+    -n | | -nx |--no-init   
+                     Don't run initialization files
+    -c cmd | --command cmd
+                     Run this passed command as a script
+    -q | --quiet     Quiet. Do not print introductory and quiet messages.
+    -x cmdfile | --cmdfile cmdfiles
+                     execute debugger commands from cmdfile
+    -L libdir | --library libdir
+                     set directory location of library helper file: dbg-main.inc
+                     The default directory is: /usr/share/bashdb
+    -T tmpdir | --tempdir
+                     set directory location for temporary files: /tmp
+    -t tty | --tty tty | --terminal tty
+                     set debugger terminal
+    -V | --version   show version number and no-warranty and exit.
+
+Long options may be abbreviated, e.g. --lib is okay for --library.
+(dbg-test1.sh:22):
+22:	x=22
+(dbg-test1.sh:22):
+22:	x=22
+(bashdb:240):
+240:	  eval $_Dbg_cmd
+echo test1a
+bashdb: unrecognized option `--badopt'
+Use --help for option help. Terminating...

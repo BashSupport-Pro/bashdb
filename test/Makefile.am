@@ -1,101 +1,109 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.1 2006/01/02 23:34:25 rockyb Exp $
+#$Id: Makefile.am,v 1.2 2006/01/30 01:50:56 rockyb Exp $
 
-check_DATA = action.right \
-	brkpt1.right \
-	brkpt2.right \
-	brkpt3.right \
-	bugIFS.right \
-	check_common.in \
-	debug.right \
-	display.right \
-	finish.right \
-	list.right \
-	misc-output.right \
-	misc.right \
-	multi1.right \
-	multi2.right \
-	multi3.right \
-	multi4.right \
-	parm.right \
-	restart.right \
-	search.right \
-	sig.right \
-	skip.right \
-	subshell1.right \
-	subshell2.right \
-	subshell3.right \
-	subshell4.right \
-	tbreak.right \
-	watch1.right \
-	watch2.right \
-	action.tests \
-	brkpt1.tests \
-	brkpt2.tests \
-	brkpt3.tests \
-	bugIFS.tests \
-	debug.tests \
-	display.tests \
-	finish.tests \
-	list.tests \
-	misc.tests \
-	multi1.tests \
-	multi2.tests \
-	multi3.tests \
-	multi4.tests \
-	parm.tests \
-	restart.tests \
-	search.tests \
-	sig.tests \
-	skip.tests \
-	subshell1.tests \
-	subshell2.tests \
-	subshell3.tests \
-	subshell4.tests \
-	tbreak.tests \
-	watch1.tests \
-	watch2.tests \
-	bugIFS.sh.in \
-	dbg-test1.sh \
-	dbg-test2.sh \
-	debug.sh \
-	multi.sh \
-	parm.sh \
-	restartbug.sh \
-	sig.sh \
-	skip.sh \
-	subshell.sh \
+check_DATA = \
 	action.cmd \
+	action.right \
+	action.tests \
 	brkpt1.cmd \
+	brkpt1.right \
+	brkpt1.tests \
 	brkpt2.cmd \
+	brkpt2.right \
+	brkpt2.tests \
 	brkpt3.cmd \
+	brkpt3.right \
+	brkpt3.tests \
 	bugIFS.cmd \
+	bugIFS.right \
+	bugIFS.sh.in \
+	bugIFS.tests \
+	check_common.in \
+	continue.cmd \
+	dbg-test1.sh \
+	dbg-test1.sub \
+	dbg-test2.sh \
 	debug.cmd \
+	debug.right \
+	debug.sh \
+	debug.tests \
 	debug2.cmd \
 	display.cmd \
+	display.right \
+	display.tests \
 	finish.cmd \
+	finish.right \
+	finish.tests \
 	list.cmd \
+	list.right \
+	list.tests \
+	lopts.right \
+	lopts.tests \
+	misc-output.right \
 	misc.cmd \
+	misc.right \
+	misc.tests \
+	multi.sh \
 	multi1.cmd \
+	multi1.right \
+	multi1.tests \
 	multi2.cmd \
+	multi2.right \
+	multi2.tests \
 	multi3.cmd \
+	multi3.right \
+	multi3.tests \
 	multi4.cmd \
+	multi4.right \
+	multi4.tests \
 	parm.cmd \
+	parm.right \
+	parm.sh \
+	parm.tests \
 	prof1.cmd \
 	prof2.cmd \
+	quit.cmd \
 	restart.cmd \
+	restart.right \
+	restart.tests \
 	restart2.cmd \
+	restartbug.sh \
+	run-opts \
 	search.cmd \
+	search.right \
+	search.tests \
 	sig.cmd \
+	sig.right \
+	sig.sh \
+	sig.tests \
 	skip.cmd \
+	skip.right \
+	skip.sh \
+	skip.tests \
+	sopts.right \
+	sopts.tests \
+	subshell.sh \
 	subshell1.cmd \
+	subshell1.right \
+	subshell1.tests \
 	subshell2.cmd \
+	subshell2.right \
+	subshell2.tests \
 	subshell3.cmd \
+	subshell3.right \
+	subshell3.tests \
 	subshell4.cmd \
+	subshell4.right \
+	subshell4.tests \
 	tbreak.cmd \
+	tbreak.right \
+	tbreak.tests \
 	watch1.cmd \
+	watch1.right \
+	watch1.tests \
 	watch2.cmd \
-	dbg-test1.sub
+	watch2.right \
+	watch2.tests
 
 TESTS = run-action run-brkpt run-bugIFS run-debug run-display \
 	run-finish run-list run-misc run-multi run-parm run-restart \

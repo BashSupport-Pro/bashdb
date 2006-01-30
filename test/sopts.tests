@@ -1,0 +1,20 @@
+#!/bin/sh
+#$Id: sopts.tests,v 1.1 2006/01/30 01:50:56 rockyb Exp $
+
+if test -z "$srcdir"  ; then
+  srcdir=`pwd`
+fi
+
+if test -z "$builddir"  ; then
+  builddir=`pwd`
+fi
+
+. ${builddir}/check_common
+
+quitcmd="${srcdir}/quit.cmd"
+contcmd="${srcdir}/quit.cmd"
+debugged_script="${srcdir}/dbg-test1.sh"
+
+$BASH ${TOP_BUILDDIR}bashdb -q -L .. -x $contcmd -c 'echo test1'
+# Note -B needs to come before -e
+$BASH ${TOP_BUILDDIR}bashdb -B -e -q -L .. -x $contcmd -c 'echo not run'
