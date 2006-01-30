@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.6 2006/01/29 17:58:24 rockyb Exp $'
+'$Id: bashdb.in,v 1.7 2006/01/30 01:52:01 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -55,11 +55,11 @@ Long options may be abbreviated, e.g. --lib is okay for --library.
 " 1>&2
 }
 
-_Dbg_usage_shortt() {
+_Dbg_usage_short() {
   printf "_Dbg_usage:
     ${_Dbg_pname} [OPTIONS] <script_file>
 
-Runs script_file under a (primitive) debugger.
+Runs script_file under a debugger.
 
 options: 
     -B           basename only on source listings. (Needed in regression tests)
@@ -110,7 +110,7 @@ if [ 0 = $? ] ; then
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
   TEMP=`getopt -o BhnqVc:t:x:L:T:: \
---long basename,command:,debugger,help,version,library,no-init,quiet,tempdir:,terminal:,tty:: \
+--long basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 
@@ -144,13 +144,15 @@ if [ 0 = $? ] ; then
 	;;
       -V|--version) show_version=1 ;;
       --) shift ; break ;;
-      *) _Dbg_usage_long; exit 2 ;;
-  esac
+      *) 
+	echo "Use --help for option help. Terminating..."
+	exit 2 ;;
+    esac
     shift
   done
 else 
   # Process using short options
-  while getopts BhnqVc:t:x:L:T: opt; do
+  while getopts :BhnqVc:t:x:L:T: opt; do
     case $opt in
       B) _Dbg_basename_only=1 ;;
       c) _Dbg_cmd="$OPTARG" ;;
@@ -170,7 +172,15 @@ else
 	fi
 	;;
       V) show_version=1 ;;
-      *) _Dbg_usage_short; exit 2 ;;
+      *) 
+	if ((_Dbg_basename_only == 1)) ; then
+	  echo "${_Dbg_pname}: unrecognized option -- $OPTARG"
+	else
+	  echo "$0: unrecognized option -- $OPTARG"
+	fi
+	echo "Use --help for option help. Terminating..."
+	exit 2 
+	;;
     esac
   done
   shift $(($OPTIND - 1))
