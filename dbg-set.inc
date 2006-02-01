@@ -491,11 +491,11 @@ of promoting the sharing and reuse of software generally.
       return 0
       ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
-      [[ -n $label ]] && label='linetracing: '
+      [[ -n $label ]] && label='line tracing: '
       local onoff="off."
       (( $_Dbg_linetrace != 0 )) && onoff='on.'
       _Dbg_msg \
-"${label}Show tracing lines on execution is" $onoff
+"${label}Show line tracing is" $onoff
       return 0
       ;;
     p | pr | pro | prom | promp | prompt )
@@ -548,7 +548,7 @@ _Dbg_cmd_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.3 2006/02/01 13:42:30 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.4 2006/02/01 17:42:17 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

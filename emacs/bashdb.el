@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.4 2006/02/01 13:42:35 rockyb Exp $
+;;; $Id: bashdb.el,v 1.5 2006/02/01 17:42:17 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -200,6 +200,7 @@ and source-file directory for your debugger."
   (define-key gud-menu-map [run]       '("Restart the Bash Script" . 
 					 gud-run))
   (define-key gud-menu-map [stepi]     'undefined)
+  (define-key gud-menu-map [tbreak]    'undefined)
   (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
   (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
 
