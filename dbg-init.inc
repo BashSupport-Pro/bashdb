@@ -20,10 +20,10 @@
 # used in only one sub-part (e.g. variables for break/watch/actions) to 
 # the corresponding file.
 
-typeset _cur_fn            # current function of debugged program
-typeset -i _cur_line       # current line number of debugged program
-typeset -i _trace=0	   # init execution trace flag to on
-typeset -i _Dbg_steps=1 # No. of statements to run after setting trap
+typeset _cur_fn             # current function of debugged program
+typeset -i _cur_line        # current line number of debugged program
+typeset -i _Dbg_linetrace=0 # init execution line trace flag off
+typeset -i _Dbg_steps=1     # No. of statements to run after setting trap
 
 # Save the initial working directory so we can reset it on a restart.
 typeset _Dbg_init_cwd=$(pwd)
@@ -102,7 +102,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.2 2006/02/01 13:42:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

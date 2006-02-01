@@ -763,10 +763,10 @@ _Dbg_cmd_source() {
 
 # toggle execution trace feature
 _Dbg_cmd_trace() {
-  ((_trace=!$_trace))
+  ((_Dbg_linetrace=!$_Dbg_linetrace))
 
-  _Dbg_msg "Trace = \c"
-  let " $_trace" && _Dbg_msg "on" || _Dbg_msg "off"
+  _Dbg_msg "Line trace = \c"
+  let " $_Dbg_linetrace" && _Dbg_msg "on" || _Dbg_msg "off"
 }
 
 # Set output tty
@@ -877,7 +877,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.2 2006/01/04 07:45:11 rockyb Exp $'
+_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.3 2006/02/01 13:42:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

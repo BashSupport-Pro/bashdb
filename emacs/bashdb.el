@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.3 2006/01/29 18:40:52 rockyb Exp $
+;;; $Id: bashdb.el,v 1.4 2006/02/01 13:42:35 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -49,9 +49,10 @@
 		  (setq new-args (cons (car args) new-args))
 		  (setq args (cdr args)))))
 
-    ; If we are invoking using the bashdb command, no need to 
-    ; add --debugger
-    (if (string-match "bashdb" command-line) 
+    ; If we are invoking using the bashdb command, no need to add
+    ; --debugger. '^\S ' means non-whitespace at the beginning of a
+    ; line and '\s ' means "whitespace"
+    (if (string-match "^\\S bashdb\\s " command-line) 
 	args
     
       ;; Pass all switches and -e scripts through.
@@ -156,21 +157,54 @@ and source-file directory for your debugger."
 
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
-  (gud-def gud-break  "break %l"   "\C-b" "Set breakpoint at current line.")
-  (gud-def gud-tbreak "tbreak %f:%l"  "\C-t" "Set temporary breakpoint at current line.")
-  (gud-def gud-remove "clear %f:%l"   "\C-d" "Remove breakpoint at current line")
-  (gud-def gud-step   "step %p"       "\C-s" "Step one source line with display.")
-  (gud-def gud-next   "next %p"       "\C-n" "Step one line (skip functions).")
-  (gud-def gud-cont   "continue"   "\C-r" "Continue with display.")
-  (gud-def gud-finish "finish"     "\C-f" "Finish executing current function.")
-  (gud-def gud-up     "up %p"      "<" "Up N stack frames (numeric arg).")
-  (gud-def gud-down   "down %p"    ">" "Down N stack frames (numeric arg).")
-  (gud-def gud-print  "p %e"      "\C-p" "Evaluate bash expression at point.")
+  (gud-def gud-args   "info args" "a"
+	   "Show arguments of current stack.")
+  (gud-def gud-break  "break %f:%l""\C-b"
+	   "Set breakpoint at current line.")
+  (gud-def gud-cont   "continue"   "\C-r" 
+	   "Continue with display.")
+  (gud-def gud-down   "down %p"     ">"
+	   "Down N stack frames (numeric arg).")
+  (gud-def gud-finish "finish"      "f\C-f"
+	   "Finish executing current function.")
+  (gud-def gud-linetrace "trace"    "t"
+	   "Toggle line tracing.")
+  (gud-def gud-next   "next %p"     "\C-n"
+	   "Step one line (skip functions).")
+  (gud-def gud-print  "p %e"        "\C-p"
+	   "Evaluate bash expression at point.")
+  (gud-def gud-remove "clear %f:%l" "\C-d"
+	   "Remove breakpoint at current line")
+  (gud-def gud-run    "run"       "R"
+	   "Restart the Bash script.")
+  (gud-def gud-statement "eval %e" "\C-e"
+	   "Execute Bash statement at point.")
+  (gud-def gud-step   "step %p"       "\C-s"
+	   "Step one source line with display.")
+  (gud-def gud-tbreak "tbreak %f:%l"  "\C-t"
+	   "Set temporary breakpoint at current line.")
+  (gud-def gud-up     "up %p"
+	   "<" "Up N stack frames (numeric arg).")
+  (gud-def gud-where   "where"
+	   "T" "Show stack trace.")
 
-  ;; Is this right?
-  (gud-def gud-statement "eval %e" "\C-e" "Execute Bash statement at point.")
+  ;; Update GUD menu bar
+  (define-key gud-menu-map [args]      '("Show arguments of current stack" . 
+					 gud-args))
+  (define-key gud-menu-map [down]      '("Down Stack" . gud-down))
+  (define-key gud-menu-map [eval]      '("Execute Bash statement at point" 
+					 . gud-statement))
+  (define-key gud-menu-map [finish]    '("Finish Function" . gud-finish))
+  (define-key gud-menu-map [linetrace] '("Toggle line tracing" . 
+					 gud-linetrace))
+  (define-key gud-menu-map [run]       '("Restart the Bash Script" . 
+					 gud-run))
+  (define-key gud-menu-map [stepi]     'undefined)
+  (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
+  (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
 
-  (local-set-key [menu-bar debug tbreak] '("Temporary Breakpoint" . gud-tbreak))
+  (local-set-key [menu-bar debug tbreak] 
+		 '("Temporary Breakpoint" . gud-tbreak))
   (local-set-key [menu-bar debug finish] '("Finish Function" . gud-finish))
   (local-set-key [menu-bar debug up] '("Up Stack" . gud-up))
   (local-set-key [menu-bar debug down] '("Down Stack" . gud-down))

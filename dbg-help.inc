@@ -241,7 +241,7 @@ l .             Same as above.
                 return ;;
 	    t | to | tog | togg | toggl | toggle ) 
 		_Dbg_msg \
-"t | trace       Toggle line-execution tracing. Long command name: toggle."
+"t | toggle      Toggle line-execution tracing. Long command name: toggle."
                 return ;;
             tb | tbr | tbre | tbrea | tbreak )
 		_Dbg_msg \
@@ -493,7 +493,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.2 2006/02/01 13:42:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

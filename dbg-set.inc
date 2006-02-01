@@ -67,7 +67,9 @@ _Dbg_cmd_set() {
 	  ;;
 	* )
 	  _Dbg_msg "\"on\" or \"off\" expected."
+	  return 1
       esac
+      return 0
       ;;
     e | ed | edi | edit | editi | editin | editing )
       local onoff=${1:-'on'}
@@ -107,6 +109,21 @@ _Dbg_cmd_set() {
       eval "$_resteglob"
       return 0
       ;;
+    lin | line | linet | linetr | linetra | linetrac | linetrace )
+      local onoff=${1:-'off'}
+      case $onoff in 
+	on | 1 ) 
+	  _Dbg_write_journal_eval "_Dbg_linetrace=1"
+	  ;;
+	off | 0 )
+	  _Dbg_write_journal_eval "_Dbg_linetrace=0"
+	  ;;
+	* )
+	  _Dbg_msg "\"on\" or \"off\" expected."
+	  return 1
+      esac
+      return 0
+      ;;
     p | pr | pro | prom | promp | prompt )
       _Dbg_prompt_str="$1"
       ;;
@@ -137,7 +154,7 @@ _Dbg_cmd_show() {
   local label=$2
 
   # Warranty, copying and directories are omitted below.
-  local -r subcmds="args basename debugger editing listsize prompt"
+  local -r subcmds="args basename debugger editing linetrace listsize prompt"
 
   if [[ -z $show_cmd ]] ; then 
       local thing
@@ -473,6 +490,14 @@ of promoting the sharing and reuse of software generally.
       "$_Dbg_listsize."
       return 0
       ;;
+    lin | line | linet | linetr | linetra | linetrac | linetrace )
+      [[ -n $label ]] && label='linetracing: '
+      local onoff="off."
+      (( $_Dbg_linetrace != 0 )) && onoff='on.'
+      _Dbg_msg \
+"${label}Show tracing lines on execution is" $onoff
+      return 0
+      ;;
     p | pr | pro | prom | promp | prompt )
       [[ -n $label ]] && label='prompt:   '
       _Dbg_msg \
@@ -523,7 +548,7 @@ _Dbg_cmd_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.2 2006/01/18 02:04:33 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.3 2006/02/01 13:42:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
