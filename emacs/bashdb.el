@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.5 2006/02/01 17:42:17 rockyb Exp $
+;;; $Id: bashdb.el,v 1.6 2006/02/01 20:38:17 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -167,7 +167,7 @@ and source-file directory for your debugger."
 	   "Down N stack frames (numeric arg).")
   (gud-def gud-finish "finish"      "f\C-f"
 	   "Finish executing current function.")
-  (gud-def gud-linetrace "trace"    "t"
+  (gud-def gud-linetrace "toggle"    "t"
 	   "Toggle line tracing.")
   (gud-def gud-next   "next %p"     "\C-n"
 	   "Step one line (skip functions).")
