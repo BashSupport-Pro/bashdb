@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.6 2006/02/01 20:38:17 rockyb Exp $
+;;; $Id: bashdb.el,v 1.7 2006/02/18 16:12:56 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -157,9 +157,9 @@ and source-file directory for your debugger."
 
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
-  (gud-def gud-args   "info args" "a"
+  (gud-def gud-args   "info args"     "a"
 	   "Show arguments of current stack.")
-  (gud-def gud-break  "break %f:%l""\C-b"
+  (gud-def gud-break  "break %f:%l" "\C-b"
 	   "Set breakpoint at current line.")
   (gud-def gud-cont   "continue"   "\C-r" 
 	   "Continue with display.")
@@ -199,8 +199,8 @@ and source-file directory for your debugger."
 					 gud-linetrace))
   (define-key gud-menu-map [run]       '("Restart the Bash Script" . 
 					 gud-run))
-  (define-key gud-menu-map [stepi]     'undefined)
-  (define-key gud-menu-map [tbreak]    'undefined)
+  (define-key gud-menu-map [stepi]     nil)
+  (define-key gud-menu-map [tbreak]    nil)
   (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
   (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
 

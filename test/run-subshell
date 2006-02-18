@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-subshell,v 1.2 2006/01/03 05:13:22 rockyb Exp $
+#$Id: run-subshell,v 1.3 2006/02/18 16:12:56 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -15,12 +15,12 @@ tests=${@:-"subshell1 subshell2 subshell3"}
 
 for SUBTEST in $tests; do
   echo "checking $SUBTEST..."
-  TEST_FILE="${SUBTEST}.check"
+  TEST_FILE="$builddir/${SUBTEST}.check"
   (cd $srcdir && ${THIS_SH} ${SUBTEST}.tests > $TEST_FILE 2>&1 < /dev/null)
 
   check_output $TEST_FILE ${srcdir}/${SUBTEST}.right
   typeset -i rc=$?
-  if (( rc == 0 )) ; then 
+  if (( rc == 0 )) ; then
     rm -f $TEST_FILE
   else
     exit $rc

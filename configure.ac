@@ -32,7 +32,7 @@ AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.7 2006/01/23 04:09:45 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.8 2006/02/18 16:12:55 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
 
@@ -100,6 +100,7 @@ AC_SUBST(BASH_SRC)
 
 dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
 AC_PROG_CC
+AM_PROG_CC_C_O
 AM_PROG_LIBTOOL
 PIC=$lt_prog_compiler_pic_CXX
 WL=$lt_prog_compiler_wl_CXX
@@ -158,7 +159,7 @@ else
    dnl Try for GNU diff options.
   # MSDOG output uses \r\n rather than \n in tests
   for diff_opt in -w --unified ; do 
-    if $DIFF $diff_opt ./configure ./configure > /dev/null 2>&1; then
+    if $DIFF $diff_opt . . > /dev/null 2>&1; then
       AC_MSG_RESULT([adding $diff_opt to diff in regression tests])
       DIFF_OPTS="$DIFF_OPTS $diff_opt"
     fi
@@ -210,4 +211,3 @@ fi
 ]],[[]])
 
 AC_OUTPUT
-

@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.2 2006/01/30 01:50:56 rockyb Exp $
+#$Id: Makefile.am,v 1.3 2006/02/18 16:12:56 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -109,5 +109,12 @@ TESTS = run-action run-brkpt run-bugIFS run-debug run-display \
 	run-finish run-list run-misc run-multi run-parm run-restart \
 	run-search run-sig run-skip run-subshell run-tbreak \
 	run-watch1 run-watch2
+
+TESTS_ENVIRONMENT = \
+  srcdir="$(abs_srcdir)" \
+  builddir="$(abs_builddir)"
+
+abs_srcdir=@abs_srcdir@
+abs_builddir=@abs_builddir@
 
 EXTRA_DIST = $(TESTS) $(check_DATA)
