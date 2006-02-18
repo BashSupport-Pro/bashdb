@@ -18,21 +18,21 @@ dnl Process this file with autoconf to produce a configure script.
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-# 02111-1307, USA.
+# along with GNU Make; see the file COPYING.  If not, write to the
+# Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
+# MA 02110-1301 USA.
 
 dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
 define(bashvers, 3.1)
-define(relstatus, 0.04)
+define(relstatus, 0.05cvs)
 
 AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
 
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.8 2006/02/18 16:12:55 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.9 2006/02/18 19:08:35 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
 
