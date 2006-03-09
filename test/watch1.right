@@ -7,17 +7,17 @@ No watch expressions have been set.
 *** Test a simple breakpoint...
  0: ($xx)==1 arith: 0
 No breakpoints have been set.
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint y    $xx
 *** Try testing enable/disable...
 Watchpoint entry 0 already enabled so nothing done.
 No breakpoints have been set.
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint y    $xx
 No actions have been set.
 Watchpoint entry 0 disabled.
 No breakpoints have been set.
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $xx
 No actions have been set.
 *** Try deleting nonexistent watchpoint...
@@ -25,11 +25,35 @@ Watchpoint entry 10 doesn't exist so nothing done.
 *** Test display of watchpoints...
  1: (y > 25)==0 arith: 1
 No breakpoints have been set.
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $xx
 1   watchpoint y    y > 25
 No breakpoints have been set.
-Watch expressions:
+Num Type       Enb  Expression
 1   watchpoint y    y > 25
 No breakpoints have been set.
 No watch expressions have been set.
+(dbg-test1.sh:23):
+23:	y=23
+ 2: ($x)==22 arith: 0
+Restarting with: -B -q -L .. -x restart2.cmd dbg-test1.sh
+Watchpoint : $x changed:
+  old value: '22'
+  new value: ''
+(bashdb:246):
+246:	set -o functrace
+246:==>set -o functrace
+247:   if [[ -z $_Dbg_cmd ]] ; then 
+248:     . $_source_file
+249:   else 
+250:     eval $_Dbg_cmd
+251:   fi
+252:   
+253:   
+254:   # end of bashdb
+255:   
+No breakpoints have been set.
+Num Type       Enb  Expression
+2   watchpoint y    $x
+(dbg-test1.sh:22):
+22:	x=22

@@ -551,6 +551,9 @@ Invalid history number: foo
 0: print "*** Testing source command..."
 Annotation_level is 1.
 Number 10000 should be less than 53
+*** Testing pwd/cd commands...
+Working directory test.
+Working directory test.
 *** Testing prompt and set tty...
 bashdb's prompt is:
        "bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space".

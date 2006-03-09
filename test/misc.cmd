@@ -1,6 +1,6 @@
 # Test of miscellaneous commands: 
 # source, info args, show args, show warranty, show copying
-# $Id: misc.cmd,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+# $Id: misc.cmd,v 1.2 2006/03/09 11:28:57 rockyb Exp $
 print "*** Testing source command..."
 source prof1.cmd
 source prof2.cmd
@@ -65,6 +65,9 @@ H foo
 H 100000
 history -2
 history 10000
+print "*** Testing pwd/cd commands..."
+pwd
+cd .
 print "*** Testing prompt and set tty..."
 set prompt bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space
 show prompt

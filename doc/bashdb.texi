@@ -255,7 +255,7 @@ factorial of a number: fact(0) is 1 and fact(n) is n*fact(n-1).
 @cartouche
 $ @b{bashdb -L .  fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -999,6 +999,7 @@ just @key{RET}. Some commands which require a parameter, such as
 * Search::               Searching source files (/pat/ ?pat?)
 * Data::                 Examining data (print, examine, info variables)
 * Evaluation/Execution:: Arbitrary execution (eval, shell)
+* Interfacing to the OS:: Interfacing to the OS (cd, pwd)
 * Auto Display::         Executing expressions on stop (display, undisplay)
 * Controlling bashdb::   Controlling bashdb (annotate, file, prompt, history...)
 @end menu
@@ -2105,7 +2106,7 @@ regression-tests @file{parm.sh}.
 @group
 % ../bashdb -n -L .. parm.sh
 Bourne-Again Shell Debugger, release @value{VERSION}
-Copyright 2002, 2003, 2004 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -2498,6 +2499,27 @@ debugging session, there is no need to leave or suspend @value{DBG}; you can
 just use the @code{shell} command or its alias @code{!!}.
 
 Invoke a shell to execute @var{command string}.
+
+@end table
+
+@node Interfacing to the OS
+@section Interfacing to the OS (@samp{cd}, @samp{pwd})
+
+@table @code
+@kindex cd @var{directory}
+@cindex change working directory
+@item cd
+
+Set working directory to @var{directory} for debugger and program
+being debugged.  The change does not take effect for the program being
+debugged until the next time it is started.
+
+@kindex pwd
+@cindex print working directory
+@item pwd
+@itemx !
+
+Prints the working directory as the program sees things.
 
 @end table
 

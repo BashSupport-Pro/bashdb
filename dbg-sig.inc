@@ -1,6 +1,6 @@
 # dbg-sig.inc - Bourne Again Shell Debugger Signal handling routines
 #
-#   Copyright (C) 2002, 2003, 2004 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein rocky@cpan.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -130,7 +130,7 @@ _Dbg_debug_trap_handler() {
       && [[ ${_Dbg_watch_enable[_Dbg_i]} != 0 ]] ; then
       local new_val=`_Dbg_get_watch_exp_eval $_Dbg_i`
       local old_val=${_Dbg_watch_val[$_Dbg_i]}
-      if [ $old_val != $new_val ] ; then
+      if [[ $old_val != $new_val ]] ; then
 	((_Dbg_watch_count[_Dbg_i]++))
 	_Dbg_msg "Watchpoint $i: ${_Dbg_watch_exp[$_Dbg_i]} changed:"
 	_Dbg_msg "  old value: '$old_val'"
@@ -573,7 +573,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.2 2006/02/01 13:42:30 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.3 2006/03/09 11:28:55 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

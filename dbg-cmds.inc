@@ -191,6 +191,12 @@ _Dbg_cmdloop() {
 	  fi
 	  ;;
 
+	# Change Directory
+	cd )
+	  cd $_Dbg_args
+	  _Dbg_cmd_pwd
+	  ;;
+
 	# Breakpoint/Watchpoint Conditions
 	cond | condi |condit |conditi | conditio | condition )
 	  _Dbg_cmd_condition $_Dbg_args
@@ -297,6 +303,11 @@ _Dbg_cmdloop() {
 	# print globbed or substituted variables
 	p | pr | pri | prin | print )
 	  _Dbg_cmd_print "$_Dbg_args"
+	  ;;
+
+	# print working directory
+	pw | pwd )
+	  _Dbg_cmd_pwd
 	  ;;
 
 	# quit
@@ -685,6 +696,12 @@ _Dbg_cmd_print() {
   _Dbg_last_print_args="$dq_expr"
 }
 
+_Dbg_cmd_pwd() {
+  local _Dbg_cwd=$(pwd)
+  (( _Dbg_basename_only )) && _Dbg_cwd=${_Dbg_cwd##*/}
+  _Dbg_msg "Working directory ${_Dbg_cwd}."
+}
+
 # Restart script in same way with saved arguments (probably the same
 # ones as we were given before).
 _Dbg_cmd_restart() {
@@ -877,7 +894,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.3 2006/02/01 13:42:30 rockyb Exp $'
+_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.4 2006/03/09 11:28:55 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

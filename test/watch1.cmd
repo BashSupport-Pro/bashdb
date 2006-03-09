@@ -1,6 +1,6 @@
 # 
 # Test of watchpoint handling
-# $Id: watch1.cmd,v 1.1 2006/01/02 23:34:27 rockyb Exp $
+# $Id: watch1.cmd,v 1.2 2006/03/09 11:28:57 rockyb Exp $
 #
 print "*** Should fail since xyxxy is not defined..."
 watch xyxxy
@@ -27,4 +27,7 @@ delete 0w
 info break
 delete 1w
 info break
+step
+watch x
+restart -B -q -L .. -x restart2.cmd dbg-test1.sh
 quit

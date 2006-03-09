@@ -13,7 +13,7 @@ Breakpoint 1 hit (1 times).
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint y    $x
 Watchpoint 1: $x changed:
   old value: '22'
@@ -26,7 +26,7 @@ Watchpoint entry 0 disabled.
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 1   watchpoint y    x > 26
@@ -41,7 +41,7 @@ Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
 2   breakpoint del  y   dbg-test1.sh:30
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 1   watchpoint y    x > 26
@@ -52,7 +52,7 @@ Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
 2   breakpoint del  y   dbg-test1.sh:30
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.
@@ -73,7 +73,7 @@ Num Type       Disp Enb What
 3   breakpoint keep y   dbg-test1.sh:5
 	breakpoint already hit 1 time
 4   breakpoint del  y   dbg-test1.sh:34
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.
@@ -179,7 +179,7 @@ Num Type       Disp Enb What
 	breakpoint already hit 1 time
 5   breakpoint del  n   dbg-test1.sh:35
 6   breakpoint keep y   dbg-test1.sub:11
-Watch expressions:
+Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.

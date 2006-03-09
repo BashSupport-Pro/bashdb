@@ -1,6 +1,6 @@
 # dbg-brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
 
-#   Copyright (C) 2002,2003 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein rocky@cpan.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -19,7 +19,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.1 2006/01/02 23:34:21 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.2 2006/03/09 11:28:55 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -631,7 +631,7 @@ _Dbg_enable_disable_watch() {
 _Dbg_list_watch() {
   if [ ${#_Dbg_watch_exp[@]} != 0 ]; then
     local i=0 j
-    _Dbg_msg "Watch expressions:"
+    _Dbg_msg "Num Type       Enb  Expression"
     for (( i=0; (( i < _Dbg_watch_max )); i++ )) ; do
       if [ -n "${_Dbg_watch_exp[$i]}" ] ;then
 	_Dbg_printf '%-3d watchpoint %-4s %s' $i \
