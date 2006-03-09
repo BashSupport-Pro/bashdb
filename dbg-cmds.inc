@@ -1,6 +1,6 @@
 # dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein rocky@cpan.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -894,7 +894,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.4 2006/03/09 11:28:55 rockyb Exp $'
+_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.5 2006/03/09 11:35:20 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
