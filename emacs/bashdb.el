@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.9 2006/03/12 11:08:38 rockyb Exp $
+;;; $Id: bashdb.el,v 1.10 2006/03/12 11:44:43 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -233,6 +233,12 @@ and source-file directory for your debugger."
 (require 'custom)
 (require 'cl)
 (require 'compile)
+(require 'shell)
+
+(defgroup bashdbtrack nil
+  "Bashdb file tracking by watching the prompt."
+  :prefix "bashdb-bashdbtrack-"
+  :group 'shell)
 
 
 ;; user definable variables
@@ -246,13 +252,13 @@ Python program, bashdbtrack notices the bashdb prompt and displays the
 source file and line that the program is stopped at, much the same way
 as gud-mode does for debugging C programs with gdb."
   :type 'boolean
-  :group 'make)
+  :group 'bashdb)
 (make-variable-buffer-local 'bashdb-bashdbtrack-do-tracking-p)
 
-(defcustom bashdbtrack-minor-mode-string " BASHDB"
+(defcustom bashdb-bashdbtrack-minor-mode-string " BASHDB"
   "*String to use in the minor mode list when bashdbtrack is enabled."
   :type 'string
-  :group 'make)
+  :group 'bashdb)
 
 (defcustom bashdb-temp-directory
   (let ((ok '(lambda (x)
@@ -273,12 +279,7 @@ By default, the first directory from this list that exists and that you
 can write into: the value (if any) of the environment variable TMPDIR,
 /usr/tmp, /tmp, /var/tmp, or the current directory."
   :type 'string
-  :group 'make)
-
-(defcustom bashdb-pdbtrack-minor-mode-string " BASHDB"
-  "*String to use in the minor mode list when bashdbtrack is enabled."
-  :type 'string
-  :group 'make)
+  :group 'bashdb)
 
 
 ;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -289,7 +290,7 @@ can write into: the value (if any) of the environment variable TMPDIR,
   "Queue of Makefile temp files awaiting execution.
 Currently-active file is at the head of the list.")
 
-(defvar bashdb-bashdbtrack-tracking-p t)
+(defvar bashdb-bashdbtrack-is-tracking-p t)
 
 
 ;; Constants
@@ -340,8 +341,8 @@ Currently-active file is at the head of the list.")
 	 (setq pos (point))
 	 (setq overlay-arrow-string "=>")
 	 (set-marker overlay-arrow-position (point) (current-buffer))
-	 (setq bashdb-bashdbtrack-tracking-p t))
-	(bashdb-bashdbtrack-tracking-p
+	 (setq bashdb-bashdbtrack-is-tracking-p t))
+	(bashdb-bashdbtrack-is-tracking-p
 	 (setq overlay-arrow-position nil)
 	 (setq bashdb-bashdbtrack-tracking-p nil))
 	))
@@ -456,6 +457,14 @@ problem as best as we can determine."
 
 ;; bashdbtrack
 (add-hook 'comint-output-filter-functions 'bashdb-bashdbtrack-track-stack-file)
+
+;; Add a designator to the minor mode strings
+(or (assq 'bashdb-bashdbtrack-minor-mode-string minor-mode-alist)
+    (push '(bashdb-bashdbtrack-is-tracking-p
+	    bashdb-bashdbtrack-minor-mode-string)
+	  minor-mode-alist))
+
+
 
 
 ;;; bashdbtrack.el ends here
