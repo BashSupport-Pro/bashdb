@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.10 2006/03/12 11:44:43 rockyb Exp $
+;;; $Id: bashdb.el,v 1.11 2006/03/12 11:52:00 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -357,12 +357,12 @@ at the beginning of the line.
 " 
   ;; Instead of trying to piece things together from partial text
   ;; (which can be almost useless depending on Emacs version), we
-  ;; monitor to the point where we have the next pdb prompt, and then
+  ;; monitor to the point where we have the next bashdb prompt, and then
   ;; check all text from comint-last-input-end to process-mark.
   ;;
   ;; Also, we're very conservative about clearing the overlay arrow,
   ;; to minimize residue.  This means, for instance, that executing
-  ;; other pdb commands wipe out the highlight.  You can always do a
+  ;; other bashdb commands wipe out the highlight.  You can always do a
   ;; 'where' (aka 'w') command to reveal the overlay arrow.
   (let* ((origbuf (current-buffer))
 	 (currproc (get-buffer-process origbuf)))
