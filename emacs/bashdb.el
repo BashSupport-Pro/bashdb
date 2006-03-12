@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.8 2006/02/18 19:08:36 rockyb Exp $
+;;; $Id: bashdb.el,v 1.9 2006/03/12 11:08:38 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -221,4 +221,243 @@ and source-file directory for your debugger."
   )
 
 (provide 'bashdb)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; bashdbtrack --- tracking bashdb debugger in an Emacs shell window
+;;; Modified from  python-mode in particular the part:
+;; pdbtrack support contributed by Ken Manheimer, April 2001.
+
+;;; Code:
+
+(require 'comint)
+(require 'custom)
+(require 'cl)
+(require 'compile)
+
+
+;; user definable variables
+;; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+(defcustom bashdb-bashdbtrack-do-tracking-p t
+  "*Controls whether the bashdbtrack feature is enabled or not.
+When non-nil, bashdbtrack is enabled in all comint-based buffers,
+e.g. shell buffers and the *Python* buffer.  When using bashdb to debug a
+Python program, bashdbtrack notices the bashdb prompt and displays the
+source file and line that the program is stopped at, much the same way
+as gud-mode does for debugging C programs with gdb."
+  :type 'boolean
+  :group 'make)
+(make-variable-buffer-local 'bashdb-bashdbtrack-do-tracking-p)
+
+(defcustom bashdbtrack-minor-mode-string " BASHDB"
+  "*String to use in the minor mode list when bashdbtrack is enabled."
+  :type 'string
+  :group 'make)
+
+(defcustom bashdb-temp-directory
+  (let ((ok '(lambda (x)
+	       (and x
+		    (setq x (expand-file-name x)) ; always true
+		    (file-directory-p x)
+		    (file-writable-p x)
+		    x))))
+    (or (funcall ok (getenv "TMPDIR"))
+	(funcall ok "/usr/tmp")
+	(funcall ok "/tmp")
+	(funcall ok "/var/tmp")
+	(funcall ok  ".")
+	(error
+	 "Couldn't find a usable temp directory -- set `bashdb-temp-directory'")))
+  "*Directory used for temporary files created by a *Python* process.
+By default, the first directory from this list that exists and that you
+can write into: the value (if any) of the environment variable TMPDIR,
+/usr/tmp, /tmp, /var/tmp, or the current directory."
+  :type 'string
+  :group 'make)
+
+(defcustom bashdb-pdbtrack-minor-mode-string " BASHDB"
+  "*String to use in the minor mode list when bashdbtrack is enabled."
+  :type 'string
+  :group 'make)
+
+
+;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;; NO USER DEFINABLE VARIABLES BEYOND THIS POINT
+
+;; have to bind bashdb-file-queue before installing the kill-emacs-hook
+(defvar bashdb-file-queue nil
+  "Queue of Makefile temp files awaiting execution.
+Currently-active file is at the head of the list.")
+
+(defvar bashdb-bashdbtrack-tracking-p t)
+
+
+;; Constants
+
+(defconst bashdb-position-re 
+  "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)).*\n"
+  "Regular expression for a bashdb position")
+
+(defconst bashdb-marker-regexp-file-group 2
+  "Group position in bashdb-postiion-re that matches the file name.")
+
+(defconst bashdb-marker-regexp-line-group 3
+  "Group position in bashdb-position-re that matches the line number.")
+
+
+
+(defconst bashdb-traceback-line-re
+  "^#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
+  "Regular expression that describes tracebacks.")
+
+;; bashdbtrack contants
+(defconst bashdb-bashdbtrack-stack-entry-regexp
+  "^=>#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
+  "Regular expression bashdbtrack uses to find a stack trace entry.")
+
+(defconst bashdb-bashdbtrack-input-prompt "\nbashdb<+.*>+ "
+  "Regular expression bashdbtrack uses to recognize a bashdb prompt.")
+
+(defconst bashdb-bashdbtrack-track-range 10000
+  "Max number of characters from end of buffer to search for stack entry.")
+
+
+;; Utilities
+(defmacro bashdb-safe (&rest body)
+  "Safely execute BODY, return nil if an error occurred."
+  (` (condition-case nil
+	 (progn (,@ body))
+       (error nil))))
+
+
+;;;###autoload
+
+(defun bashdb-bashdbtrack-overlay-arrow (activation)
+  "Activate or de arrow at beginning-of-line in current buffer."
+  ;; This was derived/simplified from edebug-overlay-arrow
+  (cond (activation
+	 (setq overlay-arrow-position (make-marker))
+	 (setq pos (point))
+	 (setq overlay-arrow-string "=>")
+	 (set-marker overlay-arrow-position (point) (current-buffer))
+	 (setq bashdb-bashdbtrack-tracking-p t))
+	(bashdb-bashdbtrack-tracking-p
+	 (setq overlay-arrow-position nil)
+	 (setq bashdb-bashdbtrack-tracking-p nil))
+	))
+
+(defun bashdb-bashdbtrack-track-stack-file (text)
+  "Show the file indicated by the bashdb stack entry line, in a separate window.
+Activity is disabled if the buffer-local variable
+`bashdb-bashdbtrack-do-tracking-p' is nil.
+
+We depend on the bashdb input prompt matching `bashdb-bashdbtrack-input-prompt'
+at the beginning of the line.
+" 
+  ;; Instead of trying to piece things together from partial text
+  ;; (which can be almost useless depending on Emacs version), we
+  ;; monitor to the point where we have the next pdb prompt, and then
+  ;; check all text from comint-last-input-end to process-mark.
+  ;;
+  ;; Also, we're very conservative about clearing the overlay arrow,
+  ;; to minimize residue.  This means, for instance, that executing
+  ;; other pdb commands wipe out the highlight.  You can always do a
+  ;; 'where' (aka 'w') command to reveal the overlay arrow.
+  (let* ((origbuf (current-buffer))
+	 (currproc (get-buffer-process origbuf)))
+
+    (if (not (and currproc bashdb-bashdbtrack-do-tracking-p))
+        (bashdb-bashdbtrack-overlay-arrow nil)
+
+      (let* ((procmark (process-mark currproc))
+             (block (buffer-substring (max comint-last-input-end
+                                           (- procmark
+                                              bashdb-bashdbtrack-track-range))
+                                      procmark))
+             target target_fname target_lineno)
+
+        (if (not (string-match (concat bashdb-bashdbtrack-input-prompt "$") block))
+            (bashdb-bashdbtrack-overlay-arrow nil)
+
+          (setq target (bashdb-bashdbtrack-get-source-buffer block))
+
+          (if (stringp target)
+              (message "bashdbtrack: %s" target)
+
+            (setq target_lineno (car target))
+            (setq target_buffer (cadr target))
+            (setq target_fname (buffer-file-name target_buffer))
+            (switch-to-buffer-other-window target_buffer)
+            (goto-line target_lineno)
+            (message "bashdbtrack: line %s, file %s" target_lineno target_fname)
+            (bashdb-bashdbtrack-overlay-arrow t)
+            (pop-to-buffer origbuf t)
+
+            )))))
+  )
+
+(defun bashdb-bashdbtrack-get-source-buffer (block)
+  "Return line number and buffer of code indicated by block's traceback text.
+
+We look first to visit the file indicated in the trace.
+
+Failing that, we look for the most recently visited python-mode buffer
+with the same name or having 
+having the named function.
+
+If we're unable find the source code we return a string describing the
+problem as best as we can determine."
+
+  (if (not (string-match bashdb-position-re block))
+
+      "line number cue not found"
+
+    (let* ((filename (match-string bashdb-marker-regexp-file-group block))
+           (lineno (string-to-int 
+		    (match-string bashdb-marker-regexp-line-group block)))
+           funcbuffer)
+
+      (cond ((file-exists-p filename)
+             (list lineno (find-file-noselect filename)))
+
+            ((= (elt filename 0) ?\<)
+             (format "(Non-file source: '%s')" filename))
+
+            (t (format "Not found: %s" filename)))
+      )
+    )
+  )
+
+
+;;; Subprocess commands
+
+
+
+;; bashdbtrack functions
+(defun bashdb-bashdbtrack-toggle-stack-tracking (arg)
+  (interactive "P")
+  (if (not (get-buffer-process (current-buffer)))
+      (error "No process associated with buffer '%s'" (current-buffer)))
+  ;; missing or 0 is toggle, >0 turn on, <0 turn off
+  (if (or (not arg)
+	  (zerop (setq arg (prefix-numeric-value arg))))
+      (setq bashdb-bashdbtrack-do-tracking-p (not bashdb-bashdbtrack-do-tracking-p))
+    (setq bashdb-bashdbtrack-do-tracking-p (> arg 0)))
+  (message "%sabled Make's bashdbtrack"
+           (if bashdb-bashdbtrack-do-tracking-p "En" "Dis")))
+
+(defun turn-on-bashdbtrack ()
+  (interactive)
+  (bashdb-bashdbtrack-toggle-stack-tracking 1))
+
+(defun turn-off-bashdbtrack ()
+  (interactive)
+  (bashdb-bashdbtrack-toggle-stack-tracking 0))
+
+;; bashdbtrack
+(add-hook 'comint-output-filter-functions 'bashdb-bashdbtrack-track-stack-file)
+
+
+;;; bashdbtrack.el ends here
+
 ;;; bashdb.el ends here
