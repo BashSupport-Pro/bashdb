@@ -188,6 +188,8 @@ Breakpoint 6 hit (3 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
 *** Should hit end of script but stay in debugger...
-dbg-test1.sh
-dbg-test1.sub
+Source files for which have been read in:
+
+dbg-test1.sh (39 lines)
+dbg-test1.sub (29 lines)
 *** quitting...

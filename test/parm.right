@@ -96,5 +96,7 @@ One-time breakpoint 3 set in file parm.sh, line 29.
 29:	exit 0
 eval says exit was 5
 print says exit was 5
-parm.sh
+Source files for which have been read in:
+
+parm.sh (34 lines)
 *** quitting...

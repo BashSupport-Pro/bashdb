@@ -1,6 +1,7 @@
 # dbg-info.inc - Bourne Again Shell Debugger Help Routines
 
-#   Copyright (C) 2002, 2003, 2004, 2005 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006 
+#   Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -131,9 +132,14 @@ _Dbg_cmd_info() {
 	;;
 
       fi | file| files | sources )
+        _Dbg_msg "Source files for which have been read in:
+"
         for file in ${_Dbg_filenames[@]} ; do  
+	  local filevar=`_Dbg_file2var $file`
+	  local -i maxline=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar`
+	  (( maxline++ )) 
 	  (( _Dbg_basename_only )) && file=${file##*/}
-	  _Dbg_msg "$file" ; 
+	  _Dbg_msg "$file ($maxline lines)" ; 
 	done        
         return
 	;;
@@ -246,7 +252,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.2 2006/03/12 23:28:46 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

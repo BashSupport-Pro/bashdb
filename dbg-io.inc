@@ -1,6 +1,7 @@
 # dbg-io.inc - Bourne Again Shell Debugger Input/Output routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein 
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -162,8 +163,9 @@ _Dbg_get_source_line() {
   source_line=`_Dbg_get_assoc_array_entry _Dbg_source_${filevar} $lineno`
 }
 
-# Read $1 into _source_$1 array.
-# Variable _read_$1 will be set to 1 to note that the file has been read.
+# Read $1 into _source_$1 array.  Variable _Dbg_read_$1 will be set
+# to 1 to note that the file has been read and the filename will be saved
+# in array _Dbg_filenames
 
 _Dbg_readin() {
   # set -xv
@@ -251,7 +253,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.6 2006/01/04 07:54:38 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.7 2006/03/12 23:28:46 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
