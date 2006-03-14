@@ -24,17 +24,17 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
-define(bashvers, 3.1)
+define(OK_BASH_VERS, 3.1)
 define(relstatus, 0.05cvs)
 
-AC_INIT([bashdb],[bashvers-relstatus],[bashdb-devel@lists.sourceforge.net])
+AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.9 2006/02/18 19:08:35 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.10 2006/03/14 22:55:15 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
-AC_DEFINE([VERSION], [bashvers-relstatus], [version string])
+AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
 dnl make sure we are using a recent autoconf version
 AC_PREREQ(2.53)
@@ -44,9 +44,9 @@ AM_INIT_AUTOMAKE([no-define])
 
 AC_BASHDB_PACKAGE([bashdb])
 
-# Brought over from bash/configure.in to substitute BASHVERS
+# Brought over from bash/configure.in to substitute OK_BASH_VERS
 # and RELSTATUS in dbg-pre.inc.in and version.texi
-BASHVERS=bashvers
+BASHVERS=OK_BASH_VERS
 RELSTATUS=relstatus
 AC_SUBST(BASHVERS)
 AC_SUBST(RELSTATUS)
@@ -88,7 +88,17 @@ if test "$BASH_PROG" = no; then
   You might want to use the --with-bash option.])
 fi
 
-bash_vers=`$BASH_PROG -c 'echo ${BASH_VERSINFO}'`
+bash_version=`$BASH_PROG --version`
+[bash_major=`$BASH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
+[bash_minor=`$BASH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
+case "${bash_major}.${bash_minor}" in
+  'OK_BASH_VERS')
+    ;;
+  *)
+    AC_MSG_WARN([You have Bash $bash_version installed.])
+    AC_MSG_ERROR([This package is only known to work with Bash OK_BASH_VERS.])
+    ;; 
+esac
 
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main], 
 		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
@@ -107,14 +117,9 @@ WL=$lt_prog_compiler_wl_CXX
 AC_SUBST(PIC)
 AC_SUBST(WL)
 
-if test "$bash_vers" != 3
-then
-  AC_MSG_ERROR([You need bash version 3 for this debugger. I see version ${bash_vers}.])
-elif test -z "$BASHDB_MAIN"
-then 
+if test -n "$BASHDB_MAIN" ; then
   BASHDB_MAIN=`strings $BASH_PROG$EXEEXT | grep bashdb-main.inc`
-  if test -z "$BASHDB_MAIN" 
-  then
+  if test -z "$BASHDB_MAIN" ; then
      AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the 
 right version of bash, set it with the --with-bashdb-main option])
   fi
@@ -211,3 +216,14 @@ fi
 ]],[[]])
 
 AC_OUTPUT
+echo
+echo "========================================================="
+echo "Bash version: $bash_version"
+echo "Location: $BASH_PROG"
+if test x"$build_readarray" != x; then
+   echo "We will try to build the readarray builtin to speed up loading"
+   echo "located at $BASH_SRC."
+else
+   echo "We will not try to build the readarray builtin to speed up loading."
+fi
+
