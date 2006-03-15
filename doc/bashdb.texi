@@ -2517,7 +2517,6 @@ debugged until the next time it is started.
 @kindex pwd
 @cindex print working directory
 @item pwd
-@itemx !
 
 Prints the working directory as the program sees things.
 
