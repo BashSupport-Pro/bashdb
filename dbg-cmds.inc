@@ -197,6 +197,11 @@ _Dbg_cmdloop() {
 	  _Dbg_cmd_pwd
 	  ;;
 
+	# complete
+	com | comp | compl | comple |complet | complete )
+	  _Dbg_cmd_complete $_Dbg_args
+	  ;;
+
 	# Breakpoint/Watchpoint Conditions
 	cond | condi |condit |conditi | conditio | condition )
 	  _Dbg_cmd_condition $_Dbg_args
@@ -534,6 +539,23 @@ _Dbg_cmd_debug() {
   $_Dbg_debug_cmd
   ((BASHDB_LEVEL--))
   export BASHDB_QUIT_ON_QUIT=$old_quit_on_quit
+}
+
+_Dbg_cmd_complete() {
+  declare -a commands=( - 
+	. / a break
+	cd complete continue condition clear
+	d debug delete disable display
+	D deleteall down eval enable examine
+	file finish frame 
+	handle help history info
+	list next step skip print pwd quit reverse
+	search set show source toggle tbreak tty
+	up undisplay watche version window 
+	A x L M R S T We )
+
+    local prefix=$1
+    eval "compgen -W \"${commands[@]}\" $prefix"
 }
 
 # V [![pat]] List variables and values for whose variables names which 
@@ -894,7 +916,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.5 2006/03/09 11:35:20 rockyb Exp $'
+_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.6 2006/03/15 12:30:56 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

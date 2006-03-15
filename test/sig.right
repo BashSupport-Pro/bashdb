@@ -25,13 +25,13 @@ SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND
 SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
 Program received signal SIGTERM (15)...
 ->0 in file `dbg-cmds.inc' at line 2
-->1 _Dbg_cmd_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 249
+->1 _Dbg_cmd_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 254
 ##2 _Dbg_cmdloop() called from file `dbg-sig.inc' at line 190
 ##3 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
 ##4 source("sig.sh") called from file `bashdb' at line 248
 ##5 main() called from file `bashdb' at line 0
 *** Should have printed a stack trace above...
-->0 in file `sig.sh' at line 640
+->0 in file `sig.sh' at line 662
 ##1 source("sig.sh") called from file `bashdb' at line 248
 ##2 main() called from file `bashdb' at line 0
 Program received signal SIGINT (2)...

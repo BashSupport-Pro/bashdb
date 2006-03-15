@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.3 2006/02/18 16:12:56 rockyb Exp $
+#$Id: Makefile.am,v 1.4 2006/03/15 12:31:06 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -19,6 +19,9 @@ check_DATA = \
 	bugIFS.sh.in \
 	bugIFS.tests \
 	check_common.in \
+	complete.cmd \
+	complete.right \
+	complete.tests \
 	continue.cmd \
 	dbg-test1.sh \
 	dbg-test1.sub \
@@ -105,7 +108,7 @@ check_DATA = \
 	watch2.right \
 	watch2.tests
 
-TESTS = run-action run-brkpt run-bugIFS run-debug run-display \
+TESTS = run-action run-brkpt run-bugIFS run-complete run-debug run-display \
 	run-finish run-list run-misc run-multi run-parm run-restart \
 	run-search run-sig run-skip run-subshell run-tbreak \
 	run-watch1 run-watch2
