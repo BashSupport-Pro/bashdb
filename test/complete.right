@@ -1,6 +1,13 @@
 (dbg-test1.sh:22):
 22:	x=22
 *** Testing complete***
+d
+debug
+delete
+disable
+display
+deleteall
+down
 file
 finish
 

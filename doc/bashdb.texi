@@ -2599,6 +2599,7 @@ interacts with you in various ways given below.
 * Editing::              Command editing (set editing, show editing)
 * Command Display::      Command display (set showcommand)
 * History::              Command history (history, !, H)
+* Command Completion::   Command completion (complete)
 @end menu
 
 @node Annotate
@@ -2941,6 +2942,34 @@ Print ten commands centered on command number @var{n}.
 Print ten commands just after the commands last printed.
 @end table
 @end ifset
+
+@node Command Completion
+@subsection Command Completion (@samp{complete})
+
+The @code{complete @var{args}} command lists all the possible completions
+for the beginning of a command.  Use @var{args} to specify the beginning of the
+command you want completed.  For example:
+
+@smallexample
+complete d
+@end smallexample
+
+@noindent results in:
+
+@smallexample
+@group
+d
+debug
+delete
+disable
+display
+deleteall
+down
+@end group
+@end smallexample
+
+@noindent This is intended for use by front-ends such as @sc{gnu}
+Emacs and @sc{ddd}.
 
 @node Front Ends
 @chapter Using @value{DBG} from a front-end user interface

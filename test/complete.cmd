@@ -1,5 +1,6 @@
 # Test of debugger complete command
-# $Id: complete.cmd,v 1.1 2006/03/15 12:31:06 rockyb Exp $
+# $Id: complete.cmd,v 1.2 2006/03/15 12:54:40 rockyb Exp $
 #
 print "*** Testing complete***"
+complete d
 complete fi

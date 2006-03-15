@@ -1,3 +1,18 @@
+Version 3.1 0.05 (initial 3.1 release)
+
+- Add complete (command completion), cd, pwd
+
+- Better checking to see if we have  bash 3.1 (as opposed to 3.0)
+
+- GNU Emacs debugging improvements
+
+- Add shell prompt tracking in GNU Emacs (bashdbtrack - like 
+  Python's pdbtrack)
+
+- Patches to allow VPATH (or build outside of source tree)
+
+- Numerous documentation changes
+
 Version 3.1 0.04 (initial 3.1 release)
 2006-01-16
 
@@ -478,4 +493,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.3 2006/01/16 06:42:46 rockyb Exp $
+$Id: NEWS,v 1.4 2006/03/15 12:54:36 rockyb Exp $
