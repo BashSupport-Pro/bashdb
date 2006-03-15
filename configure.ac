@@ -18,7 +18,7 @@ dnl Process this file with autoconf to produce a configure script.
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with GNU Make; see the file COPYING.  If not, write to the
+# along with this program; see the file COPYING.  If not, write to the
 # Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 # MA 02110-1301 USA.
 
@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.10 2006/03/14 22:55:15 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.11 2006/03/15 03:15:20 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -76,7 +76,7 @@ fi
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
 AC_ARG_WITH(bash, AC_HELP_STRING([--with-bash], 
-		  [location of bash 3.1 program]), BASH_PROG=$withval)
+		  [location of bash OK_BASH_VERS program]), BASH_PROG=$withval)
 
 if test "$BASH_PROG" = "yes" || test "$BASH_PROG" = "no" || test -z "$BASH_PROG"
 then
@@ -105,7 +105,8 @@ AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 
 dnl See if we build readarray.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
-		  [location of bash 3.1 source code]), BASH_SRC=$withval)
+		  [location of bash OK_BASH_VERS source code]), 
+		  BASH_SRC=$withval)
 AC_SUBST(BASH_SRC)
 
 dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
