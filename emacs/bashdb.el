@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.11 2006/03/12 11:52:00 rockyb Exp $
+;;; $Id: bashdb.el,v 1.12 2006/03/16 05:03:44 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -208,6 +208,8 @@ and source-file directory for your debugger."
   (define-key gud-menu-map [tbreak]    nil)
   (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
   (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
+
+  (local-set-key "\C-i" 'gud-gdb-complete-command)
 
   (local-set-key [menu-bar debug tbreak] 
 		 '("Temporary Breakpoint" . gud-tbreak))
