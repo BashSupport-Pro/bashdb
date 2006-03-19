@@ -16,6 +16,9 @@
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+typeset -r _Dbg_set_cmds="args annotate basename debugger editing listsize prompt showcommand"
+typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories listsize prompt warranty"
+
 # print help command 
 _Dbg_cmd_help() {
 
@@ -346,11 +349,10 @@ For more help, type h <cmd> or consult online-documentation.'
 _Dbg_help_set() {
   local -r set_cmd=$1
   local label=$2
-  local -r subcmds="args annotate basename debugger editing listsize prompt showcommand"
 
   if [[ -z $set_cmd ]] ; then 
       local thing
-      for thing in $subcmds ; do 
+      for thing in $_Dbg_set_cmds ; do 
 	_Dbg_help_set $thing 1
       done
       return
@@ -425,11 +427,10 @@ Follow this command with any number of args, to be passed to the program."
 
 _Dbg_help_show() {
   local -r show_cmd=$1
-  local -r subcmds="args annotate basename debugger commands copying debugger directories listsize prompt warranty"
 
   if [[ -z $show_cmd ]] ; then 
       local thing
-      for thing in $subcmds ; do 
+      for thing in $_Dbg_show_cmds ; do 
 	_Dbg_help_show $thing 1
       done
       return
@@ -493,7 +494,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.2 2006/02/01 13:42:30 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.3 2006/03/19 04:48:43 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

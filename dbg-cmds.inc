@@ -541,6 +541,31 @@ _Dbg_cmd_debug() {
   export BASHDB_QUIT_ON_QUIT=$old_quit_on_quit
 }
 
+typeset -a _Dbg_matches=()
+
+# Print a list of completions in global variable _Dbg_matches 
+# for 'subcmd' that start with 'text'.
+# We get the list of completions from _Dbg._*subcmd*_cmds.
+# If no completion, we return the empty list.
+_Dbg_subcmd_complete() {
+    subcmd=$1
+    text=$2
+    _Dbg_matches=()
+    local list=""
+    cmd="list=\$_Dbg_${subcmd}_cmds"
+    eval $cmd
+    local -i last=0
+    for word in $list ; do
+        # See if $word contains $text at the beginning. We use the string
+        # strip operatior '#' and check that some part of $word was stripped 
+        if [[ ${word#$text} != $word ]] ; then 
+            _Dbg_matches[$last]="$subcmd $word"
+            ((last++))
+        fi
+    done
+    # return _Dbg_matches
+}
+
 _Dbg_cmd_complete() {
   declare -a commands=( - 
 	. / a break
@@ -554,8 +579,19 @@ _Dbg_cmd_complete() {
 	up undisplay watche version window 
 	A x L M R S T We )
 
-    local prefix=$1
-    eval "compgen -W \"${commands[@]}\" $prefix"
+    # set -x
+    local -a args=($*)
+    _Dbg_matches=()
+    if (( ${#args[@]} == 2 )) ; then
+      _Dbg_subcmd_complete ${args[0]} ${args[1]}
+    elif (( ${#args[@]} == 1 )) ; then 
+      eval "builtin compgen -W \"${commands[@]}\" ${args[0]}"
+    fi  
+    local -i i
+    for (( i=0;  i < ${#_Dbg_matches[@]}  ; i++ )) ; do 
+      _Dbg_msg ${_Dbg_matches[$i]}
+    done
+    # set +x
 }
 
 # V [![pat]] List variables and values for whose variables names which 
@@ -916,7 +952,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.6 2006/03/15 12:30:56 rockyb Exp $'
+_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.7 2006/03/19 04:48:43 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

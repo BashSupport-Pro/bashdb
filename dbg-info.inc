@@ -17,17 +17,18 @@
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+typeset -r _Dbg_info_cmds="args breakpoints display files functions line signals source stack terminal variables warranty"
+
 _Dbg_info_help() {
   local -r info_cmd=$1
   local label=$2
-  local -r subcmds="args breakpoints display files functions line signals source stack terminal variables warranty"
 
   if [[ -z $info_cmd ]] ; then 
       local thing
 		_Dbg_msg \
 "List of info subcommands:
 "
-      for thing in $subcmds ; do 
+      for thing in $_Dbg_info_cmds ; do 
 	_Dbg_info_help $thing 1
       done
       return
@@ -252,7 +253,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.2 2006/03/12 23:28:46 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.3 2006/03/19 04:48:43 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
