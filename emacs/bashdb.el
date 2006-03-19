@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.12 2006/03/16 05:03:44 rockyb Exp $
+;;; $Id: bashdb.el,v 1.13 2006/03/19 01:06:15 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -446,26 +446,28 @@ problem as best as we can determine."
 	  (zerop (setq arg (prefix-numeric-value arg))))
       (setq bashdb-bashdbtrack-do-tracking-p (not bashdb-bashdbtrack-do-tracking-p))
     (setq bashdb-bashdbtrack-do-tracking-p (> arg 0)))
-  (message "%sabled Make's bashdbtrack"
+  (message "%sabled bashdb's bashdbtrack"
            (if bashdb-bashdbtrack-do-tracking-p "En" "Dis")))
 
 (defun turn-on-bashdbtrack ()
   (interactive)
+  (add-hook 'comint-output-filter-functions 
+	    'bashdb-bashdbtrack-track-stack-file)
+  (setq bashdb-bashdbtrack-is-tracking-p t)
   (bashdb-bashdbtrack-toggle-stack-tracking 1))
 
 (defun turn-off-bashdbtrack ()
   (interactive)
+  (remove-hook 'comint-output-filter-functions 
+	       'bashdb-bashdbtrack-track-stack-file)
+  (setq bashdb-bashdbtrack-is-tracking-p nil)
   (bashdb-bashdbtrack-toggle-stack-tracking 0))
-
-;; bashdbtrack
-(add-hook 'comint-output-filter-functions 'bashdb-bashdbtrack-track-stack-file)
 
 ;; Add a designator to the minor mode strings
 (or (assq 'bashdb-bashdbtrack-minor-mode-string minor-mode-alist)
     (push '(bashdb-bashdbtrack-is-tracking-p
 	    bashdb-bashdbtrack-minor-mode-string)
 	  minor-mode-alist))
-
 
 
 
