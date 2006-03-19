@@ -10,4 +10,12 @@ deleteall
 down
 file
 finish
+set args
+set annotate
+show args
+show annotate
+set annotate
+set args
+info files
+info functions
 
