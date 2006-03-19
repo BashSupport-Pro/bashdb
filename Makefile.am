@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.2 2006/01/05 12:35:44 rockyb Exp $
+#$Id: Makefile.am,v 1.3 2006/03/19 21:48:47 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -37,8 +37,9 @@ bin_SCRIPTS = bashdb
 pkgdatadir=$(datadir)/bashdb
 
 data_DATA =
-pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-file.inc     \
-               dbg-fns.inc   dbg-help.inc       dbg-hist.inc     \
+pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-complete.inc \
+	       dbg-file.inc  dbg-fns.inc                         \
+	       dbg-help.inc  dbg-hist.inc                        \
                dbg-info.inc  dbg-init.inc       dbg-io.inc       \
                dbg-list.inc  dbg-main.inc       dbg-pre.inc      \
 	       dbg-set.inc   dbg-sig.inc                         \
@@ -71,7 +72,7 @@ OLD_MAIN:=$(notdir @BASHDB_MAIN@)
 PARENT_DIR:=$(dir $(OLD_DIR))
 install-data-hook:
 	@if test -e @BASHDB_MAIN@ ; then \
-	  if test $(OLD_MAIN) != dbg-main.inc ; then \
+	  if test "$(OLD_MAIN)" != "dbg-main.inc" ; then \
 	    $(RM) @BASHDB_MAIN@ || true; \
           fi; fi
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
@@ -81,7 +82,7 @@ install-data-hook:
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
 	$(LN_S) $(DESTDIR)$(PKGDATADIR) $(DESTDIR)$(PARENT_DIR:/=) || true
-	@if test dbg-main.inc != $(OLD_MAIN) ; then \
+	@if test "dbg-main.inc" != "$(OLD_MAIN)" ; then \
 	  ( if cd $(DESTDIR)$(pkgdatadir) ; then \
 	     test -e $(OLD_MAIN) && $(RM) $(OLD_MAIN); \
 	     $(LN_S) dbg-main.inc $(OLD_MAIN) || \

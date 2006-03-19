@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.11 2006/03/15 03:15:20 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.12 2006/03/19 21:48:47 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -118,7 +118,7 @@ WL=$lt_prog_compiler_wl_CXX
 AC_SUBST(PIC)
 AC_SUBST(WL)
 
-if test -n "$BASHDB_MAIN" ; then
+if test -z "$BASHDB_MAIN" ; then
   BASHDB_MAIN=`strings $BASH_PROG$EXEEXT | grep bashdb-main.inc`
   if test -z "$BASHDB_MAIN" ; then
      AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the 
@@ -202,7 +202,6 @@ AC_CONFIG_FILES([ \
 	test/check_common \
 	doc/macros.texi \
         test/bugIFS.sh])
-
 
 AC_CONFIG_COMMANDS([default],[[
 # Keep old dates on these files to prevent rebuilding.

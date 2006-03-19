@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-watch1,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+#$Id: run-watch1,v 1.2 2006/03/19 21:48:48 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -13,7 +13,8 @@ fi
 
 TEST_NAME='watch1'
 TEST_FILE="$builddir/${TEST_NAME}.check"
-${THIS_SH} ${srcdir}/${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null
+
+(cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
 check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
 

@@ -17,7 +17,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.inc.in,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-main.inc.in,v 1.2 2006/03/19 21:48:47 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -29,20 +29,21 @@ fi
 # If not, set if "bash --debugger"
 [ -z $_Dbg_libdir ] && typeset _Dbg_libdir=@PKGDATADIR@
 
-. ${_Dbg_libdir}/dbg-init.inc  # Initializations - put sooner
-. ${_Dbg_libdir}/dbg-brk.inc   # Breakpoints, watchpoints, actions
-. ${_Dbg_libdir}/dbg-file.inc  # File functions
-. ${_Dbg_libdir}/dbg-fns.inc   # Miscellaneous helper functions
-. ${_Dbg_libdir}/dbg-help.inc  # Help routines
-. ${_Dbg_libdir}/dbg-hist.inc  # History routines
-. ${_Dbg_libdir}/dbg-info.inc  # Info routines
-. ${_Dbg_libdir}/dbg-io.inc    # I/O routines - has to come before 
-                                          # cmds
-. ${_Dbg_libdir}/dbg-cmds.inc  # Debugger commands
-. ${_Dbg_libdir}/dbg-list.inc  # List/search commands
-. ${_Dbg_libdir}/dbg-stack.inc # Call-stack routines
-. ${_Dbg_libdir}/dbg-set.inc   # set/show routines
-. ${_Dbg_libdir}/dbg-sig.inc   # signal-handling routines
+. ${_Dbg_libdir}/dbg-init.inc       # Initializations - put sooner
+. ${_Dbg_libdir}/dbg-brk.inc        # Breakpoints, watchpoints, actions
+. ${_Dbg_libdir}/dbg-complete.inc   # Breakpoints, watchpoints, actions
+. ${_Dbg_libdir}/dbg-file.inc       # File functions
+. ${_Dbg_libdir}/dbg-fns.inc        # Miscellaneous helper functions
+. ${_Dbg_libdir}/dbg-help.inc       # Help routines
+. ${_Dbg_libdir}/dbg-hist.inc       # History routines
+. ${_Dbg_libdir}/dbg-info.inc       # Info routines
+. ${_Dbg_libdir}/dbg-io.inc         # I/O routines - has to come before 
+                                    # cmds
+. ${_Dbg_libdir}/dbg-cmds.inc       # Debugger commands
+. ${_Dbg_libdir}/dbg-list.inc       # List/search commands
+. ${_Dbg_libdir}/dbg-stack.inc      # Call-stack routines
+. ${_Dbg_libdir}/dbg-set.inc        # set/show routines
+. ${_Dbg_libdir}/dbg-sig.inc        # signal-handling routines
 
 if [[ ${_Dbg_libdir:0:1} == '.' ]] ; then
     # Relative file name
