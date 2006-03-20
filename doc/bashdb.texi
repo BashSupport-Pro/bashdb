@@ -1987,6 +1987,19 @@ The version number is the same as the one announced when you start
 @item show copying
 Display information about permission for copying @value{BASH}.
 
+@item show logging
+
+Show summary information of logging variables which can be set via
+@code{set logging}.
+
+@item show logging file
+
+Show the current logging file.
+
+@item show logging overwrite
+
+Show whether logging overwrites or appends to the log file.
+
 @kindex show warranty
 @item show warranty
 Display the @sc{gnu} ``NO WARRANTY'' statement, or a warranty,
@@ -2258,6 +2271,8 @@ the @code{list} argument explicitly specifies some other number).
 @kindex show listsize
 @item show listsize
 Display the number of lines that @code{list} prints.
+
+
 @end table
 
 Repeating a @code{list} command with @key{RET} discards the argument,
@@ -2594,6 +2609,7 @@ interacts with you in various ways given below.
 * Basename::             Show basenames of file names only (set basename)
 * Debugger::             Allow debugging the debugger (set debugger)
 * File::                 Specifying a Script-File Associaton (file)
+* Logging::              Specifying where to write debugger output
 * Prompt::               Prompt (set prompt, show prompt)
 * Editing::              Command editing (set editing, show editing)
 * Command Display::      Command display (set showcommand)
@@ -2661,6 +2677,33 @@ Directs @value{DBG} to use @var{script-file} whenever bash would have
 it refers to the filename given in @env{BASH_SOURCE}. The filename
 specified in @env{BASH_SOURCE} that gets overriden is shown when is
 this command is issued.
+@end table
+
+@node Logging
+@subsection Logging output (@samp{set logging}, @samp{set logging file}...)
+
+You may want to save the output of the debugger commands to a file.
+There are several commands to control the debuggers's logging.
+
+@table @code
+@item set logging
+Prints @code{set logging} usage.
+@kindex set logging
+@item set logging @r{[} on | 1 @r{]}
+Enable or Disable logging.
+@item set logging file @var{filename}
+Change the name of the current logfile.  The default logfile is 
+@file{bashdb.txt}.
+@item set logging overwrite @r{[} on | 1 @r{]}
+By default, the debugger will append to the logfile.  Set
+@code{overwrite} if you want @code{set logging on} to overwrite the
+logfile instead.
+@item set logging redirect @r{[} on | 1 @r{]}
+By default, the debugger output will go to both the terminal and the
+logfile.  Set @code{redirect} if you want output to go only to the log
+file.
+@item show logging
+Show the current values of the logging settings.
 @end table
 
 @node Prompt
