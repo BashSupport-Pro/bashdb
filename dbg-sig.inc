@@ -1,6 +1,7 @@
 # dbg-sig.inc - Bourne Again Shell Debugger Signal handling routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein rocky@cpan.org
+#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein 
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -573,7 +574,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.3 2006/03/09 11:28:55 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.4 2006/03/20 01:51:36 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

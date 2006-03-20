@@ -2945,9 +2945,11 @@ Print ten commands just after the commands last printed.
 @node Command Completion
 @subsection Command Completion (@samp{complete})
 
-The @code{complete @var{args}} command lists all the possible completions
-for the beginning of a command.  Use @var{args} to specify the beginning of the
-command you want completed.  For example:
+The @code{complete @var{args}} command lists all the possible
+completions for the beginning of a command.  We can also show
+completions for @code{set}, @code{show} and @code{info}
+subcommands. Use @var{args} to specify the beginning of the command
+you want completed.  For example:
 
 @smallexample
 complete d
@@ -2964,6 +2966,20 @@ disable
 display
 deleteall
 down
+@end group
+@end smallexample
+
+And
+@smallexample
+complete set a
+@end smallexample
+
+@noindent results in:
+
+@smallexample
+@group
+set args
+set annotate
 @end group
 @end smallexample
 

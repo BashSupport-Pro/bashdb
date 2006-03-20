@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.3 2006/03/19 21:48:47 rockyb Exp $
+#$Id: Makefile.am,v 1.4 2006/03/20 01:51:36 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -41,8 +41,9 @@ pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-complete.inc \
 	       dbg-file.inc  dbg-fns.inc                         \
 	       dbg-help.inc  dbg-hist.inc                        \
                dbg-info.inc  dbg-init.inc       dbg-io.inc       \
-               dbg-list.inc  dbg-main.inc       dbg-pre.inc      \
-	       dbg-set.inc   dbg-sig.inc                         \
+               dbg-list.inc  dbg-log.inc        dbg-main.inc     \
+	       dbg-pre.inc                                       \
+	       dbg-set.inc   dbg-show.inc       dbg-sig.inc      \
 	       dbg-stack.inc dbg-set-d-vars.inc  $(readarray_builtin)
 
 EXTRA_DIST = dbg-pre.inc.in bashdb.in dbg-main.inc.in \

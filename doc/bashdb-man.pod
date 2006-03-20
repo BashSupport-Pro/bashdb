@@ -37,14 +37,14 @@ below.
 
 =over 4
 
-=item -h
+=item -h | --help
 
 Print a usage message on standard error and exit with a return code
 of 100.
 
 Z<>
 
-=item -B
+=item -B | --basename
 
 In places where a filename appears in debugger output give just the
 basename only. This is needed in for regression testing. Using this
@@ -56,7 +56,7 @@ inside the debugger.
 
 Z<>
 
-=item -n
+=item -n | nx
 
 Normally the debugger will read debugger commands in C<~/.bashdbinit>
 if that file exists before accepting user interaction.
@@ -81,7 +81,7 @@ appear in source listing or in a call stack trace will be the artifical name
 
 Z<>
 
-=item -q
+=item -q | --quiet
 
 Do not print introductory version and copyright information. This is
 again useful in regression testing where we don't want to include a
@@ -98,7 +98,7 @@ scripts.
 
 Z<>
 
-=item -L I<debugger-library>
+=item -L|--library I<debugger-library>
 
 The debugger needs to source or include a number of functions and
 these reside in a library. If this option is not given the default location
@@ -106,7 +106,7 @@ of library is relative to the installed bashdb script: C<../lib/bashdb>.
 
 Z<>
 
-=item -T I<temporary-file-directory>
+=item -T|--tempdir I<temporary-file-directory>
 
 The debugger needs to make use of some temporary filesystem storage to
 save persistent information across a subshell return or in order to
@@ -116,7 +116,7 @@ will be created.
 
 Z<>
 
-=item -t I<tty-name>
+=item -t|--tty I<tty-name>
 
 Debugger output usually goes to a terminal rather than stdout or stdin
 which the debugged program may use. Determination of the tty or
@@ -125,7 +125,7 @@ control where the debugger output goes, use this option.
 
 Z<>
 
-=item -V
+=item -V | --version
 
 Show version number and no-warranty and exit with return code 1.
 
@@ -168,11 +168,11 @@ L<bash>. There also an extensive debugger reference manual.
 
 =head1 AUTHOR
 
-The current version is maintained (or not) by C<rocky@panix.com>.
+The current version is maintained (or not) by C<rockyb@users.sourceforge.net>.
 
 =head1 COPYRIGHT
 
-  Copyright (C) 2003 Rocky Bernstein, email: rocky@panix.com.
+  Copyright (C) 2003, 2006 Rocky Bernstein, email: rockyb@users.sourceforge.net
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
@@ -185,8 +185,8 @@ The current version is maintained (or not) by C<rocky@panix.com>.
 
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.1 2006/01/02 23:34:23 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.2 2006/03/20 01:51:38 rockyb Exp $>
 
 =cut

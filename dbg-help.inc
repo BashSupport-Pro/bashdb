@@ -1,6 +1,7 @@
 # dbg-help.inc - Bourne Again Shell Debugger Help Routines
 
-#   Copyright (C) 2002, 2003, 2004, 2005 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006
+#   Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -494,7 +495,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.3 2006/03/19 04:48:43 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.4 2006/03/20 01:51:36 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

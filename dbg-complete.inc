@@ -1,6 +1,6 @@
 # dbg-cmds.inc - Bourne Again Shell Debugger command completion handling
 #
-#   Copyright (C) 2006 Rocky Bernstein rocky@cpan.org
+#   Copyright (C) 2006 Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -69,3 +69,10 @@ _Dbg_cmd_complete() {
     # set +x
 }
 
+typeset -r _Dbg_complete_ver=\
+'$Id: dbg-complete.inc,v 1.2 2006/03/20 01:51:36 rockyb Exp $'
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

@@ -1,6 +1,7 @@
 # dbg-init.inc - Bourne Again Shell Debugger Global Variables
 
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein 
+#   rocky@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -102,7 +103,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.3 2006/02/01 17:42:17 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.4 2006/03/20 01:51:36 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

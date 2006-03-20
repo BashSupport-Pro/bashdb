@@ -1,6 +1,7 @@
 # dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein rocky@cpan.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006 
+#   Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -29,7 +30,7 @@
 #                       command files will increase this descriptor
 
 typeset -ir _Dbg_INPUT_START_DESC=4
-typeset -ir _Dbg_MAX_INPUT_DESC=9
+typeset -i  _Dbg_MAX_INPUT_DESC=9  # logfile can reduce this
 typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
 
 # Are we inside the middle of a "skip" command?
@@ -899,7 +900,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmd_ver='$Id: dbg-cmds.inc,v 1.8 2006/03/19 21:48:47 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.9 2006/03/20 01:51:36 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

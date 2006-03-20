@@ -1,68 +1,73 @@
-(dbg-test2.sh:23):
-23:	set -xv
-*** Testing source command...
-prof1.cmd called
-prof2.cmd called...
-calling prof1.cmd...
-prof1.cmd called
-*** Test that ARGs are correct...
-_Dbg_arg#: 2
-$1: testarg1
-$2: testarg2
-*** Testing script args...
-$1 = dbg-test2.sh
-*** Testing Invalid commands...
-Don't know how to show badcommand.
-Undefined command: "another-bad-command". Try "help".
-Argument required (terminal name for running target process).
-*** GNU things...
+# dbg-set.inc - Bourne Again Shell Debugger Set Routines
+#
+#   Copyright (C) 2002,2003,2006 Rocky Bernstein rockyb@users.sourceforge.net
+#
+#   Bash is free software; you can redistribute it and/or modify it under
+#   the terms of the GNU General Public License as published by the Free
+#   Software Foundation; either version 2, or (at your option) any later
+#   version.
+#
+#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#   for more details.
+#   
+#   You should have received a copy of the GNU General Public License along
+#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-			    NO WARRANTY
+# Sets whether or not to display command to be executed in debugger prompt.
+# If yes, always show. If auto, show only if the same line is to be run
+# but the command is different.
+typeset _Dbg_show_command="auto"
 
-  11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
-OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
-OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
-TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
-PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
-REPAIR OR CORRECTION.
+_Dbg_cmd_show() {
+  local show_cmd=$1
+  local label=$2
 
-  12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
-INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
-OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
-TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
-YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
-PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGES.
+  # Warranty, copying and directories are omitted below.
+  local -r subcmds="args basename debugger editing linetrace listsize prompt"
 
+  if [[ -z $show_cmd ]] ; then 
+      local thing
+      for thing in $subcmds ; do 
+	_Dbg_cmd_show $thing 1
+      done
+      return
+  fi
 
-			    NO WARRANTY
-
-  11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
-OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
-OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
-TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
-PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
-REPAIR OR CORRECTION.
-
-  12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
-INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
-OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
-TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
-YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
-PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGES.
-
-
+  case $show_cmd in 
+    ar | arg | args )
+      [[ -n $label ]] && label='args:     '
+      _Dbg_msg \
+"${label}Argument list to give script when debugged program starts is:\n" \
+"      \"${_Dbg_script_args[@]}\"."
+      return 0
+      ;;
+    an | ann | anno | annot | annota | annotat | annotate )
+      [[ -n $label ]] && label='annotate: '
+     _Dbg_msg \
+"${label}Annotation_level is" \
+      "$_Dbg_annotate."
+      return 0
+      ;;
+    b | ba | bas | base | basen | basena | basenam | basename )
+      [[ -n $label ]] && label='basename: '
+      local onoff="off."
+      (( $_Dbg_basename_only != 0 )) && onoff='on.'
+      _Dbg_msg \
+"${label}Show short filenames (the basename) in debug output is" $onoff
+      return 0
+      ;;
+    com | comm | comma | comman | command | commands )
+      local -i hi_start=_Dbg_hi-1
+      local -i hi_stop=hi_start-10
+      _Dbg_cmd_history_list $hi_start $hi_stop
+      return 0
+      ;;
+    cop | copy| copyi | copyin | copying )
+      _Dbg_msg \
+"
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 
@@ -126,13 +131,13 @@ modification follow.
 
   0. This License applies to any program or other work which contains
 a notice placed by the copyright holder saying it may be distributed
-under the terms of this General Public License.  The "Program", below,
-refers to any such program or work, and a "work based on the Program"
+under the terms of this General Public License.  The \"Program\", below,
+refers to any such program or work, and a \"work based on the Program\"
 means either the Program or any derivative work under copyright law:
 that is to say, a work containing the Program or a portion of it,
 either verbatim or with modifications and/or translated into another
 language.  (Hereinafter, translation is included without limitation in
-the term "modification".)  Each licensee is addressed as "you".
+the term \"modification\".)  Each licensee is addressed as \"you\".
 
 Activities other than copying, distribution and modification are not
 covered by this License; they are outside its scope.  The act of
@@ -305,8 +310,8 @@ be similar in spirit to the present version, but may differ in detail to
 address new problems or concerns.
 
 Each version is given a distinguishing version number.  If the Program
-specifies a version number of this License which applies to it and "any
-later version", you have the option of following the terms and conditions
+specifies a version number of this License which applies to it and \"any
+later version\", you have the option of following the terms and conditions
 either of that version or of any later version published by the Free
 Software Foundation.  If the Program does not specify a version number of
 this License, you may choose any version ever published by the Free Software
@@ -319,241 +324,104 @@ Software Foundation, write to the Free Software Foundation; we sometimes
 make exceptions for this.  Our decision will be guided by the two goals
 of preserving the free status of all derivatives of our free software and
 of promoting the sharing and reuse of software generally.
+"
+      return 0
+      ;;
+    e | ed | edi | edit | editi | editin | editing )
+      [[ -n $label ]] && label='editing:  '
+      local onoff="on."
+      [[ -z $_Dbg_edit ]] && onoff='off.'
+     _Dbg_msg \
+"${label}Editing of command lines as they are typed is" $onoff
+      return 0
+      ;;
+    de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+      local onoff=${1:-'on'}
+      [[ -n $label ]] && label='debugger: '
+      local onoff="off."
+      (( $_Dbg_debug_debugger )) && onoff='on.'
+     _Dbg_msg \
+"${label}Allow debugging the debugger is" $onoff
+      return 0
+      ;;
+    di|dir|dire|direc|direct|directo|director|directori|directorie|directories)
+      local list=${_Dbg_dir[0]}
+      local -i n=${#_Dbg_dir[@]}
+      local -i i
+      for (( i=1 ; i < n; i++ )) ; do
+	list="${list}:${_Dbg_dir[i]}"
+      done
 
-*** Testing help commands...
-bashdb commands:
-List/search source lines:                 Control script execution:
--------------------------                 -------------------------
- l [start|.] [cnt] List cnt lines         T [n]        Stack trace
-                   from line start        s [n]        Single step [n times]
- l sub       List source code fn          n [n]        Next, steps over subs
- - or .      List previous/current line   <CR>/<Enter> Repeat last n or s 
- w [line]    List around line             c [linespec] Continue [to linespec]
- f filename  View source in file          L            List all breakpoints
- /pat/       Search forward for pat       b linespec   Set breakpoint
- ?pat?       Search backward for pat      del [n].. or D Delete a/all breaks
-                                                         by entry number
-Debugger controls:                        skip         skip execution of cmd
--------------------------                 cl linespec  Delete breakpoints by
- H [num]         Show last num commands                line spec
- q [exp] or ^D   Quit returning exp       R [args]     Attempt a restart
- info [cmd]      Get info on cmd.         u [n]        Go up stack by n or 1.
- !n or hi n      Run debugger history n   do [n]       Go down stack by n or 1.
- h or ? [cmd]    Get help on command      W [var]      Add watchpoint. If no
- info [cmd]      Get info on cmd                       no expr, delete all
- show [cmd]      Show settings            We [expr]    Add Watchpoint arith 
-                                                       expr
- so file         read in dbg commands     t            Toggle trace
-                                          en/di n      enable/disable brkpt,
- set x y         set a debugger variable               watchpoint, or display
- e bash-cmd      evaluate a bash command  tb linespec  Add one-time break
- disp expr       add a display expr       a linespec cmd eval "cmd" at linespec
- M               Show module versions     A            delete all actions
- x expr          evaluate expression      ret          jump out of fn or source
-                 (via declare, let, eval) finish       execute until return
- deb             debug into another       cond n exp   set breakpoint condition
-                 shell script
- !! cmd [args]   execute shell command "cmd" with "args"
- file filename   Set script filename to read for current source.
+     _Dbg_msg "Source directories searched: $list"
+      return 0
+      ;;
+    li | lis | list | lists | listsi | listsiz | listsize )
+      [[ -n $label ]] && label='listsize: '
+     _Dbg_msg \
+"${label}Number of source lines bashdb will list by default is" \
+      "$_Dbg_listsize."
+      return 0
+      ;;
+    lin | line | linet | linetr | linetra | linetrac | linetrace )
+      [[ -n $label ]] && label='line tracing: '
+      local onoff="off."
+      (( $_Dbg_linetrace != 0 )) && onoff='on.'
+      _Dbg_msg \
+"${label}Show line tracing is" $onoff
+      return 0
+      ;;
+    lo | log | logg | loggi | loggin | logging )
+      shift
+      _Dbg_cmd_show_logging $*
+      ;;
+    p | pr | pro | prom | promp | prompt )
+      [[ -n $label ]] && label='prompt:   '
+      _Dbg_msg \
+"${label}bashdb's prompt is:\n" \
+"      \"$_Dbg_prompt_str\"."
+      return 0
+      ;;
+    sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
+      [[ -n $label ]] && label='showcommand: '
+     _Dbg_msg \
+"${label}Show commands in debugger prompt is" \
+      "$_Dbg_show_command."
+      return 0
+      ;;
+    v | ve | ver | vers | versi | versio | version )
+      _Dbg_cmd_show_versions
+      return 0
+      ;;
+    w | wa | war | warr | warra | warran | warrant | warranty )
+      _Dbg_cmd_info warranty
+      return 0
+      ;;
+    *)
+      _Dbg_msg "Don't know how to show $show_cmd."
+      return 1
+  esac
+}
 
-Data Examination: also see e, t, x
--------------------------                 
- p variable      Print variable 
- V [[!]pat]      List variable(s) matching or not (!) matching pattern pat
- S [[!]pat]      List subroutine names [not] matching pattern pat
+_Dbg_cmd_show_versions()
+{
+  _Dbg_printf "%-12s => $_Dbg_release" "Release"
+  _Dbg_msg "=================================================================="
+  if [[ -n $_Dbg_script ]] ; then
+    _Dbg_printf "%-12s => $_Dbg_ver", 'bashdb'
+    local version
+    for file in $_Dbg_includes; do
+      local set_version_cmd="version=\$_Dbg_${file}_ver"
+      eval $set_version_cmd
+      _Dbg_printf "%-12s => $version" $file
+    done
+  fi
+}
 
-Readline command line editing (emacs/vi mode) is available.
-For more help, type h <cmd> or consult online-documentation.
-set args -- Set argument list to give program being debugged when it is started.
-Follow this command with any number of args, to be passed to the program.
-set annotate -- Set annotation level.
-set basename -- Set short filenames (the basename) in debug output is on.
-set debugger -- Set debugging the debugger is off.
-set editing  -- Set editing of command lines as they are typed is off.
-set listsize -- Set number of source lines bashdb will list by default.
-set prompt   -- bashdb's prompt is:
-       "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-set showcommand -- Set showing the command to execute is auto.
-There is no "set foo" command.
-Set argument list to give program being debugged when it is started.
-Follow this command with any number of args, to be passed to the program.
-Set annotation level.
-0 == normal;     1 == fullname (for use when running under emacs)
-Set number of source lines bashdb will list by default.
-bashdb's prompt is:
-       "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-Set editing of command lines as they are typed is off.
-tt  tty-name     Set the output device for debugger output
-                 Long command name: tty.
-List of info subcommands:
+# This is put at the so we have something at the end when we debug this.
+typeset -r _Dbg_show_ver=\
+'$Id: dbg-show.inc,v 1.1 2006/03/20 01:51:36 rockyb Exp $'
 
-info args -- Argument variables (e.g. $1, $2, ...) of current stack frame.
-info breakpoints -- Status of user-settable breakpoints
-info display -- Show all display expressions
-info files -- Source files in the program
-info functions -- All function names
-info line -- list current line number and and file name
-info signals -- What debugger does when program gets various signals
-info source -- Information about the current source file
-info stack -- Backtrace of the stack
-info terminal -- Print terminal device
-info variables -- All global and static variable names
-info warranty -- Various kinds of warranty you do not have
-Info subcommands are: args breakpoints display files functions source sources stack terminal variables watchpoints
-args:     Argument list to give script when debugged program starts is:
-       "-B -q -L .. -x misc.cmd dbg-test2.sh testarg1 testarg2".
-basename: Show short filenames (the basename) in debug output is on.
-debugger: Allow debugging the debugger is off.
-editing:  Editing of command lines as they are typed is on.
-line tracing: Show line tracing is off.
-listsize: Number of source lines bashdb will list by default is 10.
-prompt:   bashdb's prompt is:
-       "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-*** Set and show...
-Argument list to give script when debugged program starts is:
-       "-B -q -L .. -x misc.cmd dbg-test2.sh testarg1 testarg2".
-Argument list to give script when debugged program starts is:
-       "now is the time".
-"on" or "off" expected.
-Editing of command lines as they are typed is off.
-Editing of command lines as they are typed is on.
-Undefined set command "misspelled"
-Integer argument expected; got: bad
-Integer argument expected; got: bad
-annotation level must be 0 or 1
-Annotation_level is 0.
-Number of source lines bashdb will list by default is 40.
-Annotation_level is 1.
-*** Testing history...
-52: print "*** Testing history..."
-51: show annotate
-50: show listsize
-49: set annotate 1
-48: show annotate
-47: set annotate 6
-46: set annotate bad
-45: set listsize bad
-44: set listsize 40
-43: set misspelled 40
-42: show editing
-41: set editing
-40: show editing
-39: set editing fooo
-38: set editing off
-37: show args
-36: set args now is the time
-35: show args
-34: print "*** Set and show..."
-33: show 
-32: info 
-31: help info
-30: help tty
-29: help set editing
-28: help set prompt
-27: help set listsize
-26: help set annotate
-25: help set ar
-24: help set foo
-23: help set
-22: help 
-21: print "*** Testing help commands..."
-20: show copying
-19: info warranty
-18: show warranty
-17: print "*** GNU things..."
-16: tty 
-15: show badcommand
-14: print "*** Testing Invalid commands..."
-13: info args
-12: print "*** Testing script args..."
-11: print "\$2: $2"
-10: print "\$1: $1"
-9: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-8: print "*** Test that ARGs are correct..."
-7: print "prof1.cmd called"
-6: source prof1.cmd
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-2: print "prof1.cmd called"
-1: source prof1.cmd
-0: print "*** Testing source command..."
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-2: print "prof1.cmd called"
-1: source prof1.cmd
-0: print "*** Testing source command..."
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-$2: testarg2
-$2: testarg2
-19: info warranty
-50: show listsize
-Annotation_level is 1.
-prof1.cmd called
-52: print "*** Testing history..."
-51: show annotate
-Invalid history number: foo
-52: print "*** Testing history..."
-51: show annotate
-50: show listsize
-49: set annotate 1
-48: show annotate
-47: set annotate 6
-46: set annotate bad
-45: set listsize bad
-44: set listsize 40
-43: set misspelled 40
-42: show editing
-41: set editing
-40: show editing
-39: set editing fooo
-38: set editing off
-37: show args
-36: set args now is the time
-35: show args
-34: print "*** Set and show..."
-33: show 
-32: info 
-31: help info
-30: help tty
-29: help set editing
-28: help set prompt
-27: help set listsize
-26: help set annotate
-25: help set ar
-24: help set foo
-23: help set
-22: help 
-21: print "*** Testing help commands..."
-20: show copying
-19: info warranty
-18: show warranty
-17: print "*** GNU things..."
-16: tty 
-15: show badcommand
-14: print "*** Testing Invalid commands..."
-13: info args
-12: print "*** Testing script args..."
-11: print "\$2: $2"
-10: print "\$1: $1"
-9: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-8: print "*** Test that ARGs are correct..."
-7: print "prof1.cmd called"
-6: source prof1.cmd
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-2: print "prof1.cmd called"
-1: source prof1.cmd
-0: print "*** Testing source command..."
-Annotation_level is 1.
-Number 10000 should be less than 53
-*** Testing pwd/cd commands...
-Working directory test.
-Working directory test.
-*** Testing prompt and set tty...
-bashdb's prompt is:
-       "bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space".
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

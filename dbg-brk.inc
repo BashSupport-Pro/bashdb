@@ -1,6 +1,7 @@
 # dbg-brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
 
-#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein rocky@cpan.org
+#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein 
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -19,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.2 2006/03/09 11:28:55 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.3 2006/03/20 01:51:36 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  

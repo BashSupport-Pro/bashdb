@@ -49,19 +49,29 @@ fi
 
 # print message to output device
 _Dbg_msg() {
-  if [[ -n $_Dbg_tty  ]] ; then
-    builtin echo -e "$@" >>$_Dbg_tty
-  else
-    builtin echo -e "$@"
+  if (( $_Dbg_logging != 0 )) ; then
+    builtin echo -e "$@" >>$_Dbg_logfid
+  fi
+  if (( $_Dbg_logging_redirect == 0 )) ; then
+    if [[ -n $_Dbg_tty  ]] ; then
+      builtin echo -e "$@" >>$_Dbg_tty
+    else
+      builtin echo -e "$@"
+    fi
   fi
 }
 
 # print message to output device without a carriage return at the end
 _Dbg_msg_nocr() {
-  if [[ -n $_Dbg_tty  ]] ; then
-    builtin echo -n -e "$@" >>$_Dbg_tty
-  else
-    builtin echo -n -e "$@"
+  if (( $_Dbg_logging != 0 )) ; then
+    builtin echo -n -e "$@" >>$_Dbg_logfid
+  fi
+  if (( $_Dbg_logging_redirect == 0 )) ; then
+    if [[ -n $_Dbg_tty  ]] ; then
+      builtin echo -n -e "$@" >>$_Dbg_tty
+    else
+      builtin echo -n -e "$@"
+    fi
   fi
 }
 
@@ -69,10 +79,15 @@ _Dbg_msg_nocr() {
 _Dbg_printf() {
   local format=$1
   shift
-  if [[ -n $_Dbg_tty ]] ; then
-    builtin printf "$format" "$@" >>$_Dbg_tty
-  else
-    builtin printf "$format" "$@"
+  if (( $_Dbg_logging != 0 )) ; then
+    builtin printf "$format" "$@" >>$_Dbg_logfid
+  fi
+  if (( $_Dbg_logging_redirect == 0 )) ; then
+    if [[ -n $_Dbg_tty ]] ; then
+      builtin printf "$format" "$@" >>$_Dbg_tty
+    else
+      builtin printf "$format" "$@"
+    fi
   fi
   _Dbg_msg ""
 }
@@ -81,11 +96,21 @@ _Dbg_printf() {
 _Dbg_printf_nocr() {
   local format=$1
   shift 
-  if [[ -n $_Dbg_tty ]] ; then 
-    builtin printf "$format" "$@" >>$_Dbg_tty
-  else
-    builtin printf "$format" "$@"
+  if (( $_Dbg_logging != 0 )) ; then
+    builtin printf "$format" "$@" >>$_Dbg_logfid
   fi
+  if (( $_Dbg_logging_redirect == 0 )) ; then
+    if [[ -n $_Dbg_tty ]] ; then 
+      builtin printf "$format" "$@" >>$_Dbg_tty
+    else
+      builtin printf "$format" "$@"
+    fi
+  fi
+}
+
+# Common funnel for "Undefined command" message
+_Dbg_undefined_cmd() {
+  _Dbg_msg "Undefined $1 command \"$2\""
 }
 
 # _Dbg_progess_show --- print the progress bar
@@ -253,7 +278,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.7 2006/03/12 23:28:46 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.8 2006/03/20 01:51:36 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
