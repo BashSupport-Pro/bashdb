@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.4 2006/03/15 12:31:06 rockyb Exp $
+#$Id: Makefile.am,v 1.5 2006/04/04 23:23:24 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -37,6 +37,7 @@ check_DATA = \
 	finish.cmd \
 	finish.right \
 	finish.tests \
+	hanoitest.sh.in \
 	list.cmd \
 	list.right \
 	list.tests \

@@ -1,5 +1,5 @@
-#!@BASH_PROG@
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006  Rocky Bernstein rocky@panix.com
+# This program needs to be "SOURCE" and is not called as an executable
+#   Copyright (C) 2006  Rocky Bernstein rocky@panix.com
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -23,19 +23,42 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.8 2006/04/04 23:23:23 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.1 2006/04/04 23:23:23 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
-    ${_Dbg_pname} [OPTIONS] <script_file>
+    source @PKGDATADIR@/${_Dbg_pname} [OPTIONS]
 
-Runs script_file under a debugger.
+Sets up a script to be able to call the debugger. The function
+_Dbg_set_trace is defined here and when it is called the you will be
+at the next statement of your program in the debugger. For example, if 
+your script is:
+
+  # Lots of stuff here. ...
+  x=2
+  source @PKGDATADIR@/${_Dbg_pname}
+  _Dbg_set_trace ; : ; :
+  y=3
+
+You will be stopped before y=3 in the debugger. This mechanism allows
+you to run lots of complex code which might otherwise get messed up by
+the debugger. Another use might be in a large script where running the
+debugger every step (e.g. configure) is just too slow.
+
+You can also supply options to ${_Dbg_pname} just as you would to the 
+debugger itself. For example to suppress the banner you could use
+\"source ${_Dbg_pname} -q\" in the above example.
+
+Please note: it is important to \"source\" this file. That is use
+\"source @PKGDATADIR@/${_Dbg_pname}\" rather than call it directly.
+The _Dbg_set_trace() function and debuggers variables that have to
+persist in your program.
 
 options: 
     -B | --basename  basename only on source listings. 
                      (Needed in regression tests)
     -h | --help      print this help
-    -n | --nx |--no-init   
+    -n | | -nx |--no-init   
                      Don't run initialization files
     -c cmd | --command cmd
                      Run this passed command as a script
@@ -108,7 +131,7 @@ if [ 0 = $? ] ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o BhnqVc:t:x:L:T:: \
+  TEMP=`getopt -o BhnqV:t:x:L:T:: \
 --long basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
      -n 'bashdb' -- "$@"`
 
@@ -123,7 +146,6 @@ if [ 0 = $? ] ; then
   while true ; do
     case $1 in
       -B|--basename) _Dbg_basename_only=1 ;;
-      -c|--command) _Dbg_cmd="$2"; shift ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger
       -h|--help) _Dbg_usage_long; exit 100 ;;
       -L|--library) _Dbg_libdir=$2; shift ;;
@@ -151,10 +173,9 @@ if [ 0 = $? ] ; then
   done
 else 
   # Process using short options
-  while getopts :BhnqVc:t:x:L:T: opt; do
+  while getopts :BhnqV:t:x:L:T: opt; do
     case $opt in
       B) _Dbg_basename_only=1 ;;
-      c) _Dbg_cmd="$OPTARG" ;;
       h) _Dbg_usage_short; exit 100 ;;
       n) _Dbg_no_init=1 ;;
       q) _Dbg_quiet=1 ;;
@@ -185,20 +206,12 @@ else
   shift $(($OPTIND - 1))
 fi
 
-[[ $# == 0 && -z $show_version && -z $_Dbg_cmd ]] && {
-  echo "${_Dbg_pname}: Need to give a script name to debug."
-  exit 1
-}
-
 if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
   echo "${_Dbg_pname}: cannot read $_Dbg_libdir. " \
   "Perhaps bashdb is installed wrong." >&2
   echo "${_Dbg_pname}: or try using -L (with a different directory)." >&2
   exit 1
 fi
-
-_source_file=$1
-shift
 
 if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   echo "${_Dbg_pname}: cannot write to temp directory $_Dbg_tmpdir." >&2
@@ -234,23 +247,27 @@ EOF
   exit 1
 fi
 
-if [[ ! -r "$_source_file" ]] && [[ -z $_Dbg_cmd ]] ; then
-  echo "${_Dbg_pname}: cannot read program to debug: $_source_file." >&2
-  exit 1
-else
-  typeset -r _Dbg_source_file=$(_Dbg_expand_filename $_source_file)
-fi
-
 . $_Dbg_libdir/dbg-main.inc
-set -o functrace
-if [[ -z $_Dbg_cmd ]] ; then 
-  . $_source_file
-else 
-  eval $_Dbg_cmd
-fi
+trap '' DEBUG
 
+_Dbg_set_trace() {
+  set -o functrace
+  _Dbg_write_journal "_Dbg_steps=0"
+  trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
+}
 
-# end of bashdb
+_Dbg_linetrace_on() {
+  set -o functrace
+  _Dbg_write_journal_eval "_Dbg_linetrace=1"
+  trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
+}
+
+_Dbg_linetrace_off() {
+  _Dbg_write_journal_eval "_Dbg_linetrace=0"
+  set -o functrace
+}
+
+# end of bashdb-trace
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

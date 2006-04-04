@@ -90,7 +90,7 @@ _Dbg_debug_trap_handler() {
 
   local -i _Dbg_rc=0
 
-  # Sifto off "RETURN" we dont use any more.
+  # Shift off "RETURN";  we do not need that any more.
   shift 
 
   _Dbg_bash_command=$1
@@ -205,7 +205,7 @@ _Dbg_debug_trap_handler() {
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
   else
-    ((_Dbg_trace==1)) && _Dbg_print_source_line
+    ((_Dbg_linetrace==1)) && _Dbg_print_source_line
   fi
   _Dbg_set_to_return_from_debugger 1
   return $_Dbg_inside_skip
@@ -574,7 +574,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.4 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.5 2006/04/04 23:23:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

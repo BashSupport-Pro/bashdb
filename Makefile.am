@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.4 2006/03/20 01:51:36 rockyb Exp $
+#$Id: Makefile.am,v 1.5 2006/04/04 23:23:23 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -22,7 +22,7 @@ bin_PROGRAMS      =  readarray
 noinst_PROGRAMS   =  readarray
 readarray_SOURCES =  readarray.c
 readarray_CFLAGS  =  -I @BASH_SRC@ -I @BASH_SRC@/include -I@BASH_SRC@/builtins @PIC@
-readarray_LDFLAGS =  -shared @WL@-soname,
+readarray_LDFLAGS =  -shared
 readarray_builtin =  readarray
 endif
 
@@ -46,7 +46,7 @@ pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-complete.inc \
 	       dbg-set.inc   dbg-show.inc       dbg-sig.inc      \
 	       dbg-stack.inc dbg-set-d-vars.inc  $(readarray_builtin)
 
-EXTRA_DIST = dbg-pre.inc.in bashdb.in dbg-main.inc.in \
+EXTRA_DIST = dbg-pre.inc.in bashdb.in bashdb-trace.in dbg-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     ChangeLog ChangeLog.0 readarray.c
 

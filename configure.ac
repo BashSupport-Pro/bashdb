@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.13 2006/03/25 02:48:44 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.14 2006/04/04 23:23:23 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -103,7 +103,7 @@ esac
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main], 
 		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
 
-dnl See if we build readarray.c
+# See if we build readarray.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
 		  [location of bash OK_BASH_VERS source code]), 
 		  BASH_SRC=$withval)
@@ -196,12 +196,16 @@ AC_CONFIG_FILES([Makefile \
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x bashdb])
+AC_CONFIG_FILES([test/hanoitest.sh], [chmod +x test/hanoitest.sh])
+
 AC_CONFIG_FILES([ \
+	bashdb-trace \
 	dbg-pre.inc \
 	dbg-main.inc \
 	test/check_common \
 	doc/macros.texi \
-        test/bugIFS.sh])
+        test/bugIFS.sh
+	])
 
 AC_CONFIG_COMMANDS([default],[[
 # Keep old dates on these files to prevent rebuilding.
