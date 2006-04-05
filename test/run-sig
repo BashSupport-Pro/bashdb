@@ -1,10 +1,10 @@
 #!/bin/sh
-#$Id: run-sig,v 1.4 2006/01/04 19:20:24 rockyb Exp $
+#$Id: run-sig,v 1.5 2006/04/05 00:09:25 rockyb Exp $
 
 # SIGnals in CYGwin seem to work differently and I'm not sure
 # how. So disable this test on that.
-OS=$(uname -o)
-if [[ "$OS" == Cygwin ]] ; then
+OS=`uname -o`
+if test "$OS" = 'Cygwin' ; then
  exit 77
 fi
 
@@ -23,7 +23,6 @@ TEST_FILE="/tmp/${TEST_NAME}.check"
 TEST2_FILE="/tmp/${TEST_NAME}.check2"
 RIGHT_FILE="/tmp/${TEST_NAME}.right"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
-set -o noglob
 grep -v "bashdbeval" ${srcdir}/${TEST_NAME}.right >${RIGHT_FILE}
 grep -v "bashdbeval" ${TEST_FILE} >${TEST2_FILE}
 

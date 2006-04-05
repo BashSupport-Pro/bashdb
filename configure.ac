@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.14 2006/04/04 23:23:23 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.15 2006/04/05 00:09:25 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -181,9 +181,7 @@ if test x"$build_readarray" != x; then
    AC_CHECK_HEADERS(unistd.h string.h,,
    [AC_MSG_WARN([Missing some C headers. Disabling readarray])
    build_readarray=])
-   AC_CHECK_FUNC(getline,,
-   [AC_MSG_WARN([Missing GNU getline. Disabling readarray])
-   build_readarray=])
+   AC_CHECK_FUNCS(getline)
 fi
 
 AM_CONDITIONAL(BUILD_READARRAY, test x"$build_readarray" != x)

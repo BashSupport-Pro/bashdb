@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-multi,v 1.3 2006/02/18 16:12:56 rockyb Exp $
+#$Id: run-multi,v 1.4 2006/04/05 00:09:25 rockyb Exp $
 
 # Reinstate brkpt3 when BASH_COMMAND works again.
 # exit 77
@@ -19,8 +19,8 @@ for SUBTEST in multi1 multi2 multi3 multi4 ; do
   (cd $srcdir && ${THIS_SH} ${SUBTEST}.tests > $TEST_FILE 2>&1 < /dev/null)
 
   check_output $TEST_FILE ${srcdir}/${SUBTEST}.right
-  typeset -i rc=$?
-  if (( rc != 0 )) ; then
+  rc=$?
+  if test "$rc" -eq  0 ; then
     exit $rc
   fi
 done

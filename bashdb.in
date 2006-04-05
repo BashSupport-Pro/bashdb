@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.8 2006/04/04 23:23:23 rockyb Exp $'
+'$Id: bashdb.in,v 1.9 2006/04/05 00:09:25 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -102,8 +102,8 @@ fi
 
 # Process using short or long options, depending on the availability
 # of getopt
-TEMP=`getopt -o testing 2>&1 >/dev/null`
-if [ 0 = $? ] ; then
+TEMP=`getopt -o testing t 2>/dev/null`
+if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
   # Process using long options
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!

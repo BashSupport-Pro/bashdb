@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.1 2006/01/02 23:34:23 rockyb Exp $
+/* $Id: readarray.c,v 1.2 2006/04/05 00:09:25 rockyb Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -48,6 +48,94 @@ extern int errno;
 extern int builtin_error ();
 extern void builtin_usage (void);
 extern int parse_and_execute (char *psz_exec, const char *psz_from_file, int flags);
+
+#ifndef HAVE_GETLINE
+#define g_return_val_if_fail(test, val) \
+   if (!(test)) return val;
+
+/* The interface here is that of GNU libc's getline */
+static ssize_t
+getline (char **lineptr, size_t *n, FILE *stream)
+{
+#define EXPAND_CHUNK 16
+
+  int n_read = 0;
+  char *line = *lineptr;
+
+  g_return_val_if_fail (lineptr != NULL, -1);
+  g_return_val_if_fail (n != NULL, -1);
+  g_return_val_if_fail (stream != NULL, -1);
+  g_return_val_if_fail (*lineptr != NULL || *n == 0, -1);
+  
+#ifdef HAVE_FLOCKFILE
+  flockfile (stream);
+#endif  
+  
+  while (1)
+    {
+      int c;
+      
+#ifdef HAVE_FLOCKFILE
+      c = getc_unlocked (stream);
+#else
+      c = getc (stream);
+#endif      
+
+      if (c == EOF)
+        {
+          if (n_read > 0)
+           line[n_read] = '\0';
+          break;
+        }
+
+      if (n_read + 2 >= *n)
+        {
+         size_t new_size;
+
+         if (*n == 0)
+           new_size = 16;
+         else
+           new_size = *n * 2;
+
+         if (*n >= new_size)    /* Overflowed size_t */
+           line = NULL;
+         else
+           line = *lineptr ? realloc (*lineptr, new_size) : malloc (new_size);
+
+         if (line)
+           {
+             *lineptr = line;
+             *n = new_size;
+           }
+         else
+           {
+             if (*n > 0)
+               {
+                 (*lineptr)[*n - 1] = '\0';
+                 n_read = *n - 2;
+               }
+             break;
+           }
+        }
+
+      line[n_read] = c;
+      n_read++;
+
+      if (c == '\n')
+        {
+          line[n_read] = '\0';
+          break;
+        }
+    }
+
+#ifdef HAVE_FLOCKFILE
+  funlockfile (stream);
+#endif
+
+  return n_read - 1;
+}
+#endif /* ! HAVE_GETLINE */
+
 
 /* Process options. In this case we're looking for 
    -n *number*.
