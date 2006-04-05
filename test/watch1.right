@@ -40,18 +40,18 @@ Restarting with: -B -q -L .. -x restart2.cmd dbg-test1.sh
 Watchpoint : $x changed:
   old value: '22'
   new value: ''
-(bashdb:246):
-246:	set -o functrace
-246:==>set -o functrace
-247:   if [[ -z $_Dbg_cmd ]] ; then 
-248:     . $_source_file
-249:   else 
-250:     eval $_Dbg_cmd
-251:   fi
+(bashdb:245):
+245:	set -o functrace
+245:==>set -o functrace
+246:   if [[ -z $_Dbg_cmd ]] ; then 
+247:     . $_source_file
+248:   else 
+249:     eval $_Dbg_cmd
+250:   fi
+251:   
 252:   
-253:   
-254:   # end of bashdb
-255:   
+253:   # end of bashdb
+254:   
 No breakpoints have been set.
 Num Type       Enb  Expression
 2   watchpoint y    $x
