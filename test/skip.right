@@ -1,6 +1,5 @@
 (skip.sh:22):
 22:	x=22
-+ # $Id: skip.right,v 1.2 2006/04/06 12:05:32 rockyb Exp $
 + # Test skip command
 + # 
 + next 
