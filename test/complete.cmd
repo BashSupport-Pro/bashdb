@@ -1,7 +1,4 @@
-# Test of debugger complete command
-# $Id: complete.cmd,v 1.3 2006/03/19 11:09:40 rockyb Exp $
-#
-print "*** Testing complete***"
+### Testing debugger 'complete' command...
 complete d
 complete fi
 complete set a

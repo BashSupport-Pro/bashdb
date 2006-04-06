@@ -512,12 +512,12 @@ a(nother) GUI interface called DDD that supports @value{DBG}.
 @section Interactive Line Tracing Session
 
 One of the things I've always found annoying about @code{set -x}
-tracings is that there is no position information given in the trace
+tracing is that there is no position information given in the trace
 output, in particular the line number and the file name.  Although
 function nesting information is shown, other important Information
 such as @code{BASH} shell and subshell nesting count is not.
 From a programming standpoint, these are just as important because
-they affect the namespace, or the scope overwhich variables are seen.
+they affect the namespace, or the scope over which variables are seen.
 
 Although I this is best fixed inside @value{BASH}, the debugger
 provides a means for showing position information when tracing a
@@ -631,7 +631,7 @@ An explanation of the output. The @emph{level} is how many invocations
 of @value{BASH} are in effect before the statement shown is
 executed. The @emph{subshell} is how many subshells you are nested
 in. Subshells are used by command substitution (@code{`..'} and
-@code{$(...)}, and arithmentic expressions @code{((...))}. The
+@code{$(...)}, and arithmetic expressions @code{((...))}. The
 @emph{depth} is the function depth or how many calls you are nested
 in. A ``source'' command also increases this depth.
 

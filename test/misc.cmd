@@ -1,25 +1,26 @@
 # Test of miscellaneous commands: 
-# source, info args, show args, show warranty, show copying
-# $Id: misc.cmd,v 1.2 2006/03/09 11:28:57 rockyb Exp $
-print "*** Testing source command..."
+# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
+#### source command...
 source prof1.cmd
 source prof2.cmd
-#
-print "*** Test that ARGs are correct..."
+#########################################
+#### Test that ARGs are correct...
 print "_Dbg_arg#: ${#_Dbg_arg[@]}"
 print "\\$1: $1"
 print "\\$2: $2"
-print "*** Testing script args..."
+#########################################
+#### Testing script args...
 info args
-print "*** Testing Invalid commands..."
+#########################################
+#### Invalid commands...
 show badcommand
 another-bad-command
 tty
-print "*** GNU things..."
+#### *** GNU things...
 show warranty
 info warranty
 show copying
-print "*** Testing help commands..."
+#### help commands...
 help
 help set
 help set foo
@@ -32,7 +33,7 @@ help tty
 help info
 info
 show
-print "*** Set and show..."
+#### and show...
 show args
 set args now is the time
 show args
@@ -50,7 +51,7 @@ show annotate
 set annotate 1
 show listsize
 show annotate
-print "*** Testing history..."
+#### history...
 H
 H 5
 H 5 3
@@ -65,17 +66,19 @@ H foo
 H 100000
 history -2
 history 10000
-print "*** Testing pwd/cd commands..."
+#### pwd/cd commands...
 pwd
 cd .
-print "*** Testing prompt and set tty..."
+##########################
+#### Test 'prompt' and 'tty' ...
 set prompt bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space
 show prompt
 tty /tmp/misc-output.check
 l
-print "*** Testing file command..."
+#########################
+#### Test 'file' command...
 file misc.cmd
-print "*** info variables (V) command..."
+#### info variables (V) command...
 V dq*
 # On OS X there is some problem in doing the above and below commands
 # in succession. Further investigation is needed to fix this. 

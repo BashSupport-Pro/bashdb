@@ -1,21 +1,44 @@
 (dbg-test2.sh:23):
 23:	set -xv
-*** Testing source command...
++ # Test of miscellaneous commands:
++ # 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
++ #### source command...
++ source prof1.cmd
++ # Test a profile
++ print "prof1.cmd called"
 prof1.cmd called
++ source prof2.cmd
++ # Test a profile
++ print prof2.cmd called...
 prof2.cmd called...
++ print calling prof1.cmd...
 calling prof1.cmd...
++ source prof1.cmd
++ # Test a profile
++ print "prof1.cmd called"
 prof1.cmd called
-*** Test that ARGs are correct...
++ ######################################### 
++ #### Test that ARGs are correct...
++ print "_Dbg_arg#: ${#_Dbg_arg[@]}"
 _Dbg_arg#: 2
++ print "\$1: $1"
 $1: testarg1
++ print "\$2: $2"
 $2: testarg2
-*** Testing script args...
++ ######################################### 
++ #### Testing script args...
++ info args
 $1 = dbg-test2.sh
-*** Testing Invalid commands...
++ ######################################### 
++ #### Invalid commands...
++ show badcommand
 Don't know how to show badcommand.
++ another-bad-command 
 Undefined command: "another-bad-command". Try "help".
++ tty 
 Argument required (terminal name for running target process).
-*** GNU things...
++ #### *** GNU things...
++ show warranty
 
 			    NO WARRANTY
 
@@ -39,6 +62,7 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
++ info warranty
 
 			    NO WARRANTY
 
@@ -62,6 +86,7 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
++ show copying
 
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
@@ -320,7 +345,8 @@ make exceptions for this.  Our decision will be guided by the two goals
 of preserving the free status of all derivatives of our free software and
 of promoting the sharing and reuse of software generally.
 
-*** Testing help commands...
++ #### help commands...
++ help 
 bashdb commands:
 List/search source lines:                 Control script execution:
 -------------------------                 -------------------------
@@ -364,6 +390,7 @@ Data Examination: also see e, t, x
 
 Readline command line editing (emacs/vi mode) is available.
 For more help, type h <cmd> or consult online-documentation.
++ help set
 set args -- Set argument list to give program being debugged when it is started.
 Follow this command with any number of args, to be passed to the program.
 set annotate -- Set annotation level.
@@ -374,17 +401,25 @@ set listsize -- Set number of source lines bashdb will list by default.
 set prompt   -- bashdb's prompt is:
        "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
 set showcommand -- Set showing the command to execute is auto.
++ help set foo
 There is no "set foo" command.
++ help set ar
 Set argument list to give program being debugged when it is started.
 Follow this command with any number of args, to be passed to the program.
++ help set annotate
 Set annotation level.
 0 == normal;     1 == fullname (for use when running under emacs)
++ help set listsize
 Set number of source lines bashdb will list by default.
++ help set prompt
 bashdb's prompt is:
        "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
++ help set editing
 Set editing of command lines as they are typed is off.
++ help tty
 tt  tty-name     Set the output device for debugger output
                  Long command name: tty.
++ help info
 List of info subcommands:
 
 info args -- Argument variables (e.g. $1, $2, ...) of current stack frame.
@@ -399,7 +434,9 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
++ info 
 Info subcommands are: args breakpoints display files functions source sources stack terminal variables watchpoints
++ show 
 args:     Argument list to give script when debugged program starts is:
        "-B -q -L .. -x misc.cmd dbg-test2.sh testarg1 testarg2".
 basename: Show short filenames (the basename) in debug output is on.
@@ -409,151 +446,186 @@ line tracing: Show line tracing is off.
 listsize: Number of source lines bashdb will list by default is 10.
 prompt:   bashdb's prompt is:
        "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-*** Set and show...
++ #### and show...
++ show args
 Argument list to give script when debugged program starts is:
        "-B -q -L .. -x misc.cmd dbg-test2.sh testarg1 testarg2".
++ set args now is the time
++ show args
 Argument list to give script when debugged program starts is:
        "now is the time".
++ set editing off
++ set editing fooo
 "on" or "off" expected.
++ show editing
 Editing of command lines as they are typed is off.
++ set editing
++ show editing
 Editing of command lines as they are typed is on.
++ set misspelled 40
 Undefined set command "misspelled"
++ set listsize 40
++ set listsize bad
 Integer argument expected; got: bad
++ set annotate bad
 Integer argument expected; got: bad
++ set annotate 6
 annotation level must be 0 or 1
++ show annotate
 Annotation_level is 0.
++ set annotate 1
++ show listsize
 Number of source lines bashdb will list by default is 40.
++ show annotate
 Annotation_level is 1.
-*** Testing history...
-52: print "*** Testing history..."
-51: show annotate
-50: show listsize
-49: set annotate 1
-48: show annotate
-47: set annotate 6
-46: set annotate bad
-45: set listsize bad
-44: set listsize 40
-43: set misspelled 40
-42: show editing
-41: set editing
-40: show editing
-39: set editing fooo
-38: set editing off
-37: show args
-36: set args now is the time
-35: show args
-34: print "*** Set and show..."
-33: show 
-32: info 
-31: help info
-30: help tty
-29: help set editing
-28: help set prompt
-27: help set listsize
-26: help set annotate
-25: help set ar
-24: help set foo
-23: help set
-22: help 
-21: print "*** Testing help commands..."
-20: show copying
-19: info warranty
-18: show warranty
-17: print "*** GNU things..."
-16: tty 
-15: show badcommand
-14: print "*** Testing Invalid commands..."
-13: info args
-12: print "*** Testing script args..."
-11: print "\$2: $2"
-10: print "\$1: $1"
-9: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-8: print "*** Test that ARGs are correct..."
-7: print "prof1.cmd called"
-6: source prof1.cmd
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-2: print "prof1.cmd called"
-1: source prof1.cmd
-0: print "*** Testing source command..."
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-2: print "prof1.cmd called"
-1: source prof1.cmd
-0: print "*** Testing source command..."
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-$2: testarg2
-$2: testarg2
-19: info warranty
-50: show listsize
-Annotation_level is 1.
++ #### history...
++ H 
+44: show annotate
+43: show listsize
+42: set annotate 1
+41: show annotate
+40: set annotate 6
+39: set annotate bad
+38: set listsize bad
+37: set listsize 40
+36: set misspelled 40
+35: show editing
+34: set editing
+33: show editing
+32: set editing fooo
+31: set editing off
+30: show args
+29: set args now is the time
+28: show args
+27: show 
+26: info 
+25: help info
+24: help tty
+23: help set editing
+22: help set prompt
+21: help set listsize
+20: help set annotate
+19: help set ar
+18: help set foo
+17: help set
+16: help 
+15: show copying
+14: info warranty
+13: show warranty
+12: tty 
+11: show badcommand
+10: info args
+9: print "\$2: $2"
+8: print "\$1: $1"
+7: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
+6: print "prof1.cmd called"
+5: source prof1.cmd
+4: print calling prof1.cmd...
+3: print prof2.cmd called...
+2: source prof2.cmd
+1: print "prof1.cmd called"
+0: source prof1.cmd
++ H 5
+5: source prof1.cmd
+4: print calling prof1.cmd...
+3: print prof2.cmd called...
+2: source prof2.cmd
+1: print "prof1.cmd called"
+0: source prof1.cmd
++ H 5 3
+5: source prof1.cmd
+4: print calling prof1.cmd...
+3: print prof2.cmd called...
++ hi 11
+Don't know how to show badcommand.
++ !11 
+Don't know how to show badcommand.
++ !19:p 
+19: help set ar
++ !-3:p 
+42: set annotate 1
++ !-2 
+Number of source lines bashdb will list by default is 40.
++ ! 2
++ # Test a profile
++ print prof2.cmd called...
+prof2.cmd called...
++ print calling prof1.cmd...
+calling prof1.cmd...
++ source prof1.cmd
++ # Test a profile
++ print "prof1.cmd called"
 prof1.cmd called
-52: print "*** Testing history..."
-51: show annotate
++ H -2
+48: print "prof1.cmd called"
+47: source prof1.cmd
++ H foo
 Invalid history number: foo
-52: print "*** Testing history..."
-51: show annotate
-50: show listsize
-49: set annotate 1
-48: show annotate
-47: set annotate 6
-46: set annotate bad
-45: set listsize bad
-44: set listsize 40
-43: set misspelled 40
-42: show editing
-41: set editing
-40: show editing
-39: set editing fooo
-38: set editing off
-37: show args
-36: set args now is the time
-35: show args
-34: print "*** Set and show..."
-33: show 
-32: info 
-31: help info
-30: help tty
-29: help set editing
-28: help set prompt
-27: help set listsize
-26: help set annotate
-25: help set ar
-24: help set foo
-23: help set
-22: help 
-21: print "*** Testing help commands..."
-20: show copying
-19: info warranty
-18: show warranty
-17: print "*** GNU things..."
-16: tty 
-15: show badcommand
-14: print "*** Testing Invalid commands..."
-13: info args
-12: print "*** Testing script args..."
-11: print "\$2: $2"
-10: print "\$1: $1"
-9: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-8: print "*** Test that ARGs are correct..."
-7: print "prof1.cmd called"
-6: source prof1.cmd
-5: print calling prof1.cmd...
-4: print prof2.cmd called...
-3: source prof2.cmd
-2: print "prof1.cmd called"
-1: source prof1.cmd
-0: print "*** Testing source command..."
-Annotation_level is 1.
-Number 10000 should be less than 53
-*** Testing pwd/cd commands...
++ H 100000
+48: print "prof1.cmd called"
+47: source prof1.cmd
+46: print calling prof1.cmd...
+45: print prof2.cmd called...
+44: show annotate
+43: show listsize
+42: set annotate 1
+41: show annotate
+40: set annotate 6
+39: set annotate bad
+38: set listsize bad
+37: set listsize 40
+36: set misspelled 40
+35: show editing
+34: set editing
+33: show editing
+32: set editing fooo
+31: set editing off
+30: show args
+29: set args now is the time
+28: show args
+27: show 
+26: info 
+25: help info
+24: help tty
+23: help set editing
+22: help set prompt
+21: help set listsize
+20: help set annotate
+19: help set ar
+18: help set foo
+17: help set
+16: help 
+15: show copying
+14: info warranty
+13: show warranty
+12: tty 
+11: show badcommand
+10: info args
+9: print "\$2: $2"
+8: print "\$1: $1"
+7: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
+6: print "prof1.cmd called"
+5: source prof1.cmd
+4: print calling prof1.cmd...
+3: print prof2.cmd called...
+2: source prof2.cmd
+1: print "prof1.cmd called"
+0: source prof1.cmd
++ history -2
++ # Test a profile
++ print "prof1.cmd called"
+prof1.cmd called
++ history 10000
+Number 10000 should be less than 50
++ #### pwd/cd commands...
++ pwd 
 Working directory test.
++ cd .
 Working directory test.
-*** Testing prompt and set tty...
++ ########################## 
++ #### Test 'prompt' and 'tty' ...
++ set prompt bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space
++ show prompt
 bashdb's prompt is:
        "bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space".
++ tty /tmp/misc-output.check

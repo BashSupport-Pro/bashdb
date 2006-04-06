@@ -1,6 +1,9 @@
 (sig.sh:7):
 7:	if [[ "$1"x != x ]] ; then 
-*** Testing that we have our signal set up...
++ # Test that debugged program's signals are savend and restored across
++ # debug calls.
++ ### Testing that we have our signal set up...
++ info signals
 Signal       Stop   Print   Stack     Value
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
@@ -9,12 +12,22 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   print   showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
-*** Testing handle command...
++ ### Testing handle command...
++ handle TERM nostack
++ handle foo
 Bad signal name: foo
++ handle 1000
 Bad signal number: 1000
++ handle TERM bogus
 Need to give a command: stop, nostop, stack, nostack, print, noprint
++ eval kill -TERM $$
 Program received signal SIGTERM (15)...
-*** Should not have printed a stack trace above...
++ ### Should not have printed a stack trace above...
++ handle TERM noprint
++ handle TERM stack
++ handle INT nostop
++ eval kill -TERM $$
++ info signals
 Signal       Stop   Print   Stack     Value
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
@@ -23,17 +36,21 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
++ continue 
 Program received signal SIGTERM (15)...
 ->0 in file `dbg-cmds.inc' at line 2
-->1 _Dbg_cmd_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 255
+->1 _Dbg_cmd_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 266
 ##2 _Dbg_cmdloop() called from file `dbg-sig.inc' at line 191
 ##3 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
 ##4 source("sig.sh") called from file `bashdb' at line 247
 ##5 main() called from file `bashdb' at line 0
-*** Should have printed a stack trace above...
-->0 in file `sig.sh' at line 646
++ ### Should have printed a stack trace above...
++ continue 
++ where 
+->0 in file `sig.sh' at line 662
 ##1 source("sig.sh") called from file `bashdb' at line 247
 ##2 main() called from file `bashdb' at line 0
++ continue 
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 23
 ->1 source("sig.sh") called from file `bashdb' at line 247
@@ -43,3 +60,4 @@ Program received signal SIGINT (2)...
 ->1 source("sig.sh") called from file `bashdb' at line 247
 ##2 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
++ quit 

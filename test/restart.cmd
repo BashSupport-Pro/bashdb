@@ -1,4 +1,3 @@
-# $Id: restart.cmd,v 1.2 2006/01/04 07:45:12 rockyb Exp $
 # Test Restart command
 list
 step

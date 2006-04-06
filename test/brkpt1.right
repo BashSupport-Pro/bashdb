@@ -1,44 +1,77 @@
 (dbg-test1.sh:22):
 22:	x=22
++ # 
++ # Test of breakpoint handling
++ # 
++ # Test the simplest of breakpoints
++ break 22
 Breakpoint 1 set in file dbg-test1.sh, line 22.
++ info break
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:22
 No watch expressions have been set.
-*** Test enable/disable...
++ ############################################################### 
++ #### Test enable/disable...
++ enable 1
 Breakpoint entry 1 already enabled so nothing done.
++ disable 1
 Breakpoint entry 1 disabled.
-*** Try setting breakpoints outside of the file range...
++ ################################################################ 
++ #### Try setting breakpoints outside of the file range...
++ break 99
 Line 99 is too large. File dbg-test1.sh has only 38 lines.
++ break 0
 There is no line 0 to break at.
++ # 
++ # list breakpoints
++ L 
 Num Type       Disp Enb What
 1   breakpoint keep n   dbg-test1.sh:22
 No watch expressions have been set.
 No actions have been set.
-*** Try Deleting a non-existent breakpoint...
++ #### Try Deleting a non-existent breakpoint...
++ clear 10
 Didn't find any breakpoints to remove at 10.
++ d 0
 There is no line 0 to clear.
-** Test display status...
++ ############################################################### 
++ #### Test display status...
++ delete 1
 Removed 1 breakpoint(s).
++ info break
 No breakpoints have been set.
 No watch expressions have been set.
++ break 22
 Breakpoint 2 set in file dbg-test1.sh, line 22.
++ info break
 Num Type       Disp Enb What
 2   breakpoint keep y   dbg-test1.sh:22
 No watch expressions have been set.
-*** Test using file:line format on break...
++ ############################################################### 
++ #### *** Test using file:line format on break...
++ break ./dbg-test1.sh:23
 Breakpoint 3 set in file dbg-test1.sh, line 23.
++ break ./dbg-test1.sh:0
 There is no line 0 to break at.
++ break ./dbg-test1.sh:1955
 Line 1955 is too large. File dbg-test1.sh has only 38 lines.
++ break 23
 Breakpoint 4 set in file dbg-test1.sh, line 23.
++ info break
 Num Type       Disp Enb What
 2   breakpoint keep y   dbg-test1.sh:22
 3   breakpoint keep y   dbg-test1.sh:23
 4   breakpoint keep y   dbg-test1.sh:23
 No watch expressions have been set.
++ delete 3
 Removed 1 breakpoint(s).
-*** Test breakpoints with conditions...
++ ############################################################### 
++ #### Test breakpoints with conditions...
++ break 23 if x==0
 Breakpoint 5 set in file dbg-test1.sh, line 23.
++ break 24 y > 25
 Breakpoint 6 set in file dbg-test1.sh, line 24.
++ info break
 Num Type       Disp Enb What
 2   breakpoint keep y   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
@@ -47,8 +80,11 @@ Num Type       Disp Enb What
 6   breakpoint keep y   dbg-test1.sh:24
 	stop only if y > 25
 No watch expressions have been set.
++ condition 23
 Breakpoint entry 23 is not set. Condition not changed.
++ condition 
 Argument required (breakpoint number).
++ info break
 Num Type       Disp Enb What
 2   breakpoint keep y   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
@@ -57,11 +93,17 @@ Num Type       Disp Enb What
 6   breakpoint keep y   dbg-test1.sh:24
 	stop only if y > 25
 No watch expressions have been set.
++ condition x==1
 Bad breakpoint number: x==1
++ condition 4 x==1
++ condition bad
 Bad breakpoint number: bad
++ condition 30 y==1
 Breakpoint entry 30 is not set. Condition not changed.
++ disable 2 5
 Breakpoint entry 2 disabled.
 Breakpoint entry 5 disabled.
++ info break
 Num Type       Disp Enb What
 2   breakpoint keep n   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
@@ -71,19 +113,27 @@ Num Type       Disp Enb What
 6   breakpoint keep y   dbg-test1.sh:24
 	stop only if y > 25
 No watch expressions have been set.
++ enable 2 6
 Breakpoint entry 2 enabled.
 Breakpoint entry 6 already enabled so nothing done.
++ delete 2 6
 Removed 2 breakpoint(s).
-*** Test info break...
++ #### Test info break...
++ info break 11
 Breakpoint entry 11 is not set.
 No watch expressions have been set.
++ info break foo
 Bad breakpoint number foo.
 No watch expressions have been set.
++ info break 5
 Num Type       Disp Enb What
 5   breakpoint keep n   dbg-test1.sh:23
 	stop only if x==0
 No watch expressions have been set.
++ d 23
 Removed 2 breakpoint(s).
++ L 
 No breakpoints have been set.
 No watch expressions have been set.
 No actions have been set.
++ quit 

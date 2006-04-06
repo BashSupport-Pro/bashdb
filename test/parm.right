@@ -1,21 +1,34 @@
 (parm.sh:26):
 26:	x="main"
-** Try a simple stack command...
++ # Debugger test of:
++ # stack trace
++ # parameter display
++ # return command
++ # evaluation of dollar variables $1, $2
++ # 
++ ### Try a simple stack command...
++ where 
 ->0 in file `parm.sh' at line 26
 ##1 source("parm.sh") called from file `bashdb' at line 247
 ##2 main() called from file `bashdb' at line 0
++ step 2
 (parm.sh:3):
 3:	fn1() {
++ where 
 ->0 in file `parm.sh' at line 3
 ##1 fn1("5") called from file `parm.sh' at line 27
 ##2 source("parm.sh") called from file `bashdb' at line 247
 ##3 main() called from file `bashdb' at line 0
-** Try printing a dollar variable...
++ ### Try printing a dollar variable...
++ p $1
 5
-** Same thing using eval...
++ ### Same thing using eval...
++ eval echo $1
 5
-** Setting an action to print 5
++ ### Setting an action to print $1
++ a 4 echo "\$1 at line 4 has value $1"
 Breakpoint 0 set at parm.sh:4.
++ c fn2
 One-time breakpoint 1 set in file parm.sh, line 14.
 $1 at line 4 has value 5
 $1 at line 4 has value 4
@@ -25,7 +38,9 @@ $1 at line 4 has value 1
 $1 at line 4 has value 0
 (parm.sh:14):
 14:	fn2() {
-** First parameter should have embedded blanks...
++ # cont
++ ### First parameter should have embedded blanks...
++ where 
 ->0 in file `parm.sh' at line 14
 ##1 fn2("testing 1", "2 3") called from file `parm.sh' at line 6
 ##2 fn1("0") called from file `parm.sh' at line 10
@@ -36,23 +51,32 @@ $1 at line 4 has value 0
 ##7 fn1("5") called from file `parm.sh' at line 27
 ##8 source("parm.sh") called from file `bashdb' at line 247
 ##9 main() called from file `bashdb' at line 0
++ p "dollar 1: $1"
 dollar 1: testing 1
-** Same thing using eval...
++ ### Same thing using eval...
++ e echo "\$1 is $1"
 $1 is testing 1
-** Should have embedded blanks...
++ ### Should have embedded blanks...
++ p $2
 2 3
++ e echo "\$2 is $2"
 $2 is 2 3
++ continue fn3
 One-time breakpoint 2 set in file parm.sh, line 21.
 fn2: testing 1 2 3
 (parm.sh:21):
 21:	fn3() {
-** Test return. Should go back to fn2 and then fn1...
++ ### Test return. Should go back to fn2 and then fn1...
++ return 
 (parm.sh:18):
 18:	  x="fn2 returning"
++ return 
 (parm.sh:7):
 7:	    return
-** Should not have done above-listed x=fn2 assignment
++ ### Should not have done above-listed x="fn2" assignment
++ p $x
 fn2 started
++ where 
 ->0 in file `parm.sh' at line 7
 ##1 fn1("0") called from file `parm.sh' at line 10
 ##2 fn1("1") called from file `parm.sh' at line 10
@@ -62,8 +86,10 @@ fn2 started
 ##6 fn1("5") called from file `parm.sh' at line 27
 ##7 source("parm.sh") called from file `bashdb' at line 247
 ##8 main() called from file `bashdb' at line 0
++ return 
 (parm.sh:11):
 11:	  x="fn1 returning"
++ where 
 ->0 in file `parm.sh' at line 11
 ##1 fn1("1") called from file `parm.sh' at line 10
 ##2 fn1("2") called from file `parm.sh' at line 10
@@ -72,8 +98,10 @@ fn2 started
 ##5 fn1("5") called from file `parm.sh' at line 27
 ##6 source("parm.sh") called from file `bashdb' at line 247
 ##7 main() called from file `bashdb' at line 0
++ return 
 (parm.sh:11):
 11:	  x="fn1 returning"
++ where 
 ->0 in file `parm.sh' at line 11
 ##1 fn1("2") called from file `parm.sh' at line 10
 ##2 fn1("3") called from file `parm.sh' at line 10
@@ -81,22 +109,30 @@ fn2 started
 ##4 fn1("5") called from file `parm.sh' at line 27
 ##5 source("parm.sh") called from file `bashdb' at line 247
 ##6 main() called from file `bashdb' at line 0
++ return 
 (parm.sh:11):
 11:	  x="fn1 returning"
++ return 
 (parm.sh:11):
 11:	  x="fn1 returning"
++ where 
 ->0 in file `parm.sh' at line 11
 ##1 fn1("4") called from file `parm.sh' at line 10
 ##2 fn1("5") called from file `parm.sh' at line 27
 ##3 source("parm.sh") called from file `bashdb' at line 247
 ##4 main() called from file `bashdb' at line 0
-*** Testing that exit status preserved on eval and print...
++ ### * Testing that exit status preserved on eval and print...
++ c 29
 One-time breakpoint 3 set in file parm.sh, line 29.
 (parm.sh:29):
 29:	exit 0
++ e echo "eval says exit was $?"
 eval says exit was 5
++ p "print says exit was $?"
 print says exit was 5
++ info files
 Source files for which have been read in:
 
 parm.sh (34 lines)
-*** quitting...
++ ### * quitting...
++ quit 

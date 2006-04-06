@@ -25,14 +25,14 @@ dnl Process this file with autoconf to produce a configure script.
 dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
 define(OK_BASH_VERS, 3.1)
-define(relstatus, 0.05)
+define(relstatus, 0.06cvs)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.15 2006/04/05 00:09:25 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.16 2006/04/06 12:05:29 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 

@@ -1,6 +1,7 @@
 (dbg-test1.sh:22):
 22:	x=22
-*** Testing complete***
++ ### Testing debugger 'complete' command...
++ complete d
 d
 debug
 delete
@@ -8,14 +9,22 @@ disable
 display
 deleteall
 down
++ complete fi
 file
 finish
++ complete set a
 set args
 set annotate
++ complete show a
 show args
 show annotate
++ complete set an
 set annotate
++ complete set args
 set args
++ complete show args1
++ complete bogus command
++ complete info f
 info files
 info functions
 

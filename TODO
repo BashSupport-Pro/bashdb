@@ -1,12 +1,8 @@
 For Debian release:
-- bashdb manual page
 - GFDL or GPL for documentation? 
-- install lib in /usr/share. Have bashdb fallback to 
  "@DEBUGGER_START_FILE@"? if no -L and no ../lib? 
 
 BUGS
-
-- *New to bash 3.x: The $BASH_COMMAND variable no longer works.
 
 - Source can have parameters but that doesn't appear in ARGC, ARGV.
   RETURN trap should signal when leaving source'd file.
@@ -62,4 +58,4 @@ FUTURE:
 
 *=Things that bash might help out with.
 -------------------------------------
-$Id: TODO,v 1.1 2006/01/02 23:34:21 rockyb Exp $
+$Id: TODO,v 1.2 2006/04/06 12:05:29 rockyb Exp $

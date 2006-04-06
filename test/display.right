@@ -1,49 +1,71 @@
 (dbg-test1.sh:22):
 22:	x=22
-*** Try a simple display...
++ # Test break, watch, watche, step, next, continue and stack handling
++ # 
++ ### Try a simple display...
++ display echo $x
  0: echo $x
++ break 23
 Breakpoint 1 set in file dbg-test1.sh, line 23.
++ break 25
 Breakpoint 2 set in file dbg-test1.sh, line 25.
++ cont 
 Breakpoint 1 hit (1 times).
 (dbg-test1.sh:23):
 23:	y=23
  0 (echo $x): 22
++ cont 
 Breakpoint 2 hit (1 times).
 (dbg-test1.sh:25):
-25:	((x += i))
+25:	  ((x += i))
  0 (echo $x): 22
-*** Try disabling display ...
++ ### Try disabling display ...
++ disable display 0
 Display entry 0 disabled.
++ info display
 Display expressions:
 Num Enb Expression          
 0     0 echo $x
++ step 
 (dbg-test1.sh:24):
 24:	for i in 0 1 3 ; do
++ cont 
 Breakpoint 2 hit (2 times).
 (dbg-test1.sh:25):
-25:	((x += i))
-*** Try enabling display ...
+25:	  ((x += i))
++ ### Try enabling display ...
++ enable display 0
 Display entry 0 enabled.
++ info display
 Display expressions:
 Num Enb Expression          
 0     1 echo $x
-*** Try display to show again status ...
++ ### Try display to show again status ...
++ display 
  0 (echo $x): 22
++ cont 28
 One-time breakpoint 3 set in file dbg-test1.sh, line 28.
 Breakpoint 2 hit (3 times).
 (dbg-test1.sh:25):
-25:	((x += i))
+25:	  ((x += i))
  0 (echo $x): 23
++ info display
 Display expressions:
 Num Enb Expression          
 0     1 echo $x
++ cont 
 (dbg-test1.sh:28):
 28:	y=b
  0 (echo $x): 27
-*** Try undisplay to delete ...
++ ### Try undisplay to delete ...
++ undisplay 0
++ info display
 No display expressions have been set.
++ step 
 (dbg-test1.sh:29):
 29:	x=29
++ step 
 (dbg-test1.sh:30):
 30:	echo $(fn3 30)
-*** quitting...
++ ### quitting...
++ quit 

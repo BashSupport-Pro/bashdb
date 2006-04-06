@@ -1,56 +1,73 @@
 (dbg-test1.sh:22):
 22:	x=22
-** Try a forward search /x. Should not be the same line ...
- 25:   ((x += i))
-** Try a backward search ?fn1? ...
-  6:   echo "fn1 here"
-** Try another backward search ? Should not be the same line ...
++ # Test 'search' command
++ # 
++ ### Try a forward search /x. Should not be the same line ...
++ /x 
+ 25:     ((x += i))
++ ### Try a backward search ?fn1? ...
++ ?fn1? 
+  6:       echo "fn1 here"
++ ### Try another backward search ? Should not be the same line ...
++ ? 
   5:   fn1() {
-** Above search should reset list line below list start.
-** Should get same line as line above...
++ ### Above search should reset list line below list start.
++ ### Should get same line as line above...
++ list 
   5:   fn1() {
-  6:   echo "fn1 here"
-  7:   x=5
-  8:   fn3
-  9:   }
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
  10:   
  11:   fn2() {
- 12:   name="fn2"
- 13:   echo "$name here"
- 14:   x=6
-** Try forward search /fn1/. Should be line we got command before last ...
+ 12:       name="fn2"
+ 13:       echo "$name here"
+ 14:       x=6
++ ### Try forward search /fn1/. Should be line we got command before last ...
++ /fn1/ 
  32:   fn1;
-** Try a backward search ?fn3? ...
++ ### Try a backward search ?fn3? ...
++ ?fn3? 
  31:   fn3 31
-** Reset line back to begining ...
++ ### Reset line back to begining ...
++ list 1
   1:   #!../../bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
   4:   
   5:   fn1() {
-  6:   echo "fn1 here"
-  7:   x=5
-  8:   fn3
-  9:   }
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
  10:   
-** Try alternate search form: search /fn1/
++ ### Try alternate search form: search /fn1/
++ search /fn1/
  32:   fn1;
++ list 1
   1:   #!../../bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
   4:   
   5:   fn1() {
-  6:   echo "fn1 here"
-  7:   x=5
-  8:   fn3
-  9:   }
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
  10:   
-** Try alternate search form: search fn3
++ ### Try alternate search form: search fn3
++ search fn3
  17:   fn3() {
-** Try backward and forward last search...
-  8:   fn3
++ ### Try backward and forward last search...
++ ? 
+  8:       fn3
++ / 
  17:   fn3() {
-** Try alternate search form: rev fn3
-  8:   fn3
-** Search for something not there...
++ ### Try alternate search form: rev fn3
++ rev fn3
+  8:       fn3
++ ### Search for something not there...
++ search foobar1111
 search pattern: foobar1111 not found.
++ quit 

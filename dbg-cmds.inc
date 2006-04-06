@@ -36,6 +36,10 @@ typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
 # Are we inside the middle of a "skip" command?
 typeset -i  _Dbg_inside_skip=0
 
+# keep a list of source'd command files. If the entry is "" then we are 
+# interactive.
+typeset -a _Dbg_cmdfile=('')
+
 # A variable holding a space is set so it can be used in a "set prompt" command
 # ("read" in the main command loop will remove a trailing space so we need
 # another way to allow a user to enter spaces in the prompt.)
@@ -124,6 +128,13 @@ _Dbg_cmdloop() {
 	_Dbg_cmd=$_Dbg_last_next_step_cmd
 	_Dbg_args=$_Dbg_last_next_step_args
       fi
+
+     # If we are running a command file echo the line
+     local -i i=${#_Dbg_cmdfile[@]}-1
+     local cmdfile=${_Dbg_cmdfile[$i]}
+     if [[  "$cmdfile" != '' ]] && [[ "$cmdfile" != /dev/stdin ]] ; then
+       _Dbg_msg "+ $_Dbg_cmd $_Dbg_args"
+     fi
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
      local dq_args=$(_Dbg_esc_dq "$_Dbg_args")
@@ -487,14 +498,19 @@ _Dbg_cmdloop() {
 	  _Dbg_remove_history_item
 	  ;;
       esac
-      done
+      done # while (( $_Dbg_redo ))
 
       IFS=$_Dbg_space_IFS;
       eval "_Dbg_prompt=$_Dbg_prompt_str"
-    done
+
+    done  # while read $_Dbg_edit -p ...
 
     ((_Dbg_input_desc--))
-  done
+
+    # Remove last entry of $_Dbg_cmdfile
+    unset _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]
+
+  done  # Loop over all open pending file descriptors
 
   # EOF hit. Same as quit without arguments
   _Dbg_msg "" # Cause <cr> since EOF may not have put in.
@@ -774,6 +790,7 @@ _Dbg_cmd_source() {
       _Dbg_input[$_Dbg_input_desc]=$filename
       local _Dbg_redirect_cmd="exec $_Dbg_input_desc<$filename"
       eval $_Dbg_redirect_cmd
+      _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]=$filename
     else 
       local -i max_nesting
       ((max_nesting=_Dbg_MAX_INPUT_DESC-_Dbg_INPUT_START_DESC+1))
@@ -900,7 +917,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.9 2006/03/20 01:51:36 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.10 2006/04/06 12:05:29 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
