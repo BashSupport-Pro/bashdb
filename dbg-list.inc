@@ -1,5 +1,6 @@
 # bashdb-list.inc - Bourne Again Shell Debugger list/search commands
-#   Copyright (C) 2002, 2003, 2004 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -34,6 +35,47 @@ _Dbg_print_source_line() {
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
 ${line_number}:\t${source_line}"
+
+  # If we are at the same place in the file but the command has changed,
+  # then we have multiple commands on the line. So print which one we are
+  # currently at.
+  if [[ $_Dbg_show_command == "on" ]] ; then
+      _Dbg_msg "$_Dbg_bash_command"
+  elif [[ $_Dbg_last_curline == $_curline ]] \
+    && [[ $_Dbg_last_source_file == $_cur_source_file ]] \
+    && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
+    && $_Dbg_show_command == "auto" ]] ; then
+      _Dbg_msg "$_Dbg_bash_command"
+  fi
+}
+
+# Print Linetrace output. We also handle output if linetrace expand
+# is in effect.
+_Dbg_print_linetrace() {
+  local line_number=${1:-$_curline}
+  local filename=${2:-$_cur_source_file}
+
+  # Remove main + sig-handler  + print_lintrace FUNCNAMES.
+  local -i depth=${#FUNCNAME[@]}-3  
+
+  # If called from bashdb script rather than via "bash --debugger", 
+  # we are artificially nested one deeper because of the bashdb call.
+  if [[ -n $_Dbg_script ]] ; then 
+    ((depth--))
+  fi
+
+  local source_line
+  _Dbg_get_source_line $line_number $filename
+  filename=$(_Dbg_adjust_filename "$filename")
+  _Dbg_msg "(${filename}:${line_number}):
+level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
+
+##  Don't really know how to do linetrace expansion yet.
+##  if (( _Dbg_linetrace_expand )) ; then
+##    _Dbg_msg_nocr  "(${filename}:${line_number}):
+##level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t}"
+##    _Dbg_cmd_print "$source_line"
+##  fi
 
   # If we are at the same place in the file but the command has changed,
   # then we have multiple commands on the line. So print which one we are
@@ -226,7 +268,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.2 2006/04/06 04:15:51 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

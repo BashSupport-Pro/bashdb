@@ -205,7 +205,9 @@ _Dbg_debug_trap_handler() {
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
   else
-    ((_Dbg_linetrace==1)) && _Dbg_print_source_line
+    if ((_Dbg_linetrace==1)) ; then 
+      _Dbg_print_linetrace
+    fi
   fi
   _Dbg_set_to_return_from_debugger 1
   return $_Dbg_inside_skip
@@ -574,7 +576,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.5 2006/04/04 23:23:23 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.6 2006/04/06 04:15:51 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -26,8 +26,14 @@ typeset -i _cur_line        # current line number of debugged program
 typeset -i _Dbg_linetrace=0 # init execution line trace flag off
 typeset -i _Dbg_steps=1     # No. of statements to run after setting trap
 
+##typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
+
 # Save the initial working directory so we can reset it on a restart.
 typeset _Dbg_init_cwd=$(pwd)
+
+# If called from bashdb script rather than via "bash --debugger", skip
+# over some initial setup commands, like the initial "source" function
+# of debugged shell script.
 
 if [[ -n $_Dbg_script ]] ; then 
   _Dbg_steps=4
@@ -73,10 +79,6 @@ typeset -r _resteglob='shopt $__eopt extglob'
 
 typeset -r int_pat="[0-9]*([0-9])"
 
-# If called from bashdb script rather than via "bash --debugger", skip
-# over some initial setup commands, like the initial "source" function
-# of debugged shell script.
-
 # Set tty to use for output. 
 if [[ -z $_Dbg_tty ]] ; then 
   typeset _Dbg_tty;
@@ -103,7 +105,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.4 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.5 2006/04/06 04:15:51 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

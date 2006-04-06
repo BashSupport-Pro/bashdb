@@ -1,6 +1,7 @@
 # dbg-stack.inc - Bourne Again Shell Debugger Call Stack routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2005 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -222,7 +223,7 @@ _Dbg_cmd_up() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.1 2006/01/02 23:34:23 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.2 2006/04/06 04:15:51 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -117,7 +117,23 @@ _Dbg_cmd_set() {
 	off | 0 )
 	  _Dbg_write_journal_eval "_Dbg_linetrace=0"
 	  ;;
+##	e | ex | exp | expa | expan | expand )
+##	  local onoff=${2:-'on'}
+##	  case $onoff in 
+##	    on | 1 ) 
+##	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=1"
+##	      ;;
+##	    off | 0 )
+##	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=0"
+##	      ;;
+##	    * )
+##	      _Dbg_msg "\expand\", \"on\" or \"off\" expected."
+##              ;;
+##	  esac
+##	  ;;
+	
 	* )
+##	  _Dbg_msg "\expand\", \"on\" or \"off\" expected."
 	  _Dbg_msg "\"on\" or \"off\" expected."
 	  return 1
       esac
@@ -153,7 +169,7 @@ _Dbg_cmd_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.5 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.6 2006/04/06 04:15:51 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

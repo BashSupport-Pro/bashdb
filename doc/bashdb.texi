@@ -233,6 +233,7 @@ by entering them inside the debugger.
 
 @menu
 * Sample Session::              A Sample BASH Debugger session
+* Line Trace Session::          Interactive Line Tracing Session
 * Free Software::               Freely redistributable software
 @end menu
 
@@ -253,14 +254,14 @@ factorial of a number: fact(0) is 1 and fact(n) is n*fact(n-1).
 
 @smallexample
 @cartouche
-$ @b{bashdb -L .  fact.sh}
+$ @b{bashdb -L .  /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
 Copyright 2002, 2003, 2004, 2006 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
-(fact.sh:9):
-9:	echo fact 0 is: `fact 0`
+(/tmp/fact.sh:9):
+  9:	echo fact 0 is: `fact 0`
 bashdb<0> @b{-}
   1:    #!/usr/local/bin/bash
   2:    fact() @{
@@ -283,7 +284,16 @@ the @command{bashdb} script and the debugger files are in the same
 location. If you are running from the source code, this will be the
 case. However if bashdb has been installed this probably won't be true
 and here you probably don't need to use ``-L .'' Instead you would
-type simply @code{bashdb fact.sh}.
+type simply @code{bashdb /tmp/fact.sh}.
+
+Position information consists of a filename and line number,
+e.g. @code{(/tmp/fact.sh:9)} and is given parenthesis. This position
+format is similar to that used by the Perl debugger and is also in the
+same format used by my GNU make debugger (
+@url{http://bashdb.sourceforge.net/remake}.  and Extended python
+debugger @url{http://remake.sourceforge.net/remake}. GNU Emacs and DDD
+can parse this and in fact the same regular expression is used on the
+3 debuggers.
 
 The first debugger command we gave @kbd{-}, we listed a window of
 lines @emph{before} where we were executing. Because the window, 10
@@ -295,13 +305,14 @@ only one remaining line, that is what is printed.
 @smallexample
 @cartouche
 bashdb<2> @b{step}
-(fact.sh:9):
+(/tmp/fact.sh:9):
+fact 0
 9:	echo fact 0 is: `fact 0`
-bashdb<3> @b{@key{RET}}
+bashdb<(3)> @b{@key{RET}}
 2:	fact() @{
-bashdb<4> @b{@key{RET}}
+bashdb<(4)> @b{@key{RET}}
 3:	((n==0)) && echo 1 && return
-bashdb<5> @b{print $n}
+bashdb<(5)> @b{print $n}
 @end cartouche
 @end smallexample
 
@@ -311,10 +322,20 @@ The first @kbd{step} command steps the script one instruction. It may
 seem odd that the line printed is exactly the same one as before. What
 has happened though is that we've ``stepped'' into the subshell needed
 to run @kbd{`fact 0`}; we haven't however started running anything
-inside that subshell yet though---the function call.
+inside that subshell yet though.
+
+To indicate that which piece of the multi-part line @code{echo fact 0
+is: `fact 0`} we show that part all by itself @kbd{fact 0}. If nothing
+is shown then it means we are running the beginning statement or in
+this case the outermost statement.
+
+To indicate that we are now nested in a subshell, notice that the
+command number, starting with 3, or the third command entered, now
+appears in parenthesis. Each subshell nesting adds a set of
+parenthesis.
 
 The first @kbd{step} command steps the script one instruction; it
-didn't advance the line number at all. That is because we were
+didn't advance the line number, 9, at all. That is because we were
 stopping before the command substitution or backtick is to take
 place. The second command we entered was just hitting the return key;
 bashdb remembers that you entered @code{step} previously, so it runs
@@ -334,7 +355,7 @@ restart.
 @cartouche
 bashdb<6> @b{restart}
 Restarting with: /usr/local/bin/bashdb -L . fact.sh
-(fact.sh:10):
+(/tmp/fact.sh:10):
 10:	echo fact 0 is: `fact 0`
 bashdb<0> @b{list 1}
   1:    #!/usr/local/bin/bash
@@ -348,12 +369,12 @@ bashdb<0> @b{list 1}
   9:    
  10:==> echo fact 0 is: `fact 0`
 bashdb<1> @b{s 3}
-(fact.sh:3):
+(/tmp/fact.sh:3):
 3:	local -i n=$@{1:0@}
-bashdb<2> @b{step}
-(fact.sh:4):
+bashdb<(2)> @b{step}
+(/tmp/fact.sh:4):
 4:	((n==0)) && echo 1 && return
-bashdb<3> @b{print $n}
+bashdb<(3)> @b{print $n}
 print $n
 0
 @end cartouche
@@ -368,12 +389,12 @@ we could have done likewise and abbreviated @code{list} with @code{l}.
 
 @smallexample
 @cartouche
-bashdb<4> @b{@key{RET}}
-(fact.sh:4):
+bashdb<(4)> @b{@key{RET}}
+(/tmp/fact.sh:4):
 4:	((n==0)) && echo 1 && return
 echo 1
-bashdb<5> @b{@key{RET}}
-(fact.sh:4): 
+bashdb<(5)> @b{@key{RET}}
+(/tmp/fact.sh:4): 
 4:	((n==0)) && echo 1 && return
 return
 @end cartouche
@@ -390,13 +411,13 @@ value echo'ed on return will be 1.
 
 @smallexample
 @cartouche
-bashdb<6> @b{@key{RET}}
+bashdb<(6)> @b{@key{RET}}
 fact 0 is: 1
-(fact.sh:12): 
+(/tmp/fact.sh:12): 
 12:	echo fact 3 is: $(fact 3)
-bashdb<7> @b{break 5}
+bashdb<(7)> @b{break 5}
 Breakpoint 1 set in file fact.sh, line 5.
-bashdb<8> @b{continue}
+bashdb<(8)> @b{continue}
 @end cartouche
 @end smallexample 
 
@@ -410,17 +431,17 @@ the next stopping point which has been set up in some way.
 
 @smallexample
 @cartouche
-(fact.sh:5):
+(/tmp/fact.sh:5):
 5:      ((nm1=n-1))
 Breakpoint 1 hit(1 times).
-bashdb<8> @b{x n-1}
+bashdb<(8)> @b{x n-1}
 2
-bashdb<9> @b{s}
-(fact.sh:5):
+bashdb<(9)> @b{s}
+(/tmp/fact.sh:5):
 6:     ((result=n*`fact $nm1`))
-bashdb<10> @b{c}
+bashdb<(10)> @b{c}
 fact.sh: line 6: ((: result=n*: syntax error: operand expected (error token is "*")
-bashdb<7> @b{R}
+bashdb<(7)> @b{R}
 Restarting with: bash --debugger fact.sh 
 11:	echo fact 0 is: `fact 0`
 bashdb<0> @b{l fact}
@@ -449,18 +470,18 @@ on line 5. Once that statement is reached the breakpoint is removed.
 bashdb<1> @b{continue 5}
 One-time breakpoint 1 set in file fact.sh, line 5.
 fact 0 is: 1
-(fact.sh:5):
+(/tmp/fact.sh:5):
 5:	((nm1=n-1))
-bashdb<2> @b{s}
+bashdb<(2)> @b{s}
 6:	((fact_nm1=`fact $nm1`))
-bashdb<2> @b{s}
+bashdb<(3)> @b{s}
 2:	fact() @{
-bashdb<3> @b{T}
+bashdb<(4)> @b{T}
 ->0 in file `fact.sh' at line 2
 ##1 fact("3") called from file `fact.sh' at line 12
 ##2 source("fact.sh") called from file `/usr/local/bin/bashdb' at line 154
 ##3 main("fact.sh") called from file `/usr/local/bin/bashdb' at line 0
-bashdb<4> @b{c}
+bashdb<(5)> @b{c}
 fact 3 is: 6
 Debugged program terminated normally. Use q to quit or R to restart.
 @end cartouche
@@ -486,6 +507,144 @@ executing.  We can end our bashdb session with the bashdb
 Above we did our debugging session on the command line. If you are a
 GNU Emacs user, you can do your debugging inside that. Also there is
 a(nother) GUI interface called DDD that supports @value{DBG}.
+
+@node Line Trace Session
+@section Interactive Line Tracing Session
+
+One of the things I've always found annoying about @code{set -x}
+tracings is that there is no position information given in the trace
+output, in particular the line number and the file name.  Although
+function nesting information is shown, other important Information
+such as @code{BASH} shell and subshell nesting count is not.
+From a programming standpoint, these are just as important because
+they affect the namespace, or the scope overwhich variables are seen.
+
+Although I this is best fixed inside @value{BASH}, the debugger
+provides a means for showing position information when tracing a
+script. Here's a simple session.
+
+@example
+@cartouche
+@b{/usr/local/bin/bashdb /tmp/fact.sh}
+Bourne-Again Shell Debugger, release bash-3.1-0.05
+Copyright 2002, 2003, 2004, 2006 Rocky Bernstein
+This is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+
+(/tmp/fact.sh:11):
+11:	echo fact 0 is: `fact 0`
+bashdb<0> @b{set linetrace on}
+bashdb<1> @b{cont}
+(/tmp/fact.sh:11):
+level 1, subshell 1, depth 0:	echo fact 0 is: `fact 0`
+fact 0
+(/tmp/fact.sh:2):
+level 1, subshell 1, depth 1:	fact() @{
+(/tmp/fact.sh:3):
+level 1, subshell 1, depth 1:	    local -i n=$@{1:0@}
+(/tmp/fact.sh:4):
+level 1, subshell 1, depth 1:	    ((n==0)) && echo 1 && return
+(/tmp/fact.sh:4):
+level 1, subshell 1, depth 1:	    ((n==0)) && echo 1 && return
+echo 1
+(/tmp/fact.sh:4):
+level 1, subshell 1, depth 1:	    ((n==0)) && echo 1 && return
+return
+fact 0 is: 1
+(/tmp/fact.sh:13):
+level 1, subshell 0, depth 0:	echo fact 3 is: $(fact 3)
+(/tmp/fact.sh:13):
+level 1, subshell 1, depth 0:	echo fact 3 is: $(fact 3)
+fact 3
+(/tmp/fact.sh:2):
+level 1, subshell 1, depth 1:	fact() @{
+(/tmp/fact.sh:3):
+level 1, subshell 1, depth 1:	    local -i n=$@{1:0@}
+(/tmp/fact.sh:4):
+level 1, subshell 1, depth 1:	    ((n==0)) && echo 1 && return
+(/tmp/fact.sh:5):
+level 1, subshell 1, depth 1:	    ((nm1=n-1))
+(/tmp/fact.sh:6):
+level 1, subshell 1, depth 1:	    ((fact_nm1=`fact $nm1`))
+(/tmp/fact.sh:6):
+level 1, subshell 2, depth 1:	    ((fact_nm1=`fact $nm1`))
+fact $nm1
+(/tmp/fact.sh:2):
+level 1, subshell 2, depth 2:	fact() @{
+(/tmp/fact.sh:3):
+level 1, subshell 2, depth 2:	    local -i n=$@{1:0@}
+(/tmp/fact.sh:4):
+level 1, subshell 2, depth 2:	    ((n==0)) && echo 1 && return
+(/tmp/fact.sh:5):
+level 1, subshell 2, depth 2:	    ((nm1=n-1))
+(/tmp/fact.sh:6):
+level 1, subshell 2, depth 2:	    ((fact_nm1=`fact $nm1`))
+(/tmp/fact.sh:6):
+level 1, subshell 3, depth 2:	    ((fact_nm1=`fact $nm1`))
+fact $nm1
+(/tmp/fact.sh:2):
+level 1, subshell 3, depth 3:	fact() @{
+(/tmp/fact.sh:3):
+level 1, subshell 3, depth 3:	    local -i n=$@{1:@}
+(/tmp/fact.sh:4):
+level 1, subshell 3, depth 3:	    ((n==0)) && echo 1 && return
+(/tmp/fact.sh:5):
+level 1, subshell 3, depth 3:	    ((nm1=n-1))
+(/tmp/fact.sh:6):
+level 1, subshell 3, depth 3:	    ((fact_nm1=`fact $nm1`))
+(/tmp/fact.sh:6):
+level 1, subshell 4, depth 3:	    ((fact_nm1=`fact $nm1`))
+fact $nm1
+(/tmp/fact.sh:2):
+level 1, subshell 4, depth 4:	fact() @{
+(/tmp/fact.sh:3):
+level 1, subshell 4, depth 4:	    local -i n=$@{1:@}
+(/tmp/fact.sh:4):
+level 1, subshell 4, depth 4:	    ((n==0)) && echo 1 && return
+(/tmp/fact.sh:4):
+level 1, subshell 4, depth 4:	    ((n==0)) && echo 1 && return
+echo 1
+(/tmp/fact.sh:4):
+level 1, subshell 4, depth 4:	    ((n==0)) && echo 1 && return
+return
+(/tmp/fact.sh:7):
+level 1, subshell 3, depth 3:	    ((result=n*fact_nm1))
+(/tmp/fact.sh:8):
+level 1, subshell 3, depth 3:	    echo $result
+(/tmp/fact.sh:7):
+level 1, subshell 2, depth 2:	    ((result=n*fact_nm1))
+(/tmp/fact.sh:8):
+level 1, subshell 2, depth 2:	    echo $result
+(/tmp/fact.sh:7):
+level 1, subshell 1, depth 1:	    ((result=n*fact_nm1))
+(/tmp/fact.sh:8):
+level 1, subshell 1, depth 1:	    echo $result
+fact 3 is: 6
+(/usr/local/bin/bashdb:260):
+level 1, subshell 0, depth -1:	
+Debugged program terminated normally. Use q to quit or R to restart.
+bashdb<2> 
+@end cartouche
+@end example
+
+An explanation of the output. The @emph{level} is how many invocations
+of @value{BASH} are in effect before the statement shown is
+executed. The @emph{subshell} is how many subshells you are nested
+in. Subshells are used by command substitution (@code{`..'} and
+@code{$(...)}, and arithmentic expressions @code{((...))}. The
+@emph{depth} is the function depth or how many calls you are nested
+in. A ``source'' command also increases this depth.
+
+Notice also that in contrast to @code{set -x} tracing, the line shown
+is exactly as you entered it in the source. So if you indented
+statements in a meaningful way, it will help you understand the
+statement nesting level. But as before, if a line contains multiple
+statements, you are @emph{not} executing the first statement in the
+line and @code{set showcommand} is not turned off (by default it is
+on), that statement is shown in addition below the multi-statement
+line. Such an example can be seen right at the beginning where
+@code{fact 0} is shown.
+
 
 @node Free Software
 @unnumberedsec Free software
