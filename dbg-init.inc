@@ -36,7 +36,7 @@ typeset _Dbg_init_cwd=$(pwd)
 # of debugged shell script.
 
 if [[ -n $_Dbg_script ]] ; then 
-  _Dbg_steps=4
+  _Dbg_steps=2
 else 
   . ${_Dbg_libdir}/dbg-pre.inc
   typeset -r _Dbg_source_file=$(_Dbg_expand_filename $0)
@@ -105,7 +105,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.5 2006/04/06 04:15:51 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.6 2006/04/08 20:34:55 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

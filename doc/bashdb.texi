@@ -571,31 +571,7 @@ level 1, subshell 2, depth 1:	    ((fact_nm1=`fact $nm1`))
 fact $nm1
 (/tmp/fact.sh:2):
 level 1, subshell 2, depth 2:	fact() @{
-(/tmp/fact.sh:3):
-level 1, subshell 2, depth 2:	    local -i n=$@{1:0@}
-(/tmp/fact.sh:4):
-level 1, subshell 2, depth 2:	    ((n==0)) && echo 1 && return
-(/tmp/fact.sh:5):
-level 1, subshell 2, depth 2:	    ((nm1=n-1))
-(/tmp/fact.sh:6):
-level 1, subshell 2, depth 2:	    ((fact_nm1=`fact $nm1`))
-(/tmp/fact.sh:6):
-level 1, subshell 3, depth 2:	    ((fact_nm1=`fact $nm1`))
-fact $nm1
-(/tmp/fact.sh:2):
-level 1, subshell 3, depth 3:	fact() @{
-(/tmp/fact.sh:3):
-level 1, subshell 3, depth 3:	    local -i n=$@{1:@}
-(/tmp/fact.sh:4):
-level 1, subshell 3, depth 3:	    ((n==0)) && echo 1 && return
-(/tmp/fact.sh:5):
-level 1, subshell 3, depth 3:	    ((nm1=n-1))
-(/tmp/fact.sh:6):
-level 1, subshell 3, depth 3:	    ((fact_nm1=`fact $nm1`))
-(/tmp/fact.sh:6):
-level 1, subshell 4, depth 3:	    ((fact_nm1=`fact $nm1`))
-fact $nm1
-(/tmp/fact.sh:2):
+...
 level 1, subshell 4, depth 4:	fact() @{
 (/tmp/fact.sh:3):
 level 1, subshell 4, depth 4:	    local -i n=$@{1:@}
@@ -630,8 +606,8 @@ bashdb<2>
 An explanation of the output. The @emph{level} is how many invocations
 of @value{BASH} are in effect before the statement shown is
 executed. The @emph{subshell} is how many subshells you are nested
-in. Subshells are used by command substitution (@code{`..'} and
-@code{$(...)}, and arithmetic expressions @code{((...))}. The
+in. Subshells are used by command substitution---@code{`..'} and
+@code{$(...)}---as well as arithmetic expressions @code{((...))}. The
 @emph{depth} is the function depth or how many calls you are nested
 in. A ``source'' command also increases this depth.
 
@@ -768,7 +744,7 @@ type @samp{bashdb -c @emph{command string}} to give a string to run
 under the debugger
 @item 
 Modifying your program to enter the debugger at a particular point:
-@code{source ../bashdb-trace} and @code{_Dbg_set_trace ; : ; :}.
+@code{source ../bashdb-trace} and @code{_Dbg_set_trace}.
 @end itemize
 
 There are also two front-ends available as well. One can also
@@ -1001,7 +977,7 @@ command there is no problem.
 The second thing that needs to be done is put add statments to start
 stepping code, and this line looks like this:
 @smallexample
-     _Dbg_set_trace ; : ; :
+     _Dbg_set_trace
 @end smallexample 
 
 (For reasons that are a mystery to me, the stepping seems to kick in
