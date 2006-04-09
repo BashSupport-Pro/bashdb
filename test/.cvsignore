@@ -3,3 +3,4 @@ Makefile
 Makefile.in
 bugIFS.sh
 check_common
+hanoi.sh
