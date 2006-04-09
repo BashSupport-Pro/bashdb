@@ -1,5 +1,6 @@
 #!@BASH_PROG@
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006  Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006  Rocky Bernstein 
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -23,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.10 2006/04/08 20:34:55 rockyb Exp $'
+'$Id: bashdb.in,v 1.11 2006/04/09 12:20:10 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -40,8 +41,6 @@ options:
     -c cmd | --command cmd
                      Run this passed command as a script
     -q | --quiet     Quiet. Do not print introductory and quiet messages.
-    -x cmdfile | --cmdfile cmdfiles
-                     execute debugger commands from cmdfile
     -L libdir | --library libdir
                      set directory location of library helper file: $_Dbg_main
                      The default directory is: $_Dbg_libdir
@@ -49,6 +48,10 @@ options:
                      set directory location for temporary files: $_Dbg_tmpdir
     -t tty | --tty tty | --terminal tty
                      set debugger terminal
+    -x cmdfile | --cmdfile cmdfiles
+                     execute debugger commands from cmdfile
+    -X | --trace --terminal tty
+                     set line tracing
     -V | --version   show version number and no-warranty and exit.
 
 Long options may be abbreviated, e.g. --lib is okay for --library.
@@ -67,13 +70,21 @@ options:
     -n           Don't run initialization files
     -c command   Run this passed command as a script
     -q           Quiet. Do not print introductory and quiet messages.
-    -x cmdfile   execute debugger commands from cmdfile
     -L libdir    set directory location of library helper file: $_Dbg_main
                  the default directory is: $_Dbg_libdir
     -T tmpdir    set directory location for temporary files: $_Dbg_tmpdir
     -t tty       set debugger terminal
+    -x cmdfile   execute debugger commands from cmdfile
+    -X           set line tracing
     -V           show version number and no-warranty and exit.
 " 1>&2
+}
+
+# This routine gets called via the -c or --command option and its sole
+# purpose is to capture the command string such as via "x $*" or 
+# in a traceback ("where").
+bashdb_eval() {
+  eval $*  # Type: "x $*" to see what's being run.
 }
 
 declare -a _Dbg_script_args="$@"
@@ -108,8 +119,8 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o BhnqVc:t:x:L:T:: \
---long basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
+  TEMP=`getopt -o Bc:hL:nqt:T::x:XV \
+--long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,tty::,version \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 
@@ -129,7 +140,6 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
       -L|--library) _Dbg_libdir=$2; shift ;;
       -n|--nx|--no-init) _Dbg_no_init=1 ;;
       -q|--quiet) _Dbg_quiet=1 ;;
-      -x) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
       -T|--tempdir) _Dbg_tmpdir=$2; shift ;;
       -t|--terminal|--tty) 
 	if ! $(touch $2 >/dev/null 2>/dev/null); then 
@@ -141,6 +151,8 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
 	fi
 	shift
 	;;
+      -x) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
+      -X|--trace) _Dbg_opt_linetrace=1 ;;  
       -V|--version) show_version=1 ;;
       --) shift ; break ;;
       *) 
@@ -151,14 +163,13 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
   done
 else 
   # Process using short options
-  while getopts :BhnqVc:t:x:L:T: opt; do
+  while getopts :Bc:hL:nqt:T:x:XV opt; do
     case $opt in
       B) _Dbg_basename_only=1 ;;
       c) _Dbg_cmd="$OPTARG" ;;
       h) _Dbg_usage_short; exit 100 ;;
       n) _Dbg_no_init=1 ;;
       q) _Dbg_quiet=1 ;;
-      x) BASHDB_INPUT="$BASHDB_INPUT $OPTARG" ;;  
       L) _Dbg_libdir=$OPTARG ;;
       T) _Dbg_tmpdir=$OPTARG ;;
       t) 
@@ -171,6 +182,8 @@ else
 	fi
 	;;
       V) show_version=1 ;;
+      x) BASHDB_INPUT="$BASHDB_INPUT $OPTARG" ;;  
+      X) _Dbg_opt_linetrace=1 ;;  
       *) 
 	if ((_Dbg_basename_only == 1)) ; then
 	  echo "${_Dbg_pname}: unrecognized option -- $OPTARG"
@@ -242,13 +255,22 @@ else
 fi
 
 . $_Dbg_libdir/dbg-main.inc
-# Set to skip over the next 4 statements
-_Dbg_write_journal_eval "_Dbg_steps=4" 
+if (( $_Dbg_opt_linetrace )) ; then 
+  # No stepping.
+  _Dbg_write_journal_eval "_Dbg_steps=-1" 
+else 
+  # Set to skip over the next 4 statements
+  _Dbg_write_journal_eval "_Dbg_steps=5" 
+fi
 set -o functrace
 if [[ -z $_Dbg_cmd ]] ; then 
+  if (( $_Dbg_opt_linetrace )) ; then 
+    # No stepping.
+    _Dbg_linetrace=1
+  fi
   . $_source_file
 else 
-  eval $_Dbg_cmd
+  bashdb_eval "$_Dbg_cmd"
 fi
 
 

@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.16 2006/04/06 12:05:29 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.17 2006/04/09 12:20:10 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -194,7 +194,7 @@ AC_CONFIG_FILES([Makefile \
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x bashdb])
-AC_CONFIG_FILES([test/hanoitest.sh], [chmod +x test/hanoitest.sh])
+AC_CONFIG_FILES([test/hanoi.sh], [chmod +x test/hanoi.sh])
 
 AC_CONFIG_FILES([ \
 	bashdb-trace \

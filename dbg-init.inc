@@ -23,8 +23,16 @@
 
 typeset _cur_fn             # current function of debugged program
 typeset -i _cur_line        # current line number of debugged program
-typeset -i _Dbg_linetrace=0 # init execution line trace flag off
-typeset -i _Dbg_steps=1     # No. of statements to run after setting trap
+
+# Number of statements to run before entering the debugger.
+# Is used intially to get out of sourced dbg-main.inc script
+# and in bashdb script to not stop in remaining bashdb statements
+# before the sourcing the script to be debugged.
+typeset -i _Dbg_steps=1
+
+# Set initial line tracing flag off
+typeset -i _Dbg_linetrace=0 
+
 
 ##typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 
@@ -36,7 +44,7 @@ typeset _Dbg_init_cwd=$(pwd)
 # of debugged shell script.
 
 if [[ -n $_Dbg_script ]] ; then 
-  _Dbg_steps=2
+  _Dbg_steps=3
 else 
   . ${_Dbg_libdir}/dbg-pre.inc
   typeset -r _Dbg_source_file=$(_Dbg_expand_filename $0)
@@ -105,7 +113,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.6 2006/04/08 20:34:55 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.7 2006/04/09 12:20:10 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
