@@ -977,7 +977,7 @@ command there is no problem.
 The second thing that needs to be done is put add statments to start
 stepping code, and this line looks like this:
 @smallexample
-     _Dbg_set_trace
+     _Dbg_set_trace ; :
 @end smallexample 
 
 (For reasons that are a mystery to me, the stepping seems to kick in
@@ -991,7 +991,7 @@ Putting these two components together, here's an example:
   source <path-to-program>/_Dbg_bash_trace
   echo There can be lots of other statements between the above
   echo and below line.
-  _Dbg_set_trace
+  _Dbg_set_trace ; :
   y=3
 @end cartouche
 @end smallexample 
@@ -1003,8 +1003,8 @@ the debugger itself. All of the options listed in @ref{Options for the
 bashdb script} can be used with the exception of @code{-c} (run a
 command) and of course you don't supply the name of a @value{BASH} script.
 
-For example to suppress the banner you could use @code{source
-_Dbg_bash_trace -q} in the above example.
+For example to suppress the banner you could use @code{_Dbg_bash_trace
+-q} in the above example.
 
 @node Running
 @chapter Script Setup inside the BASH Debugger
