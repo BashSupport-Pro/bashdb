@@ -1,5 +1,5 @@
 #!../../bash
-#$Id: action.tests,v 1.2 2006/04/10 00:40:41 rockyb Exp $
+#$Id: action.tests,v 1.3 2006/04/10 01:54:52 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
@@ -8,7 +8,7 @@ fi
 cmdfile=action.cmd
 debugged_script=dbg-test1.sh
 
-$BASH ${TOP_BUILDDIR}bashdb -B -q -L ${TOP_BUILDDIR} -x $cmdfile $debugged_script
+$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile $debugged_script
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
