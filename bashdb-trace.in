@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.1 2006/04/04 23:23:23 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.2 2006/04/10 00:40:40 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -131,7 +131,7 @@ if [ 0 = $? ] ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o BhnqV:t:x:L:T:: \
+  TEMP=`getopt -o BhL:nqt:T::V:x: \
 --long basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
      -n 'bashdb' -- "$@"`
 
@@ -173,7 +173,7 @@ if [ 0 = $? ] ; then
   done
 else 
   # Process using short options
-  while getopts :BhnqV:t:x:L:T: opt; do
+  while getopts BhL:n:qt:T:V:x: opt; do
     case $opt in
       B) _Dbg_basename_only=1 ;;
       h) _Dbg_usage_short; exit 100 ;;
@@ -258,13 +258,14 @@ _Dbg_set_trace() {
 
 _Dbg_linetrace_on() {
   set -o functrace
-  _Dbg_write_journal_eval "_Dbg_linetrace=1"
+  _Dbg_linetrace=1
+  _Dbg_steps=-1
+  BASHDB_QUIT_ON_QUIT=1
   trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }
 
 _Dbg_linetrace_off() {
-  _Dbg_write_journal_eval "_Dbg_linetrace=0"
-  set -o functrace
+  _Dbg_linetrace=0
 }
 
 # end of bashdb-trace

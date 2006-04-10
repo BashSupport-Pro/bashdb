@@ -1,0 +1,221 @@
+(hanoi.sh:38):
+level 1, subshell 0, depth -1:	hanoi $max "a" "b" "c"
+(hanoi.sh:13):
+level 1, subshell 0, depth 0:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 0:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 0:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 0:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 0:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 0:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 0:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 0:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 1:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 1:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 1:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 1:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 1:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 1:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 1:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 1:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 2:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 2:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 2:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 2:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 2:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 2:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 3:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 2:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
+Move disk 0 on a to b
+(hanoi.sh:25):
+level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 1:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 1:	    echo "Move disk $n on $a to $b"
+Move disk 1 on a to c
+(hanoi.sh:25):
+level 1, subshell 0, depth 1:	    if (( n > 0 )) ; then
+(hanoi.sh:26):
+level 1, subshell 0, depth 1:	       hanoi $n $c $b $a
+(hanoi.sh:13):
+level 1, subshell 0, depth 2:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 2:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 2:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 2:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 2:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 2:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 3:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 2:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
+Move disk 0 on b to c
+(hanoi.sh:25):
+level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 0:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 0:	    echo "Move disk $n on $a to $b"
+Move disk 2 on a to b
+(hanoi.sh:25):
+level 1, subshell 0, depth 0:	    if (( n > 0 )) ; then
+(hanoi.sh:26):
+level 1, subshell 0, depth 0:	       hanoi $n $c $b $a
+(hanoi.sh:13):
+level 1, subshell 0, depth 1:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 1:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 1:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 1:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 1:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 1:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 1:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 1:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 2:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 2:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 2:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 2:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 2:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 2:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 3:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 2:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
+Move disk 0 on c to a
+(hanoi.sh:25):
+level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 1:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 1:	    echo "Move disk $n on $a to $b"
+Move disk 1 on c to b
+(hanoi.sh:25):
+level 1, subshell 0, depth 1:	    if (( n > 0 )) ; then
+(hanoi.sh:26):
+level 1, subshell 0, depth 1:	       hanoi $n $c $b $a
+(hanoi.sh:13):
+level 1, subshell 0, depth 2:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 2:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 2:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 2:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 2:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
+(hanoi.sh:21):
+level 1, subshell 0, depth 2:	    (( n-- ))
+(hanoi.sh:22):
+level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:14):
+level 1, subshell 0, depth 3:	  local -i n=$1
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  local -r a=$2
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  local -r b=$3
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  local -r c=$4
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:23):
+level 1, subshell 0, depth 2:	    ((disc_num=max-n))
+(hanoi.sh:24):
+level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
+Move disk 0 on a to b
+(hanoi.sh:25):
+level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+(hanoi.sh:39):
+level 1, subshell 0, depth -1:	if (( $tracing )) ; then
+(hanoi.sh:40):
+level 1, subshell 0, depth -1:	  _Dbg_linetrace_off

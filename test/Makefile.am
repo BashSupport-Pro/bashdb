@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.9 2006/04/09 15:56:06 rockyb Exp $
+#$Id: Makefile.am,v 1.10 2006/04/10 00:40:41 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -104,6 +104,8 @@ check_DATA = \
 	tbreak.tests \
 	trace.right \
 	trace.tests \
+	trace2.tests \
+	trace2.right \
 	watch1.cmd \
 	watch1.right \
 	watch1.tests \

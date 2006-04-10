@@ -1,4 +1,4 @@
-(bashdb:271):
+(bashdb:272):
 level 1, subshell 0, depth -1:	  . $_source_file
 (hanoi.sh:31):
 level 1, subshell 0, depth 0:	typeset -i max=3
@@ -12,7 +12,7 @@ level 1, subshell 0, depth 0:	init
 level 1, subshell 0, depth 1:	init() {
 (hanoi.sh:8):
 level 1, subshell 0, depth 1:	  if (( $tracing )) ; then
-(hanoi.sh:39):
+(hanoi.sh:38):
 level 1, subshell 0, depth 0:	hanoi $max "a" "b" "c"
 (hanoi.sh:13):
 level 1, subshell 0, depth 1:	hanoi() { 
@@ -229,7 +229,7 @@ level 1, subshell 0, depth 3:	    echo "Move disk $n on $a to $b"
 Move disk 0 on a to b
 (hanoi.sh:25):
 level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
-(bashdb:284):
+(hanoi.sh:39):
+level 1, subshell 0, depth 0:	if (( $tracing )) ; then
+(bashdb:285):
 level 1, subshell 0, depth -1:	
-Debugged program terminated normally. Use q to quit or R to restart.
-
