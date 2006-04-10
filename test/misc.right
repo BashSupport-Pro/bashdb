@@ -422,7 +422,7 @@ tt  tty-name     Set the output device for debugger output
 + help info
 List of info subcommands:
 
-info args -- Argument variables (e.g. $1, $2, ...) of current stack frame.
+info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
 info breakpoints -- Status of user-settable breakpoints
 info display -- Show all display expressions
 info files -- Source files in the program

@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.13 2006/03/19 01:06:15 rockyb Exp $
+;;; $Id: bashdb.el,v 1.14 2006/04/10 02:52:15 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -163,9 +163,9 @@ and source-file directory for your debugger."
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
   (gud-def gud-args   "info args"     "a"
-	   "Show arguments of current stack.")
+	   "Show arguments of the current stack frame.")
   (gud-def gud-break  "break %f:%l" "\C-b"
-	   "Set breakpoint at current line.")
+	   "Set breakpoint at the current line.")
   (gud-def gud-cont   "continue"   "\C-r" 
 	   "Continue with display.")
   (gud-def gud-down   "down %p"     ">"
