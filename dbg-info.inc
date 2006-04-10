@@ -37,7 +37,7 @@ _Dbg_info_help() {
   case $info_cmd in 
     ar | arg | args )
       _Dbg_msg \
-"info args -- Argument variables (e.g. \$1, \$2, ...) of current stack frame."
+"info args -- Argument variables (e.g. \$1, \$2, ...) of the current stack frame."
       return 0
       ;;
     b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
@@ -253,7 +253,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.3 2006/03/19 04:48:43 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.4 2006/04/10 02:50:27 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

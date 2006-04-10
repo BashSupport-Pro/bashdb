@@ -178,7 +178,7 @@ Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein
 * Running::                     Script setup inside the BASH debugger
 * Debugger Command Reference::  BASH debugger command reference
 
-* Front Ends::                  Using @DBG from a front-end user interface
+* Front Ends::                  Using the Debugger from a front-end user interface
 
 * BASH Debugger Bugs::          Reporting bugs
 * History and Acknowledgments:: History and Acknowledgments
@@ -3288,14 +3288,13 @@ Emacs and @sc{ddd}.
 @node Front Ends
 @chapter Using @value{DBG} from a front-end user interface
 
-There are two front-ends available that can use @value{DBG} as a back-end
-debugger are @sc{gnu} Emacs and @value{DDD}.
+There are some front-ends that can use @value{DBG} as a back-end
+debugger.
 
 @menu
-* Emacs::      Using @value{DBG} from @sc{gnu} Emacs
-* DDD::        Using @value{DBG} from @value{DDD}
+* Emacs::          Using @value{DBG} from @sc{gnu} Emacs
+* DDD::            Using @value{DBG} from @value{DDD}
 @end menu
-
 
 @node Emacs
 @section Using @value{DBG} from @sc{gnu} Emacs
@@ -3383,37 +3382,53 @@ addition to the standard Shell mode commands:
 @item C-h m
 Describe the features of Emacs' @value{DBG} Mode.
 
-@item M-s
-Execute to another source line, like the @value{DBG} @code{step} command; also
-update the display window to show the current file and location.
-
-@item M-n
-Execute to next source line in this function, skipping all function
-calls, like the @value{DBG} @code{next} command.  Then update the display window
-to show the current file and location.
-
 @item C-c C-f
-Execute until exit from the selected stack frame, like the @value{DBG}
-@code{finish} command.
+Execute until exit from the selected stack frame. Same as @value{DBG}
+@code{finish} command. @xref{Finish}.
 
-@item M-c
-Continue execution of your script, like the @value{DBG} @code{continue}
-command.
+@item C-c C-l
+Resynchronize the current position with the source window.
 
-@emph{Warning:} In Emacs v19, this command is @kbd{C-c C-p}.
+@item C-c C-n
+Execute to next source line in this function, skipping all function
+calls. Same as @value{DBG} @code{next} command.  @xref{Next}.
 
-@item M-u
-Go up the number of frames indicated by the numeric argument
-(@pxref{Arguments, , Numeric Arguments, Emacs, The @sc{gnu} Emacs Manual}),
-like the @value{DBG} @code{up} command.
+With a numeric argument, run that many times.
+@xref{Arguments, , Numeric Arguments, Emacs, The @sc{gnu} Emacs
+Manual}.
 
-@emph{Warning:} In Emacs v19, this command is @kbd{C-c C-u}.
+@item C-c C-r
+Continue execution of your script Same as @value{DBG} @code{continue}
+command. See @ref{Continue}.
 
-@item M-d
-Go down the number of frames indicated by the numeric argument, like the
-@value{DBG} @code{down} command.
+@item C-c C-s
+Step one source line. Same as @value{DBG} @code{step} command. @xref{Step}.
 
-@emph{Warning:} In Emacs v19, this command is @kbd{C-c C-d}.
+With a numeric argument, run that many times.
+@xref{Arguments, , Numeric Arguments, Emacs, The @sc{gnu} Emacs
+Manual}.
+
+@item C-c >
+Go down a stack frame.  Same as @value{DBG} @code{down}.
+With a numeric argument, go down that many stack frames.
+@xref{Arguments, , Numeric Arguments, Emacs, The @sc{gnu} Emacs
+Manual}.
+
+@item C-c <
+Go up a stack frame. With a numeric argument, go up that many
+stack frames. Same @value{DBG} @code{up} command.
+@xref{Arguments, , Numeric Arguments, Emacs, The @sc{gnu} Emacs Manual}.
+
+@item C-c a
+Shows argument variables (e.g. @code{$1}, @code{$2}) of the current
+stack frame. Same as @value{DBG} @code{info args} command.
+
+@item C-c R
+Restart or run the script. Same as @value{DBG} @code{run} command.
+
+@item C-c T
+Show stack trace. Same as @value{DBG} @code{where}
+command. @xref{Backtrace}.
 
 @item C-x &
 Read the number where the cursor is positioned, and insert it at the end
@@ -3447,6 +3462,15 @@ the files with these buffers if you wish; but keep in mind that @value{DBG}
 communicates with Emacs in terms of line numbers.  If you add or
 delete lines from the text, the line numbers that @value{DBG} knows cease
 to correspond properly with the code.
+
+@subsection @value{DBG} from a @sc{gnu} Emacs Shell
+
+It is also possible in GNU emacs to use a regular (``comint'') shell
+and set a mode to watch for @value{DBG} prompts. To do this, in Emacs
+issue the command (from M-x) @code{turn-on-bashdbtrack}. There is some
+overhead involved in scanning output, so if you are not debugging bash
+programs you probably want to turn this off which can be done via the
+M-x @code{turn-off-bashdbtrack} command.
 
 @node DDD
 @section Using @value{DBG} from @value{DDD}
