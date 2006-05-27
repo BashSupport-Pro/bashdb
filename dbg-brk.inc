@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.3 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.4 2006/05/27 16:42:41 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -34,20 +34,20 @@ typeset -i  _Dbg_action_max=0       # Needed because we can't figure
                                        # out what the max index is and arrays 
                                        # can be sparse
 
-# Note: we loop over possibly sparse arrays with _brkpt_max by adding one
+# Note: we loop over possibly sparse arrays with _Dbg_brkpt_max by adding one
 # and testing for an entry. Could add yet another array to list only 
 # used indices. Bash is kind of primitive.
 
 # Breakpoint data structures
-typeset -ai _brkpt_line=()     # Line number of breakpoint
-typeset -a  _brkpt_file=()     # filename of breakpoint
-typeset -a  _brkpt_enable=()   # 1/0 if enabled or not
-typeset -ai _brkpt_count=()    # Number of times hit
-typeset -ai _brkpt_onetime=()  # Is this a onetime break?
-typeset -a  _brkpt_cond=()     # Condition to eval true in order to stop.
-typeset -i  _brkpt_max=0       # Needed because we can't figure out what
+typeset -ai _Dbg_brkpt_line=()     # Line number of breakpoint
+typeset -a  _Dbg_brkpt_file=()     # filename of breakpoint
+typeset -a  _Dbg_brkpt_enable=()   # 1/0 if enabled or not
+typeset -ai _Dbg_brkpt_count=()    # Number of times hit
+typeset -ai _Dbg_brkpt_onetime=()  # Is this a onetime break?
+typeset -a  _Dbg_brkpt_cond=()     # Condition to eval true in order to stop.
+typeset -i  _Dbg_brkpt_max=0       # Needed because we can't figure out what
                                # the max index is and arrays can be sparse
-# Note: we loop over possibly sparse arrays with _brkpt_max by adding one
+# Note: we loop over possibly sparse arrays with _Dbg_brkpt_max by adding one
 # and testing for an entry. Could add yet another array to list only 
 # used indices. Bash is kind of primitive.
 
@@ -75,15 +75,15 @@ _Dbg_save_breakpoints() {
   local file
   for file in ${_Dbg_filenames[@]} ; do  
     local filevar="`_Dbg_file2var $file`"
-    declare -p _brkpt_$filevar >> $_Dbg_statefile 2>/dev/null
+    declare -p _Dbg_brkpt_$filevar >> $_Dbg_statefile 2>/dev/null
   done        
-  declare -p _brkpt_line >> $_Dbg_statefile
-  declare -p _brkpt_file >> $_Dbg_statefile 
-  declare -p _brkpt_cond >> $_Dbg_statefile 
-  declare -p _brkpt_count >> $_Dbg_statefile 
-  declare -p _brkpt_enable >> $_Dbg_statefile
-  declare -p _brkpt_onetime >> $_Dbg_statefile
-  declare -p _brkpt_max >> $_Dbg_statefile
+  declare -p _Dbg_brkpt_line >> $_Dbg_statefile
+  declare -p _Dbg_brkpt_file >> $_Dbg_statefile 
+  declare -p _Dbg_brkpt_cond >> $_Dbg_statefile 
+  declare -p _Dbg_brkpt_count >> $_Dbg_statefile 
+  declare -p _Dbg_brkpt_enable >> $_Dbg_statefile
+  declare -p _Dbg_brkpt_onetime >> $_Dbg_statefile
+  declare -p _Dbg_brkpt_max >> $_Dbg_statefile
 
 }
 
@@ -248,11 +248,11 @@ _Dbg_cmd_disable() {
 
 _Dbg_print_brkpt_count() {
   local -ir i=$1
-  if (( _brkpt_count[$i] != 0 )) ; then
-    if (( _brkpt_count[$i] == 1 )) ; then 
+  if (( _Dbg_brkpt_count[$i] != 0 )) ; then
+    if (( _Dbg_brkpt_count[$i] == 1 )) ; then 
       _Dbg_printf "\tbreakpoint already hit 1 time" 
     else
-      _Dbg_printf "\tbreakpoint already hit %d times" ${_brkpt_count[$i]}
+      _Dbg_printf "\tbreakpoint already hit %d times" ${_Dbg_brkpt_count[$i]}
     fi
   fi
 }
@@ -331,7 +331,7 @@ _Dbg_cmd_condition() {
   fi
   eval "$_resteglob"
 
-  if [[ -z ${_brkpt_file[$n]} ]] ; then
+  if [[ -z ${_Dbg_brkpt_file[$n]} ]] ; then
     _Dbg_msg "Breakpoint entry $n is not set. Condition not changed."
     return 1
   fi
@@ -340,7 +340,7 @@ _Dbg_cmd_condition() {
     condition=1
     _Dbg_msg "Breakpoint $n now unconditional."
   fi
-  _brkpt_cond[$n]="$condition"
+  _Dbg_brkpt_cond[$n]="$condition"
   return 0
 }
 
@@ -390,43 +390,43 @@ _Dbg_cmd_list_brkpt() {
   if [[ -n $1 ]] ; then 
     if [[ $1 != $int_pat ]]; then
       _Dbg_msg "Bad breakpoint number $1."
-    elif [[ -z ${_brkpt_file[$1]} ]] ; then
+    elif [[ -z ${_Dbg_brkpt_file[$1]} ]] ; then
       _Dbg_msg "Breakpoint entry $1 is not set."
     else
       local -r -i i=$1
-      local source_file=${_brkpt_file[$i]}
+      local source_file=${_Dbg_brkpt_file[$i]}
       source_file=$(_Dbg_adjust_filename "$source_file")
       _Dbg_msg "Num Type       Disp Enb What"
       _Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
-	${_Dbg_keep[${_brkpt_onetime[$i]}]} \
-	${_Dbg_yn[${_brkpt_enable[$i]}]} \
-	$source_file ${_brkpt_line[$i]}
-      if [[ ${_brkpt_cond[$i]} != '1' ]] ; then
-	_Dbg_printf "\tstop only if %s" "${_brkpt_cond[$i]}"
+	${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
+	${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
+	$source_file ${_Dbg_brkpt_line[$i]}
+      if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
+	_Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
       fi
-      _Dbg_print_brkpt_count ${_brkpt_count[$i]}
+      _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
     fi
     eval "$_resteglob"
     return
   fi
 
-  if [ ${#_brkpt_line[@]} != 0 ]; then
+  if [ ${#_Dbg_brkpt_line[@]} != 0 ]; then
     local -i i
 
     _Dbg_msg "Num Type       Disp Enb What"
-    for (( i=1; (( i <= _brkpt_max )) ; i++ )) ; do
-      local source_file=${_brkpt_file[$i]}
-      if [[ -n ${_brkpt_line[$i]} ]] ; then
+    for (( i=1; (( i <= _Dbg_brkpt_max )) ; i++ )) ; do
+      local source_file=${_Dbg_brkpt_file[$i]}
+      if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
 	source_file=$(_Dbg_adjust_filename "$source_file")
 	_Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
-	  ${_Dbg_keep[${_brkpt_onetime[$i]}]} \
-	  ${_Dbg_yn[${_brkpt_enable[$i]}]} \
-	  $source_file ${_brkpt_line[$i]}
-	if [[ ${_brkpt_cond[$i]} != '1' ]] ; then
-	  _Dbg_printf "\tstop only if %s" "${_brkpt_cond[$i]}"
+	  ${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
+	  ${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
+	  $source_file ${_Dbg_brkpt_line[$i]}
+	if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
+	  _Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
 	fi
-	if (( _brkpt_count[$i] != 0 )) ; then
-	  _Dbg_print_brkpt_count ${_brkpt_count[$i]}
+	if (( _Dbg_brkpt_count[$i] != 0 )) ; then
+	  _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
 	fi
       fi
     done
@@ -442,15 +442,15 @@ _Dbg_clear_all_brkpt() {
   for (( k=0; (( k < ${#_Dbg_filenames[@]} )) ; k++ )) ; do
     local filename=${_filename[$k]}
     local filevar="`_Dbg_file2var $filename`"
-    local brkpt_a="_brkpt_${filevar}"
+    local brkpt_a="_Dbg_brkpt_${filevar}"
     _Dbg_write_journal_eval "unset ${brkpt_a}[$k]"
   done
-  _Dbg_write_journal_eval "_brkpt_line=()"
-  _Dbg_write_journal_eval "_brkpt_cond=()"
-  _Dbg_write_journal_eval "_brkpt_file=()"
-  _Dbg_write_journal_eval "_brkpt_enable=()"
-  _Dbg_write_journal_eval "_brkpt_count=()"
-  _Dbg_write_journal_eval "_brkpt_onetime=()"
+  _Dbg_write_journal_eval "_Dbg_brkpt_line=()"
+  _Dbg_write_journal_eval "_Dbg_brkpt_cond=()"
+  _Dbg_write_journal_eval "_Dbg_brkpt_file=()"
+  _Dbg_write_journal_eval "_Dbg_brkpt_enable=()"
+  _Dbg_write_journal_eval "_Dbg_brkpt_count=()"
+  _Dbg_write_journal_eval "_Dbg_brkpt_onetime=()"
 }
 
 # Internal routine to a set breakpoint unconditonally. 
@@ -462,52 +462,52 @@ _Dbg_set_brkpt() {
   local -r condition=${4:-1}
   local -r filevar="`_Dbg_file2var $source_file`"
 
-  local val_str=`_Dbg_get_assoc_array_entry "_brkpt_$filevar" $line`
+  local val_str=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
 
   # Increment brkpt_max here because we are 1-origin
-  ((_brkpt_max++))
+  ((_Dbg_brkpt_max++))
 
   if [ -z "$val_str" ] ; then 
-    val_str=$_brkpt_max
+    val_str=$_Dbg_brkpt_max
   else
-    val_str="$val_str $_brkpt_max"
+    val_str="$val_str $_Dbg_brkpt_max"
   fi
 
-  _brkpt_line[$_brkpt_max]=$line
-  _brkpt_file[$_brkpt_max]="$source_file"
-  _brkpt_cond[$_brkpt_max]="$condition"
-  _brkpt_onetime[$_brkpt_max]=$is_temp
-  _brkpt_count[$_brkpt_max]=0
-  _brkpt_enable[$_brkpt_max]=1
+  _Dbg_brkpt_line[$_Dbg_brkpt_max]=$line
+  _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
+  _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
+  _Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp
+  _Dbg_brkpt_count[$_Dbg_brkpt_max]=0
+  _Dbg_brkpt_enable[$_Dbg_brkpt_max]=1
 
   local dq_source_file=$(_Dbg_esc_dq "$source_file")
   local dq_condition=$(_Dbg_esc_dq "$condition")
-  _Dbg_write_journal "_brkpt_line[$_brkpt_max]=$line"
-  _Dbg_write_journal "_brkpt_file[$_brkpt_max]=\"$dq_source_file\""
-  _Dbg_write_journal "_brkpt_cond[$_brkpt_max]=\"$dq_condition\""
-  _Dbg_write_journal "_brkpt_onetime[$_brkpt_max]=$is_temp"
-  _Dbg_write_journal "_brkpt_count[$_brkpt_max]=\"0\""
-  _Dbg_write_journal "_brkpt_enable[$_brkpt_max]=1"
+  _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$line"
+  _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
+  _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
+  _Dbg_write_journal "_Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp"
+  _Dbg_write_journal "_Dbg_brkpt_count[$_Dbg_brkpt_max]=\"0\""
+  _Dbg_write_journal "_Dbg_brkpt_enable[$_Dbg_brkpt_max]=1"
 
-  _Dbg_set_assoc_array_entry "_brkpt_$filevar" $line $val_str
+  _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line $val_str
   source_file=$(_Dbg_adjust_filename "$source_file")
   if (( $is_temp == 0 )) ; then 
-    _Dbg_msg "Breakpoint $_brkpt_max set in file ${source_file}, line $line."
+    _Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
   else 
-    _Dbg_msg "One-time breakpoint $_brkpt_max set in file ${source_file}, line $line."
+    _Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
   fi
-  _Dbg_write_journal "_brkpt_max=$_brkpt_max"
+  _Dbg_write_journal "_Dbg_brkpt_max=$_Dbg_brkpt_max"
 }
 
 # Internal routine to unset the actual breakpoint arrays
 _Dbg_unset_brkpt_arrays() {
   local -i del=$1
-  _Dbg_write_journal_eval "unset _brkpt_line[$del]"
-  _Dbg_write_journal_eval "unset _brkpt_count[$del]"
-  _Dbg_write_journal_eval "unset _brkpt_file[$del]"
-  _Dbg_write_journal_eval "unset _brkpt_enable[$del]"
-  _Dbg_write_journal_eval "unset _brkpt_cond[$del]"
-  _Dbg_write_journal_eval "unset _brkpt_onetime[$del]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_line[$del]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_count[$del]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_file[$del]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_enable[$del]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_cond[$del]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_onetime[$del]"
 }
 
 # Internal routine to delete a breakpoint by file/line.
@@ -519,23 +519,23 @@ _Dbg_unset_brkpt() {
   local -i found=0
   
   # set -xv
-  local -r entries=`_Dbg_get_assoc_array_entry "_brkpt_$filevar" $line`
+  local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
   local -i del
   for del in $entries ; do 
-    if [[ -z ${_brkpt_file[$del]} ]] ; then
+    if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
       _Dbg_msg "No breakpoint found at $filename:$line"
       continue
     fi
-    local brkpt_fullname=$(_Dbg_expand_filename ${_brkpt_file[$del]})
+    local brkpt_fullname=$(_Dbg_expand_filename ${_Dbg_brkpt_file[$del]})
     if [[ $brkpt_fullname != $fullname ]] ; then 
       _Dbg_msg "Brkpt inconsistency:" \
-	"$filename[$line] lists ${_brkpt_file[$del]} at entry $del"
+	"$filename[$line] lists ${_Dbg_brkpt_file[$del]} at entry $del"
     else
       _Dbg_unset_brkpt_arrays $del
       ((found++))
     fi
   done
-  _Dbg_write_journal_eval "unset _brkpt_$filevar[$line]"
+  _Dbg_write_journal_eval "unset _Dbg_brkpt_$filevar[$line]"
   return $found
   # set +xv
 }
@@ -548,13 +548,13 @@ _Dbg_delete_brkpt_entry() {
   local -i  found=0
   
   # set -xv
-  if [[ -z ${_brkpt_file[$del]} ]] ; then
+  if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
     _Dbg_msg "Breakpoint entry $del is not set."
     return 0
   fi
-  local filevar="`_Dbg_file2var ${_brkpt_file[$del]}`"
-  local line=${_brkpt_line[$del]}
-  local -r  entries=`_Dbg_get_assoc_array_entry "_brkpt_$filevar" $line`
+  local filevar="`_Dbg_file2var ${_Dbg_brkpt_file[$del]}`"
+  local line=${_Dbg_brkpt_line[$del]}
+  local -r  entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
   local     try 
   local -a  new_val=()
   for try in $entries ; do 
@@ -562,15 +562,15 @@ _Dbg_delete_brkpt_entry() {
       _Dbg_unset_brkpt_arrays $del
       found=1
     else
-      if [[ -n ${_brkpt_file[$try]} ]] ; then
+      if [[ -n ${_Dbg_brkpt_file[$try]} ]] ; then
 	new_val[${#new_val[@]}]=$try
       fi
     fi
   done
   if [[ ${#new_val[@]} == 0 ]] ; then 
-   _Dbg_write_journal_eval "unset _brkpt_$filevar[$line]"
+   _Dbg_write_journal_eval "unset _Dbg_brkpt_$filevar[$line]"
   else
-    _Dbg_set_assoc_array_entry "_brkpt_$filevar" $line "${new_val[@]}"
+    _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line "${new_val[@]}"
   fi
 
   return $found
@@ -582,11 +582,11 @@ _Dbg_enable_disable_brkpt() {
   local -i on=$1
   local en_dis=$2
   local -i i=$3
-  if [[ -n "${_brkpt_file[$i]}" ]] ; then
-    if [[ ${_brkpt_enable[$i]} == $on ]] ; then
+  if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
+    if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
       _Dbg_msg "Breakpoint entry $i already $en_dis so nothing done."
     else
-      _Dbg_write_journal_eval "_brkpt_enable[$i]=$on"
+      _Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
       _Dbg_msg "Breakpoint entry $i $en_dis."
     fi
   else

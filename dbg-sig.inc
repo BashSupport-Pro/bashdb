@@ -158,21 +158,21 @@ _Dbg_debug_trap_handler() {
   fi
 
   # check if breakpoint reached
-  local -r entries=`_Dbg_get_assoc_array_entry "_brkpt_$_cur_filevar" $_curline`
+  local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$_cur_filevar" $_curline`
   if [[ $entries != "" ]]  ; then
     local -i _Dbg_i
     for _Dbg_i in $entries ; do
-      if [[ ${_brkpt_enable[_Dbg_i]:0} != 0 ]] ; then
+      if [[ ${_Dbg_brkpt_enable[_Dbg_i]:0} != 0 ]] ; then
 	local -i cond
 	. ${_Dbg_libdir}/dbg-set-d-vars.inc
-	eval let cond=${_brkpt_cond[$_Dbg_i]:0}
+	eval let cond=${_Dbg_brkpt_cond[$_Dbg_i]:0}
 	if [[ $cond != 0 ]] ; then
-	  ((_brkpt_count[_Dbg_i]++))
-	  if [[ ${_brkpt_onetime[_Dbg_i]:0} == 1 ]] ; then
+	  ((_Dbg_brkpt_count[_Dbg_i]++))
+	  if [[ ${_Dbg_brkpt_onetime[_Dbg_i]:0} == 1 ]] ; then
 	    _Dbg_delete_brkpt_entry $_Dbg_i
 	  else
 	    _Dbg_msg \
-              "Breakpoint $_Dbg_i hit (${_brkpt_count[$_Dbg_i]} times)."
+              "Breakpoint $_Dbg_i hit (${_Dbg_brkpt_count[$_Dbg_i]} times)."
 	  fi
 	  _Dbg_print_source_line
 	  _Dbg_cmdloop		# enter debugger
@@ -576,7 +576,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.6 2006/04/06 04:15:51 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.7 2006/05/27 16:42:41 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
