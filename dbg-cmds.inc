@@ -118,13 +118,13 @@ _Dbg_cmdloop() {
 
     eval "local _Dbg_prompt=$_Dbg_prompt_str"
 
-    local cmd 
+    local _Dbg_cmd 
     local args
     while read $_Dbg_edit -p "$_Dbg_prompt" \
-      cmd args \
+      _Dbg_cmd args \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output; do
 
-     _Dbg_onecmd "$cmd" "$args"
+     _Dbg_onecmd "$_Dbg_cmd" "$args"
      local rc=$?
      if (( $rc != 10 )) ; then 
 	 return $rc
@@ -145,8 +145,7 @@ _Dbg_cmdloop() {
 }
 
 # Run a single command
-# We assume global _Dbg_cmd is the command and _Dbg_args are the 
-# arguments to the command
+# Parameters: _Dbg_cmd and args
 # 
 _Dbg_onecmd() {
 
@@ -936,7 +935,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.12 2006/06/03 07:06:09 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.13 2006/06/03 16:53:17 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
