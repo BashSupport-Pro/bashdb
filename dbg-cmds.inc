@@ -318,6 +318,10 @@ _Dbg_onecmd() {
 	  _Dbg_cmd_frame $args
 	  ;;
 
+	# print help command menu
+	h | he | hel | help | '?'  )
+	  _Dbg_cmd_help $args ;;
+
 	#  Set signal handle parameters
 	ha | han | hand | handl | handle )
 	  _Dbg_cmd_handle $args
@@ -362,9 +366,9 @@ _Dbg_onecmd() {
 	  _Dbg_cmd_quit $args
 	  ;;
 
-	# Search backwards for pattern
-	rev | reve | rever | revers | reverse )
-	  _Dbg_cmd_search_back $args
+	# restart debug session.
+	re | res | rest | resta | restar | restart | ru | run | R )
+	  _Dbg_cmd_restart $args
 	  ;;
 
 	# return from function/source without finishing executions
@@ -373,6 +377,11 @@ _Dbg_onecmd() {
 	  _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
 	  IFS="$_Dbg_old_IFS";
 	  return 2
+	  ;;
+
+	# Search backwards for pattern
+	rev | reve | rever | revers | reverse )
+	  _Dbg_cmd_search_back $args
 	  ;;
 
 	# Run a debugger set command
@@ -390,6 +399,10 @@ _Dbg_onecmd() {
 	sh | sho | show )
 	  _Dbg_cmd_show $args
 	  ;;
+
+	# run shell command. Has to come before ! below.
+	she | shel | shell | '!!' )
+	  eval $args ;;
 
 	# Run a debugger comamnd file
 	so | sou | sour | sourc | source )
@@ -421,11 +434,38 @@ _Dbg_onecmd() {
 	  _Dbg_cmd_undisplay $args
 	  ;;
 
+	# Show version information
+	ve | ver | vers | versi | versio | version | M )
+	  _Dbg_cmd_show_versions
+	  ;;
+
 	# List window around line.
 	w | wi | win | wind | windo | window )
 	  ((_startline=_curline - _Dbg_listsize/2))
 	  (( $_startline <= 0 )) && _startline=1
 	  _Dbg_list $_cur_source_file $_startline
+	  ;;
+
+	# watch variable
+	wa | wat | watch | W )
+	  local -a a
+	  a=($args)
+	  local first=${a[0]}
+	  if [[ $first == '' ]] ; then
+	    _Dbg_cmd_watch 0
+	  else
+	    if [[ 0 == `_Dbg_is_var $first` ]] ; then
+	      _Dbg_msg "Can't set watch: no such variable $first."
+	    else
+	      unset a first
+	      _Dbg_cmd_watch 0 "\$$args"
+	    fi
+	  fi
+	  ;;
+
+	# Watch expression
+	watche | We )
+	  _Dbg_cmd_watch 1 "$args"
 	  ;;
 
 	# intelligent print of variable, function or expression
@@ -440,31 +480,6 @@ _Dbg_onecmd() {
 	  _Dbg_list_action
 	  ;;
 
-	# print help command menu
-	'?' | h | he | hel | help )
-	  _Dbg_cmd_help $args ;;
-
-	# run shell command. Has to come before ! below.
-	'!!' | sh | she | shell )
-	  eval $args ;;
-
-	\!* | hi | his | hist | histo | histor | history )
-	  _Dbg_remove_history_item
-	  _Dbg_cmd_history_parse $args
-	  if (( $history_num >= 0 )) ; then 
-	    if (( $history_num < ${#_Dbg_history[@]} )) ; then 
-	      set ${_Dbg_history[$history_num]}
-	      _Dbg_cmd=$1
-	      shift
-	      args="$@"
-	      _Dbg_redo=1;
-	    else
-	      _Dbg_msg \
-	      "Number $history_num should be less than ${#_Dbg_history[@]}"
-	    fi
-	  fi
-	  ;;
-
 	# Remove all actions
 	A )
 	  _Dbg_cmd_clear_all_actions $args
@@ -474,11 +489,6 @@ _Dbg_onecmd() {
 	H )
 	  _Dbg_remove_history_item
 	  _Dbg_cmd_history_list $args
-	  ;;
-
-	# restart debug session.
-	R | re | res | rest | resta | restar | restart | ru | run )
-	  _Dbg_cmd_restart $args
 	  ;;
 
 	#  S List subroutine names
@@ -496,31 +506,22 @@ _Dbg_onecmd() {
 	  _Dbg_cmd_list_variables "$args"
 	  ;;
 
-	# Watch expression
-	We | watche )
-	  _Dbg_cmd_watch 1 "$args"
-	  ;;
-
-	# watch variable
-	W | wa | wat | watch )
-	  local -a a
-	  a=($args)
-	  local first=${a[0]}
-	  if [[ $first == '' ]] ; then
-	    _Dbg_cmd_watch 0
-	  else
-	    if [[ 0 == `_Dbg_is_var $first` ]] ; then
-	      _Dbg_msg "Can't set watch: no such variable $first."
+	# Has to come after !! of "shell" listed above
+	\!* | hi | his | hist | histo | histor | history )
+	  _Dbg_remove_history_item
+	  _Dbg_cmd_history_parse $args
+	  if (( $history_num >= 0 )) ; then 
+	    if (( $history_num < ${#_Dbg_history[@]} )) ; then 
+	      set ${_Dbg_history[$history_num]}
+	      _Dbg_cmd=$1
+	      shift
+	      args="$@"
+	      _Dbg_redo=1;
 	    else
-	      unset a first
-	      _Dbg_cmd_watch 0 "\$$args"
+	      _Dbg_msg \
+	      "Number $history_num should be less than ${#_Dbg_history[@]}"
 	    fi
 	  fi
-	  ;;
-
-	# Show version information
-	M | ve | ver | vers | versi | versio | version )
-	  _Dbg_cmd_show_versions
 	  ;;
 
 	* ) 
@@ -935,7 +936,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.13 2006/06/03 16:53:17 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.14 2006/06/03 21:36:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
