@@ -34,13 +34,14 @@ typeset -i  _Dbg_stack_pos
 _Dbg_cmd_down() {
   local -i count=${1:-1}
   
-  if (( _Dbg_stack_pos-count < _Dbg_STACK_TOP )) ; then 
+  if (( _Dbg_stack_pos-count+2 <= _Dbg_STACK_TOP )) ; then 
     _Dbg_msg "Would be beyond bottom-most entry."
     return
   fi
   ((_Dbg_stack_pos -= $count))
   local -i j=_Dbg_stack_pos+1
-  _Dbg_listline=${BASH_LINENO[$_Dbg_stack_pos]}
+  _Dbg_listline=${BASH_LINENO[$j]}
+  ((j++))
   _cur_source_file=${BASH_SOURCE[$j]}
   _Dbg_print_source_line $_Dbg_listline
 }
@@ -59,10 +60,11 @@ _Dbg_cmd_frame() {
     return
   fi
   _Dbg_stack_pos=$_Dbg_STACK_TOP+$pos
-  _Dbg_cmd_stack_trace 2 1 $pos
-  local -i k=_Dbg_stack_pos+1
-  _Dbg_listline=${BASH_LINENO[$_Dbg_stack_pos]}
-  _cur_source_file=${BASH_SOURCE[$k]}
+  _Dbg_cmd_stack_trace 3 1 $pos
+  local -i j=_Dbg_stack_pos+1
+  _Dbg_listline=${BASH_LINENO[$j]}
+   ((j++))
+  _cur_source_file=${BASH_SOURCE[$j]}
   _Dbg_print_source_line
 }
 
@@ -211,19 +213,20 @@ _Dbg_cmd_info_args() {
 _Dbg_cmd_up() {
   local -i count=${1:-1}
   
-  if (( _Dbg_stack_pos+count+1 >= ${#FUNCNAME[@]} )) ; then 
+  if (( _Dbg_stack_pos+count+2 >= ${#FUNCNAME[@]} )) ; then 
     _Dbg_msg "Would be beyond top-most entry."
     return
   fi
   ((_Dbg_stack_pos += $count))
-  local -i k=_Dbg_stack_pos+1
-  _Dbg_listline=${BASH_LINENO[$_Dbg_stack_pos]}
-  _cur_source_file=${BASH_SOURCE[$k]}
+  local -i j=_Dbg_stack_pos+1
+  _Dbg_listline=${BASH_LINENO[$j]}
+  ((j++))
+  _cur_source_file=${BASH_SOURCE[$j]}
   _Dbg_print_source_line $_Dbg_listline
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.2 2006/04/06 04:15:51 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.3 2006/06/03 04:24:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

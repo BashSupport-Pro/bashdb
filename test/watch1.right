@@ -84,6 +84,6 @@ No breakpoints have been set.
 Num Type       Enb  Expression
 2   watchpoint y    $x
 + cont 
-(dbg-test1.sh:22):
-22:	x=22
+(bashdb:87):
+87:	  eval $*  # Type: "x $*" to see what's being run.
 + quit 

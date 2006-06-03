@@ -63,6 +63,9 @@ typeset _Dbg_last_print_args=''
 # The arguments in the last "x" command.
 typeset _Dbg_last_x_args=''
 
+typeset _Dbg_cmd=''
+typeset _Dbg_args=''
+
 # ===================== FUNCTIONS =======================================
 
 # Note: We have to be careful here in naming "local" variables. In contrast
@@ -85,8 +88,6 @@ _Dbg_cmdloop() {
 
   # Loop over all pending open input file descriptors
   while (( $_Dbg_input_desc >= $_Dbg_INPUT_START_DESC )) ; do
-    local _Dbg_cmd;
-    local _Dbg_args;
 
     # Set up prompt to show shell level.
     local _Dbg_greater=''
@@ -122,6 +123,32 @@ _Dbg_cmdloop() {
     while read $_Dbg_edit -p "$_Dbg_prompt" \
       _Dbg_cmd _Dbg_args \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output; do
+
+     _Dbg_onecmd
+     local rc=$?
+     if (( $rc != 10 )) ; then 
+	 return $rc
+     fi
+
+    done  # while read $_Dbg_edit -p ...
+
+    ((_Dbg_input_desc--))
+
+    # Remove last entry of $_Dbg_cmdfile
+    unset _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]
+
+  done  # Loop over all open pending file descriptors
+
+  # EOF hit. Same as quit without arguments
+  _Dbg_msg "" # Cause <cr> since EOF may not have put in.
+  _Dbg_cmd_quit
+}
+
+# Run a single command
+# We assume global _Dbg_cmd is the command and _Dbg_args are the 
+# arguments to the command
+# 
+_Dbg_onecmd() {
 
      # Set default next, step or skip command
      if [[ -z $_Dbg_cmd ]]; then
@@ -279,7 +306,7 @@ _Dbg_cmdloop() {
 	# 
 	fin | fini | finis | finish | r )
 
-	  (( _Dbg_return_level=${#FUNCNAME[@]}-2 ))
+	  (( _Dbg_return_level=${#FUNCNAME[@]}-3 ))
 	  return 0
 	  ;;
 
@@ -458,7 +485,7 @@ _Dbg_cmdloop() {
 
 	# Stack trace
 	T | wh | whe | wher | where | bt| back | backtrace )
-	  _Dbg_cmd_stack_trace 1 $_Dbg_args;
+	  _Dbg_cmd_stack_trace 2 $_Dbg_args;
 	  ;;
 
 	# Dump variables
@@ -502,19 +529,7 @@ _Dbg_cmdloop() {
 
       IFS=$_Dbg_space_IFS;
       eval "_Dbg_prompt=$_Dbg_prompt_str"
-
-    done  # while read $_Dbg_edit -p ...
-
-    ((_Dbg_input_desc--))
-
-    # Remove last entry of $_Dbg_cmdfile
-    unset _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]
-
-  done  # Loop over all open pending file descriptors
-
-  # EOF hit. Same as quit without arguments
-  _Dbg_msg "" # Cause <cr> since EOF may not have put in.
-  _Dbg_cmd_quit
+      return 10
 }
 
 # Set up to Debug into another script...
@@ -917,7 +932,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.10 2006/04/06 12:05:29 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.11 2006/06/03 04:24:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

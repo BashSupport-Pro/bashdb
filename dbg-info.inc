@@ -117,7 +117,7 @@ _Dbg_cmd_info() {
     shift
     case $info_cmd in 
       a | ar | arg | args )
-        _Dbg_cmd_info_args 2  # located in dbg-stack.inc
+        _Dbg_cmd_info_args 3  # located in dbg-stack.inc
 	return
 	;;
       b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
@@ -253,7 +253,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.4 2006/04/10 02:50:27 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.5 2006/06/03 04:24:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
