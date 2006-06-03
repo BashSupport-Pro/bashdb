@@ -63,9 +63,6 @@ typeset _Dbg_last_print_args=''
 # The arguments in the last "x" command.
 typeset _Dbg_last_x_args=''
 
-typeset _Dbg_cmd=''
-typeset _Dbg_args=''
-
 # ===================== FUNCTIONS =======================================
 
 # Note: We have to be careful here in naming "local" variables. In contrast
@@ -120,11 +117,14 @@ _Dbg_cmdloop() {
     local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
 
     eval "local _Dbg_prompt=$_Dbg_prompt_str"
+
+    local cmd 
+    local args
     while read $_Dbg_edit -p "$_Dbg_prompt" \
-      _Dbg_cmd _Dbg_args \
+      cmd args \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output; do
 
-     _Dbg_onecmd
+     _Dbg_onecmd "$cmd" "$args"
      local rc=$?
      if (( $rc != 10 )) ; then 
 	 return $rc
@@ -150,26 +150,30 @@ _Dbg_cmdloop() {
 # 
 _Dbg_onecmd() {
 
+    local _Dbg_cmd=$1
+    shift
+    local args=$*
+
      # Set default next, step or skip command
      if [[ -z $_Dbg_cmd ]]; then
 	_Dbg_cmd=$_Dbg_last_next_step_cmd
-	_Dbg_args=$_Dbg_last_next_step_args
+	args=$_Dbg_last_next_step_args
       fi
 
      # If we are running a command file echo the line
      local -i i=${#_Dbg_cmdfile[@]}-1
      local cmdfile=${_Dbg_cmdfile[$i]}
      if [[  "$cmdfile" != '' ]] && [[ "$cmdfile" != /dev/stdin ]] ; then
-       _Dbg_msg "+ $_Dbg_cmd $_Dbg_args"
+       _Dbg_msg "+ $_Dbg_cmd $args"
      fi
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
-     local dq_args=$(_Dbg_esc_dq "$_Dbg_args")
+     local dq_args=$(_Dbg_esc_dq "$args")
      # _Dbg_write_journal_eval doesn't work here. Don't really understand
      # how to get it to work. So we do this in two steps.
      _Dbg_write_journal \
         "_Dbg_history[${#_Dbg_history[@]}]=\"$dq_cmd $dq_args\""
-     _Dbg_history[${#_Dbg_history[@]}]="$_Dbg_cmd $_Dbg_args"
+     _Dbg_history[${#_Dbg_history[@]}]="$_Dbg_cmd $args"
 
      _Dbg_hi=${#_Dbg_history[@]}
 
@@ -213,15 +217,15 @@ _Dbg_onecmd() {
 
 	# Set action to be silently run when a line is hit
 	a )
-	  _Dbg_cmd_action $_Dbg_args ;;
+	  _Dbg_cmd_action $args ;;
 
 	# Set breakpoint on a line
 	b | br | bre | brea | break )
-	  _Dbg_cmd_break 0 $_Dbg_args ;;
+	  _Dbg_cmd_break 0 $args ;;
 
 	# Continue
 	c | cont | conti |contin |continu | continue )
-	  _Dbg_cmd_continue $_Dbg_args
+	  _Dbg_cmd_continue $args
 	  if [[ $? == 0 ]] ; then
 	    IFS="$_Dbg_old_IFS";
 	    _Dbg_write_journal_eval \
@@ -232,36 +236,36 @@ _Dbg_onecmd() {
 
 	# Change Directory
 	cd )
-	  cd $_Dbg_args
+	  cd $args
 	  _Dbg_cmd_pwd
 	  ;;
 
 	# complete
 	com | comp | compl | comple |complet | complete )
-	  _Dbg_cmd_complete $_Dbg_args
+	  _Dbg_cmd_complete $args
 	  ;;
 
 	# Breakpoint/Watchpoint Conditions
 	cond | condi |condit |conditi | conditio | condition )
-	  _Dbg_cmd_condition $_Dbg_args
+	  _Dbg_cmd_condition $args
 	  ;;
 
 	# Delete all breakpoints by line number.
 	# Note we use "d" as an alias for "clear" to be compatible
 	# with the Perl5 debugger.
 	d | cl | cle | clea | clea | clear )
-	  _Dbg_cmd_clear_brkpt $_Dbg_args
+	  _Dbg_cmd_clear_brkpt $args
 	  ;;
 
 	# Delete breakpoints by entry numbers. Note "d" is an alias for
 	# clear.
 	de | del | dele | delet | delete )
-	  _Dbg_cmd_delete $_Dbg_args
+	  _Dbg_cmd_delete $args
 	  ;;
 
 	# Set up a script for debugging into.
 	deb | debu | debug )
-	  _Dbg_cmd_debug $_Dbg_args
+	  _Dbg_cmd_debug $args
 	  # Skip over the execute statement which presumably we ran above.
 	  _Dbg_cmd_next_step_skip "skip" 1
 	  IFS="$_Dbg_old_IFS";
@@ -270,12 +274,12 @@ _Dbg_onecmd() {
 
 	# Disable breakpoints
 	di | dis | disa | disab | disabl | disable )
-	  _Dbg_cmd_disable $_Dbg_args
+	  _Dbg_cmd_disable $args
 	  ;;
 
 	# Display expression
 	disp | displ | displa| display )
-	  _Dbg_cmd_display $_Dbg_args
+	  _Dbg_cmd_display $args
 	  ;;
 
 	# Delete all breakpoints.
@@ -285,22 +289,22 @@ _Dbg_onecmd() {
 
 	# List stack 1 up
 	do | dow | down )
-	  _Dbg_cmd_down $_Dbg_args
+	  _Dbg_cmd_down $args
 	  ;;
 
 	# evaluate as bash command
 	e | ev | eva | eval )
-	  _Dbg_cmd_eval $_Dbg_args
+	  _Dbg_cmd_eval $args
 	  ;;
 
 	# evaluate as bash command
 	en | ena | enab | enabl | enable )
-	  _Dbg_cmd_enable $_Dbg_args
+	  _Dbg_cmd_enable $args
 	  ;;
 
 	# 
 	fil | file )
-	  _Dbg_cmd_file $_Dbg_args
+	  _Dbg_cmd_file $args
 	  ;;
 
 	# 
@@ -312,30 +316,30 @@ _Dbg_onecmd() {
 
 	#  View source in file
 	fr | fra | fra | frame )
-	  _Dbg_cmd_frame $_Dbg_args
+	  _Dbg_cmd_frame $args
 	  ;;
 
 	#  Set signal handle parameters
 	ha | han | hand | handl | handle )
-	  _Dbg_cmd_handle $_Dbg_args
+	  _Dbg_cmd_handle $args
 	  ;;
 
 	#  Info subcommands
 	i | in | inf | info )
-	  _Dbg_cmd_info $_Dbg_args
+	  _Dbg_cmd_info $args
 	  ;;
 
 	# List line.
 	# print lines in file
 	l | li | lis | list )
-	  _Dbg_cmd_list $_Dbg_args
+	  _Dbg_cmd_list $args
 	  ;;
 
 	# next/single-step N times (default 1)
 	n | ne | nex | next | s | st | ste | step | sk | ski | skip )
 	  _Dbg_last_next_step_cmd="$_Dbg_cmd"
-	  _Dbg_last_next_step_args=$_Dbg_args
-	  _Dbg_cmd_next_step_skip $_Dbg_cmd $_Dbg_args
+	  _Dbg_last_next_step_args=$args
+	  _Dbg_cmd_next_step_skip $_Dbg_cmd $args
 	  if [[ $_Dbg_cmd == sk* ]] ; then
 	    _Dbg_inside_skip=1
 	    return 1
@@ -346,7 +350,7 @@ _Dbg_onecmd() {
 
 	# print globbed or substituted variables
 	p | pr | pri | prin | print )
-	  _Dbg_cmd_print "$_Dbg_args"
+	  _Dbg_cmd_print "$args"
 	  ;;
 
 	# print working directory
@@ -356,12 +360,12 @@ _Dbg_onecmd() {
 
 	# quit
 	q | qu | qui | quit )
-	  _Dbg_cmd_quit $_Dbg_args
+	  _Dbg_cmd_quit $args
 	  ;;
 
 	# Search backwards for pattern
 	rev | reve | rever | revers | reverse )
-	  _Dbg_cmd_search_back $_Dbg_args
+	  _Dbg_cmd_search_back $args
 	  ;;
 
 	# return from function/source without finishing executions
@@ -374,23 +378,23 @@ _Dbg_onecmd() {
 
 	# Run a debugger set command
 	se | set )
-	  _Dbg_cmd_set $_Dbg_args
+	  _Dbg_cmd_set $args
 	  ;;
 
 	# Search forwards for pattern
 	sea | sear | searc | search | \
         for | forw | forwa | forwar | forward )
-	  _Dbg_cmd_search $_Dbg_args
+	  _Dbg_cmd_search $args
 	  ;;
 
 	# Run a debugger show command
 	sh | sho | show )
-	  _Dbg_cmd_show $_Dbg_args
+	  _Dbg_cmd_show $args
 	  ;;
 
 	# Run a debugger comamnd file
 	so | sou | sour | sourc | source )
-	  _Dbg_cmd_source $_Dbg_args
+	  _Dbg_cmd_source $args
 	  ;;
 
 	# toggle execution trace
@@ -400,22 +404,22 @@ _Dbg_onecmd() {
 
 	# Set breakpoint on a line
 	tb | tbr | tbre | tbrea | tbreak )
-	  _Dbg_cmd_break 1 $_Dbg_args ;;
+	  _Dbg_cmd_break 1 $args ;;
 
 	# Set the output tty
 	tt | tty )
-	  _Dbg_cmd_tty $_Dbg_args 
+	  _Dbg_cmd_tty $args 
 	  _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
 	  ;;
 
 	# List call stack up
 	u | up )
-	  _Dbg_cmd_up $_Dbg_args
+	  _Dbg_cmd_up $args
 	  ;;
 
 	# List call stack up
 	un | undi | undis | undisp | undispl | undispla | undisplay )
-	  _Dbg_cmd_undisplay $_Dbg_args
+	  _Dbg_cmd_undisplay $args
 	  ;;
 
 	# List window around line.
@@ -427,7 +431,7 @@ _Dbg_onecmd() {
 
 	# intelligent print of variable, function or expression
 	x | examine )
-	  _Dbg_cmd_x "$_Dbg_args"
+	  _Dbg_cmd_x "$args"
 	  ;;
 
 	# List all breakpoints and actions.
@@ -439,21 +443,21 @@ _Dbg_onecmd() {
 
 	# print help command menu
 	'?' | h | he | hel | help )
-	  _Dbg_cmd_help $_Dbg_args ;;
+	  _Dbg_cmd_help $args ;;
 
 	# run shell command. Has to come before ! below.
 	'!!' | sh | she | shell )
-	  eval $_Dbg_args ;;
+	  eval $args ;;
 
 	\!* | hi | his | hist | histo | histor | history )
 	  _Dbg_remove_history_item
-	  _Dbg_cmd_history_parse $_Dbg_args
+	  _Dbg_cmd_history_parse $args
 	  if (( $history_num >= 0 )) ; then 
 	    if (( $history_num < ${#_Dbg_history[@]} )) ; then 
 	      set ${_Dbg_history[$history_num]}
 	      _Dbg_cmd=$1
 	      shift
-	      _Dbg_args="$@"
+	      args="$@"
 	      _Dbg_redo=1;
 	    else
 	      _Dbg_msg \
@@ -464,44 +468,44 @@ _Dbg_onecmd() {
 
 	# Remove all actions
 	A )
-	  _Dbg_cmd_clear_all_actions $_Dbg_args
+	  _Dbg_cmd_clear_all_actions $args
 	  ;;
 
 	# Run debugger command history
 	H )
 	  _Dbg_remove_history_item
-	  _Dbg_cmd_history_list $_Dbg_args
+	  _Dbg_cmd_history_list $args
 	  ;;
 
 	# restart debug session.
 	R | re | res | rest | resta | restar | restart | ru | run )
-	  _Dbg_cmd_restart $_Dbg_args
+	  _Dbg_cmd_restart $args
 	  ;;
 
 	#  S List subroutine names
 	S )
-	  _Dbg_cmd_list_subroutines $_Dbg_args
+	  _Dbg_cmd_list_subroutines $args
 	  ;;
 
 	# Stack trace
 	T | wh | whe | wher | where | bt| back | backtrace )
-	  _Dbg_cmd_stack_trace 2 $_Dbg_args;
+	  _Dbg_cmd_stack_trace 2 $args;
 	  ;;
 
 	# Dump variables
 	V )
-	  _Dbg_cmd_list_variables "$_Dbg_args"
+	  _Dbg_cmd_list_variables "$args"
 	  ;;
 
 	# Watch expression
 	We | watche )
-	  _Dbg_cmd_watch 1 "$_Dbg_args"
+	  _Dbg_cmd_watch 1 "$args"
 	  ;;
 
 	# watch variable
 	W | wa | wat | watch )
 	  local -a a
-	  a=($_Dbg_args)
+	  a=($args)
 	  local first=${a[0]}
 	  if [[ $first == '' ]] ; then
 	    _Dbg_cmd_watch 0
@@ -510,7 +514,7 @@ _Dbg_onecmd() {
 	      _Dbg_msg "Can't set watch: no such variable $first."
 	    else
 	      unset a first
-	      _Dbg_cmd_watch 0 "\$$_Dbg_args"
+	      _Dbg_cmd_watch 0 "\$$args"
 	    fi
 	  fi
 	  ;;
@@ -932,7 +936,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.11 2006/06/03 04:24:44 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.12 2006/06/03 07:06:09 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
