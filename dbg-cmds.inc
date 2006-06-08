@@ -124,7 +124,20 @@ _Dbg_cmdloop() {
       _Dbg_cmd args \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output; do
 
-     _Dbg_onecmd "$_Dbg_cmd" "$args"
+      if (( _Dbg_brkpt_commands_defining )) ; then
+	  case $_Dbg_cmd in
+	      silent ) 
+		  _Dbg_brkpt_commands_silent[$_Dbg_brkpt_commands_current]=1
+		  continue
+		  ;;
+	      end )
+		  _Dbg_brkpt_commands_defining=0
+		  continue
+		  ;;
+	      *) ;;
+	  esac
+      fi
+      _Dbg_onecmd "$_Dbg_cmd" "$args"
      local rc=$?
      if (( $rc != 10 )) ; then 
 	 return $rc
@@ -237,6 +250,11 @@ _Dbg_onecmd() {
 	cd )
 	  cd $args
 	  _Dbg_cmd_pwd
+	  ;;
+
+	# commands
+	comm | comma | comman | command | commands )
+	  _Dbg_cmd_complete $args
 	  ;;
 
 	# complete
@@ -525,6 +543,8 @@ _Dbg_onecmd() {
 	  ;;
 
 	* ) 
+
+
           _Dbg_msg "Undefined command: \"$_Dbg_cmd\". Try \"help\"." 
 	  _Dbg_remove_history_item
 	  ;;
@@ -936,7 +956,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.14 2006/06/03 21:36:23 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.15 2006/06/08 09:00:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
