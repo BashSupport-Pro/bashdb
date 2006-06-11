@@ -1,0 +1,16 @@
+#!../../bash
+#$Id: command.tests,v 1.1 2006/06/11 02:23:32 rockyb Exp $
+
+if test -z $srcdir  ; then
+  srcdir=`pwd`
+fi
+
+cmdfile=command.cmd
+debugged_script=dbg-test1.sh
+
+$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile $debugged_script
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

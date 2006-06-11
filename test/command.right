@@ -1,0 +1,19 @@
+(dbg-test1.sh:22):
+22:	x=22
++ # Debugger test of 'command' command
++ # 
++ # Try to set command when there is no.
++ command 1
+No breakpoint number 1.
++ break 23
+Breakpoint 1 set in file dbg-test1.sh, line 23.
++ command 1
+Type commands for when breakpoint 1 hit, one per line.
++ continue 24
+One-time breakpoint 2 set in file dbg-test1.sh, line 24.
+Breakpoint 1 hit (1 times).
++ x x
+declare -- x="22"
+(dbg-test1.sh:23):
+23:	y=23
++ quit 

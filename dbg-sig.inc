@@ -174,6 +174,12 @@ _Dbg_debug_trap_handler() {
 	    _Dbg_msg \
               "Breakpoint $_Dbg_i hit (${_Dbg_brkpt_count[$_Dbg_i]} times)."
 	  fi
+	  # We're sneaky and check commands_end because start could 
+	  # legitimately be 0.
+	  if (( ${_Dbg_brkpt_commands_end[$_Dbg_i]} )) ; then
+	      # Run any commands associated with this breakpoint
+	      _Dbg_bp_commands $_Dbg_i
+	  fi
 	  _Dbg_print_source_line
 	  _Dbg_cmdloop		# enter debugger
 	  _Dbg_set_to_return_from_debugger 1
@@ -576,7 +582,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.7 2006/05/27 16:42:41 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.8 2006/06/11 02:23:32 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -132,15 +132,35 @@ _Dbg_cmdloop() {
 		  ;;
 	      end )
 		  _Dbg_brkpt_commands_defining=0
+		  #### ??? TESTING
+		  ## local -i cur=$_Dbg_brkpt_commands_current
+		  ## local -i start=${_Dbg_brkpt_commands_start[$cur]}
+		  ## local -i end=${_Dbg_brkpt_commands_end[$cur]}
+		  ## local -i i
+		  ## echo "++ brkpt: $cur, start: $start, end: $end "
+		  ## for (( i=start; (( i < end )) ; i++ )) ; do
+		  ##    echo ${_Dbg_brkpt_commands[$i]}
+		  ## done
+		  eval "_Dbg_prompt=$_Dbg_prompt_str"
 		  continue
 		  ;;
-	      *) ;;
+	      *) 
+		  _Dbg_brkpt_commands[${#_Dbg_brkpt_commands[@]}]="$_Dbg_cmd $args"
+		  (( _Dbg_brkpt_commands_end[$_Dbg_brkpt_commands_current]++ ))
+		  continue
+		  ;;
 	  esac
+      else
+	  _Dbg_onecmd "$_Dbg_cmd" "$args"
       fi
-      _Dbg_onecmd "$_Dbg_cmd" "$args"
      local rc=$?
      if (( $rc != 10 )) ; then 
 	 return $rc
+     fi
+     if (( _Dbg_brkpt_commands_defining )) ; then
+	 _Dbg_prompt='>'
+     else
+	 eval "_Dbg_prompt=$_Dbg_prompt_str"
      fi
 
     done  # while read $_Dbg_edit -p ...
@@ -254,7 +274,7 @@ _Dbg_onecmd() {
 
 	# commands
 	comm | comma | comman | command | commands )
-	  _Dbg_cmd_complete $args
+	  _Dbg_cmd_commands $args
 	  ;;
 
 	# complete
@@ -956,7 +976,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.15 2006/06/08 09:00:23 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.16 2006/06/11 02:23:32 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
