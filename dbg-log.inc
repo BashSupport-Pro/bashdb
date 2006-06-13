@@ -32,7 +32,7 @@ typeset _Dbg_logging_overwrite=0
 # If 1, log file is sufficient, don't also print to stdout. 
 typeset _Dbg_logging_redirect=0
 
-_Dbg_cmd_set_logging()
+_Dbg_do_set_logging()
 {
   local -a args=($*)
   if (( ${#args[@]} > 0 )) ; then
@@ -96,7 +96,7 @@ _Dbg_cmd_set_logging()
 set +x
 }
 
-_Dbg_cmd_show_logging()
+_Dbg_do_show_logging()
 {
   local -a args=($*)
   if (( ${#args[@]} == 0 )) ; then
@@ -136,7 +136,7 @@ _Dbg_cmd_show_logging()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_log_ver=\
-'$Id: dbg-log.inc,v 1.1 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-log.inc,v 1.2 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

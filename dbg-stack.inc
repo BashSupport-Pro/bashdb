@@ -31,7 +31,7 @@ typeset -i  _Dbg_stack_pos
 
 # Move default values down $1 or one in the stack. 
 
-_Dbg_cmd_down() {
+_Dbg_do_down() {
   local -i count=${1:-1}
   
   if (( _Dbg_stack_pos-count+2 <= _Dbg_STACK_TOP )) ; then 
@@ -46,7 +46,7 @@ _Dbg_cmd_down() {
   _Dbg_print_source_line $_Dbg_listline
 }
 
-_Dbg_cmd_frame() {
+_Dbg_do_frame() {
   eval "$_seteglob"
   if [[ $1 != '' && $1 != $int_pat ]] ; then 
     _Dbg_msg "Bad integer parameter: $1"
@@ -60,7 +60,7 @@ _Dbg_cmd_frame() {
     return
   fi
   _Dbg_stack_pos=$_Dbg_STACK_TOP+$pos
-  _Dbg_cmd_stack_trace 3 1 $pos
+  _Dbg_do_stack_trace 3 1 $pos
   local -i j=_Dbg_stack_pos+1
   _Dbg_listline=${BASH_LINENO[$j]}
    ((j++))
@@ -78,7 +78,7 @@ _Dbg_cmd_frame() {
 # This code assumes the's debugger version of bash where FUNCNAME is
 # an array, not a variable.
 
-_Dbg_cmd_stack_trace() {
+_Dbg_do_stack_trace() {
 
   local -i n=${#FUNCNAME[@]}-1
 
@@ -168,7 +168,7 @@ _Dbg_cmd_stack_trace() {
 # This code assumes the's debugger version of
 # bash where FUNCNAME is an array, not a variable.
 
-_Dbg_cmd_info_args() {
+_Dbg_do_info_args() {
 
   local -i n=${#FUNCNAME[@]}-1
 
@@ -210,7 +210,7 @@ _Dbg_cmd_info_args() {
 
 # Move default values up $1 or one in the stack. 
 
-_Dbg_cmd_up() {
+_Dbg_do_up() {
   local -i count=${1:-1}
   
   if (( _Dbg_stack_pos+count+2 >= ${#FUNCNAME[@]} )) ; then 
@@ -226,7 +226,7 @@ _Dbg_cmd_up() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.3 2006/06/03 04:24:44 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.4 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

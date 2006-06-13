@@ -21,7 +21,7 @@ typeset -r _Dbg_set_cmds="args annotate basename debugger editing listsize promp
 typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories listsize prompt warranty"
 
 # print help command 
-_Dbg_cmd_help() {
+_Dbg_do_help() {
 
   local -r db_cmd=$1
   
@@ -495,7 +495,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.4 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.5 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

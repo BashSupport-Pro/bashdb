@@ -108,7 +108,7 @@ _Dbg_info_help() {
   esac
 }
 
-_Dbg_cmd_info() {
+_Dbg_do_info() {
   local -r info_cmd=$1
   local -ar subcmds=( args breakpoints display files functions source sources \
                       stack terminal variables watchpoints )
@@ -117,18 +117,18 @@ _Dbg_cmd_info() {
     shift
     case $info_cmd in 
       a | ar | arg | args )
-        _Dbg_cmd_info_args 3  # located in dbg-stack.inc
+        _Dbg_do_info_args 3  # located in dbg-stack.inc
 	return
 	;;
       b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
       w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
-	_Dbg_cmd_list_brkpt $*
+	_Dbg_do_list_brkpt $*
 	_Dbg_list_watch $*
 	return
 	;;
 
       d | di | dis| disp | displ | displa | display )
-	_Dbg_cmd_list_display $*
+	_Dbg_do_list_display $*
 	return
 	;;
 
@@ -146,7 +146,7 @@ _Dbg_cmd_info() {
 	;;
 
       fu | fun| func | funct | functi | functio | function | functions )
-        _Dbg_cmd_list_subroutines $*
+        _Dbg_do_list_subroutines $*
         return
 	;;
 
@@ -169,7 +169,7 @@ _Dbg_cmd_info() {
 	;;
 
       st | sta | stac | stack )
-	_Dbg_cmd_stack_trace 1 $*
+	_Dbg_do_stack_trace 1 $*
 	return
 	;;
       te | ter | term | termi | termin | termina | terminal | tt | tty )
@@ -177,7 +177,7 @@ _Dbg_cmd_info() {
 	return;
 	;;
       v | va | var | vari | varia | variab | variabl | variable | variables )
-	_Dbg_cmd_list_variables "$1"
+	_Dbg_do_list_variables "$1"
 	return
         ;;
       w | wa | war | warr | warra | warran | warrant | warranty )
@@ -253,7 +253,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.5 2006/06/03 04:24:44 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.6 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

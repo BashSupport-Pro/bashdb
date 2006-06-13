@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.4 2006/05/27 16:42:41 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.5 2006/06/13 09:11:44 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -117,7 +117,7 @@ _Dbg_save_display() {
 # Start out with general break/watchpoint functions first...
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
-_Dbg_cmd_delete() {
+_Dbg_do_delete() {
   local -r  to_go=$@
   local -i  i
   local -i  found=0
@@ -206,7 +206,7 @@ _Dbg_enable_disable() {
   return 0
 }
 
-_Dbg_cmd_continue() {
+_Dbg_do_continue() {
   # set -xv
   local -r first_arg=$1
 
@@ -237,12 +237,12 @@ _Dbg_cmd_continue() {
 }
 
 # Enable breakpoint(s)/watchpoint(s) by entry number(s).
-_Dbg_cmd_enable() {
+_Dbg_do_enable() {
   _Dbg_enable_disable 1 "enabled" $@
 }
 
 # Disable breakpoint(s)/watchpoint(s) by entry number(s).
-_Dbg_cmd_disable() {
+_Dbg_do_disable() {
   _Dbg_enable_disable 0 "disabled" $@
 }
 
@@ -263,7 +263,7 @@ _Dbg_print_brkpt_count() {
 # the line number or _curline if omitted.  $2 is a condition to test
 # for whether to stop.
 
-_Dbg_cmd_break() {
+_Dbg_do_break() {
   
   local -i is_temp=$1;
   shift
@@ -311,7 +311,7 @@ _Dbg_cmd_break() {
 # Set a condition for a given breakpoint $1 is a breakpoint number
 # $2 is a condition. If not given, set "unconditional" or 1.
 # returns 0 if success or 1 if fail.
-_Dbg_cmd_condition() {
+_Dbg_do_condition() {
   # set -x
   local -r n=$1
   shift 
@@ -346,7 +346,7 @@ _Dbg_cmd_condition() {
 
 # delete brkpt(s) at given file:line numbers. If no file is given
 # use the current file.
-_Dbg_cmd_clear_brkpt() {
+_Dbg_do_clear_brkpt() {
   # set -x
   local -r n=${1:-$_curline}
 
@@ -384,7 +384,7 @@ _Dbg_cmd_clear_brkpt() {
 
 # list breakpoints and break condition.
 # If $1 is given just list those associated for that line.
-_Dbg_cmd_list_brkpt() {
+_Dbg_do_list_brkpt() {
 
   eval "$_seteglob"
   if [[ -n $1 ]] ; then 
@@ -688,7 +688,7 @@ _Dbg_clear_watch() {
 }   
 
 # Set or list watch command
-_Dbg_cmd_watch() {
+_Dbg_do_watch() {
   if [ -z "$2" ]; then
     _Dbg_clear_watch 
   else 
@@ -711,7 +711,7 @@ _Dbg_cmd_watch() {
 # the line number or _curline if omitted.  $2 is a condition to test
 # for whether to stop.
 
-_Dbg_cmd_action() {
+_Dbg_do_action() {
   
   local n=${1:-$_curline}
   shift
@@ -749,7 +749,7 @@ _Dbg_cmd_action() {
 }
 
 # clear all actions
-_Dbg_cmd_clear_all_actions() {
+_Dbg_do_clear_all_actions() {
 
   local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
   read $_Dbg_edit -p "Delete all actions? (y/n): " \
@@ -774,7 +774,7 @@ _Dbg_cmd_clear_all_actions() {
 
 # delete actions(s) at given file:line numbers. If no file is given
 # use the current file.
-_Dbg_cmd_clear_action() {
+_Dbg_do_clear_action() {
   # set -x
   local -r n=${1:-$_curline}
 
@@ -898,7 +898,7 @@ _Dbg_unset_action() {
 }
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
-_Dbg_cmd_action_delete() {
+_Dbg_do_action_delete() {
   local -r  to_go=$@
   local -i  i
   local -i  found=0
@@ -955,13 +955,13 @@ _Dbg_eval_all_display() {
     if [ -n "${_Dbg_disp_exp[$i]}" ] \
       && [[ ${_Dbg_disp_enable[i]} != 0 ]] ; then
       _Dbg_printf_nocr "%2d (%s): " $i "${_Dbg_disp_exp[i]}"
-      _Dbg_cmd_eval "${_Dbg_disp_exp[i]}"
+      _Dbg_do_eval "${_Dbg_disp_exp[i]}"
     fi
   done
 }  
 
 # Set display command or list all current display expressions
-_Dbg_cmd_display() {
+_Dbg_do_display() {
   if [[ -z "$@" ]]; then
     _Dbg_eval_all_display
   else 
@@ -973,7 +973,7 @@ _Dbg_cmd_display() {
 }
 
 # List display command(s)
-_Dbg_cmd_list_display() {
+_Dbg_do_list_display() {
   if [ ${#_Dbg_disp_exp[@]} != 0 ]; then
     local i=0 j
     _Dbg_msg "Display expressions:"
@@ -1006,7 +1006,7 @@ _Dbg_enable_disable_display() {
   fi
 }
 
-_Dbg_cmd_undisplay() {
+_Dbg_do_undisplay() {
   local -i del=$1
 
   if [ -n "${_Dbg_disp_exp[$del]}" ] ; then

@@ -50,7 +50,7 @@ _Dbg_brkpt_commands_defining=0
 _Dbg_brkpt_commands_bnum=0
 
 
-_Dbg_cmd_commands() {
+_Dbg_do_commands() {
   eval "$_seteglob"
   local num=$1
   local -i found=0

@@ -174,7 +174,7 @@ _Dbg_cmdloop() {
 
   # EOF hit. Same as quit without arguments
   _Dbg_msg "" # Cause <cr> since EOF may not have put in.
-  _Dbg_cmd_quit
+  _Dbg_do_quit
 }
 
 # Run a single command
@@ -239,25 +239,25 @@ _Dbg_onecmd() {
 
 	# Search forwards for pattern
 	/* )
-	  _Dbg_cmd_search $_Dbg_cmd
+	  _Dbg_do_search $_Dbg_cmd
 	  ;;
 
 	# Search backwards for pattern
 	[?]* )
-	  _Dbg_cmd_search_back $_Dbg_cmd
+	  _Dbg_do_search_back $_Dbg_cmd
 	  ;;
 
 	# Set action to be silently run when a line is hit
 	a )
-	  _Dbg_cmd_action $args ;;
+	  _Dbg_do_action $args ;;
 
 	# Set breakpoint on a line
 	b | br | bre | brea | break )
-	  _Dbg_cmd_break 0 $args ;;
+	  _Dbg_do_break 0 $args ;;
 
 	# Continue
 	c | cont | conti |contin |continu | continue )
-	  _Dbg_cmd_continue $args
+	  _Dbg_do_continue $args
 	  if [[ $? == 0 ]] ; then
 	    IFS="$_Dbg_old_IFS";
 	    _Dbg_write_journal_eval \
@@ -269,54 +269,54 @@ _Dbg_onecmd() {
 	# Change Directory
 	cd )
 	  cd $args
-	  _Dbg_cmd_pwd
+	  _Dbg_do_pwd
 	  ;;
 
 	# commands
 	comm | comma | comman | command | commands )
-	  _Dbg_cmd_commands $args
+	  _Dbg_do_commands $args
 	  ;;
 
 	# complete
 	com | comp | compl | comple |complet | complete )
-	  _Dbg_cmd_complete $args
+	  _Dbg_do_complete $args
 	  ;;
 
 	# Breakpoint/Watchpoint Conditions
 	cond | condi |condit |conditi | conditio | condition )
-	  _Dbg_cmd_condition $args
+	  _Dbg_do_condition $args
 	  ;;
 
 	# Delete all breakpoints by line number.
 	# Note we use "d" as an alias for "clear" to be compatible
 	# with the Perl5 debugger.
 	d | cl | cle | clea | clea | clear )
-	  _Dbg_cmd_clear_brkpt $args
+	  _Dbg_do_clear_brkpt $args
 	  ;;
 
 	# Delete breakpoints by entry numbers. Note "d" is an alias for
 	# clear.
 	de | del | dele | delet | delete )
-	  _Dbg_cmd_delete $args
+	  _Dbg_do_delete $args
 	  ;;
 
 	# Set up a script for debugging into.
 	deb | debu | debug )
-	  _Dbg_cmd_debug $args
+	  _Dbg_do_debug $args
 	  # Skip over the execute statement which presumably we ran above.
-	  _Dbg_cmd_next_step_skip "skip" 1
+	  _Dbg_do_next_step_skip "skip" 1
 	  IFS="$_Dbg_old_IFS";
 	  return 1
 	  ;;
 
 	# Disable breakpoints
 	di | dis | disa | disab | disabl | disable )
-	  _Dbg_cmd_disable $args
+	  _Dbg_do_disable $args
 	  ;;
 
 	# Display expression
 	disp | displ | displa| display )
-	  _Dbg_cmd_display $args
+	  _Dbg_do_display $args
 	  ;;
 
 	# Delete all breakpoints.
@@ -326,22 +326,22 @@ _Dbg_onecmd() {
 
 	# List stack 1 up
 	do | dow | down )
-	  _Dbg_cmd_down $args
+	  _Dbg_do_down $args
 	  ;;
 
 	# evaluate as bash command
 	e | ev | eva | eval )
-	  _Dbg_cmd_eval $args
+	  _Dbg_do_eval $args
 	  ;;
 
 	# evaluate as bash command
 	en | ena | enab | enabl | enable )
-	  _Dbg_cmd_enable $args
+	  _Dbg_do_enable $args
 	  ;;
 
 	# 
 	fil | file )
-	  _Dbg_cmd_file $args
+	  _Dbg_do_file $args
 	  ;;
 
 	# 
@@ -353,34 +353,34 @@ _Dbg_onecmd() {
 
 	#  View source in file
 	fr | fra | fra | frame )
-	  _Dbg_cmd_frame $args
+	  _Dbg_do_frame $args
 	  ;;
 
 	# print help command menu
 	h | he | hel | help | '?'  )
-	  _Dbg_cmd_help $args ;;
+	  _Dbg_do_help $args ;;
 
 	#  Set signal handle parameters
 	ha | han | hand | handl | handle )
-	  _Dbg_cmd_handle $args
+	  _Dbg_do_handle $args
 	  ;;
 
 	#  Info subcommands
 	i | in | inf | info )
-	  _Dbg_cmd_info $args
+	  _Dbg_do_info $args
 	  ;;
 
 	# List line.
 	# print lines in file
 	l | li | lis | list )
-	  _Dbg_cmd_list $args
+	  _Dbg_do_list $args
 	  ;;
 
 	# next/single-step N times (default 1)
 	n | ne | nex | next | s | st | ste | step | sk | ski | skip )
 	  _Dbg_last_next_step_cmd="$_Dbg_cmd"
 	  _Dbg_last_next_step_args=$args
-	  _Dbg_cmd_next_step_skip $_Dbg_cmd $args
+	  _Dbg_do_next_step_skip $_Dbg_cmd $args
 	  if [[ $_Dbg_cmd == sk* ]] ; then
 	    _Dbg_inside_skip=1
 	    return 1
@@ -391,22 +391,22 @@ _Dbg_onecmd() {
 
 	# print globbed or substituted variables
 	p | pr | pri | prin | print )
-	  _Dbg_cmd_print "$args"
+	  _Dbg_do_print "$args"
 	  ;;
 
 	# print working directory
 	pw | pwd )
-	  _Dbg_cmd_pwd
+	  _Dbg_do_pwd
 	  ;;
 
 	# quit
 	q | qu | qui | quit )
-	  _Dbg_cmd_quit $args
+	  _Dbg_do_quit $args
 	  ;;
 
 	# restart debug session.
 	re | res | rest | resta | restar | restart | ru | run | R )
-	  _Dbg_cmd_restart $args
+	  _Dbg_do_restart $args
 	  ;;
 
 	# return from function/source without finishing executions
@@ -419,23 +419,23 @@ _Dbg_onecmd() {
 
 	# Search backwards for pattern
 	rev | reve | rever | revers | reverse )
-	  _Dbg_cmd_search_back $args
+	  _Dbg_do_search_back $args
 	  ;;
 
 	# Run a debugger set command
 	se | set )
-	  _Dbg_cmd_set $args
+	  _Dbg_do_set $args
 	  ;;
 
 	# Search forwards for pattern
 	sea | sear | searc | search | \
         for | forw | forwa | forwar | forward )
-	  _Dbg_cmd_search $args
+	  _Dbg_do_search $args
 	  ;;
 
 	# Run a debugger show command
 	sh | sho | show )
-	  _Dbg_cmd_show $args
+	  _Dbg_do_show $args
 	  ;;
 
 	# run shell command. Has to come before ! below.
@@ -444,37 +444,37 @@ _Dbg_onecmd() {
 
 	# Run a debugger comamnd file
 	so | sou | sour | sourc | source )
-	  _Dbg_cmd_source $args
+	  _Dbg_do_source $args
 	  ;;
 
 	# toggle execution trace
 	t | to | tog | togg | toggl | toggle )
-	  _Dbg_cmd_trace
+	  _Dbg_do_trace
 	  ;;
 
 	# Set breakpoint on a line
 	tb | tbr | tbre | tbrea | tbreak )
-	  _Dbg_cmd_break 1 $args ;;
+	  _Dbg_do_break 1 $args ;;
 
 	# Set the output tty
 	tt | tty )
-	  _Dbg_cmd_tty $args 
+	  _Dbg_do_tty $args 
 	  _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
 	  ;;
 
 	# List call stack up
 	u | up )
-	  _Dbg_cmd_up $args
+	  _Dbg_do_up $args
 	  ;;
 
 	# List call stack up
 	un | undi | undis | undisp | undispl | undispla | undisplay )
-	  _Dbg_cmd_undisplay $args
+	  _Dbg_do_undisplay $args
 	  ;;
 
 	# Show version information
 	ve | ver | vers | versi | versio | version | M )
-	  _Dbg_cmd_show_versions
+	  _Dbg_do_show_versions
 	  ;;
 
 	# List window around line.
@@ -490,64 +490,64 @@ _Dbg_onecmd() {
 	  a=($args)
 	  local first=${a[0]}
 	  if [[ $first == '' ]] ; then
-	    _Dbg_cmd_watch 0
+	    _Dbg_do_watch 0
 	  else
 	    if [[ 0 == `_Dbg_is_var $first` ]] ; then
 	      _Dbg_msg "Can't set watch: no such variable $first."
 	    else
 	      unset a first
-	      _Dbg_cmd_watch 0 "\$$args"
+	      _Dbg_do_watch 0 "\$$args"
 	    fi
 	  fi
 	  ;;
 
 	# Watch expression
 	watche | We )
-	  _Dbg_cmd_watch 1 "$args"
+	  _Dbg_do_watch 1 "$args"
 	  ;;
 
 	# intelligent print of variable, function or expression
 	x | examine )
-	  _Dbg_cmd_x "$args"
+	  _Dbg_do_x "$args"
 	  ;;
 
 	# List all breakpoints and actions.
 	L )
-	  _Dbg_cmd_list_brkpt
+	  _Dbg_do_list_brkpt
 	  _Dbg_list_watch
 	  _Dbg_list_action
 	  ;;
 
 	# Remove all actions
 	A )
-	  _Dbg_cmd_clear_all_actions $args
+	  _Dbg_do_clear_all_actions $args
 	  ;;
 
 	# Run debugger command history
 	H )
 	  _Dbg_remove_history_item
-	  _Dbg_cmd_history_list $args
+	  _Dbg_do_history_list $args
 	  ;;
 
 	#  S List subroutine names
 	S )
-	  _Dbg_cmd_list_subroutines $args
+	  _Dbg_do_list_subroutines $args
 	  ;;
 
 	# Stack trace
 	T | wh | whe | wher | where | bt| back | backtrace )
-	  _Dbg_cmd_stack_trace 2 $args;
+	  _Dbg_do_stack_trace 2 $args;
 	  ;;
 
 	# Dump variables
 	V )
-	  _Dbg_cmd_list_variables "$args"
+	  _Dbg_do_list_variables "$args"
 	  ;;
 
 	# Has to come after !! of "shell" listed above
 	\!* | hi | his | hist | histo | histor | history )
 	  _Dbg_remove_history_item
-	  _Dbg_cmd_history_parse $args
+	  _Dbg_do_history_parse $args
 	  if (( $history_num >= 0 )) ; then 
 	    if (( $history_num < ${#_Dbg_history[@]} )) ; then 
 	      set ${_Dbg_history[$history_num]}
@@ -580,7 +580,7 @@ _Dbg_onecmd() {
 # TODO: would work better if instead of using $source_line below
 # which might have several statements, we could just pick up the next
 # single statement.
-_Dbg_cmd_debug() {
+_Dbg_do_debug() {
 
   # set -xv
   local script_cmd=${@:-$_Dbg_bash_command}
@@ -620,7 +620,7 @@ _Dbg_cmd_debug() {
 # V [![pat]] List variables and values for whose variables names which 
 # match pat $1. If ! is used, list variables that *don't* match. 
 # If pat ($1) is omitted, use * (everything) for the pattern.
-_Dbg_cmd_list_variables() {
+_Dbg_do_list_variables() {
   local _Dbg_old_glob="$GLOBIGNORE"
   GLOBIGNORE="*"
   
@@ -718,7 +718,7 @@ _Dbg_cmd_list_variables() {
   GLOBIGNORE=$_Dbg_old_glob
 }
 
-_Dbg_cmd_eval() {
+_Dbg_do_eval() {
 
   echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
   echo "$@" >> $_Dbg_evalfile
@@ -729,7 +729,7 @@ _Dbg_cmd_eval() {
   fi
 }
 
-_Dbg_cmd_file() {
+_Dbg_do_file() {
 
   local filename
   if [[ -z "$1" ]] ; then
@@ -748,7 +748,7 @@ _Dbg_cmd_file() {
   _Dbg_msg "File $filename will be used when $source_file is referenced."
 }
 
-_Dbg_cmd_next_step_skip() {
+_Dbg_do_next_step_skip() {
 
   local cmd=$1
   local count=${2:-1}
@@ -769,7 +769,7 @@ _Dbg_cmd_next_step_skip() {
   _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
 }
 
-_Dbg_cmd_print() {
+_Dbg_do_print() {
   local -r _Dbg_expr=${@:-"$_Dbg_last_print_args"}
   local -r dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
   . ${_Dbg_libdir}/dbg-set-d-vars.inc
@@ -777,7 +777,7 @@ _Dbg_cmd_print() {
   _Dbg_last_print_args="$dq_expr"
 }
 
-_Dbg_cmd_pwd() {
+_Dbg_do_pwd() {
   local _Dbg_cwd=$(pwd)
   (( _Dbg_basename_only )) && _Dbg_cwd=${_Dbg_cwd##*/}
   _Dbg_msg "Working directory ${_Dbg_cwd}."
@@ -785,7 +785,7 @@ _Dbg_cmd_pwd() {
 
 # Restart script in same way with saved arguments (probably the same
 # ones as we were given before).
-_Dbg_cmd_restart() {
+_Dbg_do_restart() {
 
   _Dbg_cleanup;
 
@@ -822,7 +822,7 @@ _Dbg_cmd_restart() {
   if (( BASH_SUBSHELL > 0 )) ; then 
     _Dbg_msg "Note you are in a subshell. We will need to leave that first."
     _Dbg_write_journal "BASHDB_RESTART_COMMAND=\"$exec_cmd\""
-    _Dbg_cmd_quit 0
+    _Dbg_do_quit 0
   fi
   _Dbg_save_state
   cd $_Dbg_init_cwd
@@ -832,7 +832,7 @@ _Dbg_cmd_restart() {
 # Handle command-file source. If the filename's okay we just increase the
 # input-file descriptor by one and redirect input which will
 # be picked up in next debugger command loop.
-_Dbg_cmd_source() {
+_Dbg_do_source() {
   local filename
   if [[ -z "$1" ]] ; then
     _Dbg_msg "Need to give a filename for the source command"
@@ -861,7 +861,7 @@ _Dbg_cmd_source() {
 }
 
 # toggle execution trace feature
-_Dbg_cmd_trace() {
+_Dbg_do_trace() {
   ((_Dbg_linetrace=!$_Dbg_linetrace))
 
   _Dbg_msg "Line trace = \c"
@@ -869,7 +869,7 @@ _Dbg_cmd_trace() {
 }
 
 # Set output tty
-_Dbg_cmd_tty() {
+_Dbg_do_tty() {
   if [[ -z "$1" ]] ; then
     _Dbg_msg "Argument required (terminal name for running target process)."
     return 1
@@ -886,7 +886,7 @@ _Dbg_cmd_tty() {
   return 0
 }
 
-_Dbg_cmd_x() {
+_Dbg_do_x() {
   local -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   local _Dbg_result
   if (( `_Dbg_is_var $_Dbg_expr` )) ; then
@@ -899,7 +899,7 @@ _Dbg_cmd_x() {
     local -i _Dbg_rc
     eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
     if (( $_Dbg_rc != 0 )) ; then
-      _Dbg_cmd_print "$_Dbg_expr"
+      _Dbg_do_print "$_Dbg_expr"
     else
       _Dbg_msg "$_Dbg_result"
     fi
@@ -939,7 +939,7 @@ _Dbg_restore_state() {
 
 # ================== INITIALIZATION =====================================
 
-_Dbg_cmd_source '/dev/stdin'
+_Dbg_do_source '/dev/stdin'
 
 # List of command files to process
 typeset -a _Dbg_input
@@ -949,12 +949,12 @@ typeset -a _Dbg_input
 # like those indices >= _Dbg_INPUT_START_DESC are.
 if [ -n "$BASHDB_INPUT" ] ; then 
   _Dbg_input=($BASHDB_INPUT)
-  _Dbg_cmd_source ${_Dbg_input[0]}
+  _Dbg_do_source ${_Dbg_input[0]}
   _Dbg_no_init=1
 fi
 
 if [[ -z $_Dbg_no_init && -r ~/.bashdbinit ]] ; then
-  _Dbg_cmd_source ~/.bashdbinit
+  _Dbg_do_source ~/.bashdbinit
 fi
 
 # BASHDB_LEVEL is the number of times we are nested inside a debugger
@@ -976,7 +976,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.16 2006/06/11 02:23:32 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.17 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

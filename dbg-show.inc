@@ -21,7 +21,7 @@
 # but the command is different.
 typeset _Dbg_show_command="auto"
 
-_Dbg_cmd_show() {
+_Dbg_do_show() {
   local show_cmd=$1
   local label=$2
 
@@ -31,7 +31,7 @@ _Dbg_cmd_show() {
   if [[ -z $show_cmd ]] ; then 
       local thing
       for thing in $subcmds ; do 
-	_Dbg_cmd_show $thing 1
+	_Dbg_do_show $thing 1
       done
       return
   fi
@@ -62,7 +62,7 @@ _Dbg_cmd_show() {
     com | comm | comma | comman | command | commands )
       local -i hi_start=_Dbg_hi-1
       local -i hi_stop=hi_start-10
-      _Dbg_cmd_history_list $hi_start $hi_stop
+      _Dbg_do_history_list $hi_start $hi_stop
       return 0
       ;;
     cop | copy| copyi | copyin | copying )
@@ -372,7 +372,7 @@ of promoting the sharing and reuse of software generally.
       ;;
     lo | log | logg | loggi | loggin | logging )
       shift
-      _Dbg_cmd_show_logging $*
+      _Dbg_do_show_logging $*
       ;;
     p | pr | pro | prom | promp | prompt )
       [[ -n $label ]] && label='prompt:   '
@@ -389,11 +389,11 @@ of promoting the sharing and reuse of software generally.
       return 0
       ;;
     v | ve | ver | vers | versi | versio | version )
-      _Dbg_cmd_show_versions
+      _Dbg_do_show_versions
       return 0
       ;;
     w | wa | war | warr | warra | warran | warrant | warranty )
-      _Dbg_cmd_info warranty
+      _Dbg_do_info warranty
       return 0
       ;;
     *)
@@ -402,7 +402,7 @@ of promoting the sharing and reuse of software generally.
   esac
 }
 
-_Dbg_cmd_show_versions()
+_Dbg_do_show_versions()
 {
   _Dbg_printf "%-12s => $_Dbg_release" "Release"
   _Dbg_msg "=================================================================="
@@ -419,7 +419,7 @@ _Dbg_cmd_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.1 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.2 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

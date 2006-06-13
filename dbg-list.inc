@@ -74,7 +74,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
 ##  if (( _Dbg_linetrace_expand )) ; then
 ##    _Dbg_msg_nocr  "(${filename}:${line_number}):
 ##level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t}"
-##    _Dbg_cmd_print "$source_line"
+##    _Dbg_do_print "$source_line"
 ##  fi
 
   # If we are at the same place in the file but the command has changed,
@@ -93,7 +93,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
 
 # l [start|.] [cnt] List cnt lines from line start.
 # l sub       List source code fn
-_Dbg_cmd_list() {
+_Dbg_do_list() {
   if [[ -n $1 ]] ; then
     first_arg=$1
     shift
@@ -128,7 +128,7 @@ _Dbg_cmd_list() {
 }
 
 # /search/
-_Dbg_cmd_search_back() {
+_Dbg_do_search_back() {
   local delim_search_pat=$1
   if [[ -z "$1" ]] ; then
     _Dbg_msg "Need a search pattern"
@@ -156,7 +156,7 @@ _Dbg_cmd_search_back() {
     eval "$_seteglob"
     if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
       eval "$_resteglob"
-      _Dbg_cmd_list $i 1
+      _Dbg_do_list $i 1
       _Dbg_listline=$i
       return 0
     fi
@@ -168,7 +168,7 @@ _Dbg_cmd_search_back() {
 }
 
 # /search/
-_Dbg_cmd_search() {
+_Dbg_do_search() {
   local delim_search_pat=${1}
   if [[ -z "$1" ]] ; then
     _Dbg_msg "Need a search pattern"
@@ -195,7 +195,7 @@ _Dbg_cmd_search() {
     eval "$_seteglob"
     if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
       eval "$_resteglob"
-      _Dbg_cmd_list $i 1
+      _Dbg_do_list $i 1
       _Dbg_listline=$i
       return 0
     fi
@@ -208,7 +208,7 @@ _Dbg_cmd_search() {
 
 # S [[!]pat] List Subroutine names [not] matching a pattern
 # Pass along whether or not to print "system" functions?
-_Dbg_cmd_list_subroutines() {
+_Dbg_do_list_subroutines() {
 
   local pat=$1
 
@@ -268,7 +268,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.2 2006/04/06 04:15:51 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.3 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

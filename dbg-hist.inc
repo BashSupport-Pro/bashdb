@@ -1,6 +1,7 @@
 # dbg-hist.inc - Bourne Again Shell Debugger history routines
 #
-#   Copyright (C) 2002,2003 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -27,7 +28,7 @@ _Dbg_remove_history_item() {
 # the history command index to run is returned or $_Dbg_hi if 
 # there's nothing to run.
 # Return value in $history_num
-_Dbg_cmd_history_parse() {
+_Dbg_do_history_parse() {
 
   history_num=$1
   
@@ -53,7 +54,7 @@ _Dbg_cmd_history_parse() {
 	local -a word2
 	word2=($(_Dbg_split ":" ${word1[0]}))
 	local -i num=_Dbg_hi+${word2[0]}
-	_Dbg_cmd_history_list $num $num
+	_Dbg_do_history_list $num $num
 	history_num=-1
 	;;
       [!]${int_pat}:p )
@@ -61,7 +62,7 @@ _Dbg_cmd_history_parse() {
 	word1=($(_Dbg_split "!" $_Dbg_cmd))
 	local -a word2
 	word2=($(_Dbg_split ":" ${word1[0]}))
-	_Dbg_cmd_history_list ${word2[0]} ${word2[0]}
+	_Dbg_do_history_list ${word2[0]} ${word2[0]}
 	history_num=-1
 	;;
       \!\-$int_pat ) 
@@ -95,7 +96,7 @@ _Dbg_cmd_history_parse() {
 # Print debugger history $1 is where to start or highest number if not given.
 # If $1 is negative, it is how many history items.
 # $2 is where to stop or 0 if not given.
-_Dbg_cmd_history_list() {
+_Dbg_do_history_list() {
 
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] && [[ $1 != -$int_pat ]] && [[ -n $1 ]] ; then 
@@ -125,7 +126,7 @@ _Dbg_cmd_history_list() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: dbg-hist.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-hist.inc,v 1.2 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

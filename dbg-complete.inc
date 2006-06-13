@@ -41,7 +41,7 @@ _Dbg_subcmd_complete() {
     # return _Dbg_matches
 }
 
-_Dbg_cmd_complete() {
+_Dbg_do_complete() {
   declare -a commands=( - 
 	. / a break
 	cd complete continue condition clear
@@ -70,7 +70,7 @@ _Dbg_cmd_complete() {
 }
 
 typeset -r _Dbg_complete_ver=\
-'$Id: dbg-complete.inc,v 1.2 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-complete.inc,v 1.3 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -115,7 +115,7 @@ _Dbg_debug_trap_handler() {
   _Dbg_source_journal
 
   if (( $BASHDB_QUIT_LEVELS > 0 )) ; then
-    _Dbg_cmd_quit $_Dbg_debugged_exit_code
+    _Dbg_do_quit $_Dbg_debugged_exit_code
   fi
 
   # if in step mode, decrement counter
@@ -238,7 +238,7 @@ _Dbg_cleanup2() {
 }
 
 # The real way to leave this program.
-_Dbg_cmd_quit() {
+_Dbg_do_quit() {
   local -i return_code=${1:-$_Dbg_program_exit_code}
 
   local -i desired_quit_levels=${2:-0}
@@ -340,7 +340,7 @@ _Dbg_exit_handler() {
     # Note: use the same message that gdb does for this.
     _Dbg_msg "Program received signal EXIT (0)..."
     if [[ ${_Dbg_sig_show_stack[0]} == "showstack" ]] ; then 
-    _Dbg_cmd_stack_trace 0
+    _Dbg_do_stack_trace 0
     fi
   fi
 
@@ -355,7 +355,7 @@ _Dbg_exit_handler() {
   if [[ ${_Dbg_sig_stop[0]} != "stop" ]] \
     || [[ $BASHDB_QUIT_LEVELS != 0 ]] \
     || [ -n "$BASHDB_QUIT_ON_QUIT" ] ; then 
-    _Dbg_cmd_quit
+    _Dbg_do_quit
     # We don't return from here.
   fi
 
@@ -406,7 +406,7 @@ _Dbg_sig_handler() {
     # Note: use the same message that gdb does for this.
     _Dbg_msg "Program received signal $name ($_Dbg_signum)..."
     if [[ ${_Dbg_sig_show_stack[$_Dbg_signum]} == "showstack" ]] ; then 
-      _Dbg_cmd_stack_trace 0
+      _Dbg_do_stack_trace 0
     fi
   fi
   if [[ ${_Dbg_sig_stop[$_Dbg_signum]} == "stop" ]] ; then
@@ -470,7 +470,7 @@ _Dbg_name2signum() {
 }
 
 # Process debugger "handle" command. 
-_Dbg_cmd_handle() {
+_Dbg_do_handle() {
   local sig=$1
   local cmd=$2
   local -i signum
@@ -542,7 +542,7 @@ _Dbg_subexit_handler() {
   fi
   _Dbg_source_journal
   if (( $BASHDB_QUIT_LEVELS > 0 )) ; then
-    _Dbg_cmd_quit $_Dbg_debugged_exit_code
+    __Dbg_do_quit $_Dbg_debugged_exit_code
   fi
 }
 
@@ -582,7 +582,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.8 2006/06/11 02:23:32 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.9 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

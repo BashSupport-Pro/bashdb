@@ -20,7 +20,7 @@
 # If yes, always show. If auto, show only if the same line is to be run
 # but the command is different.
 
-_Dbg_cmd_set() {
+_Dbg_do_set() {
   local set_cmd=$1
   if [[ $set_cmd == '' ]] ; then
     _Dbg_msg "Argument required (expression to compute)."
@@ -169,7 +169,7 @@ _Dbg_cmd_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.6 2006/04/06 04:15:51 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.7 2006/06/13 09:11:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
