@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.5 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.6 2006/07/13 10:54:12 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -208,6 +208,12 @@ _Dbg_enable_disable() {
 
 _Dbg_do_continue() {
   # set -xv
+
+  if (( ! _Dbg_running )) ; then
+      _Dbg_msg "The program is not being run."
+      return
+  fi
+
   local -r first_arg=$1
 
   [[ -z "$1" ]] && return 0

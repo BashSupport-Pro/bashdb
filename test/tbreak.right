@@ -60,5 +60,11 @@ No stack.
 No stack.
 + info line
 No line number information available.
++ step 
+The program is not being run.
++ next 
+The program is not being run.
++ continue 
+The program is not being run.
 + ### quitting...
 + quit 

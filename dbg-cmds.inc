@@ -750,6 +750,11 @@ _Dbg_do_file() {
 
 _Dbg_do_next_step_skip() {
 
+  if (( ! _Dbg_running )) ; then
+      _Dbg_msg "The program is not being run."
+      return
+  fi
+
   local cmd=$1
   local count=${2:-1}
   # Do we step debug into functions called or not?
@@ -976,7 +981,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.17 2006/06/13 09:11:44 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.18 2006/07/13 10:54:12 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

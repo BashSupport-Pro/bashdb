@@ -25,6 +25,9 @@ down
 frame 0
 where
 info line
+step
+next
+continue
 ### quitting...
 quit
 
