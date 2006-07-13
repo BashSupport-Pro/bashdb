@@ -58,5 +58,7 @@ No stack.
 No stack.
 + where 
 No stack.
++ info line
+No line number information available.
 + ### quitting...
 + quit 

@@ -24,6 +24,7 @@ up 1
 down
 frame 0
 where
+info line
 ### quitting...
 quit
 

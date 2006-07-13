@@ -162,6 +162,11 @@ _Dbg_do_info() {
 	;;
 
       l | li | lin | line )
+        if (( ! _Dbg_running )) ; then
+	    _Dbg_msg "No line number information available."
+	    return
+	fi
+
         _Dbg_msg "Line $_Dbg_listline of \"$_cur_source_file\""
 	return
 	;;
@@ -266,7 +271,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.7 2006/07/13 09:42:48 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.8 2006/07/13 09:51:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
