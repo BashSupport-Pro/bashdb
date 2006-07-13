@@ -34,6 +34,11 @@ typeset -i  _Dbg_stack_pos
 _Dbg_do_down() {
   local -i count=${1:-1}
   
+  if (( ! _Dbg_running )) ; then
+      _Dbg_msg "No stack."
+      return
+  fi
+
   if (( _Dbg_stack_pos-count+2 <= _Dbg_STACK_TOP )) ; then 
     _Dbg_msg "Would be beyond bottom-most entry."
     return
@@ -47,6 +52,12 @@ _Dbg_do_down() {
 }
 
 _Dbg_do_frame() {
+
+  if (( ! _Dbg_running )) ; then
+      _Dbg_msg "No stack."
+      return
+  fi
+
   eval "$_seteglob"
   if [[ $1 != '' && $1 != $int_pat ]] ; then 
     _Dbg_msg "Bad integer parameter: $1"
@@ -79,6 +90,11 @@ _Dbg_do_frame() {
 # an array, not a variable.
 
 _Dbg_do_stack_trace() {
+
+  if (( ! _Dbg_running )) ; then
+      _Dbg_msg "No stack."
+      return
+  fi
 
   local -i n=${#FUNCNAME[@]}-1
 
@@ -211,6 +227,13 @@ _Dbg_do_info_args() {
 # Move default values up $1 or one in the stack. 
 
 _Dbg_do_up() {
+
+
+  if (( ! _Dbg_running )) ; then
+      _Dbg_msg "No stack."
+      return
+  fi
+
   local -i count=${1:-1}
   
   if (( _Dbg_stack_pos+count+2 >= ${#FUNCNAME[@]} )) ; then 
@@ -226,7 +249,7 @@ _Dbg_do_up() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.4 2006/06/13 09:11:44 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.5 2006/07/13 09:42:48 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

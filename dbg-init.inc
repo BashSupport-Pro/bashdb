@@ -75,6 +75,8 @@ typeset -i _Dbg_annotate=0
 
 typeset -i _Dbg_need_input=1  # True if we need to reassign input.
 
+typeset -i _Dbg_running=1  # True we are not finished running the program
+
 typeset last_next_step_cmd='s' # Default is step.
 typeset _Dbg_last_print='' # expression on last print command
 typeset _Dbg_last_printe='' # expression on last print expression command
@@ -113,7 +115,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.7 2006/04/09 12:20:10 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.8 2006/07/13 09:42:48 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

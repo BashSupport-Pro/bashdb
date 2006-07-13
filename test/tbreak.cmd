@@ -19,6 +19,11 @@ cont
 L
 ### Should end but stay in debugger..
 cont
+### Try some commands that require a running debugger
+up 1
+down
+frame 0
+where
 ### quitting...
 quit
 

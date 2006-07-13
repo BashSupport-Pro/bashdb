@@ -49,5 +49,14 @@ FUNCNAME[1]: source called from dbg-test1.sh at line 34
 FUNCNAME[2]: source called from bashdb at line 272
 FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
++ ### Try some commands that require a running debugger
++ up 1
+No stack.
++ down 
+No stack.
++ frame 0
+No stack.
++ where 
+No stack.
 + ### quitting...
 + quit 

@@ -17,7 +17,7 @@
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-typeset -r _Dbg_info_cmds="args breakpoints display files functions line signals source stack terminal variables warranty"
+typeset -r _Dbg_info_cmds="args breakpoints display files functions line program signals source stack terminal variables warranty"
 
 _Dbg_info_help() {
   local -r info_cmd=$1
@@ -66,6 +66,11 @@ _Dbg_info_help() {
 "info line -- list current line number and and file name"
       return 0
       ;;
+    p | pr | pro | prog | progr | progra | program )
+      _Dbg_msg \
+"info program -- Execution status of the program."
+      return 0
+      ;;
     h | ha | han | hand | handl | handle | \
     si | sig | sign | signa | signal | signals )
       _Dbg_msg \
@@ -110,8 +115,8 @@ _Dbg_info_help() {
 
 _Dbg_do_info() {
   local -r info_cmd=$1
-  local -ar subcmds=( args breakpoints display files functions source sources \
-                      stack terminal variables watchpoints )
+  local -ar subcmds=( args breakpoints display files functions program source \
+                      sources stack terminal variables watchpoints )
   
   if [[ $info_cmd != '' ]] ; then
     shift
@@ -161,6 +166,14 @@ _Dbg_do_info() {
 	return
 	;;
 
+      p | pr | pro | prog | progr | progra | program )
+      if (( _Dbg_running )) ; then
+	  _Dbg_msg "Program stopped."
+      else
+	  _Dbg_msg "The program being debugged is not being run."
+      fi
+      return
+      ;;
       so | sou | sourc | source )
         _Dbg_msg "Current script file is $_cur_source_file" 
 	local -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
@@ -253,7 +266,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.6 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.7 2006/07/13 09:42:48 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

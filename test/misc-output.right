@@ -1,8 +1,9 @@
++ l 
  23:==>set -xv
  24:   x=24
  25:   x=25
  26:   for i in 0 1 3 ; do
- 27:   ((x += i))
+ 27:     ((x += i))
  28:   done
  29:   set +xv
  30:   x=27
@@ -16,8 +17,16 @@
  38:   #;;; Local Variables: ***
  39:   #;;; mode:shell-script ***
  40:   #;;; End: ***
-*** Testing file command...
-File misc.cmd will be used when dbg-test2.sh is referenced.
-*** info variables (V) command...
++ ######################### 
++ #### Test 'file' command...
++ file misc.cmd
+File misc.cmd will be used when dbg-sig.inc is referenced.
++ #### info variables (V) command...
++ V dq*
 dq_args="dq*"
 dq_cmd="V"
++ # On OS X there is some problem in doing the above and below commands
++ # in succession. Further investigation is needed to fix this.
++ # Until then..
++ ## info variables dq*
++ quit 

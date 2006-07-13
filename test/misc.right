@@ -428,6 +428,7 @@ info display -- Show all display expressions
 info files -- Source files in the program
 info functions -- All function names
 info line -- list current line number and and file name
+info program -- Execution status of the program.
 info signals -- What debugger does when program gets various signals
 info source -- Information about the current source file
 info stack -- Backtrace of the stack
@@ -435,7 +436,7 @@ info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
 + info 
-Info subcommands are: args breakpoints display files functions source sources stack terminal variables watchpoints
+Info subcommands are: args breakpoints display files functions program source sources stack terminal variables watchpoints
 + show 
 args:     Argument list to give script when debugged program starts is:
        "-B -q -L .. -x misc.cmd dbg-test2.sh testarg1 testarg2".

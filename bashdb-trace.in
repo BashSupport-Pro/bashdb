@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.2 2006/04/10 00:40:40 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.3 2006/07/13 09:42:48 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -250,8 +250,20 @@ fi
 . $_Dbg_libdir/dbg-main.inc
 trap '' DEBUG
 
+# Enter the debugger at the calling stack frame.  This is useful to
+# hard-code a breakpoint at a given point in a program, even if the code
+# is not otherwise being debugged.
+# Leaving this the debugger terminates the program.
+
+# Any parameters are exec'd. In this way you can force specifi options to
+# get set.
 _Dbg_set_trace() {
   set -o functrace
+  while [[ -n $1 ]] ; do
+    exec $1
+    shift
+  done
+
   _Dbg_write_journal "_Dbg_steps=0"
   trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }

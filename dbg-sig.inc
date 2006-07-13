@@ -373,6 +373,7 @@ _Dbg_exit_handler() {
     _Dbg_msg \
       "Debugged program terminated $term_msg. Use q to quit or R to restart."
 
+    _Dbg_running=0
     while [[ 1 ]] ; do
       _Dbg_cmdloop
     done
@@ -582,7 +583,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.9 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.10 2006/07/13 09:42:48 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
