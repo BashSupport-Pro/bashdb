@@ -174,6 +174,11 @@ _Dbg_do_info() {
       p | pr | pro | prog | progr | progra | program )
       if (( _Dbg_running )) ; then
 	  _Dbg_msg "Program stopped."
+	  if (( _Dbg_currentbp )) ; then
+	      _Dbg_msg "It stopped at breakpoint ${_Dbg_currentbp}."
+	  elif [[ -n $_Dbg_stop_reason ]] ; then
+	      _Dbg_msg "It stopped ${_Dbg_stop_reason}."
+	  fi
       else
 	  _Dbg_msg "The program being debugged is not being run."
       fi
@@ -271,7 +276,7 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.8 2006/07/13 09:51:23 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.9 2006/07/16 14:04:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

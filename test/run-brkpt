@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-brkpt,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+#$Id: run-brkpt,v 1.2 2006/07/16 14:04:44 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -11,9 +11,7 @@ fi
 
 . ${builddir}/check_common
 
-# Reinstate brkpt3 when BASH_COMMAND works again.
-#tests=${@:-"brkpt1 brkpt2 brkpt3"}
-tests=${@:-"brkpt1 brkpt2"}
+tests=${@:-"brkpt1 brkpt2 brkpt3"}
 for SUBTEST in $tests ; do
   echo "checking $SUBTEST..."
   TEST_NAME=$SUBTEST

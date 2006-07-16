@@ -169,8 +169,11 @@ _Dbg_debug_trap_handler() {
 	if [[ $cond != 0 ]] ; then
 	  ((_Dbg_brkpt_count[_Dbg_i]++))
 	  if [[ ${_Dbg_brkpt_onetime[_Dbg_i]:0} == 1 ]] ; then
+	    _Dbg_stop_reason='at a breakpoint that has since been deleted'
 	    _Dbg_delete_brkpt_entry $_Dbg_i
 	  else
+	    _Dbg_stop_reason='at breakpoint'
+	    _Dbg_currentbp=$_Dbg_i
 	    _Dbg_msg \
               "Breakpoint $_Dbg_i hit (${_Dbg_brkpt_count[$_Dbg_i]} times)."
 	  fi
@@ -192,6 +195,7 @@ _Dbg_debug_trap_handler() {
 
   # next, check if step mode and no. of steps is up
   if ((_Dbg_steps == 0)); then
+    _Dbg_stop_reason='after being stepped'
     _Dbg_print_source_line
     # _Dbg_msg "Stopped at line $_curline"
     _Dbg_cmdloop		# enter debugger
@@ -199,6 +203,7 @@ _Dbg_debug_trap_handler() {
     return $_Dbg_rc
   elif (( ${#FUNCNAME[@]} == _Dbg_return_level )) ; then
     # here because a trap RETURN
+    _Dbg_stop_reason='on a return'
     _Dbg_return_level=0
     _Dbg_print_source_line
     _Dbg_cmdloop		# enter debugger
@@ -206,6 +211,7 @@ _Dbg_debug_trap_handler() {
     return $_Dbg_rc
   elif (( -1 == _Dbg_return_level )) ; then
     # here because we are fielding a signal.
+    _Dbg_stop_reason='on fielding signal'
     _Dbg_print_source_line
     _Dbg_cmdloop		# enter debugger
     _Dbg_set_to_return_from_debugger 1
@@ -583,7 +589,7 @@ _Dbg_init_trap ILL    "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.10 2006/07/13 09:42:48 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.11 2006/07/16 14:04:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

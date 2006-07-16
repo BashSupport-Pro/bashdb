@@ -278,6 +278,8 @@ _Dbg_set_debugger_entry() {
 _Dbg_set_to_return_from_debugger() {
   _Dbg_rc=$?
 
+  _Dbg_currentbp=0
+  _Dbg_stop_reason=''
   if (( $1 != 0 )) ; then
     _Dbg_last_bash_command="$_Dbg_bash_command"
     _Dbg_last_curline="$_curline"
@@ -297,7 +299,7 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.2 2006/07/16 14:04:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -64,22 +64,17 @@ else
   eval $_Dbg_set_str
 fi
 
-# Current next history entry to store into.
-typeset -i _Dbg_hi=0         
-
-# How many lines in a listing? 
-typeset -i _Dbg_listsize=10  
-
-# Annotation level.
-typeset -i _Dbg_annotate=0
-
-typeset -i _Dbg_need_input=1  # True if we need to reassign input.
-
-typeset -i _Dbg_running=1  # True we are not finished running the program
-
+typeset -i _Dbg_hi=0           # Current next history entry to store into.
+typeset -i _Dbg_listsize=10    # How many lines in a listing? 
+typeset -i _Dbg_annotate=0     # Annotation level.
+typeset -i _Dbg_need_input=1   # True if we need to reassign input.
+typeset -i _Dbg_running=1      # True we are not finished running the program
+typeset -i _Dbg_currentbp=0    # If nonzero, the breakpoint number that we 
+                               # are currently stopped at.
 typeset last_next_step_cmd='s' # Default is step.
-typeset _Dbg_last_print='' # expression on last print command
-typeset _Dbg_last_printe='' # expression on last print expression command
+typeset _Dbg_stop_reason=''    # The reason we are in the debugger.
+typeset _Dbg_last_print=''     # expression on last print command
+typeset _Dbg_last_printe=''    # expression on last print expression command
 
 
 # strings to save and restore the setting of `extglob' in debugger functions
@@ -115,7 +110,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.8 2006/07/13 09:42:48 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.9 2006/07/16 14:04:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

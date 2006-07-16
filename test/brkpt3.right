@@ -1,24 +1,38 @@
 (subshell.sh:6):
 6:	x=1; y=2; z=3
++ # Test break handling in the presence of subshells and canonicalization
++ # of breakpoints
++ # 
++ break 15
 Breakpoint 1 set in file subshell.sh, line 15.
++ step 4
 (subshell.sh:7):
 7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
-*** Try a setting and removing break inside a subshell...
++ ### Try a setting and removing break inside a subshell...
++ p "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
++ delete 1
 Removed 1 breakpoint(s).
++ break 17
 Breakpoint 2 set in file subshell.sh, line 17.
++ cont 
 ho
 ho
 Breakpoint 2 hit (1 times).
 (subshell.sh:17):
 17:	x=5; y=6;
++ step 4
 Breakpoint 2 hit (2 times).
 (subshell.sh:17):
 17:	x=5; y=6;
 y=6
-*** Try canonicalization of filenames in the break command...
++ ### Try canonicalization of filenames in the break command...
++ b ../test/subshell.sh:1
 Breakpoint 3 set in file subshell.sh, line 1.
++ b subshell.sh:2
 Breakpoint 4 set in file subshell.sh, line 2.
++ b ./subshell.sh:3
 Breakpoint 5 set in file subshell.sh, line 3.
-*** quitting...
++ ### quitting...
++ quit 

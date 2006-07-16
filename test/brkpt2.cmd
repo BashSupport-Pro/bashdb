@@ -3,12 +3,14 @@
 ###  Try a simple line number breakpoint...
 break 23
 info break
-cont
+continue
+info program
 #
 ###  Try watch...
 watch x
 info watchpoints
-cont
+c
+info program
 ###  Try disable expression...
 disable 1w
 watche x > 26
@@ -25,6 +27,7 @@ break fn1
 step 2
 ###  Try continue with a line number...
 cont 34
+info program
 L
 ###  List stack frame...
 where
@@ -38,6 +41,7 @@ list
 frame 0
 ###  Try step (twice)...
 step
+info program
 step
 ###  Try next and check that it jumps over fn3
 next
@@ -72,7 +76,11 @@ print "j: $j, name: $name"
 disable 5
 L
 cont
+### Test temporary break and its reporting
+cont 13
+info program
 ###  Should hit end of script but stay in debugger...
+cont
 info files
 ###  quitting...
 quit
