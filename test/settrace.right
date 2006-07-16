@@ -1,0 +1,28 @@
+(settrace.sh:5):
+5:	  _Dbg_set_trace; : ; :
++ # Test set_trace call.
++ where 
+->0 in file `settrace.sh' at line 5
+##1 init() called from file `settrace.sh' at line 27
+##2 main() called from file `settrace.sh' at line 0
++ list 5
+  5:==>  _Dbg_set_trace; : ; :
+  6:   }
+  7:   
+  8:   hanoi() { 
+  9:     local -i n=$1
+ 10:     local -r a=$2
+ 11:     local -r b=$3
+ 12:     local -r c=$4
+ 13:   
+ 14:     if (( n > 0 )) ; then
++ c 
+Move disk 0 on a to b
+Move disk 1 on a to c
+Move disk 0 on b to c
+Move disk 2 on a to b
+Move disk 0 on c to a
+Move disk 1 on c to b
+Move disk 0 on a to b
+Debugged program terminated normally. Use q to quit or R to restart.
++ q 

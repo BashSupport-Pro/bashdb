@@ -1,0 +1,16 @@
+#!/bin/sh
+#$Id: settrace.tests,v 1.1 2006/07/16 21:24:32 rockyb Exp $
+
+if test -z $srcdir  ; then
+  srcdir=`pwd`
+fi
+
+cmdfile=settrace.cmd
+debugged_script=settrace.sh
+
+$BASH $debugged_script
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***
