@@ -1,14 +1,18 @@
 #!/bin/sh
-#$Id: settrace.tests,v 1.1 2006/07/16 21:24:32 rockyb Exp $
+#$Id: settrace.tests,v 1.2 2006/07/17 02:02:25 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
 fi
 
+if test -z "$builddir"  ; then
+  builddir=`pwd`
+fi
+
 cmdfile=settrace.cmd
 debugged_script=settrace.sh
 
-$BASH $debugged_script
+$BASH $debugged_script $builddir/../
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

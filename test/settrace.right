@@ -3,7 +3,7 @@
 + # Test set_trace call.
 + where 
 ->0 in file `settrace.sh' at line 5
-##1 init() called from file `settrace.sh' at line 27
+##1 init() called from file `settrace.sh' at line 32
 ##2 main() called from file `settrace.sh' at line 0
 + list 5
   5:==>  _Dbg_set_trace; : ; :

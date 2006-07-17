@@ -22,7 +22,12 @@ hanoi() {
   fi
 }
 
-source ../bashdb-trace -q -L ../ -B  -x settrace.cmd
+if [[ -n $1 ]] ; then
+  builddir=$1
+elif [[ -z $builddir ]] ; then
+  builddir=`pwd`
+fi
+source ${builddir}/bashdb-trace -q -L ../ -B  -x settrace.cmd
 typeset -i max=3
 init
 hanoi $max "a" "b" "c"

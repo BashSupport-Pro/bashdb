@@ -1,13 +1,17 @@
 #!../../bash
-#$Id: trace2.tests,v 1.2 2006/04/10 01:54:52 rockyb Exp $
+#$Id: trace2.tests,v 1.3 2006/07/17 02:02:25 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
 fi
 
+if test -z "$builddir"  ; then
+  builddir=`pwd`
+fi
+
 debugged_script=hanoi.sh
 
-$BASH ${TOP_BUILDDIR}/test/$debugged_script trace
+$BASH ${TOP_BUILDDIR}/test/$debugged_script trace $builddir/../
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
