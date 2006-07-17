@@ -11,6 +11,7 @@ hanoi() {
   local -r b=$3
   local -r c=$4
 
+  _Dbg_set_trace; : ; :
   if (( n > 0 )) ; then
     (( n-- ))
     hanoi $n $a $c $b
@@ -25,9 +26,10 @@ hanoi() {
 if [[ -n $1 ]] ; then
   builddir=$1
 elif [[ -z $builddir ]] ; then
-  builddir=`pwd`
+  builddir=`pwd`/..
 fi
-source ${builddir}/bashdb-trace -q -L ../ -B  -x settrace.cmd
-typeset -i max=3
+source ${builddir}/bashdb-trace -q -L ${builddir}/ -B  -x settrace.cmd
+typeset -i max=1
 init
 hanoi $max "a" "b" "c"
+_Dbg_set_trace _Dbg_do_quit; : ; :
