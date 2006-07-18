@@ -28,7 +28,7 @@ if [[ -n $1 ]] ; then
 elif [[ -z $builddir ]] ; then
   builddir=`pwd`/..
 fi
-source ${builddir}/bashdb-trace -q -L ${builddir}/ -B  -x settrace.cmd
+source ${builddir}/bashdb-trace -q -L .. -B  -x settrace.cmd
 typeset -i max=1
 init
 hanoi $max "a" "b" "c"

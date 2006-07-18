@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: hanoi.sh.in,v 1.4 2006/07/17 09:45:05 rockyb Exp $
+# $Id: hanoi.sh.in,v 1.5 2006/07/18 01:26:33 rockyb Exp $
 # Towers of Hanoi
 # We've added calls to set line tracing if the 1st argument is "trace"
 
@@ -37,7 +37,7 @@ if [[ "$1" = 'trace' ]] ; then
       builddir=`pwd`
   fi
   tracing=1
-  source @top_builddir@bashdb-trace -q -L @top_srcdir@ -q -B
+  source ${builddir}/bashdb-trace -q -L ../ -B  -x settrace.cmd
 fi
 init
 hanoi $max "a" "b" "c"
