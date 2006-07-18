@@ -1391,7 +1391,21 @@ with @code{info breakpoints}.  You can get a complete list of the
 
 @example
 bashdb<0> @b{help info}
-Info subcommands are: args breakpoints display files source sources stack terminal variables watchpoints
+List of info subcommands:
+
+info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
+info breakpoints -- Status of user-settable breakpoints
+info display -- Show all display expressions
+info files -- Source files in the program
+info functions -- All function names
+info line -- list current line number and and file name
+info program -- Execution status of the program.
+info signals -- What debugger does when program gets various signals
+info source -- Information about the current source file
+info stack -- Backtrace of the stack
+info terminal -- Print terminal device
+info variables -- All global and static variable names
+info warranty -- Various kinds of warranty you do not have
 bashdb<1> @b{info source}
 Current script file is parm.sh
 Contains 34 lines.
@@ -1439,7 +1453,7 @@ you want this inner script just to return to the outer script.
 @end table
 
 @node Stopping
-@section Stopping and Resuming Execution (@samp{break}, @samp{watch}, @samp{step}, @samp{cont})
+@section Stopping and Resuming Execution
 
 One important use of a debugger is to stop your program before it
 terminates so that, if your script might run into trouble, you can
@@ -1455,13 +1469,13 @@ change variables, set new breakpoints or remove old ones, and then
 continue execution.  
 
 @menu
-* Breakpoints::          Breakpoints, watchpoints (break, watch, clear)
+* Breakpoints::          Breakpoints, watchpoints (break, tbreak, watch, watche, clear)
 * Resuming Execution::   Resuming execution (continue, step, next, skip, debug)
 * Signals::              Signals
 @end menu
 
 @node Breakpoints
-@subsection Breakpoints, watchpoints
+@subsection Breakpoints, watchpoints (@samp{break}, @samp{tbreak}, @samp{watch}, @samp{watche}...)
 
 @cindex breakpoints
 A @dfn{breakpoint} makes your script stop whenever a certain point in
@@ -1518,6 +1532,7 @@ all breakpoint in that range are operated on.
 @menu
 * Set Breaks::                      Setting breakpoints (break, tbreak)
 * Set Watchpoints::                 Setting watchpoints (watch, watche)
+* Break Commands::                  Breakpoint command lists (command)
 * Delete Breaks::                   Deleting breakpoints (delete, clear)
 * Disabling::                       Disabling breakpoints (disable, enable)
 * Conditions::                      Break conditions (condition)
@@ -1684,6 +1699,81 @@ and its value changes. Not that this may not work for tracking
 arbitrary string value changes. For that use @code{watch} described
 earlier.
 @end table
+
+@node Break Commands
+@subsubsection Breakpoint command lists (@samp{commands})
+
+@table @code
+@kindex commands
+@kindex end
+@item commands @r{[}@var{bnum}@r{]}
+@itemx @dots{} @var{command-list} @dots{}
+@itemx end
+Specify a list of commands for breakpoint number @var{bnum}.  The commands
+themselves appear on the following lines.  Type a line containing just
+@code{end} to terminate the commands.
+
+To remove all commands from a breakpoint, type @code{commands} and
+follow it immediately with @code{end}; that is, give no commands.
+
+With no @var{bnum} argument, @code{commands} refers to the last
+breakpoint, watchpoint, or catchpoint set (not to the breakpoint most
+recently encountered).
+@end table
+
+Pressing @key{RET} as a means of repeating the last debugger command is
+disabled within a @var{command-list}.
+
+You can use breakpoint commands to start your program up again.  Simply
+use the @code{continue} command, or @code{step}, or any other command
+that resumes execution.
+
+Any other commands in the command list, after a command that resumes
+execution, are ignored.  This is because any time you resume execution
+(even with a simple @code{next} or @code{step}), you may encounter
+another breakpoint---which could have its own command list, leading to
+ambiguities about which list to execute.
+
+@kindex silent
+If the first command you specify in a command list is @code{silent}, the
+usual message about stopping at a breakpoint is not printed.  This may
+be desirable for breakpoints that are to print a specific message and
+then continue.  If none of the remaining commands print anything, you
+see no sign that the breakpoint was reached.  @code{silent} is
+meaningful only at the beginning of a breakpoint command list.
+
+The commands @code{echo}, @code{output}, and @code{printf} allow you to
+print precisely controlled output, and are often useful in silent
+breakpoints.
+
+For example, here is how you could use breakpoint commands to print the
+value of @code{x} at entry to @code{foo} whenever @code{x} is positive.
+
+@smallexample
+break foo if x>0
+commands
+silent
+printf "x is %d\n",x
+cont
+end
+@end smallexample
+
+One application for breakpoint commands is to compensate for one bug so
+you can test for another.  Put a breakpoint just after the erroneous line
+of code, give it a condition to detect the case in which something
+erroneous has been done, and give it commands to assign correct values
+to any variables that need them.  End with the @code{continue} command
+so that your program does not stop, and start with the @code{silent}
+command so that no output is produced.  Here is an example:
+
+@smallexample
+break 403
+commands
+silent
+set x = y + 4
+cont
+end
+@end smallexample
 
 @node Delete Breaks
 @subsubsection Deleting breakpoints (@samp{clear}, @samp{delete})
@@ -1884,7 +1974,7 @@ condition 1       # Change that! Unconditinally stop on breakpoint 1.
 @end example
 
 @node Resuming Execution
-@subsection Resuming Execution
+@subsection Resuming Execution (@samp{step}, @samp{next}, @samp{finish}, @samp{skip}, @samp{continue}, @samp{debug}, @samp{return})
 
 @cindex stepping
 @cindex continuing
@@ -2184,7 +2274,12 @@ program a signal}.
 @end ifset
 
 @node Information
-@section Status and Debugger Settings (@samp{info}, @samp{show}, @samp{set})
+@section Status and Debugger Settings (@samp{info}, @samp{show})
+
+@menu
+* Info::        Showing information about the program being debugged
+* Show::        Show information about the debugger
+@end menu
 
 In addition to @code{help}, you can use the @acronym{BASH} commands @code{info}
 and @code{show} to inquire about the state of your program, or the
@@ -2193,45 +2288,68 @@ here we introduce each of them in the appropriate context.  The
 listings under @code{info} and under @code{show} in the Index point to
 all the sub-commands.  @xref{Command Index}.
 
+@node Info
+@subsection Showing information about the program being debugged (@samp{info})
 @c @group
-@table @code
-@kindex info
-@kindex i @r{(@code{info})}
-@item info
-This command (abbreviated @code{i}) is for describing the state of
+This @code{info} command (abbreviated @code{i}) is for describing the state of
 your program.  For example, you can list the current @code{$1}, @code{$2}
 parameters with @code{info args}, or list the breakpoints you have set
 with @code{info breakpoints} or @code{info watchpoints}.  You can get
 a complete list of the @code{info} sub-commands with @w{@code{help
 info}}.
 
-@kindex set
-@item set
-You can assign the result of an expression to an environment variable
-with @code{set}.  For example, you can set the number of lines
-@acronym{BASH} will list by default to 20 with @code{set listsize 20}.
+@table @code
+@kindex info args
+@item info args
+Argument variables (e.g. $1, $2, ...) of the current stack frame.
+@kindex info breakpoints
+@item info breakpoints
+Status of user-settable breakpoints
+@kindex info display
+@item info display
+Show all display expressions
+@kindex info files
+@item info files
+Source files in the program
+@kindex info functions
+@item info functions
+All function names
+@kindex info line
+@item info line
+list current line number and and file name
+@kindex info program
+@item info program
+Execution status of the program.
+@kindex info signals
+@item info signals
+What debugger does when program gets various signals
+@kindex info source
+@item info source
+Information about the current source file
+@kindex info stack
+@item info stack
+Backtrace of the stack
+@kindex info terminal
+@item info terminal
+Print terminal device
+@kindex info variables
+@item info variables
+All global and static variable names
+@end table
 
-@kindex show
-@item show
+@c @end group
+
+@node Show
+@subsection Show information about the debugger (@samp{show})
+
 In contrast to @code{info}, @code{show} is for describing the state of
-@acronym{BASH} itself.
-You can change most of the things you can @code{show}, by using the
-related command @code{set}; 
+@acronym{BASH} itself.  You can change most of the things you can
+@code{show}, by using the related command @code{set};
 
 The distinction between @code{info} and @code{show} however is a bit
 fuzzy and is kept here to try to follow the GDB interface.
 For example, to list the arguments given to your script use
 @code{show args}; @code{info args} does something different.
-
-@kindex info set
-To display all the settable parameters and their current
-values, you can use @code{show} with no arguments; you may also use
-@code{info set}.  Both commands produce the same display.
-@c FIXME: "info set" violates the rule that "info" is for state of
-@c FIXME...program.  Ck w/ GNU: "info set" to be called something else,
-@c FIXME...or change desc of rule---eg "state of prog and debugging session"?
-@end table
-@c @end group
 
 Here are three miscellaneous @code{show} subcommands, all of which are
 exceptional in lacking corresponding @code{set} commands:
@@ -2924,7 +3042,8 @@ Source filenames are shown as with their full path. This is the default.
 @kindex set debugger
 @item set debugger @r{[} on | 1 @r{]}
 Allow the possibility of debugging this debugger. Somewhat of an
-arcane thing to do.
+arcane thing to do. For gurus, and even he doesn't use it all that
+much.
 @item set debugger @r{[} off | 0 @r{]}
 Don't allow debugging into the debugger. This is the default.
 @end table
