@@ -1,7 +1,6 @@
 dnl
 dnl Configure script for bash-3.x debugger
 dnl
-dnl report bugs to rocky@panix.com
 dnl
 dnl Process this file with autoconf to produce a configure script.
 
@@ -33,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.19 2006/07/21 23:08:59 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.20 2006/07/21 23:09:39 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
