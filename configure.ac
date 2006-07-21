@@ -5,7 +5,8 @@ dnl report bugs to rocky@panix.com
 dnl
 dnl Process this file with autoconf to produce a configure script.
 
-# Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein <rocky@panix.com>
+# Copyright (C) 2002, 2003, 2004, 2005, 
+# 2006 Rocky Bernstein <rockyb@users.sourceforge.net>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +33,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.18 2006/07/21 23:08:06 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.19 2006/07/21 23:08:59 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
