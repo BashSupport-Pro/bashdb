@@ -292,7 +292,7 @@ e.g. @code{(/tmp/fact.sh:9)} and is given parenthesis. This position
 format is similar to that used by the Perl debugger and is also in the
 same format used by my GNU make debugger (
 @url{http://bashdb.sourceforge.net/remake}.  and Extended python
-debugger @url{http://remake.sourceforge.net/remake}. GNU Emacs and DDD
+debugger @url{http://remake.sourceforge.net/pydb}. GNU Emacs and DDD
 can parse this and in fact the same regular expression is used on the
 3 debuggers.
 
