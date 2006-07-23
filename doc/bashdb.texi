@@ -1015,7 +1015,7 @@ Although I said that running under the debugger adds overhead which
 slows down you program, the above command in of itself will @emph{not}
 cause any slowdown. If possible, it's best to put this somewhere in
 the main-line code rather than in a function or in a subshell. If it
-is put in a function of subshell latter and you step outside of that,
+is put in a function of subshell and you step outside of that,
 some of the global variables set up in @code{bashdb-trace} may be
 lost. One the other hand if you know your debugging will be confined
 to just the scope of the @code{source} command there is no problem.
