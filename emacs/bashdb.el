@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.14 2006/04/10 02:52:15 rockyb Exp $
+;;; $Id: bashdb.el,v 1.15 2006/07/27 23:27:10 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -340,13 +340,12 @@ Currently-active file is at the head of the list.")
   ;; This was derived/simplified from edebug-overlay-arrow
   (cond (activation
 	 (setq overlay-arrow-position (make-marker))
-	 (setq pos (point))
 	 (setq overlay-arrow-string "=>")
 	 (set-marker overlay-arrow-position (point) (current-buffer))
 	 (setq bashdb-bashdbtrack-is-tracking-p t))
 	(bashdb-bashdbtrack-is-tracking-p
 	 (setq overlay-arrow-position nil)
-	 (setq bashdb-bashdbtrack-tracking-p nil))
+	 (setq bashdb-bashdbtrack-is-tracking-p nil))
 	))
 
 (defun bashdb-bashdbtrack-track-stack-file (text)
