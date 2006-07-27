@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.15 2006/07/27 23:27:10 rockyb Exp $
+;;; $Id: bashdb.el,v 1.16 2006/07/27 23:31:58 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -376,7 +376,7 @@ at the beginning of the line.
                                            (- procmark
                                               bashdb-bashdbtrack-track-range))
                                       procmark))
-             target target_fname target_lineno)
+             target target_fname target_lineno target_buffer)
 
         (if (not (string-match (concat bashdb-bashdbtrack-input-prompt "$") block))
             (bashdb-bashdbtrack-overlay-arrow nil)
