@@ -578,18 +578,17 @@ _Dbg_init_trap() {
 }
 
 _Dbg_init_trap EXIT   "noprint" "nostack" "stop" 
-_Dbg_init_trap INT    "print" "showstack" "stop" 
-_Dbg_init_trap TRAP   "print" "showstack" "stop" 
-_Dbg_init_trap TERM   "print" "showstack" "stop" 
-_Dbg_init_trap QUIT   "print" "showstack" "stop" 
-_Dbg_init_trap TRAP   "print" "showstack" "stop" 
 _Dbg_init_trap ILL    "print" "showstack" "stop" 
+_Dbg_init_trap INT    "print" "showstack" "stop" 
+_Dbg_init_trap QUIT   "print" "showstack" "stop" 
+_Dbg_init_trap TERM   "print" "showstack" "stop" 
+_Dbg_init_trap TRAP   "print" "showstack" "stop" 
 
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.11 2006/07/16 14:04:38 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.12 2006/07/31 00:09:59 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
