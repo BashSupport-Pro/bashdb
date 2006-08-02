@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.16 2006/07/27 23:31:58 rockyb Exp $
+;;; $Id: bashdb.el,v 1.17 2006/08/02 23:55:56 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -37,10 +37,10 @@
 
 ;; The debugger outputs program-location lines that look like this:
 ;;   (/etc/init.d/network:14):
-(defconst gud-pydb-marker-regexp
+(defconst gud-bashdb-marker-regexp
   "^(\\([-a-zA-Z0-9_/.]*\\):\\([0-9]+\\)):[ \t]?\\(.*\n\\)")
-(defconst gud-pydb-marker-regexp-file-group 1)
-(defconst gud-pydb-marker-regexp-line-group 2)
+(defconst gud-bashdb-marker-regexp-file-group 1)
+(defconst gud-bashdb-marker-regexp-line-group 2)
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
@@ -91,18 +91,18 @@
   (let ((output ""))
 
     ;; Process all the complete markers in this chunk.
-    (while (string-match gud-pydb-marker-regexp gud-marker-acc)
+    (while (string-match gud-bashdb-marker-regexp gud-marker-acc)
       (setq
 
        ;; Extract the frame position from the marker.
        gud-last-frame
        (cons (substring gud-marker-acc 
-			(match-beginning gud-pydb-marker-regexp-file-group) 
-			(match-end gud-pydb-marker-regexp-file-group))
+			(match-beginning gud-bashdb-marker-regexp-file-group) 
+			(match-end gud-bashdb-marker-regexp-file-group))
 	     (string-to-int 
 	      (substring gud-marker-acc
-			 (match-beginning gud-pydb-marker-regexp-line-group)
-			 (match-end gud-pydb-marker-regexp-line-group))))
+			 (match-beginning gud-bashdb-marker-regexp-line-group)
+			 (match-end gud-bashdb-marker-regexp-line-group))))
 
        ;; Append any text before the marker to the output we're going
        ;; to return - we don't include the marker in this text.
