@@ -204,7 +204,7 @@ _Dbg_readin() {
   if [[ -z $filename ]] || [[ $filename == $_Dbg_bogus_file ]] ; then 
     filevar='ABOGUSA'
     source_array="_Dbg_source_${filevar}"
-    local cmd="${source_array}[1]=\"$BASH_EXECUTION_STRING\""
+    local cmd="${source_array}[0]=\"$BASH_EXECUTION_STRING\""
     eval $cmd
 
   else 
@@ -278,7 +278,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.8 2006/03/20 01:51:36 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.9 2006/08/03 10:04:20 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
