@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.3 2006/08/15 11:01:15 myamato Exp $
+/* $Id: readarray.c,v 1.4 2006/08/15 14:03:54 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -187,7 +187,8 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
     j++;
 
     /* Have we Exceded # of lines to store/ */
-    if (j >= i_count) break;
+    if (i_count != 0 && j >= i_count) 
+      break;
 
     /* Remove trailing newlines? */
     if (i_chop) {
@@ -220,7 +221,7 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
 int
 readarray_builtin (WORD_LIST *list)
 {
-  long int i_line;
+  long int i_line   = 0;
   long int i_origin = 0;
   long int i_chop   = 0;
   long int i_cb     = 5000;
@@ -232,7 +233,6 @@ readarray_builtin (WORD_LIST *list)
   munge_list (list);	/* change -num into -n num */
 
   reset_internal_getopt ();
-  i_line = 100000;
   while ((i_opt = internal_getopt (list, "tc:C:n:O:")) != -1)
     {
       switch (i_opt)
@@ -322,7 +322,7 @@ readarray_builtin (WORD_LIST *list)
 char *readarray_doc[] = {
 	"Copy the lines from the input file into an array variable.",
 	"Use the `-n' option to specify a count of the number of lines to copy.",
-	"If -n is missing all lines are copied.",
+	"If -n is missing or 0 is given as the number all lines are copied.",
 	"Use the `-O' option to specify an index orgin to start the array.",
 	"If -O is missing the origin will be 0.",
 	"Use -t to chop trailing newlines (\\n) from lines.",
