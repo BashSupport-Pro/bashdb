@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: autogen.sh,v 1.1 2006/01/02 23:34:21 rockyb Exp $ 
+# $Id: autogen.sh,v 1.2 2006/08/15 11:09:31 myamato Exp $ 
 # Run this to generate all the initial Makefiles, etc.
 
 # Check how echo works in this /bin/sh
@@ -32,7 +32,7 @@ rc=$?
 (echo $_echo_n " + Running aclocal -I . $aclocalinclude ..."; \
   aclocal -I . $aclocalinclude; \
   if grep "^AM_CONFIG_HEADER" configure.ac >/dev/null; then \
-    echo "Running autoheader..." \
+    echo $_echo_n "Running autoheader..."; \
     autoheader; \
   fi; \
   echo "done.")
