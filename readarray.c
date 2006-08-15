@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.4 2006/08/15 14:03:54 myamato Exp $
+/* $Id: readarray.c,v 1.5 2006/08/15 14:10:24 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -192,8 +192,8 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
 
     /* Remove trailing newlines? */
     if (i_chop) {
-      int j=strlen(psz_line);
-      if (j && '\n' == psz_line[j-1]) psz_line[j-1] = '\0';
+      int length = strlen(psz_line);
+      if (length && '\n' == psz_line[length-1]) psz_line[length-1] = '\0';
     }
 
     /* Has a callback been registered and if so is it time to call it? */
