@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.2 2006/04/05 00:09:25 rockyb Exp $
+/* $Id: readarray.c,v 1.3 2006/08/15 11:01:15 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -337,7 +337,7 @@ struct builtin readarray_struct = {
 	readarray_builtin,	/* function implementing the builtin */
 	BUILTIN_ENABLED,	/* initial flags for builtin */
 	readarray_doc,		/* array of long documentation strings. */
-	"readarray [-t] [-c *count*] [-C callback] [-n *lines*] [-O *origin)] *file* *array_variable*)", 
+	"readarray [-t] [-c *count*] [-C callback] [-n *lines*] [-O *origin*] *file* *array_variable*", 
 	                        /* usage synopsis; becomes short_doc */
 	0			/* reserved for internal use */
 };
