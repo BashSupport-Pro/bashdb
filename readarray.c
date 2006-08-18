@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.5 2006/08/15 14:10:24 myamato Exp $
+/* $Id: readarray.c,v 1.6 2006/08/18 05:04:17 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -197,15 +197,26 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
     }
 
     /* Has a callback been registered and if so is it time to call it? */
-    if (psz_cb && 0 == (j % i_cb)) {
-      const unsigned int i_len = strlen(psz_cb)+10;
-      char *psz_exec = calloc(i_len, sizeof(char));
-      snprintf(psz_exec, i_len, "%s %d", psz_cb, i);
-      parse_and_execute(psz_exec, NULL, 0);
-    }
+    if (psz_cb && 0 == (j % i_cb)) 
+      {
+	const unsigned int execlen;
+	char *psz_exec;
+
+        /* #  define INT_MAX	"2147483647" */
+	execlen = strlen(psz_cb)+ 10;
+	/* A `1' is for space between %s and %d,
+	   another `1' is for the last nul char for C string. */
+	execlen += (1 + 1);
+	psz_exec = calloc(execlen, sizeof(char));
+
+	snprintf(psz_exec, execlen, "%s %d", psz_cb, i);
+	parse_and_execute(psz_exec, NULL, 0);
+      }
 
     /* ENTRY is an array variable, and ARRAY points to the value. */
-    { char *newval;
+    { 
+      char *newval;
+
       newval = make_variable_value (entry, psz_line, 0);
       if (entry->assign_func)
 	(*entry->assign_func) (entry, newval, i);
