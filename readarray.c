@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.6 2006/08/18 05:04:17 myamato Exp $
+/* $Id: readarray.c,v 1.7 2006/08/19 06:20:33 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -48,6 +48,10 @@ extern int errno;
 extern int builtin_error ();
 extern void builtin_usage (void);
 extern int parse_and_execute (char *psz_exec, const char *psz_from_file, int flags);
+
+/* The value specifying how frequently `readarray' 
+   calls the callback. */
+#define DEFAULT_PROGRESS_QUANTUM 5000
 
 #ifndef HAVE_GETLINE
 #define g_return_val_if_fail(test, val) \
@@ -168,8 +172,8 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
 {
   char *psz_line = NULL;
   size_t i_len = 0;
-  unsigned int i;
-  unsigned int j = 0;
+  unsigned int array_index;
+  unsigned int line_count;
   SHELL_VAR *entry = var_lookup (psz_var, shell_variables);
 
   if (!entry)
@@ -183,11 +187,12 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
   else if (array_p (entry) == 0)
     entry = convert_var_to_array (entry);
 
-  for (i=i_origin; -1 != getline(&psz_line, &i_len, fp); i++) {
-    j++;
+  for (array_index = i_origin, line_count = 0; 
+       -1 != getline(&psz_line, &i_len, fp); 
+       array_index++, line_count++) {
 
     /* Have we Exceded # of lines to store/ */
-    if (i_count != 0 && j >= i_count) 
+    if (i_count != 0 && line_count >= i_count) 
       break;
 
     /* Remove trailing newlines? */
@@ -197,9 +202,9 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
     }
 
     /* Has a callback been registered and if so is it time to call it? */
-    if (psz_cb && 0 == (j % i_cb)) 
+    if (psz_cb && 0 == (line_count % i_cb)) 
       {
-	const unsigned int execlen;
+	unsigned int execlen;
 	char *psz_exec;
 
         /* #  define INT_MAX	"2147483647" */
@@ -209,7 +214,7 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
 	execlen += (1 + 1);
 	psz_exec = calloc(execlen, sizeof(char));
 
-	snprintf(psz_exec, execlen, "%s %d", psz_cb, i);
+	snprintf(psz_exec, execlen, "%s %d", psz_cb, array_index);
 	parse_and_execute(psz_exec, NULL, 0);
       }
 
@@ -219,9 +224,9 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
 
       newval = make_variable_value (entry, psz_line, 0);
       if (entry->assign_func)
-	(*entry->assign_func) (entry, newval, i);
+	(*entry->assign_func) (entry, newval, array_index);
       else
-	array_insert (array_cell (entry), i, newval);
+	array_insert (array_cell (entry), array_index, newval);
       free (newval);
     }
   }
@@ -235,7 +240,7 @@ readarray_builtin (WORD_LIST *list)
   long int i_line   = 0;
   long int i_origin = 0;
   long int i_chop   = 0;
-  long int i_cb     = 5000;
+  long int i_cb     = DEFAULT_PROGRESS_QUANTUM;
   char    *psz_cb   = NULL;
   int i_opt;
   int rval = EXECUTION_SUCCESS;;
