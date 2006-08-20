@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.7 2006/08/19 06:20:33 myamato Exp $
+/* $Id: readarray.c,v 1.8 2006/08/20 19:13:34 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -243,7 +243,7 @@ readarray_builtin (WORD_LIST *list)
   long int i_cb     = DEFAULT_PROGRESS_QUANTUM;
   char    *psz_cb   = NULL;
   int i_opt;
-  int rval = EXECUTION_SUCCESS;;
+  int rval = EXECUTION_SUCCESS;
   FILE *fp;
 
   munge_list (list);	/* change -num into -n num */
