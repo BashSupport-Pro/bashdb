@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.8 2006/08/20 19:13:34 myamato Exp $
+/* $Id: readarray.c,v 1.9 2006/08/21 10:35:49 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -246,6 +246,12 @@ readarray_builtin (WORD_LIST *list)
   int rval = EXECUTION_SUCCESS;
   FILE *fp;
 
+  char *filename;
+  char *arrayname;
+  int code;
+  intmax_t intval;
+  
+  
   munge_list (list);	/* change -num into -n num */
 
   reset_internal_getopt ();
@@ -254,20 +260,24 @@ readarray_builtin (WORD_LIST *list)
       switch (i_opt)
 	{
 	case 'n':
-	  i_line = atoi (list_optarg);
-	  if (i_line <= 0)
+	  code = legal_number (list_optarg, &intval);
+	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
 	    {
-	      builtin_error ("bad line count: %s", list_optarg);
-	      return (EX_USAGE);
+	      builtin_error ("%s: bad line count", list_optarg);
+	      return (EXECUTION_FAILURE);
 	    }
+	  else
+	    i_line = intval;
 	  break;
 	case 'c':
-	  i_cb = atoi (list_optarg);
-	  if (i_cb <= 0)
+	  code = legal_number (list_optarg, &intval);
+	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
 	    {
-	      builtin_error ("bad callback count: %s", list_optarg);
-	      return (EX_USAGE);
+	      builtin_error ("%s: bad callback count", list_optarg);
+	      return (EXECUTION_FAILURE);
 	    }
+	  else
+	    i_cb = intval;
 	  break;
 	case 'C':
 	  psz_cb = list_optarg;
@@ -276,12 +286,14 @@ readarray_builtin (WORD_LIST *list)
 	  i_chop = 1;
 	  break;
 	case 'O':
-	  i_origin = atoi (list_optarg);
-	  if (i_origin <= 0)
+	  code = legal_number (list_optarg, &intval);
+	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
 	    {
-	      builtin_error ("bad i_origin: %s", list_optarg);
-	      return (EX_USAGE);
+	      builtin_error ("%s: bad i_origin", list_optarg);
+	      return (EXECUTION_FAILURE);
 	    }
+	  else
+	    i_origin = intval;
 	  break;
 	default:
 	  builtin_usage ();
@@ -299,36 +311,47 @@ readarray_builtin (WORD_LIST *list)
   } else if (!list->word->word) {
     builtin_error ("Internal error #2 in getting file name");
     return (EX_USAGE);
+  } else if (list->word->word[0] == '\0') {
+    builtin_error ("File name is empty");
+    return (EX_USAGE);
+  } else {
+    filename = list->word->word;
   }
     
+  if (0 == strcmp(filename, "-"))
+    fp = stdin;
+  else 
+    fp = fopen (filename, "r");
 
-  if (!list->next) {
-    builtin_error ("Missing array variable name");
-    return (EX_USAGE);
-  } else if (!list->next->word) {
-    builtin_error ("Internal error #1 in getting variable name");
-    return (EX_USAGE);
-  } else if (!list->next->word->word) {
-    builtin_error ("Internal error #2 in getting variable name");
+  if (!fp) {
+    builtin_error ("%s: %s", filename, strerror (errno));
     return (EX_USAGE);
   }
 
-  if (0 == strcmp(list->word->word, "-"))
-    fp = stdin;
-  else 
-    fp = fopen (list->word->word, "r");
 
-  if (!fp) {
-    builtin_error ("%s: %s", list->word->word, strerror (errno));
+
+  list = list->next;
+  if (!list) {
+    builtin_error ("Missing array variable name");
     return (EX_USAGE);
+  } else if (!list->word) {
+    builtin_error ("Internal error #1 in getting variable name");
+    return (EX_USAGE);
+  } else if (!list->word->word) {
+    builtin_error ("Internal error #2 in getting variable name");
+    return (EX_USAGE);
+  } else if (list->word->word[0] == '\0') {
+    builtin_error ("Array variable name is empty");
+    return (EX_USAGE);
+  } else {
+    arrayname = list->word->word;
   }
 
   /* FIXME: Should test to see if list->next->word->word is can be a valid
      variable name.
    */
 
-  rval = read_array (fp, i_line, i_origin, i_chop, i_cb, psz_cb, 
-		     list->next->word->word);
+  rval = read_array (fp, i_line, i_origin, i_chop, i_cb, psz_cb, arrayname);
   fclose (fp);
    
   return (rval);
