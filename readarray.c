@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.11 2006/08/21 11:49:58 myamato Exp $
+/* $Id: readarray.c,v 1.12 2006/08/21 18:26:39 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -22,32 +22,24 @@
 
 #include "builtins.h"
 #include "posixstat.h"
-#include "filecntl.h"
 
 #if defined (HAVE_UNISTD_H)
 #  include <unistd.h>
-#endif
-
-#if defined (HAVE_STRING_H)
-#  include <string.h>
 #endif
 
 #include "bashansi.h"
 
 #include <stdio.h>
 #include <errno.h>
-#include "chartypes.h"
 
 #include "shell.h"
+#include "common.h"
 #include "bashgetopt.h"
+#include "bashintl.h"
 
 #if !defined (errno)
 extern int errno;
 #endif
-
-extern int builtin_error ();
-extern void builtin_usage (void);
-extern int parse_and_execute (char *psz_exec, const char *psz_from_file, int flags);
 
 /* The value specifying how frequently `readarray' 
    calls the callback. */
@@ -64,14 +56,16 @@ extern int parse_and_execute (char *psz_exec, const char *psz_from_file, int fla
 static ssize_t
 zreadlinec (int fd, char **lineptr, size_t *n)
 {
+  int n_read;
+  char *line;
 
-
-  int n_read = 0;
-  char *line = *lineptr;
 
   g_return_val_if_fail (lineptr != NULL, -1);
   g_return_val_if_fail (n != NULL, -1);
   g_return_val_if_fail (*lineptr != NULL || *n == 0, -1);
+
+  n_read = 0;
+  line 	 = *lineptr;
   
   while (1)
     {
@@ -99,7 +93,7 @@ zreadlinec (int fd, char **lineptr, size_t *n)
          if (*n >= new_size)    /* Overflowed size_t */
            line = NULL;
          else
-           line = *lineptr ? realloc (*lineptr, new_size) : malloc (new_size);
+           line = *lineptr ? xrealloc (*lineptr, new_size) : xmalloc (new_size);
 
          if (line)
            {
@@ -129,48 +123,55 @@ zreadlinec (int fd, char **lineptr, size_t *n)
   return n_read - 1;
 }
 
-
-/* Process options. In this case we're looking for 
-   -n *number*.
-*/
-static void
-munge_list (WORD_LIST *list)
+static int
+run_callback(const char * callback, unsigned int current_index)
 {
-  WORD_LIST *l, *nl;
-  WORD_DESC *wd;
-  char *arg;
+  unsigned int execlen;
+  char  *execstr;
 
-  for (l = list; l; l = l->next)
-    {
-      arg = l->word->word;
-      if (arg[0] != '-' || arg[1] == '-' || (DIGIT(arg[1]) == 0))
-        return;
-      /* We have -[0-9]* */
-      wd = make_bare_word (arg+1);
-      nl = make_word_list (wd, l->next);
-      l->word->word[1] = 'n';
-      l->word->word[2] = '\0';
-      l->next = nl;
-      l = nl;	/* skip over new argument */
-    }
+  /* #  define INT_MAX	"2147483647" */
+  execlen = strlen(callback)+ 10;
+  /* A `1' is for space between %s and %d,
+     another `1' is for the last nul char for C string. */
+  execlen += (1 + 1);
+  execstr = xmalloc(execlen);
+
+  snprintf(execstr, execlen, "%s %d", callback, current_index);
+  return parse_and_execute(execstr, NULL, 0);
+}
+
+static void
+do_chop(char * line)
+{
+  int length;
+
+
+  length = strlen(line);
+  if (length && '\n' == line[length-1]) 
+    line[length-1] = '\0';
 }
 
 static int
-read_array (int fd, long int i_count, long int i_origin, long int i_chop,
-	    long int i_cb, char *psz_cb, char *psz_var)
+read_array (int fd, long int line_count_goal, long int origin, long int chop,
+	    long int callback_quantum, char *callback, char *arrayname)
 {
-  char *psz_line = NULL;
-  size_t i_len = 0;
+  char *line;
+  size_t line_length;
   unsigned int array_index;
   unsigned int line_count;
-  SHELL_VAR *entry = var_lookup (psz_var, shell_variables);
+  SHELL_VAR *entry;
 
+
+  line 	      = NULL;
+  line_length = 0;
+  entry       = var_lookup (arrayname, shell_variables);
+  
   if (!entry)
-    entry = make_new_array_variable (psz_var);
+    entry = make_new_array_variable (arrayname);
   else if (readonly_p (entry) || noassign_p (entry))
     {
       if (readonly_p (entry))
-	err_readonly (psz_var);
+	err_readonly (arrayname);
       return (EX_USAGE);
     }
   else if (array_p (entry) == 0)
@@ -178,53 +179,41 @@ read_array (int fd, long int i_count, long int i_origin, long int i_chop,
 
   /* Reset the buffer for bash own stream */
   zsyncfd (fd);
-  for (array_index = i_origin, line_count = 0; 
-       -1 != zreadlinec(fd, &psz_line, &i_len); 
-       array_index++, line_count++) {
+  for (array_index = origin, line_count = 0; 
+       -1 != zreadlinec(fd, &line, &line_length); 
+       array_index++, line_count++) 
+    {
 
-    /* Have we Exceded # of lines to store/ */
-    if (i_count != 0 && line_count >= i_count) 
-      break;
+      /* Have we Exceded # of lines to store/ */
+      if (line_count_goal != 0 && line_count >= line_count_goal) 
+	break;
 
-    /* Remove trailing newlines? */
-    if (i_chop) {
-      int length = strlen(psz_line);
-      if (length && '\n' == psz_line[length-1]) psz_line[length-1] = '\0';
-    }
+      /* Remove trailing newlines? */
+      if (chop)
+	do_chop(line);
+	  
+      /* Has a callback been registered and if so is it time to call it? */
+      if (callback && 0 == (line_count % callback_quantum)) 
+	{
+	  run_callback(callback, array_index);
 
-    /* Has a callback been registered and if so is it time to call it? */
-    if (psz_cb && 0 == (line_count % i_cb)) 
-      {
-	unsigned int execlen;
-	char *psz_exec;
+	  /* Reset the buffer for bash own stream. */
+	  zsyncfd (fd);
+	}
 
-        /* #  define INT_MAX	"2147483647" */
-	execlen = strlen(psz_cb)+ 10;
-	/* A `1' is for space between %s and %d,
-	   another `1' is for the last nul char for C string. */
-	execlen += (1 + 1);
-	psz_exec = calloc(execlen, sizeof(char));
+      /* ENTRY is an array variable, and ARRAY points to the value. */
+      { 
+	char *newval;
 
-	snprintf(psz_exec, execlen, "%s %d", psz_cb, array_index);
-	parse_and_execute(psz_exec, NULL, 0);
-	
-	/* Reset the buffer for bash own stream. */
-	zsyncfd (fd);
+	newval = make_variable_value (entry, line, 0);
+	if (entry->assign_func)
+	  (*entry->assign_func) (entry, newval, array_index);
+	else
+	  array_insert (array_cell (entry), array_index, newval);
+	free (newval);
       }
-
-    /* ENTRY is an array variable, and ARRAY points to the value. */
-    { 
-      char *newval;
-
-      newval = make_variable_value (entry, psz_line, 0);
-      if (entry->assign_func)
-	(*entry->assign_func) (entry, newval, array_index);
-      else
-	array_insert (array_cell (entry), array_index, newval);
-      free (newval);
     }
-  }
-  free(psz_line);
+  xfree(line);
   return EXECUTION_SUCCESS;
 }
 
@@ -235,7 +224,7 @@ readarray_builtin (WORD_LIST *list)
   int code;
   intmax_t intval;
 
-  long int line;
+  long int lines;
   long int origin;
   long int chop;
   long int callback_quantum;
@@ -244,11 +233,9 @@ readarray_builtin (WORD_LIST *list)
   char *arrayname;
 
 
-  fd = line = origin = chop = 0;
+  fd = lines = origin = chop = 0;
   callback_quantum = DEFAULT_PROGRESS_QUANTUM;
   callback 	   = NULL;
-  
-  munge_list (list);	/* change -num into -n num */
 
   reset_internal_getopt ();
   while ((opt = internal_getopt (list, "tc:C:n:O:u:")) != -1)
@@ -274,17 +261,17 @@ readarray_builtin (WORD_LIST *list)
 	  code = legal_number (list_optarg, &intval);
 	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
 	    {
-	      builtin_error ("%s: bad line count specification", list_optarg);
+	      builtin_error (_("%s: bad line count specification"), list_optarg);
 	      return (EXECUTION_FAILURE);
 	    }
 	  else
-	    line = intval;
+	    lines = intval;
 	  break;
 	case 'c':
 	  code = legal_number (list_optarg, &intval);
 	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
 	    {
-	      builtin_error ("%s: bad callback quantum", list_optarg);
+	      builtin_error (_("%s: bad callback quantum"), list_optarg);
 	      return (EXECUTION_FAILURE);
 	    }
 	  else
@@ -300,7 +287,7 @@ readarray_builtin (WORD_LIST *list)
 	  code = legal_number (list_optarg, &intval);
 	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
 	    {
-	      builtin_error ("%s: bad array origin", list_optarg);
+	      builtin_error (_("%s: bad array origin"), list_optarg);
 	      return (EXECUTION_FAILURE);
 	    }
 	  else
@@ -312,9 +299,10 @@ readarray_builtin (WORD_LIST *list)
 	}
     }
   list = loptend;
+
   if (!list) 
     {
-      builtin_error ("missing array variable name");
+      builtin_error (_("missing array variable name"));
       return (EX_USAGE);
     } 
   else if (!list->word) 
@@ -329,7 +317,7 @@ readarray_builtin (WORD_LIST *list)
     } 
   else if (list->word->word[0] == '\0')
     {
-      builtin_error ("array variable name is empty");
+      builtin_error (_("array variable name is empty"));
       return (EX_USAGE);
     } 
   else
@@ -343,28 +331,32 @@ readarray_builtin (WORD_LIST *list)
       return (EXECUTION_FAILURE);
     }
 
-  return read_array (fd, line, origin, chop, callback_quantum, callback, arrayname);
+  return read_array (fd, lines, origin, chop, callback_quantum, callback, arrayname);
 }
 
 char *readarray_doc[] = {
-	"Copy the lines from the input file into an array variable.",
-	"Use the `-n' option to specify a count of the number of lines to copy.",
-	"If -n is missing or 0 is given as the number all lines are copied.",
-	"Use the `-O' option to specify an index orgin to start the array.",
-	"If -O is missing the origin will be 0.",
-	"Use -t to chop trailing newlines (\\n) from lines.",
-	"To read from stdin use '-' as the filename.",
-	"Note: this routine does not clear any previously existing array values.",
-	"      It will however overwrite existing indices.",
-	NULL
+  "Multiple lines are read from the standard input into an array variable,",
+  "or from file descriptor FD if the -u option is supplied.",
+  "Use the `-n' option to specify a count of the number of lines to copy.",
+  "If -n is missing or 0 is given as the number all lines are copied.",
+  "Use the `-O' option to specify an index orgin to start the array.",
+  "If -O is missing the origin will be 0.",
+  "Use -t to chop trailing newlines (\\n) from lines.",
+  "Use the `-C' option to specify a string evaluated during reading lines.",
+  "readarray evaluates the string each time when reading number of lines ",
+  "specified with -c option. If `-c' is not given, 5000 is used as the default.",
+  "This option may be useful to implement a progress bar.",
+  "Note: this routine does not clear any previously existing array values.",
+  "      It will however overwrite existing indices.",
+  NULL
 };
 
 struct builtin readarray_struct = {
-	"readarray",		/* builtin name */
-	readarray_builtin,	/* function implementing the builtin */
-	BUILTIN_ENABLED,	/* initial flags for builtin */
-	readarray_doc,		/* array of long documentation strings. */
-	"readarray [-t] [-c *count*] [-C callback] [-n *lines*] [-O *origin*] *file* *array_variable*", 
-	                        /* usage synopsis; becomes short_doc */
-	0			/* reserved for internal use */
+  "readarray",		/* builtin name */
+  readarray_builtin,	/* function implementing the builtin */
+  BUILTIN_ENABLED,	/* initial flags for builtin */
+  readarray_doc,		/* array of long documentation strings. */
+  "readarray [-u fd]  [-n lines] [-O origin] [-t] [-C callback] [-c count] array_variable", 
+  /* usage synopsis; becomes short_doc */
+  0			/* reserved for internal use */
 };
