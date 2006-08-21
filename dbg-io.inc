@@ -224,7 +224,7 @@ _Dbg_readin() {
 	fi
 	readarray -t -O 1 -c $BIGFILE \
 	  -C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
-	  $fullname $source_array
+	  $source_array < $fullname 
 
 	(( line_count > BIGFILE)) && _Dbg_progess_done
 	
@@ -278,7 +278,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.9 2006/08/03 10:04:20 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.10 2006/08/21 11:49:58 myamato Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

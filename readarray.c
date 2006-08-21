@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.10 2006/08/21 11:10:52 myamato Exp $
+/* $Id: readarray.c,v 1.11 2006/08/21 11:49:58 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -53,39 +53,34 @@ extern int parse_and_execute (char *psz_exec, const char *psz_from_file, int fla
    calls the callback. */
 #define DEFAULT_PROGRESS_QUANTUM 5000
 
-#ifndef HAVE_GETLINE
+/* Initial memory allocation for automatic growing buffer in zreadline */
+#define ZREADLINE_INITIAL_ALLOCATION 16
+
+
 #define g_return_val_if_fail(test, val) \
    if (!(test)) return val;
 
-/* The interface here is that of GNU libc's getline */
+/* Derived from GNU libc's getline */
 static ssize_t
-getline (char **lineptr, size_t *n, FILE *stream)
+zreadlinec (int fd, char **lineptr, size_t *n)
 {
-#define EXPAND_CHUNK 16
+
 
   int n_read = 0;
   char *line = *lineptr;
 
   g_return_val_if_fail (lineptr != NULL, -1);
   g_return_val_if_fail (n != NULL, -1);
-  g_return_val_if_fail (stream != NULL, -1);
   g_return_val_if_fail (*lineptr != NULL || *n == 0, -1);
-  
-#ifdef HAVE_FLOCKFILE
-  flockfile (stream);
-#endif  
   
   while (1)
     {
-      int c;
+      char c;
+      int  retval;
       
-#ifdef HAVE_FLOCKFILE
-      c = getc_unlocked (stream);
-#else
-      c = getc (stream);
-#endif      
+      retval = zreadc(fd, &c);
 
-      if (c == EOF)
+      if (retval <= 0)
         {
           if (n_read > 0)
            line[n_read] = '\0';
@@ -97,7 +92,7 @@ getline (char **lineptr, size_t *n, FILE *stream)
          size_t new_size;
 
          if (*n == 0)
-           new_size = 16;
+           new_size = ZREADLINE_INITIAL_ALLOCATION;
          else
            new_size = *n * 2;
 
@@ -131,14 +126,8 @@ getline (char **lineptr, size_t *n, FILE *stream)
           break;
         }
     }
-
-#ifdef HAVE_FLOCKFILE
-  funlockfile (stream);
-#endif
-
   return n_read - 1;
 }
-#endif /* ! HAVE_GETLINE */
 
 
 /* Process options. In this case we're looking for 
@@ -167,7 +156,7 @@ munge_list (WORD_LIST *list)
 }
 
 static int
-read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
+read_array (int fd, long int i_count, long int i_origin, long int i_chop,
 	    long int i_cb, char *psz_cb, char *psz_var)
 {
   char *psz_line = NULL;
@@ -187,8 +176,10 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
   else if (array_p (entry) == 0)
     entry = convert_var_to_array (entry);
 
+  /* Reset the buffer for bash own stream */
+  zsyncfd (fd);
   for (array_index = i_origin, line_count = 0; 
-       -1 != getline(&psz_line, &i_len, fp); 
+       -1 != zreadlinec(fd, &psz_line, &i_len); 
        array_index++, line_count++) {
 
     /* Have we Exceded # of lines to store/ */
@@ -216,6 +207,9 @@ read_array (FILE *fp, long int i_count, long int i_origin, long int i_chop,
 
 	snprintf(psz_exec, execlen, "%s %d", psz_cb, array_index);
 	parse_and_execute(psz_exec, NULL, 0);
+	
+	/* Reset the buffer for bash own stream. */
+	zsyncfd (fd);
       }
 
     /* ENTRY is an array variable, and ARRAY points to the value. */
@@ -240,29 +234,42 @@ readarray_builtin (WORD_LIST *list)
   int opt;
   int code;
   intmax_t intval;
-  int rval;
-  
+
   long int line;
   long int origin;
   long int chop;
   long int callback_quantum;
   char    *callback;
-  FILE *fp;
-  char *filename;
+  int      fd;
   char *arrayname;
 
 
-  line = origin = chop = 0;
+  fd = line = origin = chop = 0;
   callback_quantum = DEFAULT_PROGRESS_QUANTUM;
   callback 	   = NULL;
   
   munge_list (list);	/* change -num into -n num */
 
   reset_internal_getopt ();
-  while ((opt = internal_getopt (list, "tc:C:n:O:")) != -1)
+  while ((opt = internal_getopt (list, "tc:C:n:O:u:")) != -1)
     {
       switch (opt)
 	{
+	case 'u':
+	  code = legal_number (list_optarg, &intval);
+	  if (code == 0 || intval < 0 || intval != (int)intval)
+	    {
+	      builtin_error (_("%s: invalid file descriptor specification"), list_optarg);
+	      return (EXECUTION_FAILURE);
+	    }
+	  else
+	    fd = intval;
+	  if (sh_validfd (fd) == 0)
+	    {
+	      builtin_error (_("%d: invalid file descriptor: %s"), fd, strerror (errno));
+	      return (EXECUTION_FAILURE);
+	    }
+	  break;	  
 	case 'n':
 	  code = legal_number (list_optarg, &intval);
 	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
@@ -305,34 +312,6 @@ readarray_builtin (WORD_LIST *list)
 	}
     }
   list = loptend;
-
-  if (!list) 
-    {
-      builtin_error ("missing file name");
-      return (EX_USAGE);
-    } 
-  else if (!list->word) 
-    {
-      builtin_error ("internal error #1 in getting file name");
-      return (EXECUTION_FAILURE);
-    } 
-  else if (!list->word->word) 
-    {
-      builtin_error ("internal error #2 in getting file name");
-      return (EXECUTION_FAILURE);
-    } 
-  else if (list->word->word[0] == '\0') 
-    {
-      builtin_error ("file name is empty");
-      return (EX_USAGE);
-    } 
-  else 
-    {
-      filename = list->word->word;
-    }
-    
-
-  list = list->next;
   if (!list) 
     {
       builtin_error ("missing array variable name");
@@ -364,22 +343,7 @@ readarray_builtin (WORD_LIST *list)
       return (EXECUTION_FAILURE);
     }
 
-  if (0 == strcmp(filename, "-"))
-    fp = stdin;
-  else 
-    fp = fopen (filename, "r");
-
-  if (!fp) 
-    {
-      builtin_error ("%s: %s", filename, strerror (errno));
-      return (EXECUTION_FAILURE);
-    }
-  
-  rval = read_array (fp, line, origin, chop, callback_quantum, callback, arrayname);
-  fclose (fp);
-   
-  return (rval);
-
+  return read_array (fd, line, origin, chop, callback_quantum, callback, arrayname);
 }
 
 char *readarray_doc[] = {
