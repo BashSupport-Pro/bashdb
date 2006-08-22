@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.12 2006/08/21 18:26:39 myamato Exp $
+/* $Id: readarray.c,v 1.13 2006/08/22 16:52:02 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -48,21 +48,36 @@ extern int errno;
 /* Initial memory allocation for automatic growing buffer in zreadline */
 #define ZREADLINE_INITIAL_ALLOCATION 16
 
+/* Derived from GNU libc's getline.
+   The behavior is almost the same as getline. See man getline.
+   The differences are (1) using file descriptor instead of FILE* and
+   (2) the order of arguments; the file descriptor comes the first. 
 
-#define g_return_val_if_fail(test, val) \
-   if (!(test)) return val;
-
-/* Derived from GNU libc's getline */
+   zreadlinec uses zreadc internally. This means you cannot use 
+   zreadlinec on fd which doesn't support lseek. Also you may have
+   to call zsyncfd on the fd after you will not call zreadlinec
+   on the fd anymore. */
 static ssize_t
 zreadlinec (int fd, char **lineptr, size_t *n)
 {
   int n_read;
   char *line;
 
-
-  g_return_val_if_fail (lineptr != NULL, -1);
-  g_return_val_if_fail (n != NULL, -1);
-  g_return_val_if_fail (*lineptr != NULL || *n == 0, -1);
+  if (lineptr == NULL)
+    {
+      builtin_error ("internal error zreadlinec#1; lineptr is NULL");
+      return -1;
+    }
+  if (n == NULL)
+    {
+      builtin_error ("internal error zreadlinec#2; n is NULL");
+      return -1;
+    }
+  if (*lineptr == NULL && *n != 0)
+    {
+      builtin_error ("internal error zreadlinec#3; lineptr and n are not consistent");
+      return -1;
+    }
 
   n_read = 0;
   line 	 = *lineptr;
@@ -153,7 +168,7 @@ do_chop(char * line)
 
 static int
 read_array (int fd, long int line_count_goal, long int origin, long int chop,
-	    long int callback_quantum, char *callback, char *arrayname)
+	    long int callback_quantum, char *callback, char *array_name)
 {
   char *line;
   size_t line_length;
@@ -164,21 +179,19 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
 
   line 	      = NULL;
   line_length = 0;
-  entry       = var_lookup (arrayname, shell_variables);
-  
-  if (!entry)
-    entry = make_new_array_variable (arrayname);
-  else if (readonly_p (entry) || noassign_p (entry))
+
+  /* Following check is also done in `bind_array_variable'.
+     However, it should be done before reading lines. */
+  entry = var_lookup (array_name, shell_variables);
+  if (entry && (readonly_p (entry) || noassign_p (entry)))
     {
       if (readonly_p (entry))
-	err_readonly (arrayname);
+	err_readonly (array_name);
       return (EX_USAGE);
     }
-  else if (array_p (entry) == 0)
-    entry = convert_var_to_array (entry);
+
 
   /* Reset the buffer for bash own stream */
-  zsyncfd (fd);
   for (array_index = origin, line_count = 0; 
        -1 != zreadlinec(fd, &line, &line_length); 
        array_index++, line_count++) 
@@ -201,19 +214,11 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
 	  zsyncfd (fd);
 	}
 
-      /* ENTRY is an array variable, and ARRAY points to the value. */
-      { 
-	char *newval;
-
-	newval = make_variable_value (entry, line, 0);
-	if (entry->assign_func)
-	  (*entry->assign_func) (entry, newval, array_index);
-	else
-	  array_insert (array_cell (entry), array_index, newval);
-	free (newval);
-      }
+      bind_array_variable(array_name, array_index, line, 0);
     }
   xfree(line);
+  zsyncfd (fd);
+
   return EXECUTION_SUCCESS;
 }
 
@@ -230,15 +235,19 @@ readarray_builtin (WORD_LIST *list)
   long int callback_quantum;
   char    *callback;
   int      fd;
-  char *arrayname;
+  char *array_name;
 
+#ifdef __CYGWIN__
+  builtin_error (_("readarray doesn't work on CYGWIN platform"));
+  return (EXECUTION_FAILURE);
+#endif /* Def: __CYGWIN__ */
 
   fd = lines = origin = chop = 0;
   callback_quantum = DEFAULT_PROGRESS_QUANTUM;
   callback 	   = NULL;
 
   reset_internal_getopt ();
-  while ((opt = internal_getopt (list, "tc:C:n:O:u:")) != -1)
+  while ((opt = internal_getopt (list, "u:n:O:tC:c:")) != -1)
     {
       switch (opt)
 	{
@@ -251,9 +260,15 @@ readarray_builtin (WORD_LIST *list)
 	    }
 	  else
 	    fd = intval;
+
 	  if (sh_validfd (fd) == 0)
 	    {
 	      builtin_error (_("%d: invalid file descriptor: %s"), fd, strerror (errno));
+	      return (EXECUTION_FAILURE);
+	    }
+	  if ((lseek (fd, 0L, SEEK_CUR) < 0) && (errno == ESPIPE))
+	    {
+	      builtin_error (_("%d: not seek-able file descriptor"), fd);
 	      return (EXECUTION_FAILURE);
 	    }
 	  break;	  
@@ -267,22 +282,6 @@ readarray_builtin (WORD_LIST *list)
 	  else
 	    lines = intval;
 	  break;
-	case 'c':
-	  code = legal_number (list_optarg, &intval);
-	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
-	    {
-	      builtin_error (_("%s: bad callback quantum"), list_optarg);
-	      return (EXECUTION_FAILURE);
-	    }
-	  else
-	    callback_quantum = intval;
-	  break;
-	case 'C':
-	  callback = list_optarg;
-	  break;
-	case 't':
-	  chop = 1;
-	  break;
 	case 'O':
 	  code = legal_number (list_optarg, &intval);
 	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
@@ -292,6 +291,22 @@ readarray_builtin (WORD_LIST *list)
 	    }
 	  else
 	    origin = intval;
+	  break;
+	case 't':
+	  chop = 1;
+	  break;
+	case 'C':
+	  callback = list_optarg;
+	  break;
+	case 'c':
+	  code = legal_number (list_optarg, &intval);
+	  if (code == 0 || intval < 0 || intval != (unsigned)intval)
+	    {
+	      builtin_error (_("%s: bad callback quantum"), list_optarg);
+	      return (EXECUTION_FAILURE);
+	    }
+	  else
+	    callback_quantum = intval;
 	  break;
 	default:
 	  builtin_usage ();
@@ -307,12 +322,12 @@ readarray_builtin (WORD_LIST *list)
     } 
   else if (!list->word) 
     {
-      builtin_error ("internal error #1 in getting variable name");
+      builtin_error ("internal error readarray_builtin#1 in getting variable name");
       return (EXECUTION_FAILURE);
     } 
   else if (!list->word->word) 
     {
-      builtin_error ("internal error #2 in getting variable name");
+      builtin_error ("internal error readarray_builtin#2 in getting variable name");
       return (EXECUTION_FAILURE);
     } 
   else if (list->word->word[0] == '\0')
@@ -321,22 +336,22 @@ readarray_builtin (WORD_LIST *list)
       return (EX_USAGE);
     } 
   else
-    {
-      arrayname = list->word->word;
-    }
+    array_name = list->word->word;
   
-  if (legal_identifier (arrayname) == 0)
+  if (legal_identifier (array_name) == 0 && valid_array_reference (array_name) == 0)
     {
-      sh_invalidid (arrayname);
+      sh_invalidid (array_name);
       return (EXECUTION_FAILURE);
     }
 
-  return read_array (fd, lines, origin, chop, callback_quantum, callback, arrayname);
+  return read_array (fd, lines, origin, chop, callback_quantum, callback, array_name);
 }
 
 char *readarray_doc[] = {
   "Multiple lines are read from the standard input into an array variable,",
-  "or from file descriptor FD if the -u option is supplied.",
+  "or from file descriptor FD if the -u option is supplied. Any case the",
+  "file descriptor must be seek-able because readarray does buffering on",
+  "the file descriptor.",
   "Use the `-n' option to specify a count of the number of lines to copy.",
   "If -n is missing or 0 is given as the number all lines are copied.",
   "Use the `-O' option to specify an index orgin to start the array.",
@@ -348,6 +363,7 @@ char *readarray_doc[] = {
   "This option may be useful to implement a progress bar.",
   "Note: this routine does not clear any previously existing array values.",
   "      It will however overwrite existing indices.",
+  "      readarray doesn't work on cygwin platform.",
   NULL
 };
 
@@ -356,7 +372,7 @@ struct builtin readarray_struct = {
   readarray_builtin,	/* function implementing the builtin */
   BUILTIN_ENABLED,	/* initial flags for builtin */
   readarray_doc,		/* array of long documentation strings. */
-  "readarray [-u fd]  [-n lines] [-O origin] [-t] [-C callback] [-c count] array_variable", 
+  "readarray [-u fd] [-n lines] [-O origin] [-t] [-C callback] [-c count] array_variable", 
   /* usage synopsis; becomes short_doc */
   0			/* reserved for internal use */
 };
