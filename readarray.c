@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.13 2006/08/22 16:52:02 myamato Exp $
+/* $Id: readarray.c,v 1.14 2006/08/23 17:46:29 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -32,10 +32,11 @@
 #include <stdio.h>
 #include <errno.h>
 
+#include "bashintl.h"
 #include "shell.h"
 #include "common.h"
 #include "bashgetopt.h"
-#include "bashintl.h"
+
 
 #if !defined (errno)
 extern int errno;
@@ -45,8 +46,8 @@ extern int errno;
    calls the callback. */
 #define DEFAULT_PROGRESS_QUANTUM 5000
 
-/* Initial memory allocation for automatic growing buffer in zreadline */
-#define ZREADLINE_INITIAL_ALLOCATION 16
+/* Initial memory allocation for automatic growing buffer in zreadlinec */
+#define ZREADLINEC_INITIAL_ALLOCATION 16
 
 /* Derived from GNU libc's getline.
    The behavior is almost the same as getline. See man getline.
@@ -348,18 +349,19 @@ readarray_builtin (WORD_LIST *list)
 }
 
 char *readarray_doc[] = {
-  "Multiple lines are read from the standard input into an array variable,",
+  "Multiple lines are read from the standard input into ARRAY_VARIABLE,",
   "or from file descriptor FD if the -u option is supplied. Any case the",
   "file descriptor must be seek-able because readarray does buffering on",
   "the file descriptor.",
-  "Use the `-n' option to specify a count of the number of lines to copy.",
+  "Use the `-n' option to specify COUNT number of lines to copy.",
   "If -n is missing or 0 is given as the number all lines are copied.",
-  "Use the `-O' option to specify an index orgin to start the array.",
+  "Use the `-O' option to specify an index ORIGIN to start the array.",
   "If -O is missing the origin will be 0.",
   "Use -t to chop trailing newlines (\\n) from lines.",
-  "Use the `-C' option to specify a string evaluated during reading lines.",
-  "readarray evaluates the string each time when reading number of lines ",
-  "specified with -c option. If `-c' is not given, 5000 is used as the default.",
+  "Use the `-C' option to specify CALLBACK which is evaluated according to ",
+  "progression of reading lines.",
+  "The evaluation is done in each time when reading QUANTUM number of lines ",
+  "specified with -c option. 5000 is used as the default quantum if `-c' is not given.",
   "This option may be useful to implement a progress bar.",
   "Note: this routine does not clear any previously existing array values.",
   "      It will however overwrite existing indices.",
@@ -372,7 +374,7 @@ struct builtin readarray_struct = {
   readarray_builtin,	/* function implementing the builtin */
   BUILTIN_ENABLED,	/* initial flags for builtin */
   readarray_doc,		/* array of long documentation strings. */
-  "readarray [-u fd] [-n lines] [-O origin] [-t] [-C callback] [-c count] array_variable", 
+  "readarray [-u fd] [-n count] [-O origin] [-t] [-C callback] [-c quantum] array_variable", 
   /* usage synopsis; becomes short_doc */
   0			/* reserved for internal use */
 };
