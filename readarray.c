@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.14 2006/08/23 17:46:29 myamato Exp $
+/* $Id: readarray.c,v 1.15 2006/08/23 23:56:54 rockyb Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -47,7 +47,7 @@ extern int errno;
 #define DEFAULT_PROGRESS_QUANTUM 5000
 
 /* Initial memory allocation for automatic growing buffer in zreadlinec */
-#define ZREADLINEC_INITIAL_ALLOCATION 16
+#define ZREADLINE_INITIAL_ALLOCATION 16
 
 /* Derived from GNU libc's getline.
    The behavior is almost the same as getline. See man getline.
@@ -350,19 +350,25 @@ readarray_builtin (WORD_LIST *list)
 
 char *readarray_doc[] = {
   "Multiple lines are read from the standard input into ARRAY_VARIABLE,",
-  "or from file descriptor FD if the -u option is supplied. Any case the",
-  "file descriptor must be seek-able because readarray does buffering on",
+  "or from file descriptor FD if the -u option is supplied. In either case,",
+  "the file descriptor must be seek-able because readarray buffers",
   "the file descriptor.",
+  "",
   "Use the `-n' option to specify COUNT number of lines to copy.",
   "If -n is missing or 0 is given as the number all lines are copied.",
+  "",
   "Use the `-O' option to specify an index ORIGIN to start the array.",
   "If -O is missing the origin will be 0.",
+  "",
   "Use -t to chop trailing newlines (\\n) from lines.",
+  "",
   "Use the `-C' option to specify CALLBACK which is evaluated according to ",
-  "progression of reading lines.",
-  "The evaluation is done in each time when reading QUANTUM number of lines ",
-  "specified with -c option. 5000 is used as the default quantum if `-c' is not given.",
-  "This option may be useful to implement a progress bar.",
+  "progression of reading lines. The evaluation is done each time",
+  "QUANTUM number of lines are read as specified via the -c option;",
+  "5000 is the default.",
+  "",
+  "The -C and -c options may be useful in implementing a progress bar.",
+  "",
   "Note: this routine does not clear any previously existing array values.",
   "      It will however overwrite existing indices.",
   "      readarray doesn't work on cygwin platform.",
