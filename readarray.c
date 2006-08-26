@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.15 2006/08/23 23:56:54 rockyb Exp $
+/* $Id: readarray.c,v 1.16 2006/08/26 07:50:38 myamato Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -47,19 +47,18 @@ extern int errno;
 #define DEFAULT_PROGRESS_QUANTUM 5000
 
 /* Initial memory allocation for automatic growing buffer in zreadlinec */
-#define ZREADLINE_INITIAL_ALLOCATION 16
+#define GET_LINE_INITIAL_ALLOCATION 16
 
 /* Derived from GNU libc's getline.
    The behavior is almost the same as getline. See man getline.
-   The differences are (1) using file descriptor instead of FILE* and
-   (2) the order of arguments; the file descriptor comes the first. 
-
-   zreadlinec uses zreadc internally. This means you cannot use 
-   zreadlinec on fd which doesn't support lseek. Also you may have
-   to call zsyncfd on the fd after you will not call zreadlinec
-   on the fd anymore. */
+   The differences are (1) using file descriptor instead of FILE*,
+   (2) the order of arguments; the file descriptor comes the first, and
+   (3) the addtion of thired argument, UNBUFFERED_READ; this argument
+   controls whether get_line uses buffering or not to get a byte data
+   from FD. get_line uses zreadc if UNBUFFERED_READ is zero; and
+   uses zread if unbuFFERED_READ is non-zero. */
 static ssize_t
-zreadlinec (int fd, char **lineptr, size_t *n)
+get_line (int fd, char **lineptr, size_t *n, int unbuffered_read)
 {
   int n_read;
   char *line;
@@ -87,8 +86,11 @@ zreadlinec (int fd, char **lineptr, size_t *n)
     {
       char c;
       int  retval;
-      
-      retval = zreadc(fd, &c);
+
+      if (unbuffered_read)
+	retval = zread (fd, &c, 1);
+      else
+	retval = zreadc(fd, &c);
 
       if (retval <= 0)
         {
@@ -102,7 +104,7 @@ zreadlinec (int fd, char **lineptr, size_t *n)
          size_t new_size;
 
          if (*n == 0)
-           new_size = ZREADLINE_INITIAL_ALLOCATION;
+           new_size = GET_LINE_INITIAL_ALLOCATION;
          else
            new_size = *n * 2;
 
@@ -176,10 +178,12 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
   unsigned int array_index;
   unsigned int line_count;
   SHELL_VAR *entry;
+  int unbuffered_read;
+  
 
-
-  line 	      = NULL;
-  line_length = 0;
+  line 	      	  = NULL;
+  line_length 	  = 0;
+  unbuffered_read = 0;
 
   /* Following check is also done in `bind_array_variable'.
      However, it should be done before reading lines. */
@@ -191,10 +195,15 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
       return (EX_USAGE);
     }
 
+#ifndef __CYGWIN__
+  unbuffered_read = (lseek (fd, 0L, SEEK_CUR) < 0) && (errno == ESPIPE);
+#else
+  unbuffered_read = 1;
+#endif
 
   /* Reset the buffer for bash own stream */
   for (array_index = origin, line_count = 0; 
-       -1 != zreadlinec(fd, &line, &line_length); 
+       -1 != get_line(fd, &line, &line_length, unbuffered_read); 
        array_index++, line_count++) 
     {
 
@@ -212,13 +221,16 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
 	  run_callback(callback, array_index);
 
 	  /* Reset the buffer for bash own stream. */
-	  zsyncfd (fd);
+	  if (!unbuffered_read)
+	    zsyncfd (fd);
 	}
 
       bind_array_variable(array_name, array_index, line, 0);
     }
   xfree(line);
-  zsyncfd (fd);
+
+  if (!unbuffered_read)
+    zsyncfd (fd);
 
   return EXECUTION_SUCCESS;
 }
@@ -238,10 +250,6 @@ readarray_builtin (WORD_LIST *list)
   int      fd;
   char *array_name;
 
-#ifdef __CYGWIN__
-  builtin_error (_("readarray doesn't work on CYGWIN platform"));
-  return (EXECUTION_FAILURE);
-#endif /* Def: __CYGWIN__ */
 
   fd = lines = origin = chop = 0;
   callback_quantum = DEFAULT_PROGRESS_QUANTUM;
@@ -265,11 +273,6 @@ readarray_builtin (WORD_LIST *list)
 	  if (sh_validfd (fd) == 0)
 	    {
 	      builtin_error (_("%d: invalid file descriptor: %s"), fd, strerror (errno));
-	      return (EXECUTION_FAILURE);
-	    }
-	  if ((lseek (fd, 0L, SEEK_CUR) < 0) && (errno == ESPIPE))
-	    {
-	      builtin_error (_("%d: not seek-able file descriptor"), fd);
 	      return (EXECUTION_FAILURE);
 	    }
 	  break;	  
@@ -350,9 +353,7 @@ readarray_builtin (WORD_LIST *list)
 
 char *readarray_doc[] = {
   "Multiple lines are read from the standard input into ARRAY_VARIABLE,",
-  "or from file descriptor FD if the -u option is supplied. In either case,",
-  "the file descriptor must be seek-able because readarray buffers",
-  "the file descriptor.",
+  "or from file descriptor FD if the -u option is supplied. ",
   "",
   "Use the `-n' option to specify COUNT number of lines to copy.",
   "If -n is missing or 0 is given as the number all lines are copied.",
@@ -371,7 +372,6 @@ char *readarray_doc[] = {
   "",
   "Note: this routine does not clear any previously existing array values.",
   "      It will however overwrite existing indices.",
-  "      readarray doesn't work on cygwin platform.",
   NULL
 };
 
