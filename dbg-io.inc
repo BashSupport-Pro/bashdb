@@ -218,14 +218,13 @@ _Dbg_readin() {
 	local -ir BIGFILE=30000
 	if wc -l < /dev/null >/dev/null 2>&1 ; then 
 	  line_count=`wc -l < "${fullname}"`
-	  if (( line_count >= NOT_SMALLFILE )) ; then 
+	  if (( $line_count >= $NOT_SMALLFILE )) ; then 
 	    _Dbg_msg_nocr "${progress_prefix} "
 	  fi
 	fi
 	readarray -t -O 1 -c $BIGFILE \
 	  -C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 	  $source_array < $fullname 
-
 	(( line_count > BIGFILE)) && _Dbg_progess_done
 	
       else
@@ -278,7 +277,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.10 2006/08/21 11:49:58 myamato Exp $'
+'$Id: dbg-io.inc,v 1.11 2006/09/03 09:09:42 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

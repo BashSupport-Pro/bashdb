@@ -376,6 +376,12 @@ _Dbg_onecmd() {
 	  _Dbg_do_list $args
 	  ;;
 
+	# kill program
+        ## To be completed...
+	## k | ki | kil | kill )
+	##  _Dbg_do_kill $args
+	##  ;;
+
 	# next/single-step N times (default 1)
 	n | ne | nex | next | s | st | ste | step | sk | ski | skip )
 	  _Dbg_last_next_step_cmd="$_Dbg_cmd"
@@ -441,6 +447,11 @@ _Dbg_onecmd() {
 	# run shell command. Has to come before ! below.
 	she | shel | shell | '!!' )
 	  eval $args ;;
+
+	# Send signal to process
+	si | sig | sign | signa | signal )
+	  _Dbg_do_signal $args
+	  ;;
 
 	# Run a debugger comamnd file
 	so | sou | sour | sourc | source )
@@ -981,7 +992,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.18 2006/07/13 10:54:12 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.19 2006/09/03 09:09:42 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

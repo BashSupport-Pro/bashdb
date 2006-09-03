@@ -508,6 +508,8 @@ _Dbg_do_handle() {
   case $cmd in
     nop | nopr | nopri | noprin | noprint )
       _Dbg_sig_print[signum]='noprint'
+      # noprint implies nostop
+      _Dbg_sig_stop[signum]='stop'
       ;;
 
     nosta | nostac | nostack )
@@ -528,6 +530,8 @@ _Dbg_do_handle() {
 
     sto | stop )
       _Dbg_sig_stop[signum]='stop'
+      # stop keyword implies print
+      _Dbg_sig_print[signum]='print'
       ;;
     * )
       if (( !cmd )) ; then 
@@ -538,13 +542,42 @@ _Dbg_do_handle() {
       fi
       ;;
   esac
-  
+}
+
+# Process debugger "signal" command. 
+_Dbg_do_signal() {
+  local sig=$1
+  local -i signum
+  if [[ -z $sig ]] ; then
+    _Dbg_msg "Missing signal name or signal number."
+    return 1
+  fi
+
+  eval "$_seteglob"
+  if [[ $sig == $int_pat ]]; then
+    eval "$_resteglob"
+    signame=`_Dbg_signum2name $sig`
+    if (( $? != 0 )) ; then
+      _Dbg_msg "Bad signal number: $sig"
+      return 1
+    fi
+    signum=sig
+  else
+    eval "$_resteglob"
+    local signum;
+    signum=`_Dbg_name2signum $sig`
+    if (( $? != 0 )) ; then
+      _Dbg_msg "Bad signal name: $sig"
+      return 1
+    fi
+  fi
+  kill -$signum $$
 }
 
 _Dbg_subexit_handler() {
   # Read in the journal to pick up variable settings that might have
   # been left from a subshell.
-  if [[ ${FUNCNAME[1]} == _Dbg_* ]] && ((  !_Dbg_debug_debugger )); then
+  if [[ ${FUNCNAME[1]} == _Dbg_* ]] && (( !_Dbg_debug_debugger )); then
     return 0
   fi
   _Dbg_source_journal
@@ -588,7 +621,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.12 2006/07/31 00:09:59 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.13 2006/09/03 09:09:42 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

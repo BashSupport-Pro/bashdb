@@ -1,4 +1,4 @@
-# Test that debugged program's signals are savend and restored across
+# Test that debugged program's signals are saved and restored across
 # debug calls.
 ###  Testing that we have our signal set up...
 info signals

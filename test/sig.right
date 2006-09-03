@@ -1,6 +1,6 @@
 (sig.sh:7):
 7:	if [[ "$1"x != x ]] ; then 
-+ # Test that debugged program's signals are savend and restored across
++ # Test that debugged program's signals are saved and restored across
 + # debug calls.
 + ### Testing that we have our signal set up...
 + info signals
@@ -48,7 +48,7 @@ Program received signal SIGTERM (15)...
 + ### Should have printed a stack trace above...
 + continue 
 + where 
-->0 in file `sig.sh' at line 721
+->0 in file `sig.sh' at line 732
 ##1 source("sig.sh") called from file `bashdb' at line 272
 ##2 main() called from file `bashdb' at line 0
 + continue 

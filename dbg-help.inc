@@ -234,6 +234,11 @@ l .             Same as above.
 	    sh | sho | show )
 		_Dbg_help_show $2
                 return ;;
+	    si | sig | sign | signa | signal )
+		_Dbg_msg \
+"signal {signam|signum}   
+                Send the specified signal to the program."
+                return ;;
   	    sk | ski | skip ) 
 		_Dbg_msg \
 "sk [count]      Skip (don't run) the next [count] command(s) to be executed.
@@ -495,7 +500,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.5 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.6 2006/09/03 09:09:42 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -2144,7 +2144,7 @@ selected stack frame returns naturally.
 @end ifset
 
 @node Signals
-@subsection Signals
+@subsection Signals (@samp{info handle}, @samp{handle}, @samp{signal})
 @cindex signals
 
 A signal is an asynchronous event that can happen in a program.  The
@@ -2270,17 +2270,14 @@ The default is set to @code{nostop}, @code{noprint}, @code{pass} for
 non-erroneous signals such as @code{SIGALRM}, @code{SIGWINCH} and
 @code{SIGCHLD}, and to @code{stop}, @code{print}, @code{pass} for the
 erroneous signals.
-
-You can also use the @code{signal} command to prevent your program from
-seeing a signal, or cause it to see a signal it normally would not see,
-or to give it any signal at any time.  For example, if your program stopped
-due to some sort of memory reference error, you might store correct
-values into the erroneous variables and continue, hoping to see more
-execution; but your program would probably terminate immediately as
-a result of the fatal signal once it saw the signal.  To prevent this,
-you can continue with @samp{signal 0}.  @xref{Signaling, ,Giving your
-program a signal}.
 @end ifset
+
+@subsubsection signal (@samp{signal})
+@table @code
+@kindex signal
+@item signal
+You can use the @code{signal} command send a signal to your program.
+@end table
 
 @node Information
 @section Status and Debugger Settings (@samp{info}, @samp{show})

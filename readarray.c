@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.16 2006/08/26 07:50:38 myamato Exp $
+/* $Id: readarray.c,v 1.17 2006/09/03 09:09:42 rockyb Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -202,13 +202,13 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
 #endif
 
   /* Reset the buffer for bash own stream */
-  for (array_index = origin, line_count = 0; 
+  for (array_index = origin, line_count = 1; 
        -1 != get_line(fd, &line, &line_length, unbuffered_read); 
        array_index++, line_count++) 
     {
 
       /* Have we Exceded # of lines to store/ */
-      if (line_count_goal != 0 && line_count >= line_count_goal) 
+      if (line_count_goal != 0 && line_count >= line_count_goal+1) 
 	break;
 
       /* Remove trailing newlines? */
@@ -216,7 +216,7 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
 	do_chop(line);
 	  
       /* Has a callback been registered and if so is it time to call it? */
-      if (callback && 0 == (line_count % callback_quantum)) 
+      if (callback && line_count && 0 == (line_count % callback_quantum)) 
 	{
 	  run_callback(callback, array_index);
 
@@ -310,7 +310,9 @@ readarray_builtin (WORD_LIST *list)
 	      return (EXECUTION_FAILURE);
 	    }
 	  else
-	    callback_quantum = intval;
+	    {
+	      callback_quantum = intval;
+	    }
 	  break;
 	default:
 	  builtin_usage ();
