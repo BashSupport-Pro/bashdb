@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.12 2006/04/10 00:40:40 rockyb Exp $'
+'$Id: bashdb.in,v 1.13 2006/09/03 09:17:54 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -120,7 +120,7 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
   TEMP=`getopt -o Bc:hL:nqt:T::x:XV \
---long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,tty::,version \
+--long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty::,version \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 
