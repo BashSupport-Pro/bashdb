@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.17 2006/09/03 09:09:42 rockyb Exp $
+/* $Id: readarray.c,v 1.18 2006/09/04 04:24:29 rockyb Exp $
    Copyright (C) 2005 Rocky Bernstein rocky@panix.com
 
    Bash is free software; you can redistribute it and/or modify it under
@@ -216,7 +216,7 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
 	do_chop(line);
 	  
       /* Has a callback been registered and if so is it time to call it? */
-      if (callback && line_count && 0 == (line_count % callback_quantum)) 
+      if (callback && 0 == (line_count % callback_quantum)) 
 	{
 	  run_callback(callback, array_index);
 
