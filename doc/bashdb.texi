@@ -2144,8 +2144,13 @@ selected stack frame returns naturally.
 @end ifset
 
 @node Signals
-@subsection Signals (@samp{info handle}, @samp{handle}, @samp{signal})
+@subsection Signals (@samp{handle}, @samp{info handle}, @samp{signal})
 @cindex signals
+
+@menu
+* handle::        Specify which signals to handle and show what's been set
+* signal::        Send a signal to your program
+@end menu
 
 A signal is an asynchronous event that can happen in a program.  The
 operating system defines the possible kinds of signals, and gives each
@@ -2198,7 +2203,16 @@ Normally, @acronym{BASH} is set up to let the non-erroneous signals like
 but to stop your program immediately whenever an error signal happens.
 You can change these settings with the @code{handle} command.
 
+@node handle
+@subsubsection Intercepting Signals (@samp{handle}, @samp{info handle})
 @table @code
+@kindex handle
+@item handle @var{signal} @var{keywords}@dots{}
+Change the way @acronym{BASH} handles signal @var{signal}.  @var{signal}
+can be the number of a signal or its name (with or without the
+@samp{SIG} at the beginning); a list of signal numbers of the form
+@samp{@var{low}-@var{high}}; or the word @samp{all}, meaning all the
+known signals.  The @var{keywords} say what change to make.
 @kindex info signals
 @item info signals
 @itemx info handle
@@ -2208,13 +2222,6 @@ the defined types of signals.
 
 @code{info handle} is an alias for @code{info signals}.
 
-@kindex handle
-@item handle @var{signal} @var{keywords}@dots{}
-Change the way @acronym{BASH} handles signal @var{signal}.  @var{signal}
-can be the number of a signal or its name (with or without the
-@samp{SIG} at the beginning); a list of signal numbers of the form
-@samp{@var{low}-@var{high}}; or the word @samp{all}, meaning all the
-known signals.  The @var{keywords} say what change to make.
 @end table
 
 @c @group
@@ -2272,11 +2279,14 @@ non-erroneous signals such as @code{SIGALRM}, @code{SIGWINCH} and
 erroneous signals.
 @end ifset
 
-@subsubsection signal (@samp{signal})
+@node signal
+@subsubsection Sending your program a signal (@samp{signal})
 @table @code
 @kindex signal
-@item signal
-You can use the @code{signal} command send a signal to your program.
+@item signal @r{@var{signal-name} | @var{signal-number}}
+You can use the @code{signal} command send a signal to your
+program. Supply either the signal name, e.g. @code{SIGINT}, or the
+signal number @code{15}.
 @end table
 
 @node Information
