@@ -1,4 +1,4 @@
-# $Id: check_common.in,v 1.2 2006/08/22 16:44:20 myamato Exp $
+# $Id: check_common.in,v 1.3 2006/09/06 04:16:33 myamato Exp $
 
 if test -z "$THIS_SH" ; then 
   THIS_SH=@BASH_PROG@
@@ -16,9 +16,6 @@ check_output() {
   rightfile="$2"
   # Bourne sh
   # set -o noglob
-
-  # Trimming progress bar output printed by readarray's callback.
-  sed -i -e 's/^..Reading.*%//' $testfile
 
   @DIFF@ @DIFF_OPTS@ $testfile $rightfile && rm -f $testfile
   return $?
