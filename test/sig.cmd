@@ -19,5 +19,6 @@ continue
 continue
 where
 continue
-quit
+kill
+y
 

@@ -377,10 +377,9 @@ _Dbg_onecmd() {
 	  ;;
 
 	# kill program
-        ## To be completed...
-	## k | ki | kil | kill )
-	##  _Dbg_do_kill $args
-	##  ;;
+	k | ki | kil | kill )
+	  _Dbg_do_kill $args
+	  ;;
 
 	# next/single-step N times (default 1)
 	n | ne | nex | next | s | st | ste | step | sk | ski | skip )
@@ -759,6 +758,16 @@ _Dbg_do_file() {
   _Dbg_msg "File $filename will be used when $source_file is referenced."
 }
 
+_Dbg_do_kill() {
+  local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
+  read $_Dbg_edit -p "Do hard kill and terminate the debugger? (y/n): " \
+      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
+
+  if [[ $REPLY = [Yy]* ]] ; then 
+      kill -9 $$
+  fi
+}
+
 _Dbg_do_next_step_skip() {
 
   if (( ! _Dbg_running )) ; then
@@ -992,7 +1001,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.19 2006/09/03 09:09:42 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.20 2006/09/06 09:26:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

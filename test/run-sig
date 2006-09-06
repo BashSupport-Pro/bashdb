@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-sig,v 1.5 2006/04/05 00:09:25 rockyb Exp $
+#$Id: run-sig,v 1.6 2006/09/06 09:26:36 rockyb Exp $
 
 # SIGnals in CYGwin seem to work differently and I'm not sure
 # how. So disable this test on that.
@@ -23,8 +23,9 @@ TEST_FILE="/tmp/${TEST_NAME}.check"
 TEST2_FILE="/tmp/${TEST_NAME}.check2"
 RIGHT_FILE="/tmp/${TEST_NAME}.right"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
-grep -v "bashdbeval" ${srcdir}/${TEST_NAME}.right >${RIGHT_FILE}
-grep -v "bashdbeval" ${TEST_FILE} >${TEST2_FILE}
+sed -i $TEST_FILE -e 's/^sig.tests: line 11:[ ]*[0-9]* Killed/sig.tests: line 11: xxxx Killed/'>${RIGHT_FILE}
+grep -v "bashdbeval" ${srcdir}/${TEST_NAME}.right | sed -e 's/^sig.tests: line 11:[ ]*[0-9]* Killed/sig.tests: line 11: xxxx Killed/'>${RIGHT_FILE}
+grep -v "bashdbeval" ${TEST_FILE} | sed -e 's/^sig.tests: line 11:[ ]*[0-9]* Killed/sig.tests: line 11: xxxx Killed/' >${TEST2_FILE}
 
 check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
 

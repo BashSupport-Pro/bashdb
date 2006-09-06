@@ -975,6 +975,10 @@ progress and returns to @value{DBG} command level.  Inside a debugger
 command interpreter, use @code{quit} command (@pxref{Quit, ,Quitting
 the BASH debugger}).
 
+There way to terminate the debugger is to use the @code{kill}
+command. This does more forceful @code{kill -9}. It can be used in
+cases where @code{quit} doesn't work.
+
 @node Calling from Program
 @section Calling the BASH debugger from inside your program
 
@@ -1267,7 +1271,7 @@ just @key{RET}. Some commands which require a parameter, such as
 @menu
 * Command Syntax::       How to give commands to the BASH debugger
 * Help::                 How to ask for help (help)
-* Quit::                 Leaving the debugger (quit)
+* Quit::                 Leaving the debugger (quit, kill)
 * Information::          Status and Debugger settings (info, show)
 * Stopping::             Stopping and continuing (break, watch, step, cont...)
 * Stack::                Examining the stack (where, up, down, frame)
@@ -1423,7 +1427,7 @@ Contains 34 lines.
 
 
 @node Quit
-@section Quitting the BASH debugger (@samp{quit})
+@section Quitting the BASH debugger (@samp{quit}, @samp{kill})
 
 @table @code
 @kindex quit @r{[}@var{expression} @ovar{subshell-levels}@r{]}
@@ -1459,6 +1463,14 @@ If the environment variable @code{BASHDB_QUIT_ON_QUIT} is set, when the
 program terminates, the debugger will also terminate too. This may be
 useful if you are debugging a script which calls another script and
 you want this inner script just to return to the outer script.
+
+@item kill
+@kindex k @r{(@code{kill})}
+@itemx k
+In situations where @code{quit} doesn't work we provide an alternative
+and more forceful quit command: @code{kill}. This sends to the OS
+non-maskable KILL signal with the debugger process number. No cleanup
+of temporary files is done by the program.
 @end table
 
 @node Stopping
