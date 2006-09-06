@@ -1,5 +1,5 @@
-/* $Id: readarray.c,v 1.19 2006/09/04 14:57:55 rockyb Exp $
-   Copyright (C) 2005 Rocky Bernstein rocky@panix.com
+/* $Id: readarray.c,v 1.20 2006/09/06 00:51:43 rockyb Exp $
+   Copyright (C) 2005, 2006 Rocky Bernstein rockyb@users.sf.net
 
    Bash is free software; you can redistribute it and/or modify it under
    the terms of the GNU General Public License as published by the Free
@@ -177,7 +177,6 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
   size_t line_length;
   unsigned int array_index;
   unsigned int line_count;
-  const unsigned int count_lines = line_count_goal - origin + 1;
   SHELL_VAR *entry;
   int unbuffered_read;
   
@@ -209,7 +208,7 @@ read_array (int fd, long int line_count_goal, long int origin, long int chop,
     {
 
       /* Have we exceeded # of lines to store/ */
-      if (line_count_goal != 0 && line_count >= count_lines) 
+      if (line_count_goal != 0 && line_count >= line_count_goal+1) 
 	break;
 
       /* Remove trailing newlines? */
