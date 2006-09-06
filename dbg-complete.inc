@@ -49,8 +49,8 @@ _Dbg_do_complete() {
 	D deleteall down eval enable examine
 	file finish frame 
 	handle help history info
-	list next step skip print pwd quit reverse
-	search set show source toggle tbreak tty
+	list kill next step skip print pwd quit reverse
+	search set show signal source toggle tbreak tty
 	up undisplay watche version window 
 	A x L M R S T We )
 
@@ -70,7 +70,7 @@ _Dbg_do_complete() {
 }
 
 typeset -r _Dbg_complete_ver=\
-'$Id: dbg-complete.inc,v 1.4 2006/07/04 02:56:12 rockyb Exp $'
+'$Id: dbg-complete.inc,v 1.5 2006/09/06 09:30:16 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
