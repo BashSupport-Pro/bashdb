@@ -2222,9 +2222,7 @@ You can change these settings with the @code{handle} command.
 @item handle @var{signal} @var{keywords}@dots{}
 Change the way @acronym{BASH} handles signal @var{signal}.  @var{signal}
 can be the number of a signal or its name (with or without the
-@samp{SIG} at the beginning); a list of signal numbers of the form
-@samp{@var{low}-@var{high}}; or the word @samp{all}, meaning all the
-known signals.  The @var{keywords} say what change to make.
+@samp{SIG} at the beginning). The @var{keywords} say what change to make.
 @kindex info signals
 @item info signals
 @itemx info handle
