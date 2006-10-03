@@ -233,9 +233,9 @@ been initialized; fragments of the existing can be experimented with
 by entering them inside the debugger.
 
 @menu
-* Sample Session::              A Sample BASH Debugger session
-* Line Trace Session::          Interactive Line Tracing Session
-* Free Software::               Freely redistributable software
+* Sample Session::                    A Sample BASH Debugger session
+* Interactive Line Tracing Session::  Interactive Line Tracing Session
+* Free Software::                     Freely redistributable software
 @end menu
 
 @node Sample Session
@@ -509,7 +509,7 @@ Above we did our debugging session on the command line. If you are a
 GNU Emacs user, you can do your debugging inside that. Also there is
 a(nother) GUI interface called DDD that supports @value{DBG}.
 
-@node Line Trace Session
+@node Interactive Line Tracing Session
 @section Interactive Line Tracing Session
 
 One of the things I've always found annoying about @code{set -x}
@@ -981,6 +981,10 @@ cases where @code{quit} doesn't work.
 
 @node Calling from Program
 @section Calling the BASH debugger from inside your program
+@menu
+* Program-Controlled Line Tracing::
+* Having the debugger intercept signals::
+@end menu
 
 Running a program from the debugger adds a bit of overhead and slows
 down your program quite a bit, and addressing this better would mean
@@ -1056,13 +1060,14 @@ command) and of course you don't supply the name of a @value{BASH} script.
 For example to suppress the banner you could use @code{_Dbg_bash_trace
 -q} in the above example.
 
-@subsection line tracing
+@node Program-Controlled Line Tracing
+@subsection Program-Controlled Line Tracing
 
 You can also turn on and off line tracing. Here's an example
 
 @smallexample
 @cartouche
-  source /usr/local/share/bashdb/bashdb-trace -q 
+  source <path-to-program>/bashdb-trace
    ...
   _Dbg_linetrace_on
   for i in `seq 10` ; do
@@ -1077,6 +1082,11 @@ The @code{BASHDB_QUIT_ON_QUIT}  variable make sure the program doesn't
 stay inside the debugger after it quits. It can also be set earlier in
 the program.
 
+Again @code{<path-to-program>} is whatever path needed to located
+@code{<bashdb-trace>}. For example it might be @code{</usr/local/share>}
+on some GNU/Linux installations.
+
+@node Having the debugger intercept signals
 @subsection Having the debugger intercept signals
 
 You can also use the debugger's signal handler to print signals or go
@@ -1263,9 +1273,11 @@ for @DBG still comes from your terminal.
 @node Script/Debugger Interaction
 @section Script/Debugger Interaction
 
-@value{dBGP} and your program live in the same variable space so
-to speak. @acronym{BASH} does not have a notion of module scoping or lexical
-hiding (yet) and this then imposes some additional care and awareness.
+@value{dBGP} and your program live in the same variable space so to
+speak. @acronym{BASH} does not have a notion of module scoping or
+lexical hiding (yet) as is found in modern programming langauges and
+in modern versions of the Korn shell. This then imposes some
+additional care and awareness.
 
 Most of the variables and functions used inside @DBG start
 @code{_Dbg_}, so please don't use variables or functions with these
@@ -3132,7 +3144,7 @@ specified in @env{BASH_SOURCE} that gets overriden is shown when is
 this command is issued.
 @end table
 
-@node Line Tracing
+@node Line Tracing 
 @subsection Show position information as statements are executed (@samp{set linetrace})
 
 @value{BASH} has @code{set -x} tracing to show commands as they are
