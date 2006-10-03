@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.6 2006/10/03 03:36:25 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.7 2006/10/03 03:54:08 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -318,7 +318,7 @@ _Dbg_handler() {
        rest=("print", "showstack", "nostop")
    fi
   _Dbg_init_trap $signame
-  for attr in ${a[@]}; do 
+  for attr in ${rest[@]}; do 
       _Dbg_do_handle $signame $attr
   done
   _Dbg_linetrace=0

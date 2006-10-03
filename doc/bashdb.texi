@@ -1056,6 +1056,42 @@ command) and of course you don't supply the name of a @value{BASH} script.
 For example to suppress the banner you could use @code{_Dbg_bash_trace
 -q} in the above example.
 
+@subsection line tracing
+
+You can also turn on and off line tracing. Here's an example
+
+@smallexample
+@cartouche
+  source /usr/local/share/bashdb/bashdb-trace -q 
+   ...
+  _Dbg_linetrace_on
+  for i in `seq 10` ; do
+     echo $i
+  done
+  _Dbg_linetrace_off
+   BASHDB_QUIT_ON_QUIT=1  
+@end cartouche
+@end smallexample 
+
+The @code{BASHDB_QUIT_ON_QUIT}  variable make sure the program doesn't
+stay inside the debugger after it quits. It can also be set earlier in
+the program.
+
+@subsection Having the debugger intercept signals
+
+You can also use the debugger's signal handler to print signals or go
+into the debugger when geting a specific signal. 
+
+Here are some examples: 
+@smallexample
+@cartouche
+    _Dbg_handler INT print showstack nostop  # this is the default
+    _Dbg_handler INT                         # same thing
+    _Dbg_hander                              # same thing
+    _Dbg_handler HUP print stop              # stop in debugger when getting
+@end cartouche
+@end smallexample 
+
 @node Running
 @chapter Script Setup inside the BASH Debugger
 
