@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.5 2006/07/21 10:33:31 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.6 2006/10/03 03:36:25 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -273,16 +273,56 @@ _Dbg_set_trace() {
   fi
 }
 
+# Turn on line tracing. Sort of a nicer replacement for
+# set -x
+# 
+# Example:
+#   source /usr/local/share/bashdb/bashdb-trace -q 
+#   ...
+#   _Dbg_linetrace_on
+#   for i in `seq 10` ; do
+#     echo $i
+#   done
+#   _Dbg_linetrace_off
+#   BASHDB_QUIT_ON_QUIT=1   # Set this to make sure not to stay in debugger
+#                           # after program terminates. Might also do earlier.
+
 _Dbg_linetrace_on() {
   set -o functrace
   _Dbg_linetrace=1
   _Dbg_steps=-1
-  BASHDB_QUIT_ON_QUIT=1
   trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }
 
+# Turn on line tracing. Sort of a nicer replacement for
+# set +x.
+#
+# See _Dbg_linetrace_on() for an example.
 _Dbg_linetrace_off() {
   _Dbg_linetrace=0
+}
+
+# Use the debugger signal handler when getting the signal specified.
+# additional arguments can be the values for "print" "showstack" and "stop"
+# Examples:
+#    _Dbg_handler INT print showstack nostop  # this is the default
+#    _Dbg_handler INT                         # same thing
+#    _Dbg_hander                              # same thing
+#    _Dbg_handler HUP print stop              # stop in debugger when getting
+#                                             # a HUP signal                  
+_Dbg_handler() {
+   local signame=${1:INT}
+   shift
+   local -a rest=$*
+   if [[ -z $rest ]]; then
+       rest=("print", "showstack", "nostop")
+   fi
+  _Dbg_init_trap $signame
+  for attr in ${a[@]}; do 
+      _Dbg_do_handle $signame $attr
+  done
+  _Dbg_linetrace=0
+  _Dbg_steps=-1
 }
 
 # end of bashdb-trace
