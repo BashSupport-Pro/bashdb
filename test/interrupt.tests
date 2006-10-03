@@ -1,0 +1,23 @@
+#!../../bash
+#$Id: interrupt.tests,v 1.1 2006/10/03 08:54:46 rockyb Exp $
+
+if test -z $srcdir  ; then
+  srcdir=`pwd`
+fi
+
+if test -z "$builddir"  ; then
+  builddir=`pwd`
+fi
+
+
+CHECK_FILE=interrupt.check
+$BASH ${builddir}/interrupt.sh > $CHECK_FILE & 
+sleep 1; kill -TERM %1
+while [[ ! -s $CHECK_FILE ]] ; do
+  sleep 1
+done
+
+#;;; Local Variables: ***
+#;;; mode:shell-script ***
+#;;; eval: (sh-set-shell "bash") ***
+#;;; End: ***

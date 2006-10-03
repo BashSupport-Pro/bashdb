@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.7 2006/10/03 03:54:08 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.8 2006/10/03 08:54:45 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -303,9 +303,9 @@ _Dbg_linetrace_off() {
 }
 
 # Use the debugger signal handler when getting the signal specified.
-# additional arguments can be the values for "print" "showstack" and "stop"
+# additional arguments can be the values for "print" "stack" and "stop"
 # Examples:
-#    _Dbg_handler INT print showstack nostop  # this is the default
+#    _Dbg_handler INT print stack nostop      # this is the default
 #    _Dbg_handler INT                         # same thing
 #    _Dbg_hander                              # same thing
 #    _Dbg_handler HUP print stop              # stop in debugger when getting
@@ -315,7 +315,7 @@ _Dbg_handler() {
    shift
    local -a rest=$*
    if [[ -z $rest ]]; then
-       rest=("print", "showstack", "nostop")
+       rest=("print" "stack" "stop")
    fi
   _Dbg_init_trap $signame
   for attr in ${rest[@]}; do 

@@ -1,6 +1,11 @@
 Version 3.1 0.07cvs
 - Add gdb-like "signal" command
 - Add "kill" command for those cases where "quit" doesn't work.
+- Add mechanism to set up signal handlers so debugger is entered,
+  or we just print the signal. 
+- document how to do call line tracing from within a program, i.e.
+  like the above signal handling setup, the debugger is not entered
+  first.
 
 Version 3.1 0.06
 2006-07-21
@@ -538,4 +543,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.17 2006/09/06 09:34:12 rockyb Exp $
+$Id: NEWS,v 1.18 2006/10/03 08:54:44 rockyb Exp $
