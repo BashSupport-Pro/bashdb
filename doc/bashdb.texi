@@ -62,44 +62,7 @@ This is the @value{EDITION} Edition, @value{UPDATED},
 of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
 for BASH
 
-Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein for the Free Software Foundation.
-
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.1 or
-@ifset DEBIANHASBECOMEREASONABLE
-@c From Matthias Klose <doko@debian.org> a Debian maintainer on
-@c Sat, 23 Aug 2003 14:24:44 +0200
-@c
-@c  I personally see the invariant sections as the thing in the
-@c  GFDL, which hinders me in uploading the package to the archives.
-@c  I don't have any problem, if some other Debian developer makes a
-@c  bashdb package built from separate sources.
-@c
-@c  I am aware that Debian ships other packages containing documentation
-@c  covered by the GFDL (and one of them for which I do the packaging as
-@c  well), but I won't add a new package, which I maintain. So before an
-@c  upload of a bashdb package built from the bash sources either
-@c
-@c
-@c  - Debian has a position on the GFDL, which allows inclusion
-@c
-@c  - the bashdb manual does not have invariant sections, or is
-@c    relicensed, or dual licensed.
-@c
-any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Free Software'' and ``Free Software Needs
-Free Documentation'', with the Front-Cover Texts being ``A GNU
-Manual,'' and with the Back-Cover Texts as in (a) below.
-
-(a) The Free Software Foundation's Back-Cover Text is: ``You have
-freedom to copy and modify this GNU Manual, like GNU software.  Copies
-published by the Free Software Foundation raise funds for GNU
-development.''
-@end ifset
-@ifclear DEBIANHASBECOMEREASONABLE
-any later version published by the Free Software Foundation; with no
-Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-@end ifclear
+@include copyright.texi
 @end ifinfo
 
 @titlepage
@@ -118,46 +81,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @end tex
 
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2002, 2003, 2004, 2006 Rocky Bernstein for the Free Software
-Foundation.
-
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.1 or
-@ifset DEBIANHASBECOMEREASONABLE
-@c From Matthias Klose <doko@debian.org> a Debian maintainer on
-@c Sat, 23 Aug 2003 14:24:44 +0200
-@c
-@c  I personally see the invariant sections as the thing in the
-@c  GFDL, which hinders me in uploading the package to the archives.
-@c  I don't have any problem, if some other Debian developer makes a
-@c  bashdb package built from separate sources.
-@c
-@c  I am aware that Debian ships other packages containing documentation
-@c  covered by the GFDL (and one of them for which I do the packaging as
-@c  well), but I won't add a new package, which I maintain. So before an
-@c  upload of a bashdb package built from the bash sources either
-@c
-@c
-@c  - Debian has a position on the GFDL, which allows inclusion
-@c
-@c  - the bashdb manual does not have invariant sections, or is
-@c    relicensed, or dual licensed.
-@c
-@c
-any later version published by the Free Software Foundation; with the
-Invariant Sections being ``Free Software'' and ``Free Software Needs
-Free Documentation'', with the Front-Cover Texts being ``A GNU Manual,''
-and with the Back-Cover Texts as in (a) below.
-
-(a) The Free Software Foundation's Back-Cover Text is: ``You have
-freedom to copy and modify this GNU Manual, like GNU software.  Copies
-published by the Free Software Foundation raise funds for GNU
-development.''
-@end ifset
-@ifclear DEBIANHASBECOMEREASONABLE
-any later version published by the Free Software Foundation; with no
-Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-@end ifclear
+@include copyright.texi
 @end titlepage
 @page
 
@@ -170,7 +94,7 @@ This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
 This is the @value{EDITION} Edition, @value{UPDATED}, for BASH.
 
-Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein
+@include copyright.texi
 
 @menu
 * Summary::                     Overview of Debugger with a sample session

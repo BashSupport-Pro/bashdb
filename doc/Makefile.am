@@ -1,5 +1,5 @@
 ##############################################################################
-# $Id: Makefile.am,v 1.1 2006/01/02 23:34:23 rockyb Exp $
+# $Id: Makefile.am,v 1.2 2006/11/02 01:24:23 rockyb Exp $
 #  Copyright (C) 2003 Rocky Bernstein
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ EXTRA_DIST = $(man1_MANS) macros.texi \
 	bashdb.info bashdb-man.pod bashdb-man.html
 
 info_TEXINFOS = bashdb.texi 
-bashdb_TEXINFOS = fdl.texi gpl.texi
+bashdb_TEXINFOS = fdl.texi gpl.texi copyright.texi
 
 all: $(INFO_DEPS) $(man1_MANS) html 
 
