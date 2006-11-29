@@ -100,15 +100,25 @@ _Dbg_debug_trap_handler() {
   # We use the loop below rather than _Dbg_set_args="(@)" because
   # we want to preserve embedded blanks in the arguments.
   local -i _Dbg_n=${#@}
-  local -i _Dbg_i=1
-  for (( ; _Dbg_n > 0; _Dbg_n-- )) ; do
+  local -i _Dbg_i
+  local -i _Dbg_arg_max=${#_Dbg_arg[@]}
+
+  # If there has been a shift since the last time we entered,
+  # it is possible that _Dbg_arg will contain too many values.
+  # So remove those that have disappeared.
+  for (( _Dbg_i=_Dbg_arg_max; _Dbg_i > _Dbg_n ; _Dbg_i-- )) ; do
+      unset _Dbg_arg[$_Dbg_i]
+  done
+ 
+  # Populate _Dbg_args with $1, $2, etc.
+  for (( _Dbg_i=1 ; _Dbg_n > 0; _Dbg_n-- )) ; do
     _Dbg_arg[$_Dbg_i]=$1
     ((_Dbg_i++))
     shift
   done
   unset _Dbg_arg[0]       # Get rid of line number; makes array count
-                             # correct; also listing all _Dbg_arg works
-                             # like $*.
+                          # correct; also listing all _Dbg_arg works
+                          # like $*.
 
   # Read in the journal to pick up variable settings that might have
   # been left from a subshell.
@@ -621,7 +631,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.13 2006/09/03 09:09:42 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.14 2006/11/29 23:12:51 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
