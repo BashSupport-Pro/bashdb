@@ -1,23 +1,12 @@
 (dbg-test1.sh:22):
 22:	x=22
-+ # Test of dollar variables in watche, display and break condition
-+ # 
-+ watche $? != 0
  0: ($? != 0)==0 arith: 1
-+ break fn3 if $1==30
+(dbg-test1.sh:23):
+23:	y=23
 Breakpoint 1 set in file dbg-test1.sh, line 17.
-+ display echo "1 is $1, ? is $?"
- 0: echo "1 is $1, ? is $?"
-+ continue 
-Breakpoint 1 hit (1 times). (dbg-test1.sh:17): 17: fn3() { 0 (echo "1 is $1, ? is $?"): 1 is 30, ? is 0 + continue
-fn1 here
-SOURCED LINENO 19
-SOURCED BASH_SOURCE[0] dbg-test1.sub
-SOURCED FN LINENO 5
-Watchpoint 0: $? != 0 changed:
-  old value: '0'
-  new value: '1'
-(dbg-test1.sub:13):
-13:		local filename=${BASH_SOURCE[$j]##*/}
- 0 (echo "1 is $1, ? is $?"): 1 is 33, ? is 1
-+ quit 
+ 0: echo "x is $x, ? is $?"
+Breakpoint 1 hit (1 times). (dbg-test1.sh:17): 17: fn3() { 0 (echo "x is $x, ? is $?"): x is 29, ? is 0
+Breakpoint 1 hit (1 times).
+(dbg-test1.sh:17):
+17:	fn3() {
+ 0 (echo "x is $x, ? is $?"): x is 29, ? is 0
