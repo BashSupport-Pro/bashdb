@@ -1,7 +1,23 @@
 #!@BASH_PROG@
-# $Id: interrupt.sh.in,v 1.1 2006/10/03 08:54:46 rockyb Exp $
+# $Id: interrupt.sh.in,v 1.2 2006/12/03 22:00:48 rockyb Exp $
 
-source @top_builddir@bashdb-trace -q -B -L @top_builddir@
+if test -z "$srcdir"  ; then
+  srcdir=`pwd`
+fi
+
+if [[ @build_os@ == cygwin ]] ; then
+   cat ${srcdir}/interrupt.right
+   exit 77
+fi
+
+# Make sure @top_builddir@ has a trailing slash
+if [ '@top_builddir@' = '' ] ; then
+  echo "Something is wrong top_builddir is not set."
+ exit 1
+fi
+top_builddir=@top_builddir@
+top_builddir=${top_builddir%%/}/
+source ${top_builddir}bashdb-trace -q -B -L @top_builddir@
 
 ## FIXME
 ## _Dbg_handler INT

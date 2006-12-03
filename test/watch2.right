@@ -1,12 +1,20 @@
 (dbg-test1.sh:22):
 22:	x=22
++ # Test of dollar variables in watche, display and break condition
++ # 
++ watche $? != 0
  0: ($? != 0)==0 arith: 1
++ step 
 (dbg-test1.sh:23):
 23:	y=23
++ break fn3 if x==29
 Breakpoint 1 set in file dbg-test1.sh, line 17.
++ display echo "x is $x, ? is $?"
  0: echo "x is $x, ? is $?"
-Breakpoint 1 hit (1 times). (dbg-test1.sh:17): 17: fn3() { 0 (echo "x is $x, ? is $?"): x is 29, ? is 0
++ continue 
+Breakpoint 1 hit (1 times). (dbg-test1.sh:17): 17: fn3() { 0 (echo "x is $x, ? is $?"): x is 29, ? is 0 + continue
 Breakpoint 1 hit (1 times).
 (dbg-test1.sh:17):
 17:	fn3() {
  0 (echo "x is $x, ? is $?"): x is 29, ? is 0
++ quit 

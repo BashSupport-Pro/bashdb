@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.23 2006/12/03 16:25:05 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.24 2006/12/03 22:00:44 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -102,11 +102,11 @@ bash_version=`$BASH_PROG --version`
 [bash_major=`$BASH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
 [bash_minor=`$BASH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS')
+  'OK_BASH_VERS'|'3.2')
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash OK_BASH_VERS.])
+    AC_MSG_ERROR([This package is only known to work with Bash 3.1 or 3.2.])
     ;; 
 esac
 

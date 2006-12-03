@@ -195,7 +195,8 @@ _Dbg_onecmd() {
      # If we are running a command file echo the line
      local -i i=${#_Dbg_cmdfile[@]}-1
      local cmdfile=${_Dbg_cmdfile[$i]}
-     if [[  "$cmdfile" != '' ]] && [[ "$cmdfile" != /dev/stdin ]] ; then
+
+     if [[  "$cmdfile" != '' ]] && [[ ! -c $cmdfile ]] ; then
        _Dbg_msg "+ $_Dbg_cmd $args"
      fi
 
@@ -864,10 +865,6 @@ _Dbg_do_source() {
     return
   fi
   _Dbg_glob_filename $1
-  if [ "$filename" != '/dev/stdin' ] && [[ ! -f $filename ]] ; then
-    _Dbg_msg "Source file $filename does not exist as a regular file."
-    return
-  fi
   if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
     if ((_Dbg_input_desc < _Dbg_MAX_INPUT_DESC )) ; then 
       ((_Dbg_input_desc++))
@@ -964,7 +961,11 @@ _Dbg_restore_state() {
 
 # ================== INITIALIZATION =====================================
 
-_Dbg_do_source '/dev/stdin'
+if [[ -r /dev/stdin ]] ; then
+  _Dbg_do_source /dev/stdin
+elif [[ $(tty) != 'not a tty' ]] ; then
+  _Dbg_do_source $(tty)
+fi
 
 # List of command files to process
 typeset -a _Dbg_input
@@ -1001,7 +1002,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.20 2006/09/06 09:26:33 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.21 2006/12/03 22:00:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
