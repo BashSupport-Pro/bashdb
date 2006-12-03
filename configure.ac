@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.21 2006/10/03 08:54:45 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.22 2006/12/03 16:19:53 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -41,6 +41,16 @@ AC_PREREQ(2.53)
 
 AC_ARG_PROGRAM
 AM_INIT_AUTOMAKE([no-define])
+
+AC_ARG_ENABLE([gnugetopt],
+	AC_HELP_STRING([--enable-getopt], [Allow GNU-style long options (default enabled)]))
+
+if test "${enable_getopt}" != "no" ; then
+  TRY_GETOPT=1
+else
+  TRY_GETOPT=0
+fi
+AC_SUBST(TRY_GETOPT)
 
 AC_BASHDB_PACKAGE([bashdb])
 
