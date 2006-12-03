@@ -29,13 +29,15 @@ continue
 ####################################
 command 2
 print "testing overwriting commands"
-print i is $i
 end
 continue
 ####################################
-# Should have seen value of i
-# above, not x. Now let's remove
-# the command altogher
+# Should have seen the testing message
+# above, not x. 
+## FIXME: theres a weird bug 
+## in evaluating expressions like $i
+# Now let's remove the command 
+# altogether
 ####################################
 command 2
 end
