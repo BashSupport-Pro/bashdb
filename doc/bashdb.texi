@@ -2060,11 +2060,11 @@ run.
 @table @code
 @kindex continue
 @kindex c @r{(@code{continue})}
-@item continue @ovar{linespec}
-@itemx c @ovar{line-number}
+@item continue @ovar{line-specification}
+@itemx c @ovar{line-specification}
 Resume program execution, at the address where your script last
 stopped; any breakpoints set at that address are bypassed.  The
-optional argument @var{linespec} allows you to specify a linespec (a
+optional argument @var{line-specification} allows you to specify a location (a
 line number, function, or filename linenumber combination) to set. A
 one-time breakpoint is deleted when that breakpoint is reached. Should
 the program stop before that breakpoint is reached, for example,
