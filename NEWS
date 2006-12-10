@@ -1,4 +1,4 @@
-Version 3.1 0.07cvs
+Version 3.1 0.07
 2006-12-10
 
 - Add gdb-like "signal" command
@@ -563,4 +563,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.22 2006/12/03 22:08:46 rockyb Exp $
+$Id: NEWS,v 1.23 2006/12/10 18:08:48 rockyb Exp $

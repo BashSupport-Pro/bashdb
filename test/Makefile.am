@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.14 2006/11/29 23:12:51 rockyb Exp $
+#$Id: Makefile.am,v 1.15 2006/12/10 18:08:50 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -17,7 +17,7 @@ check_DATA = \
 	bug-args.tests \
 	bug-args.cmd \
 	bug-args.right \
-	bug-args.sh \
+	bug-args.sh.in \
 	bugIFS.cmd \
 	bugIFS.right \
 	bugIFS.sh.in \
@@ -47,6 +47,7 @@ check_DATA = \
 	hanoi.sh.in \
 	interrupt.right \
 	interrupt.sh.in \
+	interrupt.tests \
 	list.cmd \
 	list.right \
 	list.tests \
