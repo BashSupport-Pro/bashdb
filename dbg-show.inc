@@ -355,19 +355,19 @@ of promoting the sharing and reuse of software generally.
      _Dbg_msg "Source directories searched: $list"
       return 0
       ;;
-    li | lis | list | lists | listsi | listsiz | listsize )
-      [[ -n $label ]] && label='listsize: '
-     _Dbg_msg \
-"${label}Number of source lines bashdb will list by default is" \
-      "$_Dbg_listsize."
-      return 0
-      ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
       [[ -n $label ]] && label='line tracing: '
       local onoff="off."
       (( $_Dbg_linetrace != 0 )) && onoff='on.'
       _Dbg_msg \
 "${label}Show line tracing is" $onoff
+      return 0
+      ;;
+    lis | list | lists | listsi | listsiz | listsize )
+      [[ -n $label ]] && label='listsize: '
+     _Dbg_msg \
+"${label}Number of source lines bashdb will list by default is" \
+      "$_Dbg_listsize."
       return 0
       ;;
     lo | log | logg | loggi | loggin | logging )
@@ -419,7 +419,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.2 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.3 2006/12/12 04:13:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

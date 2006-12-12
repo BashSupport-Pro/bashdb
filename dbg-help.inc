@@ -17,8 +17,8 @@
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-typeset -r _Dbg_set_cmds="args annotate basename debugger editing listsize prompt showcommand"
-typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories listsize prompt warranty"
+typeset -r _Dbg_set_cmds="args annotate basename debugger editing linetrace listsize prompt showcommand"
+typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories linetrace listsize prompt warranty"
 
 # print help command 
 _Dbg_do_help() {
@@ -374,7 +374,7 @@ Follow this command with any number of args, to be passed to the program."
       ;;
     an | ann | anno | annot | annota | annotat | annotate )
       if [[ -n $label ]] ; then 
-	label='set annotate -- '
+	label='set annotate  -- '
       else
 	local post_label='
 0 == normal;     1 == fullname (for use when running under emacs)'
@@ -384,7 +384,7 @@ Follow this command with any number of args, to be passed to the program."
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
-      [[ -n $label ]] && label='set basename -- '
+      [[ -n $label ]] && label='set basename  -- '
       local onoff="off."
       (( $_Dbg_basename_only != 0 )) && onoff='on.'
       _Dbg_msg \
@@ -393,27 +393,34 @@ Follow this command with any number of args, to be passed to the program."
       ;;
     d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
       local onoff=${1:-'on'}
-      [[ -n $label ]] && label='set debugger -- '
-      local onoff="off."
+      [[ -n $label ]] && label='set debugger  -- '
       (( $_Dbg_debug_debugger )) && onoff='on.'
      _Dbg_msg \
 "${label}Set debugging the debugger is" $onoff
       return 0
       ;;
     e | ed | edi | edit | editi | editin | editing )
-      [[ -n $label ]] && label='set editing  -- '
+      [[ -n $label ]] && label='set editing   -- '
       local onoff="off."
       (( $_Dbg_edit )) && onoff='on.'
       _Dbg_msg \
 "${label}Set editing of command lines as they are typed is" $onoff
       ;;
-    l | li | lis | list | lists | listsi | listsiz | listsize )
-      [[ -n $label ]] && label='set listsize -- '
+    lin | line | linet | linetr | linetra | linetrac | linetrace )
+      [[ -n $label ]] && label='set linetrace -- '
+      local onoff='off.'
+      (( $_Dbg_linetrace )) && onoff='on.'
+     _Dbg_msg \
+"${label}Set tracing execution of lines before executed is" $onoff
+      return 0
+      ;;
+     lis | list | lists | listsi | listsiz | listsize )
+      [[ -n $label ]] && label='set listsize  -- '
       _Dbg_msg \
 "${label}Set number of source lines bashdb will list by default."
       ;;
     p | pr | pro | prom | promp | prompt )
-      [[ -n $label ]] && label='set prompt   -- '
+      [[ -n $label ]] && label='set prompt    -- '
       _Dbg_msg \
 "${label}bashdb's prompt is:\n" \
 "      \"$_Dbg_prompt_str\"."
@@ -476,7 +483,11 @@ _Dbg_help_show() {
       _Dbg_msg \
 "show directories -- Show if we are set to debug the debugger"
       ;;
-    l | li | lis | list | lists | listsi | listsiz | listsize )
+    lin | line | linet | linetr | linetra | linetrac | linetrace )
+      _Dbg_msg \
+"show linetrace   -- Show whether to trace lines before execution"
+      ;;
+    lis | list | lists | listsi | listsiz | listsize )
       _Dbg_msg \
 "show listsize    -- Show number of source lines debugger will list by default"
       ;;
@@ -500,7 +511,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.6 2006/09/03 09:09:42 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.7 2006/12/12 04:13:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
