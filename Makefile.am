@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.8 2006/12/03 16:14:58 rockyb Exp $
+#$Id: Makefile.am,v 1.9 2006/12/12 12:30:51 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -32,7 +32,7 @@ html:
 	@( cd $(top_builddir)/doc ; $(MAKE) $(MFLAGS) html )
 
 # Set up the install target 
-bin_SCRIPTS = bashdb
+bin_SCRIPTS = bashdb bashdb-trace
 
 pkgdatadir=$(datadir)/bashdb
 
