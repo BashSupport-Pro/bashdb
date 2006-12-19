@@ -381,6 +381,7 @@ Debugger controls:                        skip         skip execution of cmd
                  shell script
  !! cmd [args]   execute shell command "cmd" with "args"
  file filename   Set script filename to read for current source.
+ load filename   read in Bash source file use in list and break commands
 
 Data Examination: also see e, t, x
 -------------------------                 

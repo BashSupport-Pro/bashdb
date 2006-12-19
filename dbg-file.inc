@@ -52,8 +52,12 @@ _Dbg_resolve_expand_filename() {
     return 0
   elif [[ ${find_file:0:1} == '.' ]] ; then
     # Relative file name
-    find_file=$(_Dbg_expand_filename ${_Dbg_init_cwd}/$find_file)
-    echo "$find_file"
+    full_find_file=$(_Dbg_expand_filename ${_Dbg_init_cwd}/$find_file)
+    if [[ -z "$full_find_file" ]] || [[ ! -r $full_find_file ]]; then
+      # Try using cwd rather that Dbg_init_cwd
+      full_find_file=$(_Dbg_expand_filename $find_file)
+    fi
+    echo "$full_find_file"
     return 0
   else
     # Resolve file using _Dbg_dir
@@ -237,7 +241,7 @@ _Dbg_source_journal() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.4 2006/03/12 23:28:46 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.5 2006/12/19 20:06:46 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
