@@ -200,6 +200,11 @@ l               List next window of lines.
 l .             Same as above.
                 Long command name: list."
                 return ;;
+	    lo | loa | load )
+		_Dbg_msg \
+"load file      Load in a Bash source file so it can be used in 
+                breakpoints and listing."
+                return ;;
 	    n | ne | nex | next )
 		_Dbg_msg \
 "n [count]       Single steps possibly skipping execution into subroutine calls
@@ -340,6 +345,7 @@ Debugger controls:                        skip         skip execution of cmd
                  shell script
  !! cmd [args]   execute shell command "cmd" with "args"
  file filename   Set script filename to read for current source.
+ load filename   read in Bash source file use in list and break commands
 
 Data Examination: also see e, t, x
 -------------------------                 
@@ -511,7 +517,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.7 2006/12/12 04:13:44 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.8 2006/12/19 17:30:06 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

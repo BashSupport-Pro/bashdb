@@ -377,6 +377,12 @@ _Dbg_onecmd() {
 	  _Dbg_do_list $args
 	  ;;
 
+	# List line.
+	# print lines in file
+	lo | loa | load )
+	  _Dbg_do_load $args
+	  ;;
+
 	# kill program
 	k | ki | kil | kill )
 	  _Dbg_do_kill $args
@@ -769,6 +775,30 @@ _Dbg_do_kill() {
   fi
 }
 
+_Dbg_do_load() {
+
+  local filename=$1
+  if [[ -z "$filename" ]] ; then
+    _Dbg_msg "Need to give a filename for the file command"
+    return
+  fi
+  local  full_filename=$(_Dbg_resolve_expand_filename "$filename")
+  if [ -n $full_filename ] && [ -r $full_filename ] ; then 
+    # Have we already loaded in this file?
+    for file in ${_Dbg_filenames[@]} ; do  
+       if [[ $file = $full_filename ]] ; then
+         _Dbg_msg "File $full_filename already loaded."
+	 return
+       fi
+    done
+
+    _Dbg_readin "$full_filename"
+    _Dbg_msg "File $full_filename loaded."
+  else
+      _Dbg_msg "Couldn't resolve or read $filename"
+  fi
+}
+
 _Dbg_do_next_step_skip() {
 
   if (( ! _Dbg_running )) ; then
@@ -1002,7 +1032,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.21 2006/12/03 22:00:44 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.22 2006/12/19 17:30:06 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
