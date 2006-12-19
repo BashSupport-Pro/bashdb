@@ -194,8 +194,8 @@ _Dbg_get_functions() {
 #   int
 #   file:line
 #   function-num
-# Return tuple (line, filename)
-# We return the line number first since that can't have embedded blanks.
+# Return triple (line,  is-function?, filename,)
+# We return the filenmae last since that can have embedded blanks.
 _Dbg_parse_linespec() {
   local linespec=$1
   eval "$_seteglob"
@@ -203,14 +203,14 @@ _Dbg_parse_linespec() {
 
     # line number only - use _cur_source_file for filename
     $int_pat )	
-      echo "$linespec $_cur_source_file"
+      echo "$linespec 0 $_cur_source_file"
       ;;
     
     # file:line
     [^:][^:]*[:]$int_pat )
       local -a word
       word=($(_Dbg_split ":" $linespec))
-      echo "${word[1]} ${word[0]}"
+      echo "${word[1]} 0 ${word[0]}"
       ;;
 
     # Function name or error
@@ -218,7 +218,7 @@ _Dbg_parse_linespec() {
       if [[ 1 == `_Dbg_is_function $linespec $_Dbg_debug_debugger` ]]; then 
 	local -a word
 	word=(`declare -F $linespec`)
-	echo "${word[1]} ${word[2]}"
+	echo "${word[1]} 1 ${word[2]}"
       else
 	echo ""
       fi
@@ -299,7 +299,7 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.2 2006/07/16 14:04:38 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.3 2006/12/19 06:44:25 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

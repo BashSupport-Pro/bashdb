@@ -114,7 +114,7 @@ _Dbg_do_list() {
   fi
 
   local -i line_number=${word[0]}
-  local filename=${word[1]}
+  local filename=${word[2]}
   local full_filename=`_Dbg_is_file $filename`
   if [[ -n $full_filename ]] ; then 
     (( $line_number ==  0 )) && line_number=1
@@ -268,7 +268,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.3 2006/06/13 09:11:44 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.4 2006/12/19 06:44:25 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

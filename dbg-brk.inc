@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.6 2006/07/13 10:54:12 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.7 2006/12/19 06:44:25 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -223,9 +223,18 @@ _Dbg_do_continue() {
     _Dbg_msg "Invalid linespec: $first_arg"
     return 1
   fi
-  local filename=${word[1]}
-  local line_number=${word[0]}
-  local full_filename=`_Dbg_is_file $filename`
+  local     filename=${word[2]}
+  local -ir is_function=${word[1]}
+  local -ir line_number=${word[0]}
+  local -r full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to continue at."
@@ -270,7 +279,7 @@ _Dbg_print_brkpt_count() {
 # for whether to stop.
 
 _Dbg_do_break() {
-  
+
   local -i is_temp=$1;
   shift
 
@@ -296,16 +305,25 @@ _Dbg_do_break() {
     return
   fi
 
-  local filename=${word[1]}
-  local line_number=${word[0]}
-  local full_filename=`_Dbg_is_file $filename`
-  if [[ -n $full_filename ]] ; then 
+  local     filename=${word[2]}
+  local -ir is_function=${word[1]}
+  local -ir line_number=${word[0]}
+  local     full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+
+  if [[ -n $full_filename ]]  ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to break at."
     else 
       _Dbg_check_line $line_number "$full_filename"
       (( $? == 0 )) && \
-	_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition" 
+	_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
     fi
   else
     filename=$(_Dbg_adjust_filename "$filename")
@@ -363,9 +381,9 @@ _Dbg_do_clear_brkpt() {
     return
   fi
   
-  local filename=${word[1]}
-  local line_number=${word[0]}
-  local full_filename=`_Dbg_is_file $filename`
+  local     filename=${word[2]}
+  local -ir line_number=${word[0]}
+  local -r  full_filename=`_Dbg_is_file $filename`
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to clear."
@@ -465,7 +483,8 @@ _Dbg_set_brkpt() {
   local source_file=$1
   local -ir line=$2
   local -ir is_temp=$3
-  local -r condition=${4:-1}
+  local -r  condition=${4:-1}
+
   local -r filevar="`_Dbg_file2var $source_file`"
 
   local val_str=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
@@ -736,9 +755,9 @@ _Dbg_do_action() {
     return
   fi
 
-  local filename=${word[1]}
-  local line_number=${word[0]}
-  local full_filename=`_Dbg_is_file $filename`
+  local     filename=${word[2]}
+  local -ir line_number=${word[0]}
+  local -r full_filename=`_Dbg_is_file $filename`
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to set action at."
@@ -791,9 +810,9 @@ _Dbg_do_clear_action() {
     return
   fi
   
-  local filename=${word[1]}
-  local line_number=${word[0]}
-  local full_filename=`_Dbg_is_file $filename`
+  local     filename=${word[2]}
+  local -ir line_number=${word[0]}
+  local -r full_filename=`_Dbg_is_file $filename`
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to clear action at."
