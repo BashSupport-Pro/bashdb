@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.8 2006/12/19 20:06:46 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.9 2006/12/19 20:12:00 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -247,7 +247,7 @@ _Dbg_do_continue() {
   else
     _Dbg_msg "File $filename not found in read-in files."
     _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load files' to read in a file."
+    _Dbg_msg "'load' to read in a file."
   fi
   return 1
 }
@@ -330,7 +330,7 @@ _Dbg_do_break() {
     filename=$(_Dbg_adjust_filename "$filename")
     _Dbg_msg "File $filename not found in read-in files." 
     _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load files' to read in a file"
+    _Dbg_msg "'load' to read in a file"
   fi
 }
 
@@ -405,7 +405,7 @@ _Dbg_do_clear_brkpt() {
     filename=$(_Dbg_adjust_filename "$filename")
     _Dbg_msg "File $filename not found in read-in files." 
     _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load files' to read in a file."
+    _Dbg_msg "'load' to read in a file."
   fi
 }
 
@@ -773,7 +773,7 @@ _Dbg_do_action() {
     filename=$(_Dbg_adjust_filename "$filename")
     _Dbg_msg "File $filename not found in read-in files." 
     _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load files' to read in a file."
+    _Dbg_msg "'load' to read in a file."
   fi
 }
 
@@ -835,7 +835,7 @@ _Dbg_do_clear_action() {
     filename=$(_Dbg_adjust_filename "$filename")
     _Dbg_msg "File $filename not found in read-in files." 
     _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load files' to read in a file."
+    _Dbg_msg "'load' to read in a file."
   fi
 }
 

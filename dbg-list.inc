@@ -123,7 +123,8 @@ _Dbg_do_list() {
       _Dbg_list "$full_filename" "$line_number" $*
   else
     _Dbg_msg "File $filename not found in read-in files."
-    _Dbg_msg "See 'info files' for a list of known files."
+    _Dbg_msg "See 'info files' for a list of known files and"
+    _Dbg_msg "'load' to read in a file."
   fi
 }
 
@@ -268,7 +269,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.4 2006/12/19 06:44:25 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.5 2006/12/19 20:12:01 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
