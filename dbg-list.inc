@@ -113,18 +113,25 @@ _Dbg_do_list() {
     return
   fi
 
-  local -i line_number=${word[0]}
-  local filename=${word[2]}
+  local -i  line_number=${word[0]}
+  local -ir is_function=${word[1]}
+  local -r  filename=${word[2]}
   local full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+
   if [[ -n $full_filename ]] ; then 
     (( $line_number ==  0 )) && line_number=1
     _Dbg_check_line $line_number "$full_filename"
     (( $? == 0 )) && \
       _Dbg_list "$full_filename" "$line_number" $*
   else
-    _Dbg_msg "File $filename not found in read-in files."
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
+    _Dbg_file_not_read_in $filename
   fi
 }
 
@@ -269,7 +276,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.5 2006/12/19 20:12:01 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.6 2006/12/19 23:54:19 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

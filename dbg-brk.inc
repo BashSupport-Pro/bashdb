@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.10 2006/12/19 23:41:46 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.11 2006/12/19 23:54:19 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -72,7 +72,7 @@ typeset -i  _Dbg_disp_max=0     # Needed because we can't figure out what
 #========================= FUNCTIONS   ============================#
 
 _Dbg_file_not_read_in() {
-    filename=$(_Dbg_adjust_filename "$1")
+    local -r filename=$(_Dbg_adjust_filename "$1")
     _Dbg_msg "File $filename not found in read-in files."
     _Dbg_msg "See 'info files' for a list of known files and"
     _Dbg_msg "'load' to read in a file."
