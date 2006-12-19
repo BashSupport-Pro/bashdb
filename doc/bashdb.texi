@@ -839,14 +839,21 @@ have the debugger scripts installed in a place where @DBG can find
 them. For this reason, in developing @value{DBG}, I use a second
 method more often; it doesn't require the bash debugger to be
 installed. This method uses another script called @code{bashdb} which
-after taking its own options (the end is signaled by adding @code{--}),
-takes the name of the script to debugged and the arguments to pass to
-that script.  Using this method, one would start the debugger like
-this:
+allows for giving its own options, the final option is signaled by
+adding @code{--}). After this, the name of the script to debugged and
+any the arguments to pass to that script are given. Using this method,
+one would start the debugger like this:
 
 @example
 bash @var{path-to-bashdb}/bashdb @var{bashdb-options} -- @var{script} @var{script-arguments...}
 @end example
+
+If you don't need to pass dash options to your program which might get
+confused with the debugger options, then you don't need to add the
+@code{--}.@footnote{And in the interest of full disclosure, although
+this was not shown in the example it is possible to add the @code{--}
+@emph{after} the script name to be debugged but before the first
+program option with a dash.}
 
 As with the first method, @code{bash} should be a debugger-enabled
 bash. If @code{bashdb} has the path to bash in it at the top (e.g. via
