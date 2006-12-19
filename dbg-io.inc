@@ -259,6 +259,8 @@ _Dbg_readin() {
 	eval $remove_last_index_cmd
 	(( line_count != 0 )) && _Dbg_progess_done
       fi
+    else
+	return
     fi
   fi
 
@@ -277,7 +279,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.11 2006/09/03 09:09:42 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.12 2006/12/19 04:41:05 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
