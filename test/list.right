@@ -66,7 +66,8 @@ Line 999 is too large. File dbg-test1.sh has only 38 lines.
 Line 999 is too large. File dbg-test1.sh has only 38 lines.
 + list ./badfile:1
 File ./badfile not found in read-in files.
-See 'info files' for a list of known files.
+See 'info files' for a list of known files and
+'load' to read in a file.
 + ######################################################### 
 + ### list of functions...
 + list fn1

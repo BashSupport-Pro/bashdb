@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.9 2006/12/19 20:12:00 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.10 2006/12/19 23:41:46 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -70,6 +70,13 @@ typeset -i  _Dbg_disp_max=0     # Needed because we can't figure out what
 
 
 #========================= FUNCTIONS   ============================#
+
+_Dbg_file_not_read_in() {
+    filename=$(_Dbg_adjust_filename "$1")
+    _Dbg_msg "File $filename not found in read-in files."
+    _Dbg_msg "See 'info files' for a list of known files and"
+    _Dbg_msg "'load' to read in a file."
+}
 
 _Dbg_save_breakpoints() {
   local file
@@ -223,7 +230,7 @@ _Dbg_do_continue() {
     _Dbg_msg "Invalid linespec: $first_arg"
     return 1
   fi
-  local     filename=${word[2]}
+  local -r  filename=${word[2]}
   local -ir is_function=${word[1]}
   local -ir line_number=${word[0]}
   local -r full_filename=`_Dbg_is_file $filename`
@@ -245,9 +252,7 @@ _Dbg_do_continue() {
       return 0
     fi
   else
-    _Dbg_msg "File $filename not found in read-in files."
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
+    _Dbg_file_not_read_in $filename
   fi
   return 1
 }
@@ -328,9 +333,7 @@ _Dbg_do_break() {
     fi
   else
     filename=$(_Dbg_adjust_filename "$filename")
-    _Dbg_msg "File $filename not found in read-in files." 
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file"
+    _Dbg_file_not_read_in $filename
   fi
 }
 
@@ -383,9 +386,18 @@ _Dbg_do_clear_brkpt() {
     return
   fi
   
-  local     filename=${word[2]}
+  local -r  filename=${word[2]}
+  local -ir is_function_number=${word[1]}
   local -ir line_number=${word[0]}
   local -r  full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to clear."
@@ -402,10 +414,7 @@ _Dbg_do_clear_brkpt() {
       fi
     fi
   else
-    filename=$(_Dbg_adjust_filename "$filename")
-    _Dbg_msg "File $filename not found in read-in files." 
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
+    _Dbg_file_not_read_in $filename
   fi
 }
 
@@ -758,9 +767,18 @@ _Dbg_do_action() {
     return
   fi
 
-  local     filename=${word[2]}
+  local -r  filename=${word[2]}
+  local -ir is_function_number=${word[1]}
   local -ir line_number=${word[0]}
   local -r full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to set action at."
@@ -770,10 +788,7 @@ _Dbg_do_action() {
 	_Dbg_set_action "$full_filename" "$line_number" $is_temp "$condition" 
     fi
   else
-    filename=$(_Dbg_adjust_filename "$filename")
-    _Dbg_msg "File $filename not found in read-in files." 
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
+    _Dbg_file_not_read_in $filename
   fi
 }
 
@@ -814,9 +829,18 @@ _Dbg_do_clear_action() {
     return
   fi
   
-  local     filename=${word[2]}
+  local -r  filename=${word[2]}
   local -ir line_number=${word[0]}
   local -r full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+
+
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
       _Dbg_msg "There is no line 0 to clear action at."
@@ -832,10 +856,7 @@ _Dbg_do_clear_action() {
       fi
     fi
   else
-    filename=$(_Dbg_adjust_filename "$filename")
-    _Dbg_msg "File $filename not found in read-in files." 
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
+    _Dbg_file_not_read_in $filename
   fi
 }
 
