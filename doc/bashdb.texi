@@ -835,16 +835,17 @@ debugger commands or maybe get online help. If you run @code{ddd
 --bash} without giving a script name, it in fact uses this form.
 
 In order for the @samp{--debugger} option to work however, you must
-have the debugger scripts installed in a place where @DBG can
-find them. For this reason, in developing @value{DBG}, I use a second
+have the debugger scripts installed in a place where @DBG can find
+them. For this reason, in developing @value{DBG}, I use a second
 method more often; it doesn't require the bash debugger to be
 installed. This method uses another script called @code{bashdb} which
-after taking its own options takes the name of the script to debugged
-and the arguments to pass to that script.  Using this method, one
-would start the debugger like this:
+after taking its own options (the end is signaled by adding @code{--}),
+takes the name of the script to debugged and the arguments to pass to
+that script.  Using this method, one would start the debugger like
+this:
 
 @example
-bash @var{path-to-bashdb}/bashdb @var{bashdb-options} @var{script} @var{script-arguments...}
+bash @var{path-to-bashdb}/bashdb @var{bashdb-options} -- @var{script} @var{script-arguments...}
 @end example
 
 As with the first method, @code{bash} should be a debugger-enabled
@@ -853,7 +854,7 @@ bash. If @code{bashdb} has the path to bash in it at the top (e.g. via
 path, then this might be equivalent to the above:
 
 @example
-bashdb @var{bashdb-options} @var{script} @var{script-arguments...}
+bashdb @var{bashdb-options} -- @var{script} @var{script-arguments...}
 @end example
 
 There are two or three disadvantages however of running a debugger

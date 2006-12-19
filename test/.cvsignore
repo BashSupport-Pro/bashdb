@@ -1,6 +1,7 @@
 *.check
 Makefile
 Makefile.in
+bug-args.sh
 bugIFS.sh
 check_common
 hanoi.sh
