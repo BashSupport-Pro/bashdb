@@ -82,7 +82,7 @@ typeset _Dbg_last_printe=''    # expression on last print expression command
 typeset -r _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s extglob'
 typeset -r _resteglob='shopt $__eopt extglob'
 
-typeset -r int_pat="+([0-9])"
+typeset -r int_pat="[0-9]*([0-9])"
 typeset -r signed_int_pat="?([-+])+([0-9])"
 
 # Set tty to use for output. 
@@ -111,7 +111,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.10 2006/12/20 04:42:16 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.11 2006/12/20 04:44:57 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
