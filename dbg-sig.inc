@@ -356,7 +356,8 @@ _Dbg_exit_handler() {
     # Note: use the same message that gdb does for this.
     _Dbg_msg "Program received signal EXIT (0)..."
     if [[ ${_Dbg_sig_show_stack[0]} == "showstack" ]] ; then 
-    _Dbg_do_stack_trace 0
+      echo "++++YES"
+      _Dbg_do_stack_trace 0
     fi
   fi
 
@@ -423,7 +424,8 @@ _Dbg_sig_handler() {
     # Note: use the same message that gdb does for this.
     _Dbg_msg "Program received signal $name ($_Dbg_signum)..."
     if [[ ${_Dbg_sig_show_stack[$_Dbg_signum]} == "showstack" ]] ; then 
-      _Dbg_do_stack_trace 0
+      local -i n=${#FUNCNAME[@]}
+      _Dbg_do_stack_trace 0 $n 0
     fi
   fi
   if [[ ${_Dbg_sig_stop[$_Dbg_signum]} == "stop" ]] ; then
@@ -631,7 +633,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.14 2006/11/29 23:12:51 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.15 2006/12/20 07:49:50 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

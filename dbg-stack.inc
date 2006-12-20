@@ -29,54 +29,69 @@ typeset -i  _Dbg_stack_pos
 
 #======================== FUNCTIONS  ============================#
 
-# Move default values down $1 or one in the stack. 
+_Dbg_adjust_frame() {
+  local -i count=$1
+  local -i signum=$2
 
-_Dbg_do_down() {
-  local -i count=${1:-1}
-  
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg "No stack."
-      return
+  local -i retval
+  _Dbg_stack_int_setup $count
+  (( retval )) && return
+
+  local -i pos
+  if (( signum==0 )) ; then
+    if (( count < 0 )) ; then
+      ((pos=${#FUNCNAME[@]}-3+count))
+    else
+      ((pos=_Dbg_STACK_TOP+count))
+    fi
+  else
+    ((pos=_Dbg_stack_pos+(count*signum)))
   fi
-
-  if (( _Dbg_stack_pos-count+2 <= _Dbg_STACK_TOP )) ; then 
-    _Dbg_msg "Would be beyond bottom-most entry."
+    
+  if (( pos <= _Dbg_STACK_TOP-1 )) ; then 
+    _Dbg_msg "Would be beyond bottom-most (most recent) entry."
+    return
+  elif (( pos >= ${#FUNCNAME[@]}-3 )) ; then 
+    _Dbg_msg "Would be beyond top-most (least recent) entry."
     return
   fi
-  ((_Dbg_stack_pos -= $count))
-  local -i j=_Dbg_stack_pos+1
+
+  ((_Dbg_stack_pos = pos))
+  local -i j=_Dbg_stack_pos+2
   _Dbg_listline=${BASH_LINENO[$j]}
   ((j++))
   _cur_source_file=${BASH_SOURCE[$j]}
   _Dbg_print_source_line $_Dbg_listline
+
+}
+
+# Tests for a signed integer parameter and set global retval
+# if everything is okay. Retval is set to 1 on error
+_Dbg_stack_int_setup() {
+
+  if (( ! _Dbg_running )) ; then
+    _Dbg_msg "No stack."
+    retval=1
+  else
+    eval "$_seteglob"
+    if [[ $1 != '' && $1 != $signed_int_pat ]] ; then 
+      _Dbg_msg "Bad integer parameter: $1"
+      retval=1
+    fi
+    eval "$_resteglob"
+  fi
+}
+
+# Move default values down $1 or one in the stack. 
+
+_Dbg_do_down() {
+  local -i count=${1:-1}
+  _Dbg_adjust_frame $count -1
 }
 
 _Dbg_do_frame() {
-
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg "No stack."
-      return
-  fi
-
-  eval "$_seteglob"
-  if [[ $1 != '' && $1 != $int_pat ]] ; then 
-    _Dbg_msg "Bad integer parameter: $1"
-    eval "$_resteglob"
-    return
-  fi
-  eval "$_resteglob"
   local -i pos=${1:-0}
-  if (( _Dbg_STACK_TOP+pos+1 >= ${#FUNCNAME[@]} )) ; then 
-    _Dbg_msg "Would be beyond top-most entry."
-    return
-  fi
-  _Dbg_stack_pos=$_Dbg_STACK_TOP+$pos
-  _Dbg_do_stack_trace 3 1 $pos
-  local -i j=_Dbg_stack_pos+1
-  _Dbg_listline=${BASH_LINENO[$j]}
-   ((j++))
-  _cur_source_file=${BASH_SOURCE[$j]}
-  _Dbg_print_source_line
+  _Dbg_adjust_frame $pos 0
 }
 
 # Print a stack trace.  
@@ -141,7 +156,7 @@ _Dbg_do_stack_trace() {
     local -i arg_count=${BASH_ARGC[$i]}
     ((j++)) ; ((count--))
     prefix='##'
-    (( i == _Dbg_stack_pos )) && prefix='->'
+    (( i == _Dbg_stack_pos+1 )) && prefix='->'
     if (( i == n )) ; then 
       # main()'s file is the same as the first caller
       j=i  
@@ -227,29 +242,12 @@ _Dbg_do_info_args() {
 # Move default values up $1 or one in the stack. 
 
 _Dbg_do_up() {
-
-
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg "No stack."
-      return
-  fi
-
   local -i count=${1:-1}
-  
-  if (( _Dbg_stack_pos+count+2 >= ${#FUNCNAME[@]} )) ; then 
-    _Dbg_msg "Would be beyond top-most entry."
-    return
-  fi
-  ((_Dbg_stack_pos += $count))
-  local -i j=_Dbg_stack_pos+1
-  _Dbg_listline=${BASH_LINENO[$j]}
-  ((j++))
-  _cur_source_file=${BASH_SOURCE[$j]}
-  _Dbg_print_source_line $_Dbg_listline
+  _Dbg_adjust_frame $count +1
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.5 2006/07/13 09:42:48 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.6 2006/12/20 07:49:50 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
