@@ -106,24 +106,11 @@ _Dbg_do_list() {
     return
   fi
 
-  local -a word
-  word=($(_Dbg_parse_linespec "$first_arg"))
-  if [[ ${#word[@]} == 0 ]] ; then
-    _Dbg_msg "Invalid linespec $n"
-    return
-  fi
+  local filename
+  local -i line_number
+  local full_filename
 
-  local -i  line_number=${word[0]}
-  local -ir is_function=${word[1]}
-  local -r  filename=${word[2]}
-  local full_filename=`_Dbg_is_file $filename`
-
-  if (( is_function )) ; then
-      if [[ -z $full_filename ]] ; then 
-	  _Dbg_readin "$filename"
-	  full_filename=`_Dbg_is_file $filename`
-      fi
-  fi
+  _Dbg_linespec_setup $first_arg
 
   if [[ -n $full_filename ]] ; then 
     (( $line_number ==  0 )) && line_number=1
@@ -276,7 +263,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.6 2006/12/19 23:54:19 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.7 2006/12/20 04:08:56 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
