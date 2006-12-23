@@ -1127,6 +1127,13 @@ Here are some examples:
 @cindex starting
 @cindex running
 
+After invoking the debugger you should be on the first stoppable line
+of your program to be debugged. At this point you can issue debugger
+commands to set breakpoints (@pxref{Set Breaks, ,Setting
+breakpoints}), or watchpoints (@pxref{Set Watchpoints, ,Setting
+watchpoints}), or start continue the execution of the program
+(@pxref{Resuming Execution, ,Resuming Execution}).
+
 @table @code
 @kindex restart
 @kindex run @r{(@code{restart})}
@@ -1294,16 +1301,15 @@ names in your program.
 @emph{Note: there are some other variables that begin with just an
 underscore (@code{_}); over time these will be phased out. But until
 then, avoid those or consult what is used by the debugger. Run
-@samp{bashdb --debugger -c 'declare -p'} to list all the variables in
+@samp{bashdb --debugger -c "declare -p"} to list all the variables in
 use including those used by the debugger.}
 
-A number of @DBG environment variables are also reserved for
-use; these start with @code{BASHDB_}. For example:
-@env{BASHDB_INPUT}, @env{BASHDB_LEVEL} and,
-@env{BASHDB_QUIT_ON_QUIT} (@pxref{Debug, ,Debug}),
-@env{BASHDB_RESTART_FILE} (@pxref{Starting, ,Starting}), to name a
-few.  Finally, there are some @acronym{BASH} environment dynamic
-variables and these start with @env{BASH_}. For example
+A number of environment variables are also reserved for use; these
+start with @code{BASHDB_}. For example: @env{BASHDB_INPUT},
+@env{BASHDB_LEVEL} and, @env{BASHDB_QUIT_ON_QUIT} (@pxref{Debug,
+,Debug}), @env{BASHDB_RESTART_FILE} (@pxref{Starting, ,Starting}), to
+name a few.  Finally, there are some @acronym{BASH} environment
+dynamic variables and these start with @env{BASH_}. For example
 @env{BASH_SUBSHELL} (@pxref{Debug, ,Debug}), @env{BASH_COMMAND}
 (@pxref{Command Display, ,Command Display}), @env{BASH_LINENO}, and
 @env{BASH_SOURCE} to name a few.
@@ -2205,11 +2211,8 @@ BASH debugger}). In some situations @code{return} is similar to
 inside in a function and the number of subshells in effect is 0, or
 when a subshell count of 1 is given on the @code{quit} command.
 
-@ifset FINISHED
-In contrast, the @code{finish} command (@pxref{Continuing
-and Stepping, ,Continuing and stepping}) resumes execution until the
-selected stack frame returns naturally.
-@end ifset
+In contrast, the @code{finish} command (@pxref{Finish, ,Finish})
+resumes execution until the selected stack frame returns naturally.
 
 @node Signals
 @subsection Signals (@samp{handle}, @samp{info handle}, @samp{signal})
@@ -2634,16 +2637,27 @@ description of the stack frame just selected.
 @kindex up
 @item up @var{n}
 Move @var{n} frames up the stack.  For positive numbers @var{n}, this
-advances toward the outermost frame, to higher frame numbers, to frames
-that have existed longer.  @var{n} defaults to one.
+advances toward the outermost frame, to higher frame numbers, to
+frames that have existed longer.  Using a negative @var{n} is the same
+as issuing a @code{down} command of the absolute value of the @var{n}.
+Using zero for @var{n} does no frame adjustment, but since the current
+position is redisplayed, it may trigger a resyncronization if there is
+a front end also watching over things. 
+
+@var{n} defaults to one. You may appreviate @code{up} as @code{u}.
 
 @kindex down
 @kindex do @r{(@code{down})}
 @item down @var{n}
 Move @var{n} frames down the stack.  For positive numbers @var{n}, this
 advances toward the innermost frame, to lower frame numbers, to frames
-that were created more recently.  @var{n} defaults to one.  You may
-abbreviate @code{down} as @code{do}.
+that were created more recently.  Using a negative @var{n} is the same
+as issuing a @code{up} command of the absolute value of the @var{n}.
+Using zero for @var{n} does no frame adjustment, but since the current
+position is redisplayed, it may trigger a resyncronization if there is
+a front end also watching over things. 
+
+@var{n} defaults to one.  You may abbreviate @code{down} as @code{do}.
 @end table
 
 All of these commands end by printing two lines of output describing the
@@ -2680,8 +2694,17 @@ prints ten lines centered on the point of execution in the frame.
 @item frame @var{args}
 The @code{frame} command allows you to move from one stack frame to
 another, and to print the stack frame you select.  @var{args} is the
-the stack frame number.  Without an argument, @code{frame} prints the
-current stack frame.
+the stack frame number;  @code{frame 0} then will always show the
+current and most recent stack frame.
+
+If a negative number is given, counting is from the other end of the
+stack frame, so @code{frame -1} shows the least-recent, outermost or
+most ``main'' stack frame.
+
+Without an argument, @code{frame} prints the current stack
+frame. Since the current position is redisplayed, it may trigger a
+resyncronization if there is a front end also watching over
+things. 
 @end table
 
 @node List
