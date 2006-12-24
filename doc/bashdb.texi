@@ -2200,7 +2200,6 @@ by enclosing the history in that many nestings of @code{<>} symbols.
 @cindex returning from a function, sourced file or subshell
 @kindex return
 @item return
-@itemx return
 You can cancel execution of a function call or a subshell with the
 @code{return} command.
 @end table
