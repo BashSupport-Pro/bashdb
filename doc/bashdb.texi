@@ -273,7 +273,7 @@ bashdb<0> @b{-}
   7:    @}
   8:    
   9:==> echo fact 0 is: `fact 0`
-bashdb<1> @b{l}
+bashdb<1> @b{list}
  10:   echo fact 3 is: $(fact 3)
 @end cartouche
 @end smallexample 
@@ -299,9 +299,9 @@ can parse this and in fact the same regular expression is used on the
 The first debugger command we gave @kbd{-}, we listed a window of
 lines @emph{before} where we were executing. Because the window, 10
 lines, is larger than the number of lines to the top of the file we
-printed only 9 lines here. The next command list starting from the
-current line and again wants to print 10 lines but because there are
-only one remaining line, that is what is printed.
+printed only 9 lines here. The next command, @code{list}, starts from
+the current line and again wants to print 10 lines but because there
+are only one remaining line, that is what is printed.
 
 @smallexample
 @cartouche
@@ -314,6 +314,8 @@ bashdb<(3)> @b{@key{RET}}
 bashdb<(4)> @b{@key{RET}}
 3:	((n==0)) && echo 1 && return
 bashdb<(5)> @b{print $n}
+
+bashdb<(6)>
 @end cartouche
 @end smallexample
 
@@ -383,7 +385,7 @@ print $n
 
 @noindent
 This time we use the @code{list} debugger command to list the lines in
-the file. From before we know it takes three @code{steps} commands
+the file. From before we know it takes three @code{step} commands
 before we get into the fact() function, so we add a count onto the
 @code{step} command. Notice we abbreviate @code{step} with @code{s};
 we could have done likewise and abbreviated @code{list} with @code{l}.
@@ -773,15 +775,15 @@ The essentials are:
 @itemize @bullet
 @item
 type @samp{bash --debugger @emph{script-name}} or @samp{bashdb
-@emph{script-name}} to start @value{DBG}.
-@item
-type @kbd{quit} or @kbd{C-d} inside the debugger to exit.
+@emph{script-name}} to start @value{DBG}. Or...
 @item 
 type @samp{bashdb -c @emph{command string}} to give a string to run 
-under the debugger
+under the debugger. Or ..
 @item 
-Modifying your program to enter the debugger at a particular point:
+modify your program to enter the debugger at a particular point:
 @code{source ../bashdb-trace} and @code{_Dbg_set_trace}.
+@item
+type @kbd{quit} or @kbd{C-d} inside the debugger to exit.
 @end itemize
 
 There are also two front-ends available as well. One can also
