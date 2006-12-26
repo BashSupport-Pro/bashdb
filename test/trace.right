@@ -1,4 +1,4 @@
-(bashdb:282):
+(bashdb:277):
 level 1, subshell 0, depth -1:	  . $_source_file
 (hanoi.sh:31):
 level 1, subshell 0, depth 0:	typeset -i max=3
@@ -231,5 +231,5 @@ Move disk 0 on a to b
 level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
 (hanoi.sh:44):
 level 1, subshell 0, depth 0:	if (( $tracing )) ; then
-(bashdb:295):
+(bashdb:290):
 level 1, subshell 0, depth -1:	
