@@ -73,7 +73,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
     local expanded_source_line
     # Replace all double quotes (") with and an escape (\")
     local esc_source_line="${source_line//\"/\\\"}" 
-     _Dbg_do_eval "expanded_source_line=\"$esc_source_line\""
+     _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
      _Dbg_msg "\t${expanded_source_line}"
   fi
 
@@ -263,7 +263,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.8 2006/12/26 04:58:08 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.9 2006/12/26 06:49:18 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
