@@ -69,13 +69,13 @@ _Dbg_print_linetrace() {
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
 level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
-
-##  Don't really know how to do linetrace expansion yet.
-##  if (( _Dbg_linetrace_expand )) ; then
-##    _Dbg_msg_nocr  "(${filename}:${line_number}):
-##level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t}"
-##    _Dbg_do_print "$source_line"
-##  fi
+  if (( _Dbg_linetrace_expand )) ; then
+    local expanded_source_line
+    # Replace all double quotes (") with and an escape (\")
+    local esc_source_line="${source_line//\"/\\\"}" 
+     _Dbg_do_eval "expanded_source_line=\"$esc_source_line\""
+     _Dbg_msg "\t${expanded_source_line}"
+  fi
 
   # If we are at the same place in the file but the command has changed,
   # then we have multiple commands on the line. So print which one we are
@@ -263,7 +263,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.7 2006/12/20 04:08:56 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.8 2006/12/26 04:58:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

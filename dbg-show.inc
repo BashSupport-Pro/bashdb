@@ -360,7 +360,10 @@ of promoting the sharing and reuse of software generally.
       local onoff="off."
       (( $_Dbg_linetrace != 0 )) && onoff='on.'
       _Dbg_msg \
-"${label}Show line tracing is" $onoff
+"${label}Show line expansion on tracing is" $onoff
+      (( $_Dbg_linetrace_expand != 0 )) && onoff='on.'
+      _Dbg_msg \
+"${label}Show line expansion on tracing is" $onoff
       return 0
       ;;
     lis | list | lists | listsi | listsiz | listsize )
@@ -419,7 +422,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.3 2006/12/12 04:13:44 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.4 2006/12/26 04:58:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

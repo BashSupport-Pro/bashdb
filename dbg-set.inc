@@ -117,24 +117,23 @@ _Dbg_do_set() {
 	off | 0 )
 	  _Dbg_write_journal_eval "_Dbg_linetrace=0"
 	  ;;
-##	e | ex | exp | expa | expan | expand )
-##	  local onoff=${2:-'on'}
-##	  case $onoff in 
-##	    on | 1 ) 
-##	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=1"
-##	      ;;
-##	    off | 0 )
-##	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=0"
-##	      ;;
-##	    * )
-##	      _Dbg_msg "\expand\", \"on\" or \"off\" expected."
-##              ;;
-##	  esac
-##	  ;;
+	e | ex | exp | expa | expan | expand )
+	  local onoff=${2:-'on'}
+	  case $onoff in 
+	    on | 1 ) 
+	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=1"
+	      ;;
+	    off | 0 )
+	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=0"
+	      ;;
+	    * )
+	      _Dbg_msg "\"expand\", \"on\" or \"off\" expected."
+             ;;
+	  esac
+	  ;;
 	
 	* )
-##	  _Dbg_msg "\expand\", \"on\" or \"off\" expected."
-	  _Dbg_msg "\"on\" or \"off\" expected."
+	  _Dbg_msg "\"expand\", \"on\" or \"off\" expected."
 	  return 1
       esac
       return 0
@@ -169,7 +168,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.7 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.8 2006/12/26 04:58:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

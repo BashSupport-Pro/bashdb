@@ -33,8 +33,7 @@ typeset -i _Dbg_steps=1
 # Set initial line tracing flag off
 typeset -i _Dbg_linetrace=0 
 
-
-##typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
+typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 
 # Save the initial working directory so we can reset it on a restart.
 typeset _Dbg_init_cwd=$(pwd)
@@ -111,7 +110,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.11 2006/12/20 04:44:57 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.12 2006/12/26 04:58:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

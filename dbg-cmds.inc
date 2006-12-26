@@ -256,6 +256,11 @@ _Dbg_onecmd() {
 	b | br | bre | brea | break )
 	  _Dbg_do_break 0 $args ;;
 
+	# Stack trace
+	ba | bac | back | backt | backtr | backtra | backtrac | backtrace | bt | T | wh | whe | wher | where )
+	  _Dbg_do_stack_trace 2 $args;
+	  ;;
+
 	# Continue
 	c | cont | conti |contin |continu | continue )
 	  _Dbg_do_continue $args
@@ -549,11 +554,6 @@ _Dbg_onecmd() {
 	#  S List subroutine names
 	S )
 	  _Dbg_do_list_subroutines $args
-	  ;;
-
-	# Stack trace
-	T | wh | whe | wher | where | bt| back | backtrace )
-	  _Dbg_do_stack_trace 2 $args;
 	  ;;
 
 	# Dump variables
@@ -1032,7 +1032,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.22 2006/12/19 17:30:06 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.23 2006/12/26 04:58:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
