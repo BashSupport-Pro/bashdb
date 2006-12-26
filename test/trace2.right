@@ -1,5 +1,3 @@
-(hanoi.sh:43):
-level 1, subshell 0, depth -1:	hanoi $max "a" "b" "c"
 (hanoi.sh:13):
 level 1, subshell 0, depth 0:	hanoi() { 
 (hanoi.sh:14):
@@ -215,7 +213,3 @@ level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
 Move disk 0 on a to b
 (hanoi.sh:25):
 level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
-(hanoi.sh:44):
-level 1, subshell 0, depth -1:	if (( $tracing )) ; then
-(hanoi.sh:45):
-level 1, subshell 0, depth -1:	  _Dbg_linetrace_off
