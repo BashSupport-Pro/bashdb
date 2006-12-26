@@ -319,7 +319,10 @@ bashdb<(6)>
 @end cartouche
 @end smallexample
 
-Ooops... The variable @kbd{n} isn't initialized. 
+Ooops... The variable @kbd{n} isn't initialized.@footnote{Recall that
+variables in @value{BASH} don't need to be declared before they are
+referred to and that the default value would be the a null value which
+here prints as an empty string.}
 
 The first @kbd{step} command steps the script one instruction. It may
 seem odd that the line printed is exactly the same one as before. What
