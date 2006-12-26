@@ -64,17 +64,20 @@ _Dbg_print_linetrace() {
     ((depth--))
   fi
 
+  (( depth < 0 )) && return
+
   local source_line
   _Dbg_get_source_line $line_number $filename
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
 level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
   if (( _Dbg_linetrace_expand )) ; then
-    local expanded_source_line
-    # Replace all double quotes (") with and an escape (\")
-    local esc_source_line="${source_line//\"/\\\"}" 
-     _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
-     _Dbg_msg "\t${expanded_source_line}"
+#    local expanded_source_line
+#    # Replace all double quotes (") with and an escape (\")
+#    local esc_source_line="${source_line//\"/\\\"}" 
+#    _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
+     _Dbg_do_eval "expanded_source_line=\"$_Dbg_bash_command\"" 2>/dev/null
+     _Dbg_msg "+ ${expanded_source_line}"
   fi
 
   # If we are at the same place in the file but the command has changed,
@@ -263,7 +266,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.9 2006/12/26 06:49:18 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.10 2006/12/26 21:19:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
