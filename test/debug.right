@@ -7,7 +7,7 @@ One-time breakpoint 1 set in file debug.sh, line 8.
 8:	./debug.sh $BASHDB_LEVEL
 + where 
 ->0 in file `debug.sh' at line 8
-##1 source("debug.sh") called from file `bashdb' at line 272
+##1 source("debug.sh") called from file `bashdb' at line 282
 ##2 main() called from file `bashdb' at line 0
 + print running debug -n ./debug.sh $BASHDB_LEVEL ...
 running debug -n ./debug.sh 1 ...
@@ -18,7 +18,7 @@ Debugging new script with -q -x debug2.cmd ./debug.sh $BASHDB_LEVEL
 + ### Second part of testing 'debug' command.
 + where 
 ->0 in file `debug.sh' at line 2
-##1 source("debug.sh") called from file `bashdb' at line 272
+##1 source("debug.sh") called from file `bashdb' at line 282
 ##2 main() called from file `bashdb' at line 0
 + print BASHDB_LEVEL is $BASHDB_LEVEL
 BASHDB_LEVEL is 2
