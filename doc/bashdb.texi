@@ -269,7 +269,7 @@ bashdb<0> @b{-}
   3:    ((n==0)) && echo 1 && return
   4:    ((nm1=n-1))
   5:    ((result=n*`fact $nm1`))
-  6:    return $result
+  6:    echo $result
   7:    @}
   8:    
   9:==> echo fact 0 is: `fact 0`
@@ -370,7 +370,7 @@ bashdb<0> @b{list 1}
   4:    ((n==0)) && echo 1 && return
   5:    ((nm1=n-1))
   6:    ((result=n*`fact $nm1`))
-  7:    return $result
+  7:    echo $result
   8:    @}
   9:    
  10:==> echo fact 0 is: `fact 0`
