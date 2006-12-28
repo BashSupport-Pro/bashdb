@@ -1,5 +1,5 @@
 ##############################################################################
-# $Id: Makefile.am,v 1.2 2006/11/02 01:24:23 rockyb Exp $
+# $Id: Makefile.am,v 1.3 2006/12/28 12:34:25 rockyb Exp $
 #  Copyright (C) 2003 Rocky Bernstein
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ bashdb-man.html: bashdb-man.pod
 	pod2html --infile=$(srcdir)/bashdb-man.pod --outfile=$@
 
 $(man1_MANS): bashdb-man.pod
-	pod2man --section=$(EXT) $(srcdir)/bashdb-man.pod >$@
+	pod2man --release=$(PACKAGE_VERSION) --center="GNU Tools" --section=$(EXT) $(srcdir)/bashdb-man.pod >$@
 
 %.ps.gz: %.ps
 	gzip -9c $< > $@

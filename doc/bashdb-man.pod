@@ -15,10 +15,28 @@ B<bash --debugger> [I<bash-options>...] I<script-name> [I<script options>]
 =head1 DESCRIPTION
 
 C<bashdb> is a bash script to which arranges for another bash script
-to be debugged. The debugger has a similar command interface as L<gdb>
-or Perl's L<perl5db> debugger. The way this script arranges debugging
-to occur is by including (or actually "source"-ing) some debug-support
-code and then sourcing the given script or command string.
+to be debugged. 
+
+=begin html
+
+The debugger has a similar command interface as <a
+href="http://sourceware.org/gdb/current/onlinedocs/gdb_toc.html">gdb</a>
+or Perl's <a
+href="http://www.perl.com/doc/manual/html/pod/perldebug.html">perl5db</a>
+debugger.
+
+=end html
+
+=begin man
+
+The debugger has a similar command interface as \f(CWgdb(1)\fR,
+or Perl's perl5db debugger - \f(CWperldebug(1)\fR.
+
+=end man
+
+The way this script arranges debugging to occur is by including (or
+actually "source"-ing) some debug-support code and then sourcing the
+given script or command string.
 
 One problem with sourcing a debugged script is that the program name
 stored in $0 will be C<bashdb> rather than the name of the script to
@@ -30,10 +48,14 @@ If you used bashdb script and need to pass options to the script to be
 debugged, add C<--> before the script name. That will tell bashdb not
 to try to process any further options.
 
-See the reference manual for how to to call the debugger from inside
-your program.
+See the reference manual L<http://bashdb.sourceforge.net/bashdb.html>
+for how to to call the debugger from inside your program or arrange
+for the debugger to get called when your program is sent a signal.
 
 =head1 OPTIONS
+
+The long options listed befow are available if the C<getopts> command
+is installed on your system. The short options can always be used.
 
 =over 4
 
@@ -98,15 +120,7 @@ scripts.
 
 Z<>
 
-=item -X|--trace
-
-Similar to C<set -x> line tracing except the I<location> of each line,
-the bash level, and subshell level are printed; the indentation of
-the original program is also preserved in the source output.
-
-Z<>
-
-=item -L|--library I<debugger-library>
+=item -L | --library I<debugger-library>
 
 The debugger needs to source or include a number of functions and
 these reside in a library. If this option is not given the default location
@@ -114,7 +128,7 @@ of library is relative to the installed bashdb script: C<../lib/bashdb>.
 
 Z<>
 
-=item -T|--tempdir I<temporary-file-directory>
+=item -T | --tempdir I<temporary-file-directory>
 
 The debugger needs to make use of some temporary filesystem storage to
 save persistent information across a subshell return or in order to
@@ -124,7 +138,7 @@ will be created.
 
 Z<>
 
-=item -t|--tty I<tty-name>
+=item -t | --tty I<tty-name>
 
 Debugger output usually goes to a terminal rather than stdout or stdin
 which the debugged program may use. Determination of the tty or
@@ -136,6 +150,25 @@ Z<>
 =item -V | --version
 
 Show version number and no-warranty and exit with return code 1.
+
+=item -X | --trace
+
+Similar to C<set -x> line tracing except the I<location> of each line,
+the bash level, and subshell level are printed; the indentation of
+the original program is also preserved in the source output.
+
+Z<>
+
+=item -Y | --vtrace
+
+C<-X> tracing except the the command is printed with string and
+backtick expansions performed. So this is roughly like C<set -xv> but
+hopefully more helpful. However note that because backtick expansion
+is performed, it is possible that your program can behave differently
+if those backticks cause state to change in a way that has an effect
+on the program.
+
+Z<>
 
 =back
 
@@ -155,27 +188,37 @@ scripts. Scripts created by GNU autoconf are at thousands of lines
 line and it is not uncommon for them to be tens of thousands of lines.
 
 There is a provision to address this problem by including a fast
-file-to-array read routine (readarray), but bashdb has to be compiled
-in a special way which needs access to the bash source code and
-objects.
+file-to-array read routine (readarray), but the bashdb package has to
+be compiled in a special way which needs access to the bash source
+code and objects.
 
-Part of the reason of the debugger slowness is that the debugger has
-to intercept every line and check to see if some action is to be taken
+Another reason of the debugger slowness is that the debugger has to
+intercept every line and check to see if some action is to be taken
 for this and this is all in bash code. A better and faster
 architecture would be for the debugger to register a list of
 conditions or stopping places inside the bash code itself and have it
 arrange to call the debugger only when a condition requiring the
 debugger arises. Checks would be faster as this would be done in C
-code and access to internal structures would make this more
-efficient. 
-
-Another place you may find slowness is in initial startup of such
-large debugger scripts. The source code has to be read into internal
-arrays and this apparently takes time.
+code and access to internal structures would make this more efficient.
 
 =head1 SEE ALSO
 
-L<bash>. There also an extensive debugger reference manual. 
+=over 4
+
+=item *
+
+L<http://bashdb.sourceforge.net/bashdb.html> - an extensive reference manual. 
+
+=item *
+
+L<http://bashdb.sourceforge.net> - the homepage for the project
+
+=item *
+
+L<http://www.gnu.org/software/bash/manual/bashref.html> - bash
+reference manual
+
+=back
 
 =head1 AUTHOR
 
@@ -198,6 +241,6 @@ The current version is maintained (or not) by C<rockyb@users.sourceforge.net>.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.3 2006/12/26 03:17:57 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.4 2006/12/28 12:34:25 rockyb Exp $>
 
 =cut

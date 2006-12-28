@@ -357,7 +357,7 @@ _Dbg_onecmd() {
 	  return 0
 	  ;;
 
-	#  View source in file
+	#  Set stack frame
 	fr | fra | fra | frame )
 	  _Dbg_do_frame $args
 	  ;;
@@ -1032,7 +1032,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.23 2006/12/26 04:58:08 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.24 2006/12/28 12:34:20 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
