@@ -13,10 +13,15 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.2 2006/01/11 09:24:33 rockyb Exp $
+#$Id: Makefile.am,v 1.3 2007/01/04 04:26:45 rockyb Exp $
 
-EXTRA_DIST := bashdb.el
+EXTRA_DIST := bashdb.el bashdb-test.el elk-test.el
 ELCFILES  :=  bashdb.elc
 if INSTALL_EMACS_LISP
 lisp_LISP := bashdb.el
 endif
+
+test: check
+
+check:
+	$(EMACS) -batch -q -l bashdb-test.el elk-test.el

@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.17 2006/08/02 23:55:56 rockyb Exp $
+;;; $Id: bashdb.el,v 1.18 2007/01/04 04:26:45 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006 Rocky Bernstein (rocky@panix.com) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -38,9 +38,18 @@
 ;; The debugger outputs program-location lines that look like this:
 ;;   (/etc/init.d/network:14):
 (defconst gud-bashdb-marker-regexp
-  "^(\\([-a-zA-Z0-9_/.]*\\):\\([0-9]+\\)):[ \t]?\\(.*\n\\)")
-(defconst gud-bashdb-marker-regexp-file-group 1)
-(defconst gud-bashdb-marker-regexp-line-group 2)
+  "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\]+\\):[ \t]?\\(.*\n\\)"
+  "Regular expression used to find a file location given by pydb.
+
+Program-location lines look like this:
+   (/etc/init.d/network:39):
+or MS Windows:
+   (c:\\mydirectory\\gcd.sh:10):
+")
+(defconst gud-bashdb-marker-regexp-file-group 1
+  "Group position in gud-pydb-marker-regexp that matches the file name.")
+(defconst gud-bashdb-marker-regexp-line-group 2
+  "Group position in gud-pydb-marker-regexp that matches the line number.")
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
