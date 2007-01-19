@@ -9,8 +9,7 @@ Version 3.1 0.08
    In particular "frame -1" refers to the oldest frame.  Some
    refactoring of this code.
 
- - Add variable expansion-like line tracing. Warning: this can change the 
-   program semantics. Better is to set $PS4!
+ - Note setting $PS4 in doc.
 
  - Help, manual-page and documentation fixes.
 
@@ -579,4 +578,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.24 2007/01/19 21:41:53 rockyb Exp $
+$Id: NEWS,v 1.25 2007/01/19 21:58:26 rockyb Exp $

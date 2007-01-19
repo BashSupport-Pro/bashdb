@@ -1,6 +1,7 @@
-# dbg-set.inc - Bourne Again Shell Debugger Set Routines
+# dbg-show.inc - Bourne Again Shell Debugger Set Routines
 #
-#   Copyright (C) 2002,2003,2006 Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2006, 2007
+#   Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -359,11 +360,11 @@ of promoting the sharing and reuse of software generally.
       [[ -n $label ]] && label='line tracing: '
       local onoff="off."
       (( $_Dbg_linetrace != 0 )) && onoff='on.'
-      _Dbg_msg \
-"${label}Show line expansion on tracing is" $onoff
-      (( $_Dbg_linetrace_expand != 0 )) && onoff='on.'
-      _Dbg_msg \
-"${label}Show line expansion on tracing is" $onoff
+#      _Dbg_msg \
+#"${label}Show line expansion on tracing is" $onoff
+#      (( $_Dbg_linetrace_expand != 0 )) && onoff='on.'
+#      _Dbg_msg \
+#"${label}Show line expansion on tracing is" $onoff
       return 0
       ;;
     lis | list | lists | listsi | listsiz | listsize )
@@ -422,7 +423,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.4 2006/12/26 04:58:08 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.5 2007/01/19 21:58:26 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

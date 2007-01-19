@@ -1,5 +1,5 @@
 \input texinfo      @c -*-texinfo-*-
-@c Copyright 2002, 2003, 2004, 2006
+@c Copyright 2002, 2003, 2004, 2006, 2007
 @c Rocky Bernstein for the Free Software Foundation
 @c
 @c TODO: 
@@ -663,6 +663,14 @@ level 1, subshell 0, depth -1:
 @end cartouche
 @end example
 
+However, you can get about the same results, just by setting @code{$PS4} to
+some suitable value. Here's what I use:
+
+@example
+@cartouche
+  export PS4='($@{BASH_SOURCE@}:$@{LINENO@}): $@{FUNCNAME[0]@}\n'
+@end cartouche
+@end example
 
 @node Free Software
 @unnumberedsec Free software

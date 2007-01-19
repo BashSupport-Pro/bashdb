@@ -1,5 +1,5 @@
 #!@BASH_PROG@
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006  Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007  Rocky Bernstein 
 #   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.15 2006/12/26 06:49:18 rockyb Exp $'
+'$Id: bashdb.in,v 1.16 2007/01/19 21:58:26 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -52,8 +52,6 @@ options:
                      execute debugger commands from cmdfile
     -X | --trace
                      set line tracing
-    -Y | --vtrace
-                     set line tracing with variable expansion
     -V | --version   show version number and no-warranty and exit.
 
 Long options may be abbreviated, e.g. --lib is okay for --library.
@@ -123,7 +121,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
   TEMP=`getopt -o Bc:hL:nqt:T::x:XYV \
---long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,vtrace::,version \
+--long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 
@@ -156,7 +154,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
 	;;
       -x) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
       -X|--trace) _Dbg_opt_linetrace=1 ;;  
-      -Y|--vtrace) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
+      # -Y|--vtrace) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
       -V|--version) show_version=1 ;;
       --) shift ; break ;;
       *) 
@@ -188,7 +186,7 @@ else
       V) show_version=1 ;;
       x) BASHDB_INPUT="$BASHDB_INPUT $OPTARG" ;;  
       X) _Dbg_opt_linetrace=1 ;;  
-      Y) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
+      # Y) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
       *) 
 	if ((_Dbg_basename_only == 1)) ; then
 	  echo "${_Dbg_pname}: unrecognized option -- $OPTARG"
