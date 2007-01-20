@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.16 2007/01/19 21:58:26 rockyb Exp $'
+'$Id: bashdb.in,v 1.17 2007/01/20 10:38:28 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -236,7 +236,7 @@ _Dbg_script=1
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"
   cat <<EOF
-Copyright 2002, 2003, 2004, 2006 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

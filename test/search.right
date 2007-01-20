@@ -32,7 +32,7 @@
  31:   fn3 31
 + ### Reset line back to begining ...
 + list 1
-  1:   #!../../bash
+  1:   #!/usr/bin/env bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
   4:   
@@ -46,7 +46,7 @@
 + search /fn1/
  32:   fn1;
 + list 1
-  1:   #!../../bash
+  1:   #!/usr/bin/env bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
   4:   

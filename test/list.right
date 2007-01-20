@@ -31,7 +31,7 @@ Line 999 is too large. File dbg-test1.sh has only 38 lines.
 + ######################################################### 
 + ### 'list file:line' and canonicalization of filenames...
 + list ./dbg-test1.sh:1
-  1:   #!../../bash
+  1:   #!/usr/bin/env bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
   4:   

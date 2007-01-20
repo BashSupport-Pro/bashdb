@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.18 2006/12/26 04:58:12 rockyb Exp $
+#$Id: Makefile.am,v 1.19 2007/01/20 10:38:28 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -33,7 +33,7 @@ check_DATA = \
 	complete.right \
 	complete.tests \
 	continue.cmd \
-	dbg-test1.sh \
+	dbg-test1.sh.in \
 	dbg-test1.sub \
 	dbg-test2.sh \
 	debug.cmd \
