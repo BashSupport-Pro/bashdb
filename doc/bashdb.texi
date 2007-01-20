@@ -466,10 +466,11 @@ bashdb<0> @b{l fact}
 @noindent
 In addition to listing by line numbers, we can also list giving a
 function name. Below, instead of setting a breakpoint at line 5 and
-running ``continue'' as we did above, we try something slightly shorter
-and slightly different. We give the line number on the ``continue''
-statement. This is a little different in that a one-time break is made
-on line 5. Once that statement is reached the breakpoint is removed. 
+running ``@code{continue}'' as we did above, we try something slightly
+shorter and slightly different. We give the line number on the
+``continue'' statement. This is a little different in that a one-time
+break is made on line 5. Once that statement is reached the breakpoint
+is removed.
 
 @smallexample
 @cartouche
@@ -517,17 +518,25 @@ a(nother) GUI interface called DDD that supports @value{DBG}.
 @node Interactive Line Tracing Session
 @section Interactive Line Tracing Session
 
-One of the things I've always found annoying about @code{set -x}
-tracing is that there is no position information given in the trace
-output, in particular the line number and the file name.  Although
-function nesting information is shown, other important Information
-such as @code{BASH} shell and subshell nesting count is not.
-From a programming standpoint, these are just as important because
-they affect the namespace, or the scope over which variables are seen.
+One of the things I had found annoying about ``@code{set -x}'' tracing is
+that no position information given in the trace output, in particular
+the line number and the file name.  However I learn in
+@url{http://raz.cx/blog/2005/08/handy-bash-debugging-trick.html} that
+one can set @code{$PS4} to rectify this.
 
-Although I this is best fixed inside @value{BASH}, the debugger
-provides a means for showing position information when tracing a
-script. Here's a simple session.
+Here's what I use:
+
+@example
+@cartouche
+  export PS4='($@{BASH_SOURCE@}:$@{LINENO@}): $@{FUNCNAME[0]@}\n'
+@end cartouche
+@end example
+
+This can be set in one's @code{.bashrc}, or added as a line in your
+script before ``@code{set -x}''.
+
+There is also facility inside the bash debugger showing position
+information when tracing a script. Here's a simple session.
 
 @example
 @cartouche
@@ -662,18 +671,6 @@ fact 3 is: 6
 level 1, subshell 0, depth -1:	
 @end cartouche
 @end example
-
-However, you can get about the same results, just by setting @code{$PS4} to
-some suitable value. Here's what I use:
-
-@example
-@cartouche
-  export PS4='($@{BASH_SOURCE@}:$@{LINENO@}): $@{FUNCNAME[0]@}\n'
-@end cartouche
-@end example
-
-This can be set in one's @code{.bashrc}, or added as a line in your
-script before @code{set -x}.
 
 @node Free Software
 @unnumberedsec Free software
@@ -3193,7 +3190,7 @@ this command is issued.
 @node Line Tracing 
 @subsection Show position information as statements are executed (@samp{set linetrace})
 
-@value{BASH} has @code{set -x} tracing to show commands as they are
+@value{BASH} has ``@code{set -x}'' tracing to show commands as they are
 run. However missing from this is file and line position
 information. So the debugger compensates here for what I think is
 deficiency of @value{BASH} by providing this information. The downside
