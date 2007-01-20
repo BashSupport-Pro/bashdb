@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.28 2007/01/20 10:38:28 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.29 2007/01/20 11:32:22 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -214,6 +214,7 @@ AC_CONFIG_FILES([ \
 	bashdb-trace \
 	dbg-pre.inc \
 	dbg-main.inc \
+        emacs/bashdb-test.el \
 	test/check_common \
 	doc/macros.texi \
 	])

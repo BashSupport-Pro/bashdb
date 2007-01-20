@@ -1,5 +1,5 @@
-(load-file "./elk-test.el")
-(load-file "./bashdb.el")
+(load-file "@srcdir@/elk-test.el")
+(load-file "@srcdir@/bashdb.el")
 
 (defun regexp-test (location-str file-str)
   "Test to see that location-str matches gud-bashdb-marker-regexp"
