@@ -20,17 +20,13 @@ to be debugged.
 =begin html
 
 The debugger has a similar command interface as <a
-href="http://sourceware.org/gdb/current/onlinedocs/gdb_toc.html">gdb</a>
-or Perl's <a
-href="http://www.perl.com/doc/manual/html/pod/perldebug.html">perl5db</a>
-debugger.
+href="http://sourceware.org/gdb/current/onlinedocs/gdb_toc.html">gdb</a>.
 
 =end html
 
 =begin man
 
-The debugger has a similar command interface as \f(CWgdb(1)\fR,
-or Perl's perl5db debugger - \f(CWperldebug(1)\fR.
+The debugger has a similar command interface as \f(CWgdb(1)\fR.
 
 =end man
 
@@ -42,7 +38,8 @@ One problem with sourcing a debugged script is that the program name
 stored in $0 will be C<bashdb> rather than the name of the script to
 be debugged. The debugged script will appear in a call stack not as
 the top item but as the item below C<bashdb>. If this is of concern,
-use the last form given above, C<bash ---debugger> I<script-name>.  
+use the last form given above, C<bash ---debugger> I<script-name>
+[I<script-options>].
 
 If you used bashdb script and need to pass options to the script to be
 debugged, add C<--> before the script name. That will tell bashdb not
@@ -153,9 +150,16 @@ Show version number and no-warranty and exit with return code 1.
 
 =item -X | --trace
 
-Similar to C<set -x> line tracing except the I<location> of each line,
-the bash level, and subshell level are printed; the indentation of
-the original program is also preserved in the source output.
+Similar to "C<set -x>'' line tracing except that by default the location
+of each line, the bash level, and subshell level are printed. You
+might be able to get the same effect if you set C<PS4> as follows
+
+    export PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]}\n'
+
+In contrast however to "C<set -x>'' tracing, indentation of the original
+program is also preserved in the source output. And if you interrupt
+the program with a break (a C<SIGINT> signal), you will go into the
+debugger (assuming your program doesn't trap C<SIGINT>).
 
 Z<>
 
@@ -165,10 +169,10 @@ Z<>
 
 The C<bashdb> script and C<--debugger> option assume a patched version
 of bash. That is you can't debug bash scripts using the standard-issue
-version 2.05 bash or earlier versions. In versions after 3.0 should
-have been enabled when bash was built. (I think this is usually the
-case though.) If you try to run the bashdb script on such as shell,
-may get the message:
+version 2.05 bash or earlier versions. In versions after 3.0,
+debugging should have been enabled when bash was built. (I think this
+is usually the case though.) If you try to run the bashdb script on
+such as shell, may get the message:
 
   Sorry, you need to use a debugger-enabled version of bash.
 
@@ -211,11 +215,11 @@ reference manual
 
 =head1 AUTHOR
 
-The current version is maintained (or not) by C<rockyb@users.sourceforge.net>.
+The current version is maintained (or not) by Rocky Bernstein.
 
 =head1 COPYRIGHT
 
-  Copyright (C) 2003, 2006 Rocky Bernstein, email: rockyb@users.sourceforge.net
+  Copyright (C) 2003, 2006, 2007 Rocky Bernstein
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
@@ -230,6 +234,6 @@ The current version is maintained (or not) by C<rockyb@users.sourceforge.net>.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.6 2007/01/20 15:09:59 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.7 2007/01/20 18:42:01 rockyb Exp $>
 
 =cut

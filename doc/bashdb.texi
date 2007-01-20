@@ -672,6 +672,10 @@ level 1, subshell 0, depth -1:
 @end cartouche
 @end example
 
+If you issue a break (e.g. send a @code{SIGINT} signal) while the
+program is running you will go into the debugger (assuming your
+program doesn't trap @code{SIGINT}).
+
 @node Free Software
 @unnumberedsec Free software
 
