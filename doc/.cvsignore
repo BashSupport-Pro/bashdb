@@ -28,6 +28,7 @@ Makefile
 Makefile.in
 bashdb.1
 bashdb.tmp
+fact.sh
 macros.texi
 pod2htm*.tmp
 stamp-vti
