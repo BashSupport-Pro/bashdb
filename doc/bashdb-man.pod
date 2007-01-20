@@ -159,17 +159,6 @@ the original program is also preserved in the source output.
 
 Z<>
 
-=item -Y | --vtrace
-
-C<-X> tracing except the the command is printed with string and
-backtick expansions performed. So this is roughly like C<set -xv> but
-hopefully more helpful. However note that because backtick expansion
-is performed, it is possible that your program can behave differently
-if those backticks cause state to change in a way that has an effect
-on the program.
-
-Z<>
-
 =back
 
 =head1 BUGS
@@ -241,6 +230,6 @@ The current version is maintained (or not) by C<rockyb@users.sourceforge.net>.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.5 2006/12/28 12:35:48 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.6 2007/01/20 15:09:59 rockyb Exp $>
 
 =cut
