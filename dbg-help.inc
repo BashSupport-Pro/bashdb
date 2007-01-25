@@ -1,6 +1,6 @@
 # dbg-help.inc - Bourne Again Shell Debugger Help Routines
 
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007
 #   Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -17,8 +17,8 @@
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-typeset -r _Dbg_set_cmds="args annotate basename debugger editing linetrace listsize prompt showcommand"
-typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories linetrace listsize prompt warranty"
+typeset -r _Dbg_set_cmds="args annotate basename debugger editing linetrace listsize prompt showcommand trace-commands"
+typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
 # print help command 
 _Dbg_do_help() {
@@ -438,6 +438,12 @@ Follow this command with any number of args, to be passed to the program."
 "${label}Set showing the command to execute is $_Dbg_show_command."
       return 0
       ;;
+    t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+      [[ -n $label ]] && label='set trace-commands -- '
+      _Dbg_msg \
+"${label}Set showing debugger commands is $_Dbg_trace_commands."
+      return 0
+      ;;
     * )
       _Dbg_msg \
 "There is no \"set $set_cmd\" command."
@@ -502,6 +508,11 @@ _Dbg_help_show() {
 "show prompt      -- Show debugger's prompt"
       return 0
       ;;
+    t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+      _Dbg_msg \
+"show trace-commands -- Show if we are echoing debugger commands"
+      return 0
+      ;;
     w | wa | war | warr | warra | warran | warrant | warranty )
       _Dbg_msg \
 "show warranty    -- Various kinds of warranty you do not have"
@@ -517,7 +528,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.8 2006/12/19 17:30:06 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.9 2007/01/25 03:23:53 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

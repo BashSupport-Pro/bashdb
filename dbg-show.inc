@@ -27,7 +27,7 @@ _Dbg_do_show() {
   local label=$2
 
   # Warranty, copying and directories are omitted below.
-  local -r subcmds="args basename debugger editing linetrace listsize prompt"
+  local -r subcmds="args basename debugger editing linetrace listsize prompt trace-commands"
 
   if [[ -z $show_cmd ]] ; then 
       local thing
@@ -392,6 +392,13 @@ of promoting the sharing and reuse of software generally.
       "$_Dbg_show_command."
       return 0
       ;;
+    t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+      [[ -n $label ]] && label='trace-commands: '
+     _Dbg_msg \
+"${label}State of command tracing is" \
+      "$_Dbg_trace_commands."
+      return 0
+      ;;
     v | ve | ver | vers | versi | versio | version )
       _Dbg_do_show_versions
       return 0
@@ -423,7 +430,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.5 2007/01/19 21:58:26 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.6 2007/01/25 03:23:54 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

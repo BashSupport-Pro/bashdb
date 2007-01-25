@@ -1,13 +1,13 @@
 (bugIFS.sh:3):
 3:	interface_names='qfe0 qfe3'
-+ # Debugger test of an old IFS bug
-+ # 
-+ ### Going to the location where IFS should be reset in the code...
-+ continue 5
++# Debugger test of an old IFS bug
++# 
++### Going to the location where IFS should be reset in the code...
++continue 5
 One-time breakpoint 1 set in file bugIFS.sh, line 5.
 (bugIFS.sh:5):
 5:	IFS="$IFS."
-+ e _Dbg_print_source_line 5
++e _Dbg_print_source_line 5
 (bugIFS.sh:5):
 5:	IFS="$IFS."
-+ quit 
++quit 

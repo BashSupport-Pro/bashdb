@@ -1,29 +1,29 @@
 (debug.sh:2):
 2:	if [[ "$1"x != x ]] ; then 
-+ #### Test 'debug' command
-+ continue 8
++#### Test 'debug' command
++continue 8
 One-time breakpoint 1 set in file debug.sh, line 8.
 (debug.sh:8):
 8:	./debug.sh $BASHDB_LEVEL
-+ where 
++where 
 ->0 in file `debug.sh' at line 8
 ##1 source("debug.sh") called from file `bashdb' at line 275
 ##2 main() called from file `bashdb' at line 0
-+ print running debug -n ./debug.sh $BASHDB_LEVEL ...
++print running debug -n ./debug.sh $BASHDB_LEVEL ...
 running debug -n ./debug.sh 1 ...
-+ debug -q -x debug2.cmd ./debug.sh $BASHDB_LEVEL
++debug -q -x debug2.cmd ./debug.sh $BASHDB_LEVEL
 Debugging new script with -q -x debug2.cmd ./debug.sh $BASHDB_LEVEL
 (debug.sh:2):
 2:	if [[ "$1"x != x ]] ; then 
-+ ### Second part of testing 'debug' command.
-+ where 
++### Second part of testing 'debug' command.
++where 
 ->0 in file `debug.sh' at line 2
 ##1 source("debug.sh") called from file `bashdb' at line 275
 ##2 main() called from file `bashdb' at line 0
-+ print BASHDB_LEVEL is $BASHDB_LEVEL
++print BASHDB_LEVEL is $BASHDB_LEVEL
 BASHDB_LEVEL is 2
-+ continue 
++continue 
 passed 1
 (debug.sh:10):
 10:	$cmd $BASHDB_LEVEL
-+ quit 
++quit 

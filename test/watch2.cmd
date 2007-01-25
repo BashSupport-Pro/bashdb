@@ -1,3 +1,4 @@
+set trace-commands on
 # Test of dollar variables in watche, display and break condition
 #
 watche $? != 0

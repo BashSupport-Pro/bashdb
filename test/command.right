@@ -1,65 +1,65 @@
 (dbg-test1.sh:22):
 22:	x=22
-+ # Debugger test of 'command' command
-+ # 
-+ # Try to set command when there is none.
-+ command 1
++# Debugger test of 'command' command
++# 
++# Try to set command when there is none.
++command 1
 No breakpoint number 1.
-+ # 
-+ # Now a command for a real breakpoint
-+ break 23
++# 
++# Now a command for a real breakpoint
++break 23
 Breakpoint 1 set in file dbg-test1.sh, line 23.
-+ command 1
++command 1
 Type commands for when breakpoint 1 hit, one per line.
-+ # 
-+ ############################## 
-+ # Should see value of x below
-+ # from the command statment
-+ break 25
++# 
++############################## 
++# Should see value of x below
++# from the command statment
++break 25
 Breakpoint 2 set in file dbg-test1.sh, line 25.
-+ continue 
++continue 
 Breakpoint 1 hit (1 times).
-+ x x
++x x
 declare -- x="22"
 (dbg-test1.sh:23):
 23:	y=23
-+ # 
-+ ############################# 
-+ # Test of a changing
-+ # command statement. First
-+ # The setup.
-+ ############################## 
-+ command 2
++# 
++############################# 
++# Test of a changing
++# command statement. First
++# The setup.
++############################## 
++command 2
 Type commands for when breakpoint 1 hit, one per line.
-+ continue 
++continue 
 Breakpoint 2 hit (1 times).
-+ print x is now $x
++print x is now $x
 x is now 22
 (dbg-test1.sh:25):
 25:	  ((x += i))
-+ #################################### 
-+ # Now we'll change the it
-+ #################################### 
-+ command 2
++#################################### 
++# Now we'll change the it
++#################################### 
++command 2
 Type commands for when breakpoint 1 hit, one per line.
-+ continue 
++continue 
 Breakpoint 2 hit (2 times).
-+ print "testing overwriting commands"
++print "testing overwriting commands"
 testing overwriting commands
 (dbg-test1.sh:25):
 25:	  ((x += i))
-+ #################################### 
-+ # Should have seen the testing message
-+ # above, not x.
-+ ## FIXME: theres a weird bug
-+ ## in evaluating expressions like $i
-+ # Now let's remove the command
-+ # altogether
-+ #################################### 
-+ command 2
++#################################### 
++# Should have seen the testing message
++# above, not x.
++## FIXME: theres a weird bug
++## in evaluating expressions like $i
++# Now let's remove the command
++# altogether
++#################################### 
++command 2
 Type commands for when breakpoint 1 hit, one per line.
-+ continue 
++continue 
 Breakpoint 2 hit (3 times).
 (dbg-test1.sh:25):
 25:	  ((x += i))
-+ quit 
++quit 

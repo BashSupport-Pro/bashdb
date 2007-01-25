@@ -150,13 +150,13 @@ Show version number and no-warranty and exit with return code 1.
 
 =item -X | --trace
 
-Similar to "C<set -x>'' line tracing except that by default the location
+Similar to "C<set -x>" line tracing except that by default the location
 of each line, the bash level, and subshell level are printed. You
-might be able to get the same effect if you set C<PS4> as follows
+might be able to get something roughly similar if you set C<PS4> as follows
 
     export PS4='(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]}\n'
 
-In contrast however to "C<set -x>'' tracing, indentation of the original
+In contrast however to "C<set -x>" tracing, indentation of the original
 program is also preserved in the source output. And if you interrupt
 the program with a break (a C<SIGINT> signal), you will go into the
 debugger (assuming your program doesn't trap C<SIGINT>).
@@ -167,12 +167,12 @@ Z<>
 
 =head1 BUGS
 
-The C<bashdb> script and C<--debugger> option assume a patched version
-of bash. That is you can't debug bash scripts using the standard-issue
-version 2.05 bash or earlier versions. In versions after 3.0,
-debugging should have been enabled when bash was built. (I think this
-is usually the case though.) If you try to run the bashdb script on
-such as shell, may get the message:
+The C<bashdb> script and C<--debugger> option assume a version of bash
+with debugging support. That is you can't debug bash scripts using the
+standard-issue version 2.05b bash or earlier versions. In versions
+after 3.0, debugging should have been enabled when bash was built. (I
+think this is usually the case though.) If you try to run the bashdb
+script on such as shell, may get the message:
 
   Sorry, you need to use a debugger-enabled version of bash.
 
@@ -234,6 +234,6 @@ The current version is maintained (or not) by Rocky Bernstein.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.7 2007/01/20 18:42:01 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.8 2007/01/25 03:23:55 rockyb Exp $>
 
 =cut

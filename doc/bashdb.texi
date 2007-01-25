@@ -972,7 +972,7 @@ messages are also suppressed in batch mode.
 output to go to. Note that the debugger output is independent of the
 debugged script output.
 
-@item -L | --library @var{directory}
+o@item -L | --library @var{directory}
 @cindex @code{-L}
 @cindex @code{--library}
 Set directory where debugger files reside to @var{directory}. The
@@ -3123,6 +3123,7 @@ interacts with you in various ways given below.
 * Logging::              Specifying where to write debugger output
 * Prompt::               Prompt (set prompt, show prompt)
 * Editing::              Command editing (set editing, show editing)
+* Command-Tracing::      Showing comands as they run (set/show trace-commands)
 * Command Display::      Command display (set showcommand)
 * History::              Command history (history, !, H)
 * Command Completion::   Command completion (complete)
@@ -3315,6 +3316,25 @@ Disable command line editing.
 Show whether command line editing is enabled.
 @end table
 
+
+@node Command-Tracing
+@subsection Debugger Commands Tracing (@samp{set trace-commands}, @samp{show trace-commands})
+@cindex tracing debugger commands
+If you need to debug user-defined commands or sourced files you may find it
+useful to enable @dfn{command tracing}.  In this mode each command will be
+printed as it is executed, prefixed with one or more @samp{+} symbols, the
+quantity denoting the call depth of each command.
+
+@table @code
+@kindex set trace-commands
+@cindex command scripts, debugging
+@item set trace-commands on
+Enable command tracing.
+@item set trace-commands off
+Disable command tracing.
+@item show trace-commands
+Display the current state of command tracing.
+@end table
 
 @node Command Display
 @subsection Command Display (@samp{set showcommand})

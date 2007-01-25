@@ -1,3 +1,4 @@
+set trace-commands on
 # Test of debugger 'list' command
 #
 ### List default location
@@ -16,6 +17,7 @@ list dbg-test1.sh:30
 list ./dbg-test1.sh:999
 list ./badfile:1
 #########################################################
+set trace-commands on
 ### list of functions...
 list fn1
 list bogus

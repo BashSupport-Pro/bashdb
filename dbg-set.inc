@@ -1,6 +1,7 @@
 # dbg-set.inc - Bourne Again Shell Debugger Set Routines
 #
-#   Copyright (C) 2002,2003,2006 Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2002,2003,2006,2007 Rocky Bernstein 
+#   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -160,6 +161,22 @@ _Dbg_do_set() {
       esac
       return 0
       ;;
+    t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+      case $1 in 
+	1 )
+	  _Dbg_write_journal_eval "_Dbg_trace_commands=on"
+	  ;;
+	0 )
+	  _Dbg_write_journal_eval "_Dbg_trace_commands=off"
+	  ;;
+	on | off )
+	  _Dbg_write_journal_eval "_Dbg_trace_commands=$1"
+	  ;;
+	* )
+	  _Dbg_msg "\"on\", \"off\" expected."
+      esac
+      return 0
+      ;;
     *)
       _Dbg_undefined_cmd "set" "$set_cmd"
       return 1
@@ -168,7 +185,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.8 2006/12/26 04:58:08 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.9 2007/01/25 03:23:53 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

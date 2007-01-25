@@ -1,11 +1,11 @@
 (parm.sh:26):
 26:	x="main"
-+ # Debugger test of 'finish' command
-+ continue fn2
++# Debugger test of 'finish' command
++continue fn2
 One-time breakpoint 1 set in file parm.sh, line 14.
 (parm.sh:14):
 14:	fn2() {
-+ where 
++where 
 ->0 in file `parm.sh' at line 14
 ##1 fn2("testing 1", "2 3") called from file `parm.sh' at line 6
 ##2 fn1("0") called from file `parm.sh' at line 10
@@ -16,12 +16,12 @@ One-time breakpoint 1 set in file parm.sh, line 14.
 ##7 fn1("5") called from file `parm.sh' at line 27
 ##8 source("parm.sh") called from file `bashdb' at line 275
 ##9 main() called from file `bashdb' at line 0
-+ finish 
++finish 
 fn2: testing 1 2 3
 fn3:  
 (parm.sh:7):
 7:	    return
-+ where 
++where 
 ->0 in file `parm.sh' at line 7
 ##1 fn1("0") called from file `parm.sh' at line 10
 ##2 fn1("1") called from file `parm.sh' at line 10
@@ -31,6 +31,6 @@ fn3:
 ##6 fn1("5") called from file `parm.sh' at line 27
 ##7 source("parm.sh") called from file `bashdb' at line 275
 ##8 main() called from file `bashdb' at line 0
-+ print $x
++print $x
 fn2 returning
-+ quit 
++quit 

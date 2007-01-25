@@ -1,3 +1,4 @@
+set trace-commands on
 # Test of frame commands
 # We also try all of the various where/backtrace variants
 # Do we give a valid stack listing initially?

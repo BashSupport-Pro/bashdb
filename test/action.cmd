@@ -1,3 +1,4 @@
+set trace-commands on
 # Debugger test of action command
 #
 # Try a simple action breakpoint...

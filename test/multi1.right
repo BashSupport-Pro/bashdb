@@ -1,20 +1,20 @@
 (multi.sh:6):
 6:	x=1; y=2; z=3
-+ ### Test step inside multi-statement line...
-+ p "BASH_SUBSHELL: $BASH_SUBSHELL"
++### Test step inside multi-statement line...
++p "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 0
-+ step 
++step 
 (multi.sh:6):
 6:	x=1; y=2; z=3
 y=2
-+ step 
++step 
 (multi.sh:6):
 6:	x=1; y=2; z=3
 z=3
-+ step 
++step 
 (multi.sh:7):
 7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
-+ ### Should now be inside a subshell...
-+ p "BASH_SUBSHELL: $BASH_SUBSHELL"
++### Should now be inside a subshell...
++p "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
-+ quit 
++quit 

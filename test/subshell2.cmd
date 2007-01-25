@@ -1,3 +1,4 @@
+set trace-commands on
 set showcommand on
 ### Test quit inside multi-statement line...
 step 

@@ -1,3 +1,4 @@
+set trace-commands on
 # 
 # Test of breakpoint handling
 #

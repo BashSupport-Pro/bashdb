@@ -1,3 +1,7 @@
+Version 3.1 0.09cvs
+
+ - Add set/show trace-commands to make the same as gdb 6.6
+
 Version 3.1 0.08
 2007-1-20
 
@@ -579,4 +583,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.26 2007/01/20 14:02:31 rockyb Exp $
+$Id: NEWS,v 1.27 2007/01/25 03:23:53 rockyb Exp $

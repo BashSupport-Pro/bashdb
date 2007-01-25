@@ -1,3 +1,4 @@
+set trace-commands on
 # Test of watchpoint handling
 #
 ###  Should fail since xyxxy is not defined...

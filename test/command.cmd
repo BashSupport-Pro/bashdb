@@ -1,3 +1,4 @@
+set trace-commands on
 # Debugger test of 'command' command
 #
 # Try to set command when there is none.

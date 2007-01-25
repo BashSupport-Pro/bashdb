@@ -1,74 +1,74 @@
 (dbg-test1.sh:22):
 22:	x=22
-+ # Test of watchpoint handling
-+ # 
-+ ### Should fail since xyxxy is not defined...
-+ watch xyxxy
++# Test of watchpoint handling
++# 
++### Should fail since xyxxy is not defined...
++watch xyxxy
 Can't set watch: no such variable xyxxy.
-+ info break
++info break
 No breakpoints have been set.
 No watch expressions have been set.
-+ ### Test a simple breakpoint...
-+ eval xx=1
-+ watch xx
++### Test a simple breakpoint...
++eval xx=1
++watch xx
  0: ($xx)==1 arith: 0
-+ info break
++info break
 No breakpoints have been set.
 Num Type       Enb  Expression
 0   watchpoint y    $xx
-+ # 
-+ # Now try enable and disable
-+ # 
-+ ### Try testing enable/disable...
-+ en 0w
++# 
++# Now try enable and disable
++# 
++### Try testing enable/disable...
++en 0w
 Watchpoint entry 0 already enabled so nothing done.
-+ L 
++L 
 No breakpoints have been set.
 Num Type       Enb  Expression
 0   watchpoint y    $xx
 No actions have been set.
-+ dis 0W
++dis 0W
 Watchpoint entry 0 disabled.
-+ L 
++L 
 No breakpoints have been set.
 Num Type       Enb  Expression
 0   watchpoint n    $xx
 No actions have been set.
-+ ### Try deleting nonexistent watchpoint...
-+ delete 10w
++### Try deleting nonexistent watchpoint...
++delete 10w
 Watchpoint entry 10 doesn't exist so nothing done.
-+ # 
-+ ### Test display of watchpoints...
-+ watche y > 25
++# 
++### Test display of watchpoints...
++watche y > 25
  1: (y > 25)==0 arith: 1
-+ info break
++info break
 No breakpoints have been set.
 Num Type       Enb  Expression
 0   watchpoint n    $xx
 1   watchpoint y    y > 25
-+ delete 0w
-+ info break
++delete 0w
++info break
 No breakpoints have been set.
 Num Type       Enb  Expression
 1   watchpoint y    y > 25
-+ delete 1w
-+ info break
++delete 1w
++info break
 No breakpoints have been set.
 No watch expressions have been set.
-+ step 
++step 
 (dbg-test1.sh:23):
 23:	y=23
-+ watch x
++watch x
  2: ($x)==22 arith: 0
-+ restart -B -q -L .. -x restart2.cmd dbg-test1.sh
++restart -B -q -L .. -x restart2.cmd dbg-test1.sh
 Restarting with: -B -q -L .. -x restart2.cmd dbg-test1.sh
 Watchpoint : $x changed:
   old value: '22'
   new value: ''
 (bashdb:261):
 261:	if (( $_Dbg_opt_linetrace )) ; then 
-+ # 2nd part of Restart test
-+ l 
++# 2nd part of Restart test
++l 
 261:==>if (( $_Dbg_opt_linetrace )) ; then 
 262:     # No stepping.
 263:     _Dbg_write_journal_eval "_Dbg_steps=-1" 
@@ -79,11 +79,11 @@ Watchpoint : $x changed:
 268:   fi
 269:   set -o functrace
 270:   if [[ -z $_Dbg_cmd ]] ; then 
-+ info break
++info break
 No breakpoints have been set.
 Num Type       Enb  Expression
 2   watchpoint y    $x
-+ cont 
++cont 
 (dbg-test1.sh:22):
 22:	x=22
-+ quit 
++quit 

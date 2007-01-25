@@ -1,6 +1,6 @@
 # dbg-init.inc - Bourne Again Shell Debugger Global Variables
 
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007 Rocky Bernstein 
 #   rocky@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -76,6 +76,9 @@ typeset _Dbg_last_print=''     # expression on last print command
 typeset _Dbg_last_printe=''    # expression on last print expression command
 
 
+# Sets whether or not to display command before executing it.
+typeset _Dbg_trace_commands="off"
+
 # strings to save and restore the setting of `extglob' in debugger functions
 # that need it
 typeset -r _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s extglob'
@@ -110,7 +113,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.12 2006/12/26 04:58:08 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.13 2007/01/25 03:23:53 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

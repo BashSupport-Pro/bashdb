@@ -1,3 +1,4 @@
+set trace-commands on
 #### Test 'debug' command
 continue 8
 where

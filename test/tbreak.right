@@ -1,44 +1,44 @@
 (dbg-test1.sh:22):
 22:	x=22
-+ # Test temporary break
-+ # 
-+ ### a simple temporary breakpoint...
-+ tbreak 23
++# Test temporary break
++# 
++### a simple temporary breakpoint...
++tbreak 23
 One-time breakpoint 1 set in file dbg-test1.sh, line 23.
-+ info break
++info break
 Num Type       Disp Enb What
 1   breakpoint del  y   dbg-test1.sh:23
 No watch expressions have been set.
-+ ### continue to line 23...
-+ cont 
++### continue to line 23...
++cont 
 (dbg-test1.sh:23):
 23:	y=23
-+ ### on to line 25...
-+ step 4
++### on to line 25...
++step 4
 (dbg-test1.sh:25):
 25:	  ((x += i))
-+ ### a temporary breakpoint here (line 25)...
-+ tbreak 
++### a temporary breakpoint here (line 25)...
++tbreak 
 One-time breakpoint 2 set in file dbg-test1.sh, line 25.
-+ ### another a temporary breakpoint at fn3...
-+ tbreak fn3
++### another a temporary breakpoint at fn3...
++tbreak fn3
 One-time breakpoint 3 set in file dbg-test1.sh, line 17.
-+ L 
++L 
 Num Type       Disp Enb What
 2   breakpoint del  y   dbg-test1.sh:25
 3   breakpoint del  y   dbg-test1.sh:17
 No watch expressions have been set.
 No actions have been set.
-+ step 2
++step 2
 (dbg-test1.sh:25):
 25:	  ((x += i))
-+ L 
++L 
 Num Type       Disp Enb What
 3   breakpoint del  y   dbg-test1.sh:17
 No watch expressions have been set.
 No actions have been set.
-+ ### not not see line 25 above and not stop again. Continue to fn3...
-+ cont 
++### not not see line 25 above and not stop again. Continue to fn3...
++cont 
 (dbg-test1.sh:17): 17: fn3() { + L No breakpoints have been set. No watch expressions have been set. No actions have been set. + ### Should end but stay in debugger.. + cont
 fn1 here
 SOURCED LINENO 19
@@ -49,22 +49,22 @@ FUNCNAME[1]: source called from dbg-test1.sh at line 34
 FUNCNAME[2]: source called from bashdb at line 275
 FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
-+ ### Try some commands that require a running debugger
-+ up 1
++### Try some commands that require a running debugger
++up 1
 No stack.
-+ down 
++down 
 No stack.
-+ frame 0
++frame 0
 No stack.
-+ where 
++where 
 No stack.
-+ info line
++info line
 No line number information available.
-+ step 
++step 
 The program is not being run.
-+ next 
++next 
 The program is not being run.
-+ continue 
++continue 
 The program is not being run.
-+ ### quitting...
-+ quit 
++### quitting...
++quit 

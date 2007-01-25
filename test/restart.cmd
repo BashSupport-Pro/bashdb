@@ -1,3 +1,4 @@
+set trace-commands on
 # Test Restart command
 list
 step

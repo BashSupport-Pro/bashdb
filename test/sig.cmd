@@ -1,3 +1,4 @@
+set trace-commands on
 # Test that debugged program's signals are saved and restored across
 # debug calls.
 ###  Testing that we have our signal set up...

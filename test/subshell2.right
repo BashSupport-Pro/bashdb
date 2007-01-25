@@ -1,21 +1,21 @@
 (subshell.sh:6):
 6:	x=1; y=2; z=3
-+ set showcommand on
-+ ### Test quit inside multi-statement line...
-+ step 
++set showcommand on
++### Test quit inside multi-statement line...
++step 
 (subshell.sh:6):
 6:	x=1; y=2; z=3
 y=2
-+ step 
++step 
 (subshell.sh:6):
 6:	x=1; y=2; z=3
 z=3
-+ step 2
++step 2
 (subshell.sh:7):
 7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
-+ ### Should now be inside a subshell. Test from here...
-+ p "BASH_SUBSHELL: $BASH_SUBSHELL"
++### Should now be inside a subshell. Test from here...
++p "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
-+ ### Test quit 0 2...
-+ quit 0 2
++### Test quit 0 2...
++quit 0 2

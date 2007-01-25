@@ -1,3 +1,4 @@
+set trace-co on
 # Debugger test of an old IFS bug
 #
 ### Going to the location where IFS should be reset in the code...

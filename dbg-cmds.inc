@@ -1,6 +1,6 @@
 # dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006 
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007
 #   Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -192,12 +192,9 @@ _Dbg_onecmd() {
 	args=$_Dbg_last_next_step_args
       fi
 
-     # If we are running a command file echo the line
-     local -i i=${#_Dbg_cmdfile[@]}-1
-     local cmdfile=${_Dbg_cmdfile[$i]}
-
-     if [[  "$cmdfile" != '' ]] && [[ ! -c $cmdfile ]] ; then
-       _Dbg_msg "+ $_Dbg_cmd $args"
+     # If "set trace-commands" is "on", echo the the command
+     if [[  $_Dbg_trace_commands == 'on' ]]  ; then
+       _Dbg_msg "+$_Dbg_cmd $args"
      fi
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
@@ -1032,7 +1029,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.24 2006/12/28 12:34:20 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.25 2007/01/25 03:23:53 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

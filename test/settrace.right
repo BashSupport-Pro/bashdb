@@ -1,11 +1,11 @@
 (settrace.sh:5):
 5:	  _Dbg_set_trace; : ; :
-+ # Test set_trace call.
-+ where 
++# Test set_trace call.
++where 
 ->0 in file `settrace.sh' at line 5
 ##1 init() called from file `settrace.sh' at line 33
 ##2 main() called from file `settrace.sh' at line 0
-+ list 5
++list 5
   5:==>  _Dbg_set_trace; : ; :
   6:   }
   7:   
@@ -16,24 +16,24 @@
  12:     local -r c=$4
  13:   
  14:     _Dbg_set_trace; : ; :
-+ info files
++info files
 Source files for which have been read in:
 
 settrace.sh (36 lines)
-+ c 
++c 
 (settrace.sh:14):
 14:	  _Dbg_set_trace; : ; :
-+ where 
++where 
 ->0 in file `settrace.sh' at line 14
 ##1 hanoi("1", "a", "b", "c") called from file `settrace.sh' at line 34
 ##2 main() called from file `settrace.sh' at line 0
-+ cont 
++cont 
 (settrace.sh:14):
 14:	  _Dbg_set_trace; : ; :
-+ where 
++where 
 ->0 in file `settrace.sh' at line 14
 ##1 hanoi("0", "a", "c", "b") called from file `settrace.sh' at line 17
 ##2 hanoi("1", "a", "b", "c") called from file `settrace.sh' at line 34
 ##3 main() called from file `settrace.sh' at line 0
-+ continue 
++continue 
 Move disk 0 on a to b

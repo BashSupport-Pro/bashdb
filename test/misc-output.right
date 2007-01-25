@@ -1,4 +1,4 @@
-+ l 
++l 
  23:==>set -xv
  24:   x=24
  25:   x=25
@@ -17,16 +17,16 @@
  38:   #;;; Local Variables: ***
  39:   #;;; mode:shell-script ***
  40:   #;;; End: ***
-+ ######################### 
-+ #### Test 'file' command...
-+ file misc.cmd
++######################### 
++#### Test 'file' command...
++file misc.cmd
 File misc.cmd will be used when dbg-sig.inc is referenced.
-+ #### info variables (V) command...
-+ V dq*
++#### info variables (V) command...
++V dq*
 dq_args="dq*"
 dq_cmd="V"
-+ # On OS X there is some problem in doing the above and below commands
-+ # in succession. Further investigation is needed to fix this.
-+ # Until then..
-+ ## info variables dq*
-+ quit 
++# On OS X there is some problem in doing the above and below commands
++# in succession. Further investigation is needed to fix this.
++# Until then..
++## info variables dq*
++quit 

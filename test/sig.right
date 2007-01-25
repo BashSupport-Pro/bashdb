@@ -1,9 +1,9 @@
 (sig.sh:7):
 7:	if [[ "$1"x != x ]] ; then 
-+ # Test that debugged program's signals are saved and restored across
-+ # debug calls.
-+ ### Testing that we have our signal set up...
-+ info signals
++# Test that debugged program's signals are saved and restored across
++# debug calls.
++### Testing that we have our signal set up...
++info signals
 Signal       Stop   Print   Stack     Value
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
@@ -12,22 +12,22 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   print   showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
-+ ### Testing handle command...
-+ handle TERM nostack
-+ handle foo
++### Testing handle command...
++handle TERM nostack
++handle foo
 Bad signal name: foo
-+ handle 1000
++handle 1000
 Bad signal number: 1000
-+ handle TERM bogus
++handle TERM bogus
 Need to give a command: stop, nostop, stack, nostack, print, noprint
-+ eval kill -TERM $$
++eval kill -TERM $$
 Program received signal SIGTERM (15)...
-+ ### Should not have printed a stack trace above...
-+ handle TERM noprint
-+ handle TERM stack
-+ handle INT nostop
-+ eval kill -TERM $$
-+ info signals
++### Should not have printed a stack trace above...
++handle TERM noprint
++handle TERM stack
++handle INT nostop
++eval kill -TERM $$
++info signals
 Signal       Stop   Print   Stack     Value
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
@@ -36,22 +36,22 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
-+ continue 
++continue 
 Program received signal SIGTERM (15)...
 ->0 in file `dbg-cmds.inc' at line 2
-##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 340
+##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 337
 ->2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `dbg-cmds.inc' at line 154
 ##3 _Dbg_cmdloop() called from file `dbg-sig.inc' at line 211
 ##4 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
 ##5 source("sig.sh") called from file `bashdb' at line 275
 ##6 main() called from file `bashdb' at line 0
-+ ### Should have printed a stack trace above...
-+ continue 
-+ where 
-->0 in file `sig.sh' at line 738
++### Should have printed a stack trace above...
++continue 
++where 
+->0 in file `sig.sh' at line 735
 ##1 source("sig.sh") called from file `bashdb' at line 275
 ##2 main() called from file `bashdb' at line 0
-+ continue 
++continue 
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 23
 ##1 source("sig.sh") called from file `bashdb' at line 275
@@ -61,5 +61,5 @@ Program received signal SIGINT (2)...
 ##1 source("sig.sh") called from file `bashdb' at line 275
 ->2 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
-+ kill 
++kill 
 sig.tests: line 11: xxxx Killed                  $BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile $debugged_script

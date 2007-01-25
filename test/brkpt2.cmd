@@ -1,3 +1,4 @@
+set trace-commands on
 # Test break, watch, watche, step, next, continue and stack handling
 #
 ###  Try a simple line number breakpoint...

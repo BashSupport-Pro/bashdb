@@ -1,3 +1,4 @@
+set trace-commands on
 # Test 'search' command
 #
 ###  Try a forward search /x. Should not be the same line ...

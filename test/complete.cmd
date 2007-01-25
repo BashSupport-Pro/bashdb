@@ -1,3 +1,4 @@
+set trace-commands on
 ### Testing debugger 'complete' command...
 complete d
 complete fi

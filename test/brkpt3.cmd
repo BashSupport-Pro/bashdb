@@ -1,3 +1,4 @@
+set trace-commands on
 # Test break handling in the presence of subshells and canonicalization
 # of breakpoints
 #

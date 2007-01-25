@@ -1,45 +1,45 @@
 (dbg-test1.sh:22):
 22:	x=22
-+ # Test break, watch, watche, step, next, continue and stack handling
-+ # 
-+ ### Try a simple line number breakpoint...
-+ break 23
++# Test break, watch, watche, step, next, continue and stack handling
++# 
++### Try a simple line number breakpoint...
++break 23
 Breakpoint 1 set in file dbg-test1.sh, line 23.
-+ info break
++info break
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 No watch expressions have been set.
-+ continue 
++continue 
 Breakpoint 1 hit (1 times).
 (dbg-test1.sh:23):
 23:	y=23
-+ info program
++info program
 Program stopped.
 It stopped at breakpoint 1.
-+ # 
-+ ### Try watch...
-+ watch x
++# 
++### Try watch...
++watch x
  0: ($x)==22 arith: 0
-+ info watchpoints
++info watchpoints
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
 Num Type       Enb  Expression
 0   watchpoint y    $x
-+ c 
++c 
 Watchpoint 1: $x changed:
   old value: '22'
   new value: '23'
 (dbg-test1.sh:24):
 24:	for i in 0 1 3 ; do
-+ info program
++info program
 Program stopped.
-+ ### Try disable expression...
-+ disable 1w
++### Try disable expression...
++disable 1w
 Watchpoint entry 0 disabled.
-+ watche x > 26
++watche x > 26
  1: (x > 26)==0 arith: 1
-+ info break
++info break
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
@@ -47,15 +47,15 @@ Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 1   watchpoint y    x > 26
-+ ### Continuing with a one-time line break (but will watch expression)...
-+ cont 30
++### Continuing with a one-time line break (but will watch expression)...
++cont 30
 One-time breakpoint 2 set in file dbg-test1.sh, line 30.
 Watchpoint 3: x > 26 changed:
   old value: '0'
   new value: '1'
 (dbg-test1.sh:28):
 28:	y=b
-+ L 
++L 
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
@@ -66,9 +66,9 @@ Num Type       Enb  Expression
 1   watchpoint y    x > 26
 	breakpoint already hit 1 time
 No actions have been set.
-+ ### Try deleting a watchpoint...
-+ delete 1W
-+ L 
++### Try deleting a watchpoint...
++delete 1W
++L 
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
@@ -77,24 +77,24 @@ Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.
-+ ### Try break with a function...
-+ break fn1
++### Try break with a function...
++break fn1
 Breakpoint 3 set in file dbg-test1.sh, line 5.
-+ ### Stepping 2...
-+ step 2
++### Stepping 2...
++step 2
 (dbg-test1.sh:30):
 30:	echo $(fn3 30)
-+ ### Try continue with a line number...
-+ cont 34
++### Try continue with a line number...
++cont 34
 One-time breakpoint 4 set in file dbg-test1.sh, line 34.
 
 Breakpoint 3 hit (1 times).
 (dbg-test1.sh:5):
 5:	fn1() {
-+ info program
++info program
 Program stopped.
 It stopped at breakpoint 3.
-+ L 
++L 
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
@@ -105,17 +105,17 @@ Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.
-+ ### List stack frame...
-+ where 
++### List stack frame...
++where 
 ->0 in file `dbg-test1.sh' at line 5
 ##1 fn1() called from file `dbg-test1.sh' at line 32
 ##2 source("dbg-test1.sh") called from file `bashdb' at line 275
 ##3 main() called from file `bashdb' at line 0
-+ ### Try up...
-+ up 
++### Try up...
++up 
 (dbg-test1.sh:32):
 32:	fn1;
-+ list 
++list 
  32:   fn1;
  33:   fn3 33
  34:   source dbg-test1.sub
@@ -123,11 +123,11 @@ No actions have been set.
  36:   #;;; Local Variables: ***
  37:   #;;; mode:shell-script ***
  38:   #;;; End: ***
-+ ### Try down 1...
-+ down 1
++### Try down 1...
++down 1
 (dbg-test1.sh:5):
 5:	fn1() {
-+ list 
++list 
   5:==>fn1() {
   6:       echo "fn1 here"
   7:       x=5
@@ -138,99 +138,99 @@ No actions have been set.
  12:       name="fn2"
  13:       echo "$name here"
  14:       x=6
-+ ### frame 0...
-+ frame 0
++### frame 0...
++frame 0
 (dbg-test1.sh:5):
 5:	fn1() {
-+ ### Try step (twice)...
-+ step 
++### Try step (twice)...
++step 
 (dbg-test1.sh:6):
 6:	    echo "fn1 here"
-+ info program
++info program
 Program stopped.
 It stopped after being stepped.
-+ step 
++step 
 fn1 here
 (dbg-test1.sh:7):
 7:	    x=5
-+ ### Try next and check that it jumps over fn3
-+ next 
++### Try next and check that it jumps over fn3
++next 
 (dbg-test1.sh:8):
 8:	    fn3
-+ ### Try continue file:line (but will hit another breakpoint)...
-+ cont ./dbg-test1.sh:35
++### Try continue file:line (but will hit another breakpoint)...
++cont ./dbg-test1.sh:35
 One-time breakpoint 5 set in file dbg-test1.sh, line 35.
 (dbg-test1.sh:34):
 34:	source dbg-test1.sub
-+ step 2
++step 2
 SOURCED LINENO 19
 (dbg-test1.sub:20):
 20:	filename=${BASH_SOURCE[0]##*/}
-+ T 
++T 
 ->0 in file `dbg-test1.sub' at line 20
 ##1 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
 ##2 source("dbg-test1.sh") called from file `bashdb' at line 275
 ##3 main() called from file `bashdb' at line 0
-+ step 10
++step 10
 SOURCED BASH_SOURCE[0] dbg-test1.sub
 SOURCED FN LINENO 5
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
-+ T 
++T 
 ->0 in file `dbg-test1.sub' at line 11
 ##1 sourced_fn() called from file `dbg-test1.sub' at line 22
 ##2 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
 ##3 source("dbg-test1.sh") called from file `bashdb' at line 275
 ##4 main() called from file `bashdb' at line 0
-+ ### Try x command...
-+ x j
++### Try x command...
++x j
 j
-+ ### Try continue break no args (here)...
-+ break 
++### Try continue break no args (here)...
++break 
 Breakpoint 6 set in file dbg-test1.sub, line 11.
-+ cont 
++cont 
 FUNCNAME[0]: sourced_fn called from dbg-test1.sub at line 22
 Breakpoint 6 hit (1 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
-+ ### another x command...
-+ x j
++### another x command...
++x j
 declare -i j="1"
-+ ### another x command (+5 than value above) ...
-+ x j+5
++### another x command (+5 than value above) ...
++x j+5
 6
-+ ### x command of string y
-+ x y
++### x command of string y
++x y
 declare -- y="b"
-+ ### x of a function ...
-+ x fn2
++### x of a function ...
++x fn2
 fn2 () 
 { 
     name="fn2";
     echo "$name here";
     x=6
 }
-+ ### Bad x expressions ...
-+ x bogus
++### Bad x expressions ...
++x bogus
 bogus
-+ x bogus+
++x bogus+
 bogus+
-+ x fn2+fn3
++x fn2+fn3
 fn2+fn3
-+ x fn2+3
++x fn2+3
 3
-+ ### another continue. Count on breakpoint should go up.
-+ cont 
++### another continue. Count on breakpoint should go up.
++cont 
 FUNCNAME[1]: source called from dbg-test1.sh at line 34
 Breakpoint 6 hit (2 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
-+ print "j: $j, name: $name"
++print "j: $j, name: $name"
 j: 2, name: fn2
-+ ### Try disable of break
-+ disable 5
++### Try disable of break
++disable 5
 Breakpoint entry 5 disabled.
-+ L 
++L 
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
@@ -242,27 +242,27 @@ Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.
-+ cont 
++cont 
 FUNCNAME[2]: source called from bashdb at line 275
 Breakpoint 6 hit (3 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
-+ ### Test temporary break and its reporting
-+ cont 13
++### Test temporary break and its reporting
++cont 13
 One-time breakpoint 7 set in file dbg-test1.sub, line 13.
 (dbg-test1.sub:13):
 13:		local filename=${BASH_SOURCE[$j]##*/}
-+ info program
++info program
 Program stopped.
 It stopped at a breakpoint that has since been deleted.
-+ ### Should hit end of script but stay in debugger...
-+ cont 
++### Should hit end of script but stay in debugger...
++cont 
 FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
-+ info files
++info files
 Source files for which have been read in:
 
 dbg-test1.sh (39 lines)
 dbg-test1.sub (29 lines)
-+ ### quitting...
-+ quit 
++### quitting...
++quit 

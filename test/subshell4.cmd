@@ -1,3 +1,4 @@
+set trace-commands on
 set showcommand 1
 print "Test step inside multi-statement lines and subshells..."
 step 1

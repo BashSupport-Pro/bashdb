@@ -1,3 +1,4 @@
+set trace-commands on
 # Debugger test of: 
 #  stack trace 
 #  parameter display 

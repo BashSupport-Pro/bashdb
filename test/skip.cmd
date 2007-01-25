@@ -1,3 +1,4 @@
+set trace-commands on
 # Test skip command
 #
 next

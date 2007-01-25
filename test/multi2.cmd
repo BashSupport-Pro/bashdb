@@ -1,3 +1,4 @@
+set trace-commands on
 set showcommand 1
 #### Test step inside multi-statement line...
 step 

@@ -1,3 +1,4 @@
+set trace-commands on
 # Test temporary break
 #
 ### a simple temporary breakpoint...

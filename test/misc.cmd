@@ -1,3 +1,4 @@
+set trace-commands on
 # Test of miscellaneous commands: 
 # 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 #### source command...

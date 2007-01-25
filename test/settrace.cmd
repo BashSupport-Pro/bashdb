@@ -1,3 +1,4 @@
+set trace-commands on
 # Test set_trace call.
 where
 list 5
