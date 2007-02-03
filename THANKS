@@ -8,3 +8,4 @@ Matthias Klose <doko at cs dot tu-berlin dot de> - making build system and
                                                    strength.
 Mikael Andersson  snikkt at telia dot com - "V" command auto* fixes
 Oleksandr Moskalenko  <malex at tagancha dot org> Debian packaging
+Matt Fleming          - NetBSD packaging
