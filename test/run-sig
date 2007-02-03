@@ -1,15 +1,5 @@
 #!/bin/sh
-#$Id: run-sig,v 1.7 2007/02/03 11:40:39 rockyb Exp $
-
-# SIGnals in CYGwin seem to work differently and I'm not sure
-# how. So disable this test on that.
-OS=`uname`
-case $OS in 
-  CYGWIN_NT )
-    exit 77 ;;
-  * )
-    break ;;
-esac
+#$Id: run-sig,v 1.8 2007/02/03 11:55:22 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
