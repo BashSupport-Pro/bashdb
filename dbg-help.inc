@@ -192,6 +192,10 @@ breakpoint N is reached. Long command name: condition."
 	    i | in | inf | info ) 
 	        _Dbg_info_help $2
                 return ;;
+	    k | ki | kil | kill )
+		_Dbg_msg \
+"kill      	Kill execution of program being debugged."
+                return ;;
 	    l | li | lis | list )
 		_Dbg_msg \
 "l linespec      List window lines starting at linespec.
@@ -528,7 +532,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.9 2007/01/25 03:23:53 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.10 2007/02/11 11:43:50 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
