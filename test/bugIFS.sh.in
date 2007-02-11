@@ -1,8 +1,8 @@
 #!@BASH_PROG@
-# $Id: bugIFS.sh.in,v 1.2 2006/07/21 10:35:21 rockyb Exp $
+# $Id: bugIFS.sh.in,v 1.3 2007/02/11 23:06:43 rockyb Exp $
 interface_names='qfe0 qfe3'
 ORIGIFS="$IFS"
-IFS="$IFS."
+IFS=" ."
 set -- $interface_names
-IFS="$ORIGIFS"
+PS4='foo'
 exit 0

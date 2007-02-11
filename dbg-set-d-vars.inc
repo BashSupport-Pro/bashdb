@@ -1,5 +1,5 @@
-#$Id: dbg-set-d-vars.inc,v 1.1 2006/01/02 23:34:22 rockyb Exp $
-#   Copyright (C) 2002, 2003, 2004 Rocky Bernstein
+#$Id: dbg-set-d-vars.inc,v 1.2 2007/02/11 23:06:41 rockyb Exp $
+#   Copyright (C) 2002, 2003, 2004, 2007 Rocky Bernstein
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -26,6 +26,10 @@ for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
 done
 eval $_Dbg_set_str
 
+PS4="$_Dbg_old_PS4"
+IFS="$_Dbg_old_IFS"
+
+# Setting $? be the last statement
 _Dbg_set_dol_q
 
 #;;; Local Variables: ***

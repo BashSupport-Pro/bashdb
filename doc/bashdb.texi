@@ -796,7 +796,7 @@ type @samp{bashdb -c @emph{command string}} to give a string to run
 under the debugger. Or ..
 @item 
 modify your program to enter the debugger at a particular point:
-@code{source ../bashdb-trace} and @code{_Dbg_set_trace}.
+@code{source ../bashdb-trace} and @code{_Dbg_debugger}.
 @item
 type @kbd{quit} or @kbd{C-d} inside the debugger to exit.
 @end itemize
@@ -1056,7 +1056,7 @@ to just the scope of the @code{source} command there is no problem.
 The second thing that needs to be done is put add statements to start
 stepping code, and this line looks like this:
 @smallexample
-     _Dbg_set_trace ; : ; :
+     _Dbg_debugger ; : ; :
 @end smallexample 
 
 (For reasons that are a mystery to me, the stepping seems to kick in
@@ -1067,22 +1067,22 @@ Putting these two components together, here's an example:
 @cartouche
   # Lots of stuff here. ...
   x=2
-  source <path-to-program>/_Dbg_bash_trace
+  source <path-to-program>/_Dbg_debugger
   echo There can be lots of other statements between the above
   echo and below line.
-  _Dbg_set_trace ; : ; :
+  _Dbg_debugger ; : ; :
   y=3
 @end cartouche
 @end smallexample 
 
 You will be stopped before @code{y=3} in the debugger. 
 
-You can also supply options to @code{_Dbg_bash_trace} just as you would to
+You can also supply options to @code{_Dbg_debugger} just as you would to
 the debugger itself. All of the options listed in @ref{Options for the
 bashdb script} can be used with the exception of @code{-c} (run a
 command) and of course you don't supply the name of a @value{BASH} script.
 
-For example to suppress the banner you could use @code{_Dbg_bash_trace
+For example to suppress the banner you could use @code{_Dbg_debugger
 -q} in the above example.
 
 @node Program-Controlled Line Tracing
@@ -1330,6 +1330,16 @@ dynamic variables and these start with @env{BASH_}. For example
 @env{BASH_SUBSHELL} (@pxref{Debug, ,Debug}), @env{BASH_COMMAND}
 (@pxref{Command Display, ,Command Display}), @env{BASH_LINENO}, and
 @env{BASH_SOURCE} to name a few.
+
+Inside the debugger some variables may be redefined. In particular
+@code{IFS} and @code{PS4}, and various dollar variables @code{$?},
+@code{$1}, @code{$2}, etc. The values before entering the debugger are
+saved and those variables have their old values restroed when leaving
+the debugger. However you may notice these difference in various
+debugger commands. For example @code{examine PS4} might not return the
+same value as @code{eval declare -p PS4}. The former is picking the debugger
+value while the @code{eval} is careful to restore the value to what
+it was before entering the debugger.
 
 In order to do its work @value{dBGP} sets up a @code{DEBUG}
 trap. Consequently a script shouldn't reset this or the debugger will

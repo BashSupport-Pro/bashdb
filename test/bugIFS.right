@@ -6,8 +6,20 @@
 +continue 5
 One-time breakpoint 1 set in file bugIFS.sh, line 5.
 (bugIFS.sh:5):
-5:	IFS="$IFS."
+5:	IFS=" ."
 +e _Dbg_print_source_line 5
 (bugIFS.sh:5):
-5:	IFS="$IFS."
+5:	IFS=" ."
++step 
+(bashdb-3:6):
+6:	
++## Make sure IFS in an eval is the same as what we just set.
++eval declare -p IFS
+declare -- IFS=" ."
++step 2
+(bashdb-3:8):
+8:	
++## Make sure PS4 in an eval is the same as what we just set.
++eval declare -p PS4
+declare -x PS4="foo"
 +quit 

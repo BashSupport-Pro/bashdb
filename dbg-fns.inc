@@ -1,6 +1,6 @@
 # dbg-fns.inc - Bourne Again Shell Debugger Utility Functions
 #
-#   Copyright (C) 2002, 2003, 2004, 2005 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2007 Rocky Bernstein
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -243,6 +243,20 @@ _Dbg_set_ftrace() {
   done
 }
 
+# Does things to after on entry of after an eval to set some debugger
+# internal settings  
+_Dbg_set_debugger_internal() {
+  IFS="$_Dbg_space_IFS";
+  PS4='+ dbg (${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]}\n'
+}
+
+_Dbg_restore_user_vars() {
+  IFS="$_Dbg_space_IFS";
+  set -$_Dbg_old_set_opts
+  IFS="$_Dbg_old_IFS";
+  PS4="$_Dbg_old_PS4"
+}
+
 # Do things for debugger entry. Set some global debugger variables
 # Remove trapping ourselves. 
 # We assume that we are nested two calls deep from the point of debug
@@ -259,22 +273,16 @@ _Dbg_set_debugger_entry() {
   ((_curline < 1)) && let _curline=1
 
   _Dbg_old_IFS="$IFS"
-  IFS="$_Dbg_space_IFS";
+  _Dbg_old_PS4="$PS4"
   _cur_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
   _cur_source_file="`_Dbg_resolve_expand_filename $_cur_source_file`"
   _cur_filevar="`_Dbg_file2var $_cur_source_file`"
   _Dbg_stack_pos=$_Dbg_STACK_TOP
   _Dbg_listline=_curline
 
-  # echo "-- ${_cur_source_file}:$_curline"
-
-  PS4=$_cur_source_file
+  _Dbg_set_debugger_internal
 }
 
-# Does things to do just before leaving debugger command loop and
-# returning to the debugged program.
-# $1 is 1 if we have called bashdb_set_debugger_entry and saved various 
-# variables.
 _Dbg_set_to_return_from_debugger() {
   _Dbg_rc=$?
 
@@ -292,14 +300,12 @@ _Dbg_set_to_return_from_debugger() {
 
   trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 
-  IFS="$_Dbg_space_IFS";
-  set -$_Dbg_old_set_opts
-  IFS="$_Dbg_old_IFS";
+  _Dbg_restore_user_vars
 }
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.3 2006/12/19 06:44:25 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.4 2007/02/11 23:06:41 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

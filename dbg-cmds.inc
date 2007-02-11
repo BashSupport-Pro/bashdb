@@ -741,6 +741,9 @@ _Dbg_do_eval() {
   else
     . $_Dbg_evalfile
   fi
+  # We've reset some variables like IFS and PS4 to make eval look
+  # like they were before debugger entry - so reset them now
+  _Dbg_set_debugger_internal
 }
 
 _Dbg_do_file() {
@@ -1029,7 +1032,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.25 2007/01/25 03:23:53 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.26 2007/02/11 23:06:41 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

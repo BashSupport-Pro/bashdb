@@ -1,4 +1,4 @@
-# This program needs to be "SOURCE" and is not called as an executable
+# This program needs to be SOURCE'd and is not called as an executable
 #   Copyright (C) 2006, 2007  Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.10 2007/02/11 20:19:10 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.11 2007/02/11 23:06:41 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:

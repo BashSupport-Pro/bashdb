@@ -1,6 +1,6 @@
 # dbg-sig.inc - Bourne Again Shell Debugger Signal handling routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007 Rocky Bernstein 
 #   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -76,7 +76,7 @@ _Dbg_debug_trap_handler() {
   shopt -s extdebug
 
   # Turn off line and variable trace listing if were not in our own debug
-  # mode
+  # mode, and set our own PS4 for debugging inside the debugger
   (( !_Dbg_debug_debugger )) && set +x +v
 
   # If we are in our own routines -- these start with _bashdb -- then
@@ -244,6 +244,7 @@ _Dbg_cleanup() {
   if (( BASHDB_QUIT_LEVELS < 1 )) ; then
     rm $_Dbg_persistent 2>/dev/null
   fi
+  _Dbg_restore_user_vars
 }
 
 # Somehow we can't put this in _Dbg_cleanup and have it work.
@@ -633,7 +634,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.15 2006/12/20 07:49:50 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.16 2007/02/11 23:06:41 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
