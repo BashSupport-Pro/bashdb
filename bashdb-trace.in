@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.9 2007/02/11 20:18:49 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.10 2007/02/11 20:19:10 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -255,7 +255,7 @@ trap '' DEBUG
 # is not otherwise being debugged.
 # Leaving this the debugger terminates the program.
 
-# Any parameters are exec'd. In this way you can force specifi options to
+# Any parameters are exec'd. In this way you can force specific options to
 # get set.
 _Dbg_debugger() {
   set -o functrace
