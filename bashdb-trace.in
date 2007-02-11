@@ -1,5 +1,5 @@
 # This program needs to be "SOURCE" and is not called as an executable
-#   Copyright (C) 2006  Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2006, 2007  Rocky Bernstein rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.8 2006/10/03 08:54:45 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.9 2007/02/11 20:18:49 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -257,6 +257,23 @@ trap '' DEBUG
 
 # Any parameters are exec'd. In this way you can force specifi options to
 # get set.
+_Dbg_debugger() {
+  set -o functrace
+  while [[ -n $1 ]] ; do
+    eval $1
+    shift
+  done
+
+  if [[ -z $_Dbg_set_trace_init ]] ; then
+      _Dbg_set_trace_init=1
+      _Dbg_write_journal "_Dbg_steps=0"
+      trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
+  else
+      _Dbg_steps=2
+  fi
+}
+
+# Older alias for _Dbg_debugger()
 _Dbg_set_trace() {
   set -o functrace
   while [[ -n $1 ]] ; do
