@@ -30,11 +30,6 @@ typeset -i _cur_line        # current line number of debugged program
 # before the sourcing the script to be debugged.
 typeset -i _Dbg_steps=1
 
-# Set initial line tracing flag off
-typeset -i _Dbg_linetrace=0 
-
-typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
-
 # Save the initial working directory so we can reset it on a restart.
 typeset _Dbg_init_cwd=$(pwd)
 
@@ -86,6 +81,7 @@ typeset -r _resteglob='shopt $__eopt extglob'
 
 typeset -r int_pat="[0-9]*([0-9])"
 typeset -r signed_int_pat="?([-+])+([0-9])"
+typeset -r real_pat="[0-9]*([0-9]).?([0-9])*"
 
 # Set tty to use for output. 
 if [[ -z $_Dbg_tty ]] ; then 
@@ -113,7 +109,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.13 2007/01/25 03:23:53 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.14 2007/02/15 19:20:18 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

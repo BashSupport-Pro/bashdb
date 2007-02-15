@@ -422,6 +422,10 @@ Follow this command with any number of args, to be passed to the program."
       (( $_Dbg_linetrace )) && onoff='on.'
      _Dbg_msg \
 "${label}Set tracing execution of lines before executed is" $onoff
+      if (( $_Dbg_linetrace )) ; then
+	  _Dbg_msg \
+"set linetrace delay -- delay before executing a line is" $_Dbg_linetrace_delay
+      fi
       return 0
       ;;
      lis | list | lists | listsi | listsiz | listsize )
@@ -532,7 +536,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.10 2007/02/11 11:43:50 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.11 2007/02/15 19:20:18 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

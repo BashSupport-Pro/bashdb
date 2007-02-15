@@ -21,6 +21,11 @@
 # If yes, always show. If auto, show only if the same line is to be run
 # but the command is different.
 
+# Set initial line tracing flag off
+typeset -i _Dbg_linetrace=0 
+typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
+typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
+
 _Dbg_do_set() {
   local set_cmd=$1
   if [[ $set_cmd == '' ]] ; then
@@ -118,6 +123,16 @@ _Dbg_do_set() {
 	off | 0 )
 	  _Dbg_write_journal_eval "_Dbg_linetrace=0"
 	  ;;
+	d | de | del | dela | delay )
+	  eval "$_seteglob"
+	  if [[ $2 != $int_pat ]] ; then 
+	    _Dbg_msg "Bad int parameter: $2"
+	    eval "$_resteglob"
+	    return 1
+	  fi
+	  eval "$_resteglob"
+	  _Dbg_write_journal_eval "_Dbg_linetrace_delay=$2"
+          ;;
 	e | ex | exp | expa | expan | expand )
 	  local onoff=${2:-'on'}
 	  case $onoff in 
@@ -185,7 +200,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.9 2007/01/25 03:23:53 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.10 2007/02/15 19:20:18 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
