@@ -52,6 +52,12 @@ show annotate
 set annotate 1
 show listsize
 show annotate
+#########################
+#### Test 'show commands'...
+show commands
+show commands +
+show commands -5
+show commands 12
 #### history...
 H
 H 5

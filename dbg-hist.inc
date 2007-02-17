@@ -1,6 +1,6 @@
 # dbg-hist.inc - Bourne Again Shell Debugger history routines
 #
-#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2006, 2007 Rocky Bernstein
 #   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -16,6 +16,10 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
+typeset -i _Dbg_hi_last_stop=0
+typeset -i _Dbg_hi=0           # Current next history entry to store into.
+typeset -a _Dbg_history=()
 
 # Remove the last command from the history list.
 _Dbg_remove_history_item() {
@@ -126,7 +130,7 @@ _Dbg_do_history_list() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: dbg-hist.inc,v 1.2 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-hist.inc,v 1.3 2007/02/17 12:07:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

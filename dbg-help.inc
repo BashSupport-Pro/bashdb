@@ -488,7 +488,10 @@ _Dbg_help_show() {
       ;;
     com | comm | comma | comman | command | commands )
       _Dbg_msg \
-"show commands    -- Show the history of commands you typed"
+"show commands [+|n] -- Show the history of commands you typed.
+You can supply a command number to start with, or a + to start after
+the previous command number shown. A negative number indicates the 
+number of lines to list."
       ;;
     cop | copy| copyi | copyin | copying )
       _Dbg_msg \
@@ -536,7 +539,7 @@ _Dbg_help_show() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.11 2007/02/15 19:20:18 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.12 2007/02/17 12:07:44 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

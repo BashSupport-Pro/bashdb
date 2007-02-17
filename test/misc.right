@@ -487,8 +487,56 @@ Annotation_level is 0.
 Number of source lines bashdb will list by default is 40.
 +show annotate
 Annotation_level is 1.
++######################### 
++#### Test 'show commands'...
++show commands
+49: show commands
+48: show annotate
+47: show listsize
+46: set annotate 1
+45: show annotate
+44: set annotate 6
+43: set annotate bad
+42: set listsize bad
+41: set listsize 40
+40: set misspelled 40
+39: show editing
++show commands +
+38: set editing
+37: show editing
+36: set editing fooo
+35: set editing off
+34: show args
+33: set args now is the time
+32: show args
+31: show 
+30: info 
+29: help info
+28: help tty
++show commands -5
+51: show commands -5
+50: show commands +
+49: show commands
+48: show annotate
+47: show listsize
++show commands 12
+12: print "\$1: $1"
+11: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
+10: print "prof1.cmd called"
+9: set trace-commands on
+8: source prof1.cmd
+7: print calling prof1.cmd...
+6: print prof2.cmd called...
+5: set trace-commands on
+4: source prof2.cmd
+3: print "prof1.cmd called"
+2: set trace-commands on
 +#### history...
 +H 
+52: show commands 12
+51: show commands -5
+50: show commands +
+49: show commands
 48: show annotate
 47: show listsize
 46: set annotate 1
@@ -556,16 +604,24 @@ _Dbg_arg#: 2
 +!19:p 
 19: show copying
 +!-3:p 
-46: set annotate 1
+50: show commands +
 +!-2 
-Number of source lines bashdb will list by default is 40.
+52: show commands 12
+51: show commands -5
+50: show commands +
+49: show commands
+48: show annotate
 +! 2
 +H -2
-48: show annotate
-47: show listsize
+52: show commands 12
+51: show commands -5
 +H foo
 Invalid history number: foo
 +H 100000
+52: show commands 12
+51: show commands -5
+50: show commands +
+49: show commands
 48: show annotate
 47: show listsize
 46: set annotate 1
@@ -616,9 +672,13 @@ Invalid history number: foo
 1: source prof1.cmd
 0: set trace-commands on
 +history -2
-Number of source lines bashdb will list by default is 40.
+52: show commands 12
+51: show commands -5
+50: show commands +
+49: show commands
+48: show annotate
 +history 10000
-Number 10000 should be less than 49
+Number 10000 should be less than 53
 +#### pwd/cd commands...
 +pwd 
 Working directory test.

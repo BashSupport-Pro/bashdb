@@ -58,7 +58,6 @@ else
   eval $_Dbg_set_str
 fi
 
-typeset -i _Dbg_hi=0           # Current next history entry to store into.
 typeset -i _Dbg_listsize=10    # How many lines in a listing? 
 typeset -i _Dbg_annotate=0     # Annotation level.
 typeset -i _Dbg_need_input=1   # True if we need to reassign input.
@@ -109,7 +108,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.14 2007/02/15 19:20:18 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.15 2007/02/17 12:07:45 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

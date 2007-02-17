@@ -61,9 +61,25 @@ _Dbg_do_show() {
       return 0
       ;;
     com | comm | comma | comman | command | commands )
-      local -i hi_start=_Dbg_hi-1
+      local -i default_hi_start=_Dbg_hi-1
+      if ((default_hi_start < 0)) ; then default_hi_start=0 ; fi
+      local hi_start=${2:-$default_hi_start}
+
+      eval "$_seteglob"
+      case $hi_start in
+	+ )
+	  ((hi_start=_Dbg_hi_last_stop-1))
+	  ;;
+	$int_pat | -$int_pat)
+	    ;;
+	* )
+	   _Dbg_msg "Invalid parameter $hi_start. Need an integer or '+'"
+      esac
+      eval "$_resteglob"
+      
       local -i hi_stop=hi_start-10
       _Dbg_do_history_list $hi_start $hi_stop
+      _Dbg_hi_last_stop=$hi_stop
       return 0
       ;;
     cop | copy| copyi | copyin | copying )
@@ -429,7 +445,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.7 2007/02/15 19:20:18 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.8 2007/02/17 12:07:45 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
