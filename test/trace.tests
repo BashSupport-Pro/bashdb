@@ -1,5 +1,5 @@
 #!../../bash
-#$Id: trace.tests,v 1.3 2006/04/10 01:54:52 rockyb Exp $
+#$Id: trace.tests,v 1.4 2007/02/17 03:27:23 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
@@ -9,7 +9,6 @@ if test -z "$builddir"  ; then
   builddir=`pwd`
 fi
 
-cmdfile=trace.cmd
 debugged_script=hanoi.sh
 
 $BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -X ${builddir}/$debugged_script
