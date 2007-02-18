@@ -33,6 +33,8 @@ typeset -ir _Dbg_INPUT_START_DESC=4
 typeset -i  _Dbg_MAX_INPUT_DESC=9  # logfile can reduce this
 typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
 
+typeset -a _Dbg_history=()
+
 # Are we inside the middle of a "skip" command?
 typeset -i  _Dbg_inside_skip=0
 
@@ -120,6 +122,7 @@ _Dbg_cmdloop() {
 
     local _Dbg_cmd 
     local args
+
     while read $_Dbg_edit -p "$_Dbg_prompt" \
       _Dbg_cmd args \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output; do
@@ -1032,7 +1035,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.26 2007/02/11 23:06:41 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.27 2007/02/18 00:47:03 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

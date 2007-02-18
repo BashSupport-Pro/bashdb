@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.13 2007/02/18 00:38:54 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.14 2007/02/18 00:47:03 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -416,14 +416,15 @@ _Dbg_do_clear_brkpt() {
 # If $1 is given just list those associated for that line.
 _Dbg_do_list_brkpt() {
 
+  local brkpt_num=${1:-''}
   eval "$_seteglob"
-  if [[ -n $1 ]] ; then 
-    if [[ $1 != $int_pat ]]; then
-      _Dbg_msg "Bad breakpoint number $1."
-    elif [[ -z ${_Dbg_brkpt_file[$1]} ]] ; then
-      _Dbg_msg "Breakpoint entry $1 is not set."
+  if [[ -n $brkpt_num ]] ; then 
+    if [[ $brkpt_num != $int_pat ]]; then
+      _Dbg_msg "Bad breakpoint number $brkpt_num."
+    elif [[ -z ${_Dbg_brkpt_file[$brkpt_num]} ]] ; then
+      _Dbg_msg "Breakpoint entry $brkpt_num is not set."
     else
-      local -r -i i=$1
+      local -r -i i=$brkpt_num
       local source_file=${_Dbg_brkpt_file[$i]}
       source_file=$(_Dbg_adjust_filename "$source_file")
       _Dbg_msg "Num Type       Disp Enb What"
