@@ -24,6 +24,8 @@ Debugging new script with -q -x debug2.cmd ./debug.sh $BASHDB_LEVEL
 BASHDB_LEVEL is 2
 +continue 
 passed 1
+Debugged program terminated with code 1. Use q to quit or R to restart.
+
 (debug.sh:10):
 10:	$cmd $BASHDB_LEVEL
 +quit 

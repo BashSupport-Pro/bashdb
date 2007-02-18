@@ -22,6 +22,12 @@
 # The "set" options in effect ($-) before debugger was invoked.
 typeset _Dbg_old_setopts
 
+# Place to save debugged program's exit handler, if any.
+typeset _Dbg_old_EXIT_handler=''  
+
+typeset BASHDB_RESTART_COMMAND=''
+typeset -i BASHDB_QUIT_ON_QUIT=0
+
 # Return code that debugged program reports
 typeset -i _Dbg_program_exit_code=0
 
@@ -242,11 +248,6 @@ _Dbg_debug_trap_handler() {
 _Dbg_cleanup() {
   rm $_Dbg_evalfile 2>/dev/null
   _Dbg_erase_journals
-  # This is needed sometimes, and sometimes _Dbg_cleanup2 works.
-  # figure out why...
-  if (( BASHDB_QUIT_LEVELS < 1 )) ; then
-    rm $_Dbg_persistent 2>/dev/null
-  fi
   _Dbg_restore_user_vars
 }
 
@@ -271,7 +272,7 @@ _Dbg_do_quit() {
   ((BASHDB_QUIT_LEVELS+=desired_quit_levels))
 
   # Reduce the number of recorded levels that we need to leave by
-  # if BASHDB_QUIT_LEVELS is numeric and greater than 0.
+  # if BASHDB_QUIT_LEVELS is greater than 0.
   ((BASHDB_QUIT_LEVELS--))
 
   ## write this to the next level up can read it.
@@ -354,13 +355,12 @@ _Dbg_exit_handler() {
   local -i _Dbg_debugged_exit_code=$?
 
   # Turn off line and variable trace listing.
-  set +x  +v
+  set +x +v -u
 
   if [[ ${_Dbg_sig_print[0]} == "print" ]] ; then 
     # Note: use the same message that gdb does for this.
     _Dbg_msg "Program received signal EXIT (0)..."
     if [[ ${_Dbg_sig_show_stack[0]} == "showstack" ]] ; then 
-      echo "++++YES"
       _Dbg_do_stack_trace 0
     fi
   fi
@@ -374,8 +374,8 @@ _Dbg_exit_handler() {
   # leave quietly on termination, then do it!
 
   if [[ ${_Dbg_sig_stop[0]} != "stop" ]] \
-    || [[ $BASHDB_QUIT_LEVELS != 0 ]] \
-    || [ -n "$BASHDB_QUIT_ON_QUIT" ] ; then 
+    || (( BASHDB_QUIT_LEVELS != 0 )) \
+    || (( BASHDB_QUIT_ON_QUIT )) ; then 
     _Dbg_do_quit
     # We don't return from here.
   fi
@@ -637,7 +637,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.17 2007/02/15 19:20:18 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.18 2007/02/18 01:27:40 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -1019,7 +1019,8 @@ fi
 # BASHDB_LEVEL is the number of times we are nested inside a debugger
 # by virtue of running "debug" for example.
 if [[ -z "${BASHDB_LEVEL}" ]] ; then
-  export BASHDB_LEVEL=1
+  typeset -i BASHDB_LEVEL=1
+  export BASHDB_LEVEL
 fi
 
 # temp file for internal eval'd commands
@@ -1029,13 +1030,14 @@ typeset _Dbg_evalfile=`_Dbg_tempname eval`
 # to a parent shell
 typeset _Dbg_journal=`_Dbg_tempname journal`
 if [ ! -f _Dbg_journal ] ; then 
+  typeset -i BASHDB_QUIT_LEVELS=0
   _Dbg_write_journal "BASHDB_QUIT_LEVELS=0"
 fi
 
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.27 2007/02/18 00:47:03 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.28 2007/02/18 01:27:40 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
