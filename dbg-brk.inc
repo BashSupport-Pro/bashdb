@@ -1,6 +1,6 @@
 # dbg-brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
 
-#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2006, 2007 Rocky Bernstein 
 #   rockyb@users.sourceforge.net
 #
 #   Bash is free software; you can redistribute it and/or modify it under
@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.12 2006/12/20 04:08:56 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.13 2007/02/18 00:38:54 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -307,7 +307,7 @@ _Dbg_print_brkpt_count() {
 
 _Dbg_do_break() {
 
-  local -i is_temp=$1;
+  local -i is_temp=$1
   shift
 
   local n=${1:-$_curline}
@@ -766,7 +766,7 @@ _Dbg_do_action() {
     else 
       _Dbg_check_line $line_number "$full_filename"
       (( $? == 0 )) && \
-	_Dbg_set_action "$full_filename" "$line_number" $is_temp "$condition" 
+	_Dbg_set_action "$full_filename" "$line_number" "$condition" 
     fi
   else
     _Dbg_file_not_read_in $filename
