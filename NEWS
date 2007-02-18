@@ -2,6 +2,11 @@ Version 3.1 0.09cvs
 
  - Add set/show trace-commands to make the same as gdb 6.6
 
+ - show commands now allows for a starting number and +, same as gdb
+
+ - Reduce assumption that undefined means '' - initialize more variables.
+   (working towards inserting "set -u".
+
 Version 3.1 0.08
 2007-1-20
 
@@ -583,4 +588,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.27 2007/01/25 03:23:53 rockyb Exp $
+$Id: NEWS,v 1.28 2007/02/18 01:29:32 rockyb Exp $
