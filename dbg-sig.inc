@@ -60,6 +60,9 @@ typeset -a _Dbg_sig_passthrough=()
 # Each entry is the trap handler with some variables substituted.
 typeset -i _Dbg_return_level=0
 
+# Place to save values of $1, $2, etc.
+typeset -a _Dbg_arg=()
+
 # ===================== FUNCTIONS =======================================
 
 # We come here after before statement is run. This is the function named
@@ -83,7 +86,7 @@ _Dbg_debug_trap_handler() {
 
   # Turn off line and variable trace listing if were not in our own debug
   # mode, and set our own PS4 for debugging inside the debugger
-  (( !_Dbg_debug_debugger )) && set +x +v
+  (( !_Dbg_debug_debugger )) && set +x +v 
 
   # If we are in our own routines -- these start with _bashdb -- then
   # return.
@@ -355,7 +358,7 @@ _Dbg_exit_handler() {
   local -i _Dbg_debugged_exit_code=$?
 
   # Turn off line and variable trace listing.
-  set +x +v -u
+  set +x +v 
 
   if [[ ${_Dbg_sig_print[0]} == "print" ]] ; then 
     # Note: use the same message that gdb does for this.
@@ -637,7 +640,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.18 2007/02/18 01:27:40 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.19 2007/02/18 02:25:40 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

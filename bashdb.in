@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.17 2007/01/20 10:38:28 rockyb Exp $'
+'$Id: bashdb.in,v 1.18 2007/02/18 02:25:40 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -96,12 +96,12 @@ typeset _Dbg_pname=${0##*/}
 # Show basename only in location listing. This is needed in regression tests
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
-typeset _Dbg_main=dbg-main.inc
-typeset _Dbg_libdir=@PKGDATADIR@
-typeset _Dbg_bindir=$(dirname $0)
-typeset _Dbg_tmpdir=/tmp
-
-typeset _Dbg_cmd='' # If command string given on command line, this is it.
+typeset    _Dbg_main=dbg-main.inc
+typeset    _Dbg_libdir=@PKGDATADIR@
+typeset    _Dbg_bindir=$(dirname $0)
+typeset    _Dbg_tmpdir=/tmp
+typeset -i _Dbg_opt_linetrace=0
+typeset    _Dbg_cmd='' # If command string given on command line, this is it.
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
