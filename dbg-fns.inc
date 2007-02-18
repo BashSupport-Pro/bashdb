@@ -58,7 +58,7 @@ _Dbg_get_assoc_scalar_entry() {
 #   set -xv
     local prefix=$1
 #   echo "${BASH_SOURCE[1]}:${BASH_LINENO[1]} ${FUNCNAME[1]}"
-    local entry=$2
+    local entry=${2:-''}
     local cmd="echo \$${prefix}${entry}"
     eval $cmd
 #   set +xv
@@ -305,7 +305,7 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.4 2007/02/11 23:06:41 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.5 2007/02/18 00:58:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
