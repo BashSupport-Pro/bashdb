@@ -1,3 +1,4 @@
+; -*- emacs-lisp -*-
 (load-file "@srcdir@/elk-test.el")
 (load-file "@srcdir@/bashdb.el")
 
@@ -17,12 +18,45 @@
    "e:\\sources\\capfilterscanner\\capanalyzer.sh"
    )
   (regexp-test 
+   "(e:\\Documents and Settings\\jsmith\\My Documents\\cpanalyzer test.sh:3):
+"
+   "e:\\Documents and Settings\\jsmith\\My Documents\\cpanalyzer test.sh"
+   )  
+  (regexp-test 
    "(/etc/init.d/network:39):
 "
    "/etc/init.d/network"
    )
 )
 
+(defun position-regexp-test (location-str file-str line-str)
+  "Test to see that location-str matches position-regexp-test with the correct
+file and line submatches."
+  (assert-equal 0 (string-match pydb-position-re location-str))
+  (assert-equal file-str (match-string pydb-marker-regexp-file-group
+                                       location-str))
+  (assert-equal line-str (match-string pydb-marker-regexp-line-group
+                                       location-str))
+  )
+(deftest "bashdb-position-re-test"
+
+  (position-regexp-test 
+   "(e:\\sources\\capfilterscanner\\capanalyzer.py:3):
+"
+   "e:\\sources\\capfilterscanner\\capanalyzer.py" "3"
+   )
+  (position-regexp-test 
+   "(e:\\Documents and Settings\\jsmith\\My Documents\\cpanalyzer test.py:3):
+"
+   "e:\\Documents and Settings\\jsmith\\My Documents\\cpanalyzer test.py" "3"
+   )  
+  (position-regexp-test 
+   "(/etc/init.d/network:29):
+"
+   "/etc/init.d/network" "29"
+   )
+)  
+   
 (build-suite "bashdb-suite" "bashdb-marker-regexp-test")
 (run-elk-test "bashdb-marker-regexp-test"
               "test regular expression used in tracking lines")  

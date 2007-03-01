@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.19 2007/02/13 14:10:44 rockyb Exp $
+;;; $Id: bashdb.el,v 1.20 2007/03/01 03:05:37 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -38,7 +38,7 @@
 ;; The debugger outputs program-location lines that look like this:
 ;;   (/etc/init.d/network:14):
 (defconst gud-bashdb-marker-regexp
-  "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\]+\\):[ \t]?\\(.*\n\\)"
+  "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):[ \t]?\\(.*\n\\)"
   "Regular expression used to find a file location given by pydb.
 
 Program-location lines look like this:

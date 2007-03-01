@@ -51,7 +51,7 @@
 @c manuals to an info tree.
 @dircategory Programming & development tools.
 @direntry
-* @value{DBG}: (@value{DBG}).                     The @sc{bash} debugger.
+* @value{DBG}: (bashdb).                     The @sc{bash} debugger.
 @end direntry
 
 @ifinfo
