@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.14 2007/02/18 00:47:03 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.15 2007/03/02 07:56:34 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -86,9 +86,13 @@ _Dbg_file_not_read_in() {
 #  filename, line_number, full_filename
 
 _Dbg_linespec_setup() {
-  local -a word=($(_Dbg_parse_linespec "$1"))
+  local linespec=${1:-''}
+  if [[ -z $linespec ]] ; then
+    _Dbg_msg "Invalid line specification, null given"
+  fi
+  local -a word=($(_Dbg_parse_linespec "$linespec"))
   if [[ ${#word[@]} == 0 ]] ; then
-    _Dbg_msg "Invalid line specification: $1"
+    _Dbg_msg "Invalid line specification: $linespec"
     return
   fi
   
@@ -107,7 +111,7 @@ _Dbg_linespec_setup() {
 
 # Error message for file not read in
 _Dbg_file_not_read_in() {
-    local -r filename=$(_Dbg_adjust_filename "$1")
+    local -r filename=$(_Dbg_adjust_filename ${1:-""})
     _Dbg_msg "File $filename not found in read-in files."
     _Dbg_msg "See 'info files' for a list of known files and"
     _Dbg_msg "'load' to read in a file."
@@ -313,13 +317,15 @@ _Dbg_do_break() {
   local n=${1:-$_curline}
   shift
 
+  local condition=${1:-''};
   if [[ "$n" == 'if' ]]; then
     n=$_curline
-  else
-    [[ "$1" == 'if' ]] && shift
+  elif [[ -z $condition ]] ; then
+    condition=1
+  elif [[ $condition == 'if' ]] ; then
+    shift
   fi
-  local condition;
-  if [ -z "$1" ] ; then
+  if [[ -z $condition ]] ; then
     condition=1
   else 
     condition="$*"
