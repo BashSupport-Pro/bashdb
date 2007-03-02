@@ -38,7 +38,7 @@ One problem with sourcing a debugged script is that the program name
 stored in $0 will be C<bashdb> rather than the name of the script to
 be debugged. The debugged script will appear in a call stack not as
 the top item but as the item below C<bashdb>. If this is of concern,
-use the last form given above, C<bash ---debugger> I<script-name>
+use the last form given above, C<bash --debugger> I<script-name>
 [I<script-options>].
 
 If you used bashdb script and need to pass options to the script to be
@@ -234,6 +234,6 @@ The current version is maintained (or not) by Rocky Bernstein.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.8 2007/01/25 03:23:55 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.9 2007/03/02 05:42:46 rockyb Exp $>
 
 =cut
