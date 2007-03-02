@@ -195,7 +195,7 @@ _Dbg_get_functions() {
 #   file:line
 #   function-num
 # Return triple (line,  is-function?, filename,)
-# We return the filenmae last since that can have embedded blanks.
+# We return the filename last since that can have embedded blanks.
 _Dbg_parse_linespec() {
   local linespec=$1
   eval "$_seteglob"
@@ -307,7 +307,7 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.7 2007/03/02 08:55:17 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.8 2007/03/02 08:56:10 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
