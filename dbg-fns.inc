@@ -208,9 +208,11 @@ _Dbg_parse_linespec() {
     
     # file:line
     [^:][^:]*[:]$int_pat )
-      local -a word
-      word=($(_Dbg_split ":" $linespec))
-      echo "${word[1]} 0 ${word[0]}"
+      # Split the POSIX way
+      local line_word=${linespec##*:}
+      file_word=${linespec%${line_word}}
+      file_word=${file_word%?}
+      echo "$line_word 0 $file_word"
       ;;
 
     # Function name or error
@@ -305,7 +307,7 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.5 2007/02/18 00:58:30 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.6 2007/03/02 08:54:04 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
