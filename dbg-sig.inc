@@ -86,7 +86,7 @@ _Dbg_debug_trap_handler() {
 
   # Turn off line and variable trace listing if were not in our own debug
   # mode, and set our own PS4 for debugging inside the debugger
-  (( !_Dbg_debug_debugger )) && set +x +v 
+  (( !_Dbg_debug_debugger )) && set +x +v +u
 
   # If we are in our own routines -- these start with _bashdb -- then
   # return.
@@ -357,8 +357,8 @@ _Dbg_exit_handler() {
   # Ditto for the restore environment
   local -i _Dbg_debugged_exit_code=$?
 
-  # Turn off line and variable trace listing.
-  set +x +v 
+  # Turn off line and variable trace listing; allow unset parameter expansion.
+  set +x +v +u
 
   if [[ ${_Dbg_sig_print[0]} == "print" ]] ; then 
     # Note: use the same message that gdb does for this.
@@ -416,8 +416,8 @@ _Dbg_sig_handler() {
   local -i _Dbg_debugged_exit_code=$?
   _Dbg_old_set_opts=$-
   
-  # Turn off line and variable trace listing.
-  set +x +v
+  # Turn off line and variable trace listing; allow unset parameter expansion.
+  set +x +v +u
   shopt -s extdebug
 
   local -i _Dbg_rc=0
@@ -640,7 +640,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.19 2007/02/18 02:25:40 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.20 2007/03/02 21:36:06 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

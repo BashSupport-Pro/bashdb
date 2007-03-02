@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.20 2007/03/01 03:05:37 rockyb Exp $
+;;; $Id: bashdb.el,v 1.21 2007/03/02 21:36:10 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -58,7 +58,7 @@ or MS Windows:
 ;; Note: bashdb will be fixed up so that it *does* bass --debugger
 ;; eventually.
 
-(defun gud-bashdb-massage-args (file args)
+(defun gud-bashdb-massage-args (file args &optional command-line)
   (let* ((new-args (list "--debugger"))
 	 (seen-e nil)
 	 (shift (lambda ()
@@ -68,7 +68,7 @@ or MS Windows:
     ; If we are invoking using the bashdb command, no need to add
     ; --debugger. '^\S ' means non-whitespace at the beginning of a
     ; line and '\s ' means "whitespace"
-    (if (string-match "^\\S bashdb\\s " command-line) 
+    (if (and command-line (string-match "^\\S bashdb\\s " command-line))
 	args
     
       ;; Pass all switches and -e scripts through.
@@ -108,7 +108,7 @@ or MS Windows:
        (cons (substring gud-marker-acc 
 			(match-beginning gud-bashdb-marker-regexp-file-group) 
 			(match-end gud-bashdb-marker-regexp-file-group))
-	     (string-to-int 
+	     (string-to-number
 	      (substring gud-marker-acc
 			 (match-beginning gud-bashdb-marker-regexp-line-group)
 			 (match-end gud-bashdb-marker-regexp-line-group))))
@@ -166,8 +166,12 @@ and source-file directory for your debugger."
 			       gud-minibuffer-local-map nil
 			       '(gud-bashdb-history . 1))))
 
-  (gud-common-init command-line 'gud-bashdb-massage-args
-		   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
+  (defun local-massage-args (file args) 
+    (gud-bashdb-massage-args file args command-line))
+  (gud-common-init command-line 'local-massage-args
+  	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
+  ;(gud-common-init command-line 'gud-bashdb-massage-args
+	;	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
 
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
@@ -424,7 +428,7 @@ problem as best as we can determine."
       "line number cue not found"
 
     (let* ((filename (match-string bashdb-marker-regexp-file-group block))
-           (lineno (string-to-int 
+           (lineno (string-to-number
 		    (match-string bashdb-marker-regexp-line-group block)))
            funcbuffer)
 
