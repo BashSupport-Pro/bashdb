@@ -210,7 +210,7 @@ _Dbg_parse_linespec() {
     [^:][^:]*[:]$int_pat )
       # Split the POSIX way
       local line_word=${linespec##*:}
-      file_word=${linespec%${line_word}}
+      local file_word=${linespec%${line_word}}
       file_word=${file_word%?}
       echo "$line_word 0 $file_word"
       ;;
@@ -307,7 +307,7 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.6 2007/03/02 08:54:04 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.7 2007/03/02 08:55:17 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
