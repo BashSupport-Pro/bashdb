@@ -274,7 +274,10 @@ _Dbg_onecmd() {
 
 	# Change Directory
 	cd )
-	  cd $args
+	  # Allow for tilde expansion. We also allow expansion of
+	  # variables like $HOME which gdb doesn't allow. That's life.
+	  local cd_command="cd $args"
+	  eval $cd_command
 	  _Dbg_do_pwd
 	  ;;
 
@@ -1037,7 +1040,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.28 2007/02/18 01:27:40 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.29 2007/03/03 01:06:29 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

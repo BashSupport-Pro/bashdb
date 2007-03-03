@@ -112,6 +112,17 @@ H -count        If a single postive integer is given, then list starting from
 "c [linespec]    Continue execution until the next breakpoint or end of 
                 program or linespec. Long command name: continue."
                 return ;;
+	    cd  )
+		_Dbg_msg \
+"cd [DIR]       Set working directory to DIR for debugger and program
+being debugged.  Tilde expansion, variable and filename expansion is
+performed on DIR. If no directory is given, we print out the
+current directory which is really the same things as running 'pwd'.
+
+Note that gdb is a little different in that it peforms tilde expansion
+but not filename or variable expansion and the directory argument is
+not optional as it is here."
+                return ;;
             cond | condi |condit |conditi | conditio | condition )
 		_Dbg_msg \
 "cond N COND     Specify breakpoint number N to break only if COND is true.
@@ -539,7 +550,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.12 2007/02/17 12:07:44 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.13 2007/03/03 01:06:29 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

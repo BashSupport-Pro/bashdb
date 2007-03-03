@@ -3041,13 +3041,19 @@ Invoke a shell to execute @var{command string}.
 @section Interfacing to the OS (@samp{cd}, @samp{pwd})
 
 @table @code
-@kindex cd @var{directory}
+@kindex cd @ovar{directory}
 @cindex change working directory
 @item cd
 
 Set working directory to @var{directory} for debugger and program
-being debugged.  The change does not take effect for the program being
-debugged until the next time it is started.
+being debugged.  Tilde expansion, variable and filename expansion is
+performed on @var{directory}. If no directory is given, we print out the
+current directory which is really the same things as running
+@code{pwd}.
+
+Note that @code{gdb} is a little different in that it peforms tilde expansion
+but not filename or variable expansion and the directory argument is
+not optional as it is here.
 
 @kindex pwd
 @cindex print working directory
