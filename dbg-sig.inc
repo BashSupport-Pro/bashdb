@@ -640,9 +640,8 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.20 2007/03/02 21:36:06 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.21 2007/03/03 05:02:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
 #;;; End: ***

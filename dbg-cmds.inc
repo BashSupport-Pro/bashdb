@@ -1040,9 +1040,8 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.29 2007/03/03 01:06:29 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.30 2007/03/03 05:02:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
 #;;; End: ***

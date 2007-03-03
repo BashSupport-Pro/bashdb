@@ -200,9 +200,8 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.10 2007/02/15 19:20:18 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.11 2007/03/03 05:02:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
 #;;; End: ***

@@ -307,9 +307,8 @@ _Dbg_set_to_return_from_debugger() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.8 2007/03/02 08:56:10 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.9 2007/03/03 05:02:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
 #;;; End: ***
