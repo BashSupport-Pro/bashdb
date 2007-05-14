@@ -935,7 +935,7 @@ This option causes @value{DBG} to print some basic help and exit.
 
 @item -V
 @cindex @code{-V}
-This option causes @DBG to print its version number and
+This option causes @DBG to print its version number,
 no-warranty blurb, and exit.
 
 @item -c | --command @var{cmd}
@@ -1152,12 +1152,12 @@ watchpoints}), or start continue the execution of the program
 (@pxref{Resuming Execution, ,Resuming Execution}).
 
 @table @code
-@kindex restart
+@kindex restart @ovar{args}
 @kindex run @r{(@code{restart})}
 @kindex R @r{(@code{restart})}
-@item restart @ovar{options to debugged script}
-@itemx run
-@itemx R
+@item restart @ovar{args}
+@itemx run @ovar{args}
+@itemx R @ovar{args}
 Use the @code{restart} command to restart your script under
 @value{DBG}. Without any arguments, the script name and parameters
 from the last invocation are used. @value{dBGP} tries to maintain the
@@ -1363,7 +1363,7 @@ just @key{RET}. Some commands which require a parameter, such as
 * Quit::                 Leaving the debugger (quit, kill)
 * Information::          Status and Debugger settings (info, show)
 * Stopping::             Stopping and continuing (break, watch, step, cont...)
-* Stack::                Examining the stack (where, up, down, frame)
+* Stack::                Examining the stack frame (where, up, down, frame)
 * List::                 Printing source files (list)
 * Search::               Searching source files (/pat/ ?pat?)
 * Data::                 Examining data (print, examine, info variables)
@@ -1677,7 +1677,7 @@ read-in files, use the @samp{info files} command.
 @item break
 When called without any arguments, @code{break} sets a breakpoint at
 the next instruction to be executed in the selected stack frame
-(@pxref{Stack, ,Examining the Stack}).  In any selected frame but the
+(@pxref{Stack, ,Examining the Stack Frame}).  In any selected frame but the
 innermost, this makes your script stop as soon as control returns to
 that frame.  If you use @code{break} without an argument in the
 innermost frame, @DBG stops the next time it reaches the
@@ -2508,7 +2508,7 @@ if your version of @DBG comes with one.
 @end table
 
 @node Stack
-@section Examining the Stack (@samp{where}, @samp{frame}, @samp{up}, @samp{down})
+@section Examining the Stack Frame (@samp{where}, @samp{frame}, @samp{up}, @samp{down})
 
 When your script has stopped, one thing you'll probably want to know
 is where it stopped and some idea of how it got there.
@@ -2660,8 +2660,8 @@ selecting a stack frame; all of them finish by printing a brief
 description of the stack frame just selected.
 
 @table @code
-@kindex up
-@item up @var{n}
+@kindex up @ovar{n}
+@item up @ovar{n}
 Move @var{n} frames up the stack.  For positive numbers @var{n}, this
 advances toward the outermost frame, to higher frame numbers, to
 frames that have existed longer.  Using a negative @var{n} is the same
@@ -2674,7 +2674,7 @@ a front end also watching over things.
 
 @kindex down
 @kindex do @r{(@code{down})}
-@item down @var{n}
+@item down @ovar{n}
 Move @var{n} frames down the stack.  For positive numbers @var{n}, this
 advances toward the innermost frame, to lower frame numbers, to frames
 that were created more recently.  Using a negative @var{n} is the same
@@ -3088,11 +3088,13 @@ This display shows item numbers, expressions and their current values.
 @item display @var{expr}
 Add the expression @var{expr} to the list of expressions to display
 each time your program stops.
-@end table
 
-@table @code
+@item display
+Display the current values of the expressions on the list, just as is
+done when your program stops.
+
 @kindex delete display
-@kindex undisplay
+@kindex undisplay @var{dnums}@dots{}
 @item undisplay @var{dnums}@dots{}
 @itemx delete display @var{dnums}@dots{}
 Remove item numbers @var{dnums} from the list of expressions to display.
@@ -3110,10 +3112,6 @@ enabled again later.
 @item enable display @var{dnums}@dots{}
 Enable display of item numbers @var{dnums}.  It becomes effective once
 again in auto display of its expression, until you specify otherwise.
-
-@item display
-Display the current values of the expressions on the list, just as is
-done when your program stops.
 
 @kindex info display
 @item info display
@@ -3139,7 +3137,7 @@ interacts with you in various ways given below.
 * Logging::              Specifying where to write debugger output
 * Prompt::               Prompt (set prompt, show prompt)
 * Editing::              Command editing (set editing, show editing)
-* Command-Tracing::      Showing comands as they run (set/show trace-commands)
+* Command-Tracing::      Showing commands as they run (set/show trace-commands)
 * Command Display::      Command display (set showcommand)
 * History::              Command history (history, !, H)
 * Command Completion::   Command completion (complete)

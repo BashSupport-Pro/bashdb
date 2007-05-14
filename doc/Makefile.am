@@ -1,5 +1,5 @@
 ##############################################################################
-# $Id: Makefile.am,v 1.3 2006/12/28 12:34:25 rockyb Exp $
+# $Id: Makefile.am,v 1.4 2007/05/14 00:37:49 rockyb Exp $
 #  Copyright (C) 2003 Rocky Bernstein
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -29,12 +29,6 @@ bashdb_TEXINFOS = fdl.texi gpl.texi copyright.texi
 
 all: $(INFO_DEPS) $(man1_MANS) html 
 
-pdf: bashdb.pdf 
-
-txt: bashdb.txt 
-
-ps: bashdb.ps 
-
 man: $(man1_MANS)
 
 html: bashdb.html bashdb-man.html
@@ -52,7 +46,14 @@ $(man1_MANS): bashdb-man.pod
 	gzip -9c $< > $@
 
 .texi.pdf:
-	texi2pdf $<
+	$(TEXI2PDF) -I $(srcdir) $<
+
+.texi.dvi:
+	$(TEXI2DVI) -I $(srcdir) $<
+
+.dvi.ps:
+	test -d $(docdir) || mkdir $(docdir)
+	$(DVIPS) $< -o $@
 
 .texi.html:
 	texi2html $< || true
