@@ -1245,7 +1245,7 @@ performs redirection of I/O, and thence to your script.
 @table @code
 @kindex set args
 @item set args
-Specify the arguments to be used the next time your program is run.  If
+Specify the arguments to be used if your program is rerun. If
 @code{set args} has no arguments, @code{restart} executes your program
 with no arguments.  Once you have run your program with arguments,
 using @code{set args} before the next @code{restart} is the only way to run
@@ -1565,8 +1565,8 @@ of temporary files is done by the program.
 @node Stopping
 @section Stopping and Resuming Execution
 
-One important use of a debugger is to stop your program before it
-terminates so that, if your script might run into trouble, you can
+One important use of a debugger is to stop your program @emph{before} it
+terminates so that if your script might run into trouble, you can
 investigate and find out why. However should your script accidently
 continue to termination, @DBG has arranged for it not to leave the
 debugger without your explicit instruction. That way, you can restart
@@ -1580,7 +1580,7 @@ continue execution.
 
 @menu
 * Breakpoints::          Breakpoints, watchpoints (break, tbreak, watch, watche, clear)
-* Resuming Execution::   Resuming execution (continue, step, next, skip, debug)
+* Resuming Execution::   Resuming execution (continue, step, next, skip, finish, return, debug)
 * Signals::              Signals
 @end menu
 
@@ -1592,10 +1592,10 @@ A @dfn{breakpoint} makes your script stop whenever a certain point in
 the program is reached.  For each breakpoint, you can add conditions to
 control in finer detail whether your script stops.  
 
-You can set breakpoints with the @code{break} command and its variants
-(@pxref{Set Breaks, ,Setting breakpoints}), to specify the place where
-your script should stop by line number.  or function name in the
-debugged script.
+You can set breakpoints specify the place where your script should
+stop the @code{break} command and its variants (@pxref{Set Breaks,
+,Setting breakpoints}). These commands allow own to specify the
+location by line number and file name or function name.
 
 @cindex watchpoints
 @cindex breakpoint on variable modification
@@ -1613,13 +1613,12 @@ Automatic display}.
 
 @cindex breakpoint numbers
 @cindex numbers for breakpoints
-@value{dBGP} assigns a number to each breakpoint and watchpoint when
-you create it; these numbers are successive integers starting with
-one.  In many of the commands for controlling various features of
-breakpoints you use the breakpoint number to say which breakpoint you
-want to change.  Each breakpoint may be @dfn{enabled} or
-@dfn{disabled}; if disabled, it has no effect on your script until you
-enable it again.
+@value{dBGP} assigns a number to each breakpoint when you create it;
+these numbers are successive integers starting with one.  In many of
+the commands for controlling various features of breakpoints you use
+the breakpoint number to say which breakpoint you want to change.
+Each breakpoint may be @dfn{enabled} or @dfn{disabled}; if disabled,
+it has no effect on your script until you enable it again.
 
 @cindex watchpoints numbers
 @cindex numbers for watchpoints
@@ -2086,6 +2085,13 @@ condition 1       # Change that! Unconditinally stop on breakpoint 1.
 @node Resuming Execution
 @subsection Resuming Execution (@samp{step}, @samp{next}, @samp{finish}, @samp{skip}, @samp{continue}, @samp{debug}, @samp{return})
 
+A typical technique for using stepping is to set a breakpoint
+(@pxref{Breakpoints, ,Breakpoints; watchpoints}) at the
+beginning of the function or the section of your script where a problem
+is believed to lie, run your script until it stops at that breakpoint,
+and then step through the suspect area, examining the variables that are
+interesting, until you see the problem happen.
+
 @cindex stepping
 @cindex continuing
 @cindex resuming execution
@@ -2097,7 +2103,7 @@ your script may stop even sooner, due to a breakpoint or a signal.
 
 @menu
 * Step::          running the next statement (step)
-* Next::          running the next statement skipping over functions (skip)
+* Next::          running the next statement skipping over functions (next)
 * Finish::        running until the return of a function or ``source'' (finish)
 * Skip::          skipping the next statement (skip)
 * Continue::      continuing execution (continue)
@@ -2180,14 +2186,14 @@ run.
 @item continue @ovar{line-specification}
 @itemx c @ovar{line-specification}
 Resume program execution, at the address where your script last
-stopped; any breakpoints set at that address are bypassed.  The
-optional argument @var{line-specification} allows you to specify a location (a
-line number, function, or filename linenumber combination) to set. A
-one-time breakpoint is deleted when that breakpoint is reached. Should
-the program stop before that breakpoint is reached, for example,
-perhaps another breakpoint or watchpoint is reached first, in a
-listing of the breakpoints you will see this entry with the condition
-9999 which indicates a one-time breakpoint.
+stopped; any breakpoints set at that address are bypassed.  
+
+The optional argument @var{line-specification} allows you to specify a
+location (a line number, function, or filename linenumber combination)
+to set a one-time breakpoint which is deleted when that breakpoint is
+reached. Should the program stop before that breakpoint is reached, in
+a listing of the breakpoints you will see this entry with the
+condition 9999 which indicates a one-time breakpoint.
 @end table
 
 To resume execution at a different place, you can use @code{return}
@@ -2195,13 +2201,6 @@ To resume execution at a different place, you can use @code{return}
 calling function or sourced script. If you are nested inside a
 subshell, @code{quit} with a value for the number of subshells to
 exit also functions like a return.
-
-A typical technique for using stepping is to set a breakpoint
-(@pxref{Breakpoints, ,Breakpoints; watchpoints}) at the
-beginning of the function or the section of your script where a problem
-is believed to lie, run your script until it stops at that breakpoint,
-and then step through the suspect area, examining the variables that are
-interesting, until you see the problem happen.
 
 @node Debug
 @subsubsection Debug (@samp{debug})
@@ -3164,8 +3163,10 @@ level 2 is the maximum annotation suitable for programs that control
 @table @code
 @kindex set basename
 @item set basename @r{[} on | 1 @r{]}
-Source filenames are shown as the basename only. This is useful in
-running the regression tests.
+When set on, source filenames are shown as the shorter ``basename''
+only. (Directory paths are omitted). This is useful in running the
+regression tests and may useful in showing debugger examples as in
+this text. You may also just want less verbose filename display.
 
 @item set basename @r{[} off | 0 @r{]}
 Source filenames are shown as with their full path. This is the default.
@@ -3805,6 +3806,9 @@ communicates with Emacs in terms of line numbers.  If you add or
 delete lines from the text, the line numbers that @value{DBG} knows cease
 to correspond properly with the code.
 
+@xref{Debugger Operation, , , Emacs, The @value{Emacs}
+Manual}.
+
 @node Emacs Source
 @subsection Commands from the source script
 
@@ -3923,8 +3927,11 @@ command name is @code{gud-refresh}. In the corresponding I/O buffer,
 @subsection @value{DBG} from a @value{Emacs} Shell
 
 It is also possible in GNU emacs to use a regular (``comint'') shell
-and set a mode to watch for @value{DBG} prompts. To do this, in Emacs
-issue the command (from M-x) @code{turn-on-bashdbtrack}. There is some
+and set a mode to watch for @value{DBG} prompts. @xref{Interactive
+Shell, , Shell, Emacs, The @value{Emacs} Manual}.
+
+To run bash in a shell in Emacs but track source lines this, issue the
+the command (from M-x) @code{turn-on-bashdbtrack}. There is some
 overhead involved in scanning output, so if you are not debugging bash
 programs you probably want to turn this off which can be done via the
 M-x @code{turn-off-bashdbtrack} command.
