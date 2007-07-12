@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.21 2007/03/02 21:36:10 rockyb Exp $
+;;; $Id: bashdb.el,v 1.22 2007/07/12 06:06:05 myamato Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -22,11 +22,16 @@
 ;; Commentary:
 ;; 1. Add
 ;;
-;; (autoload 'bashdb "bashdb" "BASH Debugger mode via GUD and bashdb" t)
+;;      (autoload 'bashdb "bashdb" "BASH Debugger mode via GUD and bashdb" t)
 ;;
-;; to your .emacs file.
+;;    to your .emacs file.
+;;
 ;; 2. Do M-x bashdb
-
+;;
+;; 3. Give a target script for debugging and arguments for it
+;;    See `bashdb' of describe-function for more details.
+;;    
+;;
 ;; Codes:
 (require 'gud)
 ;; ======================================================================
@@ -39,7 +44,7 @@
 ;;   (/etc/init.d/network:14):
 (defconst gud-bashdb-marker-regexp
   "^(\\(\\(?:[a-zA-Z]:\\)?[-a-zA-Z0-9_/.\\\\ ]+\\):[ \t]?\\(.*\n\\)"
-  "Regular expression used to find a file location given by pydb.
+  "Regular expression used to find a file location given by bashdb.
 
 Program-location lines look like this:
    (/etc/init.d/network:39):
@@ -47,9 +52,9 @@ or MS Windows:
    (c:\\mydirectory\\gcd.sh:10):
 ")
 (defconst gud-bashdb-marker-regexp-file-group 1
-  "Group position in gud-pydb-marker-regexp that matches the file name.")
+  "Group position in `gud-bashdb-marker-regexp' that matches the file name.")
 (defconst gud-bashdb-marker-regexp-line-group 2
-  "Group position in gud-pydb-marker-regexp that matches the line number.")
+  "Group position in `gud-bashdb-marker-regexp' that matches the line number.")
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
@@ -68,7 +73,7 @@ or MS Windows:
     ; If we are invoking using the bashdb command, no need to add
     ; --debugger. '^\S ' means non-whitespace at the beginning of a
     ; line and '\s ' means "whitespace"
-    (if (and command-line (string-match "^\\S bashdb\\s " command-line))
+    (if (and command-line (string-match "^\\S *bashdb\\s " command-line))
 	args
     
       ;; Pass all switches and -e scripts through.
@@ -78,8 +83,8 @@ or MS Windows:
 		  (not (equal "--" (car args))))
 	(funcall shift))
       
-      (if (or (not args)
-	      (string-match "^-" (car args)))
+      (when (or (not args)
+		(string-match "^-" (car args)))
 	  (error "Can't use stdin as the script to debug"))
       ;; This is the program name.
       (funcall shift)
@@ -156,7 +161,20 @@ or MS Windows:
 (defun bashdb (command-line)
   "Run bashdb on program FILE in buffer *gud-FILE*.
 The directory containing FILE becomes the initial working directory
-and source-file directory for your debugger."
+and source-file directory for your debugger.
+
+You can specify a target script and its arguments like:
+
+  bash YOUR-SCRIPT ARGUMENT...
+
+or
+  
+  bashdb YOUR-SCRIPT ARGUMENT...
+
+Generally the former one works fine. The later one may be useful if
+you have not installed bashdb yet or you have installed Bashdb to the
+place where Bash doesn't expect."
+
   (interactive
    (list (read-from-minibuffer "Run bashdb (like this): "
 			       (if (consp gud-bashdb-history)
@@ -166,12 +184,11 @@ and source-file directory for your debugger."
 			       gud-minibuffer-local-map nil
 			       '(gud-bashdb-history . 1))))
 
-  (defun local-massage-args (file args) 
-    (gud-bashdb-massage-args file args command-line))
-  (gud-common-init command-line 'local-massage-args
+  ;; `gud-bashdb-massage-args' needs whole `command-line'.
+  ;; command-line is refered through dyanmic scope.
+  (gud-common-init command-line (lambda (file args)
+				  (gud-bashdb-massage-args file args command-line))
   	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
-  ;(gud-common-init command-line 'gud-bashdb-massage-args
-	;	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
 
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
@@ -222,7 +239,7 @@ and source-file directory for your debugger."
   (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
   (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
 
-  (local-set-key "\C-i" 'gud-gdb-complete-command)
+  (local-set-key "\C-i" 'gud-bash-complete-command)
 
   (local-set-key [menu-bar debug tbreak] 
 		 '("Temporary Breakpoint" . gud-tbreak))
@@ -234,6 +251,10 @@ and source-file directory for your debugger."
   (setq paragraph-start comint-prompt-regexp)
   (run-hooks 'bashdb-mode-hook)
   )
+
+(defun gud-bashdb-complete-command (&optional command a b)
+  "A wrapper for `gud-gdb-complete-command'"
+  (gud-gdb-complete-command command a b))
 
 (provide 'bashdb)
 
@@ -305,7 +326,7 @@ can write into: the value (if any) of the environment variable TMPDIR,
   "Queue of Makefile temp files awaiting execution.
 Currently-active file is at the head of the list.")
 
-(defvar bashdb-bashdbtrack-is-tracking-p t)
+(defvar bashdb-bashdbtrack-is-tracking-p nil)
 
 
 ;; Constants
@@ -476,7 +497,7 @@ problem as best as we can determine."
   (bashdb-bashdbtrack-toggle-stack-tracking 0))
 
 ;; Add a designator to the minor mode strings
-(or (assq 'bashdb-bashdbtrack-minor-mode-string minor-mode-alist)
+(or (assq 'bashdb-bashdbtrack-is-tracking-p minor-mode-alist)
     (push '(bashdb-bashdbtrack-is-tracking-p
 	    bashdb-bashdbtrack-minor-mode-string)
 	  minor-mode-alist))
