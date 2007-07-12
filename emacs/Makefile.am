@@ -13,13 +13,13 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.5 2007/01/20 12:02:03 rockyb Exp $
+#$Id: Makefile.am,v 1.6 2007/07/12 08:37:36 myamato Exp $
 
-check_DATA := bashdb-test.el bashdb-test.el.in elk-test.el
-EXTRA_DIST := bashdb.el $(check_DATA)
-ELCFILES  :=  bashdb.elc
+check_DATA = bashdb-test.el bashdb-test.el.in elk-test.el
+EXTRA_DIST = bashdb.el $(check_DATA)
+ELCFILES  =  bashdb.elc
 if INSTALL_EMACS_LISP
-lisp_LISP := bashdb.el
+lisp_LISP = bashdb.el
 endif
 
 test: check
