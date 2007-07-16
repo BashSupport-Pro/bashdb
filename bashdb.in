@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.18 2007/02/18 02:25:40 rockyb Exp $'
+'$Id: bashdb.in,v 1.19 2007/07/16 02:51:29 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -207,9 +207,10 @@ fi
 }
 
 if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
-  echo "${_Dbg_pname}: cannot read $_Dbg_libdir. " \
-  "Perhaps bashdb is installed wrong." >&2
-  echo "${_Dbg_pname}: or try using -L (with a different directory)." >&2
+  echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
+  echo "${_Dbg_pname}: Perhaps bashdb is installed wrong (if its installed)." >&2
+  echo "${_Dbg_pname}: Try running bashdb using -L (with a different directory)." >&2
+  echo "${_Dbg_pname}: Run bashdb --help for a list and explanation of options." >&2
   exit 1
 fi
 
