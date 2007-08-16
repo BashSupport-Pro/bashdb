@@ -1,4 +1,4 @@
-#   Copyright (C) 2002, 2004, 2005, 2006 Rocky Bernstein
+#   Copyright (C) 2002, 2004, 2005, 2006, 2007 Rocky Bernstein
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.10 2006/12/19 02:10:49 rockyb Exp $
+#$Id: Makefile.am,v 1.11 2007/08/16 11:32:59 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -73,15 +73,17 @@ readarray$(EXEEXT): $(readarray_OBJECTS) $(readarray_DEPENDENCIES)
 OLD_DIR :=$(dir @BASHDB_MAIN@)
 OLD_MAIN:=$(notdir @BASHDB_MAIN@)
 PARENT_DIR:=$(dir $(OLD_DIR))
-install-data-hook:
+install-data-hook: 
 	@if test -e @BASHDB_MAIN@ ; then \
 	  if test "$(OLD_MAIN)" != "dbg-main.inc" ; then \
 	    $(RM) @BASHDB_MAIN@ || true; \
           fi; fi
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
 	     $(RM) -fr $(DESTDIR)$(OLD_DIR:/=) || true; \
+	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
 	else if test -L $(DESTDIR)$(OLD_DIR:/=) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR:/=) || true; \
+	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
 	$(LN_S) $(DESTDIR)$(PKGDATADIR) $(DESTDIR)$(PARENT_DIR:/=) || true
