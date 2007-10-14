@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.19 2007/07/16 02:51:29 rockyb Exp $'
+'$Id: bashdb.in,v 1.20 2007/10/14 03:53:24 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -97,6 +97,7 @@ typeset _Dbg_pname=${0##*/}
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
 typeset    _Dbg_main=dbg-main.inc
+prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset    _Dbg_libdir=@PKGDATADIR@
 typeset    _Dbg_bindir=$(dirname $0)
 typeset    _Dbg_tmpdir=/tmp
