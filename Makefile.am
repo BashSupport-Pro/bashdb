@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.12 2007/10/14 03:02:11 rockyb Exp $
+#$Id: Makefile.am,v 1.13 2007/10/14 09:12:53 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -86,7 +86,9 @@ install-data-hook:
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
-	$(LN_S) $(DESTDIR)$(PKGDATADIR) $(DESTDIR)$(PARENT_DIR:/=) || true
+	@if test $(DESTDIR)$(PKGDATADIR) != $(DESTDIR)$(PARENT_DIR:/=) ; then \
+	  $(LN_S) $(DESTDIR)$(PKGDATADIR) $(DESTDIR)$(PARENT_DIR:/=) || true; \
+        fi
 	@if test "dbg-main.inc" != "$(OLD_MAIN)" ; then \
 	  ( if cd $(DESTDIR)$(pkgdatadir) ; then \
 	     test -e $(OLD_MAIN) && $(RM) $(OLD_MAIN); \
