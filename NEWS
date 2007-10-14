@@ -19,6 +19,8 @@ Version 3.1 0.09cvs
 
 -  emacs code improved
 
+-  some installation bugs fixed
+
 Version 3.1 0.08
 2007-1-20
 
@@ -600,4 +602,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.30 2007/10/14 00:42:13 rockyb Exp $
+$Id: NEWS,v 1.31 2007/10/14 04:07:44 rockyb Exp $
