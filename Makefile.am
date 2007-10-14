@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.11 2007/08/16 11:32:59 rockyb Exp $
+#$Id: Makefile.am,v 1.12 2007/10/14 03:02:11 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -70,9 +70,9 @@ readarray$(EXEEXT): $(readarray_OBJECTS) $(readarray_DEPENDENCIES)
 # the basename that bash wants to use is symlinked to the main name
 # that this distribution uses dbg-main.inc, unless those are the same.
 # 
-OLD_DIR :=$(dir @BASHDB_MAIN@)
-OLD_MAIN:=$(notdir @BASHDB_MAIN@)
-PARENT_DIR:=$(dir $(OLD_DIR))
+OLD_DIR    = $(dir @BASHDB_MAIN@)
+OLD_MAIN   = $(notdir @BASHDB_MAIN@)
+PARENT_DIR = $(dir $(OLD_DIR))
 install-data-hook: 
 	@if test -e @BASHDB_MAIN@ ; then \
 	  if test "$(OLD_MAIN)" != "dbg-main.inc" ; then \
