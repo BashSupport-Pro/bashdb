@@ -22,14 +22,21 @@ SHORT INSTRUCTIONS:
        make && make check 
        su -c 'make install'
 
+   On systems which don't install GNU Make by default you may have to use
+   "gmake" instead of "make".
+
+   Some systems have trouble with GNU long options (getopt). For those 
+   systems you may want to add --disable-getopt to configure.
+
 That's it!   
 
 - - - - 
 
-This debugger needs a debugger-enabled version of Bash 3.1 which
-contains things like the ability to step into functions automatically,
-give tracebacks, and list source-file information. When configuring
-bash 3.1, the option --enable-debugger should be used.
+This debugger needs a debugger-enabled version of Bash 3.1 or 3.2
+which contains things like the ability to step into functions
+automatically, give tracebacks, and list source-file information. When
+configuring bash 3.1 or 3.2, the option --enable-debugger should be
+used.
 
 It is possible to try out the debugger without installing it by using
 the bashdb script that is in this directory. To do so you would invoke
@@ -123,4 +130,4 @@ instructions.
    
 No, really. that's it!
 
-$Id: INSTALL,v 1.4 2006/01/18 03:54:11 rockyb Exp $
+$Id: INSTALL,v 1.5 2007/10/27 03:23:50 rockyb Exp $

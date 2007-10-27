@@ -15,7 +15,7 @@ One-time breakpoint 1 set in file bugIFS.sh, line 5.
 6:	set -- $interface_names
 +## Make sure IFS in an eval is the same as what we just set.
 +eval declare -p IFS
-declare -- IFS=" ."
+declare -x IFS=" ."
 +step 2
 (bugIFS.sh:8):
 8:	exit 0
