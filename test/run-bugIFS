@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-bugIFS,v 1.2 2007/10/27 03:23:50 rockyb Exp $
+#$Id: run-bugIFS,v 1.3 2007/10/27 03:34:19 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -19,7 +19,9 @@ TEST_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.check"
 
 cat ${TEST_FILE} | sed -e 's/declare --/declare -x/'>${TEST_FILTERED_FILE}
 
-check_output $TEST_FILTERED_FILE ${RIGHT_FILE}
+check_output $TEST_FILTERED_FILE ${RIGHT_FILE} && {
+  rm -f $TEST_FILE
+}
 
 # Return code tells testing mechanism whether passed or not.
 exit $?
