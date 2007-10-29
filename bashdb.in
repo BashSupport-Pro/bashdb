@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.20 2007/10/14 03:53:24 rockyb Exp $'
+'$Id: bashdb.in,v 1.21 2007/10/29 05:19:53 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -33,6 +33,7 @@ _Dbg_usage_long() {
 Runs script_file under a debugger.
 
 options: 
+    -A | --annotate  set annotation level.
     -B | --basename  basename only on source listings. 
                      (Needed in regression tests)
     -h | --help      print this help
@@ -104,6 +105,9 @@ typeset    _Dbg_tmpdir=/tmp
 typeset -i _Dbg_opt_linetrace=0
 typeset    _Dbg_cmd='' # If command string given on command line, this is it.
 
+# Use gdb-style annotate?
+typeset -i _Dbg_annotate=0
+
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
   # Use bindir/../share as fallback
@@ -121,7 +125,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o Bc:hL:nqt:T::x:XYV \
+  TEMP=`getopt -o ABc:hL:nqt:T::x:XYV \
 --long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
      -n 'bashdb' -- "$@"`
 
@@ -135,6 +139,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   
   while true ; do
     case $1 in
+      -A|--annotate) _Dbg_annotate=1 ;;
       -B|--basename) _Dbg_basename_only=1 ;;
       -c|--command) _Dbg_cmd="$2"; shift ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger
@@ -166,8 +171,9 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   done
 else 
   # Process using short options
-  while getopts :Bc:hL:nqt:T:x:XYV opt; do
+  while getopts :A:Bc:hL:nqt:T:x:XYV opt; do
     case $opt in
+      A) _Dbg_annotate=1 ;;
       B) _Dbg_basename_only=1 ;;
       c) _Dbg_cmd="$OPTARG" ;;
       h) _Dbg_usage_short; exit 100 ;;

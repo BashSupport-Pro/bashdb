@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.22 2007/07/12 06:06:05 myamato Exp $
+;;; $Id: bashdb.el,v 1.23 2007/10/29 05:19:53 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -56,6 +56,20 @@ or MS Windows:
 (defconst gud-bashdb-marker-regexp-line-group 2
   "Group position in `gud-bashdb-marker-regexp' that matches the line number.")
 
+;;-----------------------------------------------------------------------------
+;; ALB - annotations support
+;;-----------------------------------------------------------------------------
+
+(defcustom bashdb-many-windows t
+  "*If non-nil, display secondary bashdb windows, in a layout similar to `gdba'."
+  :type 'boolean
+  :group 'bashdb)
+
+(defconst bashdb-annotation-start-regexp
+  "^\\([a-z]+\\)\n")
+(defconst bashdb-annotation-end-regexp
+  "^\n")
+
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
 ;; "--debugger" in inserted as the first switch, unless the 
@@ -100,9 +114,9 @@ or MS Windows:
 ;; receive a chunk of text which looks like it might contain the
 ;; beginning of a marker, we save it here between calls to the
 ;; filter.
-(defun gud-bashdb-marker-filter (string)
+(defun OLD_gud-bashdb-marker-filter (string)
   (setq gud-marker-acc (concat gud-marker-acc string))
-  (let ((output ""))
+  (let ((output "") s s2 (tmp ""))
 
     ;; Process all the complete markers in this chunk.
     (while (string-match gud-bashdb-marker-regexp gud-marker-acc)
@@ -146,13 +160,115 @@ or MS Windows:
 
     output))
 
+;; There's no guarantee that Emacs will hand the filter the entire
+;; marker at once; it could be broken up across several strings.  We
+;; might even receive a big chunk with several markers in it.  If we
+;; receive a chunk of text which looks like it might contain the
+;; beginning of a marker, we save it here between calls to the
+;; filter.
+(defun gud-bashdb-marker-filter (string)
+  ;;(message "GOT: %s" string)
+  (setq gud-marker-acc (concat gud-marker-acc string))
+  ;;(message "ACC: %s" gud-marker-acc)
+  (let ((output "") s s2 (tmp ""))
+
+    ;; ALB first we process the annotations (if any)
+    (while (setq s (string-match bashdb-annotation-start-regexp
+                                 gud-marker-acc))
+      (let ((name (substring gud-marker-acc (match-beginning 1) (match-end 1)))
+            (end (match-end 0)))
+        (if (setq s2 (string-match bashdb-annotation-end-regexp
+                                   gud-marker-acc end))
+            ;; ok, annotation complete, process it and remove it
+            (let ((contents (substring gud-marker-acc end s2))
+                  (end2 (match-end 0)))
+              (bashdb-process-annotation name contents)
+              (setq gud-marker-acc
+                    (concat (substring gud-marker-acc 0 s)
+                            (substring gud-marker-acc end2))))
+          ;; otherwise, save the partial annotation to a temporary, and re-add
+          ;; it to gud-marker-acc after normal output has been processed
+          (setq tmp (substring gud-marker-acc s))
+          (setq gud-marker-acc (substring gud-marker-acc 0 s)))))
+    
+    (when (setq s (string-match bashdb-annotation-end-regexp gud-marker-acc))
+      ;; save the beginning of gud-marker-acc to tmp, remove it and restore it
+      ;; after normal output has been processed
+      (setq tmp (substring gud-marker-acc 0 s))
+      (setq gud-marker-acc (substring gud-marker-acc s)))
+           
+    ;; Process all the complete markers in this chunk.
+    ;; Format of line looks like this:
+    ;;   (/etc/init.d/ntp.init:16):
+    ;; but we also allow DOS drive letters
+    ;;   (d:/etc/init.d/ntp.init:16):
+    (while (string-match gud-bashdb-marker-regexp gud-marker-acc)
+      (setq
+
+       ;; Extract the frame position from the marker.
+       gud-last-frame
+       (cons (substring gud-marker-acc 
+			(match-beginning gud-bashdb-marker-regexp-file-group) 
+			(match-end gud-bashdb-marker-regexp-file-group))
+	     (string-to-number
+	      (substring gud-marker-acc
+			 (match-beginning gud-bashdb-marker-regexp-line-group)
+			 (match-end gud-bashdb-marker-regexp-line-group))))
+
+       ;; Append any text before the marker to the output we're going
+       ;; to return - we don't include the marker in this text.
+       output (concat output
+		      (substring gud-marker-acc 0 (match-beginning 0)))
+
+       ;; Set the accumulator to the remaining text.
+       gud-marker-acc (substring gud-marker-acc (match-end 0))))
+
+    ;; Does the remaining text look like it might end with the
+    ;; beginning of another marker?  If it does, then keep it in
+    ;; gud-marker-acc until we receive the rest of it.  Since we
+    ;; know the full marker regexp above failed, it's pretty simple to
+    ;; test for marker starts.
+    (if (string-match "\032.*\\'" gud-marker-acc)
+	(progn
+	  ;; Everything before the potential marker start can be output.
+	  (setq output (concat output (substring gud-marker-acc
+						 0 (match-beginning 0))))
+
+	  ;; Everything after, we save, to combine with later input.
+	  (setq gud-marker-acc
+		(concat tmp (substring gud-marker-acc (match-beginning 0)))))
+
+      (setq output (concat output gud-marker-acc)
+	    gud-marker-acc tmp))
+
+    output))
+
+(defvar bashdb--annotation-setup-map
+  (progn
+    (define-hash-table-test 'str-hash 'string= 'sxhash)
+    (let ((map (make-hash-table :test 'str-hash)))
+      (puthash "breakpoints" 'bashdb--setup-breakpoints-buffer map)
+      (puthash "stack" 'bashdb--setup-stack-buffer map)
+      ; (puthash "locals" 'bashdb--setup-locals-buffer map)
+      map)))
+
+(defun bashdb-process-annotation (name contents)
+  (let ((buf (get-buffer-create (format "*bashdb-%s*" name))))
+    (with-current-buffer buf
+      (setq buffer-read-only t)
+     (let ((inhibit-read-only t)
+            (setup-func (gethash name bashdb--annotation-setup-map)))
+        (erase-buffer)
+        (insert contents)
+        (when setup-func (funcall setup-func buf))))))
+
 (defun gud-bashdb-find-file (f)
   (save-excursion
     (let ((buf (find-file-noselect f 'nowarn)))
       (set-buffer buf)
       buf)))
 
-(defcustom gud-bashdb-command-name "bash"
+(defcustom gud-bashdb-command-name "bashdb -A"
   "File name for executing bash debugger."
   :type 'string
   :group 'gud)
@@ -249,6 +365,7 @@ place where Bash doesn't expect."
 
   (setq comint-prompt-regexp "^bashdb<+(*[0-9]*)*>+ ")
   (setq paragraph-start comint-prompt-regexp)
+  (when bashdb-many-windows (bashdb-setup-windows))
   (run-hooks 'bashdb-mode-hook)
   )
 
@@ -347,7 +464,7 @@ Currently-active file is at the head of the list.")
   "^#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
   "Regular expression that describes tracebacks.")
 
-;; bashdbtrack contants
+;; bashdbtrack constants
 (defconst bashdb-bashdbtrack-stack-entry-regexp
   "^=>#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
   "Regular expression bashdbtrack uses to find a stack trace entry.")
@@ -358,13 +475,217 @@ Currently-active file is at the head of the list.")
 (defconst bashdb-bashdbtrack-track-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
-
-;; Utilities
-(defmacro bashdb-safe (&rest body)
-  "Safely execute BODY, return nil if an error occurred."
-  (` (condition-case nil
-	 (progn (,@ body))
-       (error nil))))
+(defun bashdb-setup-windows ()
+  "Layout the window pattern for `bashdb-many-windows'. This was
+mostly copied from `gdb-setup-windows', but simplified."
+  (pop-to-buffer gud-comint-buffer)
+  (delete-other-windows)
+  (split-window nil ( / ( * (window-height) 3) 4))
+  (split-window nil ( / (window-height) 3))
+  ;(split-window-horizontally)
+  ;(other-window 1)
+  ; (set-window-buffer (selected-window) (get-buffer-create "*bashdb-locals*"))
+  (other-window 1)
+  (switch-to-buffer
+       (if gud-last-last-frame
+	   (gud-find-file (car gud-last-last-frame))
+         ;; Put buffer list in window if we
+         ;; can't find a source file.
+         (list-buffers-noselect)))
+  (other-window 1)
+  (set-window-buffer (selected-window) (get-buffer-create "*bashdb-stack*"))
+  (split-window-horizontally)
+  (other-window 1)
+  (set-window-buffer (selected-window) (get-buffer-create "*bashdb-breakpoints*"))
+  (other-window 1)
+  (end-of-buffer))
+
+(defun bashdb-restore-windows ()
+  "Equivalent of `gdb-restore-windows' for bashdb."
+  (interactive)
+  (when bashdb-many-windows
+    (bashdb-setup-windows)))
+
+;; ALB fontification and keymaps for secondary buffers (breakpoints, stack)
+
+;; -- breakpoints
+
+(defvar bashdb--breakpoints-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mouse-2] 'bashdb-goto-breakpoint-mouse)
+    (define-key map [? ] 'bashdb-toggle-breakpoint)
+    (define-key map [(control m)] 'bashdb-goto-breakpoint)
+    (define-key map [?d] 'bashdb-delete-breakpoint)
+    map)
+  "Keymap to navigate/set/enable bashdb breakpoints.")
+
+(defconst bashdb--breakpoint-regexp
+  "^\\([0-9]+\\) +breakpoint +\\([a-z]+\\) +\\([a-z]+\\) +at +\\(.+\\):\\([0-9]+\\)$"
+  "Regexp to recognize breakpoint lines in bashdb breakpoints buffers.")
+
+(defun bashdb--setup-breakpoints-buffer (buf)
+  "Detects breakpoint lines and sets up mouse navigation."
+  (with-current-buffer buf
+    (let ((inhibit-read-only t))
+      (setq mode-name "BASHDB Breakpoints")
+      (goto-char (point-min))
+      (while (not (eobp))
+        (let ((b (point-at-bol)) (e (point-at-eol)))
+          (when (string-match bashdb--breakpoint-regexp
+                              (buffer-substring b e))
+            (add-text-properties b e
+                                 (list 'mouse-face 'highlight
+                                       'keymap bashdb--breakpoints-map))
+            ;; fontify "keep/del"
+            (let ((face (if (string= "keep" (buffer-substring
+                                             (+ b (match-beginning 2))
+                                             (+ b (match-end 2))))
+                            compilation-info-face
+                          compilation-warning-face)))
+              (add-text-properties
+               (+ b (match-beginning 2)) (+ b (match-end 2))
+               (list 'face face 'font-lock-face face)))
+            ;; fontify "enabled"
+            (when (string= "y" (buffer-substring (+ b (match-beginning 3))
+                                                 (+ b (match-end 3))))
+              (add-text-properties
+               (+ b (match-beginning 3)) (+ b (match-end 3))
+               (list 'face compilation-error-face
+                     'font-lock-face compilation-error-face))))
+        (forward-line)
+        (beginning-of-line))))))
+
+(defun bashdb-goto-breakpoint-mouse (event)
+  "Displays the location in a source file of the selected breakpoint."
+  (interactive "e")
+  (with-current-buffer (window-buffer (posn-window (event-end event)))
+    (bashdb-goto-breakpoint (posn-point (event-end event)))))
+
+(defun bashdb-goto-breakpoint (pt)
+  "Displays the location in a source file of the selected breakpoint."
+  (interactive "d")
+  (save-excursion
+    (goto-char pt)
+    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
+      (when (string-match bashdb--breakpoint-regexp s)
+        (bashdb-display-line
+         (substring s (match-beginning 4) (match-end 4))
+         (string-to-number (substring s (match-beginning 5) (match-end 5))))
+        ))))
+
+(defun bashdb-toggle-breakpoint (pt)
+  "Toggles the breakpoint at PT in the breakpoints buffer."
+  (interactive "d")
+  (save-excursion
+    (goto-char pt)
+    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
+      (when (string-match bashdb--breakpoint-regexp s)
+        (let* ((enabled
+                (string= (substring s (match-beginning 3) (match-end 3)) "y"))
+               (cmd (if enabled "disable" "enable"))
+               (bpnum (substring s (match-beginning 1) (match-end 1))))
+          (gud-call (format "%s %s" cmd bpnum)))))))
+
+(defun bashdb-delete-breakpoint (pt)
+  "Deletes the breakpoint at PT in the breakpoints buffer."
+  (interactive "d")
+  (save-excursion
+    (goto-char pt)
+    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
+      (when (string-match bashdb--breakpoint-regexp s)
+        (let ((bpnum (substring s (match-beginning 1) (match-end 1))))
+          (gud-call (format "delete %s" bpnum)))))))
+
+(defun bashdb-display-line (file line &optional move-arrow)
+  (let ((oldpos (and gud-overlay-arrow-position
+                     (marker-position gud-overlay-arrow-position)))
+        (oldbuf (and gud-overlay-arrow-position
+                     (marker-buffer gud-overlay-arrow-position))))
+    (gud-display-line file line)
+    (unless move-arrow
+      (when gud-overlay-arrow-position
+        (set-marker gud-overlay-arrow-position oldpos oldbuf)))))
+
+
+;; -- stack
+
+(defvar bashdb--stack-frame-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mouse-1] 'bashdb-goto-stack-frame-mouse)
+    (define-key map [mouse-2] 'bashdb-goto-stack-frame-mouse)
+    (define-key map [(control m)] 'bashdb-goto-stack-frame)
+    map)
+  "Keymap to navigate bashdb stack frames.")
+
+(defconst bashdb--stack-frame-regexp
+  "^\\(->\\|##\\|  \\) +\\([0-9]+\\) +\\([^ (]+\\).+$"
+  "Regexp to recognize stack frame lines in bashdb stack buffers.")
+
+(defun bashdb--setup-stack-buffer (buf)
+  "Detects stack frame lines and sets up mouse navigation."
+  (with-current-buffer buf
+    (let ((inhibit-read-only t))
+      (setq mode-name "BASHDB Stack Frames")
+      (goto-char (point-min))
+      (while (not (eobp))
+        (let* ((b (point-at-bol)) (e (point-at-eol))
+               (s (buffer-substring b e)))
+          (when (string-match bashdb--stack-frame-regexp s)
+            (add-text-properties
+             (+ b (match-beginning 3)) (+ b (match-end 3))
+             (list 'face font-lock-function-name-face
+                   'font-lock-face font-lock-function-name-face))
+            (if (string= (substring s (match-beginning 1) (match-end 1)) "->")
+                ;; highlight the currently selected frame
+                (add-text-properties b e
+                                     (list 'face 'bold
+                                           'font-lock-face 'bold))
+              ;; remove the trailing ## 
+              (beginning-of-line)
+              (delete-char 2)
+              (insert "  "))
+            (add-text-properties b e
+                                 (list 'mouse-face 'highlight
+                                       'keymap bashdb--stack-frame-map))))
+        (forward-line)
+        (beginning-of-line)))))
+
+(defun bashdb-goto-stack-frame (pt)
+  "Show the bashdb stack frame correspoding at PT in the bashdb stack buffer."
+  (interactive "d")
+  (save-excursion
+    (goto-char pt)
+    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
+      (when (string-match bashdb--stack-frame-regexp s)
+        (let ((frame (substring s (match-beginning 2) (match-end 2))))
+          (gud-call (concat "frame " frame)))))))
+
+(defun bashdb-goto-stack-frame-mouse (event)
+  "Show the bashdb stack frame under the mouse in the bashdb stack buffer."
+  (interactive "e")
+  (with-current-buffer (window-buffer (posn-window (event-end event)))
+    (bashdb-goto-stack-frame (posn-point (event-end event)))))
+
+;; -- locals
+
+(defun bashdb--setup-locals-buffer (buf)
+  (with-current-buffer buf
+    (setq mode-name "BASHDB Locals")))
+
+;;-----------------------------------------------------------------------------
+;; ALB - redefinition of gud-reset for our own purposes
+
+(defvar bashdb--orig-gud-reset (symbol-function 'gud-reset))
+
+(defun gud-reset ()
+  "Redefinition of `gud-reset' to take care of bashdb cleanup."
+  (funcall bashdb--orig-gud-reset)
+  (dolist (buffer (buffer-list))
+    (when (string-match "\\*bashdb-[a-z]+\\*" (buffer-name buffer))
+      (let ((w (get-buffer-window buffer)))
+        (when w (delete-window w)))
+      (kill-buffer buffer))))
+
 
 
 ;;;###autoload
