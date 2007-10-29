@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.23 2007/10/29 05:19:53 rockyb Exp $
+;;; $Id: bashdb.el,v 1.24 2007/10/29 15:00:10 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -114,58 +114,6 @@ or MS Windows:
 ;; receive a chunk of text which looks like it might contain the
 ;; beginning of a marker, we save it here between calls to the
 ;; filter.
-(defun OLD_gud-bashdb-marker-filter (string)
-  (setq gud-marker-acc (concat gud-marker-acc string))
-  (let ((output "") s s2 (tmp ""))
-
-    ;; Process all the complete markers in this chunk.
-    (while (string-match gud-bashdb-marker-regexp gud-marker-acc)
-      (setq
-
-       ;; Extract the frame position from the marker.
-       gud-last-frame
-       (cons (substring gud-marker-acc 
-			(match-beginning gud-bashdb-marker-regexp-file-group) 
-			(match-end gud-bashdb-marker-regexp-file-group))
-	     (string-to-number
-	      (substring gud-marker-acc
-			 (match-beginning gud-bashdb-marker-regexp-line-group)
-			 (match-end gud-bashdb-marker-regexp-line-group))))
-
-       ;; Append any text before the marker to the output we're going
-       ;; to return - we don't include the marker in this text.
-       output (concat output
-		      (substring gud-marker-acc 0 (match-beginning 0)))
-
-       ;; Set the accumulator to the remaining text.
-       gud-marker-acc (substring gud-marker-acc (match-end 0))))
-
-    ;; Does the remaining text look like it might end with the
-    ;; beginning of another marker?  If it does, then keep it in
-    ;; gud-marker-acc until we receive the rest of it.  Since we
-    ;; know the full marker regexp above failed, it's pretty simple to
-    ;; test for marker starts.
-    (if (string-match "\032.*\\'" gud-marker-acc)
-	(progn
-	  ;; Everything before the potential marker start can be output.
-	  (setq output (concat output (substring gud-marker-acc
-						 0 (match-beginning 0))))
-
-	  ;; Everything after, we save, to combine with later input.
-	  (setq gud-marker-acc
-		(substring gud-marker-acc (match-beginning 0))))
-
-      (setq output (concat output gud-marker-acc)
-	    gud-marker-acc ""))
-
-    output))
-
-;; There's no guarantee that Emacs will hand the filter the entire
-;; marker at once; it could be broken up across several strings.  We
-;; might even receive a big chunk with several markers in it.  If we
-;; receive a chunk of text which looks like it might contain the
-;; beginning of a marker, we save it here between calls to the
-;; filter.
 (defun gud-bashdb-marker-filter (string)
   ;;(message "GOT: %s" string)
   (setq gud-marker-acc (concat gud-marker-acc string))
@@ -268,7 +216,7 @@ or MS Windows:
       (set-buffer buf)
       buf)))
 
-(defcustom gud-bashdb-command-name "bashdb -A"
+(defcustom gud-bashdb-command-name "bashdb -A 1"
   "File name for executing bash debugger."
   :type 'string
   :group 'gud)

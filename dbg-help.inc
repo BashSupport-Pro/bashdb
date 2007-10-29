@@ -398,7 +398,7 @@ Follow this command with any number of args, to be passed to the program."
 	label='set annotate  -- '
       else
 	local post_label='
-0 == normal;     1 == fullname (for use when running under emacs)'
+0 == normal;     1 == fullname (for use when running under emacs).'
       fi
       _Dbg_msg \
 "${label}Set annotation level.$post_label"
@@ -550,7 +550,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.14 2007/03/03 05:02:30 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.15 2007/10/29 15:00:10 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

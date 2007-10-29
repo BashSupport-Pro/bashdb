@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.21 2007/10/29 05:19:53 rockyb Exp $'
+'$Id: bashdb.in,v 1.22 2007/10/29 15:00:10 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -33,27 +33,23 @@ _Dbg_usage_long() {
 Runs script_file under a debugger.
 
 options: 
-    -A | --annotate  set annotation level.
-    -B | --basename  basename only on source listings. 
-                     (Needed in regression tests)
-    -h | --help      print this help
-    -n | --nx |--no-init   
-                     Don't run initialization files
-    -c cmd | --command cmd
-                     Run this passed command as a script
+    -A | --annotate  LEVEL  set annotation level.
+    -B | --basename         basename only on source listings. 
+                            (Needed in regression tests)
+    -h | --help             print this help
+    -n | --nx |--no-init    Don't run initialization files
+    -c cmd | --command cmd  Run this passed command as a script
     -q | --quiet     Quiet. Do not print introductory and quiet messages.
     -L libdir | --library libdir
-                     set directory location of library helper file: $_Dbg_main
-                     The default directory is: $_Dbg_libdir
-    -T tmpdir | --tempdir
-                     set directory location for temporary files: $_Dbg_tmpdir
+                            set directory location of library helper file: $_Dbg_main
+                            The default directory is: $_Dbg_libdir
+    -T tmpdir | --tempdir   set directory location for temporary files: $_Dbg_tmpdir
     -t tty | --tty tty | --terminal tty
-                     set debugger terminal
+                            set debugger terminal
     -x cmdfile | --cmdfile cmdfiles
-                     execute debugger commands from cmdfile
-    -X | --trace
-                     set line tracing
-    -V | --version   show version number and no-warranty and exit.
+                            execute debugger commands from cmdfile
+    -X | --trace            set line tracing
+    -V | --version          show version number and no-warranty and exit.
 
 Long options may be abbreviated, e.g. --lib is okay for --library.
 " 1>&2
@@ -66,6 +62,7 @@ _Dbg_usage_short() {
 Runs script_file under a debugger.
 
 options: 
+    -A LEVEL     set annotation level.
     -B           basename only on source listings. (Needed in regression tests)
     -h           print this help
     -n           Don't run initialization files
@@ -125,7 +122,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o ABc:hL:nqt:T::x:XYV \
+  TEMP=`getopt -o AB:c:hL:nqt:T::x:XYV \
 --long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
      -n 'bashdb' -- "$@"`
 
@@ -139,7 +136,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   
   while true ; do
     case $1 in
-      -A|--annotate) _Dbg_annotate=1 ;;
+      -A|--annotate) _Dbg_annotate="$2"; shift ;;
       -B|--basename) _Dbg_basename_only=1 ;;
       -c|--command) _Dbg_cmd="$2"; shift ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger

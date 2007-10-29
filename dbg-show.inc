@@ -48,8 +48,7 @@ _Dbg_do_show() {
     an | ann | anno | annot | annota | annotat | annotate )
       [[ -n $label ]] && label='annotate: '
      _Dbg_msg \
-"${label}Annotation_level is" \
-      "$_Dbg_annotate."
+"${label}Annotation_level is $_Dbg_annotate."
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
@@ -445,7 +444,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.8 2007/02/17 12:07:45 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.9 2007/10/29 15:00:10 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

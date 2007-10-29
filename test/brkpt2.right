@@ -109,7 +109,7 @@ No actions have been set.
 +where 
 ->0 in file `dbg-test1.sh' at line 5
 ##1 fn1() called from file `dbg-test1.sh' at line 32
-##2 source("dbg-test1.sh") called from file `bashdb' at line 283
+##2 source("dbg-test1.sh") called from file `bashdb' at line 280
 ##3 main() called from file `bashdb' at line 0
 +### Try up...
 +up 
@@ -169,7 +169,7 @@ SOURCED LINENO 19
 +T 
 ->0 in file `dbg-test1.sub' at line 20
 ##1 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
-##2 source("dbg-test1.sh") called from file `bashdb' at line 283
+##2 source("dbg-test1.sh") called from file `bashdb' at line 280
 ##3 main() called from file `bashdb' at line 0
 +step 10
 SOURCED BASH_SOURCE[0] dbg-test1.sub
@@ -180,7 +180,7 @@ SOURCED FN LINENO 5
 ->0 in file `dbg-test1.sub' at line 11
 ##1 sourced_fn() called from file `dbg-test1.sub' at line 22
 ##2 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
-##3 source("dbg-test1.sh") called from file `bashdb' at line 283
+##3 source("dbg-test1.sh") called from file `bashdb' at line 280
 ##4 main() called from file `bashdb' at line 0
 +### Try x command...
 +x j
@@ -243,7 +243,7 @@ Num Type       Enb  Expression
 	breakpoint already hit 1 time
 No actions have been set.
 +cont 
-FUNCNAME[2]: source called from bashdb at line 283
+FUNCNAME[2]: source called from bashdb at line 280
 Breakpoint 6 hit (3 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1

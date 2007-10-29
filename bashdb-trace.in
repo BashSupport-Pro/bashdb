@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.11 2007/02/11 23:06:41 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.12 2007/10/29 15:00:09 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -55,24 +55,24 @@ The _Dbg_set_trace() function and debuggers variables that have to
 persist in your program.
 
 options: 
-    -B | --basename  basename only on source listings. 
-                     (Needed in regression tests)
-    -h | --help      print this help
-    -n | --nx |--no-init   
-                     Don't run initialization files
+    -A | --annotate LEVEL  set annotation level.
+    -B | --basename        basename only on source listings. 
+                           (Needed in regression tests)
+    -h | --help            print this help
+    -n | --nx |--no-init   Don't run initialization files
     -c cmd | --command cmd
-                     Run this passed command as a script
-    -q | --quiet     Quiet. Do not print introductory and quiet messages.
+                           Run this passed command as a script
+    -q | --quiet           Quiet. Do not print introductory and quiet messages.
     -x cmdfile | --cmdfile cmdfiles
                      execute debugger commands from cmdfile
     -L libdir | --library libdir
-                     set directory location of library helper file: $_Dbg_main
-                     The default directory is: $_Dbg_libdir
+                           set directory location of library helper file: $_Dbg_main
+                           The default directory is: $_Dbg_libdir
     -T tmpdir | --tempdir
-                     set directory location for temporary files: $_Dbg_tmpdir
+                           set directory location for temporary files: $_Dbg_tmpdir
     -t tty | --tty tty | --terminal tty
-                     set debugger terminal
-    -V | --version   show version number and no-warranty and exit.
+                           set debugger terminal
+    -V | --version         show version number and no-warranty and exit.
 
 Long options may be abbreviated, e.g. --lib is okay for --library.
 " 1>&2
@@ -85,6 +85,7 @@ _Dbg_usage_short() {
 Runs script_file under a debugger.
 
 options: 
+    -A           Set annotation level.
     -B           basename only on source listings. (Needed in regression tests)
     -h           print this help
     -n           Don't run initialization files
@@ -108,11 +109,15 @@ typeset _Dbg_pname=${0##*/}
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
 typeset _Dbg_main=dbg-main.inc
+prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset _Dbg_libdir=@PKGDATADIR@
 typeset _Dbg_bindir=$(dirname $0)
 typeset _Dbg_tmpdir=/tmp
 
 typeset _Dbg_cmd='' # If command string given on command line, this is it.
+
+# Use gdb-style annotate?
+typeset -i _Dbg_annotate=0
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
@@ -126,12 +131,12 @@ fi
 # Process using short or long options, depending on the availability
 # of getopt
 TEMP=`getopt -o testing t 2>/dev/null`
-if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
+if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Process using long options
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o BhL:nqt:T::V:x: \
+  TEMP=`getopt -o ABhL:nqt:T::V:x: \
 --long basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
      -n 'bashdb' -- "$@"`
 
@@ -145,6 +150,7 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
   
   while true ; do
     case $1 in
+      -A|--annotate) _Dbg_annotate=$2; shift ;;
       -B|--basename) _Dbg_basename_only=1 ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger
       -h|--help) _Dbg_usage_long; exit 100 ;;
@@ -173,7 +179,7 @@ if [ 0 = $? ] && [[ "$TEMP" == " -- 't'" ]]  ; then
   done
 else 
   # Process using short options
-  while getopts BhL:n:qt:T:V:x: opt; do
+  while getopts ABhL:n:qt:T:V:x: opt; do
     case $opt in
       B) _Dbg_basename_only=1 ;;
       h) _Dbg_usage_short; exit 100 ;;
@@ -233,7 +239,7 @@ _Dbg_script=1
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"
   cat <<EOF
-Copyright 2002, 2003, 2004, 2006 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

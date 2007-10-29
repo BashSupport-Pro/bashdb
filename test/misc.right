@@ -414,7 +414,7 @@ Set argument list to give program being debugged when it is started.
 Follow this command with any number of args, to be passed to the program.
 +help set annotate
 Set annotation level.
-0 == normal;     1 == fullname (for use when running under emacs)
+0 == normal;     1 == fullname (for use when running under emacs).
 +help set listsize
 Set number of source lines bashdb will list by default.
 +help set prompt
