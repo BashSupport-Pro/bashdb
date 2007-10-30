@@ -9,3 +9,4 @@ Matthias Klose <doko at cs dot tu-berlin dot de> - making build system and
 Mikael Andersson  snikkt at telia dot com - "V" command auto* fixes
 Oleksandr Moskalenko  <malex at tagancha dot org> Debian packaging
 Matt Fleming          - NetBSD packaging
+Alberto Griggio       - Annotate patch #1781965 (for pydb)

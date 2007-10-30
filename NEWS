@@ -1,3 +1,7 @@
+Version 3.1 0.10cvs
+ - Add set/show annotate. Add Emacs support for this
+ - Dbg_set_trace -> Dbg_debugger more often
+
 Version 3.1 0.09
 2007-10-27
 
@@ -604,4 +608,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.34 2007/10/27 03:47:05 rockyb Exp $
+$Id: NEWS,v 1.35 2007/10/30 11:46:29 rockyb Exp $

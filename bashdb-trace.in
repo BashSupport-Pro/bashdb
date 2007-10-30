@@ -23,21 +23,21 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.12 2007/10/29 15:00:09 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.13 2007/10/30 11:46:29 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
     source @PKGDATADIR@/${_Dbg_pname} [OPTIONS]
 
 Sets up a script to be able to call the debugger. The function
-_Dbg_set_trace is defined here and when it is called the you will be
+_Dbg_debugger is defined here and when it is called the you will be
 at the next statement of your program in the debugger. For example, if 
 your script is:
 
   # Lots of stuff here. ...
   x=2
   source @PKGDATADIR@/${_Dbg_pname}
-  _Dbg_set_trace ; : ; :
+  _Dbg_debugger ; : ; :
   y=3
 
 You will be stopped before y=3 in the debugger. This mechanism allows
@@ -51,7 +51,7 @@ debugger itself. For example to suppress the banner you could use
 
 Please note: it is important to \"source\" this file. That is use
 \"source @PKGDATADIR@/${_Dbg_pname}\" rather than call it directly.
-The _Dbg_set_trace() function and debuggers variables that have to
+The _Dbg_debugger() function and debuggers variables that have to
 persist in your program.
 
 options: 
@@ -136,8 +136,8 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o ABhL:nqt:T::V:x: \
---long basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
+  TEMP=`getopt -o A:BhL:nqt:T::V:x: \
+--long annotate:,basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 
@@ -280,21 +280,7 @@ _Dbg_debugger() {
 }
 
 # Older alias for _Dbg_debugger()
-_Dbg_set_trace() {
-  set -o functrace
-  while [[ -n $1 ]] ; do
-    eval $1
-    shift
-  done
-
-  if [[ -z $_Dbg_set_trace_init ]] ; then
-      _Dbg_set_trace_init=1
-      _Dbg_write_journal "_Dbg_steps=0"
-      trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
-  else
-      _Dbg_steps=2
-  fi
-}
+alias _Dbg_set_trace='_Dbg_debugger'
 
 # Turn on line tracing. Sort of a nicer replacement for
 # set -x
