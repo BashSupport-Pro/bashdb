@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.22 2007/10/29 15:00:10 rockyb Exp $'
+'$Id: bashdb.in,v 1.23 2007/10/30 02:56:57 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -122,8 +122,8 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o AB:c:hL:nqt:T::x:XYV \
---long basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
+  TEMP=`getopt -o A:Bc:hL:nqt:T::x:XYV \
+--long annotate:,basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 

@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.24 2007/10/29 15:00:10 rockyb Exp $
+;;; $Id: bashdb.el,v 1.25 2007/10/30 02:56:57 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -446,7 +446,7 @@ mostly copied from `gdb-setup-windows', but simplified."
   (other-window 1)
   (set-window-buffer (selected-window) (get-buffer-create "*bashdb-breakpoints*"))
   (other-window 1)
-  (end-of-buffer))
+  (goto-char (point-max)))
 
 (defun bashdb-restore-windows ()
   "Equivalent of `gdb-restore-windows' for bashdb."
@@ -468,7 +468,7 @@ mostly copied from `gdb-setup-windows', but simplified."
   "Keymap to navigate/set/enable bashdb breakpoints.")
 
 (defconst bashdb--breakpoint-regexp
-  "^\\([0-9]+\\) +breakpoint +\\([a-z]+\\) +\\([a-z]+\\) +at +\\(.+\\):\\([0-9]+\\)$"
+  "^\\([0-9]+\\) +breakpoint +\\([a-z]+\\) +\\([a-z]+\\) +\\(.+\\):\\([0-9]+\\)$"
   "Regexp to recognize breakpoint lines in bashdb breakpoints buffers.")
 
 (defun bashdb--setup-breakpoints-buffer (buf)
@@ -566,7 +566,7 @@ mostly copied from `gdb-setup-windows', but simplified."
   "Keymap to navigate bashdb stack frames.")
 
 (defconst bashdb--stack-frame-regexp
-  "^\\(->\\|##\\|  \\) +\\([0-9]+\\) +\\([^ (]+\\).+$"
+  "^\\(->\\|##\\)+\\([0-9]+\\) .* file `\\([^']+\\)' at line \\([0-9]+\\)$"
   "Regexp to recognize stack frame lines in bashdb stack buffers.")
 
 (defun bashdb--setup-stack-buffer (buf)
