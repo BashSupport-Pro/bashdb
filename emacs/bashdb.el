@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.25 2007/10/30 02:56:57 rockyb Exp $
+;;; $Id: bashdb.el,v 1.26 2007/11/02 03:55:08 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -74,12 +74,11 @@ or MS Windows:
 ;; into one that invokes an Emacs-enabled debugging session.
 ;; "--debugger" in inserted as the first switch, unless the 
 ;; command is bashdb which doesn't need and can't parse --debugger.
-;; Note: bashdb will be fixed up so that it *does* bass --debugger
+;; Note: bashdb will be fixed up so that it *does* pass --debugger
 ;; eventually.
 
 (defun gud-bashdb-massage-args (file args &optional command-line)
   (let* ((new-args (list "--debugger"))
-	 (seen-e nil)
 	 (shift (lambda ()
 		  (setq new-args (cons (car args) new-args))
 		  (setq args (cdr args)))))
@@ -216,6 +215,27 @@ or MS Windows:
       (set-buffer buf)
       buf)))
 
+(defun bashdb-arg-test (args)
+  "Returns a pair as a list of arg and remaining args. If arg is
+  nil we have to continue, and args will be some stripped off options."
+  (let ((arg (car args)))
+    (setq args (cdr args))
+    (cond 
+     ((equal "-A" arg) (cons nil (cdr args)))
+     ((equal "--annotate" arg) (cons nil (cdr args)))
+     ((string-match "^-[a-zA-z]" arg) (cons nil args))
+     ((string-match "^--[a-zA-z]+" arg) (cons nil args))
+     ((string-match "^bashdb" arg) (cons nil args))
+     (t (cons arg nil)))))
+
+(defun bashdb-get-script-name (args)
+  "Pick out the script name from the command line. All the real work is done in bashdb-arg-test"
+  (let ((arg nil))
+    (while (and args (not arg))
+      (setq args (bashdb-arg-test args))
+      (setq arg (pop args)))
+    arg))
+
 (defcustom gud-bashdb-command-name "bashdb -A 1"
   "File name for executing bash debugger."
   :type 'string
@@ -253,6 +273,11 @@ place where Bash doesn't expect."
   (gud-common-init command-line (lambda (file args)
 				  (gud-bashdb-massage-args file args command-line))
   	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
+
+
+  (let* ((words (split-string-and-unquote command-line))
+	(script-name (bashdb-get-script-name (gud-bashdb-massage-args "1" words))))
+    (rename-buffer (concat "*bashdb-" script-name "*")))
 
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 
