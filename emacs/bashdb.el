@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.26 2007/11/02 03:55:08 rockyb Exp $
+;;; $Id: bashdb.el,v 1.27 2007/11/02 10:50:55 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -223,13 +223,21 @@ or MS Windows:
     (cond 
      ((equal "-A" arg) (cons nil (cdr args)))
      ((equal "--annotate" arg) (cons nil (cdr args)))
+     ((equal "-L" arg) (cons nil (cdr args)))
+     ((equal "--library" arg) (cons nil (cdr args)))
+     ((equal "-T" arg) (cons nil (cdr args)))
+     ((equal "--terminal" arg) (cons nil (cdr args)))
+     ((equal "-t" arg) (cons nil (cdr args)))
+     ((equal "--tempdir" arg) (cons nil (cdr args)))
+     ((equal "-x" arg) (cons nil (cdr args)))
      ((string-match "^-[a-zA-z]" arg) (cons nil args))
      ((string-match "^--[a-zA-z]+" arg) (cons nil args))
      ((string-match "^bashdb" arg) (cons nil args))
      (t (cons arg nil)))))
 
 (defun bashdb-get-script-name (args)
-  "Pick out the script name from the command line. All the real work is done in bashdb-arg-test"
+  "Pick out the script name from the command line. All the real work is done in bashdb-arg-test.
+If you want to debug bashdb you need to make it look like a file-name e.g. ./bashdb"
   (let ((arg nil))
     (while (and args (not arg))
       (setq args (bashdb-arg-test args))
@@ -270,14 +278,24 @@ place where Bash doesn't expect."
 
   ;; `gud-bashdb-massage-args' needs whole `command-line'.
   ;; command-line is refered through dyanmic scope.
-  (gud-common-init command-line (lambda (file args)
-				  (gud-bashdb-massage-args file args command-line))
+  (gud-common-init command-line 
+		   (lambda (file args)
+		     (gud-bashdb-massage-args file args command-line))
   	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
 
-
+  ; gud-common-init sets the bashdb process buffer name incorrectly, because
+  ; it can't parse the command line properly to pick out the script name.
+  ; So we'll do it here and rename that buffer. The buffer we want to rename
+  ; happens to be the current buffer.
   (let* ((words (split-string-and-unquote command-line))
-	(script-name (bashdb-get-script-name (gud-bashdb-massage-args "1" words))))
-    (rename-buffer (concat "*bashdb-" script-name "*")))
+	(script-name (bashdb-get-script-name 
+		      (gud-bashdb-massage-args "1" words)))
+	(bashdb-buffer-name (concat "*bashdb-" 
+				    (file-name-nondirectory script-name) "*"))
+	(bashdb-buffer (get-buffer bashdb-buffer-name))
+	)
+    (when bashdb-buffer (kill-buffer bashdb-buffer))
+    (rename-buffer bashdb-buffer-name))
 
   (set (make-local-variable 'gud-minor-mode) 'bashdb)
 

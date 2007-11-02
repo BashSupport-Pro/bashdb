@@ -2,6 +2,14 @@
 (load-file "@srcdir@/elk-test.el")
 (load-file "@srcdir@/bashdb.el")
 
+(defun regexp-stack-test (location-str)
+  "Test to see that location-str matches bashdb--stack-frame-regexp"
+  (assert-equal 0 (string-match bashdb--stack-frame-regexp location-str))
+)
+(defun regexp-breakpoint-test (location-str)
+  "Test to see that location-str matches bashdb--breakpoint-regexp"
+  (assert-equal 0 (string-match bashdb--breakpoint-regexp location-str))
+)
 (defun regexp-test (location-str file-str)
   "Test to see that location-str matches gud-bashdb-marker-regexp"
   (assert-equal 0 (string-match gud-bashdb-marker-regexp location-str))
@@ -12,6 +20,18 @@
 )
 (deftest "bashdb-marker-regexp-test"
 
+  (regexp-breakpoint-test
+   "1   breakpoint keep y   /usr/local/bin/bashdb:10")
+  (regexp-stack-test
+   "->0 in file `/src/external-cvs/bashdb-3.1/test/hanoi.sh' at line 31
+")
+  (regexp-stack-test 
+   "##1 source(\"/src/external-cvs/bashdb-3.1/test/hanoi.sh\") called from file `/usr/local/bin/bashdb' at line 280
+")
+
+  (regexp-stack-test 
+   "##2 main() called from file `/usr/local/bin/bashdb' at line 0
+")
   (regexp-test 
    "(e:\\sources\\capfilterscanner\\capanalyzer.sh:3):
 "
@@ -57,7 +77,13 @@ file and line submatches."
    )
 )  
    
-(build-suite "bashdb-suite" "bashdb-marker-regexp-test")
-(run-elk-test "bashdb-marker-regexp-test"
-              "test regular expression used in tracking lines")  
+(deftest "bashdb-get-script-name-test"
+  (assert-equal "foo" (bashdb-get-script-name '("foo")))
+  (assert-equal "foo" (bashdb-get-script-name '("-A" "1" "foo")))
+  (assert-equal "foo" (bashdb-get-script-name '("bashdb" "-L" "." "foo")))
+  (assert-equal "foo" (bashdb-get-script-name 
+		       '("--debugger bashdb" "--annotate" "1" "foo")))
+)
 
+(build-suite "bashdb-suite" "bashdb-marker-regexp-test" "bashdb-get-script-name-test")
+(run-elk-test "bashdb-suite" "Test Emacs routines to run the bash debugger")
