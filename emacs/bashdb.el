@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.27 2007/11/02 10:50:55 rockyb Exp $
+;;; $Id: bashdb.el,v 1.28 2007/11/02 11:00:04 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -221,15 +221,9 @@ or MS Windows:
   (let ((arg (car args)))
     (setq args (cdr args))
     (cond 
-     ((equal "-A" arg) (cons nil (cdr args)))
-     ((equal "--annotate" arg) (cons nil (cdr args)))
-     ((equal "-L" arg) (cons nil (cdr args)))
-     ((equal "--library" arg) (cons nil (cdr args)))
-     ((equal "-T" arg) (cons nil (cdr args)))
-     ((equal "--terminal" arg) (cons nil (cdr args)))
-     ((equal "-t" arg) (cons nil (cdr args)))
-     ((equal "--tempdir" arg) (cons nil (cdr args)))
-     ((equal "-x" arg) (cons nil (cdr args)))
+     ((member arg '("-A" "--annotate" "-L" "--library" "T" "--terminal" "-t"
+		    "--termdir" "-x"))
+	      (cons nil (cdr args)))
      ((string-match "^-[a-zA-z]" arg) (cons nil args))
      ((string-match "^--[a-zA-z]+" arg) (cons nil args))
      ((string-match "^bashdb" arg) (cons nil args))
