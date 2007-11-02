@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.28 2007/11/02 11:00:04 rockyb Exp $
+;;; $Id: bashdb.el,v 1.29 2007/11/02 11:10:45 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -32,10 +32,111 @@
 ;;    See `bashdb' of describe-function for more details.
 ;;    
 ;;
-;; Codes:
 (require 'gud)
-;; ======================================================================
-;; bashdb functions
+
+
+;; User-definable variables
+;; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+(defcustom gud-bashdb-command-name "bashdb -A 1"
+  "File name for executing bash debugger."
+  :type 'string
+  :group 'gud)
+
+(defcustom bashdb-temp-directory
+  (let ((ok '(lambda (x)
+	       (and x
+		    (setq x (expand-file-name x)) ; always true
+		    (file-directory-p x)
+		    (file-writable-p x)
+		    x))))
+    (or (funcall ok (getenv "TMPDIR"))
+	(funcall ok "/usr/tmp")
+	(funcall ok "/tmp")
+	(funcall ok "/var/tmp")
+	(funcall ok  ".")
+	(error
+	 "Couldn't find a usable temp directory -- set `bashdb-temp-directory'")))
+  "*Directory used for temporary files created by a *Python* process.
+By default, the first directory from this list that exists and that you
+can write into: the value (if any) of the environment variable TMPDIR,
+/usr/tmp, /tmp, /var/tmp, or the current directory."
+  :type 'string
+  :group 'bashdb)
+
+(defcustom bashdb-many-windows t
+  "*If non-nil, display secondary bashdb windows, in a layout similar to `gdba'."
+  :type 'boolean
+  :group 'bashdb)
+
+(defcustom bashdb-bashdbtrack-do-tracking-p t
+  "*Controls whether the bashdbtrack feature is enabled or not.
+When non-nil, bashdbtrack is enabled in all comint-based buffers,
+e.g. shell buffers and the *Python* buffer.  When using bashdb to debug a
+Python program, bashdbtrack notices the bashdb prompt and displays the
+source file and line that the program is stopped at, much the same way
+as gud-mode does for debugging C programs with gdb."
+  :type 'boolean
+  :group 'bashdb)
+
+(defcustom bashdb-bashdbtrack-minor-mode-string " BASHDB"
+  "*String to use in the minor mode list when bashdbtrack is enabled."
+  :type 'string
+  :group 'bashdb)
+
+(defgroup bashdbtrack nil
+  "Bashdb file tracking by watching the prompt."
+  :prefix "bashdb-bashdbtrack-"
+  :group 'shell)
+
+
+;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;; NO USER DEFINABLE VARIABLES BEYOND THIS POINT
+
+;; have to bind bashdb-file-queue before installing the kill-emacs-hook
+(defvar bashdb-file-queue nil
+  "Queue of Makefile temp files awaiting execution.
+Currently-active file is at the head of the list.")
+
+(defvar bashdb-bashdbtrack-is-tracking-p nil)
+
+
+;; Constants
+
+(defconst bashdb-position-re 
+  "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)).*\n"
+  "Regular expression for a bashdb position")
+
+(defconst bashdb-marker-regexp-file-group 2
+  "Group position in bashdb-postiion-re that matches the file name.")
+
+(defconst bashdb-marker-regexp-line-group 3
+  "Group position in bashdb-position-re that matches the line number.")
+
+(defconst bashdb-traceback-line-re
+  "^#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
+  "Regular expression that describes tracebacks.")
+
+;; bashdbtrack constants
+(defconst bashdb-bashdbtrack-stack-entry-regexp
+  "^=>#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
+  "Regular expression bashdbtrack uses to find a stack trace entry.")
+
+(defconst bashdb-bashdbtrack-input-prompt "\nbashdb<+.*>+ "
+  "Regular expression bashdbtrack uses to recognize a bashdb prompt.")
+
+(defconst bashdb-bashdbtrack-track-range 10000
+  "Max number of characters from end of buffer to search for stack entry.")
+
+(defconst gud-bashdb-marker-regexp-file-group 1
+  "Group position in `gud-bashdb-marker-regexp' that matches the file name.")
+(defconst gud-bashdb-marker-regexp-line-group 2
+  "Group position in `gud-bashdb-marker-regexp' that matches the line number.")
+
+(defconst bashdb-annotation-start-regexp
+  "^\\([a-z]+\\)\n")
+(defconst bashdb-annotation-end-regexp
+  "^\n")
 
 ;;; History of argument lists passed to bashdb.
 (defvar gud-bashdb-history nil)
@@ -51,24 +152,9 @@ Program-location lines look like this:
 or MS Windows:
    (c:\\mydirectory\\gcd.sh:10):
 ")
-(defconst gud-bashdb-marker-regexp-file-group 1
-  "Group position in `gud-bashdb-marker-regexp' that matches the file name.")
-(defconst gud-bashdb-marker-regexp-line-group 2
-  "Group position in `gud-bashdb-marker-regexp' that matches the line number.")
 
-;;-----------------------------------------------------------------------------
-;; ALB - annotations support
-;;-----------------------------------------------------------------------------
-
-(defcustom bashdb-many-windows t
-  "*If non-nil, display secondary bashdb windows, in a layout similar to `gdba'."
-  :type 'boolean
-  :group 'bashdb)
-
-(defconst bashdb-annotation-start-regexp
-  "^\\([a-z]+\\)\n")
-(defconst bashdb-annotation-end-regexp
-  "^\n")
+;; ======================================================================
+;; bashdb functions
 
 ;; Convert a command line as would be typed normally to run a script
 ;; into one that invokes an Emacs-enabled debugging session.
@@ -238,11 +324,6 @@ If you want to debug bashdb you need to make it look like a file-name e.g. ./bas
       (setq arg (pop args)))
     arg))
 
-(defcustom gud-bashdb-command-name "bashdb -A 1"
-  "File name for executing bash debugger."
-  :type 'string
-  :group 'gud)
-
 ;;;###autoload
 (defun bashdb (command-line)
   "Run bashdb on program FILE in buffer *gud-FILE*.
@@ -358,107 +439,13 @@ place where Bash doesn't expect."
   "A wrapper for `gud-gdb-complete-command'"
   (gud-gdb-complete-command command a b))
 
-(provide 'bashdb)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; bashdbtrack --- tracking bashdb debugger in an Emacs shell window
-;;; Modified from  python-mode in particular the part:
-;; pdbtrack support contributed by Ken Manheimer, April 2001.
-
-;;; Code:
-
 (require 'comint)
 (require 'custom)
 (require 'cl)
 (require 'compile)
 (require 'shell)
 
-(defgroup bashdbtrack nil
-  "Bashdb file tracking by watching the prompt."
-  :prefix "bashdb-bashdbtrack-"
-  :group 'shell)
-
-
-;; user definable variables
-;; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-(defcustom bashdb-bashdbtrack-do-tracking-p t
-  "*Controls whether the bashdbtrack feature is enabled or not.
-When non-nil, bashdbtrack is enabled in all comint-based buffers,
-e.g. shell buffers and the *Python* buffer.  When using bashdb to debug a
-Python program, bashdbtrack notices the bashdb prompt and displays the
-source file and line that the program is stopped at, much the same way
-as gud-mode does for debugging C programs with gdb."
-  :type 'boolean
-  :group 'bashdb)
 (make-variable-buffer-local 'bashdb-bashdbtrack-do-tracking-p)
-
-(defcustom bashdb-bashdbtrack-minor-mode-string " BASHDB"
-  "*String to use in the minor mode list when bashdbtrack is enabled."
-  :type 'string
-  :group 'bashdb)
-
-(defcustom bashdb-temp-directory
-  (let ((ok '(lambda (x)
-	       (and x
-		    (setq x (expand-file-name x)) ; always true
-		    (file-directory-p x)
-		    (file-writable-p x)
-		    x))))
-    (or (funcall ok (getenv "TMPDIR"))
-	(funcall ok "/usr/tmp")
-	(funcall ok "/tmp")
-	(funcall ok "/var/tmp")
-	(funcall ok  ".")
-	(error
-	 "Couldn't find a usable temp directory -- set `bashdb-temp-directory'")))
-  "*Directory used for temporary files created by a *Python* process.
-By default, the first directory from this list that exists and that you
-can write into: the value (if any) of the environment variable TMPDIR,
-/usr/tmp, /tmp, /var/tmp, or the current directory."
-  :type 'string
-  :group 'bashdb)
-
-
-;; ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-;; NO USER DEFINABLE VARIABLES BEYOND THIS POINT
-
-;; have to bind bashdb-file-queue before installing the kill-emacs-hook
-(defvar bashdb-file-queue nil
-  "Queue of Makefile temp files awaiting execution.
-Currently-active file is at the head of the list.")
-
-(defvar bashdb-bashdbtrack-is-tracking-p nil)
-
-
-;; Constants
-
-(defconst bashdb-position-re 
-  "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)).*\n"
-  "Regular expression for a bashdb position")
-
-(defconst bashdb-marker-regexp-file-group 2
-  "Group position in bashdb-postiion-re that matches the file name.")
-
-(defconst bashdb-marker-regexp-line-group 3
-  "Group position in bashdb-position-re that matches the line number.")
-
-
-
-(defconst bashdb-traceback-line-re
-  "^#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
-  "Regular expression that describes tracebacks.")
-
-;; bashdbtrack constants
-(defconst bashdb-bashdbtrack-stack-entry-regexp
-  "^=>#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
-  "Regular expression bashdbtrack uses to find a stack trace entry.")
-
-(defconst bashdb-bashdbtrack-input-prompt "\nbashdb<+.*>+ "
-  "Regular expression bashdbtrack uses to recognize a bashdb prompt.")
-
-(defconst bashdb-bashdbtrack-track-range 10000
-  "Max number of characters from end of buffer to search for stack entry.")
 
 (defun bashdb-setup-windows ()
   "Layout the window pattern for `bashdb-many-windows'. This was
@@ -671,9 +658,13 @@ mostly copied from `gdb-setup-windows', but simplified."
         (when w (delete-window w)))
       (kill-buffer buffer))))
 
-
 
-;;;###autoload
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; bashdbtrack --- tracking bashdb debugger in an Emacs shell window
+;;; Modified from  python-mode in particular the part:
+;; pdbtrack support contributed by Ken Manheimer, April 2001.
+
+;;; Code:
 
 (defun bashdb-bashdbtrack-overlay-arrow (activation)
   "Activate or de arrow at beginning-of-line in current buffer."
@@ -808,8 +799,8 @@ problem as best as we can determine."
 	    bashdb-bashdbtrack-minor-mode-string)
 	  minor-mode-alist))
 
-
 
 ;;; bashdbtrack.el ends here
 
+(provide 'bashdb)
 ;;; bashdb.el ends here
