@@ -78,11 +78,13 @@ file and line submatches."
 )  
    
 (deftest "bashdb-get-script-name-test"
-  (assert-equal "foo" (bashdb-get-script-name '("foo")))
-  (assert-equal "foo" (bashdb-get-script-name '("-A" "1" "foo")))
-  (assert-equal "foo" (bashdb-get-script-name '("bashdb" "-L" "." "foo")))
-  (assert-equal "foo" (bashdb-get-script-name 
+  (assert-equal '("foo" nil) (bashdb-get-script-name '("foo")))
+  (assert-equal '("foo" t) (bashdb-get-script-name '("-A" "1" "foo")))
+  (assert-equal '("foo" nil) (bashdb-get-script-name '("bashdb" "-L" "." "foo")))
+  (assert-equal '("foo" t) (bashdb-get-script-name 
 		       '("--debugger bashdb" "--annotate" "1" "foo")))
+  (assert-equal '("bar" t) (bashdb-get-script-name 
+		       '("--debugger bashdb" "--annotate" "1" "bar" "foo")))
 )
 
 (build-suite "bashdb-suite" "bashdb-marker-regexp-test" "bashdb-get-script-name-test")

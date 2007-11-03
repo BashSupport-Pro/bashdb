@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.29 2007/11/02 11:10:45 rockyb Exp $
+;;; $Id: bashdb.el,v 1.30 2007/11/03 12:32:15 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -57,7 +57,7 @@
 	(funcall ok  ".")
 	(error
 	 "Couldn't find a usable temp directory -- set `bashdb-temp-directory'")))
-  "*Directory used for temporary files created by a *Python* process.
+  "*Directory used for temporary files created by a *gud-bashdb* process.
 By default, the first directory from this list that exists and that you
 can write into: the value (if any) of the environment variable TMPDIR,
 /usr/tmp, /tmp, /var/tmp, or the current directory."
@@ -65,19 +65,22 @@ can write into: the value (if any) of the environment variable TMPDIR,
   :group 'bashdb)
 
 (defcustom bashdb-many-windows t
-  "*If non-nil, display secondary bashdb windows, in a layout similar to `gdba'."
+  "*If non-nil, display secondary bashdb windows, in a layout similar to `gdba'.
+However only set to the multi-window display if the bashdb
+command invocation has an annotate options (\"--annotate 1\" or \"-A 1\")."
   :type 'boolean
   :group 'bashdb)
 
-(defcustom bashdb-bashdbtrack-do-tracking-p t
+(defcustom bashdb-bashdbtrack-do-tracking-p nil
   "*Controls whether the bashdbtrack feature is enabled or not.
 When non-nil, bashdbtrack is enabled in all comint-based buffers,
-e.g. shell buffers and the *Python* buffer.  When using bashdb to debug a
-Python program, bashdbtrack notices the bashdb prompt and displays the
+e.g. shell buffers and the *gud-bashdb* buffer.  When using bashdb to debug a
+bash program, bashdbtrack notices the bashdb prompt and displays the
 source file and line that the program is stopped at, much the same way
 as gud-mode does for debugging C programs with gdb."
   :type 'boolean
   :group 'bashdb)
+(make-variable-buffer-local 'bashdb-bashdbtrack-do-tracking-p)
 
 (defcustom bashdb-bashdbtrack-minor-mode-string " BASHDB"
   "*String to use in the minor mode list when bashdbtrack is enabled."
@@ -108,7 +111,7 @@ Currently-active file is at the head of the list.")
   "Regular expression for a bashdb position")
 
 (defconst bashdb-marker-regexp-file-group 2
-  "Group position in bashdb-postiion-re that matches the file name.")
+  "Group position in bashdb-position-re that matches the file name.")
 
 (defconst bashdb-marker-regexp-line-group 3
   "Group position in bashdb-position-re that matches the line number.")
@@ -286,7 +289,7 @@ or MS Windows:
       map)))
 
 (defun bashdb-process-annotation (name contents)
-  (let ((buf (get-buffer-create (format "*bashdb-%s*" name))))
+  (let ((buf (get-buffer-create (format "*bashdb-%s-%s*" name gud-target-name))))
     (with-current-buffer buf
       (setq buffer-read-only t)
      (let ((inhibit-read-only t)
@@ -301,28 +304,25 @@ or MS Windows:
       (set-buffer buf)
       buf)))
 
-(defun bashdb-arg-test (args)
-  "Returns a pair as a list of arg and remaining args. If arg is
-  nil we have to continue, and args will be some stripped off options."
-  (let ((arg (car args)))
-    (setq args (cdr args))
-    (cond 
-     ((member arg '("-A" "--annotate" "-L" "--library" "T" "--terminal" "-t"
+(defun bashdb-get-script-name (args &optional annotate-p)
+  "Pick out the script name from the command line and return a list of that and whether
+the annotate option was set. Initially annotate should be set to nil."
+  (let ((arg (pop args)))
+     (cond 
+      ((not arg) (list nil annotate-p))
+      ((member arg '("-A" "--annotate"))
+       (if args (bashdb-get-script-name (cdr args) t) '(nil t)))
+      ((member arg '("-L" "--library" "T" "--terminal" "-t"
 		    "--termdir" "-x"))
-	      (cons nil (cdr args)))
-     ((string-match "^-[a-zA-z]" arg) (cons nil args))
-     ((string-match "^--[a-zA-z]+" arg) (cons nil args))
-     ((string-match "^bashdb" arg) (cons nil args))
-     (t (cons arg nil)))))
-
-(defun bashdb-get-script-name (args)
-  "Pick out the script name from the command line. All the real work is done in bashdb-arg-test.
-If you want to debug bashdb you need to make it look like a file-name e.g. ./bashdb"
-  (let ((arg nil))
-    (while (and args (not arg))
-      (setq args (bashdb-arg-test args))
-      (setq arg (pop args)))
-    arg))
+	      (if args 
+		  (bashdb-get-script-name (cdr args) annotate-p)
+		;else
+		(list nil annotate-p)))
+     ((string-match "^-[a-zA-z]" arg) (bashdb-get-script-name args annotate-p))
+     ((string-match "^--[a-zA-z]+" arg) (bashdb-get-script-name args annotate-p))
+     ((string-match "^bashdb" arg) (bashdb-get-script-name args annotate-p))
+     ; found script name (or nil
+     (t (list arg annotate-p)))))
 
 ;;;###autoload
 (defun bashdb (command-line)
@@ -351,90 +351,93 @@ place where Bash doesn't expect."
 			       gud-minibuffer-local-map nil
 			       '(gud-bashdb-history . 1))))
 
-  ;; `gud-bashdb-massage-args' needs whole `command-line'.
-  ;; command-line is refered through dyanmic scope.
-  (gud-common-init command-line 
-		   (lambda (file args)
-		     (gud-bashdb-massage-args file args command-line))
-  	   'gud-bashdb-marker-filter 'gud-bashdb-find-file)
-
-  ; gud-common-init sets the bashdb process buffer name incorrectly, because
-  ; it can't parse the command line properly to pick out the script name.
-  ; So we'll do it here and rename that buffer. The buffer we want to rename
-  ; happens to be the current buffer.
   (let* ((words (split-string-and-unquote command-line))
-	(script-name (bashdb-get-script-name 
-		      (gud-bashdb-massage-args "1" words)))
-	(bashdb-buffer-name (concat "*bashdb-" 
-				    (file-name-nondirectory script-name) "*"))
+	(script-name-annotate-p (bashdb-get-script-name 
+			       (gud-bashdb-massage-args "1" words) nil))
+	(gud-target-name (file-name-nondirectory (car script-name-annotate-p)))
+	(annotate-p (cadr script-name-annotate-p))
+	(bashdb-buffer-name (format "*bashdb-%s*" gud-target-name))
 	(bashdb-buffer (get-buffer bashdb-buffer-name))
 	)
+
+    ;; `gud-bashdb-massage-args' needs whole `command-line'.
+    ;; command-line is refered through dyanmic scope.
+    (gud-common-init command-line 
+		     (lambda (file args)
+		       (gud-bashdb-massage-args file args command-line))
+		     'gud-bashdb-marker-filter 'gud-bashdb-find-file)
+
+    (setq gud-target-name (file-name-nondirectory (car script-name-annotate-p)))
+    ; gud-common-init sets the bashdb process buffer name incorrectly, because
+    ; it can't parse the command line properly to pick out the script name.
+    ; So we'll do it here and rename that buffer. The buffer we want to rename
+    ; happens to be the current buffer.
     (when bashdb-buffer (kill-buffer bashdb-buffer))
-    (rename-buffer bashdb-buffer-name))
+    (rename-buffer bashdb-buffer-name)
+    (setq comint-prompt-regexp "^bashdb<+(*[0-9]*)*>+ ")
+    (setq paragraph-start comint-prompt-regexp)
+    (set (make-local-variable 'gud-minor-mode) 'bashdb)
+    (when (and annotate-p bashdb-many-windows) 
+      (bashdb-setup-windows))
 
-  (set (make-local-variable 'gud-minor-mode) 'bashdb)
-
-  (gud-def gud-args   "info args"     "a"
-	   "Show arguments of the current stack frame.")
-  (gud-def gud-break  "break %d%f:%l" "\C-b"
-	   "Set breakpoint at the current line.")
-  (gud-def gud-cont   "continue"   "\C-r" 
-	   "Continue with display.")
-  (gud-def gud-down   "down %p"     ">"
-	   "Down N stack frames (numeric arg).")
-  (gud-def gud-finish "finish"      "f\C-f"
-	   "Finish executing current function.")
-  (gud-def gud-linetrace "toggle"    "t"
-	   "Toggle line tracing.")
-  (gud-def gud-next   "next %p"     "\C-n"
-	   "Step one line (skip functions).")
-  (gud-def gud-print  "p %e"        "\C-p"
-	   "Evaluate bash expression at point.")
-  (gud-def gud-remove "clear %d%f:%l" "\C-d"
-	   "Remove breakpoint at current line")
-  (gud-def gud-run    "run"       "R"
-	   "Restart the Bash script.")
-  (gud-def gud-statement "eval %e" "\C-e"
-	   "Execute Bash statement at point.")
-  (gud-def gud-step   "step %p"       "\C-s"
-	   "Step one source line with display.")
-  (gud-def gud-tbreak "tbreak %d%f:%l"  "\C-t"
-	   "Set temporary breakpoint at current line.")
-  (gud-def gud-up     "up %p"
-	   "<" "Up N stack frames (numeric arg).")
-  (gud-def gud-where   "where"
-	   "T" "Show stack trace.")
-
-  ;; Update GUD menu bar
-  (define-key gud-menu-map [args]      '("Show arguments of current stack" . 
-					 gud-args))
-  (define-key gud-menu-map [down]      '("Down Stack" . gud-down))
-  (define-key gud-menu-map [eval]      '("Execute Bash statement at point" 
-					 . gud-statement))
-  (define-key gud-menu-map [finish]    '("Finish Function" . gud-finish))
-  (define-key gud-menu-map [linetrace] '("Toggle line tracing" . 
-					 gud-linetrace))
-  (define-key gud-menu-map [run]       '("Restart the Bash Script" . 
-					 gud-run))
-  (define-key gud-menu-map [stepi]     nil)
-  (define-key gud-menu-map [tbreak]    nil)
-  (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
-  (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
-
-  (local-set-key "\C-i" 'gud-bash-complete-command)
-
-  (local-set-key [menu-bar debug tbreak] 
-		 '("Temporary Breakpoint" . gud-tbreak))
-  (local-set-key [menu-bar debug finish] '("Finish Function" . gud-finish))
-  (local-set-key [menu-bar debug up] '("Up Stack" . gud-up))
-  (local-set-key [menu-bar debug down] '("Down Stack" . gud-down))
-
-  (setq comint-prompt-regexp "^bashdb<+(*[0-9]*)*>+ ")
-  (setq paragraph-start comint-prompt-regexp)
-  (when bashdb-many-windows (bashdb-setup-windows))
-  (run-hooks 'bashdb-mode-hook)
-  )
-
+    (gud-def gud-args   "info args"     "a"
+	     "Show arguments of the current stack frame.")
+    (gud-def gud-break  "break %d%f:%l" "\C-b"
+	     "Set breakpoint at the current line.")
+    (gud-def gud-cont   "continue"   "\C-r" 
+	     "Continue with display.")
+    (gud-def gud-down   "down %p"     ">"
+	     "Down N stack frames (numeric arg).")
+    (gud-def gud-finish "finish"      "f\C-f"
+	     "Finish executing current function.")
+    (gud-def gud-linetrace "toggle"    "t"
+	     "Toggle line tracing.")
+    (gud-def gud-next   "next %p"     "\C-n"
+	     "Step one line (skip functions).")
+    (gud-def gud-print  "p %e"        "\C-p"
+	     "Evaluate bash expression at point.")
+    (gud-def gud-remove "clear %d%f:%l" "\C-d"
+	     "Remove breakpoint at current line")
+    (gud-def gud-run    "run"       "R"
+	     "Restart the Bash script.")
+    (gud-def gud-statement "eval %e" "\C-e"
+	     "Execute Bash statement at point.")
+    (gud-def gud-step   "step %p"       "\C-s"
+	     "Step one source line with display.")
+    (gud-def gud-tbreak "tbreak %d%f:%l"  "\C-t"
+	     "Set temporary breakpoint at current line.")
+    (gud-def gud-up     "up %p"
+	     "<" "Up N stack frames (numeric arg).")
+    (gud-def gud-where   "where"
+	     "T" "Show stack trace.")
+    
+    ;; Update GUD menu bar
+    (define-key gud-menu-map [args]      '("Show arguments of current stack" . 
+					   gud-args))
+    (define-key gud-menu-map [down]      '("Down Stack" . gud-down))
+    (define-key gud-menu-map [eval]      '("Execute Bash statement at point" 
+					   . gud-statement))
+    (define-key gud-menu-map [finish]    '("Finish Function" . gud-finish))
+    (define-key gud-menu-map [linetrace] '("Toggle line tracing" . 
+					   gud-linetrace))
+    (define-key gud-menu-map [run]       '("Restart the Bash Script" . 
+					   gud-run))
+    (define-key gud-menu-map [stepi]     nil)
+    (define-key gud-menu-map [tbreak]    nil)
+    (define-key gud-menu-map [up]        '("Up Stack" . gud-up))
+    (define-key gud-menu-map [where]     '("Show stack trace" . gud-where))
+    
+    (local-set-key "\C-i" 'gud-bash-complete-command)
+    
+    (local-set-key [menu-bar debug tbreak] 
+		   '("Temporary Breakpoint" . gud-tbreak))
+    (local-set-key [menu-bar debug finish] '("Finish Function" . gud-finish))
+    (local-set-key [menu-bar debug up] '("Up Stack" . gud-up))
+    (local-set-key [menu-bar debug down] '("Down Stack" . gud-down))
+    
+    (run-hooks 'bashdb-mode-hook)
+    ))
+  
 (defun gud-bashdb-complete-command (&optional command a b)
   "A wrapper for `gud-gdb-complete-command'"
   (gud-gdb-complete-command command a b))
@@ -445,32 +448,37 @@ place where Bash doesn't expect."
 (require 'compile)
 (require 'shell)
 
-(make-variable-buffer-local 'bashdb-bashdbtrack-do-tracking-p)
-
 (defun bashdb-setup-windows ()
   "Layout the window pattern for `bashdb-many-windows'. This was
 mostly copied from `gdb-setup-windows', but simplified."
   (pop-to-buffer gud-comint-buffer)
-  (delete-other-windows)
-  (split-window nil ( / ( * (window-height) 3) 4))
-  (split-window nil ( / (window-height) 3))
-  ;(split-window-horizontally)
-  ;(other-window 1)
-  ; (set-window-buffer (selected-window) (get-buffer-create "*bashdb-locals*"))
-  (other-window 1)
-  (switch-to-buffer
-       (if gud-last-last-frame
-	   (gud-find-file (car gud-last-last-frame))
-         ;; Put buffer list in window if we
-         ;; can't find a source file.
-         (list-buffers-noselect)))
-  (other-window 1)
-  (set-window-buffer (selected-window) (get-buffer-create "*bashdb-stack*"))
-  (split-window-horizontally)
-  (other-window 1)
-  (set-window-buffer (selected-window) (get-buffer-create "*bashdb-breakpoints*"))
-  (other-window 1)
-  (goto-char (point-max)))
+  (let ((script-name gud-target-name))
+    (delete-other-windows)
+    (split-window nil ( / ( * (window-height) 3) 4))
+    (split-window nil ( / (window-height) 3))
+    ;(split-window-horizontally)
+    ;(other-window 1)
+    ; (set-window-buffer (selected-window) (get-buffer-create "*bashdb-locals*"))
+    (other-window 1)
+    (switch-to-buffer
+     (if gud-last-last-frame
+	 (gud-find-file (car gud-last-last-frame))
+       ;; Put buffer list in window if we
+       ;; can't find a source file.
+       (list-buffers-noselect)))
+    (other-window 1)
+    (set-window-buffer 
+     (selected-window) 
+     (get-buffer-create (format "*bashdb-stack-%s*" script-name))
+     (set (make-local-variable 'gud-target-name) script-name))
+    (split-window-horizontally)
+    (other-window 1)
+    (set-window-buffer 
+     (selected-window) 
+     (get-buffer-create (format "*bashdb-breakpoints-%s*" script-name))
+     (set (make-local-variable 'gud-target-name) script-name))
+    (other-window 1)
+    (goto-char (point-max))))
 
 (defun bashdb-restore-windows ()
   "Equivalent of `gdb-restore-windows' for bashdb."
