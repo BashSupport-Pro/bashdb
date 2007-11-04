@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.30 2007/11/03 12:32:15 rockyb Exp $
+;;; $Id: bashdb.el,v 1.31 2007/11/04 05:42:21 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -122,7 +122,7 @@ Currently-active file is at the head of the list.")
 
 ;; bashdbtrack constants
 (defconst bashdb-bashdbtrack-stack-entry-regexp
-  "^=>#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
+  "^->#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
   "Regular expression bashdbtrack uses to find a stack trace entry.")
 
 (defconst bashdb-bashdbtrack-input-prompt "\nbashdb<+.*>+ "
@@ -351,12 +351,14 @@ place where Bash doesn't expect."
 			       gud-minibuffer-local-map nil
 			       '(gud-bashdb-history . 1))))
 
+  ; Parse the command line and pick out the script name and whether --annotate
+  ; has been set.
   (let* ((words (split-string-and-unquote command-line))
 	(script-name-annotate-p (bashdb-get-script-name 
 			       (gud-bashdb-massage-args "1" words) nil))
 	(gud-target-name (file-name-nondirectory (car script-name-annotate-p)))
 	(annotate-p (cadr script-name-annotate-p))
-	(bashdb-buffer-name (format "*bashdb-%s*" gud-target-name))
+	(bashdb-buffer-name (format "*bashdb-cmd-%s*" gud-target-name))
 	(bashdb-buffer (get-buffer bashdb-buffer-name))
 	)
 
@@ -516,6 +518,14 @@ mostly copied from `gdb-setup-windows', but simplified."
             (add-text-properties b e
                                  (list 'mouse-face 'highlight
                                        'keymap bashdb--breakpoints-map))
+            (add-text-properties
+             (+ b (match-beginning 1)) (+ b (match-end 1))
+             (list 'face font-lock-constant-face
+                   'font-lock-face font-lock-constant-face))
+            (add-text-properties
+             (+ b (match-beginning 3)) (+ b (match-end 3))
+             (list 'face font-lock-constant-face
+                   'font-lock-face font-lock-constant-face))
             ;; fontify "keep/del"
             (let ((face (if (string= "keep" (buffer-substring
                                              (+ b (match-beginning 2))
@@ -531,7 +541,15 @@ mostly copied from `gdb-setup-windows', but simplified."
               (add-text-properties
                (+ b (match-beginning 3)) (+ b (match-end 3))
                (list 'face compilation-error-face
-                     'font-lock-face compilation-error-face))))
+                     'font-lock-face compilation-error-face)))
+            (add-text-properties
+             (+ b (match-beginning 4)) (+ b (match-end 4))
+             (list 'face font-lock-comment-face
+                   'font-lock-face font-lock-comment-face))
+            (add-text-properties
+             (+ b (match-beginning 5)) (+ b (match-end 5))
+             (list 'face font-lock-constant-face
+                   'font-lock-face font-lock-constant-face)))
         (forward-line)
         (beginning-of-line))))))
 
@@ -598,7 +616,7 @@ mostly copied from `gdb-setup-windows', but simplified."
   "Keymap to navigate bashdb stack frames.")
 
 (defconst bashdb--stack-frame-regexp
-  "^\\(->\\|##\\)+\\([0-9]+\\) .* file `\\([^']+\\)' at line \\([0-9]+\\)$"
+  "^\\(->\\|##\\| +\\)+\\([0-9]+\\) \\(.*\\) file `\\([^']+\\)' at line \\([0-9]+\\)$"
   "Regexp to recognize stack frame lines in bashdb stack buffers.")
 
 (defun bashdb--setup-stack-buffer (buf)
@@ -612,7 +630,17 @@ mostly copied from `gdb-setup-windows', but simplified."
                (s (buffer-substring b e)))
           (when (string-match bashdb--stack-frame-regexp s)
             (add-text-properties
-             (+ b (match-beginning 3)) (+ b (match-end 3))
+             (+ b (match-beginning 2)) (+ b (match-end 2))
+             (list 'face font-lock-constant-face
+                   'font-lock-face font-lock-constant-face))
+            (add-text-properties
+             (+ b (match-beginning 4)) (+ b (match-end 4))
+             (list 'face font-lock-comment-face
+                   'font-lock-face font-lock-comment-face))
+            (add-text-properties
+             (+ b (match-beginning 5)) (+ b (match-end 5))
+             (list 'face font-lock-constant-face
+                   'font-lock-face font-lock-constant-face))
              (list 'face font-lock-function-name-face
                    'font-lock-face font-lock-function-name-face))
             (if (string= (substring s (match-beginning 1) (match-end 1)) "->")
@@ -626,7 +654,17 @@ mostly copied from `gdb-setup-windows', but simplified."
               (insert "  "))
             (add-text-properties b e
                                  (list 'mouse-face 'highlight
-                                       'keymap bashdb--stack-frame-map))))
+                                       'keymap bashdb--stack-frame-map))
+	    (let ((fn-str (substring s (match-beginning 3) (match-end 3)))
+		  (fn-start (+ b (match-beginning 3))))
+	      (if (string-match "\\([^(]+\\)(" fn-str)
+		  (add-text-properties
+		   (+ fn-start (match-beginning 1)) (+ fn-start (match-end 1))
+		   (list 'face font-lock-function-name-face
+			 'font-lock-face font-lock-function-name-face)))
+	      (add-text-properties b e
+				   (list 'mouse-face 'highlight
+					 'keymap bashdb--stack-frame-map))))
         (forward-line)
         (beginning-of-line)))))
 

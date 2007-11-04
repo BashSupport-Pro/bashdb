@@ -654,7 +654,7 @@ _Dbg_onecmd() {
 _Dbg_preloop() {
   if (($_Dbg_annotate)) ; then
       _Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
-      _Dbg_annotation 'locals'      _Dbg_do_stack_trace 3 
+      # _Dbg_annotation 'locals'      _Dbg_do_stack_trace 3 
       _Dbg_annotation 'stack'       _Dbg_do_stack_trace 3 
   fi
 }
@@ -666,7 +666,7 @@ _Dbg_postcmd() {
 	  _Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
         ;;
 	up | down | frame ) 
-	  _Dbg_annotation 'stack' _Dbg_do_stack_trace 3 
+	  _Dbg_annotation 'stack' _Dbg_do_stack_trace 2
 	;;
       * )
       esac
@@ -1117,7 +1117,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.31 2007/10/29 05:19:53 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.32 2007/11/04 05:42:21 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
