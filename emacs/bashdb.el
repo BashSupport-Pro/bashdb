@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.31 2007/11/04 05:42:21 rockyb Exp $
+;;; $Id: bashdb.el,v 1.32 2007/11/04 15:04:20 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -326,7 +326,7 @@ the annotate option was set. Initially annotate should be set to nil."
 
 ;;;###autoload
 (defun bashdb (command-line)
-  "Run bashdb on program FILE in buffer *gud-FILE*.
+  "Run bashdb on program FILE in buffer *bashdb-cmd-FILE*.
 The directory containing FILE becomes the initial working directory
 and source-file directory for your debugger.
 
@@ -339,8 +339,36 @@ or
   bashdb YOUR-SCRIPT ARGUMENT...
 
 Generally the former one works fine. The later one may be useful if
-you have not installed bashdb yet or you have installed Bashdb to the
-place where Bash doesn't expect."
+you have not installed bashdb yet or you have installed bashdb to the
+place where Bash doesn't expect
+
+The custom variable `gud-bashdb-command-name' sets the pattern used
+to invoke bashdb.
+
+If `bashdb-many-windows' is nil (the default value) then bashdb just
+starts with two windows: one displaying the GUD buffer and the
+other with the source file with the main routine of the inferior.
+
+If `bashdb-many-windows' is t, regardless of the value of the layout
+below will appear.
+
++----------------------------------------------------------------------+
+|                               GDB Toolbar                            |
++-----------------------------------+----------------------------------+
+| GUD buffer (I/O of GDB)                                              |
+|                                                                      |
+|                                                                      |
+|                                                                      |
++-----------------------------------+----------------------------------+
+| Source buffer                                                        |
+|                                                                      |
++-----------------------------------+----------------------------------+
+| Stack buffer                      | Breakpoints buffer               |
+| RET  bashdb-goto-stack-frame      | SPC bashdb-toggle-breakpoint     |
+|                                   | RET bashdb-goto-breakpoint       |
+|                                   | D   bashdb-delete-breakpoint     |
++-----------------------------------+----------------------------------+
+."
 
   (interactive
    (list (read-from-minibuffer "Run bashdb (like this): "
