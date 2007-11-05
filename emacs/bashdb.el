@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.34 2007/11/05 15:28:07 rockyb Exp $
+;;; $Id: bashdb.el,v 1.35 2007/11/05 15:59:20 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -610,7 +610,7 @@ mostly copied from `gdb-setup-windows', but simplified."
   (interactive "d")
   (save-excursion
     (goto-char pt)
-    (let ((s (concat "##" (buffer-substring (point-at-bol) (point-at-eol)))))
+    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
       (when (string-match bashdb--breakpoint-regexp s)
         (bashdb-display-line
          (substring s (match-beginning 4) (match-end 4))
