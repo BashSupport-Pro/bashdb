@@ -111,7 +111,7 @@ _Dbg_do_stack_trace() {
       return
   fi
 
-  local -i n=${#FUNCNAME[@]}-1
+  local -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_info_args) from count
 
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] ; then 
@@ -156,7 +156,7 @@ _Dbg_do_stack_trace() {
     local -i arg_count=${BASH_ARGC[$i]}
     ((j++)) ; ((count--))
     prefix='##'
-    (( i == _Dbg_stack_pos+1 )) && prefix='->'
+    (( i == _Dbg_stack_pos+$1-1)) && prefix='->'
     if (( i == n )) ; then 
       # main()'s file is the same as the first caller
       j=i  
@@ -201,7 +201,7 @@ _Dbg_do_stack_trace() {
 
 _Dbg_do_info_args() {
 
-  local -i n=${#FUNCNAME[@]}-1
+  local -i n=${#FUNCNAME[@]}-1  # remove us (_Dbg_do_info_args) from count
 
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] ; then 
@@ -247,7 +247,7 @@ _Dbg_do_up() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.6 2006/12/20 07:49:50 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.7 2007/11/05 11:42:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.32 2007/11/04 15:04:20 rockyb Exp $
+;;; $Id: bashdb.el,v 1.33 2007/11/05 11:42:38 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -592,7 +592,7 @@ mostly copied from `gdb-setup-windows', but simplified."
   (interactive "d")
   (save-excursion
     (goto-char pt)
-    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
+    (let ((s (concat "##" (buffer-substring (point-at-bol) (point-at-eol)))))
       (when (string-match bashdb--breakpoint-regexp s)
         (bashdb-display-line
          (substring s (match-beginning 4) (match-end 4))
@@ -650,12 +650,17 @@ mostly copied from `gdb-setup-windows', but simplified."
 (defun bashdb--setup-stack-buffer (buf)
   "Detects stack frame lines and sets up mouse navigation."
   (with-current-buffer buf
-    (let ((inhibit-read-only t))
+    (let ((inhibit-read-only t)
+	  (frame-point nil) ; position in stack buffer of selected frame
+	  )
       (setq mode-name "BASHDB Stack Frames")
       (goto-char (point-min))
+      
       (while (not (eobp))
-        (let* ((b (point-at-bol)) (e (point-at-eol))
-               (s (buffer-substring b e)))
+        (let* ((b (point-at-bol)) 
+	       (e (point-at-eol))
+               (s (buffer-substring b e))
+	       )
           (when (string-match bashdb--stack-frame-regexp s)
             (add-text-properties
              (+ b (match-beginning 2)) (+ b (match-end 2))
@@ -671,15 +676,14 @@ mostly copied from `gdb-setup-windows', but simplified."
                    'font-lock-face font-lock-constant-face))
              (list 'face font-lock-function-name-face
                    'font-lock-face font-lock-function-name-face))
-            (if (string= (substring s (match-beginning 1) (match-end 1)) "->")
+            (when (string= (substring s (match-beginning 1) (match-end 1)) "->")
                 ;; highlight the currently selected frame
-                (add-text-properties b e
-                                     (list 'face 'bold
-                                           'font-lock-face 'bold))
-              ;; remove the trailing ## 
-              (beginning-of-line)
-              (delete-char 2)
-              (insert "  "))
+	      (add-text-properties b e
+				   (list 'face 'bold
+					 'font-lock-face 'bold))
+	      (setq overlay-arrow-position (make-marker))
+	      (set-marker overlay-arrow-position (point))
+	      (setq frame-point (point)))
             (add-text-properties b e
                                  (list 'mouse-face 'highlight
                                        'keymap bashdb--stack-frame-map))
@@ -693,15 +697,21 @@ mostly copied from `gdb-setup-windows', but simplified."
 	      (add-text-properties b e
 				   (list 'mouse-face 'highlight
 					 'keymap bashdb--stack-frame-map))))
+	;; remove initial ##  or ->
+	(beginning-of-line)
+	(delete-char 2)
         (forward-line)
-        (beginning-of-line)))))
+        (beginning-of-line))
+      ; Go back to the selected frame if any
+      (when frame-point (goto-char frame-point))
+      )))
 
 (defun bashdb-goto-stack-frame (pt)
   "Show the bashdb stack frame correspoding at PT in the bashdb stack buffer."
   (interactive "d")
   (save-excursion
     (goto-char pt)
-    (let ((s (buffer-substring (point-at-bol) (point-at-eol))))
+    (let ((s (concat "##" (buffer-substring (point-at-bol) (point-at-eol)))))
       (when (string-match bashdb--stack-frame-regexp s)
         (let ((frame (substring s (match-beginning 2) (match-end 2))))
           (gud-call (concat "frame " frame)))))))
