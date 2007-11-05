@@ -40,7 +40,7 @@ SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAN
 Program received signal SIGTERM (15)...
 ->0 in file `dbg-cmds.inc' at line 2
 ##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `dbg-cmds.inc' at line 379
-->2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `dbg-cmds.inc' at line 163
+##2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `dbg-cmds.inc' at line 163
 ##3 _Dbg_cmdloop() called from file `dbg-sig.inc' at line 220
 ##4 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
 ##5 source("sig.sh") called from file `bashdb' at line 280
@@ -55,11 +55,11 @@ Program received signal SIGTERM (15)...
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 23
 ##1 source("sig.sh") called from file `bashdb' at line 280
-->2 main() called from file `bashdb' at line 0
+##2 main() called from file `bashdb' at line 0
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 24
 ##1 source("sig.sh") called from file `bashdb' at line 280
-->2 main() called from file `bashdb' at line 0
+##2 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +kill 
 sig.tests: line 11: xxxx Killed $BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile $debugged_script

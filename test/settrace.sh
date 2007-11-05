@@ -2,7 +2,7 @@
 # Towers of Hanoi
 
 init() {
-  _Dbg_set_trace; : ; :
+  _Dbg_debugger; : ; :
 }
 
 hanoi() { 
@@ -11,7 +11,7 @@ hanoi() {
   local -r b=$3
   local -r c=$4
 
-  _Dbg_set_trace; : ; :
+  _Dbg_debugger; : ; :
   if (( n > 0 )) ; then
     (( n-- ))
     hanoi $n $a $c $b
@@ -32,4 +32,4 @@ source ${builddir}/bashdb-trace -q -L .. -B  -x settrace.cmd
 typeset -i max=1
 init
 hanoi $max "a" "b" "c"
-_Dbg_set_trace _Dbg_do_quit; : ; :
+_Dbg_debugger _Dbg_do_quit; : ; :
