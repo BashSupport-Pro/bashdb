@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.35 2007/11/05 15:59:20 rockyb Exp $
+;;; $Id: bashdb.el,v 1.36 2007/11/07 02:28:17 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -137,9 +137,9 @@ Currently-active file is at the head of the list.")
   "Group position in `gud-bashdb-marker-regexp' that matches the line number.")
 
 (defconst bashdb-annotation-start-regexp
-  "^\\([a-z]+\\)\n")
+  "\\([a-z]+\\)\n")
 (defconst bashdb-annotation-end-regexp
-  "^\n")
+  "\n")
 
 ;;; History of argument lists passed to bashdb.
 (defvar gud-bashdb-history nil)
@@ -534,6 +534,16 @@ mostly copied from `gdb-setup-windows', but simplified."
   (when bashdb-many-windows
     (bashdb-setup-windows)))
 
+(defun bashdb-set-windows (&optional name)
+  "Sets window used in multi-window frame and issues
+bashdb-restore-windows if bashdb-many-windows is set"
+  (interactive "sProgram name: ")
+  (when name (setq gud-target-name name)
+	(setq gud-comint-buffer (current-buffer)))
+  (when gud-last-frame (setq gud-last-last-frame gud-last-frame))
+  (when bashdb-many-windows
+    (bashdb-setup-windows)))
+
 ;; ALB fontification and keymaps for secondary buffers (breakpoints, stack)
 
 ;; -- breakpoints
@@ -803,22 +813,22 @@ at the beginning of the line.
 
     (if (not (and currproc bashdb-bashdbtrack-do-tracking-p))
         (bashdb-bashdbtrack-overlay-arrow nil)
-
+      ;else 
       (let* ((procmark (process-mark currproc))
-             (block (buffer-substring (max comint-last-input-end
-                                           (- procmark
-                                              bashdb-bashdbtrack-track-range))
-                                      procmark))
+	     (block-start (max comint-last-input-end
+			       (- procmark bashdb-bashdbtrack-track-range)))
+             (block-str (buffer-substring block-start procmark))
              target target_fname target_lineno target_buffer)
 
-        (if (not (string-match (concat bashdb-bashdbtrack-input-prompt "$") block))
+        (if (not (string-match (concat bashdb-bashdbtrack-input-prompt "$") block-str))
             (bashdb-bashdbtrack-overlay-arrow nil)
 
-          (setq target (bashdb-bashdbtrack-get-source-buffer block))
+          (setq target (bashdb-bashdbtrack-get-source-buffer block-str))
 
           (if (stringp target)
               (message "bashdbtrack: %s" target)
-
+	    ;else
+	    (gud-bashdb-marker-filter block-str)
             (setq target_lineno (car target))
             (setq target_buffer (cadr target))
             (setq target_fname (buffer-file-name target_buffer))
@@ -827,8 +837,23 @@ at the beginning of the line.
             (message "bashdbtrack: line %s, file %s" target_lineno target_fname)
             (bashdb-bashdbtrack-overlay-arrow t)
             (pop-to-buffer origbuf t)
+	    )
 
-            )))))
+	  ; Delete processed annotations from buffer.
+	  (save-excursion
+	    (let ((annotate-start)
+		  (annotate-end (point-max)))
+	      (goto-char block-start)
+	      (while (re-search-forward
+		      bashdb-annotation-start-regexp annotate-end t)
+		(setq annotate-start (match-beginning 0))
+		(if (re-search-forward 
+		     bashdb-annotation-end-regexp annotate-end t)
+		    (delete-region annotate-start (point))
+		;else
+		  (forward-line)))
+	      )))
+	)))
   )
 
 (defun bashdb-bashdbtrack-get-source-buffer (block)
