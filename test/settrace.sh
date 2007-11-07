@@ -11,7 +11,7 @@ hanoi() {
   local -r b=$3
   local -r c=$4
 
-  _Dbg_debugger; : ; :
+  _Dbg_set_trace; : ; :
   if (( n > 0 )) ; then
     (( n-- ))
     hanoi $n $a $c $b
