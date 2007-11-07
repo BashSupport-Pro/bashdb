@@ -15,21 +15,21 @@
  11:     local -r b=$3
  12:     local -r c=$4
  13:   
- 14:     _Dbg_debugger; : ; :
+ 14:     _Dbg_set_trace; : ; :
 +info files
 Source files for which have been read in:
 
 settrace.sh (36 lines)
 +c 
 (settrace.sh:14):
-14:	  _Dbg_debugger; : ; :
+14:	  _Dbg_set_trace; : ; :
 +where 
 ->0 in file `settrace.sh' at line 14
 ##1 hanoi("1", "a", "b", "c") called from file `settrace.sh' at line 34
 ##2 main() called from file `settrace.sh' at line 0
 +cont 
 (settrace.sh:14):
-14:	  _Dbg_debugger; : ; :
+14:	  _Dbg_set_trace; : ; :
 +where 
 ->0 in file `settrace.sh' at line 14
 ##1 hanoi("0", "a", "c", "b") called from file `settrace.sh' at line 17
