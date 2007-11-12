@@ -33,8 +33,6 @@ typeset -ir _Dbg_INPUT_START_DESC=4
 typeset -i  _Dbg_MAX_INPUT_DESC=9  # logfile can reduce this
 typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
 
-typeset -a _Dbg_history=()
-
 # Are we inside the middle of a "skip" command?
 typeset -i  _Dbg_inside_skip=0
 
@@ -218,11 +216,13 @@ _Dbg_onecmd() {
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
      local dq_args=$(_Dbg_esc_dq "$args")
+
      # _Dbg_write_journal_eval doesn't work here. Don't really understand
      # how to get it to work. So we do this in two steps.
      _Dbg_write_journal \
         "_Dbg_history[${#_Dbg_history[@]}]=\"$dq_cmd $dq_args\""
      _Dbg_history[${#_Dbg_history[@]}]="$_Dbg_cmd $args"
+     history -s "$_Dbg_cmd $args"
 
      _Dbg_hi=${#_Dbg_history[@]}
 
@@ -639,9 +639,10 @@ _Dbg_onecmd() {
 
 	* ) 
 
-
           _Dbg_msg "Undefined command: \"$_Dbg_cmd\". Try \"help\"." 
 	  _Dbg_remove_history_item
+	  local -a last_history=(`history 1`)
+	  history -d ${last_history[0]}
 	  ;;
       esac
       done # while (( $_Dbg_redo ))
@@ -1117,7 +1118,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.33 2007/11/05 11:42:38 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.34 2007/11/12 12:00:52 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

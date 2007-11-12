@@ -304,9 +304,17 @@ _Dbg_set_to_return_from_debugger() {
   _Dbg_restore_user_vars
 }
 
+# Add escapes to a string $1 so that when it is read back via "$1"
+# it is the same as $1.
+_Dbg_onoff() {
+  local onoff="off."
+  (( $1 != 0 )) && onoff='on.'
+  builtin echo $onoff
+}
+
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.10 2007/10/14 08:50:34 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.11 2007/11/12 12:00:52 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

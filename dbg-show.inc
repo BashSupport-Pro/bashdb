@@ -27,7 +27,7 @@ _Dbg_do_show() {
   local label=$2
 
   # Warranty, copying and directories are omitted below.
-  local -r subcmds="args basename debugger editing linetrace listsize prompt trace-commands"
+  local -r subcmds="args basename debugger editing history linetrace listsize prompt trace-commands"
 
   if [[ -z $show_cmd ]] ; then 
       local thing
@@ -53,10 +53,8 @@ _Dbg_do_show() {
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
       [[ -n $label ]] && label='basename: '
-      local onoff="off."
-      (( $_Dbg_basename_only != 0 )) && onoff='on.'
       _Dbg_msg \
-"${label}Show short filenames (the basename) in debug output is" $onoff
+"${label}Show short filenames (the basename) in debug output is" `_Dbg_onoff $_Dbg_basename_only`
       return 0
       ;;
     com | comm | comma | comman | command | commands )
@@ -371,6 +369,14 @@ of promoting the sharing and reuse of software generally.
      _Dbg_msg "Source directories searched: $list"
       return 0
       ;;
+    hi|his|hist|histo|histor|history)
+      _Dbg_msg \
+"filename: The filename in which to record the command history is $_Dbg_histfile"
+      _Dbg_msg \
+"save: Saving of history save is" `_Dbg_onoff $_Dbg_history_save`
+      _Dbg_msg \
+"size: Debugger history size is $_Dbg_history_length"
+      ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
       [[ -n $label ]] && label='line tracing: '
       local onoff="off."
@@ -444,7 +450,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.9 2007/10/29 15:00:10 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.10 2007/11/12 12:00:52 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -449,6 +449,9 @@ args:     Argument list to give script when debugged program starts is:
 basename: Show short filenames (the basename) in debug output is on.
 debugger: Allow debugging the debugger is off.
 editing:  Editing of command lines as they are typed is on.
+filename: The filename in which to record the command history is
+save: Saving of history save is on.
+size: Debugger history size is 256
 line tracing: Show line tracing is off.
 line tracing: Show line trace delay is 0.
 listsize: Number of source lines bashdb will list by default is 10.

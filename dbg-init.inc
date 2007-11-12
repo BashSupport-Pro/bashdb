@@ -68,7 +68,6 @@ typeset _Dbg_stop_reason=''    # The reason we are in the debugger.
 typeset _Dbg_last_print=''     # expression on last print command
 typeset _Dbg_last_printe=''    # expression on last print expression command
 
-
 # Sets whether or not to display command before executing it.
 typeset _Dbg_trace_commands="off"
 
@@ -107,7 +106,7 @@ typeset -r _Dbg_space_IFS="
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.16 2007/10/29 05:19:53 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.17 2007/11/12 12:00:52 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

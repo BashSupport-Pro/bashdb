@@ -27,7 +27,7 @@ Num Type       Disp Enb What
 Num Type       Enb  Expression
 0   watchpoint y    $x
 +c 
-Watchpoint 1: $x changed:
+Watchpoint 0: $x changed:
   old value: '22'
   new value: '23'
 (dbg-test1.sh:24):
@@ -50,7 +50,7 @@ Num Type       Enb  Expression
 +### Continuing with a one-time line break (but will watch expression)...
 +cont 30
 One-time breakpoint 2 set in file dbg-test1.sh, line 30.
-Watchpoint 3: x > 26 changed:
+Watchpoint 1: x > 26 changed:
   old value: '0'
   new value: '1'
 (dbg-test1.sh:28):

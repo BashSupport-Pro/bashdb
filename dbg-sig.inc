@@ -152,7 +152,7 @@ _Dbg_debug_trap_handler() {
       local old_val=${_Dbg_watch_val[$_Dbg_i]}
       if [[ $old_val != $new_val ]] ; then
 	((_Dbg_watch_count[_Dbg_i]++))
-	_Dbg_msg "Watchpoint $i: ${_Dbg_watch_exp[$_Dbg_i]} changed:"
+	_Dbg_msg "Watchpoint $_Dbg_i: ${_Dbg_watch_exp[$_Dbg_i]} changed:"
 	_Dbg_msg "  old value: '$old_val'"
 	_Dbg_msg "  new value: '$new_val'"
 	_Dbg_print_source_line
@@ -293,6 +293,12 @@ _Dbg_do_quit() {
     fi
 
     _Dbg_cleanup
+
+    # Save history file
+    if (( $_Dbg_history_save )) ; then
+	history -w $_Dbg_histfile
+    fi
+
     trap - DEBUG
     # This is a hack we need. I am not sure why.
     trap "_Dbg_cleanup2" EXIT
@@ -640,7 +646,7 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.21 2007/03/03 05:02:30 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.22 2007/11/12 12:00:52 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

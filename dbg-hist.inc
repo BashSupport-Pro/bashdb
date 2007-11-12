@@ -21,9 +21,34 @@ typeset -i _Dbg_hi_last_stop=0
 typeset -i _Dbg_hi=0           # Current next history entry to store into.
 typeset -a _Dbg_history=()
 
+typeset -i _Dbg_history_save=1
+typeset -i _Dbg_history_length=256  # gdb's default value
+typeset _Dbg_histfile=${HOME:-.}/.bashdb_hist
+
+_Dbg_read_history() {
+  if [[ -f $_Dbg_histfile ]] && [[ -r $_Dbg_histfile ]] ; then 
+    history -r $_Dbg_histfile
+    local -a last_history=(`history 1`)
+    local -i max_history=${last_history[0]}
+    if (( $max_history > $_Dbg_history_length )) ; then
+      max_history=$_Dbg_history_length
+    fi
+    local OLD_HISTTIMEFORMAT=${HISTTIMEFORMAT}
+    local hist
+    HISTTIMEFORMAT=''
+    local -i i
+    for (( i=1; (( i <= $max_history )) ; i++ )) ; do
+      last_history=(`history $i`)
+      hist=${last_history}[1]
+      # _Dbg_history[$i]=$hist
+    done
+    HISTTIMEFORMAT=${OLD_HISTTIMEFORMAT}
+  fi
+}
+
 # Remove the last command from the history list.
 _Dbg_remove_history_item() {
- _Dbg_hi=${#_Dbg_history[@]}-1
+  _Dbg_hi=${#_Dbg_history[@]}-1
   unset _Dbg_history[$_Dbg_hi]
 }
 
@@ -128,9 +153,11 @@ _Dbg_do_history_list() {
   done
 }
 
+_Dbg_read_history
+
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: dbg-hist.inc,v 1.3 2007/02/17 12:07:44 rockyb Exp $'
+'$Id: dbg-hist.inc,v 1.4 2007/11/12 12:00:52 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
