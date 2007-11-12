@@ -938,9 +938,9 @@ This option causes @value{DBG} to print some basic help and exit.
 This option causes @DBG to print its version number,
 no-warranty blurb, and exit.
 
-@item -c | --command @var{cmd}
+@item -c | --exec-command @var{cmd}
 @cindex @code{-c}
-@cindex @code{--command}
+@cindex @code{--exec-command}
 Run the string instead of running a script
 
 @item -B | --basename
@@ -972,7 +972,12 @@ messages are also suppressed in batch mode.
 output to go to. Note that the debugger output is independent of the
 debugged script output.
 
-o@item -L | --library @var{directory}
+@item -x | --command
+@cindex @code{-x}
+@cindex @code{--command} @var{cmdfile}
+execute debugger commands from @var{cmdfile}.
+@item -L | --library @var{directory}
+
 @cindex @code{-L}
 @cindex @code{--library}
 Set directory where debugger files reside to @var{directory}. The
