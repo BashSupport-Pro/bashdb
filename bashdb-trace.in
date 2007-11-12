@@ -23,7 +23,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.14 2007/11/07 12:34:28 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.15 2007/11/12 14:58:37 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -60,10 +60,10 @@ options:
                            (Needed in regression tests)
     -h | --help            print this help
     -n | --nx |--no-init   Don't run initialization files
-    -c cmd | --command cmd
+    -c cmd | --eval-command cmd
                            Run this passed command as a script
     -q | --quiet           Quiet. Do not print introductory and quiet messages.
-    -x cmdfile | --cmdfile cmdfiles
+    -x cmdfile | --command cmdfiles
                      execute debugger commands from cmdfile
     -L libdir | --library libdir
                            set directory location of library helper file: $_Dbg_main
@@ -157,7 +157,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
       -L|--library) _Dbg_libdir=$2; shift ;;
       -n|--nx|--no-init) _Dbg_no_init=1 ;;
       -q|--quiet) _Dbg_quiet=1 ;;
-      -x) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
+      -x|--command) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
       -T|--tempdir) _Dbg_tmpdir=$2; shift ;;
       -t|--terminal|--tty) 
 	if ! $(touch $2 >/dev/null 2>/dev/null); then 

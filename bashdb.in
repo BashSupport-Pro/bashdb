@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.23 2007/10/30 02:56:57 rockyb Exp $'
+'$Id: bashdb.in,v 1.24 2007/11/12 14:58:37 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -38,7 +38,7 @@ options:
                             (Needed in regression tests)
     -h | --help             print this help
     -n | --nx |--no-init    Don't run initialization files
-    -c cmd | --command cmd  Run this passed command as a script
+    -c cmd | --eval-command cmd  Run this passed argument as a script
     -q | --quiet     Quiet. Do not print introductory and quiet messages.
     -L libdir | --library libdir
                             set directory location of library helper file: $_Dbg_main
@@ -46,7 +46,7 @@ options:
     -T tmpdir | --tempdir   set directory location for temporary files: $_Dbg_tmpdir
     -t tty | --tty tty | --terminal tty
                             set debugger terminal
-    -x cmdfile | --cmdfile cmdfiles
+    -x command | --command cmdfile
                             execute debugger commands from cmdfile
     -X | --trace            set line tracing
     -V | --version          show version number and no-warranty and exit.
@@ -123,7 +123,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
   TEMP=`getopt -o A:Bc:hL:nqt:T::x:XYV \
---long annotate:,basename,command:,debugger,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
+--long annotate:,basename,command:,debugger,exec-command,help,library:,no-init,quiet,tempdir:,terminal:,trace,tty,version \
      -n 'bashdb' -- "$@"`
 
   if [ $? != 0 ] ; then 
@@ -138,7 +138,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
     case $1 in
       -A|--annotate) _Dbg_annotate="$2"; shift ;;
       -B|--basename) _Dbg_basename_only=1 ;;
-      -c|--command) _Dbg_cmd="$2"; shift ;;
+      -c|--eval-command) _Dbg_cmd="$2"; shift ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger
       -h|--help) _Dbg_usage_long; exit 100 ;;
       -L|--library) _Dbg_libdir=$2; shift ;;
@@ -155,7 +155,7 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
 	fi
 	shift
 	;;
-      -x) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
+      -x|--command) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
       -X|--trace) _Dbg_opt_linetrace=1 ;;  
       # -Y|--vtrace) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
       -V|--version) show_version=1 ;;
