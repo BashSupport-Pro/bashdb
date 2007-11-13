@@ -1,5 +1,6 @@
-(/home/src/external-cvs/bashdb-3.1/test/../bashdb:250):
-250:	  eval $_Dbg_cmd
-echo test1
+(bashdb:86):
+86:	  eval $*  # Type: "x $*" to see what's being run.
++# Just a simple quit command.
++quit 
 bashdb: invalid option -- e
 Use --help for option help. Terminating...
