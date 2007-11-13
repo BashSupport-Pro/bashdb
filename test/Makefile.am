@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.23 2007/11/13 12:57:38 rockyb Exp $
+#$Id: Makefile.am,v 1.24 2007/11/13 16:20:07 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -89,7 +89,6 @@ check_DATA = \
 	restart.tests \
 	restart2.cmd \
 	restartbug.sh \
-	run-opts \
 	search.cmd \
 	search.right \
 	search.tests \
@@ -137,13 +136,13 @@ check_DATA = \
 	watch2.right \
 	watch2.tests
 
-TESTS = run-action run-brkpt run-bug-args run-bugIFS run-bug-source \
-	run-command run-complete \
-	run-debug run-display run-finish run-frame \
-	run-list run-misc run-multi run-parm run-restart \
-	run-search run-setshow run-settrace run-sig run-skip run-subshell \
-        run-tbreak run-trace \
-	run-watch1 run-watch2
+TESTS = test-action test-brkpt test-bug-args test-bugIFS test-bug-source \
+	test-command test-complete \
+	test-debug test-display test-finish test-frame \
+	test-list test-misc test-multi test-opts test-parm test-restart \
+	test-search test-setshow test-settrace test-sig test-skip test-subshell \
+        test-tbreak test-trace \
+	test-watch1 test-watch2
 
 TESTS_ENVIRONMENT = \
   srcdir="$(abs_srcdir)" \

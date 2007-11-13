@@ -1,5 +1,6 @@
 #!/bin/sh
-#$Id: run-bug-source,v 1.1 2006/12/19 06:44:25 rockyb Exp $
+#$Id: test-opts,v 1.1 2007/11/13 16:20:08 rockyb Exp $
+# Test bash options.
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -11,11 +12,20 @@ fi
 
 . ${builddir}/check_common
 
-TEST_NAME='bug-source'
+TEST_NAME='sopts'
 TEST_FILE="$builddir/${TEST_NAME}.check"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
 check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
+
+TEMP=`getopt1 -o testing 2>&1 >/dev/null`
+if [ 0 = $? ] ; then
+  TEST_NAME='lopts'
+  TEST_FILE="$builddir/${TEST_NAME}.check"
+  (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+  
+  check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
+fi
 
 # Return code tells testing mechanism whether passed or not.
 exit $?

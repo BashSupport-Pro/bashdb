@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-action,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+#$Id: test-settrace,v 1.1 2007/11/13 16:20:08 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -11,7 +11,7 @@ fi
 
 . ${builddir}/check_common
 
-TEST_NAME='action'
+TEST_NAME='settrace'
 TEST_FILE="$builddir/${TEST_NAME}.check"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 

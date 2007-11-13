@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-setshow,v 1.1 2007/11/13 12:46:13 rockyb Exp $
+#$Id: test-setshow,v 1.1 2007/11/13 16:20:08 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`

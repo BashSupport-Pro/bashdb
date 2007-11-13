@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-bug-args,v 1.1 2006/11/29 23:12:51 rockyb Exp $
+#$Id: test-watch2,v 1.1 2007/11/13 16:20:08 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -11,7 +11,7 @@ fi
 
 . ${builddir}/check_common
 
-TEST_NAME='bug-args'
+TEST_NAME='watch2'
 TEST_FILE="$builddir/${TEST_NAME}.check"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 

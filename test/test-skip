@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-command,v 1.1 2006/06/11 02:23:32 rockyb Exp $
+#$Id: test-skip,v 1.1 2007/11/13 16:20:08 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -11,7 +11,7 @@ fi
 
 . ${builddir}/check_common
 
-TEST_NAME='command'
+TEST_NAME='skip'
 TEST_FILE="$builddir/${TEST_NAME}.check"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 

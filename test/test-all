@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-all,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+#$Id: test-all,v 1.1 2007/11/13 16:20:08 rockyb Exp $
 
 if [ -z "$*" ] ; then
 	TESTS=run-*

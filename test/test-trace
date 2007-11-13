@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: run-subshell,v 1.4 2006/04/05 00:09:25 rockyb Exp $
+#$Id: test-trace,v 1.1 2007/11/13 16:20:08 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -11,16 +11,16 @@ fi
 
 . ${builddir}/check_common
 
-tests=${@:-"subshell1 subshell2 subshell3"}
+tests=${@:-"trace trace2"}
 
-for SUBTEST in $tests; do
+for SUBTEST in $tests ; do
   echo "checking $SUBTEST..."
-  TEST_FILE="$builddir/${SUBTEST}.check"
-  (cd $srcdir && ${THIS_SH} ${SUBTEST}.tests > $TEST_FILE 2>&1 < /dev/null)
-
-  check_output $TEST_FILE ${srcdir}/${SUBTEST}.right
+  TEST_NAME=$SUBTEST
+  TEST_FILE="$builddir/${TEST_NAME}.check"
+  (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+  check_output $TEST_FILE ${srcdir}/${TEST_NAME}.right
   rc=$?
-  if test "$rc" -eq  0 ; then
+  if test $rc -eq 0  ; then 
     rm -f $TEST_FILE
   else
     exit $rc
