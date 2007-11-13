@@ -13,14 +13,9 @@ print "\\$2: $2"
 #### Testing script args...
 info args
 #########################################
-#### Invalid commands...
-show badcommand
-another-bad-command
 tty
 #### *** GNU things...
-show warranty
 info warranty
-show copying
 #### help commands...
 help
 help set
@@ -33,31 +28,6 @@ help set editing
 help tty
 help info
 info
-show
-#### and show...
-show args
-set args now is the time
-show args
-set editing off
-set editing fooo
-show editing
-set editing
-show editing
-set misspelled 40
-set listsize 40
-set listsize bad
-set annotate bad
-set annotate 6
-show annotate
-set annotate 1
-show listsize
-show annotate
-#########################
-#### Test 'show commands'...
-show commands
-show commands +
-show commands -5
-show commands 12
 #### history...
 H
 H 5

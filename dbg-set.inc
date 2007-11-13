@@ -47,7 +47,9 @@ _Dbg_do_set() {
       ;;
     an | ann | anno | annot | annota | annotat | annotate )
       eval "$_seteglob"
-      if [[ $1 == $int_pat ]] ; then 
+      if [[ -z $2 ]] ; then
+	  _Dbg_msg "Argument required (integer to set it to.)."
+      elif [[ $1 == $int_pat ]] ; then 
 	if (( $1 > 1 )) ; then
 	  _Dbg_msg "annotation level must be 0 or 1"
 	else
@@ -102,17 +104,38 @@ _Dbg_do_set() {
 	  _Dbg_msg "\"on\" or \"off\" expected."
       esac
       ;;
-    li | lis | list | lists | listsi | listsiz | listsize )
-      eval "$_seteglob"
-      if [[ $1 == $int_pat ]] ; then 
-	_Dbg_write_journal_eval "_Dbg_listsize=$1"
-      else
-	eval "$_resteglob"
-	_Dbg_msg "Integer argument expected; got: $1"
-	return 1
-      fi
-      eval "$_resteglob"
-      return 0
+   hi|his|hist|histo|histor|history)
+      case $1 in 
+	sa | sav | save )
+	  local onoff=${2:-'on'}
+	  case $onoff in 
+	    on | 1 ) 
+	      _Dbg_write_journal_eval "_Dbg_history_save=1"
+	      ;;
+	    off | 0 )
+	      _Dbg_write_journal_eval "_Dbg_history_save=0"
+	      ;;
+	    * )
+	      _Dbg_msg "\"on\" or \"off\" expected."
+             ;;
+	  esac
+          ;;
+	si | siz | size )
+	  eval "$_seteglob"
+	  if [[ -z $2 ]] ; then
+	    _Dbg_msg "Argument required (integer to set it to.)."
+	  elif [[ $2 != $int_pat ]] ; then 
+	    _Dbg_msg "Bad int parameter: $2"
+	    eval "$_resteglob"
+	    return 1
+	  fi
+	  eval "$_resteglob"
+	  _Dbg_write_journal_eval "_Dbg_history_length=$2"
+          ;;
+        *)
+	_Dbg_msg "\"save\", or \"size\" expected."
+	;;
+      esac
       ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
       local onoff=${1:-'off'}
@@ -200,7 +223,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.11 2007/03/03 05:02:30 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.12 2007/11/13 12:46:12 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

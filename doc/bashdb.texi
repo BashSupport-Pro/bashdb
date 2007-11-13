@@ -3470,11 +3470,11 @@ number.
 
 @end table
 
-@ifset FINISHED
-Use these commands to manage the @value{DBGN} command
+Use these commands to manage the @value{DBG} command
 history facility.
 
 @table @code
+@ifset FINISHED
 @cindex history substitution
 @cindex history file
 @kindex set history filename
@@ -3488,13 +3488,14 @@ the history command editing characters listed below.  This file defaults
 to the value of the environment variable @code{GDBHISTFILE}, or to
 @file{./.gdb_history} (@file{./_gdb_history} on MS-DOS) if this variable
 is not set.
+@end ifset
 
 @cindex history save
 @kindex set history save
 @item set history save
 @itemx set history save @r{[} on | 1 @r{]}
 Record command history in a file, whose name may be specified with the
-@code{set history filename} command.  By default, this option is disabled.
+@code{set history filename} command.  By default, this option is enabled.
 
 @item set history save @r{[} off | 0 @r{]}
 Stop recording command history in a file.
@@ -3507,6 +3508,7 @@ This defaults to the value of the environment variable
 @code{HISTSIZE}, or to 256 if this variable is not set.
 @end table
 
+@ifset FINISHED
 @cindex history expansion
 History expansion assigns special meaning to the character @kbd{!}.
 
@@ -3519,8 +3521,10 @@ history facilities do not attempt substitution on the strings
 @kbd{!=} and @kbd{!(}, even when history expansion is enabled.
 
 The commands to control history expansion are:
+@end ifset 
 
 @table @code
+@ifset FINISHED
 @kindex set history expansion
 @item set history expansion on
 @itemx set history expansion
@@ -3532,16 +3536,19 @@ Disable history expansion.
 The readline code comes with more complete documentation of
 editing and history expansion features.  Users unfamiliar with @value{Emacs}
 or @code{vi} may wish to read it.
+@end ifset
 
 @c @group
 @kindex show history
 @item show history
+@ifset FINISHED
 @itemx show history filename
+@itemx show history expansion
+@end ifset
 @itemx show history save
 @itemx show history size
-@itemx show history expansion
 These commands display the state of the @acronym{BASH} history parameters.
-@code{show history} by itself displays all four states.
+@code{show history} by itself displays all states.
 @c @end group
 @end table
 
@@ -3556,7 +3563,6 @@ Print ten commands centered on command number @var{n}.
 @item show commands +
 Print ten commands just after the commands last printed.
 @end table
-@end ifset
 
 @node Command Completion
 @subsection Command Completion (@samp{complete})

@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.20 2007/01/20 11:32:29 rockyb Exp $
+#$Id: Makefile.am,v 1.21 2007/11/13 12:46:13 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -93,6 +93,10 @@ check_DATA = \
 	search.cmd \
 	search.right \
 	search.tests \
+	setshow-output.right \
+	setshow.cmd \
+	setshow.right \
+	setshow.tests \
 	settrace.cmd \
 	settrace.right \
 	settrace.sh \
