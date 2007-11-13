@@ -325,9 +325,8 @@ Editing of command lines as they are typed is on.
 +set misspelled 40
 Undefined set command "misspelled"
 +set listsize 40
-Undefined set command "listsize"
 +set listsize bad
-Undefined set command "listsize"
+Integer argument expected; got: bad
 +set annotate bad
 Argument required (integer to set it to.).
 +set annotate 6
@@ -337,7 +336,7 @@ Annotation_level is 0.
 +set annotate 1
 Argument required (integer to set it to.).
 +show listsize
-Number of source lines bashdb will list by default is 10.
+Number of source lines bashdb will list by default is 40.
 +show annotate
 Annotation_level is 0.
 +set history size

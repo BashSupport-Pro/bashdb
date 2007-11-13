@@ -177,6 +177,18 @@ _Dbg_do_set() {
       esac
       return 0
       ;;
+    li | lis | list | lists | listsi | listsiz | listsize )
+      eval "$_seteglob"
+      if [[ $1 == $int_pat ]] ; then 
+	_Dbg_write_journal_eval "_Dbg_listsize=$1"
+      else
+	eval "$_resteglob"
+	_Dbg_msg "Integer argument expected; got: $1"
+	return 1
+      fi
+      eval "$_resteglob"
+      return 0
+      ;;
     lo | log | logg | loggi | loggin | logging )
       _Dbg_cmd_set_logging $*
       ;;
@@ -223,7 +235,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.12 2007/11/13 12:46:12 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.13 2007/11/13 12:57:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

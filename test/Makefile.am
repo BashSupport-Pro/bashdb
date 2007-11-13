@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.22 2007/11/13 12:48:19 rockyb Exp $
+#$Id: Makefile.am,v 1.23 2007/11/13 12:57:38 rockyb Exp $
 
 check_DATA = \
 	action.cmd \
@@ -141,7 +141,7 @@ TESTS = run-action run-brkpt run-bug-args run-bugIFS run-bug-source \
 	run-command run-complete \
 	run-debug run-display run-finish run-frame \
 	run-list run-misc run-multi run-parm run-restart \
-	run-search run-settrace run-sig run-skip run-subshell \
+	run-search run-setshow run-settrace run-sig run-skip run-subshell \
         run-tbreak run-trace \
 	run-watch1 run-watch2
 
