@@ -22,7 +22,7 @@ typeset -i _Dbg_hi=0           # Current next history entry to store into.
 typeset -a _Dbg_history=()
 
 typeset -i _Dbg_history_save=1
-typeset -i _Dbg_history_length=256  # gdb's default value
+typeset -i _Dbg_history_length=${HISTSIZE:-256}  # gdb's default value
 typeset _Dbg_histfile=${HOME:-.}/.bashdb_hist
 
 _Dbg_read_history() {
@@ -157,7 +157,7 @@ _Dbg_read_history
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: dbg-hist.inc,v 1.4 2007/11/12 12:00:52 rockyb Exp $'
+'$Id: dbg-hist.inc,v 1.5 2007/11/14 00:48:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
