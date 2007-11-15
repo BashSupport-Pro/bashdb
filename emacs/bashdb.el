@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.36 2007/11/07 02:28:17 rockyb Exp $
+;;; $Id: bashdb.el,v 1.37 2007/11/15 00:38:34 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -679,7 +679,7 @@ bashdb-restore-windows if bashdb-many-windows is set"
   "Detects stack frame lines and sets up mouse navigation."
   (with-current-buffer buf
     (let ((inhibit-read-only t)
-	  (frame-point nil) ; position in stack buffer of selected frame
+	  (current-frame-point nil) ; position in stack buffer of selected frame
 	  )
       (setq mode-name "BASHDB Stack Frames")
       (goto-char (point-min))
@@ -711,7 +711,7 @@ bashdb-restore-windows if bashdb-many-windows is set"
 					 'font-lock-face 'bold))
 	      (setq overlay-arrow-position (make-marker))
 	      (set-marker overlay-arrow-position (point))
-	      (setq frame-point (point)))
+	      (setq current-frame-point (point)))
             (add-text-properties b e
                                  (list 'mouse-face 'highlight
                                        'keymap bashdb--stack-frame-map))
@@ -731,7 +731,7 @@ bashdb-restore-windows if bashdb-many-windows is set"
         (forward-line)
         (beginning-of-line))
       ; Go back to the selected frame if any
-      (when frame-point (goto-char frame-point))
+      (when current-frame-point (goto-char current-frame-point))
       )))
 
 (defun bashdb-goto-stack-frame (pt)
