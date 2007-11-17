@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.38 2007/11/17 11:44:34 rockyb Exp $
+;;; $Id: bashdb.el,v 1.39 2007/11/17 11:56:02 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -38,7 +38,7 @@
 ;; User-definable variables
 ;; vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
-(defcustom gud-bashdb-command-name "bashdb -A 1"
+(defcustom gud-bashdb-command-name "bashdb -A 3"
   "File name for executing bash debugger."
   :type 'string
   :group 'gud)
@@ -67,7 +67,7 @@ can write into: the value (if any) of the environment variable TMPDIR,
 (defcustom bashdb-many-windows t
   "*If non-nil, display secondary bashdb windows, in a layout similar to `gdba'.
 However only set to the multi-window display if the bashdb
-command invocation has an annotate options (\"--annotate 1\" or \"-A 1\")."
+command invocation has an annotate options (\"--annotate 3\" or \"-A 3\")."
   :type 'boolean
   :group 'bashdb)
 
