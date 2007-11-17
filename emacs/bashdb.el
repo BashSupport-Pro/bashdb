@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.37 2007/11/15 00:38:34 rockyb Exp $
+;;; $Id: bashdb.el,v 1.38 2007/11/17 11:44:34 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -756,20 +756,16 @@ bashdb-restore-windows if bashdb-many-windows is set"
   (with-current-buffer buf
     (setq mode-name "BASHDB Locals")))
 
-;;-----------------------------------------------------------------------------
-;; ALB - redefinition of gud-reset for our own purposes
-
-(defvar bashdb--orig-gud-reset (symbol-function 'gud-reset))
-
-(defun gud-reset ()
-  "Redefinition of `gud-reset' to take care of bashdb cleanup."
-  (funcall bashdb--orig-gud-reset)
+(defadvice gud-reset (before bashdb-reset)
+  "bashdb cleanup - remove debugger's internal buffers (frame, breakpoints, 
+etc.)."
   (dolist (buffer (buffer-list))
     (when (string-match "\\*bashdb-[a-z]+\\*" (buffer-name buffer))
       (let ((w (get-buffer-window buffer)))
         (when w (delete-window w)))
       (kill-buffer buffer))))
 
+(ad-activate 'gud-reset)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; bashdbtrack --- tracking bashdb debugger in an Emacs shell window
