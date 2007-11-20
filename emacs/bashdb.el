@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.39 2007/11/17 11:56:02 rockyb Exp $
+;;; $Id: bashdb.el,v 1.40 2007/11/20 19:39:43 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -71,7 +71,7 @@ command invocation has an annotate options (\"--annotate 3\" or \"-A 3\")."
   :type 'boolean
   :group 'bashdb)
 
-(defcustom bashdb-bashdbtrack-do-tracking-p nil
+(defcustom bashdbtrack-do-tracking-p nil
   "*Controls whether the bashdbtrack feature is enabled or not.
 When non-nil, bashdbtrack is enabled in all comint-based buffers,
 e.g. shell buffers and the *gud-bashdb* buffer.  When using bashdb to debug a
@@ -80,16 +80,16 @@ source file and line that the program is stopped at, much the same way
 as gud-mode does for debugging C programs with gdb."
   :type 'boolean
   :group 'bashdb)
-(make-variable-buffer-local 'bashdb-bashdbtrack-do-tracking-p)
+(make-variable-buffer-local 'bashdbtrack-do-tracking-p)
 
-(defcustom bashdb-bashdbtrack-minor-mode-string " BASHDB"
+(defcustom bashdbtrack-minor-mode-text " bashdb"
   "*String to use in the minor mode list when bashdbtrack is enabled."
   :type 'string
   :group 'bashdb)
 
 (defgroup bashdbtrack nil
   "Bashdb file tracking by watching the prompt."
-  :prefix "bashdb-bashdbtrack-"
+  :prefix "bashdbtrack-"
   :group 'shell)
 
 
@@ -101,13 +101,13 @@ as gud-mode does for debugging C programs with gdb."
   "Queue of Makefile temp files awaiting execution.
 Currently-active file is at the head of the list.")
 
-(defvar bashdb-bashdbtrack-is-tracking-p nil)
+(defvar bashdbtrack-is-tracking-p nil)
 
 
 ;; Constants
 
 (defconst bashdb-position-re 
-  "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\)).*\n"
+  "\\(^\\|\n\\)(\\([^:]+\\):\\([0-9]*\\))"
   "Regular expression for a bashdb position")
 
 (defconst bashdb-marker-regexp-file-group 2
@@ -121,14 +121,14 @@ Currently-active file is at the head of the list.")
   "Regular expression that describes tracebacks.")
 
 ;; bashdbtrack constants
-(defconst bashdb-bashdbtrack-stack-entry-regexp
+(defconst bashdbtrack-stack-entry-regexp
   "^->#[0-9]+[ \t]+\\((\\([a-zA-Z-.]+\\) at (\\(\\([a-zA-Z]:\\)?[^:\n]*\\):\\([0-9]*\\)).*\n"
   "Regular expression bashdbtrack uses to find a stack trace entry.")
 
-(defconst bashdb-bashdbtrack-input-prompt "\nbashdb<+.*>+ "
+(defconst bashdbtrack-input-prompt "\nbashdb<+.*>+ "
   "Regular expression bashdbtrack uses to recognize a bashdb prompt.")
 
-(defconst bashdb-bashdbtrack-track-range 10000
+(defconst bashdbtrack-track-range 10000
   "Max number of characters from end of buffer to search for stack entry.")
 
 (defconst gud-bashdb-marker-regexp-file-group 1
@@ -627,6 +627,19 @@ bashdb-restore-windows if bashdb-many-windows is set"
          (string-to-number (substring s (match-beginning 5) (match-end 5))))
         ))))
 
+(defun bashdb-goto-trace-line ()
+  "Displays the location in a source file of a trace line."
+  (interactive "")
+  (save-excursion
+    (goto-char (point))
+    (let ((s (buffer-substring (line-beginning-position) (line-end-position)))
+	  (gud-comint-buffer (current-buffer)))
+      (when (string-match bashdb-position-re s)
+        (bashdb-display-line
+         (substring s (match-beginning 2) (match-end 2))
+         (string-to-number (substring s (match-beginning 3) (match-end 3))))
+        ))))
+
 (defun bashdb-toggle-breakpoint (pt)
   "Toggles the breakpoint at PT in the breakpoints buffer."
   (interactive "d")
@@ -774,25 +787,25 @@ etc.)."
 
 ;;; Code:
 
-(defun bashdb-bashdbtrack-overlay-arrow (activation)
+(defun bashdbtrack-overlay-arrow (activation)
   "Activate or de arrow at beginning-of-line in current buffer."
   ;; This was derived/simplified from edebug-overlay-arrow
   (cond (activation
 	 (setq overlay-arrow-position (make-marker))
 	 (setq overlay-arrow-string "=>")
 	 (set-marker overlay-arrow-position (point) (current-buffer))
-	 (setq bashdb-bashdbtrack-is-tracking-p t))
-	(bashdb-bashdbtrack-is-tracking-p
+	 (setq bashdbtrack-is-tracking-p t))
+	(bashdbtrack-is-tracking-p
 	 (setq overlay-arrow-position nil)
-	 (setq bashdb-bashdbtrack-is-tracking-p nil))
+	 (setq bashdbtrack-is-tracking-p nil))
 	))
 
-(defun bashdb-bashdbtrack-track-stack-file (text)
+(defun bashdbtrack-track-stack-file (text)
   "Show the file indicated by the bashdb stack entry line, in a separate window.
 Activity is disabled if the buffer-local variable
-`bashdb-bashdbtrack-do-tracking-p' is nil.
+`bashdbtrack-do-tracking-p' is nil.
 
-We depend on the bashdb input prompt matching `bashdb-bashdbtrack-input-prompt'
+We depend on the bashdb input prompt matching `bashdbtrack-input-prompt'
 at the beginning of the line.
 " 
   ;; Instead of trying to piece things together from partial text
@@ -807,19 +820,19 @@ at the beginning of the line.
   (let* ((origbuf (current-buffer))
 	 (currproc (get-buffer-process origbuf)))
 
-    (if (not (and currproc bashdb-bashdbtrack-do-tracking-p))
-        (bashdb-bashdbtrack-overlay-arrow nil)
+    (if (not (and currproc bashdbtrack-do-tracking-p))
+        (bashdbtrack-overlay-arrow nil)
       ;else 
       (let* ((procmark (process-mark currproc))
 	     (block-start (max comint-last-input-end
-			       (- procmark bashdb-bashdbtrack-track-range)))
+			       (- procmark bashdbtrack-track-range)))
              (block-str (buffer-substring block-start procmark))
              target target_fname target_lineno target_buffer)
 
-        (if (not (string-match (concat bashdb-bashdbtrack-input-prompt "$") block-str))
-            (bashdb-bashdbtrack-overlay-arrow nil)
+        (if (not (string-match (concat bashdbtrack-input-prompt "$") block-str))
+            (bashdbtrack-overlay-arrow nil)
 
-          (setq target (bashdb-bashdbtrack-get-source-buffer block-str))
+          (setq target (bashdbtrack-get-source-buffer block-str))
 
           (if (stringp target)
               (message "bashdbtrack: %s" target)
@@ -831,7 +844,7 @@ at the beginning of the line.
             (switch-to-buffer-other-window target_buffer)
             (goto-line target_lineno)
             (message "bashdbtrack: line %s, file %s" target_lineno target_fname)
-            (bashdb-bashdbtrack-overlay-arrow t)
+            (bashdbtrack-overlay-arrow t)
             (pop-to-buffer origbuf t)
 	    )
 
@@ -852,7 +865,7 @@ at the beginning of the line.
 	)))
   )
 
-(defun bashdb-bashdbtrack-get-source-buffer (block)
+(defun bashdbtrack-get-source-buffer (block)
   "Return line number and buffer of code indicated by block's traceback text.
 
 We look first to visit the file indicated in the trace.
@@ -890,31 +903,47 @@ problem as best as we can determine."
 
 
 ;; bashdbtrack functions
-(defun bashdb-bashdbtrack-toggle-stack-tracking (arg)
+(define-minor-mode bashdbtrack-mode ()
+  "Minor mode for tracking bash debugging inside a process shell."
+  :init-value nil
+  ;; The indicator for the mode line.
+  :lighter bashdbtrack-minor-mode-text
+  ;; The minor mode bindings.
+  :global nil
+  :group 'bashdb
+  (bashdbtrack-toggle-stack-tracking 1)
+  (setq bashdbtrack-is-tracking-p t)
+  (local-set-key "\C-cg" 'bashdb-goto-trace-line)
+  (add-hook 'comint-output-filter-functions 'bashdbtrack-track-stack-file)
+  (run-mode-hooks 'bashdbtrack-mode-hook))
+
+(defun bashdbtrack-toggle-stack-tracking (arg)
   (interactive "P")
   (if (not (get-buffer-process (current-buffer)))
       (error "No process associated with buffer '%s'" (current-buffer)))
   ;; missing or 0 is toggle, >0 turn on, <0 turn off
   (if (or (not arg)
 	  (zerop (setq arg (prefix-numeric-value arg))))
-      (setq bashdb-bashdbtrack-do-tracking-p (not bashdb-bashdbtrack-do-tracking-p))
-    (setq bashdb-bashdbtrack-do-tracking-p (> arg 0)))
+      (setq bashdbtrack-do-tracking-p (not bashdbtrack-do-tracking-p))
+    (setq bashdbtrack-do-tracking-p (> arg 0)))
   (message "%sabled bashdb's bashdbtrack"
-           (if bashdb-bashdbtrack-do-tracking-p "En" "Dis")))
+           (if bashdbtrack-do-tracking-p "En" "Dis")))
 
 (defun turn-on-bashdbtrack ()
+  "Turn on bashdbtrack mode.
+
+This function is designed to be added to hooks, for example:
+  (add-hook 'comint-mode-hook 'turn-on-bashdbtrack-mode)"
   (interactive)
-  (add-hook 'comint-output-filter-functions 
-	    'bashdb-bashdbtrack-track-stack-file)
-  (setq bashdb-bashdbtrack-is-tracking-p t)
-  (bashdb-bashdbtrack-toggle-stack-tracking 1))
+  (bashdbtrack-mode 1)
+)
 
 (defun turn-off-bashdbtrack ()
   (interactive)
   (remove-hook 'comint-output-filter-functions 
-	       'bashdb-bashdbtrack-track-stack-file)
-  (setq bashdb-bashdbtrack-is-tracking-p nil)
-  (bashdb-bashdbtrack-toggle-stack-tracking 0))
+	       'bashdbtrack-track-stack-file)
+  (setq bashdbtrack-is-tracking-p nil)
+  (bashdbtrack-toggle-stack-tracking 0))
 
 ;; Add a designator to the minor mode strings
 (or (assq 'bashdb-bashdbtrack-is-tracking-p minor-mode-alist)
@@ -922,7 +951,6 @@ problem as best as we can determine."
 	    bashdb-bashdbtrack-minor-mode-string)
 	  minor-mode-alist))
 
-
 ;;; bashdbtrack.el ends here
 
 (provide 'bashdb)
