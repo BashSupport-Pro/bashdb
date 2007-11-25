@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.40 2007/11/20 19:39:43 rockyb Exp $
+;;; $Id: bashdb.el,v 1.41 2007/11/25 17:05:36 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -548,14 +548,39 @@ bashdb-restore-windows if bashdb-many-windows is set"
 
 ;; -- breakpoints
 
-(defvar bashdb--breakpoints-map
-  (let ((map (make-sparse-keymap)))
+(defvar bashdb-breakpoints-mode-map
+  (let ((map (make-sparse-keymap))
+	(menu (make-sparse-keymap "Breakpoints")))
+    (define-key menu [quit] '("Quit"   . bashdb-delete-frame-or-window))
+    (define-key menu [goto] '("Goto"   . bashdb-goto-breakpoint))
+    (define-key menu [delete] '("Delete" . basdhb-delete-breakpoint))
     (define-key map [mouse-2] 'bashdb-goto-breakpoint-mouse)
     (define-key map [? ] 'bashdb-toggle-breakpoint)
     (define-key map [(control m)] 'bashdb-goto-breakpoint)
     (define-key map [?d] 'bashdb-delete-breakpoint)
     map)
   "Keymap to navigate/set/enable bashdb breakpoints.")
+
+(defun bashdb-delete-frame-or-window ()
+  "Delete frame if there is only one window.  Otherwise delete the window."
+  (interactive)
+  (if (one-window-p) (delete-frame)
+    (delete-window)))
+
+(defun bashdb-breakpoints-mode ()
+  "Major mode for rdebug breakpoints.
+
+\\{rdebug-breakpoints-mode-map}"
+  (kill-all-local-variables)
+  (setq major-mode 'bashdb-breakpoints-mode)
+  (setq mode-name "BASHDB Breakpoints")
+  (use-local-map bashdb-breakpoints-mode-map)
+  (setq buffer-read-only t)
+  (run-mode-hooks 'bashdb-breakpoints-mode-hook)
+  ;(if (eq (buffer-local-value 'gud-minor-mode gud-comint-buffer) 'gdba)
+  ;    'gdb-invalidate-breakpoints
+  ;  'gdbmi-invalidate-breakpoints)
+)
 
 (defconst bashdb--breakpoint-regexp
   "^\\([0-9]+\\) +breakpoint +\\([a-z]+\\) +\\([a-z]+\\) +\\(.+\\):\\([0-9]+\\)$"
@@ -565,7 +590,7 @@ bashdb-restore-windows if bashdb-many-windows is set"
   "Detects breakpoint lines and sets up mouse navigation."
   (with-current-buffer buf
     (let ((inhibit-read-only t))
-      (setq mode-name "BASHDB Breakpoints")
+      (bashdb-breakpoints-mode)
       (goto-char (point-min))
       (while (not (eobp))
         (let ((b (point-at-bol)) (e (point-at-eol)))
@@ -573,7 +598,7 @@ bashdb-restore-windows if bashdb-many-windows is set"
                               (buffer-substring b e))
             (add-text-properties b e
                                  (list 'mouse-face 'highlight
-                                       'keymap bashdb--breakpoints-map))
+                                       'keymap bashdb-breakpoints-mode-map))
             (add-text-properties
              (+ b (match-beginning 1)) (+ b (match-end 1))
              (list 'face font-lock-constant-face
