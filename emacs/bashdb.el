@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.41 2007/11/25 17:05:36 rockyb Exp $
+;;; $Id: bashdb.el,v 1.42 2007/11/26 00:49:19 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -32,6 +32,11 @@
 ;;    See `bashdb' of describe-function for more details.
 ;;    
 ;;
+(if (< emacs-major-version 22)
+  (error
+   "This version of bashdb.el needs at least Emacs 22 or greater - you have version %d."
+   emacs-major-version))
+
 (require 'gud)
 
 
