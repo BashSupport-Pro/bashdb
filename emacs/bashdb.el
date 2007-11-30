@@ -1,5 +1,5 @@
 ;;; bashdb.el --- BASH Debugger mode via GUD and bashdb
-;;; $Id: bashdb.el,v 1.42 2007/11/26 00:49:19 rockyb Exp $
+;;; $Id: bashdb.el,v 1.43 2007/11/30 01:58:43 rockyb Exp $
 
 ;; Copyright (C) 2002, 2006, 2007 Rocky Bernstein (rockyb@users.sf.net) 
 ;;                    and Masatake YAMATO (jet@gyve.org)
@@ -407,9 +407,9 @@ below will appear.
   (let* ((words (split-string-and-unquote command-line))
 	(script-name-annotate-p (bashdb-get-script-name 
 			       (gud-bashdb-massage-args "1" words) nil))
-	(gud-target-name (file-name-nondirectory (car script-name-annotate-p)))
+	(target-name (file-name-nondirectory (car script-name-annotate-p)))
 	(annotate-p (cadr script-name-annotate-p))
-	(bashdb-buffer-name (format "*bashdb-cmd-%s*" gud-target-name))
+	(bashdb-buffer-name (format "*bashdb-cmd-%s*" target-name))
 	(bashdb-buffer (get-buffer bashdb-buffer-name))
 	)
 
@@ -420,7 +420,7 @@ below will appear.
 		       (gud-bashdb-massage-args file args command-line))
 		     'gud-bashdb-marker-filter 'gud-bashdb-find-file)
 
-    (setq gud-target-name (file-name-nondirectory (car script-name-annotate-p)))
+    (setq gud-target-name target-name)
     ; gud-common-init sets the bashdb process buffer name incorrectly, because
     ; it can't parse the command line properly to pick out the script name.
     ; So we'll do it here and rename that buffer. The buffer we want to rename
