@@ -2,6 +2,14 @@
 (load-file "@srcdir@/elk-test.el")
 (load-file "@srcdir@/bashdb.el")
 
+(deftest "bashdb-marker-filter-test"
+  (assert-equal "Testing 1 2 3" (gud-bashdb-marker-filter "Testing 1 2 3"))
+  (assert-equal "ABC" (gud-bashdb-marker-filter 
+"breakpoints
+No breakpoints
+
+ABC")))
+
 (defun regexp-stack-test (location-str pos-str file-str line-str)
   "Test to see that location-str matches gud-rdebug-marker-regexp"
   (assert-equal 0 (string-match bashdb--stack-frame-regexp location-str))
@@ -110,5 +118,7 @@
 (build-suite "bashdb-suite" 
 	     "bashdb-regexp-stack-test"
 	     "bashdb-marker-regexp-test"
-	     "bashdb-get-script-name-test")
+	     "bashdb-get-script-name-test"
+	     "bashdb-marker-filter-test")
+
 (run-elk-test "bashdb-suite" "Test Emacs routines to run the bash debugger")
