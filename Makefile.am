@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.13 2007/10/14 09:12:53 rockyb Exp $
+#$Id: Makefile.am,v 1.14 2008/01/03 02:53:18 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -38,7 +38,7 @@ pkgdatadir=$(datadir)/bashdb
 
 data_DATA =
 pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-commands.inc \
-	       dbg-complete.inc                                  \
+	       dbg-complete.inc                 dbg-edit.inc     \
 	       dbg-file.inc  dbg-fns.inc                         \
 	       dbg-help.inc  dbg-hist.inc                        \
                dbg-info.inc  dbg-init.inc       dbg-io.inc       \
