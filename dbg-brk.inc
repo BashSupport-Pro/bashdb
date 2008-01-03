@@ -1,7 +1,7 @@
 # dbg-brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
 
-#   Copyright (C) 2002, 2003, 2006, 2007 Rocky Bernstein 
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
+#   rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.15 2007/03/02 07:56:34 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.16 2008/01/03 02:52:08 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -78,35 +78,6 @@ _Dbg_file_not_read_in() {
     _Dbg_msg "File $filename not found in read-in files."
     _Dbg_msg "See 'info files' for a list of known files and"
     _Dbg_msg "'load' to read in a file."
-}
-
-# Common routine for setup of commands that take a single
-# linespec argument. We assume the following variables 
-# which we store into:
-#  filename, line_number, full_filename
-
-_Dbg_linespec_setup() {
-  local linespec=${1:-''}
-  if [[ -z $linespec ]] ; then
-    _Dbg_msg "Invalid line specification, null given"
-  fi
-  local -a word=($(_Dbg_parse_linespec "$linespec"))
-  if [[ ${#word[@]} == 0 ]] ; then
-    _Dbg_msg "Invalid line specification: $linespec"
-    return
-  fi
-  
-  filename=${word[2]}
-  local -ir is_function=${word[1]}
-  line_number=${word[0]}
-  full_filename=`_Dbg_is_file $filename`
-
-  if (( is_function )) ; then
-      if [[ -z $full_filename ]] ; then 
-	  _Dbg_readin "$filename"
-	  full_filename=`_Dbg_is_file $filename`
-      fi
-  fi
 }
 
 # Error message for file not read in

@@ -1,6 +1,7 @@
 # dbg-fns.inc - Bourne Again Shell Debugger Utility Functions
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2007 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008 Rocky Bernstein
+#   rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -190,6 +191,35 @@ _Dbg_get_functions() {
     echo ${ret_fns[@]}
 }
 
+# Common routine for setup of commands that take a single
+# linespec argument. We assume the following variables 
+# which we store into:
+#  filename, line_number, full_filename
+
+_Dbg_linespec_setup() {
+  local linespec=${1:-''}
+  if [[ -z $linespec ]] ; then
+    _Dbg_msg "Invalid line specification, null given"
+  fi
+  local -a word=($(_Dbg_parse_linespec "$linespec"))
+  if [[ ${#word[@]} == 0 ]] ; then
+    _Dbg_msg "Invalid line specification: $linespec"
+    return
+  fi
+  
+  filename=${word[2]}
+  local -ir is_function=${word[1]}
+  line_number=${word[0]}
+  full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+}
+
 # Parse linespec in $1 which should be one of
 #   int
 #   file:line
@@ -314,7 +344,7 @@ _Dbg_onoff() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.11 2007/11/12 12:00:52 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.12 2008/01/03 02:52:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

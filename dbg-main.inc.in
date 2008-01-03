@@ -1,7 +1,7 @@
 # dbg-main.inc - Bourne Again Shell Debugger Main Include
 
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein 
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein 
+#   rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -18,7 +18,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.inc.in,v 1.5 2007/10/14 03:53:24 rockyb Exp $'
+'$Id: dbg-main.inc.in,v 1.6 2008/01/03 02:52:08 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -33,7 +33,7 @@ prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 
 # Note: "init" comes first and "cmds" has to come after "io". Otherwise 
 # these are sorted alphabetically.
-typeset -r _Dbg_includes="init brk complete file fns help hist info log io 
+typeset -r _Dbg_includes="init brk complete edit file fns help hist info log io 
 cmds commands list stack set show sig"
 
 for file in $_Dbg_includes ; do 

@@ -1,7 +1,7 @@
 # dbg-help.inc - Bourne Again Shell Debugger Help Routines
 
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007
-#   Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
+#   Rocky Bernstein rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -164,6 +164,11 @@ breakpoint N is reached. Long command name: condition."
 		_Dbg_msg \
 "e bash-cmd      Evaluate a bash command by sourcing it in a subshell. Long
                 command name: eval."
+                return ;;
+	    ed | edi | edit ) 
+		_Dbg_msg \
+"edit [linespec] Edit specified file at location given
+                 If no location is given use the current location."
                 return ;;
             en | ena | enab | enabl | enable ) 
 		_Dbg_msg \
@@ -550,7 +555,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.15 2007/10/29 15:00:10 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.16 2008/01/03 02:52:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

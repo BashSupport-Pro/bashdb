@@ -1,7 +1,7 @@
 # dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007
-#   Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
+#   Rocky Bernstein rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -378,6 +378,12 @@ _Dbg_onecmd() {
 	e | ev | eva | eval )
 	  _Dbg_do_eval $args
 	  _Dbg_last_cmd="eval"
+	  ;;
+
+	# evaluate as bash command
+	ed | edi | edit )
+	  _Dbg_do_edit $args
+	  _Dbg_last_cmd="edit"
 	  ;;
 
 	# evaluate as bash command
@@ -1118,7 +1124,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.35 2007/11/12 12:04:06 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.36 2008/01/03 02:52:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

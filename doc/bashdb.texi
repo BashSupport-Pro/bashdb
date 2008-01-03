@@ -1366,10 +1366,11 @@ just @key{RET}. Some commands which require a parameter, such as
 * Command Syntax::       How to give commands to the BASH debugger
 * Help::                 How to ask for help (help)
 * Quit::                 Leaving the debugger (quit, kill)
-* Information::          Status and Debugger settings (info, show)
+* Program Information::  Status and Debugger settings (info, show)
 * Stopping::             Stopping and continuing (break, watch, step, cont...)
 * Stack::                Examining the stack frame (where, up, down, frame)
 * List::                 Printing source files (list)
+* Edit::                 Editing source files (edit)
 * Search::               Searching source files (/pat/ ?pat?)
 * Data::                 Examining data (print, examine, info variables)
 * Evaluation/Execution:: Arbitrary execution (eval, shell)
@@ -2388,7 +2389,7 @@ program. Supply either the signal name, e.g. @code{SIGINT}, or the
 signal number @code{15}.
 @end table
 
-@node Information
+@node Program Information
 @section Status and Debugger Settings (@samp{info}, @samp{show})
 
 @menu
@@ -2854,6 +2855,43 @@ Specifies the line of function @var{function} in the file
 avoid ambiguity when there are identically named functions in
 different source files.
 @end ifset
+@end table
+
+@node Edit
+@section Editing Source files (@samp{edit})
+
+To edit the lines in a source file, use the @code{edit} command.  The
+editing program of your choice is invoked with the current line set to
+the active line in the program.  Alternatively, you can give a line
+specification to specify what part of the file you want to print if
+you want to see other parts of the program.
+
+You can customize to use any editor you want by using the
+@code{EDITOR} environment variable. The only restriction is that your
+editor (say @code{ex}), recognizes the following command-line syntax:
+@smallexample
+ex +@var{number} file
+@end smallexample
+The optional numeric value +@var{number} specifies the number of the
+line in the file where to start editing.  For example, to configure
+@value{DBG} to use the @code{vi} editor, you could use these commands
+with the @code{sh} shell:
+@smallexample
+EDITOR=/usr/bin/vi
+export EDITOR
+gdb @dots{}
+@end smallexample
+or in the @code{csh} shell,
+@smallexample
+setenv EDITOR /usr/bin/vi
+gdb @dots{}
+@end smallexample
+
+@table @code
+@kindex edit @ovar{line-specification}
+@item edit @ovar{line specification}
+Edit line specification using the editor specified by the
+@code{EDITOR} environment variable.
 @end table
 
 @node Search
