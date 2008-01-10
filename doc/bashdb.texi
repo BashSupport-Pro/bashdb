@@ -2028,7 +2028,8 @@ Break conditions can be specified when a breakpoint is set, by using
 @samp{if} in the arguments to the @code{break} command.  @xref{Set
 Breaks, ,Setting breakpoints}.  A breakpoint with a condition
 evaluates the expression each time your script reaches it, and your
-script stops only if the condition is @emph{true}.
+script stops only if the condition is @emph{true}. They can also be
+changed at any time with the @code{condition} command.
 
 @cindex one-time breakpoints
 There is also a notion of a ``one-time'' breakpoint which gets deleted
@@ -2040,10 +2041,6 @@ it might be simpler, say, to just set a watchpoint on a variable name,
 and specify a condition that tests whether the new value is an interesting
 one.
 
-Break conditions can be specified when a breakpoint is set, by using
-@samp{if} in the arguments to the @code{break} command.  @xref{Set
-Breaks, ,Setting breakpoints}.  They can also be changed at any time
-with the @code{condition} command.
 
 @ifset FINISHED
 You can also use the @code{if} keyword with the @code{watch} command.
