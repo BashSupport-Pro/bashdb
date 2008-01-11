@@ -1,4 +1,4 @@
-#   Copyright (C) 2002, 2003, 2006 Rocky Bernstein rocky@panix.com
+#   Copyright (C) 2002, 2003, 2006, 2008 Rocky Bernstein rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -13,18 +13,16 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.6 2007/07/12 08:37:36 myamato Exp $
+#$Id: Makefile.am,v 1.7 2008/01/11 13:57:31 rockyb Exp $
 
 check_DATA = bashdb-test.el bashdb-test.el.in elk-test.el
 EXTRA_DIST = bashdb.el $(check_DATA)
 ELCFILES  =  bashdb.elc
 if INSTALL_EMACS_LISP
 lisp_LISP = bashdb.el
-endif
 
-test: check
 
 check:
 	$(EMACS) -batch -q -l $(top_builddir)/emacs/bashdb-test.el $(srcdir)/elk-test.el
-
-
+endif
+test: check
