@@ -1,5 +1,5 @@
 \input texinfo      @c -*-texinfo-*-
-@c Copyright 2002, 2003, 2004, 2006, 2007
+@c Copyright 2002, 2003, 2004, 2006, 2007, 2008
 @c Rocky Bernstein for the Free Software Foundation
 @c
 @c TODO: 
@@ -51,7 +51,7 @@
 @c manuals to an info tree.
 @dircategory Programming & development tools.
 @direntry
-* @value{DBG}: (bashdb).                     The @sc{bash} debugger.
+* Bashdb - the bash debugger: (bashdb). The @sc{bash} debugger
 @end direntry
 
 @ifinfo
@@ -62,7 +62,7 @@ This is the @value{EDITION} Edition, @value{UPDATED},
 of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
 for BASH
 
-Copyright (C) 2002, 2003, 2004, 2006, 2007 Rocky Bernstein for the Free Software Foundation.
+Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein for the Free Software Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -118,7 +118,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @end tex
 
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2002, 2003, 2004, 2006, 2007 Rocky Bernstein for the Free Software
+Copyright @copyright{} 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein for the Free Software
 Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -170,7 +170,7 @@ This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
 This is the @value{EDITION} Edition, @value{UPDATED}, for BASH.
 
-Copyright (C) 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
+Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 
 @menu
 * Summary::                     Overview of Debugger with a sample session
@@ -257,7 +257,7 @@ factorial of a number: fact(0) is 1 and fact(n) is n*fact(n-1).
 @cartouche
 $ @b{bashdb -L .  /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -542,7 +542,7 @@ information when tracing a script. Here's a simple session.
 @cartouche
 @b{/usr/local/bin/bashdb /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -645,7 +645,7 @@ the @code{bashdb} command:
 @cartouche
 @b{/usr/local/bin/bashdb -X /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -2621,7 +2621,7 @@ regression-tests @file{parm.sh}.
 @group
 % ../bashdb -n -L .. parm.sh
 Bourne-Again Shell Debugger, release @value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

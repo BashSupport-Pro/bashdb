@@ -1,6 +1,6 @@
 #!@BASH_PROG@
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007  Rocky Bernstein 
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008  Rocky Bernstein 
+#   rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.24 2007/11/12 14:58:37 rockyb Exp $'
+'$Id: bashdb.in,v 1.25 2008/02/05 09:24:32 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -241,7 +241,7 @@ _Dbg_script=1
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"
   cat <<EOF
-Copyright 2002, 2003, 2004, 2006, 2007 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
