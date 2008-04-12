@@ -279,7 +279,7 @@ _Dbg_set_ftrace() {
 # internal settings  
 _Dbg_set_debugger_internal() {
   IFS="$_Dbg_space_IFS";
-  PS4='+ dbg (${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]}\n'
+  PS4='+ dbg (${BASH_SOURCE}:${LINENO}[$BASH_SUBSHELL]): ${FUNCNAME[0]}\n'
 }
 
 _Dbg_restore_user_vars() {
@@ -344,7 +344,7 @@ _Dbg_onoff() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.12 2008/01/03 02:52:08 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.13 2008/04/12 08:14:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

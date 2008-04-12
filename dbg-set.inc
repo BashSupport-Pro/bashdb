@@ -1,7 +1,7 @@
 # dbg-set.inc - Bourne Again Shell Debugger Set Routines
 #
-#   Copyright (C) 2002,2003,2006,2007 Rocky Bernstein 
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002,2003,2006,2007,2008 Rocky Bernstein 
+#   rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -61,6 +61,21 @@ _Dbg_do_set() {
 	return 1
       fi
       eval "$_resteglob"
+      return 0
+      ;;
+    au | aut | auto | autoe | autoev | autoeva | autoeval )
+      local onoff=${1:-'off'}
+      case $onoff in 
+	on | 1 ) 
+	  _Dbg_write_journal_eval "_Dbg_autoeval=1"
+	  ;;
+	off | 0 )
+	  _Dbg_write_journal_eval "_Dbg_autoeval=0"
+	  ;;
+	* )
+	  _Dbg_msg "\"on\" or \"off\" expected."
+	  return 1
+      esac
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
@@ -235,7 +250,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: dbg-set.inc,v 1.13 2007/11/13 12:57:38 rockyb Exp $'
+'$Id: dbg-set.inc,v 1.14 2008/04/12 08:14:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

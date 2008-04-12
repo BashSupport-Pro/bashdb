@@ -17,8 +17,8 @@
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-typeset -r _Dbg_set_cmds="args annotate basename debugger editing linetrace listsize prompt showcommand trace-commands"
-typeset -r _Dbg_show_cmds="args annotate basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
+typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
+typeset -r _Dbg_show_cmds="args annotate autoeval basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
 # print help command 
 _Dbg_do_help() {
@@ -409,6 +409,14 @@ Follow this command with any number of args, to be passed to the program."
 "${label}Set annotation level.$post_label"
       return 0
       ;;
+    au | aut | auto | autoe | autoev | autoeva | autoeval )
+      [[ -n $label ]] && label='set autoeval  -- '
+      local onoff="off."
+      (( $_Dbg_autoeval != 0 )) && onoff='on.'
+      _Dbg_msg \
+"${label}Evaluate unrecognized commands is" $onoff
+      return 0
+      ;;
     b | ba | bas | base | basen | basena | basenam | basename )
       [[ -n $label ]] && label='set basename  -- '
       local onoff="off."
@@ -497,6 +505,11 @@ _Dbg_help_show() {
 "show annotate    -- Show annotation_level"
       return 0
       ;;
+    au | aut | auto | autoe | autoev | autoeva | autoeval )
+      _Dbg_msg \
+"show auotoeval    -- Show if we evaluate unrecognized commands"
+      return 0
+      ;;
     b | ba | bas | base | basen | basena | basenam | basename )
       _Dbg_msg \
 "show basename    -- Show if we are are to show short or long filenames"
@@ -555,7 +568,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.16 2008/01/03 02:52:08 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.17 2008/04/12 08:14:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

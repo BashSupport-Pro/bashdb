@@ -1,7 +1,7 @@
 # dbg-show.inc - Bourne Again Shell Debugger Set Routines
 #
-#   Copyright (C) 2002, 2003, 2006, 2007
-#   Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008
+#   Rocky Bernstein rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -49,6 +49,12 @@ _Dbg_do_show() {
       [[ -n $label ]] && label='annotate: '
      _Dbg_msg \
 "${label}Annotation_level is $_Dbg_annotate."
+      return 0
+      ;;
+    au | aut | auto | autoe | autoev | autoeva | autoeval )
+      [[ -n $label ]] && label='basename: '
+      _Dbg_msg \
+"${label}Evaluate unrecognized commands is" `_Dbg_onoff $_Dbg_autoeval`
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
@@ -450,7 +456,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: dbg-show.inc,v 1.10 2007/11/12 12:00:52 rockyb Exp $'
+'$Id: dbg-show.inc,v 1.11 2008/04/12 08:14:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

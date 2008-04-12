@@ -15,9 +15,11 @@ finish
 +complete set a
 set args
 set annotate
+set autoeval
 +complete show a
 show args
 show annotate
+show autoeval
 +complete set an
 set annotate
 +complete set args

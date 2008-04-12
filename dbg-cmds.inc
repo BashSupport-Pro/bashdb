@@ -645,10 +645,14 @@ _Dbg_onecmd() {
 
 	* ) 
 
-          _Dbg_msg "Undefined command: \"$_Dbg_cmd\". Try \"help\"." 
-	  _Dbg_remove_history_item
-	  # local -a last_history=(`history 1`)
-	  # history -d ${last_history[0]}
+	   if (( _Dbg_autoeval )) ; then
+	     _Dbg_do_eval $_Dbg_cmd $args
+	   else
+             _Dbg_msg "Undefined command: \"$_Dbg_cmd\". Try \"help\"." 
+	     _Dbg_remove_history_item
+	     # local -a last_history=(`history 1`)
+	     # history -d ${last_history[0]}
+	   fi
 	  ;;
       esac
       done # while (( $_Dbg_redo ))
@@ -1124,7 +1128,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.36 2008/01/03 02:52:08 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.37 2008/04/12 08:14:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
