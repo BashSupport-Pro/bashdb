@@ -3169,6 +3169,7 @@ interacts with you in various ways given below.
 
 @menu
 * Annotate::             Annotation Level (set annotate)
+* Autoeval::             Evaluate unrecognized commands
 * Basename::             Show basenames of file names only (set basename)
 * Debugger::             Allow debugging the debugger (set debugger)
 * File::                 Specifying a Script-File Associaton (set file)
@@ -3195,6 +3196,38 @@ information.  Level 0 is the normal, level 1 is for use when
 @value{DBG} is run as a subprocess of @value{Emacs} of @value{DDD},
 level 2 is the maximum annotation suitable for programs that control
 @value{DBG}.
+@end table
+
+@node Autoeval
+@subsection Set/Show auto-eval (@samp{set autoeval})
+
+@table @code
+@kindex set autoeval @r{[} on | 1 | off | 0 @r{]}
+@item set autoeval @r{[} on | 1 | off | 0 @r{]}
+Specify that debugger input that isn't recognized as a command should
+be passed to Ruby for evaluation (using the current debugged program
+namespace). Note however that we @emph{first} check input to see if it
+is a debugger command and @emph{only} if it is not do we consider it
+as Ruby code. This means for example that if you have variable called
+@code{n} and you want to see its value, you could use @code{p n},
+because just entering @code{n} will be interpreted as the debugger
+``next'' command.
+
+When autoeval is set on, you'll get a different error message when you
+invalid commands are encountered. Here's a session fragment to show
+the difference
+@smallexample
+bashdb<1> @b{stepp}
+Unknown command
+bashdb<2> @b{set autoeval on}
+autoeval is on.
+bashdb<3> @b{stepp}
+NameError Exception: undefined local variable or method `stepp' for ...
+@end smallexample
+
+@kindex show autoeval 
+@item show args
+Shows whether Ruby evaluation of debugger input should occur or not.
 @end table
 
 @node Basename

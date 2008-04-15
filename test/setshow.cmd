@@ -40,4 +40,10 @@ show commands
 show commands +
 show commands -5
 show commands 12
+#########################
+#### Test 'autoeval'...
+set autoeval on
+xx=1 ; declare -p xx
+set autoeval off
+xx=1 ; declare -p xx
 quit
