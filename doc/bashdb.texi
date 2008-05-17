@@ -672,7 +672,7 @@ level 1, subshell 0, depth -1:
 @end cartouche
 @end example
 
-If you issue a break (e.g. send a @code{SIGINT} signal) while the
+If you issue a break (e.g.@: send a @code{SIGINT} signal) while the
 program is running you will go into the debugger (assuming your
 program doesn't trap @code{SIGINT}).
 
@@ -873,7 +873,7 @@ this was not shown in the example it is possible to add the @code{--}
 program option with a dash.}
 
 As with the first method, @code{bash} should be a debugger-enabled
-bash. If @code{bashdb} has the path to bash in it at the top (e.g. via
+bash. If @code{bashdb} has the path to bash in it at the top (e.g.@: via
 @code{#!}), and @code{bashdb} can be found in your program-search
 path, then this might be equivalent to the above:
 
@@ -1501,7 +1501,7 @@ with @code{info breakpoints}.  You can get a complete list of the
 bashdb<0> @b{help info}
 List of info subcommands:
 
-info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
+info args -- Argument variables (e.g.@: $1, $2, ...) of the current stack frame.
 info breakpoints -- Status of user-settable breakpoints
 info display -- Show all display expressions
 info files -- Source files in the program
@@ -2382,7 +2382,7 @@ erroneous signals.
 @kindex signal
 @item signal @r{@var{signal-name} | @var{signal-number}}
 You can use the @code{signal} command send a signal to your
-program. Supply either the signal name, e.g. @code{SIGINT}, or the
+program. Supply either the signal name, e.g.@: @code{SIGINT}, or the
 signal number @code{15}.
 @end table
 
@@ -2414,7 +2414,7 @@ info}}.
 @table @code
 @kindex info args
 @item info args
-Argument variables (e.g. $1, $2, ...) of the current stack frame.
+Argument variables (e.g.@: $1, $2, ...) of the current stack frame.
 @kindex info breakpoints
 @item info breakpoints
 Status of user-settable breakpoints
@@ -2938,7 +2938,7 @@ via @code{eval echo}.
 
 Use @code{print} to display strings as you would from @code{echo}. And
 as such, variable names to be substituted have to be preceded with a
-dollar sign. As with echo, filename expansion, e.g. tilde expansion,
+dollar sign. As with echo, filename expansion, e.g.@: tilde expansion,
 is performed on unquoted strings. So for example if you want to print
 a *, you would write @samp{print "*"}, not @samp{print *}. If you want
 to have the special characters dollars sign appear, use a backslash.
@@ -3851,7 +3851,7 @@ The @value{Emacs} command name is
 which can be used in the source script. 
 
 @item C-c a
-Shows argument variables (e.g. @code{$1}, @code{$2}) of the current
+Shows argument variables (e.g.@: @code{$1}, @code{$2}) of the current
 stack frame. Same as @value{DBG} @code{info args} command. The
 @value{Emacs} command name is @code{gud-args} and @code{C-x C-a a} is
 an alternate binding which also can be used in the source script.
@@ -3989,7 +3989,7 @@ corresponding I/O buffer, @code{C-c C-r} is an alternate binding. See
 @item C-x C-a a	
 
 @code{gud-args}
-Shows argument variables (e.g. @code{$1}, @code{$2}) of the current
+Shows argument variables (e.g.@: @code{$1}, @code{$2}) of the current
 stack frame. Same as @value{DBG} @code{info args} command.  The
 @value{Emacs} command name is @code{gud-args}. In the corresponding
 I/O buffer, @code{C-c a} is an alternate binding which also can be
@@ -4025,7 +4025,7 @@ structures or hash tables (yet), no pointers, package variable scoping
 or methods. So much of the data display and visualization features of
 @value{DDD} are disabled.
 
-As with any scripting or interpreted language (e.g. Perl), one can't
+As with any scripting or interpreted language (e.g.@: Perl), one can't
 step by a single machine-language instruction. So the ddd Stepi/Nexti
 commands are disabled.
 
