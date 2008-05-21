@@ -24,7 +24,7 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.25 2008/02/05 09:24:32 rockyb Exp $'
+'$Id: bashdb.in,v 1.26 2008/05/21 16:12:11 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -197,7 +197,7 @@ else
 	else
 	  echo "$0: unrecognized option -- $OPTARG"
 	fi
-	echo "Use --help for option help. Terminating..."
+	echo "Use -h for option help. Terminating..."
 	exit 2 
 	;;
     esac
