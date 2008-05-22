@@ -5,7 +5,7 @@ dnl
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008
-# Rocky Bernstein <rockyb@users.sourceforge.net>
+# Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,10 +29,24 @@ define(relstatus, 0.10cvs)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
+# From fish's configure.ac
+#
+# List of output variables produced by this configure script
+#
+AC_SUBST(BASHVERS)
+AC_SUBST(RELSTATUS)
+AC_SUBST(TRY_GETOPT)
+AC_SUBST(BASH_SRC)
+AC_SUBST(PIC)
+AC_SUBST(WL)
+AC_SUBST(BASHDB_MAIN)
+AC_SUBST(DIFF)
+AC_SUBST(DIFF_OPTS)
+
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.34 2008/05/22 01:13:23 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.35 2008/05/22 23:25:46 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -43,7 +57,8 @@ AC_ARG_PROGRAM
 AM_INIT_AUTOMAKE([no-define])
 
 AC_ARG_ENABLE([gnugetopt],
-	AC_HELP_STRING([--enable-getopt], [Allow GNU-style long options (default enabled)]))
+	AC_HELP_STRING([--enable-getopt], 
+	[Allow GNU-style long options (default enabled)]))
 
 AC_BASHDB_PACKAGE([bashdb])
 
@@ -51,8 +66,6 @@ AC_BASHDB_PACKAGE([bashdb])
 # and RELSTATUS in dbg-pre.inc.in and version.texi
 BASHVERS=OK_BASH_VERS
 RELSTATUS=relstatus
-AC_SUBST(BASHVERS)
-AC_SUBST(RELSTATUS)
 
 
 AC_CONFIG_SRCDIR(bashdb.in)
@@ -104,7 +117,6 @@ if test "${enable_getopt}" != "no" ; then
 else
   TRY_GETOPT=0
 fi
-AC_SUBST(TRY_GETOPT)
 
 bash_version=`$BASH_PROG --version`
 [bash_major=`$BASH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
@@ -125,7 +137,6 @@ AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
 		  [location of bash OK_BASH_VERS source code]), 
 		  BASH_SRC=$withval)
-AC_SUBST(BASH_SRC)
 
 dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
 AC_PROG_CC
@@ -133,8 +144,6 @@ AM_PROG_CC_C_O
 AM_PROG_LIBTOOL
 PIC=$lt_prog_compiler_pic_CXX
 WL=$lt_prog_compiler_wl_CXX
-AC_SUBST(PIC)
-AC_SUBST(WL)
 
 if test -z "$BASHDB_MAIN" ; then
   BASHDB_MAIN=`strings $BASH_PROG$EXEEXT | grep bashdb-main.inc`
@@ -143,7 +152,6 @@ if test -z "$BASHDB_MAIN" ; then
 right version of bash, set it with the --with-bashdb-main option])
   fi
 fi
-AC_SUBST(BASHDB_MAIN)
 
 # Create a suitable transform ( without the $ -> $$ escaping added
 # because of $program_transform_name being used in a Makefile
@@ -189,8 +197,6 @@ else
     fi
   done
 fi
-AC_SUBST(DIFF)
-AC_SUBST(DIFF_OPTS)
 
 AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
 
