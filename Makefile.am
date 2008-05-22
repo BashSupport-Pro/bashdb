@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.14 2008/01/03 02:53:18 rockyb Exp $
+#$Id: Makefile.am,v 1.15 2008/05/22 01:13:23 rockyb Exp $
 
 SUBDIRS = test doc emacs
 
@@ -50,6 +50,7 @@ pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-commands.inc \
 
 EXTRA_DIST = dbg-pre.inc.in bashdb.in bashdb-trace.in dbg-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
+	     getopt-test.sh \
 	     ChangeLog ChangeLog.0 readarray.c
 
 readarray$(EXEEXT): $(readarray_OBJECTS) $(readarray_DEPENDENCIES) 

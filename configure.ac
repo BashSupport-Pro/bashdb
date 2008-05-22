@@ -32,7 +32,7 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.33 2008/05/21 16:12:11 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.34 2008/05/22 01:13:23 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -44,13 +44,6 @@ AM_INIT_AUTOMAKE([no-define])
 
 AC_ARG_ENABLE([gnugetopt],
 	AC_HELP_STRING([--enable-getopt], [Allow GNU-style long options (default enabled)]))
-
-if test "${enable_getopt}" != "no" ; then
-  TRY_GETOPT=1
-else
-  TRY_GETOPT=0
-fi
-AC_SUBST(TRY_GETOPT)
 
 AC_BASHDB_PACKAGE([bashdb])
 
@@ -97,6 +90,21 @@ if test "$BASH_PROG" = no; then
   AC_MSG_ERROR([I didn't find the bash executable.\
   You might want to use the --with-bash option.])
 fi
+
+if test "${enable_getopt}" != "no" ; then
+  $BASH_PROG ./getopt-test.sh
+  if test $? -eq 0 ; then
+    AC_MSG_RESULT([Good! Your long options seem to be working okay.])
+    TRY_GETOPT=1
+  else
+    AC_MSG_WARN([getopt doesn't seem to handle long options correctly.])
+    AC_MSG_WARN([Disabling long-options in bashdb.])
+    TRY_GETOPT=0
+  fi  
+else
+  TRY_GETOPT=0
+fi
+AC_SUBST(TRY_GETOPT)
 
 bash_version=`$BASH_PROG --version`
 [bash_major=`$BASH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
@@ -192,6 +200,8 @@ if test x"$build_readarray" != x; then
    [AC_MSG_WARN([Missing some C headers. Disabling readarray])
    build_readarray=])
    AC_CHECK_FUNCS(getline)
+elif test ! -d $BASH_SRC ; then
+   AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
 fi
 
 AM_CONDITIONAL(BUILD_READARRAY, test x"$build_readarray" != x)
