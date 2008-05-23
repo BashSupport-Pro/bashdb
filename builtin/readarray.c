@@ -1,4 +1,4 @@
-/* $Id: readarray.c,v 1.21 2006/09/06 04:20:43 myamato Exp $
+/* $Id: readarray.c,v 1.1 2008/05/23 23:55:25 rockyb Exp $
    Copyright (C) 2005, 2006 Rocky Bernstein rockyb@users.sf.net
 
    Bash is free software; you can redistribute it and/or modify it under

@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.35 2008/05/22 23:25:46 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.36 2008/05/23 23:55:25 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -210,10 +210,11 @@ elif test ! -d $BASH_SRC ; then
    AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
 fi
 
-AM_CONDITIONAL(BUILD_READARRAY, test x"$build_readarray" != x)
+AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_readarray" != x)
 
 #Makefiles
 AC_CONFIG_FILES([Makefile \
+	builtin/Makefile \
 	doc/Makefile \
 	emacs/Makefile \
 	test/Makefile])
@@ -256,6 +257,6 @@ if test x"$build_readarray" != x; then
    echo "We will try to build the readarray builtin to speed up loading"
    echo "located at $BASH_SRC."
 else
-   echo "We will not try to build the readarray builtin to speed up loading."
+   echo 'We will not try to build the builtins to speed up loading and set $0.'
 fi
 

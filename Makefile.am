@@ -1,4 +1,5 @@
-#   Copyright (C) 2002, 2004, 2005, 2006, 2007 Rocky Bernstein
+#   Copyright (C) 2002, 2004, 2005, 2006, 2007, 2008 Rocky Bernstein
+#   rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -13,17 +14,12 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.15 2008/05/22 01:13:23 rockyb Exp $
+#$Id: Makefile.am,v 1.16 2008/05/23 23:55:25 rockyb Exp $
 
+if BUILD_BUILTINS
+SUBDIRS = builtin test doc emacs
+else
 SUBDIRS = test doc emacs
-
-if BUILD_READARRAY
-bin_PROGRAMS      =  readarray
-noinst_PROGRAMS   =  readarray
-readarray_SOURCES =  readarray.c
-readarray_CFLAGS  =  -I @BASH_SRC@ -I @BASH_SRC@/include -I@BASH_SRC@/builtins @PIC@
-readarray_LDFLAGS =  -shared
-readarray_builtin =  readarray
 endif
 
 man:
@@ -45,7 +41,7 @@ pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-commands.inc \
                dbg-list.inc  dbg-log.inc        dbg-main.inc     \
 	       dbg-pre.inc                                       \
 	       dbg-set.inc   dbg-show.inc       dbg-sig.inc      \
-	       dbg-stack.inc dbg-set-d-vars.inc  $(readarray_builtin) \
+	       dbg-stack.inc dbg-set-d-vars.inc  \
 	       bashdb-trace
 
 EXTRA_DIST = dbg-pre.inc.in bashdb.in bashdb-trace.in dbg-main.inc.in \
