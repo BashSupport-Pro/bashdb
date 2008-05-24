@@ -33,6 +33,12 @@
 @include version.texi
 @include macros.texi
 
+@c Karl Berry informs me that this will add straight quotes in 
+@c typewriter text.
+@c See the "Inserting Quote Characters" node in the Texinfo manual
+@set txicodequoteundirected
+@set txicodequotebacktick
+
 @iftex
 @c @smallbook
 @c @cropmarks
@@ -1598,10 +1604,10 @@ A @dfn{breakpoint} makes your script stop whenever a certain point in
 the program is reached.  For each breakpoint, you can add conditions to
 control in finer detail whether your script stops.  
 
-You can set breakpoints specify the place where your script should
-stop the @code{break} command and its variants (@pxref{Set Breaks,
-,Setting breakpoints}). These commands allow own to specify the
-location by line number and file name or function name.
+You specify the place where your script should stop with the @code{break}
+command and its variants (@pxref{Set Breaks, ,Setting
+breakpoints}). These commands allow own to specify the location by
+line number and file name or function name.
 
 @cindex watchpoints
 @cindex breakpoint on variable modification
@@ -1734,11 +1740,12 @@ Enabled breakpoints are marked with @samp{1}.  @samp{0} marks breakpoints
 that are disabled (not enabled).
 @item Count
 The number of times that breakpoint or watchpoint has been hit.
-@item Condition
-The arithmetic expression
 @item File and Line (@samp{file:line})
 The filename and line number inside that file where of breakpoint in
 the script. The file and line are separated with a colon.
+@item Condition
+A condition (an arithmetic expression) which when true causes the
+breakpoint to take effect.
 @end table
 
 @noindent
