@@ -39,8 +39,8 @@ typeset -i _curline       # current line number of debugged program
 # files into a bash array.
 typeset -i _Dbg_have_readarray=0
 
-if [[ -r $_Dbg_libdir/readarray ]] ; then
-  if enable -f $_Dbg_libdir/readarray  readarray >/dev/null 2>&1 ; then
+if [[ -r $_Dbg_libdir/builtin/readarray ]] ; then
+  if enable -f $_Dbg_libdir/builtin/readarray  readarray >/dev/null 2>&1 ; then
     _Dbg_have_readarray=1
   fi
 fi
@@ -222,7 +222,7 @@ _Dbg_readin() {
 	    _Dbg_msg_nocr "${progress_prefix} "
 	  fi
 	fi
-	readarray -t -O 1 -c $BIGFILE \
+	builtin readarray -t -O 1 -c $BIGFILE \
 	  -C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 	  $source_array < $fullname 
 	(( line_count > BIGFILE)) && _Dbg_progess_done
@@ -279,7 +279,7 @@ _Dbg_readin() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.12 2006/12/19 04:41:05 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.13 2008/05/27 03:51:45 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

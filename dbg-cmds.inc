@@ -331,30 +331,30 @@ _Dbg_onecmd() {
 	# with the Perl5 debugger.
 	d | cl | cle | clea | clea | clear )
 	  _Dbg_do_clear_brkpt $args
-	  _Dbg_last_cmd="clear"
+	  _Dbg_last_cmd='clear'
 	  ;;
 
 	# Delete breakpoints by entry numbers. Note "d" is an alias for
 	# clear.
 	de | del | dele | delet | delete )
 	  _Dbg_do_delete $args
-	  _Dbg_last_cmd="delete"
+	  _Dbg_last_cmd='delete'
 	  ;;
 
 	# Set up a script for debugging into.
 	deb | debu | debug )
 	  _Dbg_do_debug $args
 	  # Skip over the execute statement which presumably we ran above.
-	  _Dbg_do_next_step_skip "skip" 1
+	  _Dbg_do_next_step_skip 'skip' 1
 	  IFS="$_Dbg_old_IFS";
 	  return 1
-	  _Dbg_last_cmd="debug"
+	  _Dbg_last_cmd='debug'
 	  ;;
 
 	# Disable breakpoints
 	di | dis | disa | disab | disabl | disable )
 	  _Dbg_do_disable $args
-	  _Dbg_last_cmd="disable"
+	  _Dbg_last_cmd='disable'
 	  ;;
 
 	# Display expression
@@ -365,51 +365,51 @@ _Dbg_onecmd() {
 	# Delete all breakpoints.
 	D | deletea | deleteal | deleteall )
 	  _Dbg_clear_all_brkpt
-	  _Dbg_last_cmd="deleteall"
+	  _Dbg_last_cmd='deleteall'
 	  ;;
 
 	# List stack 1 up
 	do | dow | down )
 	  _Dbg_do_down $args
-	  _Dbg_last_cmd="down"
+	  _Dbg_last_cmd='down'
 	  ;;
 
 	# evaluate as bash command
 	e | ev | eva | eval )
 	  _Dbg_do_eval $args
-	  _Dbg_last_cmd="eval"
+	  _Dbg_last_cmd='eval'
 	  ;;
 
 	# evaluate as bash command
 	ed | edi | edit )
 	  _Dbg_do_edit $args
-	  _Dbg_last_cmd="edit"
+	  _Dbg_last_cmd='edit'
 	  ;;
 
 	# evaluate as bash command
 	en | ena | enab | enabl | enable )
 	  _Dbg_do_enable $args
-	  _Dbg_last_cmd="enable"
+	  _Dbg_last_cmd='enable'
 	  ;;
 
 	# 
 	fil | file )
 	  _Dbg_do_file $args
-	  _Dbg_last_cmd="file"
+	  _Dbg_last_cmd='file'
 	  ;;
 
 	# 
 	fin | fini | finis | finish | r )
 
 	  (( _Dbg_return_level=${#FUNCNAME[@]}-3 ))
-	  _Dbg_last_cmd="finish"
+	  _Dbg_last_cmd='finish'
 	  return 0
 	  ;;
 
 	#  Set stack frame
 	fr | fra | fra | frame )
 	  _Dbg_do_frame $args
-	  _Dbg_last_cmd="frame"
+	  _Dbg_last_cmd='frame'
 	  ;;
 
 	# print help command menu
@@ -430,6 +430,7 @@ _Dbg_onecmd() {
 	# print lines in file
 	l | li | lis | list )
 	  _Dbg_do_list $args
+	  _Dbg_last_cmd='list'
 	  ;;
 
 	# List line.
@@ -450,10 +451,10 @@ _Dbg_onecmd() {
 	  _Dbg_do_next_step_skip $_Dbg_cmd $args
 	  if [[ $_Dbg_cmd == sk* ]] ; then
 	    _Dbg_inside_skip=1
-	    _Dbg_last_cmd="skip"
+	    _Dbg_last_cmd='skip'
 	    return 1
 	  else
-	    _Dbg_last_cmd="next"
+	    _Dbg_last_cmd='next'
 	    return 0
 	  fi
 	  ;;
@@ -461,7 +462,7 @@ _Dbg_onecmd() {
 	# print globbed or substituted variables
 	p | pr | pri | prin | print )
 	  _Dbg_do_print "$args"
-	  _Dbg_last_cmd="print"
+	  _Dbg_last_cmd='print'
 	  ;;
 
 	# print working directory
@@ -471,13 +472,13 @@ _Dbg_onecmd() {
 
 	# quit
 	q | qu | qui | quit )
-	  _Dbg_last_cmd="quit"
+	  _Dbg_last_cmd='quit'
 	  _Dbg_do_quit $args
 	  ;;
 
 	# restart debug session.
 	re | res | rest | resta | restar | restart | ru | run | R )
-	  _Dbg_last_cmd="restart"
+	  _Dbg_last_cmd='restart'
 	  _Dbg_do_restart $args
 	  ;;
 
@@ -486,33 +487,33 @@ _Dbg_onecmd() {
 	  _Dbg_steps=1
 	  _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
 	  IFS="$_Dbg_old_IFS";
-	  _Dbg_last_cmd="return"
+	  _Dbg_last_cmd='return'
 	  return 2
 	  ;;
 
 	# Search backwards for pattern
 	rev | reve | rever | revers | reverse )
 	  _Dbg_do_search_back $args
-	  _Dbg_last_cmd="reverse"
+	  _Dbg_last_cmd='reverse'
 	  ;;
 
 	# Run a debugger set command
 	se | set )
 	  _Dbg_do_set $args
-	  _Dbg_last_cmd="set"
+	  _Dbg_last_cmd='set'
 	  ;;
 
 	# Search forwards for pattern
 	sea | sear | searc | search | \
         for | forw | forwa | forwar | forward )
 	  _Dbg_do_search $args
-	  _Dbg_last_cmd="search"
+	  _Dbg_last_cmd='search'
 	  ;;
 
 	# Run a debugger show command
 	sh | sho | show )
 	  _Dbg_do_show $args
-	  _Dbg_last_cmd="show"
+	  _Dbg_last_cmd='show'
 	  ;;
 
 	# run shell command. Has to come before ! below.
@@ -522,7 +523,7 @@ _Dbg_onecmd() {
 	# Send signal to process
 	si | sig | sign | signa | signal )
 	  _Dbg_do_signal $args
-	  _Dbg_last_cmd="signal"
+	  _Dbg_last_cmd='signal'
 	  ;;
 
 	# Run a debugger comamnd file
@@ -538,7 +539,7 @@ _Dbg_onecmd() {
 	# Set breakpoint on a line
 	tb | tbr | tbre | tbrea | tbreak )
 	  _Dbg_do_break 1 $args 
-	  _Dbg_last_cmd="tbreak"
+	  _Dbg_last_cmd='tbreak'
 	  ;;
 
 	# Set the output tty
@@ -550,7 +551,7 @@ _Dbg_onecmd() {
 	# List call stack up
 	u | up )
 	  _Dbg_do_up $args
-	  _Dbg_last_cmd="up"
+	  _Dbg_last_cmd='up'
 	  ;;
 
 	# List call stack up
@@ -578,7 +579,7 @@ _Dbg_onecmd() {
 	  if [[ $first == '' ]] ; then
 	    _Dbg_do_watch 0
 	  else
-	    if [[ 0 == `_Dbg_is_var $first` ]] ; then
+	    if [[ 0 == `_Dbg_defined $first` ]] ; then
 	      _Dbg_msg "Can't set watch: no such variable $first."
 	    else
 	      unset a first
@@ -642,7 +643,13 @@ _Dbg_onecmd() {
 	    fi
 	  fi
 	  ;;
-
+	'' )
+	  # Redo last_cmd
+	  if [[ -n $_Dbg_last_cmd ]] ; then 
+	      _Dbg_cmd=$_Dbg_last_cmd 
+	      _Dbg_redo=1
+	  fi
+	  ;;
 	* ) 
 
 	   if (( _Dbg_autoeval )) ; then
@@ -1035,7 +1042,7 @@ _Dbg_do_tty() {
 _Dbg_do_x() {
   local -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   local _Dbg_result
-  if (( `_Dbg_is_var $_Dbg_expr` )) ; then
+  if (( `_Dbg_defined $_Dbg_expr` )) ; then
     _Dbg_result=`declare -p $_Dbg_expr`
     _Dbg_msg "$_Dbg_result"
   elif (( `_Dbg_is_function $_Dbg_expr` )) ; then 
@@ -1128,7 +1135,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.37 2008/04/12 08:14:23 rockyb Exp $'
+_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.38 2008/05/27 03:51:45 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

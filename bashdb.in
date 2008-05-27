@@ -24,9 +24,9 @@
 # normally.
 
 typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.26 2008/05/21 16:12:11 rockyb Exp $'
+'$Id: bashdb.in,v 1.27 2008/05/27 03:51:45 rockyb Exp $'
 
-_Dbg_usage_long() {
+function _Dbg_usage_long {
   printf "_Dbg_usage:
     ${_Dbg_pname} [OPTIONS] <script_file>
 
@@ -82,11 +82,11 @@ options:
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
 # in a traceback ("where").
-bashdb_eval() {
+function bashdb_eval {
   eval $*  # Type: "x $*" to see what's being run.
 }
 
-declare -a _Dbg_script_args="$@"
+typeset -a _Dbg_script_args="$@"
 
 # Equivalent to basename $0; the short program name
 typeset _Dbg_pname=${0##*/}  
@@ -240,18 +240,18 @@ _Dbg_script=1
 
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"
-  cat <<EOF
+  printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
-EOF
+'
 fi
 
 if (( show_version == 1 )) ; then 
-cat <<EOF
-There is absolutely no warranty for BASHDB.  Type "show warranty" for details.
-EOF
+printf '
+There is absolutely no warranty for bashdb.  Type "show warranty" for details.
+'
   exit 1
 fi
 
@@ -281,7 +281,6 @@ if [[ -z $_Dbg_cmd ]] ; then
 else 
   bashdb_eval "$_Dbg_cmd"
 fi
-
 
 # end of bashdb
 

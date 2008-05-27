@@ -48,7 +48,7 @@ Program received signal SIGTERM (15)...
 +### Should have printed a stack trace above...
 +continue 
 +where 
-->0 in file `sig.sh' at line 829
+->0 in file `sig.sh' at line 836
 ##1 source("sig.sh") called from file `bashdb' at line 280
 ##2 main() called from file `bashdb' at line 0
 +continue 

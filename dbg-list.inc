@@ -1,19 +1,19 @@
 # bashdb-list.inc - Bourne Again Shell Debugger list/search commands
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein
+#   rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # List search commands/routines
@@ -27,10 +27,10 @@ typeset -i _Dbg_listline
 # Print source line in standard format for line $1 of filename $2.  If
 # $2 is omitted, use _cur_source_file, if $1 is omitted use _curline.
 
-_Dbg_print_source_line() {
-  local line_number=${1:-$_curline}
-  local filename=${2:-$_cur_source_file}
-  local source_line
+function _Dbg_print_source_line {
+  typeset line_number=${1:-$_curline}
+  typeset filename=${2:-$_cur_source_file}
+  typeset source_line
   _Dbg_get_source_line $line_number $filename
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
@@ -51,12 +51,12 @@ ${line_number}:\t${source_line}"
 
 # Print Linetrace output. We also handle output if linetrace expand
 # is in effect.
-_Dbg_print_linetrace() {
-  local line_number=${1:-$_curline}
-  local filename=${2:-$_cur_source_file}
+function _Dbg_print_linetrace {
+  typeset line_number=${1:-$_curline}
+  typeset filename=${2:-$_cur_source_file}
 
   # Remove main + sig-handler  + print_lintrace FUNCNAMES.
-  local -i depth=${#FUNCNAME[@]}-3  
+  typeset -i depth=${#FUNCNAME[@]}-3  
 
   # If called from bashdb script rather than via "bash --debugger", 
   # we are artificially nested one deeper because of the bashdb call.
@@ -66,15 +66,15 @@ _Dbg_print_linetrace() {
 
   (( depth < 0 )) && return
 
-  local source_line
+  typeset source_line
   _Dbg_get_source_line $line_number $filename
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
 level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
   if (( _Dbg_linetrace_expand )) ; then
-#    local expanded_source_line
+#    typeset expanded_source_line
 #    # Replace all double quotes (") with and an escape (\")
-#    local esc_source_line="${source_line//\"/\\\"}" 
+#    typeset esc_source_line="${source_line//\"/\\\"}" 
 #    _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
      _Dbg_do_eval "expanded_source_line=\"$_Dbg_bash_command\"" 2>/dev/null
      _Dbg_msg "+ ${expanded_source_line}"
@@ -96,7 +96,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
 
 # l [start|.] [cnt] List cnt lines from line start.
 # l sub       List source code fn
-_Dbg_do_list() {
+function _Dbg_do_list {
   if [[ -n $1 ]] ; then
     first_arg=$1
     shift
@@ -109,9 +109,9 @@ _Dbg_do_list() {
     return
   fi
 
-  local filename
-  local -i line_number
-  local full_filename
+  typeset filename
+  typeset -i line_number
+  typeset full_filename
 
   _Dbg_linespec_setup $first_arg
 
@@ -126,8 +126,8 @@ _Dbg_do_list() {
 }
 
 # /search/
-_Dbg_do_search_back() {
-  local delim_search_pat=$1
+function _Dbg_do_search_back {
+  typeset delim_search_pat=$1
   if [[ -z "$1" ]] ; then
     _Dbg_msg "Need a search pattern"
     return 1
@@ -138,7 +138,7 @@ _Dbg_do_search_back() {
     [?] )
       ;;
     [?]* )
-      local -a word
+      typeset -a word
       word=($(_Dbg_split '?' $delim_search_pat))
       _Dbg_last_search_pat=${word[0]}
       ;;
@@ -146,10 +146,10 @@ _Dbg_do_search_back() {
     * )
       _Dbg_last_search_pat=$delim_search_pat
   esac
-  local -i i
-  local -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
+  typeset -i i
+  typeset -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
   for (( i=_Dbg_listline-1; i > 0 ; i-- )) ; do
-    local source_line
+    typeset source_line
     _Dbg_get_source_line $i
     eval "$_seteglob"
     if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
@@ -166,29 +166,29 @@ _Dbg_do_search_back() {
 }
 
 # /search/
-_Dbg_do_search() {
-  local delim_search_pat=${1}
+function _Dbg_do_search {
+  typeset delim_search_pat=${1}
   if [[ -z "$1" ]] ; then
     _Dbg_msg "Need a search pattern"
     return 1
   fi
   shift
-  local search_pat
+  typeset search_pat
   case "$delim_search_pat" in
     / )
       ;;
     /* )
-      local -a word
+      typeset -a word
       word=($(_Dbg_split "/" $delim_search_pat))
       _Dbg_last_search_pat=${word[0]}
       ;;
     * )
       _Dbg_last_search_pat=$delim_search_pat
   esac
-  local -i i
-  local -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
+  typeset -i i
+  typeset -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
   for (( i=_Dbg_listline+1; i < max_line ; i++ )) ; do
-    local source_line
+    typeset source_line
     _Dbg_get_source_line $i
     eval "$_seteglob"
     if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
@@ -206,13 +206,13 @@ _Dbg_do_search() {
 
 # S [[!]pat] List Subroutine names [not] matching a pattern
 # Pass along whether or not to print "system" functions?
-_Dbg_do_list_subroutines() {
+function _Dbg_do_list_subroutines {
 
-  local pat=$1
+  typeset pat=$1
 
-  local -a fns_a
+  typeset -a fns_a
   fns_a=(`_Dbg_get_functions 0 "$pat"`)
-  local -i i
+  typeset -i i
   for (( i=0; (( i < ${#fns_a[@]} )) ; i++ )) ; do
     _Dbg_msg ${fns_a[$i]}
   done
@@ -223,7 +223,7 @@ _Dbg_do_list_subroutines() {
 # lines. if $2 is omitted, use global variable $_curline.
 
 _Dbg_list() {
-    local filename=${1:-$_cur_source_file}
+    typeset filename=${1:-$_cur_source_file}
 
     if [[ $2 = . ]]; then
       _Dbg_listline=$_curline
@@ -232,16 +232,16 @@ _Dbg_list() {
     fi
     (( _Dbg_listline==0 && _Dbg_listline++))
 
-    local -ir cnt=${3:-$_Dbg_listsize}
-    local -ir n=$((_Dbg_listline+cnt-1))
+    typeset -ir cnt=${3:-$_Dbg_listsize}
+    typeset -ir n=$((_Dbg_listline+cnt-1))
 
-    local source_line
+    typeset source_line
 
-    local filevar=`_Dbg_file2var $filename`
-    local is_read
+    typeset filevar=`_Dbg_file2var $filename`
+    typeset is_read
     is_read=`_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar`
     [ $is_read ] || _Dbg_readin $filename
-    local -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar`
+    typeset -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar`
     #   echo "debug: -- max_line: $max_line --"
 
     if (( _Dbg_listline > max_line )) ; then
@@ -253,8 +253,8 @@ _Dbg_list() {
 
     for ((  ; (( _Dbg_listline <= n && _Dbg_listline <= max_line )) \
             ; _Dbg_listline++ )) ; do
-     local prefix="   "
-     local source_line
+     typeset prefix="   "
+     typeset source_line
      _Dbg_get_source_line $_Dbg_listline $filename
 
      (( _Dbg_listline == _curline )) \
@@ -266,7 +266,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.10 2006/12/26 21:19:08 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.11 2008/05/27 03:51:45 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

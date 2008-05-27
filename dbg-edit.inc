@@ -2,12 +2,12 @@
 
 #   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
@@ -18,8 +18,8 @@
 
 #================ VARIABLE INITIALIZATIONS ====================#
 
-declare -r _Dbg_edit_ver=\
-'$Id: dbg-edit.inc,v 1.1 2008/01/03 02:53:18 rockyb Exp $'
+typeset -r _Dbg_edit_ver=\
+'$Id: dbg-edit.inc,v 1.2 2008/05/27 03:51:45 rockyb Exp $'
 _Dbg_linespec_setup() {
   local linespec=${1:-''}
   if [[ -z $linespec ]] ; then

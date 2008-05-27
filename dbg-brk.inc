@@ -19,8 +19,8 @@
 
 #================ VARIABLE INITIALIZATIONS ====================#
 
-declare -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.16 2008/01/03 02:52:08 rockyb Exp $'
+typeset -r _Dbg_brk_ver=\
+'$Id: dbg-brk.inc,v 1.17 2008/05/27 03:51:45 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
