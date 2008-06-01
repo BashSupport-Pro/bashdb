@@ -1,4 +1,4 @@
-# bashdb-list.inc - Bourne Again Shell Debugger list/search commands
+# dbg-list.inc - Bourne Again Shell Debugger list/search commands
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
 #
@@ -179,7 +179,7 @@ function _Dbg_do_search {
       ;;
     /* )
       typeset -a word
-      word=($(_Dbg_split "/" $delim_search_pat))
+      word=($(_Dbg_split '/' $delim_search_pat))
       _Dbg_last_search_pat=${word[0]}
       ;;
     * )
@@ -266,7 +266,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.11 2008/05/27 03:51:45 rockyb Exp $'
+_Dbg_list_ver='$Id: dbg-list.inc,v 1.12 2008/06/01 00:49:13 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

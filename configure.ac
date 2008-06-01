@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.36 2008/05/23 23:55:25 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.37 2008/06/01 00:49:12 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -217,7 +217,8 @@ AC_CONFIG_FILES([Makefile \
 	builtin/Makefile \
 	doc/Makefile \
 	emacs/Makefile \
-	test/Makefile])
+	test/Makefile \
+	test/unit/Makefile])
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x bashdb])
@@ -226,6 +227,7 @@ AC_CONFIG_FILES([test/hanoi.sh], [chmod +x test/hanoi.sh])
 AC_CONFIG_FILES([test/interrupt.sh], [chmod +x test/interrupt.sh])
 AC_CONFIG_FILES([test/bug-args.sh], [chmod +x test/bug-args.sh])
 AC_CONFIG_FILES([test/dbg-test1.sh], [chmod +x test/dbg-test1.sh])
+AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 
 AC_CONFIG_FILES([ \
 	bashdb-trace \

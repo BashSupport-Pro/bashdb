@@ -578,13 +578,11 @@ _Dbg_onecmd() {
 	  local first=${a[0]}
 	  if [[ $first == '' ]] ; then
 	    _Dbg_do_watch 0
-	  else
-	    if [[ 0 == `_Dbg_defined $first` ]] ; then
+	  elif _Dbg_defined? $first ; then
 	      _Dbg_msg "Can't set watch: no such variable $first."
-	    else
+	  else
 	      unset a first
 	      _Dbg_do_watch 0 "\$$args"
-	    fi
 	  fi
 	  ;;
 
@@ -1135,7 +1133,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-_Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.38 2008/05/27 03:51:45 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.39 2008/06/01 00:49:12 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

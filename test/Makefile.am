@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.24 2007/11/13 16:20:07 rockyb Exp $
+#$Id: Makefile.am,v 1.25 2008/06/01 00:49:16 rockyb Exp $
+
+SUBDIRS = unit
 
 check_DATA = \
 	action.cmd \

@@ -21,10 +21,38 @@
 # This determines if we need to stop and go into the debugger 
 # command loop or not.
 
+# _Dbg_defined echoes 1 if $1 is a defined variable or 0 otherwise. 
+function _Dbg_defined {
+  declare -p $1 &>/dev/null
+  if [[ $? != 0 ]] ; then 
+    echo 0
+  else
+    echo 1
+  fi
+}
+
+# _Dbg_defined? returns 0 if $1 is a defined variable or 1 otherwise. 
+_Dbg_defined?() {
+  declare -p $1 &>/dev/null
+  if [[ $? != 0 ]] ; then 
+    return 0
+  else
+    return 1
+  fi
+}
+
 # Add escapes to a string $1 so that when it is read back via "$1"
 # it is the same as $1.
 function _Dbg_esc_dq {
   builtin echo $1 | sed -e 's/[`$\"]/\\\0/g' 
+}
+
+# Add escapes to a string $1 so that when it is read back via "$1"
+# it is the same as $1.
+function _Dbg_onoff {
+  typeset onoff='off.'
+  (( $1 != 0 )) && onoff='on.'
+  builtin echo $onoff
 }
 
 # Set $? to $1 if supplied or the saved entry value of $?. 
@@ -36,14 +64,14 @@ function _Dbg_set_dol_q {
 # temporarily resetting the variable IFS (input field separator).
 #
 # Example:
-# typeset -a a=($(_Dbg_split ":" "file:line"))
+# typeset -a a=($(_Dbg_split ':' "file:line"))
 # a[0] will have file and a{1] will have line.
 
 function _Dbg_split {
   typeset old_IFS=$IFS
   typeset new_ifs=${1:-' '}
   shift
-  typeset -r text=$*
+  typeset -r text="$*"
   typeset -a array
   IFS="$new_ifs"
   array=( $text )
@@ -97,7 +125,6 @@ function _Dbg_get_assoc_array_entry {
 # how we simulate such a datatype.
 
 function _Dbg_set_assoc_array_entry {
-#  set -xv
   typeset prefix=$1
   typeset lineno=$2
   shift; shift
@@ -113,18 +140,6 @@ function _Dbg_set_assoc_array_entry {
 
   typeset dq_value=$(_Dbg_esc_dq "$value")
   _Dbg_write_journal "$entry=\"$dq_value\""
-
-#  set +xv
-}
-
-# _Dbg_defined echoes 1 if $1 is a defined variable or 0 otherwise. 
-function _Dbg_defined {
-  declare -p $1 >/dev/null 2>&1
-  if [[ $? != 0 ]] ; then 
-    echo 0
-  else
-    echo 1
-  fi
 }
 
 # _Dbg_is_function echoes 1 if $1 is a defined function or 0 otherwise. 
@@ -329,17 +344,9 @@ function _Dbg_set_to_return_from_debugger {
   _Dbg_restore_user_vars
 }
 
-# Add escapes to a string $1 so that when it is read back via "$1"
-# it is the same as $1.
-function _Dbg_onoff {
-  typeset onoff="off."
-  (( $1 != 0 )) && onoff='on.'
-  builtin echo $onoff
-}
-
 # This is put at the end so we have something at the end when we debug this.
-typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.14 2008/05/27 03:51:45 rockyb Exp $'
+[[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
+'$Id: dbg-fns.inc,v 1.15 2008/06/01 00:49:12 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

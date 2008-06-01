@@ -79,29 +79,29 @@ _Dbg_do_history_parse() {
     case $_Dbg_cmd in 
       \!\-${int_pat}:p )
 	local -a word1
-	word1=($(_Dbg_split "!" $_Dbg_cmd))
+	word1=($(_Dbg_split '!' $_Dbg_cmd))
 	local -a word2
-	word2=($(_Dbg_split ":" ${word1[0]}))
+	word2=($(_Dbg_split ':' ${word1[0]}))
 	local -i num=_Dbg_hi+${word2[0]}
 	_Dbg_do_history_list $num $num
 	history_num=-1
 	;;
       [!]${int_pat}:p )
 	local -a word1
-	word1=($(_Dbg_split "!" $_Dbg_cmd))
+	word1=($(_Dbg_split '!' $_Dbg_cmd))
 	local -a word2
-	word2=($(_Dbg_split ":" ${word1[0]}))
+	word2=($(_Dbg_split ':' ${word1[0]}))
 	_Dbg_do_history_list ${word2[0]} ${word2[0]}
 	history_num=-1
 	;;
       \!\-$int_pat ) 
 	local -a word
-	word=($(_Dbg_split "!" $_Dbg_cmd))
+	word=($(_Dbg_split '!' $_Dbg_cmd))
 	history_num=$_Dbg_hi+${word[0]}
 	;;
       \!$int_pat ) 
 	local -a word
-	word=($(_Dbg_split "!" $_Dbg_cmd))
+	word=($(_Dbg_split '!' $_Dbg_cmd))
 	history_num=${word[0]}
 	;;
       '!' ) 
@@ -157,9 +157,9 @@ _Dbg_read_history
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: dbg-hist.inc,v 1.5 2007/11/14 00:48:08 rockyb Exp $'
+'$Id: dbg-hist.inc,v 1.6 2008/06/01 00:49:12 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
 #;;; eval: (sh-set-shell "bash") ***
-#;;; End: **
+#;;; End: ***

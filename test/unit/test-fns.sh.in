@@ -1,0 +1,39 @@
+#!@BASH_PROG@
+
+test_esc_dq()
+{
+    assertEquals 'abc' $(_Dbg_esc_dq abc)
+    assertEquals '\\\"abc\\\"' $(_Dbg_esc_dq '\"abc\"')
+    assertEquals '\\\"a\\bc\\\"' $(_Dbg_esc_dq '\"a\bc\"')
+}
+
+test_onoff()
+{
+    assertEquals 'on.' $(_Dbg_onoff 1)
+    assertEquals 'off.' $(_Dbg_onoff 0)
+}
+
+test_set_debugger_internal()
+{
+    typeset  _Dbg_space_IFS=' '
+    _Dbg_set_debugger_internal
+    assertEquals "$_Dbg_space_IFS" "$IFS"
+##    assertEquals '+ dbg (${.sh.file}:${LINENO}[$.sh.subshell]): ${.sh.fun}\n' $PS4
+}
+
+test_split()
+{
+    local -a words
+    words=($(_Dbg_split ':' 'foo:bar'))
+    assertEquals 'foo' ${words[0]}
+    assertEquals 'bar' ${words[1]}
+    words=($(_Dbg_split ':' 'foo'))
+    assertEquals 'foo' ${words[0]}
+}
+
+# load shunit2
+top_srcdir=@top_builddir@
+. ${top_srcdir}/dbg-fns.inc
+
+. ./shunit2
+
