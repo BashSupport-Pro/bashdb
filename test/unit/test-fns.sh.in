@@ -1,4 +1,16 @@
 #!@BASH_PROG@
+# -*- shell-script -*-
+
+test_defined()
+{
+    typeset p=5
+    _Dbg_defined? p
+    assertEquals 1 "$(_Dbg_defined p)"
+    unset p
+    assertEquals 0 "$(_Dbg_defined p)"
+    _Dbg_defined? p
+    assertFalse 'p should now not defined' '$?' 
+}
 
 test_esc_dq()
 {

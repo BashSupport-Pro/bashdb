@@ -1,2 +1,3 @@
 Makefile
 test-fns.sh
+test-pre.sh
