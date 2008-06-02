@@ -29,7 +29,7 @@ typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
 # mentioned in a debugger "file" command. If not and the file name
 # is a relative name use _Dbg_dir to substitute a relative directory name.
 #
-_Dbg_resolve_expand_filename() {
+function _Dbg_resolve_expand_filename {
   typeset find_file=$1
 
   if [[ -z "$find_file" ]] ; then
@@ -83,10 +83,10 @@ _Dbg_resolve_expand_filename() {
 
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
 # '' is echo'd if no file found.
-_Dbg_is_file() {
+function _Dbg_is_file {
   typeset find_file=$1
 
-  if [[ -z "$find_file" ]] ; then
+  if [[ -z $find_file ]] ; then
     _Dbg_msg "Internal debug error: null file to find"
     echo ''
     return
@@ -242,4 +242,4 @@ _Dbg_source_journal() {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.6 2008/06/02 02:37:26 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.7 2008/06/02 23:34:06 rockyb Exp $'

@@ -21,7 +21,7 @@
 # but the command is different.
 
 # 1 if we are logging output. 
-typeset _Dbg_logging=0
+typeset -i _Dbg_logging=0
 
 # Location of logging file *when* we are set logging is on.
 typeset _Dbg_logging_file="bashdb.txt"
@@ -136,7 +136,7 @@ _Dbg_do_show_logging()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_log_ver=\
-'$Id: dbg-log.inc,v 1.2 2006/06/13 09:11:44 rockyb Exp $'
+'$Id: dbg-log.inc,v 1.3 2008/06/02 23:34:06 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

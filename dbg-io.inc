@@ -1,20 +1,21 @@
+# -*- shell-script -*-
 # dbg-io.inc - Bourne Again Shell Debugger Input/Output routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006 Rocky Bernstein 
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   Bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   Bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with Bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # ==================== VARIABLES =======================================
@@ -48,11 +49,11 @@ fi
 # ===================== FUNCTIONS =======================================
 
 # print message to output device
-_Dbg_msg() {
-  if (( $_Dbg_logging != 0 )) ; then
+function _Dbg_msg {
+  if (( _Dbg_logging )) ; then
     builtin echo -e "$@" >>$_Dbg_logfid
   fi
-  if (( $_Dbg_logging_redirect == 0 )) ; then
+  if (( ! _Dbg_logging_redirect )) ; then
     if [[ -n $_Dbg_tty  ]] ; then
       builtin echo -e "$@" >>$_Dbg_tty
     else
@@ -62,7 +63,7 @@ _Dbg_msg() {
 }
 
 # print message to output device without a carriage return at the end
-_Dbg_msg_nocr() {
+function _Dbg_msg_nocr {
   if (( $_Dbg_logging != 0 )) ; then
     builtin echo -n -e "$@" >>$_Dbg_logfid
   fi
@@ -76,30 +77,30 @@ _Dbg_msg_nocr() {
 }
 
 # print message to output device
-_Dbg_printf() {
-  local format=$1
+function _Dbg_printf {
+  typeset format=$1
   shift
-  if (( $_Dbg_logging != 0 )) ; then
+  if (( _Dbg_logging )) ; then
     builtin printf "$format" "$@" >>$_Dbg_logfid
   fi
-  if (( $_Dbg_logging_redirect == 0 )) ; then
+  if (( ! _Dbg_logging_redirect )) ; then
     if [[ -n $_Dbg_tty ]] ; then
       builtin printf "$format" "$@" >>$_Dbg_tty
     else
       builtin printf "$format" "$@"
     fi
   fi
-  _Dbg_msg ""
+  _Dbg_msg ''
 }
 
 # print message to output device without a carriage return at the end
-_Dbg_printf_nocr() {
-  local format=$1
+function _Dbg_printf_nocr {
+  typeset format=$1
   shift 
-  if (( $_Dbg_logging != 0 )) ; then
+  if (( _Dbg_logging )) ; then
     builtin printf "$format" "$@" >>$_Dbg_logfid
   fi
-  if (( $_Dbg_logging_redirect == 0 )) ; then
+  if (( ! _Dbg_logging_redirect )) ; then
     if [[ -n $_Dbg_tty ]] ; then 
       builtin printf "$format" "$@" >>$_Dbg_tty
     else
@@ -117,12 +118,12 @@ _Dbg_undefined_cmd() {
 # $1: prefix string
 # $2: max value
 # $3: current value
-_Dbg_progess_show() {
-    local title=$1
-    local -i max_value=$2
-    local -i current_value=$3
-    local -i max_length=40
-    local -i current_length
+function _Dbg_progess_show {
+    typeset title=$1
+    typeset -i max_value=$2
+    typeset -i current_value=$3
+    typeset -i max_length=40
+    typeset -i current_length
 
     
     if (( max_value == 0 )) ; then
@@ -139,8 +140,8 @@ _Dbg_progess_show() {
 # $1: prefix string
 # $2: max length
 # $3: current length
-_Dbg_progess_show_internal() {
-    local -i i=0
+function _Dbg_progess_show_internal {
+    typeset -i i=0
 
     # Erase line
     if test "x$EMACS" = xt; then
@@ -162,7 +163,7 @@ _Dbg_progess_show_internal() {
 }
 
 # clean up progress bar
-_Dbg_progess_done() {
+function _Dbg_progess_done {
     # Erase line
     if test "x$EMACS" = xt; then
 	_Dbg_msg_nocr "\r\b\n"	
@@ -174,16 +175,16 @@ _Dbg_progess_done() {
 
 
 # Return text for source line for line $1 of filename $2 in variable
-# $source_line. The hope is that this has been declared "local" in the 
+# $source_line. The hope is that this has been declared "typeset" in the 
 # caller.
 
 # If $2 is omitted, # use _cur_source_file, if $1 is omitted use _curline.
-_Dbg_get_source_line() {
-  local lineno=${1:-$_curline}
-  local filename=${2:-$_cur_source_file}
-  local filevar=`_Dbg_file2var $filename`
-  local is_read=`_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar`
-  [ $is_read ] || _Dbg_readin $filename 
+function _Dbg_get_source_line {
+  typeset lineno=${1:-$_curline}
+  typeset filename=${2:-$_cur_source_file}
+  typeset filevar=$(_Dbg_file2var $filename)
+  typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
+  [[ $is_read ]] || _Dbg_readin $filename 
   
   source_line=`_Dbg_get_assoc_array_entry _Dbg_source_${filevar} $lineno`
 }
@@ -192,30 +193,30 @@ _Dbg_get_source_line() {
 # to 1 to note that the file has been read and the filename will be saved
 # in array _Dbg_filenames
 
-_Dbg_readin() {
+function _Dbg_readin {
   # set -xv
-  local filename=${1:-$_cur_source_file}
+  typeset filename=${1:-$_cur_source_file}
 
-  local -i line_count=0
-  local filevar
-  local source_array
-  local -ir NOT_SMALLFILE=1000
+  typeset -i line_count=0
+  typeset filevar
+  typeset source_array
+  typeset -ir NOT_SMALLFILE=1000
 
   if [[ -z $filename ]] || [[ $filename == $_Dbg_bogus_file ]] ; then 
     filevar='ABOGUSA'
     source_array="_Dbg_source_${filevar}"
-    local cmd="${source_array}[0]=\"$BASH_EXECUTION_STRING\""
+    typeset cmd="${source_array}[0]=\"$BASH_EXECUTION_STRING\""
     eval $cmd
 
   else 
-    local fullname=$(_Dbg_resolve_expand_filename $filename)
+    typeset fullname=$(_Dbg_resolve_expand_filename $filename)
     filevar=`_Dbg_file2var $filename`
     if [[ -r $fullname ]] ; then
-      local -r progress_prefix="Reading $filename"
+      typeset -r progress_prefix="Reading $filename"
       source_array="_Dbg_source_${filevar}"
       if (( 0 != $_Dbg_have_readarray )); then
 	# If we have readarray that speeds up reading greatly. Use it.
-	local -ir BIGFILE=30000
+	typeset -ir BIGFILE=30000
 	if wc -l < /dev/null >/dev/null 2>&1 ; then 
 	  line_count=`wc -l < "${fullname}"`
 	  if (( $line_count >= $NOT_SMALLFILE )) ; then 
@@ -229,11 +230,11 @@ _Dbg_readin() {
 	
       else
 	# No readarray. Do things the long way.
-	local -i i
+	typeset -i i
 	for (( i=1; 1 ; i++ )) ; do 
-	  local source_entry="${source_array}[$i]"
-	  local readline_cmd="read -r $source_entry; rc=\$?";
-	  local -i rc=1
+	  typeset source_entry="${source_array}[$i]"
+	  typeset readline_cmd="read -r $source_entry; rc=\$?";
+	  typeset -i rc=1
 	  if (( i % 1000 == 0 )) ; then
 	    if (( i==NOT_SMALLFILE )) ; then
 	      if wc -l < /dev/null >/dev/null 2>&1 ; then 
@@ -255,7 +256,7 @@ _Dbg_readin() {
 	done  < $fullname
 	# The last read in the loop above failed. So we've actually 
 	# read one more than the number of lines.
-	local -r remove_last_index_cmd="unset $source_array[$i]"
+	typeset -r remove_last_index_cmd="unset $source_array[$i]"
 	eval $remove_last_index_cmd
 	(( line_count != 0 )) && _Dbg_progess_done
       fi
@@ -264,7 +265,7 @@ _Dbg_readin() {
     fi
   fi
 
-  local -r line_count_cmd="line_count=\${#$source_array[@]}"
+  typeset -r line_count_cmd="line_count=\${#$source_array[@]}"
   eval $line_count_cmd
 
   (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
@@ -278,10 +279,5 @@ _Dbg_readin() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.13 2008/05/27 03:51:45 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
+[[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
+'$Id: dbg-io.inc,v 1.14 2008/06/02 23:34:06 rockyb Exp $'
