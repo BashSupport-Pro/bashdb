@@ -1,0 +1,43 @@
+#!@BASH_PROG@
+# -*- shell-script -*-
+
+test_msg()
+{
+    local -i _Dbg_logging=0
+    local -i _Dbg_logging_redirect=0
+    local _Dbg_tty=''
+    local msg=$(_Dbg_msg hi)
+    assertEquals 'hi' "$msg"
+    msg=$(_Dbg_msg_nocr hi)
+    assertEquals 'hi' "$msg"
+    msg=$(_Dbg_printf '%03d' 5)
+    assertEquals '005' "$msg"
+    msg=$(_Dbg_printf_nocr '%-3s' 'fo')
+    assertEquals 'fo ' "$msg"
+}
+
+test_undefined()
+{
+    local -i _Dbg_logging=0
+    local -i _Dbg_logging_redirect=0
+    local _Dbg_tty=''
+    local msg=$(_Dbg_undefined_cmd foo bar)
+    assertEquals 'Undefined foo command "bar"' "$msg"
+}
+
+test_progress_show()
+{
+    local -i _Dbg_logging=0
+    local -i _Dbg_logging_redirect=0
+    local _Dbg_tty=''
+    local EMACS=t
+    local bar=$(_Dbg_progess_show foo 10 3)
+    assertEquals 'foo: [============> ' "${bar:3:20}"
+}
+
+# load shunit2
+top_srcdir=@top_builddir@
+. ${top_srcdir}/dbg-io.inc
+
+. ./shunit2
+

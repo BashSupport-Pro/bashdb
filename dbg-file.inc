@@ -24,6 +24,16 @@ typeset -a _Dbg_dir=('\$cdir' '\$cwd' )
 # Directory in which the script is located
 typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
 
+# See if we have compiled the readarray builtin. This speeds up reading
+# files into a bash array.
+typeset -i _Dbg_have_readarray=0
+
+if [[ -r $_Dbg_libdir/builtin/readarray ]] ; then
+  if enable -f $_Dbg_libdir/builtin/readarray  readarray >/dev/null 2>&1 ; then
+    _Dbg_have_readarray=1
+  fi
+fi
+
 #
 # Resolve $1 to a full file name which exists. First see if filename has been
 # mentioned in a debugger "file" command. If not and the file name
@@ -240,6 +250,95 @@ _Dbg_source_journal() {
   fi
 }
 
+# Read $1 into _source_$1 array.  Variable _Dbg_read_$1 will be set
+# to 1 to note that the file has been read and the filename will be saved
+# in array _Dbg_filenames
+
+function _Dbg_readin {
+  # set -xv
+  typeset filename=${1:-$_cur_source_file}
+
+  typeset -i line_count=0
+  typeset filevar
+  typeset source_array
+  typeset -ir NOT_SMALLFILE=1000
+
+  if [[ -z filename ]] || [[ filename == _Dbg_bogus_file ]] ; then 
+    filevar='ABOGUSA'
+    source_array="_Dbg_source_${filevar}"
+    typeset cmd="${source_array}[0]=\"$BASH_EXECUTION_STRING\""
+    eval $cmd
+
+  else 
+    typeset fullname=$(_Dbg_resolve_expand_filename $filename)
+    filevar=`_Dbg_file2var $filename`
+    if [[ -r $fullname ]] ; then
+      typeset -r progress_prefix="Reading $filename"
+      source_array="_Dbg_source_${filevar}"
+      if (( 0 != $_Dbg_have_readarray )); then
+	# If we have readarray that speeds up reading greatly. Use it.
+	typeset -ir BIGFILE=30000
+	if wc -l < /dev/null >/dev/null 2>&1 ; then 
+	  line_count=`wc -l < "${fullname}"`
+	  if (( $line_count >= $NOT_SMALLFILE )) ; then 
+	    _Dbg_msg_nocr "${progress_prefix} "
+	  fi
+	fi
+	builtin readarray -t -O 1 -c $BIGFILE \
+	  -C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
+	  $source_array < $fullname 
+	(( line_count > BIGFILE)) && _Dbg_progess_done
+	
+      else
+	# No readarray. Do things the long way.
+	typeset -i i
+	for (( i=1; 1 ; i++ )) ; do 
+	  typeset source_entry="${source_array}[$i]"
+	  typeset readline_cmd="read -r $source_entry; rc=\$?";
+	  typeset -i rc=1
+	  if (( i % 1000 == 0 )) ; then
+	    if (( i==NOT_SMALLFILE )) ; then
+	      if wc -l < /dev/null >/dev/null 2>&1 ; then 
+		line_count=`wc -l < "${fullname}"`
+	      else
+		_Dbg_msg_nocr "${progress_prefix} "
+	      fi
+	    fi
+	    if (( line_count == 0 )) ; then
+	      _Dbg_msg_nocr "${i}... "
+	    else
+	      _Dbg_progess_show "${progress_prefix}" ${line_count} ${i}
+	    fi
+	  fi
+	  eval $readline_cmd
+	  if [[ $rc != 0 ]]  ; then 
+	    break;
+	  fi
+	done  < $fullname
+	# The last read in the loop above failed. So we've actually 
+	# read one more than the number of lines.
+	typeset -r remove_last_index_cmd="unset $source_array[$i]"
+	eval $remove_last_index_cmd
+	(( line_count != 0 )) && _Dbg_progess_done
+      fi
+    else
+	return
+    fi
+  fi
+
+  typeset -r line_count_cmd="line_count=\${#$source_array[@]}"
+  eval $line_count_cmd
+
+  (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
+
+  _Dbg_set_assoc_scalar_entry "_Dbg_read_" $filevar 1
+  _Dbg_set_assoc_scalar_entry "_Dbg_maxline_" $filevar $line_count
+  
+  # Add $filename to list of all filenames
+  _Dbg_filenames[${#_Dbg_filenames[@]}]=$fullname;
+  # set +xv
+}
+
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.7 2008/06/02 23:34:06 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.8 2008/06/03 02:03:38 rockyb Exp $'
