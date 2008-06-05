@@ -564,7 +564,7 @@ _Dbg_onecmd() {
 	  _Dbg_do_undisplay $args
 	  ;;
 
-	# Trace a function
+	# Remove a function trace
 	unt | untr | untra | untrac | untrace )
 	  _Dbg_do_untrace_fn $args 
 	  ;;
@@ -588,7 +588,7 @@ _Dbg_onecmd() {
 	  local first=${a[0]}
 	  if [[ $first == '' ]] ; then
 	    _Dbg_do_watch 0
-	  elif _Dbg_defined? $first ; then
+	  elif _Dbg_defined? "$first" ; then
 	      _Dbg_msg "Can't set watch: no such variable $first."
 	  else
 	      unset a first
@@ -1050,11 +1050,11 @@ _Dbg_do_tty() {
 _Dbg_do_x() {
   local -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   local _Dbg_result
-  if (( `_Dbg_defined $_Dbg_expr` )) ; then
-    _Dbg_result=`declare -p $_Dbg_expr`
+  if (( $(_Dbg_defined $_Dbg_expr) )) ; then
+    _Dbg_result=$(declare -p $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
   elif _Dbg_is_function? $_Dbg_expr ; then 
-    _Dbg_result=`declare -f $_Dbg_expr`
+    _Dbg_result=$(declare -f $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
   else 
     local -i _Dbg_rc
@@ -1069,7 +1069,7 @@ _Dbg_do_x() {
 }
 
 _Dbg_save_state() {
-  _Dbg_statefile=`_Dbg_tempname statefile`
+  _Dbg_statefile=$(_Dbg_tempname statefile)
   echo "" > $_Dbg_statefile
   _Dbg_save_breakpoints
   _Dbg_save_actions
@@ -1130,11 +1130,11 @@ if [[ -z "${BASHDB_LEVEL}" ]] ; then
 fi
 
 # temp file for internal eval'd commands
-typeset _Dbg_evalfile=`_Dbg_tempname eval`
+typeset _Dbg_evalfile=$(_Dbg_tempname eval)
 
 # File to save information that needs to be passed from a subshell
 # to a parent shell
-typeset _Dbg_journal=`_Dbg_tempname journal`
+typeset _Dbg_journal=$(_Dbg_tempname journal)
 if [ ! -f _Dbg_journal ] ; then 
   typeset -i BASHDB_QUIT_LEVELS=0
   _Dbg_write_journal "BASHDB_QUIT_LEVELS=0"
@@ -1143,7 +1143,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.40 2008/06/05 09:51:50 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.41 2008/06/05 10:07:47 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
