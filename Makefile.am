@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.17 2008/06/02 02:37:26 rockyb Exp $
+#$Id: Makefile.am,v 1.18 2008/06/05 09:51:50 rockyb Exp $
 
 if BUILD_BUILTINS
 SUBDIRS = builtin test doc emacs
@@ -41,7 +41,7 @@ pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-commands.inc \
                dbg-list.inc  dbg-log.inc        dbg-main.inc     \
 	       dbg-pre.inc                                       \
 	       dbg-set.inc   dbg-show.inc       dbg-sig.inc      \
-	       dbg-stack.inc dbg-set-d-vars.inc  \
+	       dbg-stack.inc dbg-set-d-vars.inc dbg-tracefn.inc  \
 	       bashdb-trace
 
 EXTRA_DIST = dbg-pre.inc.in bashdb.in bashdb-trace.in dbg-main.inc.in \

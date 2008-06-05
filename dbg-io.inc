@@ -25,10 +25,6 @@
 # _Dbg_read_mungedfilename is array which contains the value '1' if the
 #  filename has been read in.
 
-# Filename that's used when no source file is around. In particular
-# if bash --debugger -c 'string' was used to invoke us.
-[[ -z $_Dbg_bogus_file ]] && typeset -r _Dbg_bogus_file='*BOGUS*'
-
 typeset -a _Dbg_filenames          # names of all source files read
 typeset -a _Dbg_override_filenames # name translations given via the debugger
                                    # "file" command.
@@ -181,4 +177,4 @@ function _Dbg_get_source_line {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.15 2008/06/03 02:03:38 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.16 2008/06/05 09:51:50 rockyb Exp $'

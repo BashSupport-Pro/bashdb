@@ -22,7 +22,7 @@
 typeset -a _Dbg_dir=('\$cdir' '\$cwd' )
 
 # Directory in which the script is located
-typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
+[[ -z _Dbg_cdir ]] && typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
 
 # See if we have compiled the readarray builtin. This speeds up reading
 # files into a bash array.
@@ -341,4 +341,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.8 2008/06/03 02:03:38 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.9 2008/06/05 09:51:50 rockyb Exp $'

@@ -542,6 +542,11 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='tbreak'
 	  ;;
 
+	# Trace a function
+	tr | tra | tra | trac | trace )
+	  _Dbg_do_trace_fn $args 
+	  ;;
+
 	# Set the output tty
 	tt | tty )
 	  _Dbg_do_tty $args 
@@ -554,9 +559,14 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='up'
 	  ;;
 
-	# List call stack up
-	un | undi | undis | undisp | undispl | undispla | undisplay )
+	# Undisplay display-number
+	und | undi | undis | undisp | undispl | undispla | undisplay )
 	  _Dbg_do_undisplay $args
+	  ;;
+
+	# Trace a function
+	unt | untr | untra | untrac | untrace )
+	  _Dbg_do_untrace_fn $args 
 	  ;;
 
 	# Show version information
@@ -1043,7 +1053,7 @@ _Dbg_do_x() {
   if (( `_Dbg_defined $_Dbg_expr` )) ; then
     _Dbg_result=`declare -p $_Dbg_expr`
     _Dbg_msg "$_Dbg_result"
-  elif (( `_Dbg_is_function $_Dbg_expr` )) ; then 
+  elif _Dbg_is_function? $_Dbg_expr ; then 
     _Dbg_result=`declare -f $_Dbg_expr`
     _Dbg_msg "$_Dbg_result"
   else 
@@ -1133,7 +1143,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.39 2008/06/01 00:49:12 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.40 2008/06/05 09:51:50 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

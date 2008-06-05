@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # dbg-fns.inc - Bourne Again Shell Debugger Utility Functions
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008 Rocky Bernstein
@@ -142,30 +143,15 @@ function _Dbg_set_assoc_array_entry {
   _Dbg_write_journal "$entry=\"$dq_value\""
 }
 
-# _Dbg_is_function echoes 1 if $1 is a defined function or 0 otherwise. 
+# _Dbg_is_function returns 0 if $1 is a defined function or nonzero otherwise. 
 # if $2 is nonzero, system functions, i.e. those whose name starts with
 # an underscore (_), are included in the search.
-function _Dbg_is_function {
+_Dbg_is_function?() {
     typeset needed_fn=$1
-    if [[ -z $needed_fn ]] ; then 
-	echo 0
-	return;
-    fi
-    typeset -i include_system=$2
-    typeset -a fns_a
-    fns_a=(`declare -F`)
-    typeset -i i
-
-    # Iterate skipping over consecutive single tokens "declare" and "-F"
-    for (( i=2; (( i < ${#fns_a[@]} )) ; i += 3 )) ; do
-	typeset fn="${fns_a[$i]}"
-	[[ $fn == _* ]] && (( ! $include_system )) && continue
-	if [[ $needed_fn ==  $fn ]] ; then
-	    echo 1
-	    return
-	fi
-    done
-    echo 0
+    [[ -z $needed_fn ]] && return 1
+    typeset -i include_system=${2:-0}
+    declare -F $needed_fn >/dev/null 2>&1
+    return $?
 }
 
 # _get_function echoes a list of all of the functions.
@@ -257,7 +243,7 @@ function _Dbg_parse_linespec {
 
     # Function name or error
     * )
-      if [[ 1 == `_Dbg_is_function $linespec $_Dbg_debug_debugger` ]]; then 
+      if _Dbg_is_function? $linespec $_Dbg_debug_debugger ; then 
 	typeset -a word
 	word=(`declare -F $linespec`)
 	echo "${word[1]} 1 ${word[2]}"
@@ -346,8 +332,4 @@ function _Dbg_set_to_return_from_debugger {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.15 2008/06/01 00:49:12 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; End: ***
+'$Id: dbg-fns.inc,v 1.16 2008/06/05 09:51:50 rockyb Exp $'

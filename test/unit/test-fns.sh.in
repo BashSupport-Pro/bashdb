@@ -4,7 +4,6 @@
 test_defined()
 {
     typeset p=5
-    _Dbg_defined? p
     assertEquals 1 "$(_Dbg_defined p)"
     unset p
     assertEquals 0 "$(_Dbg_defined p)"
@@ -17,6 +16,21 @@ test_esc_dq()
     assertEquals 'abc' $(_Dbg_esc_dq abc)
     assertEquals '\\\"abc\\\"' $(_Dbg_esc_dq '\"abc\"')
     assertEquals '\\\"a\\bc\\\"' $(_Dbg_esc_dq '\"a\bc\"')
+}
+
+test_is_function()
+{
+    unset function_test
+    _Dbg_is_function? function_test
+    assertFalse 'test_function should not be defined' "$?"
+    typeset -i function_test=1
+    _Dbg_is_function? function_test
+    assertFalse 'test_function should still not be defined' "$?"
+    function_test() { :; }
+    _Dbg_is_function? function_test
+    assertTrue 'test_function should now be defined' "$?"
+    function another_function_test { :; }
+    _Dbg_is_function? another_function_test "$?"
 }
 
 test_onoff()

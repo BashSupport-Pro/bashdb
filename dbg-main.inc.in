@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # dbg-main.inc - Bourne Again Shell Debugger Main Include
 
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein 
@@ -18,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.inc.in,v 1.7 2008/05/27 03:51:45 rockyb Exp $'
+'$Id: dbg-main.inc.in,v 1.8 2008/06/05 09:51:50 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -33,8 +34,9 @@ prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 
 # Note: "init" comes first and "cmds" has to come after "io". Otherwise 
 # these are sorted alphabetically.
-typeset -r _Dbg_includes="init brk complete edit file fns help hist info log io 
-cmds commands list stack set show sig"
+typeset -r _Dbg_includes="init brk complete edit file fns help hist
+                          info log io cmds commands list stack set show 
+                          sig tracefn"
 
 for file in $_Dbg_includes ; do 
   source ${_Dbg_libdir}/dbg-${file}.inc
@@ -50,8 +52,3 @@ fi
 
 trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 # echo '*** we were here***'  # uncomment to test that we were run.
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
