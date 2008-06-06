@@ -964,7 +964,7 @@ _Dbg_do_restart() {
   local exec_cmd="$0 $script_args";
   if [[ $_Dbg_script != 1 ]] ; then
     [ -z "$BASH" ] && BASH='bash'
-    if [ $_cur_source_file == $_Dbg_bogus_file ] ; then
+    if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
       script_args="--debugger -c \"$BASH_EXECUTION_STRING\""
       exec_cmd="$BASH --debugger -c \"$BASH_EXECUTION_STRING\"";
     else
@@ -1143,7 +1143,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.41 2008/06/05 10:07:47 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.42 2008/06/06 20:21:24 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
