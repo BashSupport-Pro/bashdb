@@ -1,7 +1,8 @@
+# *-* shell-script -*-
 # dbg-info.inc - Bourne Again Shell Debugger Help Routines
 
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006 
-#   Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008
+#   Rocky Bernstein rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -237,12 +238,12 @@ POSSIBILITY OF SUCH DAMAGES.
 }
 
 # List signal handlers in effect.
-_Dbg_info_signals() {
-  local -i i=0
-  local signal_name
-  local handler
-  local stop_flag
-  local print_flag
+function _Dbg_info_signals {
+  typeset -i i=0
+  typeset signal_name
+  typeset handler
+  typeset stop_flag
+  typeset print_flag
 
   _Dbg_msg "Signal       Stop   Print   Stack     Value"
   _Dbg_printf_nocr "%-12s %-6s %-7s %-9s " EXIT \
@@ -258,11 +259,8 @@ _Dbg_info_signals() {
   fi
 
   while [ 1 ] ; do
-    signal_name=`builtin kill -l $i 2>/dev/null`
-    if (( $? != 0 )) ; then
-      break
-    fi
-    handler=`builtin trap -p $i`
+    signal_name=$(builtin kill -l $i 2>/dev/null) || break
+    handler=$(builtin trap -p $i)
     if [[ -n $handler ]] ; then
       _Dbg_printf "%-12s %-6s %-7s %-9s %-6s" $signal_name \
 	${_Dbg_sig_stop[$i]:-nostop} ${_Dbg_sig_print[$i]:-noprint} \
@@ -276,9 +274,5 @@ _Dbg_info_signals() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.9 2006/07/16 14:04:38 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.10 2008/06/06 01:40:16 rockyb Exp $'
 
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
