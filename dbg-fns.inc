@@ -162,14 +162,14 @@ function _Dbg_get_functions {
     typeset -i include_system=${1:-0}
     typeset    pat=${2:-*}
     typeset -a fns_a
-    fns_a=(`declare -F`)
+    fns_a=( $(declare -F) )
     typeset -a ret_fns=()
     typeset -i i
     typeset -i invert=0;
 
     if [[ $pat == !* ]] ; then 
 	# Remove leading !
-	pat=$(echo $pat | cut -c2-)
+	pat=#{$pat#!}
 	invert=1
     fi	
 
@@ -332,4 +332,4 @@ function _Dbg_set_to_return_from_debugger {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.16 2008/06/05 09:51:50 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.17 2008/06/06 01:03:12 rockyb Exp $'

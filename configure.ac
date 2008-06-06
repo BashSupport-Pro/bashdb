@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.39 2008/06/03 02:03:38 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.40 2008/06/06 01:03:12 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -88,7 +88,7 @@ else
   fi
 fi
 
-## --with bash can be used to tell the bashdb script and the regression
+## --with-bash can be used to tell the bashdb script and the regression
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
 AC_ARG_WITH(bash, AC_HELP_STRING([--with-bash], 
