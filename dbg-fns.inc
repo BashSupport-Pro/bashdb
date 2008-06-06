@@ -325,11 +325,15 @@ function _Dbg_set_to_return_from_debugger {
     _Dbg_last_bash_command="**unsaved _bashdb command**"
   fi
 
-  trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
+  if (( _Dbg_restore_debug_trap )) ; then
+    trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
+  else
+    trap - DEBUG
+  fi  
 
   _Dbg_restore_user_vars
 }
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.17 2008/06/06 01:03:12 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.18 2008/06/06 03:19:34 rockyb Exp $'

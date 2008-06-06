@@ -2193,7 +2193,7 @@ run.
 @table @code
 @kindex continue
 @kindex c @r{(@code{continue})}
-@item continue @ovar{line-specification}
+@item continue @ovar{- | line-specification}
 @itemx c @ovar{line-specification}
 Resume program execution, at the address where your script last
 stopped; any breakpoints set at that address are bypassed.  
@@ -2204,6 +2204,9 @@ to set a one-time breakpoint which is deleted when that breakpoint is
 reached. Should the program stop before that breakpoint is reached, in
 a listing of the breakpoints you will see this entry with the
 condition 9999 which indicates a one-time breakpoint.
+
+If instead of a line specification you enter @code{-}, debugging will be
+turned of after continuing causing the program to run at full speed.
 @end table
 
 To resume execution at a different place, you can use @code{return}

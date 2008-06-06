@@ -17,11 +17,14 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Wrap "set -x .. set +x" around a call to function $1.
+# Normally we also save and restrore any trap DEBUG functions. However
+# If $2 is 0 we will won't.
 # The wrapped function becomes the new function and the original
 # function is called old_$1.
 # $? is 0 if successful.
 function _Dbg_do_trace_fn {
     typeset -r fn=$1
+    typeset -ri clear_debug_trap=${2:-1}
     if [[ -z $fn ]] ; then
 	_Dbg_msg "trace_fn: missing function name"
 	return 2
@@ -33,12 +36,20 @@ function _Dbg_do_trace_fn {
     cmd=old_$(declare -f $fn) || {
 	return 4
     }
-    (($debug)) && echo $cmd 
+    ((_Dbg_debug_debugger)) && echo $cmd 
+    typeset save_clear_debug_trap_cmd=''
+    typeset restore_trap_cmd=''
+    if (( clear_debug_trap )) ; then
+	save_clear_trap_cmd='local old_handler=$(trap -p DEBUG); trap - DEBUG'
+	restore_trap_cmd='eval $old_handler'
+    fi
     eval "$cmd" || return 5
     cmd="${fn}() { 
-    set -x; 
-    old_$fn \$*; 
+    $save_clear_trap_cmd
+    set -x
+    old_$fn \$*
     set +x
+    $restore_trap_cmd
     }
 "
     ((_Dbg_debug_debugger)) && echo $cmd 
@@ -71,5 +82,5 @@ function _Dbg_do_untrace_fn {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_tracefns_ver=\
-'$Id: dbg-tracefn.inc,v 1.1 2008/06/05 09:51:50 rockyb Exp $'
+'$Id: dbg-tracefn.inc,v 1.2 2008/06/06 03:19:34 rockyb Exp $'
 

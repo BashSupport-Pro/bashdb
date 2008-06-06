@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # dbg-sig.inc - Bourne Again Shell Debugger Signal handling routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
@@ -62,6 +63,9 @@ typeset -i _Dbg_return_level=0
 
 # Place to save values of $1, $2, etc.
 typeset -a _Dbg_arg=()
+
+# Set to 0 to clear "trap DEBUG" after entry
+typeset -i _Dbg_restore_debug_trap=1
 
 # ===================== FUNCTIONS =======================================
 
@@ -646,8 +650,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.23 2008/05/27 03:51:45 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; End: ***
+'$Id: dbg-sig.inc,v 1.24 2008/06/06 03:19:34 rockyb Exp $'

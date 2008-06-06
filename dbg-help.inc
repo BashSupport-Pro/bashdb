@@ -108,9 +108,7 @@ H -count        If a single postive integer is given, then list starting from
                 line. Long command name: break."
                 return ;;
 	    c | cont | conti |contin |continu | continue )
-		_Dbg_msg \
-"c [linespec]    Continue execution until the next breakpoint or end of 
-                program or linespec. Long command name: continue."
+	        _Dbg_help_continue
                 return ;;
 	    cd  )
 		_Dbg_msg \
@@ -568,7 +566,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.18 2008/05/27 03:51:45 rockyb Exp $'
+'$Id: dbg-help.inc,v 1.19 2008/06/06 03:19:34 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -1,26 +1,27 @@
+# -*- shell-script -*-
 # dbg-brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
 
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   Bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   Bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with Bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_brk_ver=\
-'$Id: dbg-brk.inc,v 1.17 2008/05/27 03:51:45 rockyb Exp $'
+'$Id: dbg-brk.inc,v 1.18 2008/06/06 03:19:34 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -223,24 +224,39 @@ _Dbg_enable_disable() {
   return 0
 }
 
-_Dbg_do_continue() {
-  # set -xv
+function _Dbg_help_continue {
+    _Dbg_msg \
+"c [linespec | - ]  Continue execution until the next breakpoint or end of 
+                   program or linespec. 
+
+If instead of a line specification you enter -, then debugging will be turned 
+off after continuing causing your program to run at full speed.
+Long command name: continue.
+"
+}
+
+function _Dbg_do_continue {
 
   if (( ! _Dbg_running )) ; then
-      _Dbg_msg "The program is not being run."
-      return
+      _Dbg_msg 'The program is not being run.'
+      return 1
   fi
 
-  [[ -z "$1" ]] && return 0
-  local filename
-  local -i line_number
-  local full_filename
+  [[ -z $1 ]] && return 0
+  typeset filename
+  typeset -i line_number
+  typeset full_filename
+
+  if [[ $1 == '-' ]] ; then
+    _Dbg_restore_debug_trap=0
+    return 0
+  fi
 
   _Dbg_linespec_setup $1
 
   if [[ -n $full_filename ]] ; then 
     if (( $line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to continue at."
+      _Dbg_msg 'There is no line 0 to continue at.'
     else 
       _Dbg_check_line $line_number "$full_filename"
       (( $? == 0 )) && \
@@ -263,8 +279,8 @@ _Dbg_do_disable() {
   _Dbg_enable_disable 0 "disabled" $@
 }
 
-_Dbg_print_brkpt_count() {
-  local -ir i=$1
+function _Dbg_print_brkpt_count {
+  typeset -ir i=$1
   if (( _Dbg_brkpt_count[$i] != 0 )) ; then
     if (( _Dbg_brkpt_count[$i] == 1 )) ; then 
       _Dbg_printf "\tbreakpoint already hit 1 time" 
@@ -1013,9 +1029,5 @@ _Dbg_do_undisplay() {
     _Dbg_msg "Display entry $del doesn't exist so nothing done."
   fi
 }
-
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
+[[ -z _Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
+'$Id: dbg-brk.inc,v 1.18 2008/06/06 03:19:34 rockyb Exp $'
