@@ -150,6 +150,9 @@ _Dbg_is_function?() {
     typeset needed_fn=$1
     [[ -z $needed_fn ]] && return 1
     typeset -i include_system=${2:-0}
+    [[ ${needed_fn:0:1} == '_' ]] && ((!include_system)) && {
+	return 1
+    }
     declare -F $needed_fn >/dev/null 2>&1
     return $?
 }
@@ -244,11 +247,14 @@ function _Dbg_parse_linespec {
     # Function name or error
     * )
       if _Dbg_is_function? $linespec $_Dbg_debug_debugger ; then 
-	typeset -a word
-	word=(`declare -F $linespec`)
-	echo "${word[1]} 1 ${word[2]}"
-      else
-	echo ""
+	local -a word=( $(declare -F $linespec) )
+	if [[ $? && ${#word[@]} > 2 ]]; then 
+	  builtin echo "${word[1]} 1 ${word[2]}"
+	else
+	  builtin echo ''
+	fi
+      else  
+	builtin echo ''
       fi
       ;;
    esac
@@ -336,4 +342,4 @@ function _Dbg_set_to_return_from_debugger {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.18 2008/06/06 03:19:34 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.19 2008/06/07 01:44:22 rockyb Exp $'
