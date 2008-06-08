@@ -26,14 +26,14 @@ function _Dbg_do_trace_fn {
     typeset -r fn=$1
     typeset -ri clear_debug_trap=${2:-1}
     if [[ -z $fn ]] ; then
-	_Dbg_msg "trace_fn: missing function name"
+	_Dbg_errmsg "trace_fn: missing function name"
 	return 2
     fi
-    _Dbg_is_function? "$fn" || {
-	_Dbg_msg "trace_fn: function \"$fn\" is not a function."
+    _Dbg_is_function "$fn" || {
+	_Dbg_errmsg "trace_fn: function \"$fn\" is not a function."
 	return 3
     }
-    cmd=old_$(declare -f $fn) || {
+    cmd=old_$(declare -f -- "$fn") || {
 	return 4
     }
     ((_Dbg_debug_debugger)) && echo $cmd 
@@ -46,10 +46,13 @@ function _Dbg_do_trace_fn {
     eval "$cmd" || return 5
     cmd="${fn}() { 
     $save_clear_trap_cmd
+    typeset -ri old_set_x=is_traced
     set -x
-    old_$fn \$*
-    set +x
+    old_$fn \"\$@\"
+    typeset -ri rc=\$?
+    (( old_set_x == 0 )) && set +x # still messes up of fn did: set -x
     $restore_trap_cmd
+    return \$rc
     }
 "
     ((_Dbg_debug_debugger)) && echo $cmd 
@@ -62,18 +65,18 @@ function _Dbg_do_trace_fn {
 function _Dbg_do_untrace_fn {
     typeset -r fn=$1
     if [[ -z $fn ]] ; then
-	_Dbg_msg "untrace_fn: missing function name."
+	_Dbg_errmsg "untrace_fn: missing function name."
 	return 2
     fi
-    _Dbg_is_function? "$fn" || {
-	_Dbg_msg "untrace_fn: function \"$fn\" is not a function."
+    _Dbg_is_function "$fn" || {
+	_Dbg_errmsg "untrace_fn: function \"$fn\" is not a function."
 	return 3
     }
-    _Dbg_is_function? "old_$fn" || {
-	_Dbg_msg "untrace_fn: old function old_$fn not seen - nothing done."
+    _Dbg_is_function "old_$fn" || {
+	_Dbg_errmsg "untrace_fn: old function old_$fn not seen - nothing done."
 	return 4
     }
-    cmd=$(declare -f old_$fn) || return 5
+    cmd=$(declare -f -- "old_$fn") || return 5
     cmd=${cmd#old_}
     ((_Dbg_debug_debugger)) && echo $cmd 
     eval "$cmd" || return 6
@@ -82,5 +85,5 @@ function _Dbg_do_untrace_fn {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_tracefns_ver=\
-'$Id: dbg-tracefn.inc,v 1.2 2008/06/06 03:19:34 rockyb Exp $'
+'$Id: dbg-tracefn.inc,v 1.3 2008/06/08 17:27:27 rockyb Exp $'
 

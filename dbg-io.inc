@@ -34,6 +34,16 @@ typeset -i _curline       # current line number of debugged program
 
 # ===================== FUNCTIONS =======================================
 
+function _Dbg_errmsg {
+    typeset -r prefix='**'
+    _Dbg_msg "$prefix $@"
+}
+
+function _Dbg_errmsg_no_cr {
+    typeset -r prefix='**'
+    _Dbg_msg_no_cr "$prefix $@"
+}
+
 # print message to output device
 function _Dbg_msg {
   if (( _Dbg_logging )) ; then
@@ -177,4 +187,4 @@ function _Dbg_get_source_line {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.16 2008/06/05 09:51:50 rockyb Exp $'
+'$Id: dbg-io.inc,v 1.17 2008/06/08 17:27:27 rockyb Exp $'

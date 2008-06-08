@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.18 2008/06/05 09:51:50 rockyb Exp $
+#$Id: Makefile.am,v 1.19 2008/06/08 17:27:27 rockyb Exp $
 
 if BUILD_BUILTINS
 SUBDIRS = builtin test doc emacs
@@ -93,6 +93,12 @@ install-data-hook:
 	     echo "WARNING: I'm having trouble letting bash know where the debugger is. Use the bashdb script only." ; \
 	  fi ) \
 	fi
+
+# Unit testing
+check-unit: test-unit
+
+test-unit:
+	cd test/unit && make check
 
 # cvs2cl
 MAINTAINERCLEANFILES = ChangeLog

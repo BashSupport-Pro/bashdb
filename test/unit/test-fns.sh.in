@@ -4,10 +4,10 @@
 test_defined()
 {
     typeset p=5
-    assertEquals 1 "$(_Dbg_defined p)"
+    assertEquals 1 "$(_Dbg_defined_old p)"
     unset p
-    assertEquals 0 "$(_Dbg_defined p)"
-    _Dbg_defined? p
+    assertEquals 0 "$(_Dbg_defined_old p)"
+    _Dbg_defined p
     assertFalse 'p should now not defined' '$?' 
 }
 
@@ -21,16 +21,31 @@ test_esc_dq()
 test_is_function()
 {
     unset function_test
-    _Dbg_is_function? function_test
+    _Dbg_is_function function_test
     assertFalse 'test_function should not be defined' "$?"
     typeset -i function_test=1
-    _Dbg_is_function? function_test
+    _Dbg_is_function function_test
     assertFalse 'test_function should still not be defined' "$?"
     function_test() { :; }
-    _Dbg_is_function? function_test
+    _Dbg_is_function function_test
     assertTrue 'test_function should now be defined' "$?"
     function another_function_test { :; }
-    _Dbg_is_function? another_function_test "$?"
+    _Dbg_is_function another_function_test "$?"
+}
+
+test_traced()
+{
+    set +x
+    _Dbg_is_traced 
+    assertFalse 'is_traced should be false' "$?"
+
+    { 
+      set -x
+      _Dbg_is_traced 
+      rc=$?
+      set +x
+    } 2>/dev/null
+    assertTrue 'is_traced should be true' "$rc"
 }
 
 test_onoff()

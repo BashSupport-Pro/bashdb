@@ -588,7 +588,7 @@ _Dbg_onecmd() {
 	  local first=${a[0]}
 	  if [[ $first == '' ]] ; then
 	    _Dbg_do_watch 0
-	  elif _Dbg_defined? "$first" ; then
+	  elif _Dbg_defined "$first" ; then
 	      _Dbg_msg "Can't set watch: no such variable $first."
 	  else
 	      unset a first
@@ -1050,10 +1050,10 @@ _Dbg_do_tty() {
 _Dbg_do_x() {
   local -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   local _Dbg_result
-  if (( $(_Dbg_defined $_Dbg_expr) )) ; then
+  if (( $(_Dbg_defined_old $_Dbg_expr) )) ; then
     _Dbg_result=$(declare -p $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
-  elif _Dbg_is_function? $_Dbg_expr ; then 
+  elif _Dbg_is_function $_Dbg_expr ; then 
     _Dbg_result=$(declare -f $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
   else 
@@ -1143,7 +1143,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.42 2008/06/06 20:21:24 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.43 2008/06/08 17:27:27 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

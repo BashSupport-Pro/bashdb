@@ -1,6 +1,7 @@
+# -*- shell-script -*-
 # dbg-sig-ret.inc - Bourne Again Shell Debugger Signal handling routines
 #
-#   Copyright (C) 2002, 2003, 2004 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2008 Rocky Bernstein rocky@gnu.org
 #
 #   Bash is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -43,10 +44,5 @@ fi
 
 local _Dbg_old_IFS="$IFS"
 IFS="$_Dbg_space_IFS";
-set -$_Dbg_old_set_opts
+set - $_Dbg_old_set_opts
 IFS="$_Dbg_old_IFS";
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

@@ -22,8 +22,9 @@
 # This determines if we need to stop and go into the debugger 
 # command loop or not.
 
-# _Dbg_defined echoes 1 if $1 is a defined variable or 0 otherwise. 
-function _Dbg_defined {
+# _Dbg_defined_old echoes 1 if $1 is a defined variable or 0 otherwise. 
+# FIXME: remove this routine
+function _Dbg_defined_old {
   declare -p $1 &>/dev/null
   if [[ $? != 0 ]] ; then 
     echo 0
@@ -32,8 +33,8 @@ function _Dbg_defined {
   fi
 }
 
-# _Dbg_defined? returns 0 if $1 is a defined variable or 1 otherwise. 
-_Dbg_defined?() {
+# _Dbg_defined returns 0 if $1 is a defined variable or 1 otherwise. 
+_Dbg_defined() {
   declare -p $1 &>/dev/null
   if [[ $? != 0 ]] ; then 
     return 0
@@ -146,7 +147,7 @@ function _Dbg_set_assoc_array_entry {
 # _Dbg_is_function returns 0 if $1 is a defined function or nonzero otherwise. 
 # if $2 is nonzero, system functions, i.e. those whose name starts with
 # an underscore (_), are included in the search.
-_Dbg_is_function?() {
+_Dbg_is_function() {
     typeset needed_fn=$1
     [[ -z $needed_fn ]] && return 1
     typeset -i include_system=${2:-0}
@@ -188,6 +189,16 @@ function _Dbg_get_functions {
 
     done
     echo ${ret_fns[@]}
+}
+
+# Return 0 if set -x tracing is on
+function _Dbg_is_traced {
+    # Is "x" in set options? 
+    if [[ $- == *x* ]] ; then
+	return 0
+    else
+	return 1
+    fi
 }
 
 # Common routine for setup of commands that take a single
@@ -246,7 +257,7 @@ function _Dbg_parse_linespec {
 
     # Function name or error
     * )
-      if _Dbg_is_function? $linespec $_Dbg_debug_debugger ; then 
+      if _Dbg_is_function $linespec $_Dbg_debug_debugger ; then 
 	local -a word=( $(declare -F $linespec) )
 	if [[ $? && ${#word[@]} > 2 ]]; then 
 	  builtin echo "${word[1]} 1 ${word[2]}"
@@ -342,4 +353,4 @@ function _Dbg_set_to_return_from_debugger {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.19 2008/06/07 01:44:22 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.20 2008/06/08 17:27:27 rockyb Exp $'
