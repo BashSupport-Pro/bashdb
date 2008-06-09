@@ -72,7 +72,7 @@ typeset _Dbg_last_cmd=''
 # to other places in the debugger, because of the read/eval loop, they are
 # in fact seen by those using the debugger. So in contrast to other "local"s
 # in the debugger, we prefer to preface these with _Dbg_.
-_Dbg_cmdloop() {
+function _Dbg_cmdloop {
 
   # THIS SHOULD BE DONE IN dbg-sig.inc, but there's a bug in BASH in 
   # trying to change "trap RETURN" inside a "trap RETURN" handler....
@@ -89,19 +89,19 @@ _Dbg_cmdloop() {
   # Loop over all pending open input file descriptors
   while (( $_Dbg_input_desc >= $_Dbg_INPUT_START_DESC )) ; do
 
-    # Set up prompt to show shell level.
-    local _Dbg_greater=''
-    local _Dbg_less=''
-    local -i _Dbg_i=0
-    for (( _Dbg_i=0 ; _Dbg_i < BASHDB_LEVEL ; _Dbg_i++ )) ; do
-      _Dbg_greater=">$_Dbg_greater"
-      _Dbg_less="<$_Dbg_less"
-    done
-
-    for (( _Dbg_i=0 ; _Dbg_i < BASH_SUBSHELL ; _Dbg_i++ )) ; do
-      _Dbg_greater=")$_Dbg_greater"
-      _Dbg_less="$_Dbg_less("
-    done
+    # Set up prompt to show shell and subshell levels.
+    typeset _Dbg_greater=''
+    typeset _Dbg_less=''
+    typeset result  # Used by copies to return a value.
+    
+    if _Dbg_copies '>' $BASHDB_LEVEL ; then
+	_Dbg_greater=$result
+	_Dbg_less=${result//>/<}
+    fi
+    if _Dbg_copies ')' $BASH_SUBSHELL ; then
+	_Dbg_greater="${result}${_Dbg_greater}"
+	_Dbg_less="${_Dbg_less}${result//)/(}"
+    fi
 
     # Loop over debugger commands. But before reading a debugger
     # command, we need to make sure IFS is set to spaces to ensure our
@@ -588,7 +588,7 @@ _Dbg_onecmd() {
 	  local first=${a[0]}
 	  if [[ $first == '' ]] ; then
 	    _Dbg_do_watch 0
-	  elif _Dbg_defined "$first" ; then
+	  elif ! _Dbg_defined "$first" ; then
 	      _Dbg_msg "Can't set watch: no such variable $first."
 	  else
 	      unset a first
@@ -1047,10 +1047,10 @@ _Dbg_do_tty() {
   return 0
 }
 
-_Dbg_do_x() {
-  local -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
-  local _Dbg_result
-  if (( $(_Dbg_defined_old $_Dbg_expr) )) ; then
+function _Dbg_do_x {
+  typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
+  typeset _Dbg_result
+  if _Dbg_defined $_Dbg_expr ; then
     _Dbg_result=$(declare -p $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
   elif _Dbg_is_function $_Dbg_expr ; then 
@@ -1143,7 +1143,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.43 2008/06/08 17:27:27 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.44 2008/06/09 06:30:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

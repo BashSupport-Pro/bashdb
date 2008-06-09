@@ -22,24 +22,26 @@
 # This determines if we need to stop and go into the debugger 
 # command loop or not.
 
-# _Dbg_defined_old echoes 1 if $1 is a defined variable or 0 otherwise. 
-# FIXME: remove this routine
-function _Dbg_defined_old {
-  declare -p $1 &>/dev/null
-  if [[ $? != 0 ]] ; then 
-    echo 0
-  else
-    echo 1
-  fi
+# Return $2 copies of $1. If successful, $? is 0 and the return value
+# is in result.  Otherwise $? is 1 and result ''
+function _Dbg_copies { 
+    result=''
+    (( $# < 2 )) && return 1
+    typeset -r string=$1
+    typeset -i count=$2 || return 2;
+    (( count > 0 )) || return 3
+    builtin printf -v result "%${count}s" ' ' || return 3
+    result=${result// /$string}
+    return 0
 }
 
 # _Dbg_defined returns 0 if $1 is a defined variable or 1 otherwise. 
 _Dbg_defined() {
   declare -p $1 &>/dev/null
   if [[ $? != 0 ]] ; then 
-    return 0
-  else
     return 1
+  else
+    return 0
   fi
 }
 
@@ -353,4 +355,4 @@ function _Dbg_set_to_return_from_debugger {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.20 2008/06/08 17:27:27 rockyb Exp $'
+'$Id: dbg-fns.inc,v 1.21 2008/06/09 06:30:30 rockyb Exp $'
