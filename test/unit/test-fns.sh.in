@@ -24,7 +24,7 @@ test_defined()
 {
     typeset p=5
     _Dbg_defined p
-    assertTrue 'p is defined' "$?"
+    assertTrue 'p should be defined' "$?"
     unset p
     _Dbg_defined p
     assertFalse 'p should now not defined' "$?"
@@ -112,7 +112,7 @@ test_set_debugger_internal()
 
 test_split()
 {
-    local -a words
+    typeset -a words
     words=($(_Dbg_split ':' 'foo:bar'))
     assertEquals 'foo' ${words[0]}
     assertEquals 'bar' ${words[1]}

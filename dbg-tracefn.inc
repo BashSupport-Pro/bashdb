@@ -26,7 +26,7 @@ function _Dbg_do_trace_fn {
     typeset -r fn=$1
     typeset -ri clear_debug_trap=${2:-1}
     if [[ -z $fn ]] ; then
-	_Dbg_errmsg "trace_fn: missing function name"
+	_Dbg_errmsg "trace_fn: missing or invalid function name"
 	return 2
     fi
     _Dbg_is_function "$fn" || {
@@ -65,7 +65,7 @@ function _Dbg_do_trace_fn {
 function _Dbg_do_untrace_fn {
     typeset -r fn=$1
     if [[ -z $fn ]] ; then
-	_Dbg_errmsg "untrace_fn: missing function name."
+	_Dbg_errmsg "untrace_fn: missing or invalid function name."
 	return 2
     fi
     _Dbg_is_function "$fn" || {
@@ -85,5 +85,5 @@ function _Dbg_do_untrace_fn {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_tracefns_ver=\
-'$Id: dbg-tracefn.inc,v 1.3 2008/06/08 17:27:27 rockyb Exp $'
+'$Id: dbg-tracefn.inc,v 1.4 2008/06/11 01:11:43 rockyb Exp $'
 
