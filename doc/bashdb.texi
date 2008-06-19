@@ -1095,7 +1095,7 @@ Now run:
 
 Sent it an "interrupt" signal
 @smallexample
-  kill -INT 9435
+  @b{kill -INT 9435}
 @end smallexample 
 
 And back to the running program:
@@ -1107,7 +1107,7 @@ And back to the running program:
   bashdb<0> where
   ->0 in file `./debugit.sh' at line 9    # but this line number is now right
   ##1 main() called from file `./debugit.sh' at line 0
-  bashdb<1> list 1
+  bashdb<1> @b{list 1}
     1:   # Set up some interrupt handlers to go into the debugger
     2:   source /usr/share/bashdb/bashdb-trace
     3:  
@@ -1117,13 +1117,13 @@ And back to the running program:
     7:   echo "$date"
     8:   sleep 2
     9:==>done
-  bashdb<2> s
+  bashdb<2> @b{step}
   (./debugit.sh:5):
   5:      while : ; do
-  bashdb<3> s
+  bashdb<3> @b{step}
   (./debugit.sh:6):
   6:      date=$(date)
-  bashdb<4> continue -
+  bashdb<4> @b{continue -}
 @end smallexample 
 The command @code{continue -} not only continues execution but it
 removes the debug trap allowing the program to run at full speed. It
@@ -1179,7 +1179,7 @@ For example to suppress the banner you could use @code{_Dbg_debugger
 You can also turn on and off line tracing. Here's an example
 
 @smallexample
-  source @emph{path-to-program}/bashdb-trace
+  source @emph{path-to-program}/bashdb-trace # modify location
    ...
   _Dbg_linetrace_on
   for i in `seq 10` ; do
