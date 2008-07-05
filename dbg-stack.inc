@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # dbg-stack.inc - Bourne Again Shell Debugger Call Stack routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006 Rocky Bernstein
@@ -259,9 +260,4 @@ _Dbg_do_up() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.8 2008/07/05 19:53:23 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.9 2008/07/05 20:37:14 rockyb Exp $'
