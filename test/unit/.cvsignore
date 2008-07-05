@@ -3,3 +3,5 @@ Makefile.in
 test-fns.sh
 test-io.sh
 test-pre.sh
+test-stack.sh
+test-tracefn.sh

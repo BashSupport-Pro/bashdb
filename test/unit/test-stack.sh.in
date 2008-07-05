@@ -1,0 +1,24 @@
+#!@BASH_PROG@
+# -*- shell-script -*-
+
+test_print_frame()
+{
+    typeset result='bogus'
+
+    function _Dbg_msg {
+	msg=$1
+    }
+    
+    msg=''
+    _Dbg_print_frame '->' 0 '' dbg-cmds.inc 2 ''
+
+    assertEquals "->0 in file \`dbg-cmds.inc' at line 2" "$msg"
+}
+
+
+# load shunit2
+top_srcdir=@top_builddir@
+. ${top_srcdir}/dbg-stack.inc
+
+. ./shunit2
+

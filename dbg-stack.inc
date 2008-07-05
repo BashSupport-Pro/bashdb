@@ -94,6 +94,19 @@ _Dbg_do_frame() {
   _Dbg_adjust_frame $pos 0
 }
 
+# Print one line in a call stack
+_Dbg_print_frame() {
+    typeset prefix=$1
+    typeset -i pos=$2
+    typeset fn=$3
+    typeset filename="$4"
+    typeset -i line=$5
+    typeset args="$6"
+    typeset callstr=$fn
+    [[ -n $args ]] && callstr="$callstr($args)"
+    _Dbg_msg "$prefix$pos in file \`$filename' at line $line"
+}
+
 # Print a stack trace.  
 # $1 is an additional offset correction - this routine is called from two
 # different places and one routine has one more additional call on top.
@@ -137,8 +150,7 @@ _Dbg_do_stack_trace() {
   if (( k == 0 )) ; then
     local filename=${BASH_SOURCE[$i]}
     (( _Dbg_basename_only )) && filename=${filename##*/}
-    _Dbg_msg "$prefix$k in file \`$filename' at line $_curline"
-    
+    _Dbg_print_frame "$prefix" "$k" '' "$filename" "$_curline" ''
     ((count--)) ; ((k++))
   fi
 
@@ -247,7 +259,7 @@ _Dbg_do_up() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.7 2007/11/05 11:42:38 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.8 2008/07/05 19:53:23 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
