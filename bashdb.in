@@ -23,8 +23,8 @@
 # quirky so sadly this script seems to be needed more than it would
 # normally.
 
-typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.27 2008/05/27 03:51:45 rockyb Exp $'
+[[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
+'$Id: bashdb.in,v 1.28 2008/07/12 01:55:19 rockyb Exp $'
 
 function _Dbg_usage_long {
   printf "_Dbg_usage:

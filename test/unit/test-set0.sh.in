@@ -1,0 +1,21 @@
+#!@BASH_PROG@
+# -*- shell-script -*-
+
+test_set0()
+{
+    typeset oldname=$0
+    set0 'newname' 'bar' 2>/dev/null
+    assertFalse "set0 should fail" "$?"
+    set0 'newname'
+    assertEquals 'newname' "$0"
+    [[ $oldname != $0 ]] 
+    assertTrue "old $oldname should not equal new $0" "$?"
+}
+
+# Load builtin
+top_builddir=@top_builddir@
+enable -f ${top_builddir}/builtin/set0 set0
+
+# load shunit2
+. ./shunit2
+

@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.41 2008/07/05 19:53:23 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.42 2008/07/12 01:55:19 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -230,6 +230,7 @@ AC_CONFIG_FILES([test/dbg-test1.sh], [chmod +x test/dbg-test1.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-io.sh], [chmod +x test/unit/test-io.sh])
 AC_CONFIG_FILES([test/unit/test-pre.sh], [chmod +x test/unit/test-pre.sh])
+AC_CONFIG_FILES([test/unit/test-set0.sh], [chmod +x test/unit/test-set0.sh])
 AC_CONFIG_FILES([test/unit/test-stack.sh], [chmod +x test/unit/test-stack.sh])
 
 AC_CONFIG_FILES([ \

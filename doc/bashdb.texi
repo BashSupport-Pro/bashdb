@@ -522,7 +522,7 @@ a(nother) GUI interface called DDD that supports @value{DBG}.
 @node Interactive Line Tracing Session
 @section Interactive Line Tracing Session
 
-One of the things I had found annoying about ``@code{set -x}'' tracing is
+One of the things I had found annoying about @code{set -x} tracing is
 that no position information given in the trace output, in particular
 the line number and the file name.  However I learn in
 @url{http://raz.cx/blog/2005/08/handy-bash-debugging-trick.html} that
@@ -531,15 +531,21 @@ one can set @code{$PS4} to rectify this.
 Here's what I use:
 @example
 @cartouche
-  export PS4='($@{BASH_SOURCE@}:$@{LINENO@}): $@{FUNCNAME[0]@} - [$@{SHLVL@},$@{BASH_SUBSHELL@}, $?]\n'
+  PS4='($@{BASH_SOURCE@}:$@{LINENO@}): $@{FUNCNAME[0]@} - [$@{SHLVL@},$@{BASH_SUBSHELL@}, $?]
 @end cartouche
 @end example
 Note that the is in single quotes, not double quotes so that those
 variables don't get expanded at the time when the @code{export} command is
 run. 
 
-This can be set in one's @code{.bashrc}, or added as a line in your
-script before ``@code{set -x}''.
+Note that you need to use single quotes, not double quotes so that
+those variables don't get expanded at the time when the assignment to
+@code{PS4} command is run. Variables which have a dollar in front of
+them in the @code{PS4} string are expanded in the current environment
+of the line that is about to be run.
+
+You might want to add this in your shell's start-up script, e.g.,
+@code{.bashrc}, or @code{.profile}.
 
 There is also facility inside the bash debugger showing position
 information when tracing a script. Here's a simple session.
