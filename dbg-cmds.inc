@@ -719,9 +719,9 @@ _Dbg_do_debug() {
   if [[ $_Dbg_script != 1 ]] ; then
     # Running "bash --debugger", so prepend "bash --debugger"
     set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH --debugger $script_cmd\"";
-  elif [[ $0/// == *bashdb/// ]] ; then
+  elif [[ $_Dbg_orig_0/// == *bashdb/// ]] ; then
     # Running "bashdb", so prepend "bash bashdb .."
-    set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH $0 -q -L $_Dbg_libdir $script_cmd\"";
+    set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH $_Dbg_orig_0 -q -L $_Dbg_libdir $script_cmd\"";
   fi
   eval "$_resteglob"
   eval $set_Dbg_debug_cmd
@@ -961,17 +961,17 @@ _Dbg_do_restart() {
     script_args="${_Dbg_script_args[@]}"
   fi
 
-  local exec_cmd="$0 $script_args";
+  local exec_cmd="$_Dbg_orig_0 $script_args";
   if [[ $_Dbg_script != 1 ]] ; then
     [ -z "$BASH" ] && BASH='bash'
     if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
       script_args="--debugger -c \"$BASH_EXECUTION_STRING\""
       exec_cmd="$BASH --debugger -c \"$BASH_EXECUTION_STRING\"";
     else
-      exec_cmd="$BASH --debugger $0 $script_args";
+      exec_cmd="$BASH --debugger $_Dbg_orig_0 $script_args";
     fi
   elif [[ -n "$BASH" ]] ; then
-      local exec_cmd="$BASH $0 $script_args";
+      local exec_cmd="$BASH $_Dbg_orig_0 $script_args";
   fi
 
   if (( _Dbg_basename_only )) ; then 
@@ -1143,7 +1143,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.44 2008/06/09 06:30:30 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.45 2008/07/12 10:57:47 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -24,7 +24,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.28 2008/07/12 01:55:19 rockyb Exp $'
+'$Id: bashdb.in,v 1.29 2008/07/12 10:57:47 rockyb Exp $'
 
 function _Dbg_usage_long {
   printf "_Dbg_usage:
@@ -248,7 +248,7 @@ welcome to change it and/or distribute copies of it under certain conditions.
 '
 fi
 
-if (( show_version == 1 )) ; then 
+if ((show_version)) ; then 
 printf '
 There is absolutely no warranty for bashdb.  Type "show warranty" for details.
 '
@@ -263,7 +263,8 @@ else
 fi
 
 . $_Dbg_libdir/dbg-main.inc
-if (( $_Dbg_opt_linetrace )) ; then 
+
+if ((_Dbg_opt_linetrace)) ; then 
   # No stepping.
   _Dbg_write_journal_eval "_Dbg_steps=-1" 
   BASHDB_QUIT_ON_QUIT=1
@@ -273,11 +274,11 @@ else
 fi
 set -o functrace
 if [[ -z $_Dbg_cmd ]] ; then 
-  if (( $_Dbg_opt_linetrace )) ; then 
-    (( _Dbg_opt_linetrace_expand )) && _Dbg_linetrace_expand=1
+  if ((_Dbg_opt_linetrace)) ; then 
+    ((_Dbg_opt_linetrace_expand)) && _Dbg_linetrace_expand=1
     _Dbg_linetrace=1
   fi
-  . $_source_file
+  . "$_source_file"
 else 
   bashdb_eval "$_Dbg_cmd"
 fi

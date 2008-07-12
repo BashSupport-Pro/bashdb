@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # dbg-init.inc - Bourne Again Shell Debugger Global Variables
 
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
@@ -44,13 +45,14 @@ if [[ -r $_Dbg_libdir/builtin/set0 ]] ; then
   fi
 fi
 
+typeset -r _Dbg_orig_0=$0
 if [[ -n $_Dbg_script ]] ; then 
-  # (( _Dbg_have_set0 )) && builtin set0 $_Dbg_script
+  ((_Dbg_have_set0)) && [[ -n $source_file ]] && builtin set0 $_source_file
   _Dbg_steps=3
 else 
   . ${_Dbg_libdir}/dbg-pre.inc
   [[ -z $_Dbg_source_file ]] && \
-      typeset -r _Dbg_source_file=$(_Dbg_expand_filename $0)
+      typeset -r _Dbg_source_file=$(_Dbg_expand_filename $_Dbg_orig_0)
   typeset -i _Dbg_n=$#
   typeset -i _Dbg_i
   typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
@@ -60,7 +62,7 @@ else
     shift
   done
   # Now that we've trashed the script parameters above, restore them.
-  _Dbg_set_str="set --"
+  _Dbg_set_str='set --'
   for (( _Dbg_i=0; _Dbg_i<_Dbg_n ; _Dbg_i++ )) ; do
     _Dbg_set_str="$_Dbg_set_str \"${_Dbg_script_args[$_Dbg_i]}\""
   done
@@ -97,28 +99,23 @@ if [[ -z $_Dbg_tty ]] ; then
   [[ $? != 0 ]] && _Dbg_tty=''
 fi
 
-# Equivalent to basename $0 -- the short program name
-typeset _Dbg_pname=${0##*/} 
+# Equivalent to basename $_Dbg_orig_0 -- the short program name
+typeset _Dbg_pname=${_Dbg_orig_0##*/} 
 
 # $_Dbg_tmpdir could have been set by bashdb script rather than
 # bash --debugger
 [[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
 
 # Known normal IFS consisting of a space, tab and newline
-typeset -r _Dbg_space_IFS=" 	
-"
+typeset -r _Dbg_space_IFS=' 	
+'
 
 # If BASHDB_QUIT_LEVELS is set to a positive number, this is the number
 # of levels (subshell or shell nestings) or we should exit out of.
-[ "X$BASHDB_QUIT_LEVELS" = "X" ] && BASHDB_QUIT_LEVELS=0
+[[ -z $BASHDB_QUIT_LEVELS ]] && BASHDB_QUIT_LEVELS=0
 
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.19 2008/05/27 03:51:45 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
+'$Id: dbg-init.inc,v 1.20 2008/07/12 10:57:47 rockyb Exp $'
