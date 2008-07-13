@@ -1,5 +1,5 @@
-pkgdatadir        = ${prefix}/share/bashdb/builtin
-bindir            = ${prefix}/share/bashdb/builtin
+pkgdatadir        = ${datadir}/@PACKAGE@/builtin
+bindir            = ${datadir}/@PACKAGE@/builtin
 if BUILD_BUILTINS
 pkgdata_DATA      = readarray set0
 bin_PROGRAMS      =  readarray set0

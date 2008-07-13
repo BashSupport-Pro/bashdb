@@ -14,12 +14,13 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.20 2008/07/13 20:38:29 rockyb Exp $
+#$Id: Makefile.am,v 1.21 2008/07/13 21:20:30 rockyb Exp $
 
+subdirs = commands test doc emacs
 if BUILD_BUILTINS
-SUBDIRS = builtin test doc emacs
+SUBDIRS = builtin $(subdirs)
 else
-SUBDIRS = test doc emacs
+SUBDIRS = $(subdirs)
 endif
 
 man:

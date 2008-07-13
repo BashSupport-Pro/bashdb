@@ -66,6 +66,10 @@ typeset _Dbg_last_x_args=''
 # The canonical name of last command run.
 typeset _Dbg_last_cmd=''
 
+for file in ${_Dbg_libdir}/commands/*.cmd ; do 
+  source $file
+done
+
 # ===================== FUNCTIONS =======================================
 
 # Note: We have to be careful here in naming "local" variables. In contrast
@@ -699,47 +703,6 @@ _Dbg_postcmd() {
   fi
 }
 
-# Set up to Debug into another script...
-# TODO: would work better if instead of using $source_line below
-# which might have several statements, we could just pick up the next
-# single statement.
-_Dbg_do_debug() {
-
-  # set -xv
-  local script_cmd=${@:-$_Dbg_bash_command}
-
-  # We need to expand variables that might be in $script_cmd.
-  # set_Dbg_nested_debug_cmd is set up to to be eval'd below.
-  local set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$script_cmd\"";
-
-  [ -z "$BASH" ] && BASH='bash'
-
-  eval "$_seteglob"
-  # Add appropriate bash debugging options
-  if [[ $_Dbg_script != 1 ]] ; then
-    # Running "bash --debugger", so prepend "bash --debugger"
-    set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH --debugger $script_cmd\"";
-  elif [[ $_Dbg_orig_0/// == *bashdb/// ]] ; then
-    # Running "bashdb", so prepend "bash bashdb .."
-    set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH $_Dbg_orig_0 -q -L $_Dbg_libdir $script_cmd\"";
-  fi
-  eval "$_resteglob"
-  eval $set_Dbg_debug_cmd
-
-  if (( _Dbg_basename_only )) ; then 
-    _Dbg_msg "Debugging new script with $script_cmd"
-  else
-    _Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
-  fi
-  local -r old_quit_on_quit=$BASHDB_QUIT_ON_QUIT
-  export BASHDB_QUIT_ON_QUIT=1
-  export BASHDB_BASENAME_ONLY="$_Dbg_basename_only"
-  ((BASHDB_LEVEL++))
-  $_Dbg_debug_cmd
-  ((BASHDB_LEVEL--))
-  export BASHDB_QUIT_ON_QUIT=$old_quit_on_quit
-}
-
 # V [![pat]] List variables and values for whose variables names which 
 # match pat $1. If ! is used, list variables that *don't* match. 
 # If pat ($1) is omitted, use * (everything) for the pattern.
@@ -841,73 +804,6 @@ _Dbg_do_list_variables() {
   GLOBIGNORE=$_Dbg_old_glob
 }
 
-_Dbg_do_eval() {
-
-  echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
-  echo "$@" >> $_Dbg_evalfile
-  if [[ -n $_basdhb_tty  ]] ; then
-    . $_Dbg_evalfile >>$_Dbg_tty
-  else
-    . $_Dbg_evalfile
-  fi
-  # We've reset some variables like IFS and PS4 to make eval look
-  # like they were before debugger entry - so reset them now
-  _Dbg_set_debugger_internal
-}
-
-_Dbg_do_file() {
-
-  local filename
-  if [[ -z "$1" ]] ; then
-    _Dbg_msg "Need to give a filename for the file command"
-    return
-  fi
-  _Dbg_glob_filename $1
-  if [[ ! -f "$filename" ]] && [[ ! -x "$filename" ]] ; then
-    _Dbg_msg "Source file $filename does not exist as a readable regular file."
-    return
-  fi
-  local filevar=`_Dbg_file2var ${BASH_SOURCE[3]}`
-  _Dbg_set_assoc_scalar_entry "_Dbg_file_cmd_" $filevar "$filename"
-  local source_file="${BASH_SOURCE[3]}"
-  (( _Dbg_basename_only )) && source_file=${source_file##*/}
-  _Dbg_msg "File $filename will be used when $source_file is referenced."
-}
-
-_Dbg_do_kill() {
-  local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
-  read $_Dbg_edit -p "Do hard kill and terminate the debugger? (y/n): " \
-      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
-
-  if [[ $REPLY = [Yy]* ]] ; then 
-      kill -9 $$
-  fi
-}
-
-_Dbg_do_load() {
-
-  local filename=$1
-  if [[ -z "$filename" ]] ; then
-    _Dbg_msg "Need to give a filename for the file command"
-    return
-  fi
-  local  full_filename=$(_Dbg_resolve_expand_filename "$filename")
-  if [ -n $full_filename ] && [ -r $full_filename ] ; then 
-    # Have we already loaded in this file?
-    for file in ${_Dbg_filenames[@]} ; do  
-       if [[ $file = $full_filename ]] ; then
-         _Dbg_msg "File $full_filename already loaded."
-	 return
-       fi
-    done
-
-    _Dbg_readin "$full_filename"
-    _Dbg_msg "File $full_filename loaded."
-  else
-      _Dbg_msg "Couldn't resolve or read $filename"
-  fi
-}
-
 _Dbg_do_next_step_skip() {
 
   if (( ! _Dbg_running )) ; then
@@ -932,140 +828,6 @@ _Dbg_do_next_step_skip() {
     _Dbg_steps=1
   fi
   _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
-}
-
-_Dbg_do_print() {
-  local -r _Dbg_expr=${@:-"$_Dbg_last_print_args"}
-  local -r dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
-  . ${_Dbg_libdir}/dbg-set-d-vars.inc
-  eval "_Dbg_msg $_Dbg_expr"
-  _Dbg_last_print_args="$dq_expr"
-}
-
-_Dbg_do_pwd() {
-  local _Dbg_cwd=$(pwd)
-  (( _Dbg_basename_only )) && _Dbg_cwd=${_Dbg_cwd##*/}
-  _Dbg_msg "Working directory ${_Dbg_cwd}."
-}
-
-# Restart script in same way with saved arguments (probably the same
-# ones as we were given before).
-_Dbg_do_restart() {
-
-  _Dbg_cleanup;
-
-  local script_args
-  if (( $# != 0 )) ; then 
-    script_args="$@"
-  else
-    script_args="${_Dbg_script_args[@]}"
-  fi
-
-  local exec_cmd="$_Dbg_orig_0 $script_args";
-  if [[ $_Dbg_script != 1 ]] ; then
-    [ -z "$BASH" ] && BASH='bash'
-    if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
-      script_args="--debugger -c \"$BASH_EXECUTION_STRING\""
-      exec_cmd="$BASH --debugger -c \"$BASH_EXECUTION_STRING\"";
-    else
-      exec_cmd="$BASH --debugger $_Dbg_orig_0 $script_args";
-    fi
-  elif [[ -n "$BASH" ]] ; then
-      local exec_cmd="$BASH $_Dbg_orig_0 $script_args";
-  fi
-
-  if (( _Dbg_basename_only )) ; then 
-    _Dbg_msg "Restarting with: $script_args"
-  else
-    _Dbg_msg "Restarting with: $exec_cmd"
-  fi
-
-  # If we are in a subshell we need to get out of those levels
-  # first before we restart. The strategy is to write into persistent
-  # storage the restart command, and issue a "quit." The quit should
-  # discover the restart at the last minute and issue the restart.
-  if (( BASH_SUBSHELL > 0 )) ; then 
-    _Dbg_msg "Note you are in a subshell. We will need to leave that first."
-    _Dbg_write_journal "BASHDB_RESTART_COMMAND=\"$exec_cmd\""
-    _Dbg_do_quit 0
-  fi
-  _Dbg_save_state
-  cd $_Dbg_init_cwd
-  exec $exec_cmd
-}
-
-# Handle command-file source. If the filename's okay we just increase the
-# input-file descriptor by one and redirect input which will
-# be picked up in next debugger command loop.
-_Dbg_do_source() {
-  local filename
-  if [[ -z "$1" ]] ; then
-    _Dbg_msg "Need to give a filename for the source command"
-    return
-  fi
-  _Dbg_glob_filename $1
-  if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
-    if ((_Dbg_input_desc < _Dbg_MAX_INPUT_DESC )) ; then 
-      ((_Dbg_input_desc++))
-      _Dbg_input[$_Dbg_input_desc]=$filename
-      local _Dbg_redirect_cmd="exec $_Dbg_input_desc<$filename"
-      eval $_Dbg_redirect_cmd
-      _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]=$filename
-    else 
-      local -i max_nesting
-      ((max_nesting=_Dbg_MAX_INPUT_DESC-_Dbg_INPUT_START_DESC+1))
-      _Dbg_msg "Source nesting too deep; nesting can't be greater than $max_nesting."
-    fi
-  else
-    _Dbg_msg "Source file $filename is not readable."
-  fi
-}
-
-# toggle execution trace feature
-_Dbg_do_trace() {
-  ((_Dbg_linetrace=!$_Dbg_linetrace))
-
-  _Dbg_msg "Line trace = \c"
-  let " $_Dbg_linetrace" && _Dbg_msg "on" || _Dbg_msg "off"
-}
-
-# Set output tty
-_Dbg_do_tty() {
-  if [[ -z "$1" ]] ; then
-    _Dbg_msg "Argument required (terminal name for running target process)."
-    return 1
-  fi
-  if ! $(touch $1 >/dev/null 2>/dev/null); then 
-    _Dbg_msg "Can't access $1 for writing."
-    return 1
-  fi
-  if [[ ! -w $1 ]] ; then
-    _Dbg_msg "tty $1 needs to be writable"
-    return 1
-  fi
-  _Dbg_tty=$1
-  return 0
-}
-
-function _Dbg_do_x {
-  typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
-  typeset _Dbg_result
-  if _Dbg_defined $_Dbg_expr ; then
-    _Dbg_result=$(declare -p $_Dbg_expr)
-    _Dbg_msg "$_Dbg_result"
-  elif _Dbg_is_function $_Dbg_expr ; then 
-    _Dbg_result=$(declare -f $_Dbg_expr)
-    _Dbg_msg "$_Dbg_result"
-  else 
-    local -i _Dbg_rc
-    eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
-    if (( $_Dbg_rc != 0 )) ; then
-      _Dbg_do_print "$_Dbg_expr"
-    else
-      _Dbg_msg "$_Dbg_result"
-    fi
-  fi
-  _Dbg_last_x_args="$_Dbg_x_args"
 }
 
 _Dbg_save_state() {
@@ -1143,7 +905,7 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.45 2008/07/12 10:57:47 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.46 2008/07/13 21:20:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
