@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.19 2008/06/08 17:27:27 rockyb Exp $
+#$Id: Makefile.am,v 1.20 2008/07/13 20:38:29 rockyb Exp $
 
 if BUILD_BUILTINS
 SUBDIRS = builtin test doc emacs
@@ -76,7 +76,7 @@ install-data-hook:
 	    $(RM) @BASHDB_MAIN@ || true; \
           fi; fi
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
-	     $(RM) -fr $(DESTDIR)$(OLD_DIR:/=) || true; \
+	     $(RM) -f $(DESTDIR)$(OLD_DIR)/* || true; \
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
 	else if test -L $(DESTDIR)$(OLD_DIR:/=) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR:/=) || true; \

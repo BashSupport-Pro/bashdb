@@ -47,7 +47,7 @@ fi
 
 typeset -r _Dbg_orig_0=$0
 if [[ -n $_Dbg_script ]] ; then 
-  ((_Dbg_have_set0)) && [[ -n $source_file ]] && builtin set0 $_source_file
+  ((_Dbg_have_set0)) && [[ -n $_source_file ]] && builtin set0 $_source_file
   _Dbg_steps=3
 else 
   . ${_Dbg_libdir}/dbg-pre.inc
@@ -118,4 +118,4 @@ typeset -r _Dbg_space_IFS='
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.20 2008/07/12 10:57:47 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.21 2008/07/13 20:38:29 rockyb Exp $'
