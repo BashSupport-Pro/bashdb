@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # This program needs to be SOURCE'd and is not called as an executable
 #   Copyright (C) 2006, 2007, 2008  Rocky Bernstein rocky@gnu.org
 #
@@ -21,9 +22,12 @@
 # the call trace. However the bash has been a bit inflexible and
 # quirky so sadly this script seems to be needed more than it would
 # normally.
+typeset _Dbg_trace_old_set_opts
+_Dbg_trace_old_set_opts=$-
+set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.16 2008/02/05 09:24:32 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.17 2008/07/16 16:02:24 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -348,10 +352,6 @@ _Dbg_handler() {
   _Dbg_steps=-1
 }
 
+set -${_Dbg_trace_old_set_opts}
+unset _Dbg_trace_old_set_opts
 # end of bashdb-trace
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
-
