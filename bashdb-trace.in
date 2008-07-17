@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.17 2008/07/16 16:02:24 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.18 2008/07/17 02:21:59 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -134,15 +134,15 @@ fi
 
 # Process using short or long options, depending on the availability
 # of getopt
-TEMP=`getopt -o testing t 2>/dev/null`
+TEMP=$(getopt -o testing t 2>/dev/null)
 if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Process using long options
   # Note that we use `"$@"' to let each command-line parameter expand to a 
   # separate word. The quotes around `$@' are essential!
   # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=`getopt -o A:BhL:nqt:T::V:x: \
+  TEMP=$(getopt -o A:BhL:nqt:T::V:x: \
 --long annotate:,basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
-     -n 'bashdb' -- "$@"`
+     -n 'bashdb' -- "$@")
 
   if [ $? != 0 ] ; then 
     echo "Use --help for option help. Terminating..." >&2 ; 
@@ -152,8 +152,8 @@ if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Note the quotes around `$TEMP': they are essential!
   eval set -- "$TEMP"
   
-  while true ; do
-    case $1 in
+  while : ; do
+    case "$1" in
       -A|--annotate) _Dbg_annotate=$2; shift ;;
       -B|--basename) _Dbg_basename_only=1 ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger
@@ -286,7 +286,7 @@ _Dbg_debugger() {
 # Older alias for _Dbg_debugger()
 _Dbg_set_trace() {
   set -o functrace
-  while [[ -n $1 ]] ; do
+  while (( $# > 0 )) ; do
     eval $1
     shift
   done
