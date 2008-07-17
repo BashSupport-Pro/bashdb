@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.18 2008/07/17 02:21:59 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.19 2008/07/17 19:57:30 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -269,7 +269,7 @@ trap '' DEBUG
 # get set.
 _Dbg_debugger() {
   set -o functrace
-  while [[ -n $1 ]] ; do
+  while (( $# > 0 )) ; do
     eval $1
     shift
   done
