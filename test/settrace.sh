@@ -1,5 +1,6 @@
 #!/bin/bash
 # Towers of Hanoi
+set -u
 
 init() {
   _Dbg_debugger; : ; :
@@ -23,13 +24,13 @@ hanoi() {
   fi
 }
 
-if [[ -n $1 ]] ; then
+if (( $# > 0 )) ; then
   builddir=$1
-elif [[ -z $builddir ]] ; then
-  builddir=`pwd`/..
+elif [[ -z ${builddir:-''} ]] ; then
+  builddir=$PWD
 fi
 source ${builddir}/bashdb-trace -q -L .. -B  -x settrace.cmd
 typeset -i max=1
 init
-hanoi $max "a" "b" "c"
+hanoi $max 'a' 'b' 'c'
 _Dbg_debugger _Dbg_do_quit; : ; :

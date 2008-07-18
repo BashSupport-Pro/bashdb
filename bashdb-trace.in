@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.19 2008/07/17 19:57:30 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.20 2008/07/18 07:10:25 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -134,6 +134,8 @@ fi
 
 # Process using short or long options, depending on the availability
 # of getopt
+BASHDB_INPUT=''
+typeset -i show_version
 TEMP=$(getopt -o testing t 2>/dev/null)
 if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
   # Process using long options
@@ -274,7 +276,7 @@ _Dbg_debugger() {
     shift
   done
 
-  if [[ -z $_Dbg_set_trace_init ]] ; then
+  if [[ -z ${_Dbg_set_trace_init:-''} ]] ; then
       _Dbg_set_trace_init=1
       _Dbg_write_journal "_Dbg_steps=0"
       trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG

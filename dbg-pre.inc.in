@@ -23,10 +23,11 @@
 # has access to definitions that --debugger has without duplicating code.
 
 # Note: the trend now is to move initializations which are generally
-# used in only one sub-part (e.g. variables for break/watch/actions) to 
+# used in only one sub-part (e.g. variables for break/watch/actions) to o
 # the corresponding file.
 
-[[ -z $_Dbg_release ]] && typeset -r _Dbg_release='bash-@BASHVERS@-@RELSTATUS@'
+[[ -z $_Dbg_release ]] || return
+typeset -r _Dbg_release='bash-@BASHVERS@-@RELSTATUS@'
 
 # Expand filename given as $1.
 # we echo the expanded name or return $1 unchanged if a bad filename.
@@ -72,6 +73,6 @@ function _Dbg_expand_filename {
 # This is put at the end so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_pre_ver ]] && typeset -r _Dbg_pre_ver=\
-'$Id: dbg-pre.inc.in,v 1.3 2008/06/11 01:11:43 rockyb Exp $'
+typeset -r _Dbg_pre_ver=\
+'$Id: dbg-pre.inc.in,v 1.4 2008/07/18 07:10:26 rockyb Exp $'
 

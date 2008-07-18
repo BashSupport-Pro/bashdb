@@ -22,6 +22,8 @@
 # used in only one sub-part (e.g. variables for break/watch/actions) to 
 # the corresponding file.
 
+[[ -z $_Dbg_init_ver ]] || return
+
 typeset _cur_fn             # current function of debugged program
 typeset -i _cur_line        # current line number of debugged program
 
@@ -81,7 +83,7 @@ typeset _Dbg_last_print=''     # expression on last print command
 typeset _Dbg_last_printe=''    # expression on last print expression command
 
 # Sets whether or not to display command before executing it.
-typeset _Dbg_trace_commands="off"
+typeset _Dbg_trace_commands='off'
 
 # strings to save and restore the setting of `extglob' in debugger functions
 # that need it
@@ -104,7 +106,7 @@ typeset _Dbg_pname=${_Dbg_orig_0##*/}
 
 # $_Dbg_tmpdir could have been set by bashdb script rather than
 # bash --debugger
-[[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
+typeset _Dbg_tmpdir=/tmp
 
 # Known normal IFS consisting of a space, tab and newline
 typeset -r _Dbg_space_IFS=' 	
@@ -118,4 +120,4 @@ typeset -r _Dbg_space_IFS='
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.21 2008/07/13 20:38:29 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.22 2008/07/18 07:10:25 rockyb Exp $'
