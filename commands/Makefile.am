@@ -8,6 +8,7 @@ pkgdata_DATA =      \
 	load.cmd    \
 	print.cmd   \
 	pwd.cmd     \
+	quit.cmd    \
 	restart.cmd \
 	source.cmd  \
 	trace.cmd   \

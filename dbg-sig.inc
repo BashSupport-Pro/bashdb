@@ -265,53 +265,6 @@ _Dbg_cleanup2() {
   trap - EXIT
 }
 
-# The real way to leave this program.
-_Dbg_do_quit() {
-  typeset -i return_code=${1:-$_Dbg_program_exit_code}
-
-  typeset -i desired_quit_levels=${2:-0}
-
-  if (( desired_quit_levels == 0 \
-    || desired_quit_levels > BASH_SUBSHELL+1)) ; then
-    ((desired_quit_levels=BASH_SUBSHELL+1))
-  fi
-
-  ((BASHDB_QUIT_LEVELS+=desired_quit_levels))
-
-  # Reduce the number of recorded levels that we need to leave by
-  # if BASHDB_QUIT_LEVELS is greater than 0.
-  ((BASHDB_QUIT_LEVELS--))
-
-  ## write this to the next level up can read it.
-  _Dbg_write_journal "BASHDB_QUIT_LEVELS=$BASHDB_QUIT_LEVELS"
-
-  # Reset signal handlers to their default but only if 
-  # we are not in a subshell.
-  if (( BASH_SUBSHELL == 0 )) ; then
-
-    # If we were told to restart from deep down, restart instead of quit.
-    if [ -n "$BASHDB_RESTART_COMMAND" ] ; then 
-      _Dbg_erase_journals
-      _Dbg_save_state
-      exec $BASHDB_RESTART_COMMAND
-    fi
-
-    _Dbg_cleanup
-
-    # Save history file
-    if (( $_Dbg_history_save )) ; then
-	history -w $_Dbg_histfile
-    fi
-
-    trap - DEBUG
-    # This is a hack we need. I am not sure why.
-    trap "_Dbg_cleanup2" EXIT
-  fi
-
-  # And just when you thought we'd never get around to it...
-  exit $return_code
-}
-
 # Save value of handler variable _Dbg_old_$sig
 _Dbg_save_handler() {
   typeset -r sig=$1
@@ -650,4 +603,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.25 2008/07/26 22:41:35 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.26 2008/07/26 23:28:45 rockyb Exp $'

@@ -204,9 +204,9 @@ _Dbg_annotation() {
 # 
 _Dbg_onecmd() {
 
-    local _Dbg_cmd=$1
+    local _Dbg_cmd="$1"
     shift
-    local args=$*
+    local args="$@"
 
      # Set default next, step or skip command
      if [[ -z $_Dbg_cmd ]]; then
@@ -906,4 +906,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.47 2008/07/26 22:41:35 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.48 2008/07/26 23:28:45 rockyb Exp $'
