@@ -161,7 +161,7 @@ _Dbg_debug_trap_handler() {
 	_Dbg_msg "  new value: '$new_val'"
 	_Dbg_print_source_line
 	_Dbg_watch_val[$_Dbg_i]=$new_val
-	_Dbg_cmdloop
+	_Dbg_process_commands
 	_Dbg_set_to_return_from_debugger 1
 	return $_Dbg_rc
       fi
@@ -207,7 +207,7 @@ _Dbg_debug_trap_handler() {
 	      _Dbg_bp_commands $_Dbg_i
 	  fi
 	  _Dbg_print_source_line
-	  _Dbg_cmdloop		# enter debugger
+	  _Dbg_process_commands		# enter debugger
 	  _Dbg_set_to_return_from_debugger 1
 	  return $_Dbg_rc
 	fi
@@ -221,7 +221,7 @@ _Dbg_debug_trap_handler() {
     _Dbg_stop_reason='after being stepped'
     _Dbg_print_source_line
     # _Dbg_msg "Stopped at line $_curline"
-    _Dbg_cmdloop		# enter debugger
+    _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
   elif (( ${#FUNCNAME[@]} == _Dbg_return_level )) ; then
@@ -229,14 +229,14 @@ _Dbg_debug_trap_handler() {
     _Dbg_stop_reason='on a return'
     _Dbg_return_level=0
     _Dbg_print_source_line
-    _Dbg_cmdloop		# enter debugger
+    _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
   elif (( -1 == _Dbg_return_level )) ; then
     # here because we are fielding a signal.
     _Dbg_stop_reason='on fielding signal'
     _Dbg_print_source_line
-    _Dbg_cmdloop		# enter debugger
+    _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
   else
@@ -409,7 +409,7 @@ _Dbg_exit_handler() {
 
     _Dbg_running=0
     while [[ 1 ]] ; do
-      _Dbg_cmdloop
+      _Dbg_process_commands
     done
   fi
 }
@@ -470,7 +470,7 @@ _Dbg_sig_handler() {
     # like $*.
 
     _Dbg_set_debugger_entry
-    _Dbg_cmdloop		# enter debugger
+    _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
 
@@ -486,7 +486,7 @@ _Dbg_err_handler() {
     eval $_Dbg_old_ERR_handler
   fi
   _Dbg_msg "Error occured at ${BASH_SOURCE[1]}:${BASH_LINENO[1]}"
-  _Dbg_cmdloop
+  _Dbg_process_commands
 }
 
 # Echo the name for a given signal number $1. The resulting name
@@ -650,4 +650,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.24 2008/06/06 03:19:34 rockyb Exp $'
+'$Id: dbg-sig.inc,v 1.25 2008/07/26 22:41:35 rockyb Exp $'

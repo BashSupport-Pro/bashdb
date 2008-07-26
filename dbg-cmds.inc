@@ -1,20 +1,21 @@
+# -*- shell-script -*-
 # dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Debugger command loop: Come here at to read debugger commands to
@@ -76,7 +77,7 @@ done
 # to other places in the debugger, because of the read/eval loop, they are
 # in fact seen by those using the debugger. So in contrast to other "local"s
 # in the debugger, we prefer to preface these with _Dbg_.
-function _Dbg_cmdloop {
+function _Dbg_process_commands {
 
   # THIS SHOULD BE DONE IN dbg-sig.inc, but there's a bug in BASH in 
   # trying to change "trap RETURN" inside a "trap RETURN" handler....
@@ -905,8 +906,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.46 2008/07/13 21:20:30 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; End: ***
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.47 2008/07/26 22:41:35 rockyb Exp $'
