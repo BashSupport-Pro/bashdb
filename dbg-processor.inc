@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-cmds.inc - Bourne Again Shell Debugger Top-level debugger commands
+# dbg-processor.inc - Bourne Again Shell Debugger Top-level debugger commands
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -906,4 +906,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-cmds.inc,v 1.48 2008/07/26 23:28:45 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-processor.inc,v 1.1 2008/07/26 23:41:12 rockyb Exp $'

@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.21 2008/07/13 21:20:30 rockyb Exp $
+#$Id: Makefile.am,v 1.22 2008/07/26 23:41:12 rockyb Exp $
 
 subdirs = commands test doc emacs
 if BUILD_BUILTINS
@@ -34,13 +34,13 @@ bin_SCRIPTS = bashdb
 pkgdatadir=$(datadir)/bashdb
 
 data_DATA =
-pkgdata_DATA = dbg-brk.inc   dbg-cmds.inc       dbg-commands.inc \
+pkgdata_DATA = dbg-brk.inc                      dbg-commands.inc \
 	       dbg-complete.inc                 dbg-edit.inc     \
 	       dbg-file.inc  dbg-fns.inc                         \
 	       dbg-help.inc  dbg-hist.inc                        \
                dbg-info.inc  dbg-init.inc       dbg-io.inc       \
                dbg-list.inc  dbg-log.inc        dbg-main.inc     \
-	       dbg-pre.inc                                       \
+	       dbg-pre.inc   dbg-processor.inc                   \
 	       dbg-set.inc   dbg-show.inc       dbg-sig.inc      \
 	       dbg-stack.inc dbg-set-d-vars.inc dbg-tracefn.inc  \
 	       bashdb-trace
