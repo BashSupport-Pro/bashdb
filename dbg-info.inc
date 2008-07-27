@@ -193,7 +193,7 @@ _Dbg_do_info() {
 	;;
 
       st | sta | stac | stack )
-	_Dbg_do_stack_trace 1 $*
+	_Dbg_do_backtrace 1 $*
 	return
 	;;
       te | ter | term | termi | termin | termina | terminal | tt | tty )
@@ -274,5 +274,5 @@ function _Dbg_info_signals {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: dbg-info.inc,v 1.10 2008/06/06 01:40:16 rockyb Exp $'
+'$Id: dbg-info.inc,v 1.11 2008/07/27 22:17:55 rockyb Exp $'
 
