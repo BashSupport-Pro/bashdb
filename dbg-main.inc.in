@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.inc.in,v 1.8 2008/06/05 09:51:50 rockyb Exp $'
+'$Id: dbg-main.inc.in,v 1.9 2008/07/28 14:03:50 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -35,7 +35,7 @@ prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 # Note: "init" comes first and "cmds" has to come after "io". Otherwise 
 # these are sorted alphabetically.
 typeset -r _Dbg_includes="init brk complete edit file fns help hist
-                          info log io cmds commands list stack set show 
+                          info log io commands processor list stack set show 
                           sig tracefn"
 
 for file in $_Dbg_includes ; do 
