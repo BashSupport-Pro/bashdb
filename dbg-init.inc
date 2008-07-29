@@ -90,9 +90,9 @@ typeset _Dbg_trace_commands='off'
 typeset -r _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s extglob'
 typeset -r _resteglob='shopt $__eopt extglob'
 
-typeset -r int_pat="[0-9]*([0-9])"
-typeset -r signed_int_pat="?([-+])+([0-9])"
-typeset -r real_pat="[0-9]*([0-9]).?([0-9])*"
+typeset -r int_pat='[0-9]*([0-9])'
+typeset -r signed_int_pat='?([-+])+([0-9])'
+typeset -r real_pat='[0-9]*([0-9]).?([0-9])*'
 
 # Set tty to use for output. 
 if [[ -z $_Dbg_tty ]] ; then 
@@ -120,4 +120,4 @@ typeset -r _Dbg_space_IFS='
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.22 2008/07/18 07:10:25 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.23 2008/07/29 03:47:15 rockyb Exp $'

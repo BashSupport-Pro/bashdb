@@ -373,7 +373,7 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='deleteall'
 	  ;;
 
-	# List stack 1 up
+	# Move call stack down
 	do | dow | down )
 	  _Dbg_do_down $args
 	  _Dbg_last_cmd='down'
@@ -558,7 +558,7 @@ _Dbg_onecmd() {
 	  _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
 	  ;;
 
-	# List call stack up
+	# Move call stack up
 	u | up )
 	  _Dbg_do_up $args
 	  _Dbg_last_cmd='up'
@@ -906,4 +906,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-processor.inc,v 1.2 2008/07/27 22:17:55 rockyb Exp $'
+[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-processor.inc,v 1.3 2008/07/29 03:47:15 rockyb Exp $'

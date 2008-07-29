@@ -35,8 +35,7 @@ _Dbg_adjust_frame() {
   local -i signum=$2
 
   local -i retval
-  _Dbg_stack_int_setup $count
-  (( retval )) && return
+  _Dbg_stack_int_setup $count || return
 
   local -i pos
   if (( signum==0 )) ; then
@@ -50,11 +49,11 @@ _Dbg_adjust_frame() {
   fi
     
   if (( pos <= _Dbg_STACK_TOP-1 )) ; then 
-    _Dbg_msg "Would be beyond bottom-most (most recent) entry."
-    return
+    _Dbg_msg 'Would be beyond bottom-most (most recent) entry.'
+    return 1
   elif (( pos >= ${#FUNCNAME[@]}-3 )) ; then 
-    _Dbg_msg "Would be beyond top-most (least recent) entry."
-    return
+    _Dbg_msg 'Would be beyond top-most (least recent) entry.'
+    return 1
   fi
 
   ((_Dbg_stack_pos = pos))
@@ -63,7 +62,7 @@ _Dbg_adjust_frame() {
   ((j++))
   _cur_source_file=${BASH_SOURCE[$j]}
   _Dbg_print_source_line $_Dbg_listline
-
+  return 0
 }
 
 # Tests for a signed integer parameter and set global retval
@@ -71,15 +70,17 @@ _Dbg_adjust_frame() {
 _Dbg_stack_int_setup() {
 
   if (( ! _Dbg_running )) ; then
-    _Dbg_msg "No stack."
-    retval=1
+    _Dbg_msg 'No stack.'
+    return 1
   else
     eval "$_seteglob"
     if [[ $1 != '' && $1 != $signed_int_pat ]] ; then 
       _Dbg_msg "Bad integer parameter: $1"
-      retval=1
+      eval "$_resteglob"
+      return 1
     fi
     eval "$_resteglob"
+    return 0
   fi
 }
 
@@ -143,4 +144,4 @@ _Dbg_do_info_args() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.10 2008/07/27 22:17:55 rockyb Exp $'
+_Dbg_stack_ver='$Id: dbg-stack.inc,v 1.11 2008/07/29 03:47:15 rockyb Exp $'
