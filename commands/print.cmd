@@ -18,6 +18,9 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+# The arguments in the last "print" command.
+typeset _Dbg_last_print_args=''
+
 _Dbg_do_print() {
   local -r _Dbg_expr=${@:-"$_Dbg_last_print_args"}
   local -r dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")

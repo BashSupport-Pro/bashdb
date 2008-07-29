@@ -197,12 +197,6 @@ _Dbg_check_line() {
   return 0
 }
 
-# Create temporary file based on $1
-# file $1
-_Dbg_tempname() {
-  echo "$_Dbg_tmpdir/bashdb$1$$"
-}
-
 # append a command into journal file and then run the command.
 _Dbg_write_journal_eval() {
   _Dbg_write_journal "$*" 
@@ -341,4 +335,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.9 2008/06/05 09:51:50 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.10 2008/07/29 12:29:11 rockyb Exp $'

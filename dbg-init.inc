@@ -104,13 +104,19 @@ fi
 # Equivalent to basename $_Dbg_orig_0 -- the short program name
 typeset _Dbg_pname=${_Dbg_orig_0##*/} 
 
+# Known normal IFS consisting of a space, tab and newline
+typeset -r _Dbg_space_IFS=' 	
+'
+
 # $_Dbg_tmpdir could have been set by bashdb script rather than
 # bash --debugger
 typeset _Dbg_tmpdir=/tmp
 
-# Known normal IFS consisting of a space, tab and newline
-typeset -r _Dbg_space_IFS=' 	
-'
+# Create temporary file based on $1
+# file $1
+_Dbg_tempname() {
+  echo "$_Dbg_tmpdir/bashdb$1$$"
+}
 
 # If BASHDB_QUIT_LEVELS is set to a positive number, this is the number
 # of levels (subshell or shell nestings) or we should exit out of.
@@ -120,4 +126,4 @@ typeset -r _Dbg_space_IFS='
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.23 2008/07/29 03:47:15 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.24 2008/07/29 12:29:11 rockyb Exp $'

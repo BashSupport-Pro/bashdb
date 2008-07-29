@@ -58,9 +58,6 @@ typeset _Dbg_edit='-e'
 
 typeset _Dbg_prompt_str='bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space'
 
-# The arguments in the last "print" command.
-typeset _Dbg_last_print_args=''
-
 # The arguments in the last "x" command.
 typeset _Dbg_last_x_args=''
 
@@ -383,9 +380,10 @@ _Dbg_onecmd() {
 	e | ev | eva | eval )
 	  _Dbg_do_eval $args
 	  _Dbg_last_cmd='eval'
+	  
 	  ;;
 
-	# evaluate as bash command
+	# edit file currently positioned at
 	ed | edi | edit )
 	  _Dbg_do_edit $args
 	  _Dbg_last_cmd='edit'
@@ -892,9 +890,6 @@ if [[ -z "${BASHDB_LEVEL}" ]] ; then
   export BASHDB_LEVEL
 fi
 
-# temp file for internal eval'd commands
-typeset _Dbg_evalfile=$(_Dbg_tempname eval)
-
 # File to save information that needs to be passed from a subshell
 # to a parent shell
 typeset _Dbg_journal=$(_Dbg_tempname journal)
@@ -906,4 +901,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_cmds_ver ]] && typeset -r _Dbg_cmds_ver='$Id: dbg-processor.inc,v 1.3 2008/07/29 03:47:15 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: dbg-processor.inc,v 1.4 2008/07/29 12:29:11 rockyb Exp $'

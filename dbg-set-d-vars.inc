@@ -1,18 +1,19 @@
-#$Id: dbg-set-d-vars.inc,v 1.2 2007/02/11 23:06:41 rockyb Exp $
-#   Copyright (C) 2002, 2003, 2004, 2007 Rocky Bernstein
+#$Id: dbg-set-d-vars.inc,v 1.3 2008/07/29 12:29:11 rockyb Exp $
+# -*- shell-script -*-
+#   Copyright (C) 2002, 2003, 2004, 2007, 2008  Rocky Bernstein rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # set dollar variables ($1, $2, ... $?) 
@@ -31,8 +32,3 @@ IFS="$_Dbg_old_IFS"
 
 # Setting $? be the last statement
 _Dbg_set_dol_q
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

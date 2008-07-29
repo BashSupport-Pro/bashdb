@@ -18,11 +18,14 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+# temp file for internal eval'd commands
+typeset _Dbg_evalfile=$(_Dbg_tempname eval)
+
 _Dbg_do_eval() {
 
   echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
   echo "$@" >> $_Dbg_evalfile
-  if [[ -n $_basdhb_tty  ]] ; then
+  if [[ -n $_Dbg_tty  ]] ; then
     . $_Dbg_evalfile >>$_Dbg_tty
   else
     . $_Dbg_evalfile
