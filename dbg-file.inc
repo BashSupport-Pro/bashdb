@@ -91,6 +91,26 @@ function _Dbg_resolve_expand_filename {
   return 1
 }
 
+_Dbg_linespec_setup() {
+  local -a word=($(_Dbg_parse_linespec "$1"))
+  if [[ ${#word[@]} == 0 ]] ; then
+    _Dbg_msg "Invalid line specification: $1"
+    return
+  fi
+  
+  filename=${word[2]}
+  local -ir is_function=${word[1]}
+  line_number=${word[0]}
+  full_filename=`_Dbg_is_file $filename`
+
+  if (( is_function )) ; then
+      if [[ -z $full_filename ]] ; then 
+	  _Dbg_readin "$filename"
+	  full_filename=`_Dbg_is_file $filename`
+      fi
+  fi
+}
+  
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
 # '' is echo'd if no file found.
 function _Dbg_is_file {
@@ -335,4 +355,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.10 2008/07/29 12:29:11 rockyb Exp $'
+'$Id: dbg-file.inc,v 1.11 2008/08/02 17:38:31 rockyb Exp $'

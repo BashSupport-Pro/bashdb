@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.44 2008/07/16 16:02:24 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.45 2008/08/02 17:38:30 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -215,9 +215,10 @@ AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_readarray" != x)
 #Makefiles
 AC_CONFIG_FILES([Makefile \
 	builtin/Makefile \
-	commands/Makefile \
+	command/Makefile \
 	doc/Makefile \
 	emacs/Makefile \
+	lib/Makefile \
 	test/Makefile \
 	test/unit/Makefile])
 

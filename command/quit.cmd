@@ -62,3 +62,4 @@ _Dbg_do_quit() {
   # And just when you thought we'd never get around to it...
   exit $return_code
 }
+alias q=quit

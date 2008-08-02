@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # dbg-edit.inc - Bourne Again Shell Debugger Edit routines
 
 #   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
@@ -19,19 +20,8 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_edit_ver=\
-'$Id: dbg-edit.inc,v 1.2 2008/05/27 03:51:45 rockyb Exp $'
-_Dbg_linespec_setup() {
-  local linespec=${1:-''}
-  if [[ -z $linespec ]] ; then
-    _Dbg_msg "Invalid line specification, null given"
-  fi
-  local -a word=($(_Dbg_parse_linespec "$linespec"))
-  if [[ ${#word[@]} == 0 ]] ; then
-    _Dbg_msg "Invalid line specification: $linespec"
-    return
-  fi
-}
-  
+'$Id: edit.cmd,v 1.1 2008/08/02 17:38:32 rockyb Exp $'
+
 # Routine to a delete breakpoint/watchpoint by entry numbers.
 _Dbg_do_edit() {
   local -i line_number

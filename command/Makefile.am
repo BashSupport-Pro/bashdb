@@ -3,6 +3,7 @@ pkgdata_DATA =      \
 	backtrace.cmd \
 	debug.cmd     \
 	down.cmd      \
+	edit.cmd      \
 	eval.cmd      \
 	examine.cmd   \
 	file.cmd      \
@@ -18,3 +19,4 @@ pkgdata_DATA =      \
 	up.cmd        \
 	tty.cmd
 
+EXTRA_DIST = $(pkgdata_DATA)

@@ -1,5 +1,5 @@
-#$Id: dbg-set-d-vars.inc,v 1.3 2008/07/29 12:29:11 rockyb Exp $
 # -*- shell-script -*-
+#$Id: dbg-set-d-vars.inc,v 1.4 2008/08/02 17:38:31 rockyb Exp $
 #   Copyright (C) 2002, 2003, 2004, 2007, 2008  Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -19,13 +19,13 @@
 # set dollar variables ($1, $2, ... $?) 
 # to their values in the debugged environment before we entered the debugger.
 
-local _Dbg_set_str="set --"
+local _Dbg_set_str='set --'
 local -i _Dbg__i
 for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
   local dq_argi=$(_Dbg_esc_dq "${_Dbg_arg[$_Dbg__i]}")
   _Dbg_set_str="$_Dbg_set_str \"$dq_argi\""
 done
-eval $_Dbg_set_str
+eval "$_Dbg_set_str"
 
 PS4="$_Dbg_old_PS4"
 IFS="$_Dbg_old_IFS"

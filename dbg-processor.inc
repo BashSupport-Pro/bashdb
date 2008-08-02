@@ -64,7 +64,7 @@ typeset _Dbg_last_x_args=''
 # The canonical name of last command run.
 typeset _Dbg_last_cmd=''
 
-for file in ${_Dbg_libdir}/commands/*.cmd ; do 
+for file in ${_Dbg_libdir}/command/*.cmd ; do 
   source $file
 done
 
@@ -901,4 +901,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: dbg-processor.inc,v 1.4 2008/07/29 12:29:11 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: dbg-processor.inc,v 1.5 2008/08/02 17:38:31 rockyb Exp $'

@@ -157,7 +157,7 @@ _Dbg_read_history
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: dbg-hist.inc,v 1.6 2008/06/01 00:49:12 rockyb Exp $'
+'$Id: hist.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

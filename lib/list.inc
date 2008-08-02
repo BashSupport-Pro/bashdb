@@ -266,7 +266,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: dbg-list.inc,v 1.12 2008/06/01 00:49:13 rockyb Exp $'
+_Dbg_list_ver='$Id: list.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

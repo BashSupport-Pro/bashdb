@@ -566,7 +566,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: dbg-help.inc,v 1.19 2008/06/06 03:19:34 rockyb Exp $'
+'$Id: help.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
