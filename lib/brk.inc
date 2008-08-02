@@ -1,15 +1,15 @@
 # -*- shell-script -*-
-# dbg-brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
-
+# brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
+#
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
 #
-#   Bashdb is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
@@ -21,7 +21,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
+'$Id: brk.inc,v 1.2 2008/08/02 18:57:41 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -134,33 +134,6 @@ _Dbg_save_display() {
 
 # Start out with general break/watchpoint functions first...
 
-# Routine to a delete breakpoint/watchpoint by entry numbers.
-_Dbg_do_delete() {
-  local -r  to_go=$@
-  local -i  i
-  local -i  found=0
-  
-  # set -xv
-  eval "$_seteglob"
-  for del in $to_go ; do 
-    case $del in
-      $_watch_pat )
-        _Dbg_delete_watch_entry ${del:0:${#del}-1}
-        ;;
-      $int_pat )
-	_Dbg_delete_brkpt_entry $del
-        ((found += $?))
-	;;
-      * )
-	_Dbg_msg "Invalid entry number skipped: $del"
-    esac
-  done
-  eval "$_resteglob"
-  [[ $found != 0 ]] && _Dbg_msg "Removed $found breakpoint(s)."
-  return $found
-  # set +xv
-}
-
 # Enable/disable breakpoint or watchpoint by entry numbers.
 _Dbg_enable_disable() {
   if [ -z "$1" ] ; then 
@@ -224,61 +197,6 @@ _Dbg_enable_disable() {
   return 0
 }
 
-function _Dbg_help_continue {
-    _Dbg_msg \
-"c [linespec | - ]  Continue execution until the next breakpoint or end of 
-                   program or linespec. 
-
-If instead of a line specification you enter -, then debugging will be turned 
-off after continuing causing your program to run at full speed.
-Long command name: continue.
-"
-}
-
-function _Dbg_do_continue {
-
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg 'The program is not being run.'
-      return 1
-  fi
-
-  [[ -z $1 ]] && return 0
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  if [[ $1 == '-' ]] ; then
-    _Dbg_restore_debug_trap=0
-    return 0
-  fi
-
-  _Dbg_linespec_setup $1
-
-  if [[ -n $full_filename ]] ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg 'There is no line 0 to continue at.'
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_set_brkpt "$full_filename" "$line_number" 1 1
-      return 0
-    fi
-  else
-    _Dbg_file_not_read_in $filename
-  fi
-  return 1
-}
-
-# Enable breakpoint(s)/watchpoint(s) by entry number(s).
-_Dbg_do_enable() {
-  _Dbg_enable_disable 1 "enabled" $@
-}
-
-# Disable breakpoint(s)/watchpoint(s) by entry number(s).
-_Dbg_do_disable() {
-  _Dbg_enable_disable 0 "disabled" $@
-}
-
 function _Dbg_print_brkpt_count {
   typeset -ir i=$1
   if (( _Dbg_brkpt_count[$i] != 0 )) ; then
@@ -291,87 +209,6 @@ function _Dbg_print_brkpt_count {
 }
 
 #======================== BREAKPOINTS  ============================#
-
-# Add breakpoint(s) at given line number of the current file.  $1 is
-# the line number or _curline if omitted.  $2 is a condition to test
-# for whether to stop.
-
-_Dbg_do_break() {
-
-  local -i is_temp=$1
-  shift
-
-  local n=${1:-$_curline}
-  shift
-
-  local condition=${1:-''};
-  if [[ "$n" == 'if' ]]; then
-    n=$_curline
-  elif [[ -z $condition ]] ; then
-    condition=1
-  elif [[ $condition == 'if' ]] ; then
-    shift
-  fi
-  if [[ -z $condition ]] ; then
-    condition=1
-  else 
-    condition="$*"
-  fi
-
-  local filename
-  local -i line_number
-  local full_filename
-
-  _Dbg_linespec_setup $n
-
-  if [[ -n $full_filename ]]  ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to break at."
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
-    fi
-  else
-    _Dbg_file_not_read_in $filename
-  fi
-}
-
-# Set a condition for a given breakpoint $1 is a breakpoint number
-# $2 is a condition. If not given, set "unconditional" or 1.
-# returns 0 if success or 1 if fail.
-_Dbg_do_condition() {
-  # set -x
-  local -r n=$1
-  shift 
-  local condition="$@"
-  # set -xv
-
-  if [[ -z $n ]]; then
-    _Dbg_msg "Argument required (breakpoint number)."
-    return 1
-  fi
-
-  eval "$_seteglob"
-  if [[ $n != $int_pat ]]; then
-    eval "$_resteglob"
-    _Dbg_msg "Bad breakpoint number: $n"
-    return 1
-  fi
-  eval "$_resteglob"
-
-  if [[ -z ${_Dbg_brkpt_file[$n]} ]] ; then
-    _Dbg_msg "Breakpoint entry $n is not set. Condition not changed."
-    return 1
-  fi
-  
-  if [[ -z $condition ]] ; then
-    condition=1
-    _Dbg_msg "Breakpoint $n now unconditional."
-  fi
-  _Dbg_brkpt_cond[$n]="$condition"
-  return 0
-}
 
 # delete brkpt(s) at given file:line numbers. If no file is given
 # use the current file.
@@ -1019,15 +856,5 @@ _Dbg_enable_disable_display() {
   fi
 }
 
-_Dbg_do_undisplay() {
-  local -i del=$1
-
-  if [ -n "${_Dbg_disp_exp[$del]}" ] ; then
-    _Dbg_write_journal_eval "unset _Dbg_disp_exp[$del]"
-    _Dbg_write_journal_eval "unset _Dbg_disp_enable[$del]"
-  else
-    _Dbg_msg "Display entry $del doesn't exist so nothing done."
-  fi
-}
 [[ -z _Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
+'$Id: brk.inc,v 1.2 2008/08/02 18:57:41 rockyb Exp $'

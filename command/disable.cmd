@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# kill.cmd - gdb-like "kill" debugger command
+# disable.cmd - gdb-like "disable" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -18,12 +18,7 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-_Dbg_do_kill() {
-  local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
-  read $_Dbg_edit -p "Do hard kill and terminate the debugger? (y/n): " \
-      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
-
-  if [[ $REPLY = [Yy]* ]] ; then 
-      kill -9 $$
-  fi
+# Disable breakpoint(s)/watchpoint(s) by entry number(s).
+_Dbg_do_disable() {
+  _Dbg_enable_disable 0 "disabled" $@
 }

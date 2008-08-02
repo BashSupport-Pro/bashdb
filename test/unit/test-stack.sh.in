@@ -18,7 +18,7 @@ test_print_frame()
 
 # load shunit2
 top_srcdir=@top_builddir@
-. ${top_srcdir}/dbg-stack.inc
+. ${top_srcdir}/lib/stack.inc
 
 . ./shunit2
 

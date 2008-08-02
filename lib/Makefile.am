@@ -12,6 +12,7 @@ pkgdata_DATA =      	\
 	set.inc    	\
 	show.inc	\
 	sig.inc	 	\
+	stack.inc	\
 	tracefn.inc
 
 EXTRA_DIST = $(pkgdata_DATA)

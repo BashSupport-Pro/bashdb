@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# frame.cmd - gdb-like frame debugger command
+# frame.cmd - gdb-like "frame" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org

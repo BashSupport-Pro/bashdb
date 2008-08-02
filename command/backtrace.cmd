@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# backtrace.cmd - gdb-like backtrace debugger command
+# backtrace.cmd - gdb-like "backtrace" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org

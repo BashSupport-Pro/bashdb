@@ -1,13 +1,21 @@
 pkgdatadir        = ${datadir}/@PACKAGE@/commands
-pkgdata_DATA =      \
+pkgdata_DATA =        \
 	backtrace.cmd \
+	break.cmd     \
+	commands.cmd  \
+	condition.cmd \
+	continue.cmd  \
 	debug.cmd     \
+	delete.cmd    \
+	disable.cmd   \
 	down.cmd      \
 	edit.cmd      \
+	enable.cmd    \
 	eval.cmd      \
 	examine.cmd   \
 	file.cmd      \
 	frame.cmd     \
+	help.cmd      \
 	kill.cmd      \
 	load.cmd      \
 	print.cmd     \
@@ -16,6 +24,7 @@ pkgdata_DATA =      \
 	restart.cmd   \
 	source.cmd    \
 	trace.cmd     \
+	undisplay.cmd \
 	up.cmd        \
 	tty.cmd
 

@@ -1,7 +1,6 @@
 # -*- shell-script -*-
-# dbg-commands.inc - Bourne Again Shell Debugger 
-# "commands" - breakpoint commands
-
+# commands.inc - Bourne Again Shell Debugger 
+#
 #   Copyright (C) 2006, 2008 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -48,34 +47,6 @@ _Dbg_brkpt_commands_defining=0
 
 # The breakpoint number for which we are defining a list
 _Dbg_brkpt_commands_bnum=0
-
-
-_Dbg_do_commands() {
-  eval "$_seteglob"
-  local num=$1
-  local -i found=0
-  case $num in
-      $int_pat )
-	  if [[ -z ${_Dbg_brkpt_file[$num]} ]] ; then
-	      _Dbg_msg "No breakpoint number $num."
-	      return 0
-	  fi
-	  ((found=1))
-	;;
-      * )
-	_Dbg_msg "Invalid entry number skipped: $num"
-  esac
-  eval "$_resteglob"
-  if (( found )) ; then 
-      _Dbg_brkpt_commands_defining=1
-      _Dbg_brkpt_commands_current=$num
-      _Dbg_brkpt_commands_end[$num]=${#_Dbg_brkpt_commands[@]}
-      _Dbg_brkpt_commands_start[$num]=${_Dbg_brkpt_commands_end[$num]}
-      _Dbg_msg "Type commands for when breakpoint $found hit, one per line."
-      _Dbg_prompt='>'
-      return 1
-  fi
-}
 
 # Call every command that was set for the current active breakpoint
 # (if there is one) Returns True if the normal interaction function
