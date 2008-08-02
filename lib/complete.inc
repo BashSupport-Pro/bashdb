@@ -1,4 +1,5 @@
-# dbg-cmds.inc - Bourne Again Shell Debugger command completion handling
+# -*- shell-script -*-
+# complete-cmds.inc - Bourne Again Shell Debugger command completion handling
 #
 #   Copyright (C) 2006 Rocky Bernstein rockyb@users.sourceforge.net
 #
@@ -70,7 +71,7 @@ _Dbg_do_complete() {
 }
 
 typeset -r _Dbg_complete_ver=\
-'$Id: complete.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'
+'$Id: complete.inc,v 1.2 2008/08/02 19:42:38 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

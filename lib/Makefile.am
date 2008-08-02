@@ -3,6 +3,7 @@ pkgdata_DATA =      	\
 	brk.inc    	\
 	commands.inc  	\
 	complete.inc  	\
+	file.inc  	\
 	fns.inc  	\
 	help.inc    	\
 	hist.inc    	\

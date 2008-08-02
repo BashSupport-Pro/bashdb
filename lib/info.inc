@@ -1,24 +1,24 @@
-# *-* shell-script -*-
-# dbg-info.inc - Bourne Again Shell Debugger Help Routines
+# -*- shell-script -*-
+# info.inc - Bourne Again Shell Debugger Help Routines
 
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008
 #   Rocky Bernstein rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-typeset -r _Dbg_info_cmds="args breakpoints display files functions line program signals source stack terminal variables warranty"
+typeset -r _Dbg_info_cmds='args breakpoints display files functions line program signals source stack terminal variables warranty'
 
 _Dbg_info_help() {
   local -r info_cmd=$1
@@ -27,8 +27,8 @@ _Dbg_info_help() {
   if [[ -z $info_cmd ]] ; then 
       local thing
 		_Dbg_msg \
-"List of info subcommands:
-"
+'List of info subcommands:
+'
       for thing in $_Dbg_info_cmds ; do 
 	_Dbg_info_help $thing 1
       done
@@ -44,68 +44,68 @@ _Dbg_info_help() {
     b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
     w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
       _Dbg_msg \
-"info breakpoints -- Status of user-settable breakpoints"
+'info breakpoints -- Status of user-settable breakpoints'
       return 0
       ;;
     disp | displ | displa | display ) 
       _Dbg_msg \
-"info display -- Show all display expressions"
+'info display -- Show all display expressions'
       return 0
       ;;
     fi | file| files | sources )
       _Dbg_msg \
-"info files -- Source files in the program"
+'info files -- Source files in the program'
       return 0
       ;;
     fu | fun| func | funct | functi | functio | function | functions )
       _Dbg_msg \
-"info functions -- All function names"
+'info functions -- All function names'
       return 0
       ;;
     l | li| lin | line )
       _Dbg_msg \
-"info line -- list current line number and and file name"
+'info line -- list current line number and and file name'
       return 0
       ;;
     p | pr | pro | prog | progr | progra | program )
       _Dbg_msg \
-"info program -- Execution status of the program."
+'info program -- Execution status of the program.'
       return 0
       ;;
     h | ha | han | hand | handl | handle | \
     si | sig | sign | signa | signal | signals )
       _Dbg_msg \
-"info signals -- What debugger does when program gets various signals"
+'info signals -- What debugger does when program gets various signals'
       return 0
       ;;
     so | sou | sourc | source )
       _Dbg_msg \
-"info source -- Information about the current source file"
+'info source -- Information about the current source file'
       return 0
       ;;
     st | sta | stac | stack )
       _Dbg_msg \
-"info stack -- Backtrace of the stack"
+'info stack -- Backtrace of the stack'
       return 0
       ;;
     te | ter | term | termi | termin | termina | terminal | tt | tty )
       _Dbg_msg \
-"info terminal -- Print terminal device"
+'info terminal -- Print terminal device'
       return 0
       ;;
     tr|tra|trac|trace|tracep | tracepo | tracepoi | tracepoint | tracepoints )
       _Dbg_msg \
-"info tracepoints -- Status of tracepoints"
+'info tracepoints -- Status of tracepoints'
       return 0
       ;;
     v | va | var | vari | varia | variab | variabl | variable | variables )
       _Dbg_msg \
-"info variables -- All global and static variable names"
+'info variables -- All global and static variable names'
       return 0
       ;;
     w | wa | war | warr | warra | warran | warrant | warranty )
       _Dbg_msg \
-"info warranty -- Various kinds of warranty you do not have"
+'info warranty -- Various kinds of warranty you do not have'
       return 0
       ;;
     * )
@@ -119,7 +119,7 @@ _Dbg_do_info() {
   local -ar subcmds=( args breakpoints display files functions program source \
                       sources stack terminal variables watchpoints )
   
-  if [[ $info_cmd != '' ]] ; then
+  if [[ -n $info_cmd ]] ; then
     shift
     case $info_cmd in 
       a | ar | arg | args )
@@ -142,8 +142,8 @@ _Dbg_do_info() {
         _Dbg_msg "Source files for which have been read in:
 "
         for file in ${_Dbg_filenames[@]} ; do  
-	  local filevar=`_Dbg_file2var $file`
-	  local -i maxline=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar`
+	  local filevar=$(_Dbg_file2var $file)
+	  local -i maxline=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
 	  (( maxline++ )) 
 	  (( _Dbg_basename_only )) && file=${file##*/}
 	  _Dbg_msg "$file ($maxline lines)" ; 
@@ -187,7 +187,7 @@ _Dbg_do_info() {
       ;;
       so | sou | sourc | source )
         _Dbg_msg "Current script file is $_cur_source_file" 
-	local -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
+	local -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
 	_Dbg_msg "Contains $max_line lines." ; 
         return
 	;;
@@ -274,5 +274,4 @@ function _Dbg_info_signals {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: info.inc,v 1.1 2008/08/02 18:57:41 rockyb Exp $'
-
+'$Id: info.inc,v 1.2 2008/08/02 19:42:38 rockyb Exp $'

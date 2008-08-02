@@ -15,6 +15,7 @@ pkgdata_DATA =        \
 	examine.cmd   \
 	file.cmd      \
 	frame.cmd     \
+	handle.cmd      \
 	help.cmd      \
 	kill.cmd      \
 	load.cmd      \
@@ -22,6 +23,7 @@ pkgdata_DATA =        \
 	pwd.cmd       \
 	quit.cmd      \
 	restart.cmd   \
+	signal.cmd    \
 	source.cmd    \
 	trace.cmd     \
 	undisplay.cmd \

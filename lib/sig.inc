@@ -458,104 +458,6 @@ _Dbg_name2signum() {
   return $?
 }
 
-# Process debugger "handle" command. 
-_Dbg_do_handle() {
-  typeset sig=$1
-  typeset cmd=$2
-  typeset -i signum
-  if [[ -z $sig ]] ; then
-    _Dbg_msg "Missing signal name or signal number."
-    return 1
-  fi
-
-  eval "$_seteglob"
-  if [[ $sig == $int_pat ]]; then
-    eval "$_resteglob"
-    signame=`_Dbg_signum2name $sig`
-    if (( $? != 0 )) ; then
-      _Dbg_msg "Bad signal number: $sig"
-      return 1
-    fi
-    signum=sig
-  else
-    eval "$_resteglob"
-    typeset signum;
-    signum=`_Dbg_name2signum $sig`
-    if (( $? != 0 )) ; then
-      _Dbg_msg "Bad signal name: $sig"
-      return 1
-    fi
-  fi
-
-  case $cmd in
-    nop | nopr | nopri | noprin | noprint )
-      _Dbg_sig_print[signum]='noprint'
-      # noprint implies nostop
-      _Dbg_sig_stop[signum]='stop'
-      ;;
-
-    nosta | nostac | nostack )
-      _Dbg_sig_show_stack[signum]='nostack'
-      ;;
-
-    nosto | nostop  )
-      _Dbg_sig_stop[signum]='nostop'
-      ;;
-
-    p | pr | pri | prin | print )
-      _Dbg_sig_print[signum]='print'
-      ;;
-
-    sta | stac | stack )
-      _Dbg_sig_show_stack[signum]='showstack'
-      ;;
-
-    sto | stop )
-      _Dbg_sig_stop[signum]='stop'
-      # stop keyword implies print
-      _Dbg_sig_print[signum]='print'
-      ;;
-    * )
-      if (( !cmd )) ; then 
-	_Dbg_msg \
-         "Need to give a command: stop, nostop, stack, nostack, print, noprint"
-      else
-	_Dbg_msg "Invalid handler command $cmd"
-      fi
-      ;;
-  esac
-}
-
-# Process debugger "signal" command. 
-_Dbg_do_signal() {
-  typeset sig=$1
-  typeset -i signum
-  if [[ -z $sig ]] ; then
-    _Dbg_msg "Missing signal name or signal number."
-    return 1
-  fi
-
-  eval "$_seteglob"
-  if [[ $sig == $int_pat ]]; then
-    eval "$_resteglob"
-    signame=`_Dbg_signum2name $sig`
-    if (( $? != 0 )) ; then
-      _Dbg_msg "Bad signal number: $sig"
-      return 1
-    fi
-    signum=sig
-  else
-    eval "$_resteglob"
-    typeset signum;
-    signum=`_Dbg_name2signum $sig`
-    if (( $? != 0 )) ; then
-      _Dbg_msg "Bad signal name: $sig"
-      return 1
-    fi
-  fi
-  kill -$signum $$
-}
-
 _Dbg_subexit_handler() {
   # Read in the journal to pick up variable settings that might have
   # been left from a subshell.
@@ -603,4 +505,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: sig.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'
+'$Id: sig.inc,v 1.2 2008/08/02 19:42:38 rockyb Exp $'
