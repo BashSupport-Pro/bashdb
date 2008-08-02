@@ -39,9 +39,9 @@ SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAN
 +continue 
 Program received signal SIGTERM (15)...
 ->0 in file `eval.cmd' at line 2
-##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `dbg-processor.inc' at line 381
-##2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `dbg-processor.inc' at line 163
-##3 _Dbg_process_commands() called from file `dbg-sig.inc' at line 224
+##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.inc' at line 381
+##2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.inc' at line 163
+##3 _Dbg_process_commands() called from file `sig.inc' at line 224
 ##4 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
 ##5 source("sig.sh") called from file `bashdb' at line 282
 ##6 main() called from file `bashdb' at line 0

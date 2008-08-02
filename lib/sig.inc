@@ -603,4 +603,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: dbg-sig.inc,v 1.27 2008/07/27 22:17:55 rockyb Exp $'
+'$Id: sig.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'

@@ -136,7 +136,7 @@ _Dbg_do_show_logging()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_log_ver=\
-'$Id: dbg-log.inc,v 1.3 2008/06/02 23:34:06 rockyb Exp $'
+'$Id: log.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

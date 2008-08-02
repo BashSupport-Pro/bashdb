@@ -85,5 +85,5 @@ function _Dbg_do_untrace_fn {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_tracefns_ver=\
-'$Id: dbg-tracefn.inc,v 1.4 2008/06/11 01:11:43 rockyb Exp $'
+'$Id: tracefn.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'
 
