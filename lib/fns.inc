@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-fns.inc - Bourne Again Shell Debugger Utility Functions
+# fns.inc - Bourne Again Shell Debugger Utility Functions
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -355,4 +355,4 @@ function _Dbg_set_to_return_from_debugger {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: dbg-fns.inc,v 1.21 2008/06/09 06:30:30 rockyb Exp $'
+'$Id: fns.inc,v 1.1 2008/08/02 19:14:34 rockyb Exp $'

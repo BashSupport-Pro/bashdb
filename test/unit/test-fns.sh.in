@@ -122,7 +122,7 @@ test_split()
 
 # load shunit2
 top_srcdir=@top_builddir@
-. ${top_srcdir}/dbg-fns.inc
+. ${top_srcdir}/lib/fns.inc
 
 . ./shunit2
 

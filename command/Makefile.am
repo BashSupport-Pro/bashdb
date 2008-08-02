@@ -1,4 +1,4 @@
-pkgdatadir        = ${datadir}/@PACKAGE@/commands
+pkgdatadir        = ${datadir}/@PACKAGE@/command
 pkgdata_DATA =        \
 	backtrace.cmd \
 	break.cmd     \
