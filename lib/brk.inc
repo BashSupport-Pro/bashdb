@@ -21,7 +21,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.2 2008/08/02 18:57:41 rockyb Exp $'
+'$Id: brk.inc,v 1.3 2008/08/02 22:50:33 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -549,24 +549,6 @@ _Dbg_clear_watch() {
   eval "$_resteglob"
 }   
 
-# Set or list watch command
-_Dbg_do_watch() {
-  if [ -z "$2" ]; then
-    _Dbg_clear_watch 
-  else 
-    local -i n=_Dbg_watch_max++
-    _Dbg_watch_arith[$n]="$1"
-    shift
-    _Dbg_watch_exp[$n]="$1"
-    _Dbg_watch_val[$n]=`_Dbg_get_watch_exp_eval $n`
-    _Dbg_watch_enable[$n]=1
-    _Dbg_watch_count[$n]=0
-    _Dbg_printf '%2d: %s==%s arith: %d' $n \
-      "(${_Dbg_watch_exp[$n]})" ${_Dbg_watch_val[$n]} \
-    ${_Dbg_watch_arith[$n]}
-  fi
-}
-
 #======================== ACTIONs  ============================#
 
 # Add actions(s) at given line number of the current file.  $1 is
@@ -857,4 +839,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z _Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.2 2008/08/02 18:57:41 rockyb Exp $'
+'$Id: brk.inc,v 1.3 2008/08/02 22:50:33 rockyb Exp $'

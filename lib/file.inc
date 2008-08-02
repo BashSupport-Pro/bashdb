@@ -355,4 +355,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: dbg-file.inc,v 1.11 2008/08/02 17:38:31 rockyb Exp $'
+'$Id: file.inc,v 1.1 2008/08/02 22:50:33 rockyb Exp $'

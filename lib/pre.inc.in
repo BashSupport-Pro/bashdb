@@ -74,5 +74,5 @@ function _Dbg_expand_filename {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_pre_ver=\
-'$Id: dbg-pre.inc.in,v 1.4 2008/07/18 07:10:26 rockyb Exp $'
+'$Id: pre.inc.in,v 1.1 2008/08/02 22:50:33 rockyb Exp $'
 

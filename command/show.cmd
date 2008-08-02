@@ -1,20 +1,21 @@
-# dbg-show.inc - Bourne Again Shell Debugger Set Routines
+# -*- shell-script -*-
+# show.cmd - Bourne Again Shell Debugger Set Routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Sets whether or not to display command to be executed in debugger prompt.
@@ -379,7 +380,7 @@ of promoting the sharing and reuse of software generally.
       _Dbg_msg \
 "filename: The filename in which to record the command history is $_Dbg_histfile"
       _Dbg_msg \
-"save: Saving of history save is" `_Dbg_onoff $_Dbg_history_save`
+"save: Saving of history save is" $(_Dbg_onoff $_Dbg_history_save)
       _Dbg_msg \
 "size: Debugger history size is $_Dbg_history_length"
       ;;
@@ -456,7 +457,7 @@ _Dbg_do_show_versions()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_show_ver=\
-'$Id: show.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
+'$Id: show.cmd,v 1.1 2008/08/02 22:50:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -10,11 +10,10 @@ pkgdata_DATA =      	\
 	info.inc    	\
 	list.inc    	\
 	log.inc    	\
+	pre.inc  	\
 	processor.inc  	\
-	set.inc    	\
-	show.inc	\
 	sig.inc	 	\
 	stack.inc	\
 	tracefn.inc
 
-EXTRA_DIST = $(pkgdata_DATA)
+EXTRA_DIST = pre.inc.in $(pkgdata_DATA)

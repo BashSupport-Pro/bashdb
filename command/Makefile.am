@@ -15,7 +15,7 @@ pkgdata_DATA =        \
 	examine.cmd   \
 	file.cmd      \
 	frame.cmd     \
-	handle.cmd      \
+	handle.cmd    \
 	help.cmd      \
 	kill.cmd      \
 	load.cmd      \
@@ -23,11 +23,14 @@ pkgdata_DATA =        \
 	pwd.cmd       \
 	quit.cmd      \
 	restart.cmd   \
+	set.cmd       \
+	show.cmd      \
 	signal.cmd    \
 	source.cmd    \
 	trace.cmd     \
 	undisplay.cmd \
 	up.cmd        \
-	tty.cmd
+	tty.cmd	      \
+	watch.cmd
 
 EXTRA_DIST = $(pkgdata_DATA)

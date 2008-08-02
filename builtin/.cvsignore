@@ -3,3 +3,4 @@ Makefile
 Makefile.in
 set0
 readarray
+*.o

@@ -1,4 +1,5 @@
-# dbg-set.inc - Bourne Again Shell Debugger Set Routines
+# -*- shell-script -*-
+# set.inc - Bourne Again Shell Debugger Set Routines
 #
 #   Copyright (C) 2002,2003,2006,2007,2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -250,7 +251,7 @@ _Dbg_do_set() {
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_set_ver=\
-'$Id: set.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
+'$Id: set.cmd,v 1.1 2008/08/02 22:50:33 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

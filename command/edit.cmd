@@ -20,7 +20,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_edit_ver=\
-'$Id: edit.cmd,v 1.1 2008/08/02 17:38:32 rockyb Exp $'
+'$Id: edit.cmd,v 1.2 2008/08/02 22:50:33 rockyb Exp $'
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
 _Dbg_do_edit() {
@@ -35,5 +35,5 @@ _Dbg_do_edit() {
   if [[ ! -r $full_filename ]]  ; then 
       _Dbg_msg "File $full_filename is not readable"
   fi
-  `$editor +$line_number $full_filename`
+  $($editor +$line_number $full_filename)
 }
