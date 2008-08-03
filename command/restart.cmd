@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# restart command.
+# restart.cmd - gdb-like "restart" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -21,8 +21,6 @@
 # Restart script in same way with saved arguments (probably the same
 # ones as we were given before).
 _Dbg_do_restart() {
-
-  _Dbg_cleanup;
 
   local script_args
   if (( $# != 0 )) ; then 
@@ -61,5 +59,7 @@ _Dbg_do_restart() {
   fi
   _Dbg_save_state
   cd $_Dbg_init_cwd
+
+  _Dbg_cleanup
   exec $exec_cmd
 }

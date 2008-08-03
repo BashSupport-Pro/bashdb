@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 # dbg-init.inc - Bourne Again Shell Debugger Global Variables
-
+#
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
 #
@@ -34,7 +34,7 @@ typeset -i _cur_line        # current line number of debugged program
 typeset -i _Dbg_steps=1
 
 # Save the initial working directory so we can reset it on a restart.
-typeset _Dbg_init_cwd=$(pwd)
+typeset _Dbg_init_cwd=$PWD
 
 # If called from bashdb script rather than via "bash --debugger", skip
 # over some initial setup commands, like the initial "source" function
@@ -126,4 +126,4 @@ _Dbg_tempname() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.24 2008/07/29 12:29:11 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.25 2008/08/03 02:10:57 rockyb Exp $'

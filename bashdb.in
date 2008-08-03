@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.30 2008/07/26 23:28:45 rockyb Exp $'
+'$Id: bashdb.in,v 1.31 2008/08/03 02:10:57 rockyb Exp $'
 
 function _Dbg_usage_long {
   printf "_Dbg_usage:
@@ -237,7 +237,7 @@ fi
 # Note that this is called via bashdb rather than "bash --debugger"
 _Dbg_script=1
 
-. ${_Dbg_libdir}/dbg-pre.inc
+. ${_Dbg_libdir}/lib/pre.inc
 
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"

@@ -31,7 +31,7 @@
 _Dbg_do_backtrace() {
 
   if (( ! _Dbg_running )) ; then
-      _Dbg_msg "No stack."
+      _Dbg_msg 'No stack.'
       return
   fi
 

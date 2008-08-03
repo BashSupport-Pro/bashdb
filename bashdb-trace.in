@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.21 2008/07/22 21:43:13 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.22 2008/08/03 02:10:57 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -240,7 +240,7 @@ fi
 # Note that this is called via bashdb rather than "bash --debugger"
 _Dbg_script=1
 
-. ${_Dbg_libdir}/dbg-pre.inc
+. ${_Dbg_libdir}/lib/pre.inc
 
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"
