@@ -290,14 +290,14 @@ _Dbg_onecmd() {
 
 	# Continue
 	c | cont | conti |contin |continu | continue )
-	  _Dbg_do_continue $args
-	  if [[ $? == 0 ]] ; then
+	  
+	  _Dbg_last_cmd='continue'
+	  if _Dbg_do_continue $args ; then
 	    IFS="$_Dbg_old_IFS";
 	    _Dbg_write_journal_eval \
 	      "_Dbg_old_set_opts=\"$_Dbg_old_set_opts -o functrace\""
 	    return 0
 	  fi
-	  _Dbg_last_cmd="continue"
 	  ;;
 
 	# Change Directory
@@ -487,8 +487,8 @@ _Dbg_onecmd() {
 
 	# return from function/source without finishing executions
 	ret | retu | retur | return )
-	  _Dbg_steps=1
-	  _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
+	  _Dbg_step_ignore=1
+	  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 	  IFS="$_Dbg_old_IFS";
 	  _Dbg_last_cmd='return'
 	  return 2
@@ -821,12 +821,12 @@ _Dbg_do_next_step_skip() {
   _Dbg_write_journal "_Dbg_old_set_opts=\"$_Dbg_old_set_opts\""
 
   if [[ $count == [0-9]* ]] ; then
-    let _Dbg_steps=${count:-1}
+    let _Dbg_step_ignore=${count:-1}
   else
     _Dbg_msg "Argument ($count) should be a number or nothing."
-    _Dbg_steps=1
+    _Dbg_step_ignore=1
   fi
-  _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
+  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 }
 
 _Dbg_save_state() {
@@ -890,15 +890,7 @@ if [[ -z "${BASHDB_LEVEL}" ]] ; then
   export BASHDB_LEVEL
 fi
 
-# File to save information that needs to be passed from a subshell
-# to a parent shell
-typeset _Dbg_journal=$(_Dbg_tempname journal)
-if [ ! -f _Dbg_journal ] ; then 
-  typeset -i BASHDB_QUIT_LEVELS=0
-  _Dbg_write_journal "BASHDB_QUIT_LEVELS=0"
-fi
-
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.2 2008/08/04 00:43:19 rockyb Exp $'

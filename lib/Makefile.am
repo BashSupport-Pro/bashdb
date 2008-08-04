@@ -8,6 +8,7 @@ pkgdata_DATA =      	\
 	help.inc    	\
 	hist.inc    	\
 	info.inc    	\
+	journal.inc    	\
 	list.inc    	\
 	log.inc    	\
 	pre.inc  	\

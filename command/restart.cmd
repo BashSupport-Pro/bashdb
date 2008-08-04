@@ -30,7 +30,7 @@ _Dbg_do_restart() {
   fi
 
   local exec_cmd="$_Dbg_orig_0 $script_args";
-  if [[ $_Dbg_script != 1 ]] ; then
+  if (( _Dbg_script )) ; then
     [ -z "$BASH" ] && BASH='bash'
     if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
       script_args="--debugger -c \"$BASH_EXECUTION_STRING\""
@@ -58,7 +58,7 @@ _Dbg_do_restart() {
     _Dbg_do_quit 0
   fi
   _Dbg_save_state
-  cd $_Dbg_init_cwd
+  builtin cd $_Dbg_init_cwd
 
   _Dbg_cleanup
   exec $exec_cmd

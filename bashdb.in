@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.31 2008/08/03 02:10:57 rockyb Exp $'
+'$Id: bashdb.in,v 1.32 2008/08/04 00:43:17 rockyb Exp $'
 
 function _Dbg_usage_long {
   printf "_Dbg_usage:
@@ -267,11 +267,11 @@ fi
 
 if ((_Dbg_opt_linetrace)) ; then 
   # No stepping.
-  _Dbg_write_journal_eval "_Dbg_steps=-1" 
+  _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
   BASHDB_QUIT_ON_QUIT=1
 else 
   # Set to skip over the next 4 statements
-  _Dbg_write_journal_eval "_Dbg_steps=5" 
+  _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
 fi
 set -o functrace
 if [[ -z $_Dbg_cmd ]] ; then 

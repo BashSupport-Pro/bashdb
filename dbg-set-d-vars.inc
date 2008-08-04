@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#$Id: dbg-set-d-vars.inc,v 1.4 2008/08/02 17:38:31 rockyb Exp $
+#$Id: dbg-set-d-vars.inc,v 1.5 2008/08/04 00:43:17 rockyb Exp $
 #   Copyright (C) 2002, 2003, 2004, 2007, 2008  Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -30,5 +30,5 @@ eval "$_Dbg_set_str"
 PS4="$_Dbg_old_PS4"
 IFS="$_Dbg_old_IFS"
 
-# Setting $? be the last statement
+# Setting $? has to be done last.
 _Dbg_set_dol_q

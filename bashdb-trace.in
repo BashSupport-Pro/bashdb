@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.22 2008/08/03 02:10:57 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.23 2008/08/04 00:43:17 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -278,10 +278,10 @@ _Dbg_debugger() {
 
   if [[ -z ${_Dbg_set_trace_init:-''} ]] ; then
       _Dbg_set_trace_init=1
-      _Dbg_write_journal "_Dbg_steps=0"
+      _Dbg_write_journal "_Dbg_step_ignore=0"
       trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
   else
-      _Dbg_steps=2
+      _Dbg_step_ignore=2
   fi
 }
 
@@ -295,10 +295,10 @@ _Dbg_set_trace() {
 
   if [[ -z $_Dbg_set_trace_init ]] ; then
       _Dbg_set_trace_init=1
-      _Dbg_write_journal "_Dbg_steps=0"
+      _Dbg_write_journal "_Dbg_step_ignore=0"
       trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
   else
-      _Dbg_steps=2
+      _Dbg_step_ignore=2
   fi
 }
 
@@ -319,7 +319,7 @@ _Dbg_set_trace() {
 _Dbg_linetrace_on() {
   set -o functrace
   _Dbg_linetrace=1
-  _Dbg_steps=-1
+  _Dbg_step_ignore=-1
   trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }
 
@@ -351,7 +351,7 @@ _Dbg_handler() {
       _Dbg_do_handle $signame $attr
   done
   _Dbg_linetrace=0
-  _Dbg_steps=-1
+  _Dbg_step_ignore=-1
 }
 
 set -${_Dbg_trace_old_set_opts}

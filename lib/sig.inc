@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-sig.inc - Bourne Again Shell Debugger Signal handling routines
+# sig.inc - Bourne Again Shell Debugger Signal handling routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -123,7 +123,7 @@ _Dbg_debug_trap_handler() {
       unset _Dbg_arg[$_Dbg_i]
   done
  
-  # Populate _Dbg_args with $1, $2, etc.
+  # Populate _Dbg_arg with $1, $2, etc.
   for (( _Dbg_i=1 ; _Dbg_n > 0; _Dbg_n-- )) ; do
     _Dbg_arg[$_Dbg_i]=$1
     ((_Dbg_i++))
@@ -142,9 +142,9 @@ _Dbg_debug_trap_handler() {
   fi
 
   # if in step mode, decrement counter
-  if ((_Dbg_steps >= 0)) ; then 
-    ((_Dbg_steps--))
-    _Dbg_write_journal "_Dbg_steps=$_Dbg_steps"
+  if ((_Dbg_step_ignore >= 0)) ; then 
+    ((_Dbg_step_ignore--))
+    _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
   fi
 
   # look for watchpoints.
@@ -217,7 +217,7 @@ _Dbg_debug_trap_handler() {
   fi
 
   # next, check if step mode and no. of steps is up
-  if ((_Dbg_steps == 0)); then
+  if ((_Dbg_step_ignore == 0)); then
     _Dbg_stop_reason='after being stepped'
     _Dbg_print_source_line
     # _Dbg_msg "Stopped at line $_curline"
@@ -505,4 +505,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: sig.inc,v 1.2 2008/08/02 19:42:38 rockyb Exp $'
+'$Id: sig.inc,v 1.3 2008/08/04 00:43:19 rockyb Exp $'

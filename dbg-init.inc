@@ -31,7 +31,7 @@ typeset -i _cur_line        # current line number of debugged program
 # Is used intially to get out of sourced dbg-main.inc script
 # and in bashdb script to not stop in remaining bashdb statements
 # before the sourcing the script to be debugged.
-typeset -i _Dbg_steps=1
+typeset -i _Dbg_step_ignore=1
 
 # Save the initial working directory so we can reset it on a restart.
 typeset _Dbg_init_cwd=$PWD
@@ -50,7 +50,7 @@ fi
 typeset -r _Dbg_orig_0=$0
 if [[ -n $_Dbg_script ]] ; then 
   ((_Dbg_have_set0)) && [[ -n $_source_file ]] && builtin set0 $_source_file
-  _Dbg_steps=3
+  _Dbg_step_ignore=3
 else 
   . ${_Dbg_libdir}/dbg-pre.inc
   [[ -z $_Dbg_source_file ]] && \
@@ -126,4 +126,4 @@ _Dbg_tempname() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.25 2008/08/03 02:10:57 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.26 2008/08/04 00:43:17 rockyb Exp $'

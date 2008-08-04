@@ -217,53 +217,6 @@ _Dbg_check_line() {
   return 0
 }
 
-# append a command into journal file and then run the command.
-_Dbg_write_journal_eval() {
-  _Dbg_write_journal "$*" 
-  eval "$*"
-}
-
-# append a command into journal file and then run the command.
-_Dbg_write_journal_var() {
-  typeset var_name=$1
-  typeset val
-  typeset val_cmd="$val=\${$var_name}"
-  eval $val_cmd
-  _Dbg_write_journal "${var_name}=${val}" 
-}
-
-_Dbg_write_journal_avar() {
-  typeset decl_str=$(declare -p $1)
-  typeset -a decl_a
-  decl_a=($decl_str)
-  typeset -a decl_a2
-  decl_a2=${decl_a[@]:2}
-  _Dbg_write_journal ${decl_a2[@]}
-}
-
-# Append a command into journal file. But we only need to do
-# if we are in a subshell.
-_Dbg_write_journal() {
-  if (( $BASH_SUBSHELL != 0 )) ; then
-    echo "$@" >> ${_Dbg_journal} 2>/dev/null
-  fi
-  # return $?
-}
-
-# Remove all journal files.
-_Dbg_erase_journals() {
-  rm ${_Dbg_journal} 2>/dev/null
-}
-
-# read in or "source" in journal file which will set variables.
-_Dbg_source_journal() {
-
-  if [ -r $_Dbg_journal ] ; then 
-    . $_Dbg_journal
-    (( BASH_SUBSHELL == 0 )) && _Dbg_erase_journals
-  fi
-}
-
 # Read $1 into _source_$1 array.  Variable _Dbg_read_$1 will be set
 # to 1 to note that the file has been read and the filename will be saved
 # in array _Dbg_filenames
@@ -355,4 +308,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.inc,v 1.1 2008/08/02 22:50:33 rockyb Exp $'
+'$Id: file.inc,v 1.2 2008/08/04 00:43:19 rockyb Exp $'
