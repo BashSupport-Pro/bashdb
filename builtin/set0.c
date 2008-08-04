@@ -1,5 +1,5 @@
 /*   
-  Extends bash with a builtin function to test if a name is defined or not.
+  Set $0, the program name.
 
   To install after compiling:
      cd *this directory* 
@@ -31,13 +31,14 @@ static int set0_builtin (WORD_LIST *list)
     return (EX_USAGE);
   }
 
+  if (dollar_vars[0]) free (dollar_vars[0]);
   dollar_vars[0] = savestring(list->word->word);
-  return EXECUTION_FAILURE;
+  return EXECUTION_SUCCESS;
 }
 
 struct builtin set0_struct = {
   "set0",		/* builtin name */
-  set0_builtin,	       /* function implementing the builtin */
+  set0_builtin,	        /* function implementing the builtin */
   BUILTIN_ENABLED,	/* initial flags for builtin */
   set0_doc,		/* array of long documentation strings. */
   "set0 STRING",        /* usage synopsis; becomes short_doc */

@@ -30,6 +30,7 @@ pkgdata_DATA =        \
 	source.cmd    \
 	undisplay.cmd \
 	up.cmd        \
+	tracefn.cmd   \
 	tty.cmd	      \
 	watch.cmd
 

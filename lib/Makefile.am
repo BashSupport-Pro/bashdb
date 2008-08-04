@@ -14,7 +14,6 @@ pkgdata_DATA =      	\
 	pre.inc  	\
 	processor.inc  	\
 	sig.inc	 	\
-	stack.inc	\
-	tracefn.inc
+	stack.inc
 
 EXTRA_DIST = pre.inc.in $(pkgdata_DATA)
