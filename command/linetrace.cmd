@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # toggle execution trace feature
-_Dbg_do_trace() {
+_Dbg_do_linetrace() {
   ((_Dbg_linetrace=!$_Dbg_linetrace))
 
   _Dbg_msg "Line trace = \c"

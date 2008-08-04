@@ -18,6 +18,7 @@ pkgdata_DATA =        \
 	handle.cmd    \
 	help.cmd      \
 	kill.cmd      \
+	linetrace.cmd \
 	load.cmd      \
 	print.cmd     \
 	pwd.cmd       \
@@ -27,7 +28,6 @@ pkgdata_DATA =        \
 	show.cmd      \
 	signal.cmd    \
 	source.cmd    \
-	trace.cmd     \
 	undisplay.cmd \
 	up.cmd        \
 	tty.cmd	      \
