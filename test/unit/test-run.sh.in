@@ -1,0 +1,27 @@
+#!@BASH_PROG@
+# -*- shell-script -*-
+
+test_not_running()
+{
+    typeset -a errs=()
+    _Dbg_errmsg() { errs+=($1); }
+    typeset -i _Dbg_running=1
+    Dbg_running=1
+    _Dbg_not_running
+    assertFalse "Should report running." "$?"
+    assertEquals  0 ${#errs}
+    Dbg_running=0
+    assertTrue "Should report not running." "$?"
+    # assertEquals  1 ${#errs}
+}
+
+top_builddir=@top_builddir@
+top_builddir=${top_builddir%%/}/
+. ${top_builddir}/lib/run.inc
+
+# load shunit2
+srcdir=@srcdir@
+srcdir=${srcdir}/
+. ${srcdir}/shunit2
+
+
