@@ -150,9 +150,12 @@ test_split()
     assertEquals 'foo' ${words[0]}
 }
 
-# load shunit2
-top_srcdir=@top_builddir@
-. ${top_srcdir}/lib/fns.inc
+top_builddir=@top_builddir@
+top_builddir=${top_builddir%%/}/
+. ${top_builddir}/lib/fns.inc
 
-. ./shunit2
+# load shunit2
+srcdir=@srcdir@
+srcdir=${srcdir}/
+. ${srcdir}/shunit2
 

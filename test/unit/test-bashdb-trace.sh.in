@@ -5,13 +5,15 @@ test_preserve_set_opts()
 {
     set -u
     old_opts=$-
-    . ${top_srcdir}/bashdb-trace -L ${top_srcdir}
+    . ${top_builddir}/bashdb-trace -L ${top_builddir}
     assertEquals $old_opts $-
 }
 
 # load shunit2
-top_srcdir=@top_builddir@
-. ${top_srcdir}/command/tracefn.cmd
+top_builddir=@top_builddir@
+. ${top_builddir}/command/tracefn.cmd
 
-. ./shunit2
+srcdir=@srcdir@
+srcdir=${srcdir}/
+. ${srcdir}/shunit2
 

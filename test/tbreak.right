@@ -51,20 +51,20 @@ FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +### Try some commands that require a running debugger
 +up 1
-No stack.
+** The program is not being run.
 +down 
-No stack.
+** The program is not being run.
 +frame 0
-No stack.
+** The program is not being run.
 +where 
 No stack.
 +info line
 No line number information available.
 +step 
-The program is not being run.
+** The program is not being run.
 +next 
-The program is not being run.
+** The program is not being run.
 +continue 
-The program is not being run.
+** The program is not being run.
 +### quitting...
 +quit 

@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.6 2008/07/16 16:02:25 rockyb Exp $
+#$Id: Makefile.am,v 1.7 2008/08/06 15:39:54 rockyb Exp $
 
 if BUILD_BUILTINS
 BUILTIN_TESTS=test-set0.sh
@@ -12,6 +12,7 @@ TESTS = $(BUILTIN_TESTS) \
         test-fns.sh \
         test-io.sh \
         test-pre.sh \
+        test-run.sh \
         test-stack.sh
 
 abs_srcdir=@abs_srcdir@
