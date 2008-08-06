@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.inc.in,v 1.14 2008/08/02 19:42:38 rockyb Exp $'
+'$Id: dbg-main.inc.in,v 1.15 2008/08/06 15:46:04 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -43,6 +43,51 @@ done
 for file in ${_Dbg_libdir}/lib/*.inc ; do 
     source $file
 done
+
+for file in ${_Dbg_libdir}/command/*.cmd ; do 
+  source $file
+done
+
+if [[ -r /dev/stdin ]] ; then
+  _Dbg_do_source /dev/stdin
+elif [[ $(tty) != 'not a tty' ]] ; then
+  _Dbg_do_source $(tty)
+fi
+
+# ================== INITIALIZATION =====================================
+
+if [[ -r /dev/stdin ]] ; then
+  _Dbg_do_source /dev/stdin
+elif [[ $(tty) != 'not a tty' ]] ; then
+  _Dbg_do_source $(tty)
+fi
+
+# List of command files to process
+typeset -a _Dbg_input
+
+# Have we already specified  where to read debugger input from?
+# Note: index 0 is only set by bashdb. It is not used otherwise for I/O
+# like those indices >= _Dbg_INPUT_START_DESC are.
+if [ -n "$BASHDB_INPUT" ] ; then 
+  _Dbg_input=($BASHDB_INPUT)
+  _Dbg_do_source ${_Dbg_input[0]}
+  _Dbg_no_init=1
+fi
+
+if [[ -z $_Dbg_no_init && -r ~/.bashdbinit ]] ; then
+  _Dbg_do_source ~/.bashdbinit
+fi
+
+# BASHDB_LEVEL is the number of times we are nested inside a debugger
+# by virtue of running "debug" for example.
+if [[ -z "${BASHDB_LEVEL}" ]] ; then
+  typeset -i BASHDB_LEVEL=1
+  export BASHDB_LEVEL
+fi
+
+# This is put at the so we have something at the end to stop at 
+# when we debug this. By stopping at the end all of the above functions
+# and variables can be tested.
 
 if [[ ${_Dbg_libdir:0:1} == '.' ]] ; then
     # Relative file name

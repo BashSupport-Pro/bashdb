@@ -23,10 +23,7 @@
 
 _Dbg_do_next_step_skip() {
 
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg "The program is not being run."
-      return
-  fi
+  _Dbg_not_running && return 1
 
   local cmd=$1
   local count=${2:-1}

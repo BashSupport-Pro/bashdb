@@ -64,10 +64,6 @@ typeset _Dbg_last_x_args=''
 # The canonical name of last command run.
 typeset _Dbg_last_cmd=''
 
-for file in ${_Dbg_libdir}/command/*.cmd ; do 
-  source $file
-done
-
 # ===================== FUNCTIONS =======================================
 
 # Note: We have to be careful here in naming "local" variables. In contrast
@@ -833,38 +829,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-# ================== INITIALIZATION =====================================
-
-if [[ -r /dev/stdin ]] ; then
-  _Dbg_do_source /dev/stdin
-elif [[ $(tty) != 'not a tty' ]] ; then
-  _Dbg_do_source $(tty)
-fi
-
-# List of command files to process
-typeset -a _Dbg_input
-
-# Have we already specified  where to read debugger input from?
-# Note: index 0 is only set by bashdb. It is not used otherwise for I/O
-# like those indices >= _Dbg_INPUT_START_DESC are.
-if [ -n "$BASHDB_INPUT" ] ; then 
-  _Dbg_input=($BASHDB_INPUT)
-  _Dbg_do_source ${_Dbg_input[0]}
-  _Dbg_no_init=1
-fi
-
-if [[ -z $_Dbg_no_init && -r ~/.bashdbinit ]] ; then
-  _Dbg_do_source ~/.bashdbinit
-fi
-
-# BASHDB_LEVEL is the number of times we are nested inside a debugger
-# by virtue of running "debug" for example.
-if [[ -z "${BASHDB_LEVEL}" ]] ; then
-  typeset -i BASHDB_LEVEL=1
-  export BASHDB_LEVEL
-fi
-
-# This is put at the so we have something at the end to stop at 
-# when we debug this. By stopping at the end all of the above functions
-# and variables can be tested.
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.3 2008/08/06 14:53:54 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.4 2008/08/06 15:46:04 rockyb Exp $'

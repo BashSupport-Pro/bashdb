@@ -20,11 +20,13 @@
 
 # Move default values down $1 or one in the stack. 
 _Dbg_do_down() {
+  _Dbg_not_running && return 1
   local -i count=${1:-1}
   _Dbg_adjust_frame $count -1
 }
 
 _Dbg_do_frame() {
+  _Dbg_not_running && return 1
   local -i pos=${1:-0}
   _Dbg_adjust_frame $pos 0
 }
@@ -32,6 +34,7 @@ _Dbg_do_frame() {
 # Move default values up $1 or one in the stack. 
 
 _Dbg_do_up() {
+  _Dbg_not_running && return 1
   local -i count=${1:-1}
   _Dbg_adjust_frame $count +1
 }

@@ -38,10 +38,7 @@ Long command name: continue.
 
 function _Dbg_do_continue {
 
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg 'The program is not being run.'
-      return 1
-  fi
+  _Dbg_not_running && return 1
 
   [[ -z $1 ]] && return 0
   typeset filename

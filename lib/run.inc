@@ -15,7 +15,10 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-alias _Dbg_check_running='if (( ! _Dbg_running )) 
-then _Dbg_errmsg "The program is not being run."
-  return 0
-fi'
+_Dbg_not_running ()  {
+  if (( ! _Dbg_running )) ; then 
+    _Dbg_errmsg 'The program is not being run.'
+    return 0
+  fi
+  return 1
+}
