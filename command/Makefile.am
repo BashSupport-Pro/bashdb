@@ -8,7 +8,6 @@ pkgdata_DATA =        \
 	debug.cmd     \
 	delete.cmd    \
 	disable.cmd   \
-	down.cmd      \
 	edit.cmd      \
 	enable.cmd    \
 	eval.cmd      \
@@ -20,6 +19,7 @@ pkgdata_DATA =        \
 	kill.cmd      \
 	linetrace.cmd \
 	load.cmd      \
+	log.cmd       \
 	print.cmd     \
 	pwd.cmd       \
 	quit.cmd      \
@@ -28,8 +28,8 @@ pkgdata_DATA =        \
 	show.cmd      \
 	signal.cmd    \
 	source.cmd    \
+	stepping.cmd  \
 	undisplay.cmd \
-	up.cmd        \
 	tracefn.cmd   \
 	tty.cmd	      \
 	watch.cmd

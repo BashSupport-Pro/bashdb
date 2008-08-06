@@ -803,32 +803,6 @@ _Dbg_do_list_variables() {
   GLOBIGNORE=$_Dbg_old_glob
 }
 
-_Dbg_do_next_step_skip() {
-
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg "The program is not being run."
-      return
-  fi
-
-  local cmd=$1
-  local count=${2:-1}
-  # Do we step debug into functions called or not?
-  if [[ $cmd == n* ]] ; then
-    _Dbg_old_set_opts="$_Dbg_old_set_opts +o functrace"
-  else
-    _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
-  fi
-  _Dbg_write_journal "_Dbg_old_set_opts=\"$_Dbg_old_set_opts\""
-
-  if [[ $count == [0-9]* ]] ; then
-    let _Dbg_step_ignore=${count:-1}
-  else
-    _Dbg_msg "Argument ($count) should be a number or nothing."
-    _Dbg_step_ignore=1
-  fi
-  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
-}
-
 _Dbg_save_state() {
   _Dbg_statefile=$(_Dbg_tempname statefile)
   echo "" > $_Dbg_statefile
@@ -893,4 +867,4 @@ fi
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.2 2008/08/04 00:43:19 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.3 2008/08/06 14:53:54 rockyb Exp $'

@@ -57,9 +57,9 @@ _Dbg_do_restart() {
     _Dbg_write_journal "BASHDB_RESTART_COMMAND=\"$exec_cmd\""
     _Dbg_do_quit 0
   fi
+  _Dbg_cleanup
   _Dbg_save_state
   builtin cd $_Dbg_init_cwd
 
-  _Dbg_cleanup
   exec $exec_cmd
 }

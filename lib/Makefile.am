@@ -10,9 +10,9 @@ pkgdata_DATA =      	\
 	info.inc    	\
 	journal.inc    	\
 	list.inc    	\
-	log.inc    	\
 	pre.inc  	\
 	processor.inc  	\
+	run.inc  	\
 	sig.inc	 	\
 	stack.inc
 

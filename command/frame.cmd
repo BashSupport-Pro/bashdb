@@ -18,7 +18,20 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+# Move default values down $1 or one in the stack. 
+_Dbg_do_down() {
+  local -i count=${1:-1}
+  _Dbg_adjust_frame $count -1
+}
+
 _Dbg_do_frame() {
   local -i pos=${1:-0}
   _Dbg_adjust_frame $pos 0
+}
+
+# Move default values up $1 or one in the stack. 
+
+_Dbg_do_up() {
+  local -i count=${1:-1}
+  _Dbg_adjust_frame $count +1
 }

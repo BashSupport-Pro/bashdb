@@ -1,19 +1,20 @@
-# dbg-set.inc - Bourne Again Shell Debugger set/show logging
+# -*- shell-script -*-
+# log.cmd - Bourne Again Shell Debugger set/show logging
 #
-#   Copyright (C) 2006 Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2006 Rocky Bernstein rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Sets whether or not to display command to be executed in debugger prompt.
@@ -93,7 +94,6 @@ _Dbg_do_set_logging()
 	;;
       esac
  fi
-set +x
 }
 
 _Dbg_do_show_logging()
@@ -136,9 +136,4 @@ _Dbg_do_show_logging()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_log_ver=\
-'$Id: log.inc,v 1.1 2008/08/02 18:24:08 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
+'$Id: log.cmd,v 1.1 2008/08/06 14:53:54 rockyb Exp $'
