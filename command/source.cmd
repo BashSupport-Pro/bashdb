@@ -23,8 +23,8 @@
 # be picked up in next debugger command loop.
 _Dbg_do_source() {
   local filename
-  if [[ -z "$1" ]] ; then
-    _Dbg_msg "Need to give a filename for the source command"
+  if (( $# == 0 )) ; then
+    _Dbg_errmsg 'Need to give a filename for the "source" command'
     return
   fi
   _Dbg_glob_filename $1

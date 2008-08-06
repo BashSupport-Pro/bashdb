@@ -50,8 +50,8 @@ function _Dbg_resolve_expand_filename {
 
   # Is this one of the files we've that has been specified in a debugger
   # "FILE" command?
-  typeset -r filevar=`_Dbg_file2var $find_file`
-  typeset file_cmd_file=`_Dbg_get_assoc_scalar_entry "_Dbg_file_cmd_" $filevar`
+  typeset -r filevar=$(_Dbg_file2var $find_file)
+  typeset file_cmd_file=$(_Dbg_get_assoc_scalar_entry "_Dbg_file_cmd_" $filevar)
   if [[ -n "$file_cmd_file" ]] ; then
     echo "$file_cmd_file"
     return 0
@@ -101,12 +101,12 @@ _Dbg_linespec_setup() {
   filename=${word[2]}
   local -ir is_function=${word[1]}
   line_number=${word[0]}
-  full_filename=`_Dbg_is_file $filename`
+  full_filename=$(_Dbg_is_file $filename)
 
   if (( is_function )) ; then
       if [[ -z $full_filename ]] ; then 
 	  _Dbg_readin "$filename"
-	  full_filename=`_Dbg_is_file $filename`
+	  full_filename=$(_Dbg_is_file $filename)
       fi
   fi
 }
@@ -174,7 +174,7 @@ _Dbg_file2var() {
 # The result will be in variable $filename which is assumed to be 
 # local'd by the caller
 _Dbg_glob_filename() {
-  typeset cmd="filename=`expr $1`"
+  typeset cmd="filename=$(expr $1)"
   eval $cmd
 }
 
@@ -183,7 +183,7 @@ _Dbg_glob_filename() {
 _Dbg_adjust_filename() {
   typeset -r filename="$1"
   if (( _Dbg_annotate == 1 )) ; then
-    echo `_Dbg_resolve_expand_filename $filename`
+    echo $(_Dbg_resolve_expand_filename $filename)
   elif ((_Dbg_basename_only)) ; then
     echo ${filename##*/}
   else
@@ -195,10 +195,10 @@ _Dbg_adjust_filename() {
 _Dbg_get_maxline() {
   # set -x
   typeset -r filename=$1
-  typeset -r filevar=`_Dbg_file2var $filename`
-  typeset is_read=`_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar`
+  typeset -r filevar=$(_Dbg_file2var $filename)
+  typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
   [ $is_read ] || _Dbg_readin $filename 
-  echo `_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar`
+  echo $(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
   # set +x
 }
 
@@ -207,7 +207,7 @@ _Dbg_get_maxline() {
 _Dbg_check_line() {
   typeset -ir line_number=$1
   typeset filename=$2
-  typeset -i max_line=`_Dbg_get_maxline $filename`
+  typeset -i max_line=$(_Dbg_get_maxline $filename)
   if (( $line_number >  max_line )) ; then 
     (( _Dbg_basename_only )) && filename=${filename##*/}
     _Dbg_msg "Line $line_number is too large." \
@@ -266,7 +266,7 @@ function _Dbg_readin {
 	  if (( i % 1000 == 0 )) ; then
 	    if (( i==NOT_SMALLFILE )) ; then
 	      if wc -l < /dev/null >/dev/null 2>&1 ; then 
-		line_count=`wc -l < "${fullname}"`
+		line_count=$(wc -l < "${fullname}")
 	      else
 		_Dbg_msg_nocr "${progress_prefix} "
 	      fi
@@ -308,4 +308,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.inc,v 1.2 2008/08/04 00:43:19 rockyb Exp $'
+'$Id: file.inc,v 1.3 2008/08/06 23:27:29 rockyb Exp $'
