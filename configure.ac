@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.47 2008/08/06 15:46:04 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.48 2008/08/07 14:23:54 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -63,7 +63,7 @@ AC_ARG_ENABLE([gnugetopt],
 AC_BASHDB_PACKAGE([bashdb])
 
 # Brought over from bash/configure.in to substitute OK_BASH_VERS
-# and RELSTATUS in dbg-pre.inc.in and version.texi
+# and RELSTATUS in dbg-pre.sh.in and version.texi
 BASHVERS=OK_BASH_VERS
 RELSTATUS=relstatus
 
@@ -130,8 +130,8 @@ case "${bash_major}.${bash_minor}" in
     ;; 
 esac
 
-AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main], 
-		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
+AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
+		  [location of dbg-main.sh]), BASHDB_MAIN=$withval)
 
 # See if we build readarray.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
@@ -149,7 +149,7 @@ if test -z "$BASHDB_MAIN" ; then
   BASHDB_MAIN=`strings $BASH_PROG$EXEEXT | grep bashdb-main.inc`
   if test -z "$BASHDB_MAIN" ; then
      AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the 
-right version of bash, set it with the --with-bashdb-main option])
+right version of bash, set it with the --with-dbg-main option])
   fi
 fi
 
@@ -176,7 +176,7 @@ AC_SUBST_DIR(INTERPRETER_NAME,"${bindir}/"`echo bash | sed "$ac_transform"`)
 # determined dynamically below.
 
 # Get the fully expanded name of pkgdatadir. This is used in bashdb.in
-# and dbg-main.inc.in and for installing debugger files.
+# and dbg-main.sh.in and for installing debugger files.
 
 pkgdatadir=$datadir/bashdb
 AC_SUBST_DIR(PKGDATADIR, $pkgdatadir)
@@ -239,9 +239,9 @@ AC_CONFIG_FILES([test/unit/test-stack.sh], [chmod +x test/unit/test-stack.sh])
 
 AC_CONFIG_FILES([ \
 	bashdb-trace \
-	dbg-main.inc \
+	dbg-main.sh \
+	dbg-pre.sh \
         emacs/bashdb-test.el \
-	lib/pre.inc \
 	test/check_common \
 	doc/macros.texi \
 	])

@@ -28,7 +28,7 @@ typeset _cur_fn             # current function of debugged program
 typeset -i _cur_line        # current line number of debugged program
 
 # Number of statements to run before entering the debugger.
-# Is used intially to get out of sourced dbg-main.inc script
+# Is used intially to get out of sourced dbg-main.sh script
 # and in bashdb script to not stop in remaining bashdb statements
 # before the sourcing the script to be debugged.
 typeset -i _Dbg_step_ignore=1
@@ -52,7 +52,7 @@ if [[ -n $_Dbg_script ]] ; then
   ((_Dbg_have_set0)) && [[ -n $_source_file ]] && builtin set0 $_source_file
   _Dbg_step_ignore=3
 else 
-  . ${_Dbg_libdir}/dbg-pre.inc
+  . ${_Dbg_libdir}/dbg-pre.sh
   [[ -z $_Dbg_source_file ]] && \
       typeset -r _Dbg_source_file=$(_Dbg_expand_filename $_Dbg_orig_0)
   typeset -i _Dbg_n=$#
@@ -126,4 +126,4 @@ _Dbg_tempname() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.26 2008/08/04 00:43:17 rockyb Exp $'
+'$Id: dbg-init.inc,v 1.27 2008/08/07 14:23:54 rockyb Exp $'

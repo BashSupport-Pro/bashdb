@@ -10,7 +10,6 @@ pkgdata_DATA =      	\
 	info.inc    	\
 	journal.inc    	\
 	list.inc    	\
-	pre.inc  	\
 	processor.inc  	\
 	run.inc  	\
 	sig.inc	 	\

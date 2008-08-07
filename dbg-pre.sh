@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-pre.inc - Bourne Again Shell Debugger Global Variables
+# dbg-pre.inc.in - Bourne Again Shell Debugger Global Variables
 #   Copyright (C) 2002, 2003, 2004, 2008 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -27,7 +27,7 @@
 # the corresponding file.
 
 [[ -z $_Dbg_release ]] || return
-typeset -r _Dbg_release='bash-@BASHVERS@-@RELSTATUS@'
+typeset -r _Dbg_release='bash-3.1-0.10cvs'
 
 # Expand filename given as $1.
 # we echo the expanded name or return $1 unchanged if a bad filename.
@@ -69,10 +69,4 @@ function _Dbg_expand_filename {
     return 1
   fi
 }
-
-# This is put at the end so we have something at the end to stop at 
-# when we debug this. By stopping at the end all of the above functions
-# and variables can be tested.
-typeset -r _Dbg_pre_ver=\
-'$Id: pre.inc.in,v 1.1 2008/08/02 22:50:33 rockyb Exp $'
 
