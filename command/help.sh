@@ -274,7 +274,7 @@ l .             Same as above.
                 return ;;
 	    so | sou | sour | sourc | source )
 		_Dbg_msg \
-"source file     Read in debugger command file."
+'source file     Read in debugger command file.'
                 return ;;
 	    t | to | tog | togg | toggl | toggle ) 
 		_Dbg_msg \

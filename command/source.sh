@@ -38,9 +38,9 @@ _Dbg_do_source() {
     else 
       local -i max_nesting
       ((max_nesting=_Dbg_MAX_INPUT_DESC-_Dbg_INPUT_START_DESC+1))
-      _Dbg_msg "Source nesting too deep; nesting can't be greater than $max_nesting."
+      _Dbg_errmsg "Source nesting too deep; nesting can't be greater than $max_nesting."
     fi
   else
-    _Dbg_msg "Source file $filename is not readable."
+    _Dbg_errmsg "Source file $filename is not readable."
   fi
 }

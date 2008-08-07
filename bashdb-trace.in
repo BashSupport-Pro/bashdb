@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.25 2008/08/07 14:33:40 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.26 2008/08/07 14:46:59 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -112,7 +112,7 @@ typeset _Dbg_pname=${0##*/}
 # Show basename only in location listing. This is needed in regression tests
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
-typeset _Dbg_main=dbg-main.inc
+typeset _Dbg_main=dbg-main.sh
 prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset _Dbg_libdir=@PKGDATADIR@
 typeset _Dbg_bindir=$(dirname $0)

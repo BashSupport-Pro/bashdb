@@ -41,6 +41,9 @@ typeset -i  _Dbg_inside_skip=0
 # interactive.
 typeset -a _Dbg_cmdfile=('')
 
+# List of command files to process
+typeset -a _Dbg_input=()
+
 # A variable holding a space is set so it can be used in a "set prompt" command
 # ("read" in the main command loop will remove a trailing space so we need
 # another way to allow a user to enter spaces in the prompt.)
@@ -126,8 +129,8 @@ function _Dbg_process_commands {
 
     while read $_Dbg_edit -p "$_Dbg_prompt" \
       _Dbg_cmd args \
-      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output; do
-
+      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
+    do
       if (( _Dbg_brkpt_commands_defining )) ; then
 	  case $_Dbg_cmd in
 	      silent ) 
@@ -179,7 +182,7 @@ function _Dbg_process_commands {
   done  # Loop over all open pending file descriptors
 
   # EOF hit. Same as quit without arguments
-  _Dbg_msg "" # Cause <cr> since EOF may not have put in.
+  _Dbg_msg '' # Cause <cr> since EOF may not have put in.
   _Dbg_do_quit
 }
 
@@ -829,4 +832,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.4 2008/08/06 15:46:04 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.5 2008/08/07 14:46:59 rockyb Exp $'

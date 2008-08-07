@@ -32,6 +32,16 @@ test_defined()
 
 test_esc_dq()
 {
+    check_esc_dq () {
+	local orig="$1"
+	local transform="$(_Dbg_esc_dq "$orig")"
+	eval 'got=$(echo "$1")'
+	assertEquals "$orig" "$got"
+    }
+    check_esc_dq 'Now is the time'
+    check_esc_dq '"Now is the time"'
+    check_esc_dq 'Make $$'
+
     assertEquals 'abc' $(_Dbg_esc_dq abc)
     assertEquals '\\\"abc\\\"' $(_Dbg_esc_dq '\"abc\"')
     assertEquals '\\\"a\\bc\\\"' $(_Dbg_esc_dq '\"a\bc\"')
