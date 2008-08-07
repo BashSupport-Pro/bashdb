@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# kill.cmd - gdb-like "kill" debugger command
+# signal.sh - gdb-like "signal" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -18,12 +18,31 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-_Dbg_do_kill() {
-  local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
-  read $_Dbg_edit -p "Do hard kill and terminate the debugger? (y/n): " \
-      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
-
-  if [[ $REPLY = [Yy]* ]] ; then 
-      kill -9 $$
+_Dbg_do_signal() {
+  typeset sig=$1
+  typeset -i signum
+  if [[ -z $sig ]] ; then
+    _Dbg_msg "Missing signal name or signal number."
+    return 1
   fi
+
+  eval "$_seteglob"
+  if [[ $sig == $int_pat ]]; then
+    eval "$_resteglob"
+    signame=$(_Dbg_signum2name $sig)
+    if (( $? != 0 )) ; then
+      _Dbg_msg "Bad signal number: $sig"
+      return 1
+    fi
+    signum=sig
+  else
+    eval "$_resteglob"
+    typeset signum;
+    signum=$(_Dbg_name2signum $sig)
+    if (( $? != 0 )) ; then
+      _Dbg_msg "Bad signal name: $sig"
+      return 1
+    fi
+  fi
+  kill -$signum $$
 }

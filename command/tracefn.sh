@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-
+#
 #   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -82,8 +82,3 @@ function _Dbg_do_untrace_fn {
     eval "$cmd" || return 6
     return 0
 }
-
-# This is put at the end so we have something at the end when we debug this.
-[[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_tracefns_ver=\
-'$Id: tracefn.cmd,v 1.1 2008/08/04 12:00:38 rockyb Exp $'
-

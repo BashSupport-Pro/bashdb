@@ -21,7 +21,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.3 2008/08/02 22:50:33 rockyb Exp $'
+'$Id: brk.inc,v 1.4 2008/08/07 14:06:49 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -792,35 +792,6 @@ _Dbg_eval_all_display() {
   done
 }  
 
-# Set display command or list all current display expressions
-_Dbg_do_display() {
-  if [[ -z "$@" ]]; then
-    _Dbg_eval_all_display
-  else 
-    local -i n=_Dbg_disp_max++
-    _Dbg_disp_exp[$n]="$@"
-    _Dbg_disp_enable[$n]=1
-    _Dbg_printf '%2d: %s' $n "${_Dbg_disp_exp[$n]}"
-  fi
-}
-
-# List display command(s)
-_Dbg_do_list_display() {
-  if [ ${#_Dbg_disp_exp[@]} != 0 ]; then
-    local i=0 j
-    _Dbg_msg "Display expressions:"
-    _Dbg_msg "Num Enb Expression          "
-    for (( i=0; (( i < _Dbg_disp_max )); i++ )) ; do
-      if [ -n "${_Dbg_disp_exp[$i]}" ] ;then
-	_Dbg_printf '%-3d %3d %s' \
-	  $i ${_Dbg_disp_enable[$i]} "${_Dbg_disp_exp[$i]}"
-      fi
-    done
-  else
-    _Dbg_msg "No display expressions have been set."
-  fi
-}
-
 # Enable/disable display(s) by entry numbers.
 _Dbg_enable_disable_display() {
   local -i on=$1
@@ -839,4 +810,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z _Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.3 2008/08/02 22:50:33 rockyb Exp $'
+'$Id: brk.inc,v 1.4 2008/08/07 14:06:49 rockyb Exp $'

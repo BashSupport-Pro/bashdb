@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# signal.cmd - gdb-like "signal" debugger command
+# disable.sh - gdb-like "disable" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -18,32 +18,7 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-_Dbg_do_signal() {
-  typeset sig=$1
-  typeset -i signum
-  if [[ -z $sig ]] ; then
-    _Dbg_msg "Missing signal name or signal number."
-    return 1
-  fi
-
-  eval "$_seteglob"
-  if [[ $sig == $int_pat ]]; then
-    eval "$_resteglob"
-    signame=$(_Dbg_signum2name $sig)
-    if (( $? != 0 )) ; then
-      _Dbg_msg "Bad signal number: $sig"
-      return 1
-    fi
-    signum=sig
-  else
-    eval "$_resteglob"
-    typeset signum;
-    signum=$(_Dbg_name2signum $sig)
-    if (( $? != 0 )) ; then
-      _Dbg_msg "Bad signal name: $sig"
-      return 1
-    fi
-  fi
-  kill -$signum $$
+# Enable breakpoint(s)/watchpoint(s) by entry number(s).
+_Dbg_do_enable() {
+  _Dbg_enable_disable 1 "enabled" $@
 }
-

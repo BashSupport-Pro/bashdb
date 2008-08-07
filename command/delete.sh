@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# delete.cmd - gdb-like "delete" debugger command
+# delete.sh - gdb-like "delete" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org

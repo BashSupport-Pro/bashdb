@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-edit.inc - Bourne Again Shell Debugger Edit routines
+# dbg-edit.sh - Bourne Again Shell Debugger Edit routines
 
 #   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
 #
@@ -18,9 +18,6 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 #================ VARIABLE INITIALIZATIONS ====================#
-
-typeset -r _Dbg_edit_ver=\
-'$Id: edit.cmd,v 1.2 2008/08/02 22:50:33 rockyb Exp $'
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
 _Dbg_do_edit() {

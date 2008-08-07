@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# stepping.cmd - Bourne Again Shell Debugger step/next logging
+# stepping.sh - Bourne Again Shell Debugger step/next logging
 #
 #   Copyright (C) 2006, 2008 Rocky Bernstein rocky@gnu.org
 #
@@ -43,4 +43,3 @@ _Dbg_do_next_step_skip() {
   fi
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 }
-

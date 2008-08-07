@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# handle.cmd - gdb-like "handle" debugger command
+# handle.sh - gdb-like "handle" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org

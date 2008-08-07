@@ -1,5 +1,4 @@
-# -*- shell-script -*-
-# continue.cmd - gdb-like "continue" debugger command
+# commmands.sh - gdb-like "commands" debugger command.
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -25,45 +24,29 @@
 # $3 is which entry we start from; the "up", "down" and the "frame"
 # commands may shift this.
 
-function _Dbg_help_continue {
-    _Dbg_msg \
-"c [linespec | - ]  Continue execution until the next breakpoint or end of 
-                   program or linespec. 
-
-If instead of a line specification you enter -, then debugging will be turned 
-off after continuing causing your program to run at full speed.
-Long command name: continue.
-"
-}
-
-function _Dbg_do_continue {
-
-  _Dbg_not_running && return 1
-
-  [[ -z $1 ]] && return 0
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  if [[ $1 == '-' ]] ; then
-    _Dbg_restore_debug_trap=0
-    return 0
+_Dbg_do_commands() {
+  eval "$_seteglob"
+  local num=$1
+  local -i found=0
+  case $num in
+      $int_pat )
+	  if [[ -z ${_Dbg_brkpt_file[$num]} ]] ; then
+	      _Dbg_msg "No breakpoint number $num."
+	      return 0
+	  fi
+	  ((found=1))
+	;;
+      * )
+	_Dbg_msg "Invalid entry number skipped: $num"
+  esac
+  eval "$_resteglob"
+  if (( found )) ; then 
+      _Dbg_brkpt_commands_defining=1
+      _Dbg_brkpt_commands_current=$num
+      _Dbg_brkpt_commands_end[$num]=${#_Dbg_brkpt_commands[@]}
+      _Dbg_brkpt_commands_start[$num]=${_Dbg_brkpt_commands_end[$num]}
+      _Dbg_msg "Type commands for when breakpoint $found hit, one per line."
+      _Dbg_prompt='>'
+      return 1
   fi
-
-  _Dbg_linespec_setup $1
-
-  if [[ -n $full_filename ]] ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg 'There is no line 0 to continue at.'
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_set_brkpt "$full_filename" "$line_number" 1 1
-      return 0
-    fi
-  else
-    _Dbg_file_not_read_in $filename
-  fi
-  return 1
 }
-

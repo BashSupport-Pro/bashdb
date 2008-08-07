@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# log.cmd - Bourne Again Shell Debugger set/show logging
+# log.sh - Bourne Again Shell Debugger set/show logging
 #
 #   Copyright (C) 2006 Rocky Bernstein rocky@gnu.org
 #
@@ -136,4 +136,4 @@ _Dbg_do_show_logging()
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_log_ver=\
-'$Id: log.cmd,v 1.1 2008/08/06 14:53:54 rockyb Exp $'
+'$Id: log.sh,v 1.1 2008/08/07 14:06:48 rockyb Exp $'

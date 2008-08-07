@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# restart.cmd - gdb-like "restart" debugger command
+# restart.sh - gdb-like "restart" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
 #   rocky@gnu.org

@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.inc.in,v 1.15 2008/08/06 15:46:04 rockyb Exp $'
+'$Id: dbg-main.inc.in,v 1.16 2008/08/07 14:06:47 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -44,7 +44,7 @@ for file in ${_Dbg_libdir}/lib/*.inc ; do
     source $file
 done
 
-for file in ${_Dbg_libdir}/command/*.cmd ; do 
+for file in ${_Dbg_libdir}/command/*.sh ; do 
   source $file
 done
 

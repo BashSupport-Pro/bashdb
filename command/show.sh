@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# show.cmd - Bourne Again Shell Debugger Set Routines
+# show.sh - Bourne Again Shell Debugger Set Routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -454,12 +454,3 @@ _Dbg_do_show_versions()
     done
   fi
 }
-
-# This is put at the so we have something at the end when we debug this.
-typeset -r _Dbg_show_ver=\
-'$Id: show.cmd,v 1.1 2008/08/02 22:50:33 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
