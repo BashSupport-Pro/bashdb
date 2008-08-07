@@ -14,8 +14,8 @@ config.h.in
 config.log
 config.status
 configure
-dbg-main.inc
-dbg-pre.inc
+dbg-main.sh
+dbg-pre.sh
 install-sh
 libtool
 missing
