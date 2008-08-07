@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with Bash; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.28 2008/08/07 14:23:54 rockyb Exp $
+#$Id: Makefile.am,v 1.29 2008/08/07 14:33:40 rockyb Exp $
 
 subdirs = command lib doc emacs test
 if BUILD_BUILTINS
@@ -41,7 +41,7 @@ pkgdata_DATA = dbg-init.inc     \
 	       dbg-set-d-vars.inc  \
 	       bashdb-trace
 
-EXTRA_DIST = bashdb.in bashdb-trace.in dbg-main.inc.in \
+EXTRA_DIST = bashdb.in bashdb-trace.in dbg-main.sh.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     getopt-test.sh \
 	     ChangeLog ChangeLog.0 
@@ -69,7 +69,7 @@ OLD_MAIN   = $(notdir @BASHDB_MAIN@)
 PARENT_DIR = $(dir $(OLD_DIR))
 install-data-hook: 
 	@if test -e @BASHDB_MAIN@ ; then \
-	  if test "$(OLD_MAIN)" != "dbg-main.inc" ; then \
+	  if test "$(OLD_MAIN)" != "dbg-main.sh" ; then \
 	    $(RM) @BASHDB_MAIN@ || true; \
           fi; fi
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
@@ -83,7 +83,7 @@ install-data-hook:
 	@if test $(DESTDIR)$(PKGDATADIR) != $(DESTDIR)$(PARENT_DIR:/=) ; then \
 	  $(LN_S) $(DESTDIR)$(PKGDATADIR) $(DESTDIR)$(PARENT_DIR:/=) || true; \
         fi
-	@if test "dbg-main.inc" != "$(OLD_MAIN)" ; then \
+	@if test "dbg-main.sh" != "$(OLD_MAIN)" ; then \
 	  ( if cd $(DESTDIR)$(pkgdatadir) ; then \
 	     test -e $(OLD_MAIN) && $(RM) $(OLD_MAIN); \
 	     $(LN_S) dbg-main.inc $(OLD_MAIN) || \

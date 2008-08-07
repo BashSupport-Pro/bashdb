@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.24 2008/08/07 14:23:54 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.25 2008/08/07 14:33:40 rockyb Exp $'
 
 _Dbg_usage_long() {
   printf "_Dbg_usage:
@@ -259,7 +259,7 @@ EOF
   exit 1
 fi
 
-. $_Dbg_libdir/dbg-main.inc
+. $_Dbg_libdir/dbg-main.sh
 trap '' DEBUG
 
 # Enter the debugger at the calling stack frame.  This is useful to
