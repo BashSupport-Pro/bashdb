@@ -1,21 +1,16 @@
 #!/bin/sh
-#$Id: brkpt1.tests,v 1.2 2008/08/08 20:56:22 rockyb Exp $
+# -*- shell-script -*-
+#$Id: brkpt1.tests,v 1.3 2008/08/08 22:04:18 rockyb Exp $
 
-if test -z $srcdir  ; then
-  srcdir=`pwd`
-fi
+[ -z "$srcdir" ] && srcdir=$PWD
+[ -z "$builddir" ] && builddir=$PWD
 d="$srcdir/.."
 
 if test -z $top_builddir ; then
   top_builddir=..
 fi
 
-cmdfile="brkpt1.cmd"
+cmdfile="$srcdir/data/brkpt1.cmd"
 debugged_script="dbg-test1.sh"
 
 $BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $cmdfile $debugged_script
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

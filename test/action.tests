@@ -1,11 +1,11 @@
 #!../../bash
-#$Id: action.tests,v 1.4 2008/08/08 20:56:22 rockyb Exp $
+#$Id: action.tests,v 1.5 2008/08/08 22:04:18 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
 fi
 
-cmdfile=action.cmd
+cmdfile=${srcdir}/data/action.cmd
 debugged_script=dbg-test1.sh
 
 $BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $cmdfile $debugged_script
