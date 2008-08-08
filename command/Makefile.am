@@ -21,7 +21,6 @@ pkgdata_DATA =        \
 	linetrace.sh \
 	load.sh      \
 	log.sh       \
-	print.sh     \
 	pwd.sh       \
 	quit.sh      \
 	restart.sh   \

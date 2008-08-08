@@ -34,3 +34,14 @@ _Dbg_do_eval() {
   # like they were before debugger entry - so reset them now
   _Dbg_set_debugger_internal
 }
+
+# The arguments in the last "print" command.
+typeset _Dbg_last_print_args=''
+
+_Dbg_do_print() {
+  local -r _Dbg_expr=${@:-"$_Dbg_last_print_args"}
+  local -r dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
+  . ${_Dbg_libdir}/dbg-set-d-vars.inc
+  eval "_Dbg_msg $_Dbg_expr"
+  _Dbg_last_print_args="$dq_expr"
+}
