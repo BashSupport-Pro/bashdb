@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# stack.inc - Bourne Again Shell Debugger Call Stack routines
+# stack.sh - Bourne Again Shell Debugger Call Stack routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -144,4 +144,4 @@ _Dbg_do_info_args() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: stack.inc,v 1.1 2008/08/02 19:14:34 rockyb Exp $'
+_Dbg_stack_ver='$Id: stack.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'

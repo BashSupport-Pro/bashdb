@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# brk.inc - Bourne Again Shell Debugger Break/Watch/Action routines
+# brk.sh - Bourne Again Shell Debugger Break/Watch/Action routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -21,7 +21,7 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.4 2008/08/07 14:06:49 rockyb Exp $'
+'$Id: brk.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -465,10 +465,10 @@ _Dbg_get_watch_exp_eval() {
   if [[ `eval echo \"${_Dbg_watch_exp[$i]}\"` == "" ]]; then
     new_val=''
   elif (( ${_Dbg_watch_arith[$i]} == 1 )) ; then
-    . ${_Dbg_libdir}/dbg-set-d-vars.inc 
+    . ${_Dbg_libdir}/dbg-set-d-vars.inc
     eval let new_val=\"${_Dbg_watch_exp[$i]}\"
   else
-    . ${_Dbg_libdir}/dbg-set-d-vars.inc 
+    . ${_Dbg_libdir}/dbg-set-d-vars.inc
     eval new_val="${_Dbg_watch_exp[$i]}"
   fi
   echo $new_val
@@ -810,4 +810,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z _Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.inc,v 1.4 2008/08/07 14:06:49 rockyb Exp $'
+'$Id: brk.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'

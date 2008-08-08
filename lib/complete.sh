@@ -71,7 +71,7 @@ _Dbg_do_complete() {
 }
 
 typeset -r _Dbg_complete_ver=\
-'$Id: complete.inc,v 1.2 2008/08/02 19:42:38 rockyb Exp $'
+'$Id: complete.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

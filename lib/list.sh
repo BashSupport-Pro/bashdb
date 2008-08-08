@@ -1,4 +1,4 @@
-# dbg-list.inc - Bourne Again Shell Debugger list/search commands
+# dbg-list.sh - Bourne Again Shell Debugger list/search commands
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
 #
@@ -266,7 +266,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: list.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
+_Dbg_list_ver='$Id: list.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

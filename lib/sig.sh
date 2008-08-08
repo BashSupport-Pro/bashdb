@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# sig.inc - Bourne Again Shell Debugger Signal handling routines
+# sig.sh - Bourne Again Shell Debugger Signal handling routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -505,4 +505,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: sig.inc,v 1.3 2008/08/04 00:43:19 rockyb Exp $'
+'$Id: sig.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'

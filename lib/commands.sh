@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# commands.inc - Bourne Again Shell Debugger 
+# commands.sh - Bourne Again Shell Debugger 
 #
 #   Copyright (C) 2006, 2008 Rocky Bernstein rocky@gnu.org
 #

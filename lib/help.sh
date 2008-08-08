@@ -1,4 +1,4 @@
-# dbg-help.inc - Bourne Again Shell Debugger Help Routines
+# dbg-help.sh - Bourne Again Shell Debugger Help Routines
 
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -210,7 +210,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.inc,v 1.2 2008/08/02 18:57:41 rockyb Exp $'
+'$Id: help.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

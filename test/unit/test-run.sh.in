@@ -18,7 +18,7 @@ test_not_running()
 
 top_builddir=@top_builddir@
 top_builddir=${top_builddir%%/}/
-. ${top_builddir}/lib/run.inc
+. ${top_builddir}/lib/run.sh
 
 # load shunit2
 srcdir=@srcdir@

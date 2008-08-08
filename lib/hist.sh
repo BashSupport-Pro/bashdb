@@ -1,4 +1,4 @@
-# dbg-hist.inc - Bourne Again Shell Debugger history routines
+# dbg-hist.sh - Bourne Again Shell Debugger history routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007 Rocky Bernstein
 #   rockyb@users.sourceforge.net
@@ -157,7 +157,7 @@ _Dbg_read_history
 
 # This is put at the so we have something at the end when we debug this.
 typeset -r _Dbg_hist_ver=\
-'$Id: hist.inc,v 1.1 2008/08/02 17:38:33 rockyb Exp $'
+'$Id: hist.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

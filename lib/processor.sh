@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-processor.inc - Bourne Again Shell Debugger Top-level debugger commands
+# dbg-processor.sh - Bourne Again Shell Debugger Top-level debugger commands
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -75,7 +75,7 @@ typeset _Dbg_last_cmd=''
 # in the debugger, we prefer to preface these with _Dbg_.
 function _Dbg_process_commands {
 
-  # THIS SHOULD BE DONE IN dbg-sig.inc, but there's a bug in BASH in 
+  # THIS SHOULD BE DONE IN dbg-sig.sh, but there's a bug in BASH in 
   # trying to change "trap RETURN" inside a "trap RETURN" handler....
   # Turn off return trapping. Not strictly necessary, since it *should* be 
   # covered by the _Dbg_ test below if we've named functions correctly.
@@ -832,4 +832,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.inc,v 1.5 2008/08/07 14:46:59 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'

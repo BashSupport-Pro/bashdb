@@ -162,7 +162,7 @@ test_split()
 
 top_builddir=@top_builddir@
 top_builddir=${top_builddir%%/}/
-. ${top_builddir}/lib/fns.inc
+. ${top_builddir}/lib/fns.sh
 
 # load shunit2
 srcdir=@srcdir@

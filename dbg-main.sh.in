@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -r _Dbg_main_ver=\
-'$Id: dbg-main.sh.in,v 1.1 2008/08/07 14:23:54 rockyb Exp $'
+'$Id: dbg-main.sh.in,v 1.2 2008/08/08 21:17:30 rockyb Exp $'
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
@@ -37,7 +37,7 @@ prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset -r _Dbg_includes='init io'
 
 for file in $_Dbg_includes ; do 
-  source ${_Dbg_libdir}/dbg-${file}.inc
+  source ${_Dbg_libdir}/dbg-${file}.sh
 done
 
 for file in ${_Dbg_libdir}/lib/*.inc ; do 

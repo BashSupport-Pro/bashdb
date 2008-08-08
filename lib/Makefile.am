@@ -1,18 +1,18 @@
 pkgdatadir        = ${datadir}/@PACKAGE@/lib
 pkgdata_DATA =      	\
-	brk.inc    	\
-	commands.inc  	\
-	complete.inc  	\
-	file.inc  	\
-	fns.inc  	\
-	help.inc    	\
-	hist.inc    	\
-	info.inc    	\
-	journal.inc    	\
-	list.inc    	\
-	processor.inc  	\
-	run.inc  	\
-	sig.inc	 	\
-	stack.inc
+	brk.sh    	\
+	commands.sh  	\
+	complete.sh  	\
+	file.sh  	\
+	fns.sh  	\
+	help.sh    	\
+	hist.sh    	\
+	info.sh    	\
+	journal.sh    	\
+	list.sh    	\
+	processor.sh  	\
+	run.sh  	\
+	sig.sh	 	\
+	stack.sh
 
-EXTRA_DIST = pre.inc.in $(pkgdata_DATA)
+EXTRA_DIST = $(pkgdata_DATA)

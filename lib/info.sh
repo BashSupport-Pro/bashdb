@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# info.inc - Bourne Again Shell Debugger Help Routines
+# info.sh - Bourne Again Shell Debugger Help Routines
 
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -123,7 +123,7 @@ _Dbg_do_info() {
     shift
     case $info_cmd in 
       a | ar | arg | args )
-        _Dbg_do_info_args 3  # located in dbg-stack.inc
+        _Dbg_do_info_args 3  # located in dbg-stack.sh
 	return
 	;;
       b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
@@ -274,4 +274,4 @@ function _Dbg_info_signals {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: info.inc,v 1.2 2008/08/02 19:42:38 rockyb Exp $'
+'$Id: info.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
