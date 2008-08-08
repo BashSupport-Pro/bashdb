@@ -1,32 +1,24 @@
 #!/bin/sh
-#$Id: test-bugIFS,v 1.1 2007/11/13 16:20:08 rockyb Exp $
+# -*- shell-script -*-
+#$Id: test-bugIFS,v 1.2 2008/08/08 09:14:52 rockyb Exp $
 
 if test -z "$srcdir"  ; then
-  srcdir=`pwd`
+  srcdir=$PWD
 fi
 
 if test -z "$builddir"  ; then
-  builddir=`pwd`
+  builddir=$PWD
 fi
+
+TEST_NAME='bugIFS'
 
 . ${builddir}/check_common
 
-TEST_NAME='bugIFS'
-TEST_FILE="$builddir/${TEST_NAME}.check"
-RIGHT_FILE="${srcdir}/${TEST_NAME}.right"
-TEST_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.check"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-cat ${TEST_FILE} | sed -e 's/declare --/declare -x/'>${TEST_FILTERED_FILE}
-
-check_output $TEST_FILTERED_FILE ${RIGHT_FILE} && {
+check_output $TEST_FILE ${RIGHT_FILE} && {
   rm -f $TEST_FILE
 }
 
 # Return code tells testing mechanism whether passed or not.
 exit $?
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

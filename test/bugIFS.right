@@ -1,25 +1,11 @@
 (bugIFS.sh:3):
-3:	interface_names='qfe0 qfe3'
+3:	IFS="."
 +# Debugger test of an old IFS bug
 +# 
-+### Going to the location where IFS should be reset in the code...
-+continue 5
-One-time breakpoint 1 set in file bugIFS.sh, line 5.
-(bugIFS.sh:5):
-5:	IFS=" ."
-+e _Dbg_print_source_line 5
-(bugIFS.sh:5):
-5:	IFS=" ."
 +step 
-(bugIFS.sh:6):
-6:	set -- $interface_names
-+## Make sure IFS in an eval is the same as what we just set.
-+eval declare -p IFS
-declare -x IFS=" ."
-+step 2
-(bugIFS.sh:8):
-8:	exit 0
+(bugIFS.sh:4):
+4:	PS4='foo'
 +## Make sure PS4 in an eval is the same as what we just set.
-+eval declare -p PS4
-declare -x PS4="foo"
++p "+$IFS+"
++.+
 +quit 
