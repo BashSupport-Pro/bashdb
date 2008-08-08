@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: test-frame,v 1.1 2007/11/13 16:20:08 rockyb Exp $
+#$Id: test-frame,v 1.2 2008/08/08 20:56:22 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -9,7 +9,7 @@ if test -z "$builddir"  ; then
   builddir=`pwd`
 fi
 
-. ${builddir}/check_common
+. ${builddir}/check-common.sh
 
 TEST_NAME='frame'
 TEST_FILE="$builddir/${TEST_NAME}.check"

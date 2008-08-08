@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: restart.tests,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+#$Id: restart.tests,v 1.2 2008/08/08 20:56:22 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
@@ -8,7 +8,7 @@ fi
 cmdfile="restart.cmd"
 debugged_script="restartbug.sh"
 
-$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile $debugged_script
+$BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $cmdfile $debugged_script
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

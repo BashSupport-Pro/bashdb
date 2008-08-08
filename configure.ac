@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.48 2008/08/07 14:23:54 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.49 2008/08/08 20:56:22 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -242,7 +242,7 @@ AC_CONFIG_FILES([ \
 	dbg-main.sh \
 	dbg-pre.sh \
         emacs/bashdb-test.el \
-	test/check_common \
+	test/check-common.sh \
 	doc/macros.texi \
 	])
 

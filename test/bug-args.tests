@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: bug-args.tests,v 1.2 2006/12/19 00:39:28 rockyb Exp $
+#$Id: bug-args.tests,v 1.3 2008/08/08 20:56:22 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
@@ -12,7 +12,7 @@ fi
 cmdfile="$srcdir/bug-args.cmd"
 debugged_script="$builddir/bug-args.sh"
 
-$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile -- $debugged_script --help
+$BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $cmdfile -- $debugged_script --help
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

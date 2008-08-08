@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: sopts.tests,v 1.2 2006/02/01 13:42:35 rockyb Exp $
+#$Id: sopts.tests,v 1.3 2008/08/08 20:56:22 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -15,6 +15,6 @@ quitcmd="${srcdir}/quit.cmd"
 contcmd="${srcdir}/quit.cmd"
 debugged_script="${srcdir}/dbg-test1.sh"
 
-$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $contcmd -c 'echo test1'
+$BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $contcmd -c 'echo test1'
 # Note -B needs to come before -e
-$BASH ${TOP_BUILDDIR}bashdb -B -e -q -L .. -x $contcmd -c 'echo not run'
+$BASH ${TOP_BUILDDIR}/bashdb -B -e -q -L .. -x $contcmd -c 'echo not run'

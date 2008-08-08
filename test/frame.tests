@@ -1,5 +1,5 @@
 #!../../bash
-#$Id: frame.tests,v 1.1 2006/12/26 04:58:12 rockyb Exp $
+#$Id: frame.tests,v 1.2 2008/08/08 20:56:22 rockyb Exp $
 
 if test -z $srcdir  ; then
   srcdir=`pwd`
@@ -12,7 +12,7 @@ fi
 cmdfile=frame.cmd
 debugged_script=hanoi.sh
 
-$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $cmdfile ${builddir}/$debugged_script
+$BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $cmdfile ${builddir}/$debugged_script
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

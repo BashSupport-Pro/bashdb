@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: lopts.tests,v 1.1 2006/01/30 01:50:56 rockyb Exp $
+#$Id: lopts.tests,v 1.2 2008/08/08 20:56:22 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -15,13 +15,13 @@ quitcmd="${srcdir}/quit.cmd"
 contcmd="${srcdir}/quit.cmd"
 debugged_script="${srcdir}/dbg-test1.sh"
 
-$BASH ${TOP_BUILDDIR}bashdb --help -q -L .. 
-$BASH ${TOP_BUILDDIR}bashdb --quiet -B --library .. \
+$BASH ${TOP_BUILDDIR}/bashdb --help -q -L .. 
+$BASH ${TOP_BUILDDIR}/bashdb --quiet -B --library .. \
   -x $quitcmd $debugged_script
-$BASH ${TOP_BUILDDIR}bashdb --base --quiet --lib .. --base \
+$BASH ${TOP_BUILDDIR}/bashdb --base --quiet --lib .. --base \
   -x $quitcmd $debugged_script
-$BASH ${TOP_BUILDDIR}bashdb -B -q -L .. -x $contcmd --command 'echo test1a'
-$BASH ${TOP_BUILDDIR}bashdb --basename --badopt -q -L .. \
+$BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $contcmd --command 'echo test1a'
+$BASH ${TOP_BUILDDIR}/bashdb --basename --badopt -q -L .. \
   -x $contcmd --command 'echo test2a'
 
 #;;; Local Variables: ***
