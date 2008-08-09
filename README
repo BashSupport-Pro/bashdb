@@ -1,18 +1,19 @@
 This is a complete rewrite of the Korn Shell debugger from Bill
 Rosenblatt's `Learning the Korn Shell', published by O'Reilly and
-Associates (ISBN 1-56592-054-6). Michael Loukides and Cigy Cyriac made
-some additional changes. 
+Associates (ISBN 1-56592-054-6). Michael Loukides, Gary Vaughan, and
+Cigy Cyriac made some additional changes.
 
 The command syntax generally follows that of the GNU debugger gdb.
 
 However this code now depends on a number of debugging support
-features that are neither part of the POSIX standard and are not in
-older POSIX-like shells. I added support for debugging in bash 2.05b,
-which has been encorporated with changes into bash 3.0 with some
-change. Note though that you can't use the bashdb code from 2.05b in
-bash 3.0 since not all of the changes are upward compatible. Instead
-you need the code from the correct 3.x bashdb distribution.
+features that are neither part of the POSIX 1003.1 standard and are
+not in older POSIX-like shells. I added support for debugging in bash
+2.05b, which has been encorporated with changes into bash 3.0 with
+some change. Note though that you can't use the bashdb code from 2.05b
+in bash 3.0 since not all of the changes are upward
+compatible. Instead you need the code from the correct 3.x bashdb
+distribution.
 
-See INSTALL for installation instructions.
+See INSTALL for generic GNU configure installation instructions.
 
-$Id: README,v 1.4 2006/11/01 12:53:57 rockyb Exp $
+$Id: README,v 1.5 2008/08/09 19:42:15 rockyb Exp $

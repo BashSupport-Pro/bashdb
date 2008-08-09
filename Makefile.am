@@ -1,20 +1,20 @@
 #   Copyright (C) 2002, 2004, 2005, 2006, 2007, 2008 Rocky Bernstein
 #   rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.30 2008/08/09 11:22:24 rockyb Exp $
+#$Id: Makefile.am,v 1.31 2008/08/09 19:42:15 rockyb Exp $
 
 subdirs = command lib doc emacs test
 if BUILD_BUILTINS
