@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-io.inc - Bourne Again Shell Debugger Input/Output routines
+# dbg-io.sh - Bourne Again Shell Debugger Input/Output routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -187,4 +187,4 @@ function _Dbg_get_source_line {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.inc,v 1.17 2008/06/08 17:27:27 rockyb Exp $'
+'$Id: dbg-io.sh,v 1.1 2008/08/09 11:20:42 rockyb Exp $'

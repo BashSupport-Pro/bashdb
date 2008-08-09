@@ -32,21 +32,19 @@ _Dbg_do_restart() {
   local exec_cmd="$_Dbg_orig_0 $script_args";
   if (( _Dbg_script )) ; then
     [ -z "$BASH" ] && BASH='bash'
+    local bash_opt=''
+    [[ $orig_0 =~ (.*/|^)bashdb$ ]] && bash_opt='--debugger '
     if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
-      script_args="--debugger -c \"$BASH_EXECUTION_STRING\""
-      exec_cmd="$BASH --debugger -c \"$BASH_EXECUTION_STRING\"";
+      script_args="${bash_opt}-c \"$BASH_EXECUTION_STRING\""
     else
-      exec_cmd="$BASH --debugger $_Dbg_orig_0 $script_args";
+      script_args="${bash_opt}$_Dbg_orig_0 $script_args";
     fi
+    exec_cmd="$BASH $script_args";
   elif [[ -n "$BASH" ]] ; then
       local exec_cmd="$BASH $_Dbg_orig_0 $script_args";
   fi
 
-  if (( _Dbg_basename_only )) ; then 
-    _Dbg_msg "Restarting with: $script_args"
-  else
-    _Dbg_msg "Restarting with: $exec_cmd"
-  fi
+  _Dbg_msg "Restarting with: $script_args"
 
   # If we are in a subshell we need to get out of those levels
   # first before we restart. The strategy is to write into persistent

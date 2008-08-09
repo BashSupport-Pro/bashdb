@@ -1,9 +1,10 @@
-#!../../bash
 # -*- shell-script -*-
-#$Id: trace2.tests,v 1.4 2008/08/09 02:36:19 rockyb Exp $
+#$Id: trace2.tests,v 1.5 2008/08/09 11:20:58 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
+[ -z "$TOP_BUILDDIR" ] && TOP_BUILDDIR=$builddir/..
+export srcdir builddir TOP_BUILDDIR
 
 debugged_script=hanoi.sh
 

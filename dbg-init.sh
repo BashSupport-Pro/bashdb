@@ -126,4 +126,4 @@ _Dbg_tempname() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.inc,v 1.27 2008/08/07 14:23:54 rockyb Exp $'
+'$Id: dbg-init.sh,v 1.1 2008/08/09 11:20:41 rockyb Exp $'

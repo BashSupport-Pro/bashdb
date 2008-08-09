@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 # -*- shell-script -*-
-#$Id: test-debug,v 1.4 2008/08/09 02:36:19 rockyb Exp $
+#$Id: test-debug,v 1.5 2008/08/09 11:20:58 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -16,15 +16,14 @@ debugged_script="debug.sh"
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 
 grep -v '##2 main("-q", "-L",' $RIGHT_FILE >${RIGHT_FILTERED_FILE}
-grep -v '##2 main("-q", "-L",' ${TEST_FILE} >${TEST_FILTERED_FILE}
+grep -v '##2 main("-q", "-L",' $TEST_FILE  >${TEST_FILTERED_FILE}
 
-check_output $TEST_FILTERED_FILE ${RIGHT_FILTERED_FILE} && {
+check_output $TEST_FILTERED_FILE ${RIGHT_FILTERED_FILE}
+rc=$? 
+if ((0 == rc)) ; then
   rm -f $TEST_FILE
-  rm -f $TEST_FILTERED_FILE
   rm -f $RIGHT_FILTERED_FILE
-}
-
-rc=$?
+fi
 
 # Return code tells testing mechanism whether passed or not.
 exit $rc

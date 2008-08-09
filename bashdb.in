@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.35 2008/08/07 14:46:59 rockyb Exp $'
+'$Id: bashdb.in,v 1.36 2008/08/09 11:20:41 rockyb Exp $'
 
 function _Dbg_usage_long {
   printf "usage:
@@ -263,6 +263,16 @@ else
   typeset -r _Dbg_source_file=$(_Dbg_expand_filename $_source_file)
 fi
 
+# Pull in the rest of the debugger code.
+typeset _Dbg_main="$_Dbg_libdir/dbg-main.sh"
+if [[ ! -r $_Dbg_main ]] ; then 
+  print "${_Dbg_pname}: Can't read debugger library file '${_Dbg_main}'."
+  print "${_Dbg_pname}: Perhaps bashdb is installed wrong (if its installed)." >&2
+  print "${_Dbg_pname}: Try running bashdb using -L (with a different directory)." >&2
+  print "${_Dbg_pname}: Run bashdb --help for a list and explanation of options." >&2
+  exit 1
+    
+fi
 . $_Dbg_libdir/dbg-main.sh
 
 if ((_Dbg_opt_linetrace)) ; then 
