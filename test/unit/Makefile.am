@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.8 2008/08/06 23:27:29 rockyb Exp $
+#$Id: Makefile.am,v 1.9 2008/08/09 19:35:50 rockyb Exp $
 
 if BUILD_BUILTINS
 BUILTIN_TESTS=test-set0.sh
@@ -13,10 +13,11 @@ TESTS = $(BUILTIN_TESTS) \
         test-io.sh \
         test-pre.sh \
         test-run.sh \
-        test-stack.sh
+        test-stack.sh \
+        test-tracefn.sh
 
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
 EXTRA_DIST = $(TESTS) shunit2 \
-     test-fns.sh.in test-run.sh.in test-tracefn.sh.in test-basdhb-trace.in
+     test-fns.sh.in test-run.sh.in test-bashdb-trace.sh.in
