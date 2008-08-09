@@ -77,3 +77,5 @@ check_DATA = \
 	watch1.right \
 	watch2.cmd \
 	watch2.right
+
+EXTRA_DIST = $(check_DATA)
