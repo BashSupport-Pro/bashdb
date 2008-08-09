@@ -1,0 +1,36 @@
+# $Id: check-common.sh.in,v 1.1 2008/08/09 00:02:16 rockyb Exp $
+# -*- shell-script -*-
+
+if test -z "$THIS_SH" ; then 
+  THIS_SH=@BASH_PROG@
+fi
+
+# Could/should probably replace all uses of THIS_SH with BASH.
+BASH=$THIS_SH
+
+TOP_BUILDDIR=@abs_top_builddir@
+
+export BASH TOP_BUILDDIR
+
+check_output() {
+  testfile="$1"
+  rightfile="$2"
+  # Bourne sh
+  # set -o noglob
+
+  @DIFF@ @DIFF_OPTS@ $testfile $rightfile && rm -f $testfile
+  return $?
+}
+
+# Run the zsh debugger on test program $1 with (optional) zshdb options $2
+# using commandfile $3. We assume $TOP_BUILDDIR, $TOP_SRCDIR and
+# $TEST_NAME have been set previously
+run_debugger() {
+  debugged_script=$1
+  zshdb_opts=${2:-"-B -q -L ${top_builddir}"}
+  cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
+  $ZSH ${TOP_BUILDDIR}/zshdb $zshdb_opts -x $cmdfile $debugged_script
+}
+
+TEST_FILE="${TOP_BUILDDIR}/test/${TEST_NAME}.check"
+RIGHT_FILE="${srcdir}/data/${TEST_NAME}.right"
