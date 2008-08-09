@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.28 2008/08/09 02:36:18 rockyb Exp $
+#$Id: Makefile.am,v 1.29 2008/08/09 11:54:16 rockyb Exp $
 
 SUBDIRS = unit data
 
@@ -8,7 +8,6 @@ check_DATA = \
 	brkpt1.tests \
 	brkpt2.tests \
 	brkpt3.tests \
-	bug-args.tests \
 	bug-args.sh.in \
 	bug-source.tests \
 	bugIFS.sh.in \

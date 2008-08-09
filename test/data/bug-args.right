@@ -2,11 +2,11 @@
 3:	echo First parm is: $1
 +# Debugger test to see that parameter handling of $1, $2, etc is correct.
 +p $#
-1
+0
 +p $5
 
 +step 2
-First parm is: --help
+First parm is:
 (bug-args.sh:5):
 5:	shift 2
 +# There should now be 5 args set and $5 should have a value
