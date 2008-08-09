@@ -28,5 +28,5 @@ delete 1w
 info break
 step
 watch x
-restart -B -q -L .. -x restart2.cmd dbg-test1.sh
+restart -B -q -L .. -x data/restart2.cmd dbg-test1.sh
 quit

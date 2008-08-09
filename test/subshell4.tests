@@ -1,20 +1,11 @@
 #!/bin/sh
-#$Id: subshell4.tests,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+# -*- shell-script -*-
+#$Id: subshell4.tests,v 1.2 2008/08/09 02:36:19 rockyb Exp $
 
-if test -z $srcdir  ; then
-  srcdir=`pwd`
-fi
+[ -z "$srcdir" ] && srcdir=$PWD
+[ -z "$builddir" ] && builddir=$PWD
 
-if test -z $top_builddir ; then
-  top_builddir=..
-fi
-
-cmdfile="$srcdir/subshell4.cmd"
+cmdfile="$srcdir/data/subshell4.cmd"
 debugged_script="$srcdir/subshell.sh"
 
 $BASH $top_builddir/bashdb -B -q -L $d -x $cmdfile $debugged_script
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

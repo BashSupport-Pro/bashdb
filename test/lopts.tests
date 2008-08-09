@@ -1,18 +1,14 @@
 #!/bin/sh
-#$Id: lopts.tests,v 1.2 2008/08/08 20:56:22 rockyb Exp $
+# -*- shell-script -*-
+#$Id: lopts.tests,v 1.3 2008/08/09 02:36:18 rockyb Exp $
 
-if test -z "$srcdir"  ; then
-  srcdir=`pwd`
-fi
-
-if test -z "$builddir"  ; then
-  builddir=`pwd`
-fi
+[ -z "$srcdir" ] && srcdir=$PWD
+[ -z "$builddir" ] && builddir=$PWD
 
 . ${builddir}/check_common
 
-quitcmd="${srcdir}/quit.cmd"
-contcmd="${srcdir}/quit.cmd"
+quitcmd="${srcdir}/data/quit.cmd"
+contcmd="${srcdir}/data/quit.cmd"
 debugged_script="${srcdir}/dbg-test1.sh"
 
 $BASH ${TOP_BUILDDIR}/bashdb --help -q -L .. 
@@ -23,8 +19,3 @@ $BASH ${TOP_BUILDDIR}/bashdb --base --quiet --lib .. --base \
 $BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $contcmd --command 'echo test1a'
 $BASH ${TOP_BUILDDIR}/bashdb --basename --badopt -q -L .. \
   -x $contcmd --command 'echo test2a'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

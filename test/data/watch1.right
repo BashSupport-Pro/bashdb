@@ -60,8 +60,8 @@ No watch expressions have been set.
 23:	y=23
 +watch x
  2: ($x)==22 arith: 0
-+restart -B -q -L .. -x restart2.cmd dbg-test1.sh
-Restarting with: -B -q -L .. -x restart2.cmd dbg-test1.sh
++restart -B -q -L .. -x data/restart2.cmd dbg-test1.sh
+Restarting with: -B -q -L .. -x data/restart2.cmd dbg-test1.sh
 Watchpoint 2: $x changed:
   old value: '22'
   new value: ''

@@ -2,8 +2,8 @@ set trace-commands on
 # Test of miscellaneous commands: 
 # 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 #### source command...
-source prof1.cmd
-source prof2.cmd
+source data/prof1.cmd
+source data/prof2.cmd
 #########################################
 #### Test that ARGs are correct...
 print "_Dbg_arg#: ${#_Dbg_arg[@]}"
@@ -54,7 +54,7 @@ tty /tmp/misc-output.check
 l
 #########################
 #### Test 'file' command...
-file misc.cmd
+file data/misc.cmd
 #### info variables (V) command...
 V dq*
 # On OS X there is some problem in doing the above and below commands

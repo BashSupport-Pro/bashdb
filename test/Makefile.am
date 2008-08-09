@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.27 2008/08/08 22:04:18 rockyb Exp $
+#$Id: Makefile.am,v 1.28 2008/08/09 02:36:18 rockyb Exp $
 
 SUBDIRS = unit data
 
@@ -12,7 +12,6 @@ check_DATA = \
 	bug-args.sh.in \
 	bug-source.tests \
 	bugIFS.sh.in \
-	bugIFS.tests \
 	check-common.sh.in \
 	command.tests \
 	complete.tests \
@@ -21,44 +20,27 @@ check_DATA = \
 	dbg-test1.sub \
 	dbg-test2.sh \
 	debug.sh \
-	debug.tests \
-	display.tests \
-	finish.tests \
-	frame.tests \
 	hanoi.sh.in \
 	interrupt.sh.in \
 	interrupt.tests \
-	list.tests \
 	lopts.tests \
-	misc.tests \
 	multi.sh \
-	multi1.tests \
-	multi2.tests \
-	multi3.tests \
-	multi4.tests \
 	parm.sh \
-	parm.tests \
-	restart.tests \
 	restartbug.sh \
-	search.tests \
 	setshow.tests \
 	settrace.sh \
 	settrace.tests \
 	sig.sh \
 	sig.tests \
 	skip.sh \
-	skip.tests \
 	sopts.tests \
 	subshell.sh \
 	subshell1.tests \
 	subshell2.tests \
 	subshell3.tests \
 	subshell4.tests \
-	tbreak.tests \
 	trace.tests \
-	trace2.tests \
-	watch1.tests \
-	watch2.tests
+	trace2.tests
 
 TESTS = test-action test-brkpt test-bug-args test-bugIFS test-bug-source \
 	test-command test-complete \

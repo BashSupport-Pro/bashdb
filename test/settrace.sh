@@ -27,9 +27,16 @@ hanoi() {
 if (( $# > 0 )) ; then
   builddir=$1
 elif [[ -z ${builddir:-''} ]] ; then
-  builddir=$PWD
+  builddir=$PWD/..
 fi
-source ${builddir}/bashdb-trace -q -L .. -B  -x settrace.cmd
+
+if (( $# > 1 )) ; then
+  cmdfile=$2
+else
+  cmdfile=${srcdir/data/settrace.cmd}
+fi
+
+source ${builddir}/bashdb-trace -q -L .. -B  -x $cmdfile
 typeset -i max=1
 init
 hanoi $max 'a' 'b' 'c'

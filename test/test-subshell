@@ -1,13 +1,9 @@
 #!/bin/sh
-#$Id: test-subshell,v 1.2 2008/08/08 20:56:22 rockyb Exp $
+# -*- shell-script -*-
+#$Id: test-subshell,v 1.3 2008/08/09 02:36:19 rockyb Exp $
 
-if test -z "$srcdir"  ; then
-  srcdir=`pwd`
-fi
-
-if test -z "$builddir"  ; then
-  builddir=`pwd`
-fi
+[ -z "$srcdir" ] && srcdir=$PWD
+[ -z "$builddir" ] && builddir=$PWD
 
 . ${builddir}/check-common.sh
 
@@ -15,10 +11,10 @@ tests=${@:-"subshell1 subshell2 subshell3"}
 
 for SUBTEST in $tests; do
   echo "checking $SUBTEST..."
-  TEST_FILE="$builddir/${SUBTEST}.check"
+  TEST_FILE="$builddir/data/${SUBTEST}.check"
   (cd $srcdir && ${THIS_SH} ${SUBTEST}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-  check_output $TEST_FILE ${srcdir}/${SUBTEST}.right
+  check_output $TEST_FILE ${srcdir}/data/${SUBTEST}.right
   rc=$?
   if test "$rc" -eq  0 ; then
     rm -f $TEST_FILE
@@ -29,8 +25,3 @@ done
 
 # Return code tells testing mechanism whether passed or not.
 exit 0
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

@@ -3,19 +3,19 @@
 +# Test of miscellaneous commands:
 +# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 +#### source command...
-+source prof1.cmd
++source data/prof1.cmd
 +set trace-commands on
 +# Test a profile
 +print "prof1.cmd called"
 prof1.cmd called
-+source prof2.cmd
++source data/prof2.cmd
 +set trace-commands on
 +# Test a profile
 +print prof2.cmd called...
 prof2.cmd called...
 +print calling prof1.cmd...
 calling prof1.cmd...
-+source prof1.cmd
++source data/prof1.cmd
 +set trace-commands on
 +# Test a profile
 +print "prof1.cmd called"
@@ -23,11 +23,11 @@ prof1.cmd called
 +######################################### 
 +#### Test that ARGs are correct...
 +print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-_Dbg_arg#: 2
+_Dbg_arg#: 0
 +print "\$1: $1"
-$1: testarg1
+$1: 
 +print "\$2: $2"
-$2: testarg2
+$2: 
 +######################################### 
 +#### Testing script args...
 +info args
@@ -177,30 +177,30 @@ Info subcommands are: args breakpoints display files functions program source so
 11: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
 10: print "prof1.cmd called"
 9: set trace-commands on
-8: source prof1.cmd
+8: source data/prof1.cmd
 7: print calling prof1.cmd...
 6: print prof2.cmd called...
 5: set trace-commands on
-4: source prof2.cmd
+4: source data/prof2.cmd
 3: print "prof1.cmd called"
 2: set trace-commands on
-1: source prof1.cmd
+1: source data/prof1.cmd
 0: set trace-commands on
 +H 5
 5: set trace-commands on
-4: source prof2.cmd
+4: source data/prof2.cmd
 3: print "prof1.cmd called"
 2: set trace-commands on
-1: source prof1.cmd
+1: source data/prof1.cmd
 0: set trace-commands on
 +H 5 3
 5: set trace-commands on
-4: source prof2.cmd
+4: source data/prof2.cmd
 3: print "prof1.cmd called"
 +hi 11
-_Dbg_arg#: 2
+_Dbg_arg#: 0
 +!11 
-_Dbg_arg#: 2
+_Dbg_arg#: 0
 +!19:p 
 19: help set foo
 +!-3:p 
@@ -247,14 +247,14 @@ Invalid history number: foo
 11: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
 10: print "prof1.cmd called"
 9: set trace-commands on
-8: source prof1.cmd
+8: source data/prof1.cmd
 7: print calling prof1.cmd...
 6: print prof2.cmd called...
 5: set trace-commands on
-4: source prof2.cmd
+4: source data/prof2.cmd
 3: print "prof1.cmd called"
 2: set trace-commands on
-1: source prof1.cmd
+1: source data/prof1.cmd
 0: set trace-commands on
 +history -2
 List of info subcommands:

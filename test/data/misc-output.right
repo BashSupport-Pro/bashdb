@@ -9,18 +9,10 @@
  30:   x=27
  31:   y=b
  32:   x=29
- 33:   echo $(fn3 30)
- 34:   fn3 31
- 35:   fn1;
- 36:   fn3 33
- 37:   exit 0;
- 38:   #;;; Local Variables: ***
- 39:   #;;; mode:shell-script ***
- 40:   #;;; End: ***
 +######################### 
 +#### Test 'file' command...
-+file misc.cmd
-File misc.cmd will be used when dbg-sig.inc is referenced.
++file data/misc.cmd
+File data/misc.cmd will be used when sig.sh is referenced.
 +#### info variables (V) command...
 +V dq*
 dq_args="dq*"

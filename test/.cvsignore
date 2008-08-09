@@ -3,7 +3,7 @@ Makefile
 Makefile.in
 bug-args.sh
 bugIFS.sh
-check_common
+check-common.sh
 dbg-test1.sh
 hanoi.sh
 interrupt.sh

@@ -1,6 +1,8 @@
-# $Id: check-common.sh.in,v 1.1 2008/08/09 00:02:16 rockyb Exp $
+# $Id: check-common.sh.in,v 1.2 2008/08/09 02:36:18 rockyb Exp $
 # -*- shell-script -*-
 
+srcdir=@srcdir@
+builddir=@builddir@
 if test -z "$THIS_SH" ; then 
   THIS_SH=@BASH_PROG@
 fi
@@ -27,9 +29,9 @@ check_output() {
 # $TEST_NAME have been set previously
 run_debugger() {
   debugged_script=$1
-  zshdb_opts=${2:-"-B -q -L ${top_builddir}"}
-  cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
-  $ZSH ${TOP_BUILDDIR}/zshdb $zshdb_opts -x $cmdfile $debugged_script
+  bashdb_opts=${2:-"-B -q -L ${TOP_BUILDDIR}"}
+  cmdfile=${3:-"${TOP_BUILDDIR}/test/data/${TEST_NAME}.cmd"}
+  $ZSH ${TOP_BUILDDIR}/bashdb $bashdb_opts -x $cmdfile $debugged_script
 }
 
 TEST_FILE="${TOP_BUILDDIR}/test/${TEST_NAME}.check"

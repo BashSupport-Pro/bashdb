@@ -293,7 +293,7 @@ of promoting the sharing and reuse of software generally.
 
 +show 
 args:     Argument list to give script when debugged program starts is:
-       "-B -q -L .. -x setshow.cmd dbg-test2.sh testarg1 testarg2".
+       "-B -q -L .. -x data/setshow.cmd dbg-test2.sh testarg1 testarg2".
 basename: Show short filenames (the basename) in debug output is on.
 debugger: Allow debugging the debugger is off.
 editing:  Editing of command lines as they are typed is on.
@@ -309,7 +309,7 @@ trace-commands: State of command tracing is on.
 +#### and show...
 +show args
 Argument list to give script when debugged program starts is:
-       "-B -q -L .. -x setshow.cmd dbg-test2.sh testarg1 testarg2".
+       "-B -q -L .. -x data/setshow.cmd dbg-test2.sh testarg1 testarg2".
 +set args now is the time
 +show args
 Argument list to give script when debugged program starts is:
