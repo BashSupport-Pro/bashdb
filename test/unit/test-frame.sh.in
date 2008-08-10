@@ -15,8 +15,8 @@ test_print_frame()
     assertEquals "->0 in file \`dbg-cmds.sh' at line 2" "$msg"
 }
 
-top_srcdir=@top_builddir@
-. ${top_srcdir}/lib/stack.sh
+top_srcdir=@top_srcdir@
+. ${top_srcdir}/lib/frame.sh
 
 # load shunit2
 srcdir=@srcdir@

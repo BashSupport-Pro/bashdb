@@ -5,6 +5,7 @@ pkgdata_DATA =      	\
 	complete.sh  	\
 	file.sh  	\
 	fns.sh  	\
+	frame.sh        \
 	help.sh    	\
 	hist.sh    	\
 	info.sh    	\
@@ -12,7 +13,6 @@ pkgdata_DATA =      	\
 	list.sh    	\
 	processor.sh  	\
 	run.sh  	\
-	sig.sh	 	\
-	stack.sh
+	sig.sh
 
 EXTRA_DIST = $(pkgdata_DATA)

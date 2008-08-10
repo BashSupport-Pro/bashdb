@@ -70,7 +70,7 @@ _Dbg_adjust_frame() {
 _Dbg_stack_int_setup() {
 
   if (( ! _Dbg_running )) ; then
-    _Dbg_msg 'No stack.'
+    _Dbg_errmsg 'No stack.'
     return 1
   else
     eval "$_seteglob"
@@ -144,4 +144,4 @@ _Dbg_do_info_args() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: stack.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+_Dbg_stack_ver='$Id: frame.sh,v 1.1 2008/08/10 22:25:08 rockyb Exp $'

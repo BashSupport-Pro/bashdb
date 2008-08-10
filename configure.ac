@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.51 2008/08/10 00:54:14 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.52 2008/08/10 22:25:07 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -231,11 +231,11 @@ AC_CONFIG_FILES([test/interrupt.sh], [chmod +x test/interrupt.sh])
 AC_CONFIG_FILES([test/bug-args.sh], [chmod +x test/bug-args.sh])
 AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh], [chmod +x test/unit/test-bashdb-trace.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
+AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
 AC_CONFIG_FILES([test/unit/test-io.sh], [chmod +x test/unit/test-io.sh])
 AC_CONFIG_FILES([test/unit/test-pre.sh], [chmod +x test/unit/test-pre.sh])
 AC_CONFIG_FILES([test/unit/test-run.sh], [chmod +x test/unit/test-run.sh])
 AC_CONFIG_FILES([test/unit/test-set0.sh], [chmod +x test/unit/test-set0.sh])
-AC_CONFIG_FILES([test/unit/test-stack.sh], [chmod +x test/unit/test-stack.sh])
 
 AC_CONFIG_FILES([ \
 	bashdb-trace \

@@ -2,9 +2,9 @@ Makefile
 Makefile.in
 test-bashdb-trace.sh
 test-fns.sh
+test-frame.sh
 test-io.sh
 test-pre.sh
 test-run.sh
 test-set0.sh
-test-stack.sh
 test-tracefn.sh
