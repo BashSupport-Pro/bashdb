@@ -1,10 +1,9 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.29 2008/08/09 11:54:16 rockyb Exp $
+#$Id: Makefile.am,v 1.30 2008/08/10 00:54:15 rockyb Exp $
 
 SUBDIRS = unit data
 
 check_DATA = \
-	action.tests \
 	brkpt1.tests \
 	brkpt2.tests \
 	brkpt3.tests \
@@ -12,10 +11,7 @@ check_DATA = \
 	bug-source.tests \
 	bugIFS.sh.in \
 	check-common.sh.in \
-	command.tests \
-	complete.tests \
 	dbg-test1.sh \
-	dbg-test1.sh.in \
 	dbg-test1.sub \
 	dbg-test2.sh \
 	debug.sh \

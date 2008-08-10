@@ -120,9 +120,6 @@ No actions have been set.
  33:   fn3 33
  34:   source dbg-test1.sub
  35:   exit 0;
- 36:   #;;; Local Variables: ***
- 37:   #;;; mode:shell-script ***
- 38:   #;;; End: ***
 +### Try down 1...
 +down 1
 (dbg-test1.sh:5):
@@ -262,7 +259,7 @@ Debugged program terminated normally. Use q to quit or R to restart.
 +info files
 Source files for which have been read in:
 
-dbg-test1.sh (39 lines)
+dbg-test1.sh (36 lines)
 dbg-test1.sub (29 lines)
 +### quitting...
 +quit 

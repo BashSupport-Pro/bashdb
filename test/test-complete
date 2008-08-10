@@ -1,16 +1,18 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-complete,v 1.4 2008/08/09 16:13:04 rockyb Exp $
+#$Id: test-complete,v 1.5 2008/08/10 00:54:15 rockyb Exp $
 
-[ -z "$srcdir" ] && srcdir=$PWD
-[ -z "$builddir" ] && builddir=$PWD
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
 
 TEST_NAME='complete'
 
 . ${builddir}/check-common.sh
 
-TEST_FILE="$builddir/${TEST_NAME}.check"
-(cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+debugged_script="$srcdir/dbg-test1.sh"
+
+(cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 
 check_output $TEST_FILE $RIGHT_FILE
 

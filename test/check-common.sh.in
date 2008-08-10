@@ -1,4 +1,4 @@
-# $Id: check-common.sh.in,v 1.4 2008/08/09 16:13:03 rockyb Exp $
+# $Id: check-common.sh.in,v 1.5 2008/08/10 00:54:15 rockyb Exp $
 # -*- shell-script -*-
 
 srcdir=@srcdir@
@@ -10,10 +10,10 @@ fi
 # Could/should probably replace all uses of THIS_SH with BASH.
 BASH=$THIS_SH
 
-TOP_BUILDDIR=@abs_top_builddir@
-TOP_SRCDIR=@abs_top_srcdir@
+top_builddir=@abs_top_builddir@
+top_srcdir=@abs_top_srcdir@
 
-export BASH TOP_BUILDDIR TOP_SRCDIR srcdir builddir
+export BASH top_builddir top_srcdir srcdir builddir
 
 check_output() {
   testfile="$1"
@@ -25,15 +25,17 @@ check_output() {
   return $?
 }
 
-# Run the zsh debugger on test program $1 with (optional) zshdb options $2
-# using commandfile $3. We assume $TOP_BUILDDIR, $TOP_SRCDIR and
+# Run the debugger on test program $1 with (optional) zshdb options $2
+# using commandfile $3. We assume $top_builddir, $top_srcdir and
 # $TEST_NAME have been set previously
 run_debugger() {
   debugged_script=$1
-  bashdb_opts=${2:-"-B -q -L ${TOP_BUILDDIR}"}
-  cmdfile=${3:-"${TOP_BUILDDIR}/test/data/${TEST_NAME}.cmd"}
-  $ZSH ${TOP_BUILDDIR}/bashdb $bashdb_opts -x $cmdfile $debugged_script
+  bashdb_opts=${2:-"-B -q -L ${top_builddir}"}
+  cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
+  $BASH ${top_builddir}/bashdb $bashdb_opts -x $cmdfile $debugged_script
 }
 
-TEST_FILE="${TOP_BUILDDIR}/test/${TEST_NAME}.check"
-RIGHT_FILE="${TOP_SRCDIR}/test/data/${TEST_NAME}.right"
+TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
+RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
+TEST_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.check"
+RIGHT_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.right"

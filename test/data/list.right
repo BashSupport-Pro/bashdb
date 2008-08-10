@@ -20,14 +20,11 @@
  33:   fn3 33
  34:   source dbg-test1.sub
  35:   exit 0;
- 36:   #;;; Local Variables: ***
- 37:   #;;; mode:shell-script ***
- 38:   #;;; End: ***
 +# 
 +# Should not see anything since we ran off the top
 +# 
 +list 999
-Line 999 is too large. File dbg-test1.sh has only 38 lines.
+Line 999 is too large. File dbg-test1.sh has only 35 lines.
 +######################################################### 
 +### 'list file:line' and canonicalization of filenames...
 +list ./dbg-test1.sh:1
@@ -59,11 +56,8 @@ Line 999 is too large. File dbg-test1.sh has only 38 lines.
  33:   fn3 33
  34:   source dbg-test1.sub
  35:   exit 0;
- 36:   #;;; Local Variables: ***
- 37:   #;;; mode:shell-script ***
- 38:   #;;; End: ***
 +list ./dbg-test1.sh:999
-Line 999 is too large. File dbg-test1.sh has only 38 lines.
+Line 999 is too large. File dbg-test1.sh has only 35 lines.
 +list ./badfile:1
 File badfile not found in read-in files.
 See 'info files' for a list of known files and
@@ -111,7 +105,6 @@ See 'info files' for a list of known files and
  33:   fn3 33
  34:   source dbg-test1.sub
  35:   exit 0;
- 36:   #;;; Local Variables: ***
 +# 
 +# Should see lines up to current execution line.
 +### Trying '-'...

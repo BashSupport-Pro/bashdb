@@ -1,21 +1,20 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-bugIFS,v 1.5 2008/08/09 16:13:04 rockyb Exp $
+#$Id: test-bugIFS,v 1.6 2008/08/10 00:54:15 rockyb Exp $
 
-[ -z "$srcdir" ] && srcdir=$PWD
-[ -z "$builddir" ] && builddir=$PWD
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
 
 TEST_NAME='bugIFS'
 
 . ${builddir}/check-common.sh
 
-debugged_script="${TOP_BUILDDIR}/test/bugIFS.sh"
+debugged_script="${top_builddir}/test/bugIFS.sh"
 
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 
-check_output $TEST_FILE ${RIGHT_FILE} && {
-  rm -f $TEST_FILE
-}
+check_output $TEST_FILE $RIGHT_FILE
 
 # Return code tells testing mechanism whether passed or not.
 exit $?

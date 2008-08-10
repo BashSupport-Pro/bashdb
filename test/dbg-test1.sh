@@ -33,6 +33,3 @@ fn1;
 fn3 33
 source dbg-test1.sub
 exit 0;
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; End: ***
