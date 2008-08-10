@@ -466,7 +466,7 @@ _Dbg_subexit_handler() {
   fi
   _Dbg_source_journal
   if (( $BASHDB_QUIT_LEVELS > 0 )) ; then
-    __Dbg_do_quit $_Dbg_debugged_exit_code
+    _Dbg_do_quit $_Dbg_debugged_exit_code
   fi
 }
 
@@ -505,4 +505,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: sig.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+'$Id: sig.sh,v 1.2 2008/08/10 00:57:14 rockyb Exp $'
