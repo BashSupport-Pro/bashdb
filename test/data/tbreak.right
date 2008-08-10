@@ -57,7 +57,7 @@ Debugged program terminated normally. Use q to quit or R to restart.
 +frame 0
 ** The program is not being run.
 +where 
-No stack.
+** The program is not being run.
 +info line
 No line number information available.
 +step 

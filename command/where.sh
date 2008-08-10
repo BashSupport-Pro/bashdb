@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# backtrace.sh - gdb-like "backtrace" debugger command
+# where.sh - gdb-like "where" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -30,21 +30,18 @@
 
 _Dbg_do_backtrace() {
 
-  if (( ! _Dbg_running )) ; then
-      _Dbg_msg 'No stack.'
-      return
-  fi
+  _Dbg_not_running && return 1
 
   local -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_info_args) from count
 
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] ; then 
-    _Dbg_msg "Bad integer parameter: $1"
+    _Dbg_errmsg "Bad integer parameter: $1"
     eval "$_resteglob"
     return 1
   fi
   if [[ $2 != '' && $2 != $int_pat ]] ; then 
-    _Dbg_msg "Bad integer parameter: $2"
+    _Dbg_errmsg "Bad integer parameter: $2"
     eval "$_resteglob"
     return 1
   fi
