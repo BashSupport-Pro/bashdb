@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.32 2008/08/11 11:15:41 rockyb Exp $
+#$Id: Makefile.am,v 1.33 2008/08/11 13:47:17 rockyb Exp $
 
 subdirs = command lib doc emacs test
 if BUILD_BUILTINS
@@ -63,7 +63,7 @@ readarray$(EXEEXT): $(readarray_OBJECTS) $(readarray_DEPENDENCIES)
 # (containing perhaps old code), that gets removed and a symbolic link
 # is added or relocated if there was another symbolic link. Finally 
 # the basename that bash wants to use is symlinked to the main name
-# that this distribution uses dbg-main.inc, unless those are the same.
+# that this distribution uses dbg-main.sh, unless those are the same.
 # 
 OLD_DIR    = $(dir @BASHDB_MAIN@)
 OLD_MAIN   = $(notdir @BASHDB_MAIN@)
@@ -87,7 +87,7 @@ install-data-hook:
 	@if test "dbg-main.sh" != "$(OLD_MAIN)" ; then \
 	  ( if cd $(DESTDIR)$(pkgdatadir) ; then \
 	     test -e $(OLD_MAIN) && $(RM) $(OLD_MAIN); \
-	     $(LN_S) dbg-main.inc $(OLD_MAIN) || \
+	     $(LN_S) dbg-main.sh $(OLD_MAIN) || \
 	     echo "WARNING: I'm having trouble letting bash know where the debugger is. Use the bashdb script only." ; \
 	  fi ) \
 	fi
