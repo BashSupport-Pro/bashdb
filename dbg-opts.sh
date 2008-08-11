@@ -58,7 +58,8 @@ options:
     -n           Don't run initialization files
     -c command   Run this passed command as a script
     -q           Quiet. Do not print introductory and quiet messages.
-    -L libdir    set directory location of library helper file: $_Dbg_main
+    -L libdir | --library libdir   
+                 set directory location of library helper file: $_Dbg_main
                  the default directory is: $_Dbg_libdir
     -T tmpdir    set directory location for temporary files: $_Dbg_tmpdir
     -t tty       set debugger terminal
@@ -96,7 +97,7 @@ if ((_Dbg_try_getopt && 0 == $? )) ; then
       -c|--eval-command) _Dbg_cmd="$2"; shift ;;
       --debugger) ;;  # This option is for compatibility with bash --debugger
       -h|--help) _Dbg_usage_long; exit 100 ;;
-      -L|--library) _Dbg_libdir=$2; shift ;;
+      -L|--library) shift ;;  # Handled previously
       -n|--nx|--no-init) _Dbg_no_init=1 ;;
       -q|--quiet) _Dbg_quiet=1 ;;
       -T|--tempdir) _Dbg_tmpdir=$2; shift ;;
@@ -131,7 +132,7 @@ else
       h) _Dbg_usage_short; exit 100 ;;
       n) _Dbg_no_init=1 ;;
       q) _Dbg_quiet=1 ;;
-      L) _Dbg_libdir=$OPTARG ;;
+      L)  ;; # Handled previously
       T) _Dbg_tmpdir=$OPTARG ;;
       t) 
 	if ! $(touch $OPTARG >/dev/null 2>/dev/null); then 

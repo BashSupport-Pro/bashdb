@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: sopts.tests,v 1.5 2008/08/10 00:54:15 rockyb Exp $
+#$Id: sopts.tests,v 1.6 2008/08/11 16:49:28 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -13,4 +13,4 @@ debugged_script="${srcdir}/dbg-test1.sh"
 
 $BASH ${top_builddir}/bashdb -B -q -L .. -x $contcmd -c 'echo test1'
 # Note -B needs to come before -e
-$BASH ${top_builddir}/bashdb -B -e -q -L .. -x $contcmd -c 'echo not run'
+$BASH ${top_builddir}/bashdb -B -e -q --library .. -x $contcmd -c 'echo not run'
