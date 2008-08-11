@@ -27,84 +27,9 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.26 2008/08/07 14:46:59 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.27 2008/08/11 11:15:41 rockyb Exp $'
 
-_Dbg_usage_long() {
-  printf "_Dbg_usage:
-    source @PKGDATADIR@/${_Dbg_pname} [OPTIONS]
-
-Sets up a script to be able to call the debugger. The function
-_Dbg_debugger is defined here and when it is called the you will be
-at the next statement of your program in the debugger. For example, if 
-your script is:
-
-  # Lots of stuff here. ...
-  x=2
-  source @PKGDATADIR@/${_Dbg_pname}
-  _Dbg_debugger ; : ; :
-  y=3
-
-You will be stopped before y=3 in the debugger. This mechanism allows
-you to run lots of complex code which might otherwise get messed up by
-the debugger. Another use might be in a large script where running the
-debugger every step (e.g. configure) is just too slow.
-
-You can also supply options to ${_Dbg_pname} just as you would to the 
-debugger itself. For example to suppress the banner you could use
-\"source ${_Dbg_pname} -q\" in the above example.
-
-Please note: it is important to \"source\" this file. That is use
-\"source @PKGDATADIR@/${_Dbg_pname}\" rather than call it directly.
-The _Dbg_debugger() function and debuggers variables that have to
-persist in your program.
-
-options: 
-    -A | --annotate LEVEL  set annotation level.
-    -B | --basename        basename only on source listings. 
-                           (Needed in regression tests)
-    -h | --help            print this help
-    -n | --nx |--no-init   Don't run initialization files
-    -c cmd | --eval-command cmd
-                           Run this passed command as a script
-    -q | --quiet           Quiet. Do not print introductory and quiet messages.
-    -x cmdfile | --command cmdfiles
-                     execute debugger commands from cmdfile
-    -L libdir | --library libdir
-                           set directory location of library helper file: $_Dbg_main
-                           The default directory is: $_Dbg_libdir
-    -T tmpdir | --tempdir
-                           set directory location for temporary files: $_Dbg_tmpdir
-    -t tty | --tty tty | --terminal tty
-                           set debugger terminal
-    -V | --version         show version number and no-warranty and exit.
-
-Long options may be abbreviated, e.g. --lib is okay for --library.
-" 1>&2
-}
-
-_Dbg_usage_short() {
-  printf "_Dbg_usage:
-    ${_Dbg_pname} [OPTIONS] <script_file>
-
-Runs script_file under a debugger.
-
-options: 
-    -A           Set annotation level.
-    -B           basename only on source listings. (Needed in regression tests)
-    -h           print this help
-    -n           Don't run initialization files
-    -c command   Run this passed command as a script
-    -q           Quiet. Do not print introductory and quiet messages.
-    -x cmdfile   execute debugger commands from cmdfile
-    -L libdir    set directory location of library helper file: $_Dbg_main
-                 the default directory is: $_Dbg_libdir
-    -T tmpdir    set directory location for temporary files: $_Dbg_tmpdir
-    -t tty       set debugger terminal
-    -V           show version number and no-warranty and exit.
-" 1>&2
-}
-
-declare -a _Dbg_script_args="$@"
+declare -a _Dbg_script_args=("$@")
 
 # Equivalent to basename $0; the short program name
 typeset _Dbg_pname=${0##*/}  
@@ -117,11 +42,12 @@ prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset _Dbg_libdir=@PKGDATADIR@
 typeset _Dbg_bindir=$(dirname $0)
 typeset _Dbg_tmpdir=/tmp
-
+typeset -i _Dbg_opt_linetrace=0
 typeset _Dbg_cmd='' # If command string given on command line, this is it.
 
 # Use gdb-style annotate?
 typeset -i _Dbg_annotate=0
+typeset -i _Dbg_try_getopt=@TRY_GETOPT@
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
@@ -132,98 +58,25 @@ if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
     fi
 fi
 
-# Process using short or long options, depending on the availability
-# of getopt
-BASHDB_INPUT=''
-typeset -i show_version
-TEMP=$(getopt -o testing t 2>/dev/null)
-if [ @TRY_GETOPT@ = 1 ] && [ 0 = $? ] ; then
-  # Process using long options
-  # Note that we use `"$@"' to let each command-line parameter expand to a 
-  # separate word. The quotes around `$@' are essential!
-  # We need TEMP as the `eval set --' would nuke the return value of getopt.
-  TEMP=$(getopt -o A:BhL:nqt:T::V:x: \
---long annotate:,basename,command:,debugger,help,version,library:,no-init,quiet,tempdir:,terminal:,tty:: \
-     -n 'bashdb' -- "$@")
-
-  if [ $? != 0 ] ; then 
-    echo "Use --help for option help. Terminating..." >&2 ; 
-    exit 1 ; 
-  fi
-  
-  # Note the quotes around `$TEMP': they are essential!
-  eval set -- "$TEMP"
-  
-  while : ; do
-    case "$1" in
-      -A|--annotate) _Dbg_annotate=$2; shift ;;
-      -B|--basename) _Dbg_basename_only=1 ;;
-      --debugger) ;;  # This option is for compatibility with bash --debugger
-      -h|--help) _Dbg_usage_long; exit 100 ;;
-      -L|--library) _Dbg_libdir=$2; shift ;;
-      -n|--nx|--no-init) _Dbg_no_init=1 ;;
-      -q|--quiet) _Dbg_quiet=1 ;;
-      -x|--command) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
-      -T|--tempdir) _Dbg_tmpdir=$2; shift ;;
-      -t|--terminal|--tty) 
-	if ! $(touch $2 >/dev/null 2>/dev/null); then 
-	  echo "${_Dbg_pname}: Can't access $2 for writing."
-	elif [[ ! -w $2 ]] ; then
-	  echo "${_Dbg_pname}: terminal $2 needs to be writable."
-	else
-	  _Dbg_tty=$2 ;
-	fi
-	shift
-	;;
-      -V|--version) show_version=1 ;;
-      --) shift ; break ;;
-      *) 
-	echo "Use --help for option help. Terminating..."
-	exit 2 ;;
-    esac
-    shift
-  done
-else 
-  # Process using short options
-  while getopts ABhL:n:qt:T:V:x: opt; do
-    case $opt in
-      B) _Dbg_basename_only=1 ;;
-      h) _Dbg_usage_short; exit 100 ;;
-      n) _Dbg_no_init=1 ;;
-      q) _Dbg_quiet=1 ;;
-      x) BASHDB_INPUT="$BASHDB_INPUT $OPTARG" ;;  
-      L) _Dbg_libdir=$OPTARG ;;
-      T) _Dbg_tmpdir=$OPTARG ;;
-      t) 
-	if ! $(touch $OPTARG >/dev/null 2>/dev/null); then 
-	  echo "${_Dbg_pname}: Can't access $OPTARG for writing."
-	elif [[ ! -w $OPTARG ]] ; then
-	  echo "${_Dbg_pname}: terminal $OPTARG needs to be writable."
-	else
-	  _Dbg_tty=$OPTARG
-	fi
-	;;
-      V) show_version=1 ;;
-      *) 
-	if ((_Dbg_basename_only == 1)) ; then
-	  echo "${_Dbg_pname}: unrecognized option -- $OPTARG"
-	else
-	  echo "$0: unrecognized option -- $OPTARG"
-	fi
-	echo "Use --help for option help. Terminating..."
-	exit 2 
-	;;
-    esac
-  done
-  shift $(($OPTIND - 1))
-fi
-
+# Parse just the libdir option
+typeset -i i
+for ((i=0; $i<${#_Dbg_script_args[@]}-1; i++)) ; do 
+    typeset arg=${_Dbg_script_args[$i]}
+    if [[ $arg == '-L' || $arg == '--libdir' ]] ; then
+	((i++))
+	_Dbg_libdir="${_Dbg_script_args[$i]}"
+	break
+    fi
+done
 if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
-  echo "${_Dbg_pname}: cannot read $_Dbg_libdir. " \
-  "Perhaps bashdb is installed wrong." >&2
-  echo "${_Dbg_pname}: or try using -L (with a different directory)." >&2
+  echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
+  echo "${_Dbg_pname}: Perhaps bashdb is installed wrong (if its installed)." >&2
+  echo "${_Dbg_pname}: Try running bashdb using -L (with a different directory)." >&2
+  echo "${_Dbg_pname}: Run bashdb --help for a list and explanation of options." >&2
   exit 1
 fi
+
+. $_Dbg_libdir/dbg-opts.sh
 
 if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   echo "${_Dbg_pname}: cannot write to temp directory $_Dbg_tmpdir." >&2

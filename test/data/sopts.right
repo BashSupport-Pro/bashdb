@@ -1,5 +1,5 @@
-(bashdb:87):
-87:	  eval $*  # Type: "x $*" to see what's being run.
+(bashdb:34):
+34:	  eval $*  # Type: "x $*" to see what's being run.
 +# Just a simple quit command.
 +quit 
 bashdb: invalid option -- e

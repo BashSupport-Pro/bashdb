@@ -32,7 +32,7 @@ _Dbg_do_backtrace() {
 
   _Dbg_not_running && return 1
 
-  local -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_info_args) from count
+  typeset -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_info_args) from count
 
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] ; then 
@@ -47,16 +47,16 @@ _Dbg_do_backtrace() {
   fi
   eval "$_resteglob"
 
-  local prefix='##'
-  local -i count=${2:-$n}
-  local -i k=${3:-0}
-  local -i i=_Dbg_STACK_TOP+k+$1
-  local -i j=i
+  typeset prefix='##'
+  typeset -i count=${2:-$n}
+  typeset -i k=${3:-0}
+  typeset -i i=_Dbg_STACK_TOP+k+$1
+  typeset -i j=i
 
   (( j > n )) && return 1
   (( i == _Dbg_stack_pos+$1 )) && prefix='->'
   if (( k == 0 )) ; then
-    local filename=${BASH_SOURCE[$i]}
+    typeset filename=${BASH_SOURCE[$i]}
     (( _Dbg_basename_only )) && filename=${filename##*/}
     _Dbg_print_frame "$prefix" "$k" '' "$filename" "$_curline" ''
     ((count--)) ; ((k++))
@@ -65,15 +65,15 @@ _Dbg_do_backtrace() {
   # Figure out which index in BASH_ARGV is position "i" (the place where
   # we start our stack trace from). variable "r" will be that place.
 
-  local -i q
-  local -i r=0
+  typeset -i q
+  typeset -i r=0
   for (( q=0 ; q<i ; q++ )) ; do 
     (( r = r + ${BASH_ARGC[$q]} ))
   done
 
   # Loop which dumps out stack trace.
   for ((  ; (( i <= n && count > 0 )) ; i++ )) ; do 
-    local -i arg_count=${BASH_ARGC[$i]}
+    typeset -i arg_count=${BASH_ARGC[$i]}
     ((j++)) ; ((count--))
     prefix='##'
     (( i == _Dbg_stack_pos+$1-1)) && prefix='->'
@@ -84,17 +84,17 @@ _Dbg_do_backtrace() {
 
     _Dbg_msg_nocr "$prefix$k ${FUNCNAME[$i]}("
 
-    local parms=''
+    typeset parms=''
 
     # Print out parameter list.
     if (( 0 != ${#BASH_ARGC[@]} )) ; then
-      local -i s
+      typeset -i s
       for (( s=0; s < arg_count; s++ )) ; do 
 	if (( s != 0 )) ; then 
 	  parms="\"${BASH_ARGV[$r]}\", $parms"
 	elif [[ ${FUNCNAME[$i]} == "source" ]] \
 	  && (( _Dbg_basename_only )); then
-	  local filename=${BASH_ARGV[$r]}
+	  typeset filename=${BASH_ARGV[$r]}
 	  filename=${filename##*/}
 	  parms="\"$filename\""
 	else
@@ -104,7 +104,7 @@ _Dbg_do_backtrace() {
       done
     fi
 
-    local filename=${BASH_SOURCE[$j]}
+    typeset filename=${BASH_SOURCE[$j]}
     (( _Dbg_basename_only )) && filename=${filename##*/}
     _Dbg_msg "$parms) called from file \`$filename'" \
       "at line ${BASH_LINENO[$i]}"

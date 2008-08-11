@@ -31,13 +31,13 @@ typeset -i  _Dbg_stack_pos
 #======================== FUNCTIONS  ============================#
 
 _Dbg_adjust_frame() {
-  local -i count=$1
-  local -i signum=$2
+  typeset -i count=$1
+  typeset -i signum=$2
 
-  local -i retval
+  typeset -i retval
   _Dbg_stack_int_setup $count || return
 
-  local -i pos
+  typeset -i pos
   if (( signum==0 )) ; then
     if (( count < 0 )) ; then
       ((pos=${#FUNCNAME[@]}-3+count))
@@ -57,7 +57,7 @@ _Dbg_adjust_frame() {
   fi
 
   ((_Dbg_stack_pos = pos))
-  local -i j=_Dbg_stack_pos+2
+  typeset -i j=_Dbg_stack_pos+2
   _Dbg_listline=${BASH_LINENO[$j]}
   ((j++))
   _cur_source_file=${BASH_SOURCE[$j]}
@@ -105,7 +105,7 @@ _Dbg_print_frame() {
 
 _Dbg_do_info_args() {
 
-  local -i n=${#FUNCNAME[@]}-1  # remove us (_Dbg_do_info_args) from count
+  typeset -i n=${#FUNCNAME[@]}-1  # remove us (_Dbg_do_info_args) from count
 
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] ; then 
@@ -114,15 +114,15 @@ _Dbg_do_info_args() {
     return 1
   fi
 
-  local -i i=_Dbg_stack_pos+$1
+  typeset -i i=_Dbg_stack_pos+$1
 
   (( i > n )) && return 1
 
   # Figure out which index in BASH_ARGV is position "i" (the place where
   # we start our stack trace from). variable "r" will be that place.
 
-  local -i q
-  local -i r=0
+  typeset -i q
+  typeset -i r=0
   for (( q=0 ; q<i ; q++ )) ; do 
     (( r = r + ${BASH_ARGC[$q]} ))
   done
@@ -130,11 +130,11 @@ _Dbg_do_info_args() {
   # Print out parameter list.
   if (( 0 != ${#BASH_ARGC[@]} )) ; then
 
-    local -i arg_count=${BASH_ARGC[$i]}
+    typeset -i arg_count=${BASH_ARGC[$i]}
 
     ((r += arg_count - 1))
 
-    local -i s
+    typeset -i s
     for (( s=1; s <= arg_count ; s++ )) ; do 
       _Dbg_printf "$%d = %s" $s "${BASH_ARGV[$r]}"
       ((r--))
@@ -144,4 +144,4 @@ _Dbg_do_info_args() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: frame.sh,v 1.1 2008/08/10 22:25:08 rockyb Exp $'
+_Dbg_stack_ver='$Id: frame.sh,v 1.2 2008/08/11 11:15:43 rockyb Exp $'

@@ -61,24 +61,24 @@ No watch expressions have been set.
 +watch x
  2: ($x)==22 arith: 0
 +restart -B -L .. -q -x data/restart2.cmd dbg-test1.sh
-Restarting with: -B -q -L .. -x data/restart2.cmd dbg-test1.sh
+Restarting with: ... -B -q -L .. -x data/restart2.cmd dbg-test1.sh
 Watchpoint 2: $x changed:
   old value: '22'
   new value: ''
-(bashdb:278):
-278:	if ((_Dbg_opt_linetrace)) ; then 
+(bashdb:147):
+147:	if ((_Dbg_opt_linetrace)) ; then 
 +# 2nd part of Restart test
 +l 
-278:==>if ((_Dbg_opt_linetrace)) ; then 
-279:     # No stepping.
-280:     _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
-281:     BASHDB_QUIT_ON_QUIT=1
-282:   else 
-283:     # Set to skip over the next 4 statements
-284:     _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
-285:   fi
-286:   set -o functrace
-287:   if [[ -z $_Dbg_cmd ]] ; then 
+147:==>if ((_Dbg_opt_linetrace)) ; then 
+148:     # No stepping.
+149:     _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
+150:     BASHDB_QUIT_ON_QUIT=1
+151:   else 
+152:     # Set to skip over the next 4 statements
+153:     _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
+154:   fi
+155:   set -o functrace
+156:   if [[ -z $_Dbg_cmd ]] ; then 
 +info break
 No breakpoints have been set.
 Num Type       Enb  Expression
