@@ -292,7 +292,6 @@ _Dbg_onecmd() {
 	  
 	  _Dbg_last_cmd='continue'
 	  if _Dbg_do_continue $args ; then
-	    IFS="$_Dbg_old_IFS";
 	    _Dbg_write_journal_eval \
 	      "_Dbg_old_set_opts=\"$_Dbg_old_set_opts -o functrace\""
 	    return 0
@@ -832,4 +831,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.2 2008/08/12 11:21:57 rockyb Exp $'
