@@ -34,77 +34,6 @@ typeset -i _curline       # current line number of debugged program
 
 # ===================== FUNCTIONS =======================================
 
-function _Dbg_errmsg {
-    typeset -r prefix='**'
-    _Dbg_msg "$prefix $@"
-}
-
-function _Dbg_errmsg_no_cr {
-    typeset -r prefix='**'
-    _Dbg_msg_no_cr "$prefix $@"
-}
-
-# print message to output device
-function _Dbg_msg {
-  if (( _Dbg_logging )) ; then
-    builtin echo -e "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty  ]] ; then
-      builtin echo -e "$@" >>$_Dbg_tty
-    else
-      builtin echo -e "$@"
-    fi
-  fi
-}
-
-# print message to output device without a carriage return at the end
-function _Dbg_msg_nocr {
-  if (( _Dbg_logging )) ; then
-    builtin echo -n -e "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty  ]] ; then
-      builtin echo -n -e "$@" >>$_Dbg_tty
-    else
-      builtin echo -n -e "$@"
-    fi
-  fi
-}
-
-# print message to output device
-function _Dbg_printf {
-  typeset format=$1
-  shift
-  if (( _Dbg_logging )) ; then
-    builtin printf "$format" "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty ]] ; then
-      builtin printf "$format" "$@" >>$_Dbg_tty
-    else
-      builtin printf "$format" "$@"
-    fi
-  fi
-  _Dbg_msg ''
-}
-
-# print message to output device without a carriage return at the end
-function _Dbg_printf_nocr {
-  typeset format=$1
-  shift 
-  if (( _Dbg_logging )) ; then
-    builtin printf "$format" "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty ]] ; then 
-      builtin printf "$format" "$@" >>$_Dbg_tty
-    else
-      builtin printf "$format" "$@"
-    fi
-  fi
-}
-
 # Common funnel for "Undefined command" message
 _Dbg_undefined_cmd() {
   _Dbg_msg "Undefined $1 command \"$2\""
@@ -187,4 +116,4 @@ function _Dbg_get_source_line {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.sh,v 1.1 2008/08/09 11:20:42 rockyb Exp $'
+'$Id: dbg-io.sh,v 1.2 2008/08/12 14:07:15 rockyb Exp $'

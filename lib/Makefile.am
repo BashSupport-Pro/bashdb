@@ -11,8 +11,10 @@ pkgdata_DATA =      	\
 	info.sh    	\
 	journal.sh    	\
 	list.sh    	\
+	msg.sh    	\
 	processor.sh  	\
 	run.sh  	\
+	save-restore.sh \
 	sig.sh
 
 EXTRA_DIST = $(pkgdata_DATA)

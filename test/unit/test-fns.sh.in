@@ -160,9 +160,10 @@ test_split()
     assertEquals 'foo' ${words[0]}
 }
 
-top_builddir=@top_builddir@
-top_builddir=${top_builddir%%/}/
-. ${top_builddir}/lib/fns.sh
+top_srcdir=@top_srcdir@
+top_srcdir=${top_srcdir%%/}/
+. ${top_srcdir}/lib/save-restore.sh
+. ${top_srcdir}/lib/fns.sh
 
 # load shunit2
 srcdir=@srcdir@

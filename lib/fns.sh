@@ -18,10 +18,6 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-# Come here via DEBUG trap after each statement in script.
-# This determines if we need to stop and go into the debugger 
-# command loop or not.
-
 # Return $2 copies of $1. If successful, $? is 0 and the return value
 # is in result.  Otherwise $? is 1 and result ''
 function _Dbg_copies { 
@@ -290,69 +286,6 @@ function _Dbg_set_ftrace {
   done
 }
 
-# Does things to after on entry of after an eval to set some debugger
-# internal settings  
-function _Dbg_set_debugger_internal {
-  IFS="$_Dbg_space_IFS";
-  PS4='+ dbg (${BASH_SOURCE}:${LINENO}[$BASH_SUBSHELL]): ${FUNCNAME[0]}\n'
-}
-
-function _Dbg_restore_user_vars {
-  IFS="$_Dbg_space_IFS";
-  set -$_Dbg_old_set_opts
-  IFS="$_Dbg_old_IFS";
-  PS4="$_Dbg_old_PS4"
-}
-
-# Do things for debugger entry. Set some global debugger variables
-# Remove trapping ourselves. 
-# We assume that we are nested two calls deep from the point of debug
-# or signal fault. If this isn't the constant 2, then consider adding
-# a parameter to this routine.
-
-function _Dbg_set_debugger_entry {
-
-  # Nuke DEBUG trap
-  trap '' DEBUG
-
-  _cur_fn=${FUNCNAME[2]}
-  let _curline=${BASH_LINENO[1]}
-  ((_curline < 1)) && let _curline=1
-
-  _Dbg_old_IFS="$IFS"
-  _Dbg_old_PS4="$PS4"
-  _cur_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
-  _Dbg_stack_pos=$_Dbg_STACK_TOP
-  _Dbg_listline=_curline
-  _Dbg_set_debugger_internal
-  _cur_source_file="`_Dbg_resolve_expand_filename $_cur_source_file`"
-  _cur_filevar="`_Dbg_file2var $_cur_source_file`"
-}
-
-function _Dbg_set_to_return_from_debugger {
-  _Dbg_rc=$?
-
-  _Dbg_currentbp=0
-  _Dbg_stop_reason=''
-  if (( $1 != 0 )) ; then
-    _Dbg_last_bash_command="$_Dbg_bash_command"
-    _Dbg_last_curline="$_curline"
-    _Dbg_last_source_file="$_cur_source_file"
-  else
-    _Dbg_last_curline==${BASH_LINENO[1]}
-    _Dbg_last_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
-    _Dbg_last_bash_command="**unsaved _bashdb command**"
-  fi
-
-  if (( _Dbg_restore_debug_trap )) ; then
-    trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
-  else
-    trap - DEBUG
-  fi  
-
-  _Dbg_restore_user_vars
-}
-
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+'$Id: fns.sh,v 1.2 2008/08/12 14:07:15 rockyb Exp $'
