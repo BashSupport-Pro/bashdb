@@ -3,6 +3,7 @@ pkgdata_DATA =      	\
 	brk.sh    	\
 	commands.sh  	\
 	complete.sh  	\
+	dbg-call.sh  	\
 	file.sh  	\
 	fns.sh  	\
 	frame.sh        \

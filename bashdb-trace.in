@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.27 2008/08/11 11:15:41 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.28 2008/08/13 14:31:34 rockyb Exp $'
 
 declare -a _Dbg_script_args=("$@")
 
@@ -111,32 +111,8 @@ There is absolutely no warranty for BASHDB.  Type "show warranty" for details.
 EOF
   exit 1
 fi
-
 . $_Dbg_libdir/dbg-main.sh
-trap '' DEBUG
-
-# Enter the debugger at the calling stack frame.  This is useful to
-# hard-code a breakpoint at a given point in a program, even if the code
-# is not otherwise being debugged.
-# Leaving this the debugger terminates the program.
-
-# Any parameters are exec'd. In this way you can force specific options to
-# get set.
-_Dbg_debugger() {
-  set -o functrace
-  while (( $# > 0 )) ; do
-    eval $1
-    shift
-  done
-
-  if [[ -z ${_Dbg_set_trace_init:-''} ]] ; then
-      _Dbg_set_trace_init=1
-      _Dbg_write_journal "_Dbg_step_ignore=0"
-      trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
-  else
-      _Dbg_step_ignore=2
-  fi
-}
+_Dbg_set_trace_init=1
 
 # Older alias for _Dbg_debugger()
 _Dbg_set_trace() {

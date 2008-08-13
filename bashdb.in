@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.37 2008/08/11 11:15:41 rockyb Exp $'
+'$Id: bashdb.in,v 1.38 2008/08/13 14:31:34 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -152,6 +152,7 @@ else
   # Set to skip over the next 4 statements
   _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
 fi
+trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 set -o functrace
 if [[ -z $_Dbg_cmd ]] ; then 
   if ((_Dbg_opt_linetrace)) ; then 
