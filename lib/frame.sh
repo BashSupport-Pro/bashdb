@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# stack.sh - Bourne Again Shell Debugger Call Stack routines
+# frame.sh - Bourne Again Shell Debugger Call Stack routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -142,6 +142,3 @@ _Dbg_do_info_args() {
   fi
   return 0
 }
-
-# This is put at the so we have something at the end when we debug this.
-_Dbg_stack_ver='$Id: frame.sh,v 1.2 2008/08/11 11:15:43 rockyb Exp $'

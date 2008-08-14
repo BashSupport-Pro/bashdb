@@ -93,3 +93,4 @@ fi
 
 [ -n "$BASHDB_RESTART_FILE" ] \
    && [ -r "$BASHDB_RESTART_FILE" ] &&  source $BASHDB_RESTART_FILE
+[ -z $_Dbg_do_trap ] && trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG

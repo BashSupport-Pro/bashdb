@@ -37,8 +37,8 @@ _Dbg_debugger() {
     shift
   done
 
-  if [[ -z ${_Dbg_initalized:-''} ]] ; then
-      _Dbg_initalized=1
+  if [[ -z $_Dbg_set_trace_init ]] ; then
+      _Dbg_set_trace_init=1
       _Dbg_step_ignore=${step_ignore:-0}
       _Dbg_write_journal "_Dbg_step_ignore=0"
       trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG

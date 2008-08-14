@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.38 2008/08/13 14:31:34 rockyb Exp $'
+'$Id: bashdb.in,v 1.39 2008/08/14 02:15:33 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -142,7 +142,7 @@ if [[ ! -r $_Dbg_main ]] ; then
   exit 1
     
 fi
-. $_Dbg_libdir/dbg-main.sh
+_Dbg_do_trap='no' ; . $_Dbg_libdir/dbg-main.sh ;
 
 if ((_Dbg_opt_linetrace)) ; then 
   # No stepping.
