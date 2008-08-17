@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.52 2008/08/10 22:25:07 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.53 2008/08/17 15:13:05 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -92,20 +92,20 @@ fi
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
 AC_ARG_WITH(bash, AC_HELP_STRING([--with-bash], 
-		  [location of bash OK_BASH_VERS program]), BASH_PROG=$withval)
+		  [location of bash OK_BASH_VERS program]), SH_PROG=$withval)
 
-if test "$BASH_PROG" = "yes" || test "$BASH_PROG" = "no" || test -z "$BASH_PROG"
+if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
 then
-  AC_PATH_PROG(BASH_PROG, bash, no)
+  AC_PATH_PROG(SH_PROG, bash, no)
 fi
 
-if test "$BASH_PROG" = no; then
+if test "$SH_PROG" = no; then
   AC_MSG_ERROR([I didn't find the bash executable.\
   You might want to use the --with-bash option.])
 fi
 
 if test "${enable_getopt}" != "no" ; then
-  $BASH_PROG ./getopt-test.sh
+  $SH_PROG ./getopt-test.sh
   if test $? -eq 0 ; then
     AC_MSG_RESULT([Good! Your long options seem to be working okay.])
     TRY_GETOPT=1
@@ -118,9 +118,9 @@ else
   TRY_GETOPT=0
 fi
 
-bash_version=`$BASH_PROG --version`
-[bash_major=`$BASH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
-[bash_minor=`$BASH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
+bash_version=`$SH_PROG --version`
+[bash_major=`$SH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
+[bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
 case "${bash_major}.${bash_minor}" in
   'OK_BASH_VERS'|'3.2')
     ;;
@@ -146,7 +146,7 @@ PIC=$lt_prog_compiler_pic_CXX
 WL=$lt_prog_compiler_wl_CXX
 
 if test -z "$BASHDB_MAIN" ; then
-  BASHDB_MAIN=`strings $BASH_PROG$EXEEXT | grep bashdb-main.inc`
+  BASHDB_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
   if test -z "$BASHDB_MAIN" ; then
      AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the 
 right version of bash, set it with the --with-dbg-main option])
@@ -229,6 +229,7 @@ AC_CONFIG_FILES([test/bugIFS.sh], [chmod +x test/bugIFS.sh])
 AC_CONFIG_FILES([test/hanoi.sh], [chmod +x test/hanoi.sh])
 AC_CONFIG_FILES([test/interrupt.sh], [chmod +x test/interrupt.sh])
 AC_CONFIG_FILES([test/bug-args.sh], [chmod +x test/bug-args.sh])
+AC_CONFIG_FILES([test/unit/test-alias.sh], [chmod +x test/unit/test-alias.sh])
 AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh], [chmod +x test/unit/test-bashdb-trace.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
@@ -239,6 +240,7 @@ AC_CONFIG_FILES([test/unit/test-set0.sh], [chmod +x test/unit/test-set0.sh])
 
 AC_CONFIG_FILES([ \
 	bashdb-trace \
+	bashdb-main.inc \
 	dbg-main.sh \
 	dbg-pre.sh \
         emacs/bashdb-test.el \
@@ -262,7 +264,7 @@ AC_OUTPUT
 echo
 echo "========================================================="
 echo "Bash version: $bash_version"
-echo "Location: $BASH_PROG"
+echo "Location: $SH_PROG"
 if test x"$build_readarray" != x; then
    echo "We will try to build the readarray builtin to speed up loading"
    echo "located at $BASH_SRC."

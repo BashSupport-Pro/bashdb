@@ -68,6 +68,7 @@ _Dbg_do_backtrace() {
   typeset -i q
   typeset -i r=0
   for (( q=0 ; q<i ; q++ )) ; do 
+    [[ -z ${BASH_ARGC[$q]} ]] && break
     (( r = r + ${BASH_ARGC[$q]} ))
   done
 

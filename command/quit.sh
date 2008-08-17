@@ -17,6 +17,10 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
+_Dbg_help_add quit \
+'quit	- Quit the debugger.  The program being debugged is aborted.'
+
 _Dbg_do_quit() {
   typeset -i return_code=${1:-$_Dbg_program_exit_code}
 
@@ -62,4 +66,6 @@ _Dbg_do_quit() {
   # And just when you thought we'd never get around to it...
   exit $return_code
 }
-alias q=quit
+
+_Dbg_alias_add q quit
+_Dbg_alias_add exit quit

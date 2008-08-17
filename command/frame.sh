@@ -19,11 +19,18 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Move default values down $1 or one in the stack. 
+
+_Dbg_help_add down \
+'down [count]    Set file location for printing down the call stack by 
+                count. If count is omitted use 1.'
 _Dbg_do_down() {
   _Dbg_not_running && return 1
   typeset -i count=${1:-1}
   _Dbg_adjust_frame $count -1
 }
+
+_Dbg_help_add frame \
+'frame frame-number	Move the current frame to the frame-number'
 
 _Dbg_do_frame() {
   _Dbg_not_running && return 1
@@ -33,8 +40,14 @@ _Dbg_do_frame() {
 
 # Move default values up $1 or one in the stack. 
 
+# Move default values up $1 or one in the stack. 
+_Dbg_help_add up \
+'u | up [count]  Set file location for printing up the call stack by 
+                count. If count is omitted use 1.'
 _Dbg_do_up() {
   _Dbg_not_running && return 1
   typeset -i count=${1:-1}
   _Dbg_adjust_frame $count +1
 }
+
+_Dbg_alias_add 'u' up

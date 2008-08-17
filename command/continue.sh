@@ -25,6 +25,12 @@
 # $3 is which entry we start from; the "up", "down" and the "frame"
 # commands may shift this.
 
+_Dbg_help_add continue \
+'continue [LOCSPEC | - ]	-- Continue execution until the next breakpoint or end of program or location specification LOCSPEC. 
+
+If instead of a line specification you enter -, then debugging will be turned 
+off after continuing causing your program to run at full speed.'
+
 function _Dbg_help_continue {
     _Dbg_msg \
 "c [linespec | - ]  Continue execution until the next breakpoint or end of 

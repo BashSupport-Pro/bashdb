@@ -26,10 +26,11 @@
 # force specific options to get set.
 _Dbg_debugger() {
   set -o functrace
-  typeset step_ignore=''
   if (( $# > 0 )) ; then
       step_ignore=$1
       shift
+  else
+      typeset step_ignore=${_Dbg_step_ignore:-''}
   fi
 
   while (( $# > 0 )) ; do
@@ -41,8 +42,8 @@ _Dbg_debugger() {
       _Dbg_set_trace_init=1
       _Dbg_step_ignore=${step_ignore:-0}
       _Dbg_write_journal "_Dbg_step_ignore=0"
-      trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
   else
-      _Dbg_step_ignore=${1:-2}
+      _Dbg_step_ignore=${1:-1}
   fi
+  trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }

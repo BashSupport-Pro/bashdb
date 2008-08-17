@@ -19,7 +19,10 @@
 
 #================ VARIABLE INITIALIZATIONS ====================#
 
-# Routine to a delete breakpoint/watchpoint by entry numbers.
+_Dbg_help_add edit \
+"edit [LINESPEC]	- Edit specified file at location given.
+If no location is given use the current location."
+
 _Dbg_do_edit() {
   local -i line_number
   local editor=${EDITOR:-ex}

@@ -25,12 +25,29 @@
 # $3 is which entry we start from; the "up", "down" and the "frame"
 # commands may shift this.
 
+_Dbg_help_add help \
+'help	- Print list of commands.'
+
 # print help command 
 function _Dbg_do_help {
 
-  local -r db_cmd=$1
+  if ((0 == $#)) ; then
+      _Dbg_help_sort_command_names
+      _Dbg_msg 'Available commands:'
+      typeset commands="${_Dbg_sorted_command_names[@]}"
+      typeset columnized=''; 
+      columnize "$commands" 60
+      typeset -i i
+      for ((i=0; i<${#columnized[@]}; i++)) ; do 
+	  _Dbg_msg "  ${columnized[i]}"
+      done
+      _Dbg_msg ''
+      _Dbg_msg 'Readline command line editing (emacs/vi mode) is available.'
+      _Dbg_msg 'Type "help" followed by command name for full documentation.'
+      return
+  else
+    typeset -r db_cmd=$1
   
-  if [[ -n "$db_cmd" ]] ; then
     case $db_cmd in 
             !! | sh | she | shell ) 
 	_Dbg_msg \

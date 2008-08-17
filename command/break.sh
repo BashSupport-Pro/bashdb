@@ -2,6 +2,10 @@
 # the line number or _curline if omitted.  $2 is a condition to test
 # for whether to stop.
 
+_Dbg_help_add break \
+'break [LOCSPEC]	-- Set a breakpoint on LOCSPEC. 
+If no location specification is given, use the current line.'
+
 _Dbg_do_break() {
 
   local -i is_temp=$1

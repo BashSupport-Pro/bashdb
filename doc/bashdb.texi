@@ -1241,8 +1241,8 @@ settings, watchpoints, breakpoints, actions and so on. Internally it
 uses line numbers and filenames to record he position of interesting
 places in your porgram; so if your program changes some or all of
 these numbers may be off. Environment variable
-@code{BASHDB_RESTART_FILE} is and a temporary file are used to signal
-a restart, so you shouldn't uset @code{BASHDB_RESTART_FILE} (or any
+@code{DBG_RESTART_FILE} is and a temporary file are used to signal
+a restart, so you shouldn't uset @code{DBG_RESTART_FILE} (or any
 environment variable starting with @code{BASHDB_}.
 
 @end table
@@ -1400,7 +1400,7 @@ use including those used by the debugger.}
 A number of environment variables are also reserved for use; these
 start with @code{BASHDB_}. For example: @env{BASHDB_INPUT},
 @env{BASHDB_LEVEL} and, @env{BASHDB_QUIT_ON_QUIT} (@pxref{Debug,
-,Debug}), @env{BASHDB_RESTART_FILE} (@pxref{Starting, ,Starting}), to
+,Debug}), @env{DBG_RESTART_FILE} (@pxref{Starting, ,Starting}), to
 name a few.  Finally, there are some @acronym{BASH} environment
 dynamic variables and these start with @env{BASH_}. For example
 @env{BASH_SUBSHELL} (@pxref{Debug, ,Debug}), @env{BASH_COMMAND}

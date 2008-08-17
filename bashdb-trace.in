@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.29 2008/08/14 02:15:33 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.30 2008/08/17 15:13:05 rockyb Exp $'
 
 declare -a _Dbg_script_args=("$@")
 
@@ -111,7 +111,7 @@ There is absolutely no warranty for BASHDB.  Type "show warranty" for details.
 EOF
   exit 1
 fi
-_Dbg_do_trap='no' ; . $_Dbg_libdir/dbg-main.sh
+. $_Dbg_libdir/dbg-main.sh
 _Dbg_set_trace_init=1
 
 # Older alias for _Dbg_debugger()
@@ -126,10 +126,10 @@ _Dbg_set_trace() {
       _Dbg_set_trace_init=1
       _Dbg_step_ignore=${step_ignore:-0}
       _Dbg_write_journal "_Dbg_step_ignore=0"
-      trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
   else
-      _Dbg_step_ignore=2
+      _Dbg_step_ignore=${1:-2}
   fi
+  trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }
 
 # Turn on line tracing. Sort of a nicer replacement for

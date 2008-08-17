@@ -91,6 +91,5 @@ if [[ ${_Dbg_libdir:0:1} == '.' ]] ; then
     _Dbg_libdir=$(_Dbg_expand_filename ${_Dbg_init_cwd}/${_Dbg_libdir})
 fi
 
-[ -n "$BASHDB_RESTART_FILE" ] \
-   && [ -r "$BASHDB_RESTART_FILE" ] &&  source $BASHDB_RESTART_FILE
-[ -z $_Dbg_do_trap ] && trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
+[ -n "$DBG_RESTART_FILE" ] \
+   && [ -r "$DBG_RESTART_FILE" ] &&  source $DBG_RESTART_FILE

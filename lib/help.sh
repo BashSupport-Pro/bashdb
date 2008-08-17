@@ -17,6 +17,51 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+# Command aliases are stored here.
+typeset -a _Dbg_command_names=()
+typeset -a _Dbg_command_names_sorted=()
+typeset -a _Dbg_command_help=()
+
+# Add an new alias in the alias table
+_Dbg_help_add() {
+    (( $# != 2 )) && return 1
+    _Dbg_command_names+=("$1")
+    _Dbg_command_help+=("$2")
+     return 0
+}
+
+_Dbg_help_get_text() {
+    _Dbg_help_text=''
+    (( $# != 1 )) && return 2
+    _Dbg_command_index $1
+    typeset -i i=$?
+    ((i==-1)) && return 1
+    _Dbg_help_text="${_Dbg_command_help[i]}"
+    return 0
+    
+}
+
+# Return the index in _Dbg_command_names of $1 or -1 if not there.
+function _Dbg_command_index {
+    typeset find_name=$1
+    typeset -i i
+    for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
+	((_Dbg_command_names[i]==find_name)) && return $i
+    done
+    return -1
+}
+_Dbg_help_sort_command_names() {
+    ((${#_Dbg_command_names_sorted} > 0 )) && return 0
+    # Temporary file to save the journal information.
+    typeset _Dbg_sorted_cmdfile=$(_Dbg_tempname sorted_cmdfile)
+    typeset -i i
+    for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
+	printf "${_Dbg_command_names[i]}\n" >> $_Dbg_sorted_cmdfile
+    done
+    _Dbg_sorted_command_names=( $(sort $_Dbg_sorted_cmdfile) )
+    rm $_Dbg_sorted_cmdfile
+}    
+
 typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
 typeset -r _Dbg_show_cmds="args annotate autoeval basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
@@ -210,7 +255,7 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+'$Id: help.sh,v 1.2 2008/08/17 15:13:11 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

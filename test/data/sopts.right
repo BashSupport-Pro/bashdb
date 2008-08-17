@@ -1,5 +1,5 @@
-(bashdb:34):
-34:	  eval $*  # Type: "x $*" to see what's being run.
+test1
+Debugged program terminated normally. Use q to quit or R to restart.
 +# Just a simple quit command.
 +quit 
 bashdb: invalid option -- e

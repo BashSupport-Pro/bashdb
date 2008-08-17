@@ -69,19 +69,15 @@ _Dbg_adjust_frame() {
 # if everything is okay. Retval is set to 1 on error
 _Dbg_stack_int_setup() {
 
-  if (( ! _Dbg_running )) ; then
-    _Dbg_errmsg 'No stack.'
-    return 1
-  else
-    eval "$_seteglob"
-    if [[ $1 != '' && $1 != $signed_int_pat ]] ; then 
+  _Dbg_not_running && return 1
+  eval "$_seteglob"
+  if [[ $1 != '' && $1 != $signed_int_pat ]] ; then 
       _Dbg_msg "Bad integer parameter: $1"
       eval "$_resteglob"
       return 1
-    fi
-    eval "$_resteglob"
-    return 0
   fi
+  eval "$_resteglob"
+  return 0
 }
 
 # Print one line in a call stack

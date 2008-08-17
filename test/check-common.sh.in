@@ -1,10 +1,10 @@
-# $Id: check-common.sh.in,v 1.5 2008/08/10 00:54:15 rockyb Exp $
+# $Id: check-common.sh.in,v 1.6 2008/08/17 15:13:12 rockyb Exp $
 # -*- shell-script -*-
 
 srcdir=@srcdir@
 builddir=@builddir@
 if test -z "$THIS_SH" ; then 
-  THIS_SH=@BASH_PROG@
+  THIS_SH=@SH_PROG@
 fi
 
 # Could/should probably replace all uses of THIS_SH with BASH.

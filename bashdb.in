@@ -1,4 +1,4 @@
-#!@BASH_PROG@
+#!@SH_PROG@
 # -*- shell-script -*-
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008  Rocky Bernstein 
 #   rocky@gnu.org
@@ -25,33 +25,31 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.39 2008/08/14 02:15:33 rockyb Exp $'
+'$Id: bashdb.in,v 1.40 2008/08/17 15:13:05 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
 # in a traceback ("where").
-function bashdb_eval {
+function _Dbg_eval {
   eval $*  # Type: "x $*" to see what's being run.
 }
 
 typeset -a _Dbg_script_args=("$@")
 
 # Equivalent to basename $0; the short program name
-typeset _Dbg_pname=${0##*/}  
+typeset _Dbg_pname=${0##*/}; typeset _Dbg_tmpdir=/tmp
 
 # Show basename only in location listing. This is needed in regression tests
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
+typeset     _Dbg_bashdb_main=@BASHDB_MAIN@
+typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
+# typeset    _Dbg_libdir=@PKGDATADIR@
+
 typeset    _Dbg_main=dbg-main.sh
-prefix=@prefix@  # cygwin gets PKGDATADIR wrong
-typeset    _Dbg_libdir=@PKGDATADIR@
 typeset    _Dbg_bindir=$(dirname $0)
-typeset    _Dbg_tmpdir=/tmp
-typeset -i _Dbg_opt_linetrace=0
 typeset    _Dbg_cmd='' # If command string given on command line, this is it.
 
-# Use gdb-style annotate?
-typeset -i _Dbg_annotate=0
 typeset -i _Dbg_try_getopt=@TRY_GETOPT@
 
 # What to set for location of helper routines? 
@@ -104,9 +102,9 @@ fi
 }
 
 # Note that this is called via bashdb rather than "bash --debugger"
-_Dbg_script=1
-
 . ${_Dbg_libdir}/dbg-pre.sh
+
+_Dbg_script=1
 
 if [[ -z $_Dbg_quiet ]] ; then 
   echo "Bourne-Again Shell Debugger, release $_Dbg_release"
@@ -142,7 +140,7 @@ if [[ ! -r $_Dbg_main ]] ; then
   exit 1
     
 fi
-_Dbg_do_trap='no' ; . $_Dbg_libdir/dbg-main.sh ;
+. $_Dbg_libdir/dbg-main.sh ;
 
 if ((_Dbg_opt_linetrace)) ; then 
   # No stepping.
@@ -161,7 +159,7 @@ if [[ -z $_Dbg_cmd ]] ; then
   fi
   . "$_source_file"
 else 
-  bashdb_eval "$_Dbg_cmd"
+  _Dbg_eval "$_Dbg_cmd"
 fi
 
 # end of bashdb

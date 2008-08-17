@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.33 2008/08/11 13:47:17 rockyb Exp $
+#$Id: Makefile.am,v 1.34 2008/08/17 15:13:05 rockyb Exp $
 
 subdirs = command lib doc emacs test
 if BUILD_BUILTINS
@@ -40,9 +40,10 @@ pkgdata_DATA = dbg-init.sh         \
                dbg-opts.sh         \
                dbg-pre.sh          \
 	       dbg-set-d-vars.inc  \
+	       bashdb-main.inc	   \
 	       bashdb-trace
 
-EXTRA_DIST = bashdb.in bashdb-trace.in dbg-main.sh.in \
+EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc dbg-main.sh.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     getopt-test.sh \
 	     ChangeLog ChangeLog.0 
@@ -69,10 +70,6 @@ OLD_DIR    = $(dir @BASHDB_MAIN@)
 OLD_MAIN   = $(notdir @BASHDB_MAIN@)
 PARENT_DIR = $(dir $(OLD_DIR))
 install-data-hook: 
-	@if test -e @BASHDB_MAIN@ ; then \
-	  if test "$(OLD_MAIN)" != "dbg-main.sh" ; then \
-	    $(RM) @BASHDB_MAIN@ || true; \
-          fi; fi
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR)/* || true; \
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
@@ -81,16 +78,6 @@ install-data-hook:
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
-	@if test $(DESTDIR)$(PKGDATADIR) != $(DESTDIR)$(PARENT_DIR:/=) ; then \
-	  $(LN_S) $(DESTDIR)$(PKGDATADIR) $(DESTDIR)$(PARENT_DIR:/=) || true; \
-        fi
-	@if test "dbg-main.sh" != "$(OLD_MAIN)" ; then \
-	  ( if cd $(DESTDIR)$(pkgdatadir) ; then \
-	     test -e $(OLD_MAIN) && $(RM) $(OLD_MAIN); \
-	     $(LN_S) dbg-main.sh $(OLD_MAIN) || \
-	     echo "WARNING: I'm having trouble letting bash know where the debugger is. Use the bashdb script only." ; \
-	  fi ) \
-	fi
 
 # Unit testing
 check-unit: test-unit

@@ -3,7 +3,7 @@
 set -u
 
 init() {
-  _Dbg_debugger; : ; :
+  _Dbg_debugger; :
 }
 
 hanoi() { 
@@ -12,7 +12,7 @@ hanoi() {
   local -r b=$3
   local -r c=$4
 
-  _Dbg_set_trace; : ; :
+  _Dbg_set_trace
   if (( n > 0 )) ; then
     (( n-- ))
     hanoi $n $a $c $b
@@ -30,14 +30,15 @@ elif [[ -z ${builddir:-''} ]] ; then
   builddir=$PWD/..
 fi
 
-if (( $# > 1 )) ; then
+if (( $# > 1 )); then
   cmdfile=$2
 else
-  cmdfile=${srcdir/data/settrace.cmd}
+  srcdir=${srcdir:-'.'}
+  cmdfile=${srcdir}/data/settrace.cmd
 fi
 
 source ${builddir}/bashdb-trace -q -L .. -B  -x $cmdfile
 typeset -i max=1
 init
 hanoi $max 'a' 'b' 'c'
-_Dbg_debugger _Dbg_do_quit; : ; :
+_Dbg_debugger 1 _Dbg_do_quit

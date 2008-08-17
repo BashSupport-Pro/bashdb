@@ -21,6 +21,9 @@
 # temp file for internal eval'd commands
 typeset _Dbg_evalfile=$(_Dbg_tempname eval)
 
+_Dbg_help_add eval \
+'eval cmd	Evaluate a bash command.'
+
 _Dbg_do_eval() {
 
   echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
@@ -35,13 +38,21 @@ _Dbg_do_eval() {
   _Dbg_set_debugger_internal
 }
 
+_Dbg_alias_add 'e' 'eval'
+
+
 # The arguments in the last "print" command.
 typeset _Dbg_last_print_args=''
 
+_Dbg_help_add print \
+'print *string*	Print value of a substituted string.'
+
 _Dbg_do_print() {
-  local -r _Dbg_expr=${@:-"$_Dbg_last_print_args"}
-  local -r dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
+  typeset _Dbg_expr=${@:-"$_Dbg_last_print_args"}
+  typeset dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
   . ${_Dbg_libdir}/dbg-set-d-vars.inc
   eval "_Dbg_msg $_Dbg_expr"
   _Dbg_last_print_args="$dq_expr"
 }
+
+_Dbg_alias_add 'p' 'print'

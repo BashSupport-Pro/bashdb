@@ -18,9 +18,12 @@
 #   with Bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add display \
+"display [EXP]	- Set display expression or list all display expressions."
+
 # Set display command or list all current display expressions
 _Dbg_do_display() {
-  if [[ -z "$@" ]]; then
+  if (( 0 == $# )); then
     _Dbg_eval_all_display
   else 
     local -i n=_Dbg_disp_max++
@@ -46,6 +49,9 @@ _Dbg_do_list_display() {
     _Dbg_msg "No display expressions have been set."
   fi
 }
+
+_Dbg_help_add undisplay \
+"undisplay [EXP]	- Set display expression or list all display expressions."
 
 _Dbg_do_undisplay() {
   local -i del=$1

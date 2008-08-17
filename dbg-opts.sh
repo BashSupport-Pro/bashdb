@@ -16,6 +16,13 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
+typeset    _Dbg_tmpdir=/tmp
+typeset -i _Dbg_opt_linetrace=0
+
+# Use gdb-style annotate?
+typeset -i _Dbg_annotate=0
+
 function _Dbg_usage_long {
   printf "usage:
     ${_Dbg_pname} [OPTIONS] <script_file>

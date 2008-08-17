@@ -18,6 +18,9 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add enable \
+"enable {N}...	- Enable breakpoint entry/entries."
+
 # Enable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_enable() {
   _Dbg_enable_disable 1 "enabled" $@

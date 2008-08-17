@@ -1,5 +1,5 @@
-#!@BASH_PROG@
-# $Id: hanoi.sh.in,v 1.8 2008/08/09 02:36:18 rockyb Exp $
+#!@SH_PROG@
+# $Id: hanoi.sh.in,v 1.9 2008/08/17 15:13:12 rockyb Exp $
 # Towers of Hanoi
 # We've added calls to set line tracing if the 1st argument is "trace"
 

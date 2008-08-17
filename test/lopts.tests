@@ -1,11 +1,11 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: lopts.tests,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: lopts.tests,v 1.5 2008/08/17 15:13:12 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
 
-. ${builddir}/check_common
+. ${builddir}/check-common.sh
 
 quitcmd="${srcdir}/data/quit.cmd"
 contcmd="${srcdir}/data/quit.cmd"

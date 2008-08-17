@@ -18,6 +18,10 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add debug \
+"debug [SCRIPT]	-- Set up SCRIPT for debugging. 
+If no script is given, take the script name from the command to be executed."
+
 # TODO: would work better if instead of using $source_line below
 # which might have several statements, we could just pick up the next
 # single statement.

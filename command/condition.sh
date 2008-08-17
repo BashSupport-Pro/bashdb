@@ -18,6 +18,11 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add condition \
+"condition N COND	-- Break only if COND is true in breakpoint number N.
+N is an integer and COND is an expression to be evaluated whenever 
+breakpoint N is reached."
+
 # Set a condition for a given breakpoint $1 is a breakpoint number
 # $2 is a condition. If not given, set "unconditional" or 1.
 # returns 0 if success or 1 if fail.

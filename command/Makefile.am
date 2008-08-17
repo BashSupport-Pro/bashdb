@@ -1,5 +1,6 @@
 pkgdatadir        = ${datadir}/@PACKAGE@/command
 pkgdata_DATA =        \
+	alias.sh     \
 	break.sh     \
 	commands.sh  \
 	condition.sh \

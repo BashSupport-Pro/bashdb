@@ -65,20 +65,20 @@ Restarting with: ... -B -q -L .. -x data/restart2.cmd dbg-test1.sh
 Watchpoint 2: $x changed:
   old value: '22'
   new value: ''
-(bashdb:147):
-147:	if ((_Dbg_opt_linetrace)) ; then 
+(bashdb:154):
+154:	set -o functrace
 +# 2nd part of Restart test
 +l 
-147:==>if ((_Dbg_opt_linetrace)) ; then 
-148:     # No stepping.
-149:     _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
-150:     BASHDB_QUIT_ON_QUIT=1
-151:   else 
-152:     # Set to skip over the next 4 statements
-153:     _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
-154:   fi
-155:   set -o functrace
-156:   if [[ -z $_Dbg_cmd ]] ; then 
+154:==>set -o functrace
+155:   if [[ -z $_Dbg_cmd ]] ; then 
+156:     if ((_Dbg_opt_linetrace)) ; then 
+157:       ((_Dbg_opt_linetrace_expand)) && _Dbg_linetrace_expand=1
+158:       _Dbg_linetrace=1
+159:     fi
+160:     . "$_source_file"
+161:   else 
+162:     _Dbg_eval "$_Dbg_cmd"
+163:   fi
 +info break
 No breakpoints have been set.
 Num Type       Enb  Expression

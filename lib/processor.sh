@@ -200,9 +200,11 @@ _Dbg_annotation() {
 # 
 _Dbg_onecmd() {
 
-    local _Dbg_cmd="$1"
+    # typeset expanded_alias; _Dbg_alias_expand $1
+    # typeset _Dbg_cmd="$expanded_alias"
+    typeset _Dbg_cmd="$1"
     shift
-    local args="$@"
+    typeset args="$@"
 
      # Set default next, step or skip command
      if [[ -z $_Dbg_cmd ]]; then
@@ -809,10 +811,10 @@ _Dbg_save_state() {
   _Dbg_save_watchpoints
   _Dbg_save_display
   _Dbg_save_Dbg_set
-  echo "unset BASHDB_RESTART_FILE" >> $_Dbg_statefile
+  echo "unset DBG_RESTART_FILE" >> $_Dbg_statefile
   echo "rm $_Dbg_statefile" >> $_Dbg_statefile
-  export BASHDB_RESTART_FILE="$_Dbg_statefile"
-  _Dbg_write_journal "export BASHDB_RESTART_FILE=\"$_Dbg_statefile\""
+  export DBG_RESTART_FILE="$_Dbg_statefile"
+  _Dbg_write_journal "export DBG_RESTART_FILE=\"$_Dbg_statefile\""
 
 }
 
@@ -831,4 +833,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.2 2008/08/12 11:21:57 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.3 2008/08/17 15:13:11 rockyb Exp $'
