@@ -20,7 +20,7 @@
 ##2 source("parm.sh") called from file `bashdb' at line 160
 ##3 main() called from file `bashdb' at line 0
 +### Try printing a dollar variable...
-+p $1
++print $1
 5
 +### Same thing using eval...
 +eval echo $1
@@ -28,7 +28,7 @@
 +### Setting an action to print $1
 +a 4 echo "\$1 at line 4 has value $1"
 Breakpoint 0 set at parm.sh:4.
-+c fn2
++continue fn2
 One-time breakpoint 1 set in file parm.sh, line 14.
 $1 at line 4 has value 5
 $1 at line 4 has value 4
@@ -51,15 +51,15 @@ $1 at line 4 has value 0
 ##7 fn1("5") called from file `parm.sh' at line 27
 ##8 source("parm.sh") called from file `bashdb' at line 160
 ##9 main() called from file `bashdb' at line 0
-+p "dollar 1: $1"
++print "dollar 1: $1"
 dollar 1: testing 1
 +### Same thing using eval...
-+e echo "\$1 is $1"
++eval echo "\$1 is $1"
 $1 is testing 1
 +### Should have embedded blanks...
-+p $2
++print $2
 2 3
-+e echo "\$2 is $2"
++eval echo "\$2 is $2"
 $2 is 2 3
 +continue fn3
 One-time breakpoint 2 set in file parm.sh, line 21.
@@ -74,7 +74,7 @@ fn2: testing 1 2 3
 (parm.sh:7):
 7:	    return
 +### Should not have done above-listed x="fn2" assignment
-+p $x
++print $x
 fn2 started
 +where 
 ->0 in file `parm.sh' at line 7
@@ -122,13 +122,13 @@ fn2 started
 ##3 source("parm.sh") called from file `bashdb' at line 160
 ##4 main() called from file `bashdb' at line 0
 +### * Testing that exit status preserved on eval and print...
-+c 29
++continue 29
 One-time breakpoint 3 set in file parm.sh, line 29.
 (parm.sh:29):
 29:	exit 0
-+e echo "eval says exit was $?"
++eval echo "eval says exit was $?"
 eval says exit was 5
-+p "print says exit was $?"
++print "print says exit was $?"
 print says exit was 5
 +info files
 Source files for which have been read in:

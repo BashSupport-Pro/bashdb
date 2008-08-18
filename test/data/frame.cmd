@@ -5,7 +5,7 @@ set trace-commands on
 where
 # How about after a frame command? 
 frame 0
-back
+bt
 where
 # How about after moving?
 u
@@ -13,7 +13,7 @@ where
 down
 where
 # Try moving past the end
-do
+down
 where
 up 2
 bt

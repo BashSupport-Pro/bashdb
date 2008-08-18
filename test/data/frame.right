@@ -11,7 +11,7 @@
 +frame 0
 (hanoi.sh:31):
 31:	typeset -i max=3
-+back 
++where 
 ->0 in file `hanoi.sh' at line 31
 ##1 source("hanoi.sh") called from file `bashdb' at line 160
 ##2 main() called from file `bashdb' at line 0
@@ -20,7 +20,7 @@
 ##1 source("hanoi.sh") called from file `bashdb' at line 160
 ##2 main() called from file `bashdb' at line 0
 +# How about after moving?
-+u 
++up 
 (bashdb:160):
 160:	  . "$_source_file"
 +where 
@@ -35,7 +35,7 @@
 ##1 source("hanoi.sh") called from file `bashdb' at line 160
 ##2 main() called from file `bashdb' at line 0
 +# Try moving past the end
-+do 
++down 
 Would be beyond bottom-most (most recent) entry.
 +where 
 ->0 in file `hanoi.sh' at line 31
@@ -43,7 +43,7 @@ Would be beyond bottom-most (most recent) entry.
 ##2 main() called from file `bashdb' at line 0
 +up 2
 Would be beyond top-most (least recent) entry.
-+bt 
++where 
 ->0 in file `hanoi.sh' at line 31
 ##1 source("hanoi.sh") called from file `bashdb' at line 160
 ##2 main() called from file `bashdb' at line 0
@@ -52,7 +52,7 @@ Would be beyond top-most (least recent) entry.
 +down -1
 (bashdb:160):
 160:	  . "$_source_file"
-+T 
++where 
 ##0 in file `hanoi.sh' at line 31
 ->1 source("hanoi.sh") called from file `bashdb' at line 160
 ##2 main() called from file `bashdb' at line 0
@@ -87,7 +87,7 @@ One-time breakpoint 1 set in file hanoi.sh, line 13.
 +frame +0
 (hanoi.sh:13):
 13:	hanoi() { 
-+backtrace 
++where 
 ->0 in file `hanoi.sh' at line 13
 ##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
 ##2 source("hanoi.sh") called from file `bashdb' at line 160

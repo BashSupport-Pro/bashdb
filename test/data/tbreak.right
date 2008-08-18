@@ -10,7 +10,7 @@ Num Type       Disp Enb What
 1   breakpoint del  y   dbg-test1.sh:23
 No watch expressions have been set.
 +### continue to line 23...
-+cont 
++continue 
 (dbg-test1.sh:23):
 23:	y=23
 +### on to line 25...
@@ -38,8 +38,8 @@ Num Type       Disp Enb What
 No watch expressions have been set.
 No actions have been set.
 +### not not see line 25 above and not stop again. Continue to fn3...
-+cont 
-(dbg-test1.sh:17): 17: fn3() { +L No breakpoints have been set. No watch expressions have been set. No actions have been set. +### Should end but stay in debugger.. +cont
++continue 
+(dbg-test1.sh:17): 17: fn3() { +L No breakpoints have been set. No watch expressions have been set. No actions have been set. +### Should end but stay in debugger.. +continue
 fn1 here
 SOURCED LINENO 19
 SOURCED BASH_SOURCE[0] dbg-test1.sub

@@ -5,33 +5,33 @@
 +next 
 (skip.sh:23):
 23:	x=23
-+p "x is $x"
++print "x is $x"
 x is 22
-+p "** Try a skip command..."
++print "** Try a skip command..."
 ** Try a skip command...
 +skip 
 (skip.sh:24):
 24:	for i in 1 ; do
-+p "x is still $x"
++print "x is still $x"
 x is still 22
-+p "** Try skipping over a for loop..."
++print "** Try skipping over a for loop..."
 ** Try skipping over a for loop...
 +skip 
 (skip.sh:27):
 27:	x=27
-+p "x is still $x"
++print "x is still $x"
 x is still 22
-+p "** Try 'skip 3'..."
++print "** Try 'skip 3'..."
 ** Try 'skip 3'...
 +skip 3
 (skip.sh:30):
 30:	fn1;
-+p "x is still $x"
++print "x is still $x"
 x is still 22
 +skip 
 (skip.sh:31):
 31:	fn3 31
-+p "x is still $x"
++print "x is still $x"
 x is still 22
 +skip 
 (skip.sh:32):
@@ -39,7 +39,7 @@ x is still 22
 +next 
 (skip.sh:33):
 33:	 * ) x = 33
-+p "x is still $x"
++print "x is still $x"
 x is still 22
 +skip 
 (skip.sh:35):
@@ -51,16 +51,16 @@ x=35
 +next 
 (skip.sh:36):
 36:	((x += 1))
-+p "x is now $x"
++print "x is now $x"
 x is now 35
 +skip 
 (skip.sh:37):
 37:	source dbg-test1.sub
-+p "x is still $x"
++print "x is still $x"
 x is still 35
 +skip 
 (skip.sh:38):
 38:	exit 0;
-+p "*** quitting..."
++print "*** quitting..."
 *** quitting...
 +quit 

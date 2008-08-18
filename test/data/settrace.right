@@ -20,14 +20,14 @@
 Source files for which have been read in:
 
 settrace.sh (45 lines)
-+c 
++continue 
 (settrace.sh:17):
 17:	    (( n-- ))
 +where 
 ->0 in file `settrace.sh' at line 17
 ##1 hanoi("1", "a", "b", "c") called from file `settrace.sh' at line 43
 ##2 main() called from file `settrace.sh' at line 0
-+cont 
++continue 
 (settrace.sh:19):
 19:	    ((disc_num=max-n))
 +where 

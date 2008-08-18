@@ -6,6 +6,6 @@
 (bugIFS.sh:4):
 4:	PS4='foo'
 +## Make sure PS4 in an eval is the same as what we just set.
-+p "+$IFS+"
++print "+$IFS+"
 +.+
 +quit 
