@@ -1,5 +1,6 @@
-# dbg-help.sh - Bourne Again Shell Debugger Help Routines
-
+# -*- shell-script -*-
+# help.sh - Bourne Again Shell Debugger Help Routines
+#
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
 #
@@ -16,6 +17,8 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
+[[ -n $_Dbg_help_ver ]] && return 1
 
 # Command aliases are stored here.
 typeset -a _Dbg_command_names=()
@@ -36,7 +39,7 @@ _Dbg_help_get_text() {
     _Dbg_command_index $1
     typeset -i i=$?
     ((i==-1)) && return 1
-    _Dbg_help_text="${_Dbg_command_help[i]}"
+    _Dbg_help_text="${_Dbg_command_help[$i]}"
     return 0
     
 }
@@ -46,7 +49,7 @@ function _Dbg_command_index {
     typeset find_name=$1
     typeset -i i
     for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
-	((_Dbg_command_names[i]==find_name)) && return $i
+	[[ ${_Dbg_command_names[$i]} == $find_name ]] && return $i
     done
     return -1
 }
@@ -255,8 +258,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.2 2008/08/17 15:13:11 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; End: ***
+'$Id: help.sh,v 1.3 2008/08/18 21:08:02 rockyb Exp $'

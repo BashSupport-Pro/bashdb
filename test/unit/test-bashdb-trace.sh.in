@@ -11,6 +11,7 @@ test_preserve_set_opts()
 
 # load shunit2
 top_builddir=@top_builddir@
+. ${top_builddir}/lib/help.sh
 . ${top_builddir}/command/tracefn.sh
 
 srcdir=@srcdir@

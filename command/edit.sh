@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-edit.sh - Bourne Again Shell Debugger Edit routines
+# edit.sh - Bourne Again Shell Debugger Edit routines
 
 #   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
 #
@@ -20,20 +20,27 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 _Dbg_help_add edit \
-"edit [LINESPEC]	- Edit specified file at location given.
-If no location is given use the current location."
+"edit [LOCATION]	-- Edit specified file at LOCATION.
+
+If LOCATION is not given, use the current location."
 
 _Dbg_do_edit() {
-  local -i line_number
-  local editor=${EDITOR:-ex}
-  if [[ -z "$1" ]] ; then
+  typeset -i line_number
+  typeset editor=${EDITOR:-ex}
+  if (($# > 2)) ; then 
+      _Dbg_errmsg "got $# parameters, but need 0 or 1."
+      return 2
+  fi
+  if (( $# == 1 )) ; then
     line_number=$_curline
     full_filename=$_cur_source_file
   else
     _Dbg_linespec_setup $1
   fi
   if [[ ! -r $full_filename ]]  ; then 
-      _Dbg_msg "File $full_filename is not readable"
+      _Dbg_errmsg "File $full_filename is not readable"
   fi
   $($editor +$line_number $full_filename)
 }
+
+_Dbg_alias_add 'ed' 'edit'

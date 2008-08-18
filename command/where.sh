@@ -114,3 +114,6 @@ _Dbg_do_backtrace() {
   return 0
 }
 
+_Dbg_alias_add 'T' 'where'
+_Dbg_alias_add 'backtrace' 'where'
+_Dbg_alias_add 'bt' 'where'

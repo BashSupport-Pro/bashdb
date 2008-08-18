@@ -18,6 +18,11 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add 'examine' \
+"examine EXPR	-- Print value of an expression via \'declare', \`let' and failing these, eval. 
+
+Single variables and arithmetic expressions do not need leading $ for their value is to be substituted. However if neither these, variables need $ to have their value substituted. Long command name: examine"
+
 function _Dbg_do_x {
   typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   typeset _Dbg_result
@@ -38,3 +43,5 @@ function _Dbg_do_x {
   fi
   _Dbg_last_x_args="$_Dbg_x_args"
 }
+
+_Dbg_alias_add 'x' 'examine'

@@ -30,12 +30,12 @@ typeset -i  _Dbg_stack_pos
 
 #======================== FUNCTIONS  ============================#
 
-_Dbg_adjust_frame() {
+_Dbg_frame_adjust() {
   typeset -i count=$1
   typeset -i signum=$2
 
   typeset -i retval
-  _Dbg_stack_int_setup $count || return
+  _Dbg_frame_int_setup $count || return
 
   typeset -i pos
   if (( signum==0 )) ; then
@@ -67,7 +67,7 @@ _Dbg_adjust_frame() {
 
 # Tests for a signed integer parameter and set global retval
 # if everything is okay. Retval is set to 1 on error
-_Dbg_stack_int_setup() {
+_Dbg_frame_int_setup() {
 
   _Dbg_not_running && return 1
   eval "$_seteglob"

@@ -19,9 +19,10 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 #================ VARIABLE INITIALIZATIONS ====================#
+[[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+'$Id: brk.sh,v 1.2 2008/08/18 21:08:01 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -809,5 +810,5 @@ _Dbg_enable_disable_display() {
   fi
 }
 
-[[ -z _Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+[[ -z $_Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
+'$Id: brk.sh,v 1.2 2008/08/18 21:08:01 rockyb Exp $'

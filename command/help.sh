@@ -26,7 +26,7 @@
 # commands may shift this.
 
 _Dbg_help_add help \
-'help	- Print list of commands.'
+'help	-- Print list of commands.'
 
 # print help command 
 function _Dbg_do_help {
@@ -36,7 +36,7 @@ function _Dbg_do_help {
       _Dbg_msg 'Available commands:'
       typeset commands="${_Dbg_sorted_command_names[@]}"
       typeset columnized=''; 
-      columnize "$commands" 60
+      columnize "$commands" 65
       typeset -i i
       for ((i=0; i<${#columnized[@]}; i++)) ; do 
 	  _Dbg_msg "  ${columnized[i]}"
@@ -44,11 +44,16 @@ function _Dbg_do_help {
       _Dbg_msg ''
       _Dbg_msg 'Readline command line editing (emacs/vi mode) is available.'
       _Dbg_msg 'Type "help" followed by command name for full documentation.'
-      return
+      return 0
   else
-    typeset -r db_cmd=$1
+    typeset -r dbg_cmd=$1
+    typeset _Dbg_help_text=''
+    if _Dbg_help_get_text "$dbg_cmd" ; then
+	_Dbg_msg "$_Dbg_help_text"
+	return 0
+    fi
   
-    case $db_cmd in 
+    case $dbg_cmd in 
             !! | sh | she | shell ) 
 	_Dbg_msg \
 "!! cmd [args]   Execute shell \"cmd\" \"args\". Alias: shell."
@@ -346,7 +351,7 @@ l .             Same as above.
                 all watchpoints are deleted. Long command name: watch."
                 return ;;
 	    * )
-	   _Dbg_msg "Undefined command: \"$db_cmd\".  Try \"help\"."
+	   _Dbg_errmsg "Undefined command: \"$dbg_cmd\".  Try \"help\"."
   	   return ;;
 	esac
     fi

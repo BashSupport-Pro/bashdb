@@ -284,11 +284,6 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd="break"
 	  ;;
 
-	# Stack trace
-	ba | bac | back | backt | backtr | backtra | backtrac | backtrace | bt | T | wh | whe | wher | where )
-	  _Dbg_do_backtrace 2 $args
-	  ;;
-
 	# Continue
 	c | cont | conti |contin |continu | continue )
 	  
@@ -376,15 +371,8 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='down'
 	  ;;
 
-	# evaluate as bash command
-	e | ev | eva | eval )
-	  _Dbg_do_eval $args
-	  _Dbg_last_cmd='eval'
-	  
-	  ;;
-
 	# edit file currently positioned at
-	ed | edi | edit )
+	edit )
 	  _Dbg_do_edit $args
 	  _Dbg_last_cmd='edit'
 	  ;;
@@ -395,8 +383,20 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='enable'
 	  ;;
 
+	# evaluate a shell command
+	eval | e )
+	  _Dbg_do_eval $args
+	  _Dbg_last_cmd='eval'
+	  
+	  ;;
+
+	# intelligent print of variable, function or expression
+	examine | x )
+	  _Dbg_do_x "$args"
+	  ;;
+
 	# 
-	fil | file )
+	file )
 	  _Dbg_do_file $args
 	  _Dbg_last_cmd='file'
 	  ;;
@@ -416,7 +416,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# print help command menu
-	h | he | hel | help | '?'  )
+	help )
 	  _Dbg_do_help $args ;;
 
 	#  Set signal handle parameters
@@ -463,18 +463,18 @@ _Dbg_onecmd() {
 	  ;;
 
 	# print globbed or substituted variables
-	p | pr | pri | prin | print )
+	print | p )
 	  _Dbg_do_print "$args"
 	  _Dbg_last_cmd='print'
 	  ;;
 
 	# print working directory
-	pw | pwd )
+	pwd )
 	  _Dbg_do_pwd
 	  ;;
 
 	# quit
-	q | qu | qui | quit )
+	quit | q )
 	  _Dbg_last_cmd='quit'
 	  _Dbg_do_quit $args
 	  ;;
@@ -486,7 +486,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# return from function/source without finishing executions
-	ret | retu | retur | return )
+	return )
 	  _Dbg_step_ignore=1
 	  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 	  IFS="$_Dbg_old_IFS";
@@ -557,7 +557,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Move call stack up
-	u | up )
+	up | u )
 	  _Dbg_do_up $args
 	  _Dbg_last_cmd='up'
 	  ;;
@@ -604,9 +604,9 @@ _Dbg_onecmd() {
 	  _Dbg_do_watch 1 "$args"
 	  ;;
 
-	# intelligent print of variable, function or expression
-	x | examine )
-	  _Dbg_do_x "$args"
+	# Frame Stack listing
+	where | T | back | backtrace | bt )
+	  _Dbg_do_backtrace 2 $args
 	  ;;
 
 	# List all breakpoints and actions.
@@ -833,4 +833,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.3 2008/08/17 15:13:11 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.4 2008/08/18 21:08:02 rockyb Exp $'

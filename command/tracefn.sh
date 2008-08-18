@@ -16,6 +16,9 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add trace \
+'trace FN	-- Wrap FN in set -x .. set -x tracing.'
+
 # Wrap "set -x .. set +x" around a call to function $1.
 # Normally we also save and restrore any trap DEBUG functions. However
 # If $2 is 0 we will won't.
@@ -59,6 +62,9 @@ function _Dbg_do_trace_fn {
     eval "$cmd" || return 6
     return 0
 }
+
+_Dbg_help_add untrace \
+'untrace FN	-- Undo trace of FN.'
 
 # Undo wrapping fn
 # $? is 0 if successful.
