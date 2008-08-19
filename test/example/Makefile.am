@@ -5,7 +5,8 @@ check_DATA =           \
 	dbg-test1.sub  \
 	dbg-test2.sh   \
 	hanoi.sh.in    \
-	interrupt.sh.in
+	interrupt.sh.in \
+	settrace.sh
 
 TESTS_ENVIRONMENT =      \
   srcdir="$(abs_srcdir)" \

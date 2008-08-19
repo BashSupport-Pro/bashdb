@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: subshell3.tests,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: subshell3.tests,v 1.5 2008/08/19 22:10:45 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -8,4 +8,4 @@
 cmdfile=${srcdir}/data/subshell3.cmd
 debugged_script=subshell.sh
 
-$BASH ${top_builddir}/bashdb -B -q -L .. -x $cmdfile $debugged_script
+$SH ${top_builddir}/bashdb -B -q -L .. -x $cmdfile $debugged_script

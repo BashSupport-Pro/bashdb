@@ -1,4 +1,4 @@
-# $Id: check-common.sh.in,v 1.6 2008/08/17 15:13:12 rockyb Exp $
+# $Id: check-common.sh.in,v 1.7 2008/08/19 22:10:45 rockyb Exp $
 # -*- shell-script -*-
 
 srcdir=@srcdir@
@@ -8,7 +8,7 @@ if test -z "$THIS_SH" ; then
 fi
 
 # Could/should probably replace all uses of THIS_SH with BASH.
-BASH=$THIS_SH
+SH=$THIS_SH
 
 top_builddir=@abs_top_builddir@
 top_srcdir=@abs_top_srcdir@
@@ -25,14 +25,14 @@ check_output() {
   return $?
 }
 
-# Run the debugger on test program $1 with (optional) zshdb options $2
+# Run the debugger on test program $1 with (optional) debugger options $2
 # using commandfile $3. We assume $top_builddir, $top_srcdir and
 # $TEST_NAME have been set previously
 run_debugger() {
   debugged_script=$1
-  bashdb_opts=${2:-"-B -q -L ${top_builddir}"}
+  dbg_opts=${2:-"-B -q -L ${top_builddir}"}
   cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
-  $BASH ${top_builddir}/bashdb $bashdb_opts -x $cmdfile $debugged_script
+  $SH ${top_builddir}/bashdb $dbg_opts -x $cmdfile $debugged_script
 }
 
 TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"

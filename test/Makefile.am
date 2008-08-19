@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.32 2008/08/19 21:32:44 rockyb Exp $
+#$Id: Makefile.am,v 1.33 2008/08/19 22:10:45 rockyb Exp $
 
 SUBDIRS = unit data example
 
@@ -16,7 +16,6 @@ check_DATA = \
 	parm.sh \
 	restartbug.sh \
 	setshow.tests \
-	settrace.sh \
 	settrace.tests \
 	sig.sh \
 	sig.tests \

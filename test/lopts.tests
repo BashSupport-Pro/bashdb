@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: lopts.tests,v 1.6 2008/08/19 21:23:23 rockyb Exp $
+#$Id: lopts.tests,v 1.7 2008/08/19 22:10:45 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -11,11 +11,11 @@ quitcmd="${srcdir}/data/quit.cmd"
 contcmd="${srcdir}/data/quit.cmd"
 debugged_script="$srcdir/example/dbg-test1.sh"
 
-$BASH ${top_builddir}/bashdb --help -q -L .. 
-$BASH ${top_builddir}/bashdb --quiet -B --library .. \
+$SH ${top_builddir}/bashdb --help -q -L .. 
+$SH ${top_builddir}/bashdb --quiet -B --library .. \
   -x $quitcmd $debugged_script
-$BASH ${top_builddir}/bashdb --base --quiet --lib .. --base \
+$SH ${top_builddir}/bashdb --base --quiet --lib .. --base \
   -x $quitcmd $debugged_script
-$BASH ${top_builddir}/bashdb -B -q -L .. -x $contcmd --command 'echo test1a'
-$BASH ${top_builddir}/bashdb --basename --badopt -q -L .. \
+$SH ${top_builddir}/bashdb -B -q -L .. -x $contcmd --command 'echo test1a'
+$SH ${top_builddir}/bashdb --basename --badopt -q -L .. \
   -x $contcmd --command 'echo test2a'
