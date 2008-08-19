@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-opts,v 1.5 2008/08/17 15:13:12 rockyb Exp $
+#$Id: test-opts,v 1.6 2008/08/19 13:53:08 rockyb Exp $
 # Test bash options.
 
 [ -z "$srcdir" ] && export srcdir=$PWD
@@ -18,7 +18,7 @@ rc=$?
 TEMP=$(getopt -o testing 2>&1 >/dev/null)
 if [ 0 = $? ] ; then
   TEST_NAME='lopts'
-  TEST_FILE="$builddir/${TEST_NAME}.check"
+  TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
   (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
   
   check_output $TEST_FILE ${srcdir}/data/${TEST_NAME}.right

@@ -36,9 +36,9 @@ test_progress_show()
 }
 
 # load shunit2
-top_srcdir=@top_builddir@
+top_srcdir=@abs_top_srcdir@
 . ${top_srcdir}/lib/msg.sh
 . ${top_srcdir}/dbg-io.sh
 
-. ./shunit2
+. ${top_srcdir}/test/unit/shunit2
 

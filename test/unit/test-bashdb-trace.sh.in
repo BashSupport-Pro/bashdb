@@ -5,14 +5,28 @@ test_preserve_set_opts()
 {
     set -u
     old_opts=$-
-    . ${top_builddir}/bashdb-trace -L ${top_builddir}
-    assertEquals $old_opts $-
+    # If running make distcheck we can't use top_builddir
+    # because some files aren't there but are in the install
+    # directory. 
+    if [[ -f $top_builddir/dbg-opts.sh ]] ; then
+	libdir=${top_builddir}
+    else
+	libdir=@PKGDATADIR@
+    fi
+    if [[ -f $libdir/dbg-opts.sh ]] ; then
+	. ${top_builddir}/bashdb-trace -L $libdir
+	assertEquals $old_opts $-
+    else
+	echo 'Skipping test - building outside of source complications'
+    fi
 }
 
 # load shunit2
-top_builddir=@top_builddir@
-. ${top_builddir}/lib/help.sh
-. ${top_builddir}/command/tracefn.sh
+prefix=@prefix@
+top_builddir=@abs_top_builddir@
+top_srcdir=@abs_top_srcdir@
+. ${top_srcdir}/lib/help.sh
+. ${top_srcdir}/command/tracefn.sh
 
 srcdir=@srcdir@
 srcdir=${srcdir}/

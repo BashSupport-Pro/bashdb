@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: test-trace,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: test-trace,v 1.5 2008/08/19 13:53:08 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -13,7 +13,8 @@ tests=${@:-"trace trace2"}
 for SUBTEST in $tests ; do
   echo "checking $SUBTEST..."
   TEST_NAME=$SUBTEST
-  TEST_FILE="$builddir/data/${TEST_NAME}.check"
+  TEST_FILE="${top_builddir}/test/${SUBTEST}.check"
+  RIGHT_FILE="${top_srcdir}/test/data/${SUBTEST}.right"
   (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
   check_output $TEST_FILE ${srcdir}/data/${TEST_NAME}.right
   rc=$?

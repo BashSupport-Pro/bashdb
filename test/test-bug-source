@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: test-bug-source,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: test-bug-source,v 1.5 2008/08/19 13:53:08 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -12,7 +12,6 @@ TEST_NAME='bug-source'
 
 cmdfile="$srcdir/data/bug-source.cmd"
 
-TEST_FILE="$builddir/${TEST_NAME}.check"
 (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
 check_output $TEST_FILE $RIGHT_FILE
