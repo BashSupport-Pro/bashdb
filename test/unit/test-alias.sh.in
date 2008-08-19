@@ -1,0 +1,37 @@
+#!@SH_PROG@
+# -*- shell-script -*-
+
+test_alias()
+{
+    _Dbg_alias_add u up
+    typeset expanded_alias=''; _Dbg_alias_expand u
+    assertEquals 'up' $expanded_alias
+
+    _Dbg_alias_add q quit
+    expanded_alias=''; _Dbg_alias_expand q
+    assertEquals 'quit' $expanded_alias
+
+    _Dbg_alias_remove q
+    expanded_alias=''; _Dbg_alias_expand q
+    assertEquals 'q' $expanded_alias
+
+    expanded_alias=''; _Dbg_alias_expand u
+    assertEquals 'up' $expanded_alias
+}
+
+# Make sure @top_builddir@ has a trailing slash
+if [ '@abs_top_srcdir@' = '' ] ; then
+  echo "Something is wrong abs_top_srcdir is not set."
+ exit 1
+fi
+abs_top_srcdir=@abs_top_srcdir@
+abs_top_srcdir=${abs_top_srcdir%%/}/
+
+. $abs_top_srcdir/lib/help.sh
+. $abs_top_srcdir/lib/alias.sh
+
+# load shunit2
+
+srcdir=@srcdir@
+srcdir=${srcdir}/
+. ${srcdir}/shunit2
