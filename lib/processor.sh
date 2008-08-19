@@ -278,6 +278,12 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd="action"
          ;;
 
+	# Add a debugger command alias
+	alias )
+	  _Dbg_do_alias $args 
+	  _Dbg_last_cmd="alias"
+         ;;
+
 	# Set breakpoint on a line
 	break )
 	  _Dbg_do_break 0 $args 
@@ -562,6 +568,12 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='up'
 	  ;;
 
+	# Add a debugger command alias
+	unalias )
+	  _Dbg_do_remove_alias $args 
+	  _Dbg_last_cmd="unalias"
+         ;;
+
 	# Undisplay display-number
 	und | undi | undis | undisp | undispl | undispla | undisplay )
 	  _Dbg_do_undisplay $args
@@ -833,4 +845,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.5 2008/08/19 00:40:00 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.6 2008/08/19 14:45:02 rockyb Exp $'
