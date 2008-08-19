@@ -78,4 +78,4 @@ check_DATA = \
 	watch2.cmd \
 	watch2.right
 
-EXTRA_DIST = $(check_DATA)
+EXTRA_DIST = $(check_DATA) README

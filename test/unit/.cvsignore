@@ -1,5 +1,6 @@
 Makefile
 Makefile.in
+test-alias.sh
 test-bashdb-trace.sh
 test-fns.sh
 test-frame.sh

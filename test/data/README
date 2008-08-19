@@ -1,0 +1,3 @@
+For an integration test x, x.cmd is the debugger commands to run and
+x.right gives the correct output. Sometimes this output is filtered
+before comparing with the actual output.

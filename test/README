@@ -1,0 +1,4 @@
+Files that start test-* are integration tests. Eventually they will
+probably move to a separate "integration" directory.
+
+

@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.31 2008/08/19 21:23:23 rockyb Exp $
+#$Id: Makefile.am,v 1.32 2008/08/19 21:32:44 rockyb Exp $
 
 SUBDIRS = unit data example
 
@@ -45,4 +45,4 @@ TESTS_ENVIRONMENT = \
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
-EXTRA_DIST = $(TESTS) $(check_DATA)
+EXTRA_DIST = $(TESTS) $(check_DATA) README
