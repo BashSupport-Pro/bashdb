@@ -47,7 +47,7 @@ step
 ###  Try next and check that it jumps over fn3
 next
 ###  Try continue file:line (but will hit another breakpoint)...
-cont ./dbg-test1.sh:35
+cont ./example/dbg-test1.sh:35
 step 2
 T
 step 10

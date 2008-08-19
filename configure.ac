@@ -46,7 +46,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.54 2008/08/19 11:50:38 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.55 2008/08/19 21:23:23 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -221,15 +221,21 @@ AC_CONFIG_FILES([Makefile \
 	lib/Makefile \
 	test/Makefile \
 	test/data/Makefile \
+	test/example/Makefile \
 	test/unit/Makefile])
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x bashdb])
-AC_CONFIG_FILES([test/bugIFS.sh], [chmod +x test/bugIFS.sh])
-AC_CONFIG_FILES([test/hanoi.sh], [chmod +x test/hanoi.sh])
-AC_CONFIG_FILES([test/interrupt.sh], [chmod +x test/interrupt.sh])
-AC_CONFIG_FILES([test/bug-args.sh], [chmod +x test/bug-args.sh])
-AC_CONFIG_FILES([test/unit/test-alias.sh], [chmod +x test/unit/test-alias.sh])
+AC_CONFIG_FILES([test/example/bugIFS.sh], 
+                [chmod +x test/example/bugIFS.sh])
+AC_CONFIG_FILES([test/example/hanoi.sh], 
+                [chmod +x test/example/hanoi.sh])
+AC_CONFIG_FILES([test/example/interrupt.sh], 
+		[chmod +x test/example/interrupt.sh])
+AC_CONFIG_FILES([test/example/bug-args.sh], 
+                [chmod +x test/example/bug-args.sh])
+AC_CONFIG_FILES([test/unit/test-alias.sh], 
+                [chmod +x test/unit/test-alias.sh])
 AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh], 
                 [chmod +x test/unit/test-bashdb-trace.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])

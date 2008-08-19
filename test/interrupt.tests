@@ -1,23 +1,14 @@
 #!../../bash
-#$Id: interrupt.tests,v 1.1 2006/10/03 08:54:46 rockyb Exp $
+# -*- shell-script -*-
+#$Id: interrupt.tests,v 1.2 2008/08/19 21:23:23 rockyb Exp $
 
-if test -z $srcdir  ; then
-  srcdir=`pwd`
-fi
-
-if test -z "$builddir"  ; then
-  builddir=`pwd`
-fi
-
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
 
 CHECK_FILE=interrupt.check
-$BASH ${builddir}/interrupt.sh > $CHECK_FILE & 
+$BASH ${builddir}/example/interrupt.sh > $CHECK_FILE & 
 sleep 1; kill -TERM %1
 while [[ ! -s $CHECK_FILE ]] ; do
   sleep 1
 done
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

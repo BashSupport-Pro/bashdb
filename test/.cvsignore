@@ -1,7 +1,6 @@
 *.check
 Makefile
 Makefile.in
-bug-args.sh
 bugIFS.sh
 check-common.sh
 dbg-test1.sh

@@ -1,5 +1,0 @@
-#!@SH_PROG@
-# $Id: bugIFS.sh.in,v 1.5 2008/08/17 15:13:11 rockyb Exp $
-IFS="."
-PS4='foo'
-exit 0

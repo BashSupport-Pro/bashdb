@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: lopts.tests,v 1.5 2008/08/17 15:13:12 rockyb Exp $
+#$Id: lopts.tests,v 1.6 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -9,7 +9,7 @@
 
 quitcmd="${srcdir}/data/quit.cmd"
 contcmd="${srcdir}/data/quit.cmd"
-debugged_script="${srcdir}/dbg-test1.sh"
+debugged_script="$srcdir/example/dbg-test1.sh"
 
 $BASH ${top_builddir}/bashdb --help -q -L .. 
 $BASH ${top_builddir}/bashdb --quiet -B --library .. \

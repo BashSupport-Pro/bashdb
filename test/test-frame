@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-frame,v 1.4 2008/08/09 16:13:04 rockyb Exp $
+#$Id: test-frame,v 1.5 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -9,7 +9,7 @@ TEST_NAME='frame'
 
 . ${builddir}/check-common.sh
 
-debugged_script=hanoi.sh
+debugged_script="$builddir/example/hanoi.sh"
 
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 

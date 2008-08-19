@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-bug-args,v 1.7 2008/08/10 00:54:15 rockyb Exp $
+#$Id: test-bug-args,v 1.8 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -9,7 +9,7 @@ TEST_NAME='bug-args'
 
 . ${builddir}/check-common.sh
 
-debugged_script="${top_srcdir}/test/bug-args.sh"
+debugged_script="${top_builddir}/test/example/bug-args.sh"
 
 (cd $srcdir && \
   run_debugger $debugged_script > $TEST_FILE 2>&1 < /dev/null)

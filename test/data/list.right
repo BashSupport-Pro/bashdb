@@ -18,7 +18,7 @@
 +l 
  32:   fn1;
  33:   fn3 33
- 34:   source dbg-test1.sub
+ 34:   source example/dbg-test1.sub
  35:   exit 0;
 +# 
 +# Should not see anything since we ran off the top
@@ -27,7 +27,7 @@
 Line 999 is too large. File dbg-test1.sh has only 35 lines.
 +######################################################### 
 +### 'list file:line' and canonicalization of filenames...
-+list ./dbg-test1.sh:1
++list ./example/dbg-test1.sh:1
   1:   #!/usr/bin/env bash
   2:   # Note: no CVS Id line since it would mess up regression testing.
   3:   # This code is used for various debugger testing.
@@ -38,7 +38,7 @@ Line 999 is too large. File dbg-test1.sh has only 35 lines.
   8:       fn3
   9:   }    
  10:   
-+list ../test/dbg-test1.sh:20
++list ../test/example/dbg-test1.sh:20
  20:   }    
  21:   
  22:==>x=22
@@ -49,14 +49,14 @@ Line 999 is too large. File dbg-test1.sh has only 35 lines.
  27:   x=27
  28:   y=b
  29:   x=29
-+list dbg-test1.sh:30
++list example/dbg-test1.sh:30
  30:   echo $(fn3 30)
  31:   fn3 31
  32:   fn1;
  33:   fn3 33
- 34:   source dbg-test1.sub
+ 34:   source example/dbg-test1.sub
  35:   exit 0;
-+list ./dbg-test1.sh:999
++list ./example/dbg-test1.sh:999
 Line 999 is too large. File dbg-test1.sh has only 35 lines.
 +list ./badfile:1
 File badfile not found in read-in files.
@@ -103,7 +103,7 @@ See 'info files' for a list of known files and
  31:   fn3 31
  32:   fn1;
  33:   fn3 33
- 34:   source dbg-test1.sub
+ 34:   source example/dbg-test1.sub
  35:   exit 0;
 +# 
 +# Should see lines up to current execution line.

@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: sopts.tests,v 1.6 2008/08/11 16:49:28 rockyb Exp $
+#$Id: sopts.tests,v 1.7 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -9,7 +9,7 @@
 
 quitcmd="${srcdir}/data/quit.cmd"
 contcmd="${srcdir}/data/quit.cmd"
-debugged_script="${srcdir}/dbg-test1.sh"
+debugged_script="${srcdir}/example/dbg-test1.sh"
 
 $BASH ${top_builddir}/bashdb -B -q -L .. -x $contcmd -c 'echo test1'
 # Note -B needs to come before -e

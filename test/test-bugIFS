@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-bugIFS,v 1.6 2008/08/10 00:54:15 rockyb Exp $
+#$Id: test-bugIFS,v 1.7 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -10,7 +10,7 @@ TEST_NAME='bugIFS'
 
 . ${builddir}/check-common.sh
 
-debugged_script="${top_builddir}/test/bugIFS.sh"
+debugged_script="${top_builddir}/test/example/bugIFS.sh"
 
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 

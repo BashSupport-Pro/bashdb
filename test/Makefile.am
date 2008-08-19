@@ -1,22 +1,15 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.30 2008/08/10 00:54:15 rockyb Exp $
+#$Id: Makefile.am,v 1.31 2008/08/19 21:23:23 rockyb Exp $
 
-SUBDIRS = unit data
+SUBDIRS = unit data example
 
 check_DATA = \
 	brkpt1.tests \
 	brkpt2.tests \
 	brkpt3.tests \
-	bug-args.sh.in \
 	bug-source.tests \
-	bugIFS.sh.in \
 	check-common.sh.in \
-	dbg-test1.sh \
-	dbg-test1.sub \
-	dbg-test2.sh \
 	debug.sh \
-	hanoi.sh.in \
-	interrupt.sh.in \
 	interrupt.tests \
 	lopts.tests \
 	multi.sh \

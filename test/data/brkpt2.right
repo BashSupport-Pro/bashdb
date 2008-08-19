@@ -118,7 +118,7 @@ No actions have been set.
 +list 
  32:   fn1;
  33:   fn3 33
- 34:   source dbg-test1.sub
+ 34:   source example/dbg-test1.sub
  35:   exit 0;
 +### Try down 1...
 +down 1
@@ -155,10 +155,10 @@ fn1 here
 (dbg-test1.sh:8):
 8:	    fn3
 +### Try continue file:line (but will hit another breakpoint)...
-+continue ./dbg-test1.sh:35
++continue ./example/dbg-test1.sh:35
 One-time breakpoint 5 set in file dbg-test1.sh, line 35.
 (dbg-test1.sh:34):
-34:	source dbg-test1.sub
+34:	source example/dbg-test1.sub
 +step 2
 SOURCED LINENO 19
 (dbg-test1.sub:20):

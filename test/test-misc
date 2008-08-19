@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-misc,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: test-misc,v 1.5 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -13,7 +13,7 @@ OUT1_NAME='misc-output'
 OUT1_FILE="/tmp/${OUT1_NAME}.check"
 rm -f $OUT1_FILE 
 
-debugged_script=dbg-test2.sh
+debugged_script="$srcdir/example/dbg-test2.sh"
 
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 

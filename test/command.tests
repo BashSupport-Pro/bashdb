@@ -1,11 +1,11 @@
 #!../../bash
 # -*- shell-script -*-
-#$Id: command.tests,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: command.tests,v 1.5 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
 
 cmdfile="$srcdir/data/command.cmd"
-debugged_script=dbg-test1.sh
+debugged_script="$srcdir/example/dbg-test1.sh"
 
 $BASH ${TOP_BUILDDIR}/bashdb -B -q -L .. -x $cmdfile $debugged_script

@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: brkpt1.tests,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: brkpt1.tests,v 1.5 2008/08/19 21:23:23 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
@@ -11,6 +11,6 @@ if test -z $top_builddir ; then
 fi
 
 cmdfile="$srcdir/data/brkpt1.cmd"
-debugged_script="dbg-test1.sh"
+debugged_script="$srcdir/example/dbg-test1.sh"
 
 $BASH ${top_builddir}/bashdb -B -q -L .. -x $cmdfile $debugged_script

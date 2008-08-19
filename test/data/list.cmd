@@ -11,10 +11,10 @@ l
 list 999
 #########################################################
 ### 'list file:line' and canonicalization of filenames...
-list ./dbg-test1.sh:1
-list ../test/dbg-test1.sh:20
-list dbg-test1.sh:30
-list ./dbg-test1.sh:999
+list ./example/dbg-test1.sh:1
+list ../test/example/dbg-test1.sh:20
+list example/dbg-test1.sh:30
+list ./example/dbg-test1.sh:999
 list ./badfile:1
 #########################################################
 set trace-commands on
