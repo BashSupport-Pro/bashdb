@@ -6,5 +6,6 @@ test-frame.sh
 test-io.sh
 test-pre.sh
 test-run.sh
+test-save-restore.sh
 test-set0.sh
 test-tracefn.sh
