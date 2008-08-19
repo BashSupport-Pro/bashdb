@@ -570,7 +570,7 @@ _Dbg_onecmd() {
 
 	# Add a debugger command alias
 	unalias )
-	  _Dbg_do_remove_alias $args 
+	  _Dbg_do_unalias $args 
 	  _Dbg_last_cmd="unalias"
          ;;
 
@@ -845,4 +845,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.6 2008/08/19 14:45:02 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.7 2008/08/19 15:08:15 rockyb Exp $'
