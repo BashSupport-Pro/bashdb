@@ -47,3 +47,4 @@ _Dbg_do_break() {
   fi
 }
 
+_Dbg_alias_add b break

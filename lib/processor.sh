@@ -200,9 +200,9 @@ _Dbg_annotation() {
 # 
 _Dbg_onecmd() {
 
-    # typeset expanded_alias; _Dbg_alias_expand $1
-    # typeset _Dbg_cmd="$expanded_alias"
-    typeset _Dbg_cmd="$1"
+    typeset expanded_alias; _Dbg_alias_expand "$1"
+    typeset _Dbg_cmd="$expanded_alias"
+    # typeset _Dbg_cmd="$1"
     shift
     typeset args="$@"
 
@@ -279,13 +279,13 @@ _Dbg_onecmd() {
          ;;
 
 	# Set breakpoint on a line
-	b | br | bre | brea | break )
+	break )
 	  _Dbg_do_break 0 $args 
 	  _Dbg_last_cmd="break"
 	  ;;
 
 	# Continue
-	c | cont | conti |contin |continu | continue )
+	continue )
 	  
 	  _Dbg_last_cmd='continue'
 	  if _Dbg_do_continue $args ; then
@@ -339,7 +339,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Set up a script for debugging into.
-	deb | debu | debug )
+	debug )
 	  _Dbg_do_debug $args
 	  # Skip over the execute statement which presumably we ran above.
 	  _Dbg_do_next_step_skip 'skip' 1
@@ -366,7 +366,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Move call stack down
-	do | dow | down )
+	down )
 	  _Dbg_do_down $args
 	  _Dbg_last_cmd='down'
 	  ;;
@@ -384,14 +384,14 @@ _Dbg_onecmd() {
 	  ;;
 
 	# evaluate a shell command
-	eval | e )
+	eval )
 	  _Dbg_do_eval $args
 	  _Dbg_last_cmd='eval'
 	  
 	  ;;
 
 	# intelligent print of variable, function or expression
-	examine | x )
+	examine )
 	  _Dbg_do_x "$args"
 	  ;;
 
@@ -410,7 +410,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	#  Set stack frame
-	fr | fra | fra | frame )
+	frame )
 	  _Dbg_do_frame $args
 	  _Dbg_last_cmd='frame'
 	  ;;
@@ -463,7 +463,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# print globbed or substituted variables
-	print | p )
+	print )
 	  _Dbg_do_print "$args"
 	  _Dbg_last_cmd='print'
 	  ;;
@@ -473,14 +473,14 @@ _Dbg_onecmd() {
 	  _Dbg_do_pwd
 	  ;;
 
-	# quit
-	quit | q )
+	# exit the debugger and debugged program
+	quit )
 	  _Dbg_last_cmd='quit'
 	  _Dbg_do_quit $args
 	  ;;
 
 	# restart debug session.
-	re | res | rest | resta | restar | restart | ru | run | R )
+	restart )
 	  _Dbg_last_cmd='restart'
 	  _Dbg_do_restart $args
 	  ;;
@@ -520,7 +520,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# run shell command. Has to come before ! below.
-	she | shel | shell | '!!' )
+	shell | '!!' )
 	  eval $args ;;
 
 	# Send signal to process
@@ -551,13 +551,13 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Set the output tty
-	tt | tty )
+	tty )
 	  _Dbg_do_tty $args 
 	  _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
 	  ;;
 
 	# Move call stack up
-	up | u )
+	up )
 	  _Dbg_do_up $args
 	  _Dbg_last_cmd='up'
 	  ;;
@@ -605,7 +605,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Frame Stack listing
-	where | T | back | backtrace | bt )
+	where )
 	  _Dbg_do_backtrace 2 $args
 	  ;;
 
@@ -833,4 +833,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.4 2008/08/18 21:08:02 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.5 2008/08/19 00:40:00 rockyb Exp $'
