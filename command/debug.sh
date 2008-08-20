@@ -20,7 +20,9 @@
 
 _Dbg_help_add debug \
 "debug [SCRIPT]	-- Set up SCRIPT for debugging. 
-If no script is given, take the script name from the command to be executed."
+
+If SCRIPT is not given, take the script name from the command that is
+about to be executed."
 
 # TODO: would work better if instead of using $source_line below
 # which might have several statements, we could just pick up the next

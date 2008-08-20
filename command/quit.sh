@@ -19,7 +19,10 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add quit \
-'quit	- Quit the debugger.  The program being debugged is aborted.'
+'quit [EXPR] [N]	- Quit the debugger with return code EXPR.  
+
+If EXPR is omitted, use 0. If N is given, then we terminate only 
+that many subshells or nested shells.'
 
 _Dbg_do_quit() {
   typeset -i return_code=${1:-$_Dbg_program_exit_code}

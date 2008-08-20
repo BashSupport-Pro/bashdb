@@ -25,12 +25,12 @@ _Dbg_help_add edit \
 If LOCATION is not given, use the current location."
 
 _Dbg_do_edit() {
-  typeset -i line_number
-  typeset editor=${EDITOR:-ex}
   if (($# > 2)) ; then 
       _Dbg_errmsg "got $# parameters, but need 0 or 1."
       return 2
   fi
+  typeset -i line_number
+  typeset editor=${EDITOR:-ex}
   if (( $# == 1 )) ; then
     line_number=$_curline
     full_filename=$_cur_source_file

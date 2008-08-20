@@ -38,7 +38,7 @@ _Dbg_help_get_text() {
     (( $# != 1 )) && return 2
     _Dbg_command_index $1
     typeset -i i=$?
-    ((i==-1)) && return 1
+    ((i==255)) && return 1
     _Dbg_help_text="${_Dbg_command_help[$i]}"
     return 0
     
@@ -51,7 +51,7 @@ function _Dbg_command_index {
     for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
 	[[ ${_Dbg_command_names[$i]} == $find_name ]] && return $i
     done
-    return -1
+    return 255
 }
 _Dbg_help_sort_command_names() {
     ((${#_Dbg_command_names_sorted} > 0 )) && return 0
@@ -66,7 +66,7 @@ _Dbg_help_sort_command_names() {
 }    
 
 typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
-typeset -r _Dbg_show_cmds="args annotate autoeval basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
+typeset -r _Dbg_show_cmds="aliases args annotate autoeval basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
 _Dbg_help_set() {
   local -r set_cmd=$1
@@ -184,6 +184,11 @@ _Dbg_help_show() {
   fi
 
   case $show_cmd in 
+    al | ali | alia | alias | aliase | aliases )
+      _Dbg_msg \
+"show aliases     -- Show list of aliases currently in effect."
+      return 0
+      ;;
     ar | arg | args )
       _Dbg_msg \
 "show args        -- Show argument list to give program being debugged when it 
@@ -197,7 +202,7 @@ _Dbg_help_show() {
       ;;
     au | aut | auto | autoe | autoev | autoeva | autoeval )
       _Dbg_msg \
-"show auotoeval    -- Show if we evaluate unrecognized commands"
+"show auotoeval   -- Show if we evaluate unrecognized commands"
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
@@ -258,4 +263,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.3 2008/08/18 21:08:02 rockyb Exp $'
+'$Id: help.sh,v 1.4 2008/08/20 09:45:43 rockyb Exp $'

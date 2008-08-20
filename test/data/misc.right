@@ -31,7 +31,7 @@ $2:
 +######################################### 
 +#### Testing script args...
 +info args
-$1 = dbg-test2.sh
+$1 = ./example/dbg-test2.sh
 +######################################### 
 +tty 
 Argument required (terminal name for running target process).
@@ -62,50 +62,15 @@ POSSIBILITY OF SUCH DAMAGES.
 
 +#### help commands...
 +help 
-bashdb commands:
-List/search source lines:                 Control script execution:
--------------------------                 -------------------------
- l [start|.] [cnt] List cnt lines         T [n]        Stack trace
-                   from line start        s [n]        Single step [n times]
- l sub       List source code fn          n [n]        Next, steps over subs
- - or .      List previous/current line   <CR>/<Enter> Repeat last n or s 
- w [line]    List around line             c [linespec] Continue [to linespec]
- f filename  View source in file          L            List all breakpoints
- /pat/       Search forward for pat       b linespec   Set breakpoint
- ?pat?       Search backward for pat      del [n].. or D Delete a/all breaks
-                                                         by entry number
-Debugger controls:                        skip         skip execution of cmd
--------------------------                 cl linespec  Delete breakpoints by
- H [num]         Show last num commands                line spec
- q [exp] or ^D   Quit returning exp       R [args]     Attempt a restart
- info [cmd]      Get info on cmd.         u [n]        Go up stack by n or 1.
- !n or hi n      Run debugger history n   do [n]       Go down stack by n or 1.
- h or ? [cmd]    Get help on command      W [var]      Add watchpoint. If no
- info [cmd]      Get info on cmd                       no expr, delete all
- show [cmd]      Show settings            We [expr]    Add Watchpoint arith 
-                                                       expr
- so file         read in dbg commands     t            Toggle trace
-                                          en/di n      enable/disable brkpt,
- set x y         set a debugger variable               watchpoint, or display
- e bash-cmd      evaluate a bash command  tb linespec  Add one-time break
- disp expr       add a display expr       a linespec cmd eval "cmd" at linespec
- M               Show module versions     A            delete all actions
- x expr          evaluate expression      ret          jump out of fn or source
-                 (via declare, let, eval) finish       execute until return
- deb             debug into another       cond n exp   set breakpoint condition
-                 shell script
- !! cmd [args]   execute shell command "cmd" with "args"
- file filename   Set script filename to read for current source.
- load filename   read in Bash source file use in list and break commands
-
-Data Examination: also see e, t, x
--------------------------                 
- p variable      Print variable 
- V [[!]pat]      List variable(s) matching or not (!) matching pattern pat
- S [[!]pat]      List subroutine names [not] matching pattern pat
+Available commands:
+  
+  alias      continue  display  eval     kill     source     untrace
+  break      debug     down     examine  print    trace      up     
+  commands   delete    edit     frame    quit     unalias    where  
+  condition  disable   enable   help     restart  undisplay
 
 Readline command line editing (emacs/vi mode) is available.
-For more help, type h <cmd> or consult online-documentation.
+Type "help" followed by command name for full documentation.
 +help set
 set args -- Set argument list to give program being debugged when it is started.
 Follow this command with any number of args, to be passed to the program.

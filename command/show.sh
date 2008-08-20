@@ -24,34 +24,33 @@
 typeset _Dbg_show_command="auto"
 
 _Dbg_do_show() {
-  local show_cmd=$1
-  local label=$2
+  typeset show_cmd=$1
+  typeset label=$2
 
   # Warranty, copying, directories, and aliases are omitted below.
-  local -r subcmds="args basename debugger editing history linetrace listsize prompt trace-commands"
+  typeset -r subcmds="args basename debugger editing history linetrace listsize prompt trace-commands"
 
   if [[ -z $show_cmd ]] ; then 
-      local thing
+      typeset thing
       for thing in $subcmds ; do 
 	_Dbg_do_show $thing 1
       done
-      return
+      return 0
   fi
 
   case $show_cmd in 
+    al | ali | alia | alias | aliase | aliases )
+      for ((i=0; i<=_Dbg_alias_max_index; i++)) ; do
+	  [[ -z ${_Dbg_alias_names[i]} ]] && continue
+	  _Dbg_msg "\t${_Dbg_alias_names[i]}\t${_Dbg_alias_expansion[i]}"
+      done
+      return 0
+      ;;
     ar | arg | args )
       [[ -n $label ]] && label='args:     '
       _Dbg_msg \
 "${label}Argument list to give script when debugged program starts is:\n" \
 "      \"${_Dbg_script_args[@]}\"."
-      return 0
-      ;;
-    al | ali | alia | alias | aliase | aliases )
-      [[ -n $label ]] && label='aliases: '
-      for ((i=0; i<=_Dbg_alias_max_index; i++)) ; do
-	  [[ -z ${_Dbg_alias_names[i]} ]] && continue
-	  _Dbg_msg "\t${_Dbg_alias_names[i]} ${_Dbg_alias_expansion[i]}"
-      done
       return 0
       ;;
     an | ann | anno | annot | annota | annotat | annotate )

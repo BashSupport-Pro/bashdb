@@ -17,6 +17,7 @@ set args
 set annotate
 set autoeval
 +complete show a
+show aliases
 show args
 show annotate
 show autoeval

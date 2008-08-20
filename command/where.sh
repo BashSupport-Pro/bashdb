@@ -28,6 +28,12 @@
 # This code assumes the version of bash where FUNCNAME is an array,
 # not a variable.
 
+_Dbg_help_add where \
+"where [N]	-- Print a backtrace of calling functions and sourced files.
+
+The backtrace contains function names, arguments, line numbers, and
+files. If N is given, list only N calls."
+
 _Dbg_do_backtrace() {
 
   _Dbg_not_running && return 1

@@ -119,23 +119,9 @@ H -count        If a single postive integer is given, then list starting from
                 pattern is given, all subroutines are listed. (The pattern 
                 is *)."
 		return ;;
-	    T | wh | whe | wher | where | bt| back | backtrace ) 
-		_Dbg_msg \
-"T [n]           Stack trace of calling functions or sourced files,
-                line numbers, and files. If n is given, list only n lines.
-                Long command name: where or backtrace."
-		return ;;
             a )
 		_Dbg_msg \
 "a [linespec] stmt  Perform stmt on reaching linespec."
-                return ;;
-            b | br | bre | brea | break )
-		_Dbg_msg \
-"b [linespec]    Break on linespec. If no argument is given, us the current
-                line. Long command name: break."
-                return ;;
-	    c | cont | conti |contin |continu | continue )
-	        _Dbg_help_continue
                 return ;;
 	    cd  )
 		_Dbg_msg \
@@ -148,12 +134,6 @@ Note that gdb is a little different in that it peforms tilde expansion
 but not filename or variable expansion and the directory argument is
 not optional as it is here."
                 return ;;
-            cond | condi |condit |conditi | conditio | condition )
-		_Dbg_msg \
-"cond N COND     Specify breakpoint number N to break only if COND is true.
-N is an integer and COND is an expression to be evaluated whenever 
-breakpoint N is reached. Long command name: condition."
-                return ;;
             d | cl | cle | clea | clea | clear )
 		_Dbg_msg \
 "cl [linespec]   Clear breakpoint at specified line-spec. If no line given, use
@@ -165,12 +145,6 @@ breakpoint N is reached. Long command name: condition."
 "d {num}..       Delete the breakpoint entry or entries.
                 Long command name: delete."
                 return ;;
-	    deb | debu | debug ) 
-		_Dbg_msg \
-"deb [script]    Set up [script] for debugging. If no script is given, take
-                the script name from the command to be executed.
-                Long command name: debug."
-                return ;;
             di | dis | disa | disab | disabl | disable ) 
 		_Dbg_msg \
 "di {n}...       Disable breakpoint entry/entries. Long command name: disable."
@@ -179,21 +153,6 @@ breakpoint N is reached. Long command name: condition."
 		_Dbg_msg \
 "disp {n}        Set display expression or list all display expressions. 
                 Long command name: display."
-                return ;;
-	    do | dow | down ) 
-		_Dbg_msg \
-"down [count]    Set file location for printing down the call stack by 
-                count. If count is omitted use 1."
-                return ;;
-	    e | ev | eva ) 
-		_Dbg_msg \
-"e bash-cmd      Evaluate a bash command by sourcing it in a subshell. Long
-                command name: eval."
-                return ;;
-	    ed | edi | edit ) 
-		_Dbg_msg \
-"edit [linespec] Edit specified file at location given
-                 If no location is given use the current location."
                 return ;;
             en | ena | enab | enabl | enable ) 
 		_Dbg_msg \
@@ -233,10 +192,6 @@ breakpoint N is reached. Long command name: condition."
 	    i | in | inf | info ) 
 	        _Dbg_info_help $2
                 return ;;
-	    k | ki | kil | kill )
-		_Dbg_msg \
-"kill      	Kill execution of program being debugged."
-                return ;;
 	    l | li | lis | list )
 		_Dbg_msg \
 "l linespec      List window lines starting at linespec.
@@ -261,12 +216,6 @@ l .             Same as above.
 "p string        Print value of a substituted string via \`echo'. A variable
                 should have leading $ if its value is to be substituted.
                 Long command name: print."
-                return ;;
-	    q | qu | qui | quit )
-		_Dbg_msg \
-"q [expr] [n]    Terminate execution of the program with return code expr. If
-                expr is missing, use 0. If n is given then we terminate only 
-                that many subshells or nested shells. Long name: quit."
                 return ;;
 	    ret | retu | retur | return )
 		_Dbg_msg \
@@ -294,10 +243,6 @@ l .             Same as above.
 "sk [count]      Skip (don't run) the next [count] command(s) to be executed.
                 Long command name: skip."
                 return ;;
-	    so | sou | sour | sourc | source )
-		_Dbg_msg \
-'source file     Read in debugger command file.'
-                return ;;
 	    t | to | tog | togg | toggl | toggle ) 
 		_Dbg_msg \
 "t | toggle      Toggle line-execution tracing. Long command name: toggle."
@@ -311,11 +256,6 @@ l .             Same as above.
 		_Dbg_msg \
 "tt  tty-name     Set the output device for debugger output
                  Long command name: tty."
-                return ;;
-	    u | up ) 
-		_Dbg_msg \
-"u | up [count]  Set file location for printing up the call stack by 
-                count. If count is omitted use 1."
                 return ;;
 	    v | ve | ver | vers | versi | versio | version )
 		_Dbg_msg \

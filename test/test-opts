@@ -1,7 +1,7 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-opts,v 1.6 2008/08/19 13:53:08 rockyb Exp $
-# Test bash options.
+#$Id: test-opts,v 1.7 2008/08/20 09:45:43 rockyb Exp $
+# Test debugger options.
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -10,7 +10,7 @@ TEST_NAME='sopts'
 
 . ${builddir}/check-common.sh
 
-(cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+(cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
 check_output $TEST_FILE $RIGHT_FILE
 rc=$?
@@ -19,9 +19,10 @@ TEMP=$(getopt -o testing 2>&1 >/dev/null)
 if [ 0 = $? ] ; then
   TEST_NAME='lopts'
   TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
-  (cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+  RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
+  (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
   
-  check_output $TEST_FILE ${srcdir}/data/${TEST_NAME}.right
+  check_output $TEST_FILE $RIGHT_FILE
   ((0==rc)) && rc=$?
 fi
 

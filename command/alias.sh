@@ -24,6 +24,9 @@ Use "unalias" to remove an alias and "show alias" to get a list the
 aliases in effect.'
 
 _Dbg_do_alias() {
+  if (($# != 2)) ; then
+      _Dbg_errmsg "Got $# parameters, but need 2."
+  fi
   _Dbg_alias_add $1 $2
 }
 
@@ -33,5 +36,8 @@ _Dbg_help_add unalias \
 Use "show alias" to get a list the aliases in effect.'
 
 _Dbg_do_unalias() {
+  if (($# != 1)) ; then
+      _Dbg_errmsg "Got $# parameters, but need 1."
+  fi
   _Dbg_alias_remove $1
 }

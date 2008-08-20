@@ -20,6 +20,7 @@
 
 _Dbg_help_add condition \
 "condition N COND	-- Break only if COND is true in breakpoint number N.
+
 N is an integer and COND is an expression to be evaluated whenever 
 breakpoint N is reached."
 
