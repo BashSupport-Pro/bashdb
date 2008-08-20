@@ -506,12 +506,6 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='reverse'
 	  ;;
 
-	# Run a debugger set command
-	se | set )
-	  _Dbg_do_set $args
-	  _Dbg_last_cmd='set'
-	  ;;
-
 	# Search forwards for pattern
 	sea | sear | searc | search | \
         for | forw | forwa | forwar | forward )
@@ -519,8 +513,14 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='search'
 	  ;;
 
-	# Run a debugger show command
-	sh | sho | show )
+	# Command to set debugger options
+	set )
+	  _Dbg_do_set $args
+	  _Dbg_last_cmd='set'
+	  ;;
+
+	# Command to show debugger settings
+	show )
 	  _Dbg_do_show $args
 	  _Dbg_last_cmd='show'
 	  ;;
@@ -845,4 +845,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.7 2008/08/19 15:08:15 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.8 2008/08/20 10:54:03 rockyb Exp $'

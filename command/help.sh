@@ -48,7 +48,7 @@ function _Dbg_do_help {
   else
     typeset -r dbg_cmd=$1
     typeset _Dbg_help_text=''
-    if _Dbg_help_get_text "$dbg_cmd" ; then
+    if _Dbg_help_get_text "$dbg_cmd" && [[ ! -z $_Dbg_help_text ]] ; then
 	_Dbg_msg "$_Dbg_help_text"
 	return 0
     fi

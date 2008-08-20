@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# show.sh - Bourne Again Shell Debugger Set Routines
+# show.sh - Show debugger settings
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -23,12 +23,14 @@
 # but the command is different.
 typeset _Dbg_show_command="auto"
 
+_Dbg_help_add show ''  # Help routine is elsewhere
+
 _Dbg_do_show() {
   typeset show_cmd=$1
   typeset label=$2
 
   # Warranty, copying, directories, and aliases are omitted below.
-  typeset -r subcmds="args basename debugger editing history linetrace listsize prompt trace-commands"
+  typeset -r subcmds="annotate args autoeval basename debugger editing history linetrace listsize prompt trace-commands"
 
   if [[ -z $show_cmd ]] ; then 
       typeset thing
@@ -60,7 +62,7 @@ _Dbg_do_show() {
       return 0
       ;;
     au | aut | auto | autoe | autoev | autoeva | autoeval )
-      [[ -n $label ]] && label='basename: '
+      [[ -n $label ]] && label='autoeval: '
       _Dbg_msg \
 "${label}Evaluate unrecognized commands is" `_Dbg_onoff $_Dbg_autoeval`
       return 0

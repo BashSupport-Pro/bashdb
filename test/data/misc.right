@@ -64,10 +64,10 @@ POSSIBILITY OF SUCH DAMAGES.
 +help 
 Available commands:
   
-  alias      continue  display  eval     kill     source     untrace
-  break      debug     down     examine  print    trace      up     
-  commands   delete    edit     frame    quit     unalias    where  
-  condition  disable   enable   help     restart  undisplay
+  alias      continue  display  eval     kill     set     unalias    where
+  break      debug     down     examine  print    show    undisplay
+  commands   delete    edit     frame    quit     source  untrace  
+  condition  disable   enable   help     restart  trace   up       
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.

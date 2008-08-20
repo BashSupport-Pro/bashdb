@@ -66,7 +66,6 @@ _Dbg_help_sort_command_names() {
 }    
 
 typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
-typeset -r _Dbg_show_cmds="aliases args annotate autoeval basename debugger commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
 _Dbg_help_set() {
   local -r set_cmd=$1
@@ -172,8 +171,10 @@ Follow this command with any number of args, to be passed to the program."
   esac
 }
 
+typeset -r _Dbg_show_cmds="aliases args annotate autoeval basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
+
 _Dbg_help_show() {
-  local -r show_cmd=$1
+  typeset -r show_cmd=$1
 
   if [[ -z $show_cmd ]] ; then 
       local thing
@@ -263,4 +264,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.4 2008/08/20 09:45:43 rockyb Exp $'
+'$Id: help.sh,v 1.5 2008/08/20 10:54:03 rockyb Exp $'
