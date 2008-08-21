@@ -1,15 +1,15 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: lopts.tests,v 1.7 2008/08/19 22:10:45 rockyb Exp $
+#$Id: lopts.tests,v 1.8 2008/08/21 13:49:04 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
 
 . ${builddir}/check-common.sh
 
-quitcmd="${srcdir}/data/quit.cmd"
-contcmd="${srcdir}/data/quit.cmd"
-debugged_script="$srcdir/example/dbg-test1.sh"
+quitcmd="${top_srcdir}/test/data/quit.cmd"
+contcmd="${top_srcdir}/test/data/quit.cmd"
+debugged_script="${top_srcdir}/test/example/dbg-test1.sh"
 
 $SH ${top_builddir}/bashdb --help -q -L .. 
 $SH ${top_builddir}/bashdb --quiet -B --library .. \

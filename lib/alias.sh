@@ -60,3 +60,21 @@ _Dbg_alias_find_index() {
     done
     return -1
 }
+
+# Return in help_aliases an array of strings that are aliases
+ #of $1
+_Dbg_alias_find_aliased() {
+    (($# != 1)) &&  return 255
+    typeset find_name=$1
+    aliases_found=''
+    typeset -i i
+    for ((i=0; i <= $_Dbg_alias_max_index; i++)) ; do
+	if [[ ${_Dbg_alias_expansion[i]} == "$find_name" ]] ; then 
+	    [[ -n $aliases_found ]] && aliases_found+=', '
+	    aliases_found+=${_Dbg_alias_names[i]}
+	fi
+    done
+    return 0
+    
+}
+

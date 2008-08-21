@@ -1153,15 +1153,13 @@ Here are some examples:
 As we saw in the last section @code{bashdb-trace} installs some signal
 handlers. However you can make an explicit call to the debugger
 @smallexample
-     _Dbg_debugger ; : ; :
+     _Dbg_debugger
 @end smallexample 
-(For reasons that are a mystery to me, the stepping seems to kick in
-only two statements after the call.)
 
 Let's show an example of that. We'll even do it under a condition:
 @smallexample
   for ((i=1; i<=10; i++)) ; 
-        (( 5 == i )) && @{ _Dbg_debugger ; : ; : @}
+        (( 5 == i )) && @{ _Dbg_debugger @}
         date=$(date)
         echo "$date"
         sleep 2
@@ -1171,13 +1169,14 @@ Let's show an example of that. We'll even do it under a condition:
 The debugger will be called on the 5th iteration of this loop, when
 @code{i} has the value 5.
 
-You can also supply options to @code{_Dbg_debugger} just as you would to
-the debugger itself. All of the options listed in @ref{Options for the
-bashdb script} can be used with the exception of @code{-c} (run a
-command) and of course you don't supply the name of a @value{BASH} script.
+You can also supply the number of statements to skip and the options to
+@code{_Dbg_debugger} just as you would to the debugger itself. All of
+the options listed in @ref{Options for the bashdb script} can be used
+with the exception of @code{-c} (run a command) and of course you
+don't supply the name of a @value{BASH} script.
 
-For example to suppress the banner you could use @code{_Dbg_debugger
--q} in the above example.
+For example to stop at the next line and suppress the banner you could
+use @code{_Dbg_debugger 1 -q} in the above example. 
 
 @node Program-Controlled Line Tracing
 @subsection Program-Controlled Line Tracing

@@ -50,6 +50,12 @@ function _Dbg_do_help {
     typeset _Dbg_help_text=''
     if _Dbg_help_get_text "$dbg_cmd" && [[ ! -z $_Dbg_help_text ]] ; then
 	_Dbg_msg "$_Dbg_help_text"
+	typeset aliases_found=''
+	_Dbg_alias_find_aliased "$dbg_cmd"
+	if [[ -n $aliases_found ]] ; then
+	    _Dbg_msg ''
+	    _Dbg_msg "Aliases for $dbg_cmd: $aliases_found"
+	fi
 	return 0
     fi
   

@@ -44,8 +44,10 @@ _Dbg_help_get_text() {
     
 }
 
-# Return the index in _Dbg_command_names of $1 or -1 if not there.
+# Return the index in _Dbg_command_names of $1 or 255 if not there.
+# We assume we'll never have 255 command names.
 function _Dbg_command_index {
+    (($# != 1)) &&  return 255
     typeset find_name=$1
     typeset -i i
     for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
@@ -264,4 +266,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.6 2008/08/21 01:34:24 rockyb Exp $'
+'$Id: help.sh,v 1.7 2008/08/21 13:49:04 rockyb Exp $'
