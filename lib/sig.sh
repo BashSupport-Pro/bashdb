@@ -64,6 +64,8 @@ typeset -i _Dbg_return_level=0
 # Place to save values of $1, $2, etc.
 typeset -a _Dbg_arg=()
 
+typeset _Dbg_stop_reason=''    # The reason we are in the debugger.
+
 # Set to 0 to clear "trap DEBUG" after entry
 typeset -i _Dbg_restore_debug_trap=1
 
@@ -505,4 +507,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: sig.sh,v 1.2 2008/08/10 00:57:14 rockyb Exp $'
+'$Id: sig.sh,v 1.3 2008/08/21 01:34:24 rockyb Exp $'

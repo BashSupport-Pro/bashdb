@@ -1,4 +1,5 @@
 #!../../bash
+# -*- shell-script -*-
 # Note: no CVS Id line since it would mess up regression testing.
 # This code is used for various debugger testing.
 
@@ -34,7 +35,4 @@ echo $(fn3 30)
 fn3 31
 fn1;
 fn3 33
-exit 0;
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; End: ***
+exit 0

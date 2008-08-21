@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-setshow,v 1.4 2008/08/10 00:54:15 rockyb Exp $
+#$Id: test-setshow,v 1.5 2008/08/21 01:34:24 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -13,11 +13,9 @@ TEST_NAME='setshow'
 OUT1_NAME='setshow'
 OUT1_FILE="/tmp/${OUT1_NAME}.check"
 rm -f $OUT1_FILE 
-(cd $srcdir && ${THIS_SH} ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+(cd $srcdir && $SH ${srcdir}/${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-# Different OS's handle ARGV differently, and "info args" may come out
-# differently depending on that.
-cat ${TEST_FILE} | sed -e "s:1 = ./dbg-test2.sh:1 = dbg-test2.sh:" \
+cat ${TEST_FILE} | sed -e "s:-x .*/data/setshow\.cmd .*/example/dbg-test2.sh:-x data/setshow.cmd example/dbg-test2.sh:" \
 | sed -e 's:record the command history is .*:record the command history is: ' \
 > ${TEST_FILTERED_FILE}
 

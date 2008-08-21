@@ -18,8 +18,8 @@ set annotate
 set autoeval
 +complete show a
 show aliases
-show args
 show annotate
+show args
 show autoeval
 +complete set an
 set annotate

@@ -1,11 +1,11 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: setshow.tests,v 1.6 2008/08/19 22:10:45 rockyb Exp $
+#$Id: setshow.tests,v 1.7 2008/08/21 01:34:24 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
 
-cmdfile=data/setshow.cmd
+cmdfile="$top_srcdir/test/data/setshow.cmd"
 debugged_script="$srcdir/example/dbg-test2.sh"
 
 $SH ${top_builddir}/bashdb -B -q -L .. -x $cmdfile $debugged_script testarg1 testarg2

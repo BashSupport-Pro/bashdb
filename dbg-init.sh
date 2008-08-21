@@ -71,19 +71,13 @@ else
   eval $_Dbg_set_str
 fi
 
-typeset -i _Dbg_autoeval=0     # Evaluate unrecognized commands?
-typeset -i _Dbg_listsize=10    # How many lines in a listing? 
 typeset -i _Dbg_need_input=1   # True if we need to reassign input.
 typeset -i _Dbg_running=1      # True we are not finished running the program
 typeset -i _Dbg_currentbp=0    # If nonzero, the breakpoint number that we 
                                # are currently stopped at.
 typeset last_next_step_cmd='s' # Default is step.
-typeset _Dbg_stop_reason=''    # The reason we are in the debugger.
 typeset _Dbg_last_print=''     # expression on last print command
 typeset _Dbg_last_printe=''    # expression on last print expression command
-
-# Sets whether or not to display command before executing it.
-typeset _Dbg_trace_commands='off'
 
 # strings to save and restore the setting of `extglob' in debugger functions
 # that need it
@@ -126,4 +120,4 @@ _Dbg_tempname() {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.sh,v 1.1 2008/08/09 11:20:41 rockyb Exp $'
+'$Id: dbg-init.sh,v 1.2 2008/08/21 01:34:22 rockyb Exp $'

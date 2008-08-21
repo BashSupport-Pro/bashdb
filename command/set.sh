@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# set.sh - Bourne Again Shell Debugger Set Routines
+# set.sh - debugger settings
 #
 #   Copyright (C) 2002,2003,2006,2007,2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -27,10 +27,16 @@ typeset -i _Dbg_linetrace=0
 typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
 
+typeset -i _Dbg_autoeval=0     # Evaluate unrecognized commands?
+typeset -i _Dbg_listsize=10    # How many lines in a listing? 
+
+# Sets whether or not to display command before executing it.
+typeset _Dbg_trace_commands='off'
+
 _Dbg_help_add set ''  # Help routine is elsewhere
 
 _Dbg_do_set() {
-  local set_cmd=$1
+  typeset set_cmd=$1
   if [[ $set_cmd == '' ]] ; then
     _Dbg_msg "Argument required (expression to compute)."
     return;
@@ -41,8 +47,8 @@ _Dbg_do_set() {
       # We use the loop below rather than _Dbg_set_args="(@)" because
       # we want to preserve embedded blanks in the arguments.
       _Dbg_script_args=()
-      local -i i
-      local -i n=$#
+      typeset -i i
+      typeset -i n=$#
       for (( i=0; i<n ; i++ )) ; do
 	_Dbg_write_journal_eval "_Dbg_script_args[$i]=$1"
 	shift
@@ -67,7 +73,7 @@ _Dbg_do_set() {
       return 0
       ;;
     au | aut | auto | autoe | autoev | autoeva | autoeval )
-      local onoff=${1:-'off'}
+      typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
 	  _Dbg_write_journal_eval "_Dbg_autoeval=1"
@@ -82,7 +88,7 @@ _Dbg_do_set() {
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
-      local onoff=${1:-'off'}
+      typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
 	  _Dbg_write_journal_eval "_Dbg_basename_only=1"
@@ -97,7 +103,7 @@ _Dbg_do_set() {
       return 0
       ;;
     e | ed | edi | edit | editi | editin | editing )
-      local onoff=${1:-'on'}
+      typeset onoff=${1:-'on'}
       case $onoff in 
 	on | 1 ) 
 	  _Dbg_edit='-e'
@@ -110,7 +116,7 @@ _Dbg_do_set() {
       esac
       ;;
     d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-      local onoff=${1:-'on'}
+      typeset onoff=${1:-'on'}
       case $onoff in 
 	on | 1 ) 
 	  _Dbg_write_journal_eval "_Dbg_debug_debugger=1"
@@ -125,7 +131,7 @@ _Dbg_do_set() {
    hi|his|hist|histo|histor|history)
       case $1 in 
 	sa | sav | save )
-	  local onoff=${2:-'on'}
+	  typeset onoff=${2:-'on'}
 	  case $onoff in 
 	    on | 1 ) 
 	      _Dbg_write_journal_eval "_Dbg_history_save=1"
@@ -156,7 +162,7 @@ _Dbg_do_set() {
       esac
       ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
-      local onoff=${1:-'off'}
+      typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
 	  _Dbg_write_journal_eval "_Dbg_linetrace=1"
@@ -175,7 +181,7 @@ _Dbg_do_set() {
 	  _Dbg_write_journal_eval "_Dbg_linetrace_delay=$2"
           ;;
 	e | ex | exp | expa | expan | expand )
-	  local onoff=${2:-'on'}
+	  typeset onoff=${2:-'on'}
 	  case $onoff in 
 	    on | 1 ) 
 	      _Dbg_write_journal_eval "_Dbg_linetrace_expand=1"

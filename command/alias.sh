@@ -20,7 +20,7 @@
 _Dbg_help_add alias \
 'alias NAME DEBUGGER-COMMAND	-- Make NAME be an alias for DEBUGGER-COMMAND.
 
-Use "unalias" to remove an alias and "show alias" to get a list the
+Use "unalias" to remove an alias and "show aliases" to get a list the
 aliases in effect.'
 
 _Dbg_do_alias() {
@@ -33,7 +33,7 @@ _Dbg_do_alias() {
 _Dbg_help_add unalias \
 'unalias NAME	-- Remove debugger command alias NAME.
 
-Use "show alias" to get a list the aliases in effect.'
+Use "show aliases" to get a list the aliases in effect.'
 
 _Dbg_do_unalias() {
   if (($# != 1)) ; then

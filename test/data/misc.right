@@ -1,5 +1,5 @@
-(dbg-test2.sh:23):
-23:	set -xv
+(dbg-test2.sh:24):
+24:	set -xv
 +# Test of miscellaneous commands:
 +# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 +#### source command...

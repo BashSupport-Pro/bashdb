@@ -171,7 +171,7 @@ Follow this command with any number of args, to be passed to the program."
   esac
 }
 
-typeset -r _Dbg_show_cmds="aliases args annotate autoeval basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
+typeset -r _Dbg_show_cmds="aliases annotate args autoeval basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
 _Dbg_help_show() {
   typeset -r show_cmd=$1
@@ -264,4 +264,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.5 2008/08/20 10:54:03 rockyb Exp $'
+'$Id: help.sh,v 1.6 2008/08/21 01:34:24 rockyb Exp $'

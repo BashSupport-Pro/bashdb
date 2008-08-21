@@ -4,18 +4,18 @@
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
 #   rocky@gnu.org
 #
-#   Bashdb is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with Bashdb; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # ==================== VARIABLES =======================================
@@ -33,11 +33,6 @@ typeset _cur_filevar      # source file mangled so it can be used in a variable
 typeset -i _curline       # current line number of debugged program
 
 # ===================== FUNCTIONS =======================================
-
-# Common funnel for "Undefined command" message
-_Dbg_undefined_cmd() {
-  _Dbg_msg "Undefined $1 command \"$2\""
-}
 
 # _Dbg_progess_show --- print the progress bar
 # $1: prefix string
@@ -116,4 +111,4 @@ function _Dbg_get_source_line {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.sh,v 1.2 2008/08/12 14:07:15 rockyb Exp $'
+'$Id: dbg-io.sh,v 1.3 2008/08/21 01:34:22 rockyb Exp $'

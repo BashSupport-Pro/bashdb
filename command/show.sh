@@ -64,13 +64,13 @@ _Dbg_do_show() {
     au | aut | auto | autoe | autoev | autoeva | autoeval )
       [[ -n $label ]] && label='autoeval: '
       _Dbg_msg \
-"${label}Evaluate unrecognized commands is" `_Dbg_onoff $_Dbg_autoeval`
+"${label}Evaluate unrecognized commands is" $(_Dbg_onoff $_Dbg_autoeval)
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
       [[ -n $label ]] && label='basename: '
       _Dbg_msg \
-"${label}Show short filenames (the basename) in debug output is" `_Dbg_onoff $_Dbg_basename_only`
+"${label}Show short filenames (the basename) in debug output is" $(_Dbg_onoff $_Dbg_basename_only)
       return 0
       ;;
     com | comm | comma | comman | command | commands )

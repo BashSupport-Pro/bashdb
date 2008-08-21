@@ -90,3 +90,8 @@ function _Dbg_printf_nocr {
     fi
   fi
 }
+
+# Common funnel for "Undefined command" message
+_Dbg_undefined_cmd() {
+  _Dbg_msg "Undefined $1 command \"$2\""
+}
