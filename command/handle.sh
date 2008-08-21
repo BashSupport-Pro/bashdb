@@ -18,7 +18,22 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+
 # Process debugger "handle" command. 
+
+_Dbg_help_add handle \
+"handle SIGNAL {stop|nostop|stack|nostack|print|noprint}	-- Specify how to handle SIGNAL.
+
+SIGNAL is a signal name like SIGSEGV, but numeric signals like 11
+(which is usually equivalent on \*nix systems) is okay too. 
+
+Recognized actions include \"stop\", \"nostop\", \"print\", and
+\"noprint\". \"Stop\" indicates entering debugger if this signal
+happens. \"Print\" indicates printing a message if this signal is
+encountered. \"Stack\" is like \"print\" but except the entire call
+stack is printed. Prefacing these actions with \"no\" indicates not to
+do the indicated action."
+
 _Dbg_do_handle() {
   typeset sig=$1
   typeset cmd=$2

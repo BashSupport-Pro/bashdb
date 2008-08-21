@@ -163,24 +163,6 @@ not optional as it is here."
 "r               Execute until the current function or source file returns.
                 Long command name: finish."
                 return ;;
-            fil| file ) 
-		_Dbg_msg \
-"file filename   Use script file filename whenever the current source file
-                is encountered by the debugger."
-                return ;;
-	    ha | han | hand | handl | handle )
-		_Dbg_msg \
-"ha sig {stop|nostop|stack|nostack|print|noprint}
-               Specify how to handle a signal. Args are signals and
-               actions to apply to those signals. Symbolic signals
-               (e.g. SIGSEGV) are recommended but numeric signals are
-               allowed too. Recognized actions include \"stop\",
-               \"nostop\", \"print\", and \"noprint\". Stop means
-               reenter debugger if this signal happens. Print means
-               print a message if this signal happens.  Long command
-               name: handle."  
-	       return ;;
-
 	    hi | his | hist | histo | histor | history ) 
 		_Dbg_msg \
 "hi n            Rerun a debugger command from the debugger history. See also
@@ -205,12 +187,6 @@ l .             Same as above.
 "load file      Load in a Bash source file so it can be used in 
                 breakpoints and listing."
                 return ;;
-	    n | ne | nex | next )
-		_Dbg_msg \
-"n [count]       Single steps possibly skipping execution into subroutine calls
-                and sourced files. Performed [count] times default is 1 time.
-                Long command name: next."
-                return ;;
 	    p | pr | pri | prin | print )
 		_Dbg_msg \
 "p string        Print value of a substituted string via \`echo'. A variable
@@ -225,23 +201,8 @@ l .             Same as above.
 	    se | set  )
 	        _Dbg_help_set $2
                 return ;;
-	    s | st | ste | step )
-		_Dbg_msg \
-"s [count]       Single steps possibly executing into subroutine calls 
-                and sourced files. Performed [count] times default is 1 time."
-                return ;;
 	    sh | sho | show )
 		_Dbg_help_show $2
-                return ;;
-	    si | sig | sign | signa | signal )
-		_Dbg_msg \
-"signal {signam|signum}   
-                Send the specified signal to the program."
-                return ;;
-  	    sk | ski | skip ) 
-		_Dbg_msg \
-"sk [count]      Skip (don't run) the next [count] command(s) to be executed.
-                Long command name: skip."
                 return ;;
 	    t | to | tog | togg | toggl | toggle ) 
 		_Dbg_msg \

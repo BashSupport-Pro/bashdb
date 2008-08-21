@@ -18,6 +18,17 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add signal \
+"signal SIGNAL	-- Send a signal to the debugged program.
+
+SIGNAL can be a name like \"TERM\" (for SIGTERM) or a positive number like 
+15 (which in \*nix systems is the equivalent number. On \*nix systems the
+command \"kill -l\" sometimes will give a list of signal names and numbers.
+
+The signal is sent to process \$\$ (which is $$ right now).
+
+Also similar is the \"kill\" command."
+
 _Dbg_do_signal() {
   typeset sig=$1
   typeset -i signum

@@ -21,8 +21,13 @@
 _Dbg_help_add kill \
 "kill [SIGNAL]	-- Kill execution of program being debugged.
 
-If given, SIGNAL should be start with a '-', .e.g. -TERM or -9, and that
-signal is used in the kill command."
+If given, SIGNAL should be start with a '-', .e.g. -KILL or -9, and that
+signal is used in the kill command. On \*nix systems the
+command \"kill -l\" sometimes will give a list of signal names and numbers.
+
+The signal is sent to process \$\$ (which is $$ right now).
+
+Also similar is the \"signal\" command."
 
 _Dbg_do_kill() {
   if (($# > 1)); then
