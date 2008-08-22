@@ -1,8 +1,4 @@
 *.check
 Makefile
 Makefile.in
-bugIFS.sh
 check-common.sh
-dbg-test1.sh
-hanoi.sh
-interrupt.sh
