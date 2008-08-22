@@ -4,7 +4,7 @@
 +# 
 +# Try to set command when there is none.
 +command 1
-No breakpoint number 1.
+** No breakpoint number 1.
 +# 
 +# Now a command for a real breakpoint
 +break 23

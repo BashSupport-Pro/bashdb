@@ -1,3 +1,20 @@
+# -*- shell-script -*-
+#   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
+#
+#   bashdb is free software; you can redistribute it and/or modify it under
+#   the terms of the GNU General Public License as published by the Free
+#   Software Foundation; either version 2, or (at your option) any later
+#   version.
+#
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
+#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#   for more details.
+#   
+#   You should have received a copy of the GNU General Public License along
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
+#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
 # Add breakpoint(s) at given line number of the current file.  $1 is
 # the line number or _curline if omitted.  $2 is a condition to test
 # for whether to stop.
@@ -37,7 +54,7 @@ _Dbg_do_break() {
 
   if [[ -n $full_filename ]]  ; then 
     if (( $line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to break at."
+      _Dbg_errmsg "There is no line 0 to break at."
     else 
       _Dbg_check_line $line_number "$full_filename"
       (( $? == 0 )) && \

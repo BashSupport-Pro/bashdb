@@ -19,26 +19,28 @@
 
 _Dbg_help_add commands \
 'commands [BKPT-NUM]	-- Set commands to be executed when a breakpoint is hit.
-With no argument, the targeted breakpoint is the last one set.
-The commands themselves follow starting on the next line.
-Type a line containing "end" to indicate the end of them.
-Give "silent" as the first line to make the breakpoint silent;
-then no output is printed when it is hit, except what the commands print.'
+
+Without BKPT-NUM, the targeted breakpoint is the last one set.  The
+commands themselves follow starting on the next line.  
+
+Type a line containing "end" to indicate the end of them.  Give
+"silent" as the first line to make the breakpoint silent; then no
+output is printed when it is hit, except what the commands print.'
 
 _Dbg_do_commands() {
   eval "$_seteglob"
-  local num=$1
-  local -i found=0
+  typeset num=$1
+  typeset -i found=0
   case $num in
       $int_pat )
 	  if [[ -z ${_Dbg_brkpt_file[$num]} ]] ; then
-	      _Dbg_msg "No breakpoint number $num."
+	      _Dbg_errmsg "No breakpoint number $num."
 	      return 0
 	  fi
 	  ((found=1))
 	;;
       * )
-	_Dbg_msg "Invalid entry number skipped: $num"
+	_Dbg_errmsg "Invalid entry number skipped: $num"
   esac
   eval "$_resteglob"
   if (( found )) ; then 

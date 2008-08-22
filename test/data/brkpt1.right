@@ -21,7 +21,7 @@ Breakpoint entry 1 disabled.
 +break 99
 Line 99 is too large. File dbg-test1.sh has only 35 lines.
 +break 0
-There is no line 0 to break at.
+** There is no line 0 to break at.
 +# 
 +# list breakpoints
 +L 
@@ -52,7 +52,7 @@ No watch expressions have been set.
 +break ./example/dbg-test1.sh:23
 Breakpoint 3 set in file dbg-test1.sh, line 23.
 +break ./example/dbg-test1.sh:0
-There is no line 0 to break at.
+** There is no line 0 to break at.
 +break ./example/dbg-test1.sh:1955
 Line 1955 is too large. File dbg-test1.sh has only 35 lines.
 +break 23

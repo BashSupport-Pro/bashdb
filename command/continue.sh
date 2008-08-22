@@ -26,27 +26,19 @@
 # commands may shift this.
 
 _Dbg_help_add continue \
-'continue [LOCSPEC | - ]	-- Continue execution until the next breakpoint or end of program or location specification LOCSPEC. 
+"continue [LOC | - ]	-- Continue execution. 
 
-If instead of a line specification you enter -, then debugging will be turned 
-off after continuing causing your program to run at full speed.'
+If not LOC or - is given, continue until the next breakpoint or the end
+of program is reached.  If - is given, then debugging will be turned off
+after continuing causing your program to run at full speed. 
 
-function _Dbg_help_continue {
-    _Dbg_msg \
-"c [linespec | - ]  Continue execution until the next breakpoint or end of 
-                   program or linespec. 
-
-If instead of a line specification you enter -, then debugging will be turned 
-off after continuing causing your program to run at full speed.
-Long command name: continue.
-"
-}
+If LOC is given, a temporary breakpoint is set at the location." 
 
 function _Dbg_do_continue {
 
   _Dbg_not_running && return 1
 
-  [[ -z $1 ]] && return 0
+  (( $# == 0 )) && return 0
   typeset filename
   typeset -i line_number
   typeset full_filename

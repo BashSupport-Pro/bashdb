@@ -36,13 +36,13 @@
 ##2 main() called from file `bashdb' at line 0
 +# Try moving past the end
 +down 
-Would be beyond bottom-most (most recent) entry.
+** Would be beyond bottom-most (most recent) entry.
 +where 
 ->0 in file `hanoi.sh' at line 31
 ##1 source("hanoi.sh") called from file `bashdb' at line 160
 ##2 main() called from file `bashdb' at line 0
 +up 2
-Would be beyond top-most (least recent) entry.
+** Would be beyond top-most (least recent) entry.
 +where 
 ->0 in file `hanoi.sh' at line 31
 ##1 source("hanoi.sh") called from file `bashdb' at line 160
