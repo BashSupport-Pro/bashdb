@@ -1,0 +1,12 @@
+#!/bin/sh
+# -*- shell-script -*-
+#$Id: sig.tests,v 1.1 2008/08/22 19:25:06 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
+
+cmdfile="$srcdir/../data/sig.cmd"
+debugged_script=sig.sh
+
+$SH ${top_builddir}/bashdb -B -q -L $top_builddir -x $cmdfile $debugged_script

@@ -1,0 +1,17 @@
+#!/bin/bash -f
+# -*- shell-script -*-
+#$Id: sopts.tests,v 1.1 2008/08/22 19:25:06 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
+
+. ${top_builddir}/test/check-common.sh
+
+quitcmd="${top_srcdir}/test/data/quit.cmd"
+contcmd="${top_srcdir}/test/data/quit.cmd"
+debugged_script="${top_srcdir}/example/dbg-test1.sh"
+
+$SH ${top_builddir}/bashdb -B -q -L ${top_builddir} -x $contcmd -c 'echo test1'
+# Note -B needs to come before -e
+$SH ${top_builddir}/bashdb -B -e -q --library ${top_builddir} -x $contcmd -c 'echo not run'

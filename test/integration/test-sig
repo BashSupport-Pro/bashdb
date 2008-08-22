@@ -1,0 +1,24 @@
+#!/bin/bash -f
+# -*- shell-script -*-
+#$Id: test-sig,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
+
+TEST_NAME='sig'
+
+. ${top_builddir}/test/check-common.sh
+
+FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
+FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
+(cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+
+grep -v '^sig.tests: line 12' $RIGHT_FILE >${FILTERED_RIGHT_FILE}
+grep -v '^sig.tests: line 12' $TEST_FILE >${FILTERED_TEST_FILE}
+check_output $FILTERED_TEST_FILE $FILTERED_RIGHT_FILE
+rc=$?
+rm $FILTERED_RIGHT_FILE
+
+# Return code tells testing mechanism whether passed or not.
+exit $rc

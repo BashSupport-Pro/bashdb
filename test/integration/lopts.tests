@@ -1,0 +1,22 @@
+#!/bin/sh
+# -*- shell-script -*-
+#$Id: lopts.tests,v 1.1 2008/08/22 19:25:06 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
+
+. ${top_builddir}/test/check-common.sh
+
+quitcmd="${top_srcdir}/test/data/quit.cmd"
+contcmd="${top_srcdir}/test/data/quit.cmd"
+debugged_script="${top_srcdir}/test/example/dbg-test1.sh"
+
+$SH ${top_builddir}/bashdb --help -q -L ${top_builddir} 
+$SH ${top_builddir}/bashdb --quiet -B --library ${top_builddir} \
+  -x $quitcmd $debugged_script
+$SH ${top_builddir}/bashdb --base --quiet --lib ${top_builddir} --base \
+  -x $quitcmd $debugged_script
+$SH ${top_builddir}/bashdb -B -q -L ${top_builddir} -x $contcmd --command 'echo test1a'
+$SH ${top_builddir}/bashdb --basename --badopt -q -L ${top_builddir} \
+  -x $contcmd --command 'echo test2a'

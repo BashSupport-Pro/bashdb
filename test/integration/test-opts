@@ -1,0 +1,36 @@
+#!/bin/bash -f
+# -*- shell-script -*-
+#$Id: test-opts,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+# Test debugger options.
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
+
+TEST_NAME='sopts'
+
+. ${top_builddir}/test/check-common.sh
+
+(cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+
+check_output $TEST_FILE $RIGHT_FILE
+rc=$?
+
+TEMP=$(getopt -o testing 2>&1 >/dev/null)
+if [ 0 = $? ] ; then
+  TEST_NAME='lopts'
+  TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
+  RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
+  (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+  
+  cat ${TEST_FILE} | sed -e "s|The default directory is: .*|The default directory is: |" > ${TEST_FILTERED_FILE}
+
+  check_output $TEST_FILTERED_FILE $RIGHT_FILE
+  ((0==rc)) && rc=$?
+  if ((0 == rc)) ; then
+      rm -f $TEST_FILE
+  fi
+fi
+
+# Return code tells testing mechanism whether passed or not.
+exit $rc
