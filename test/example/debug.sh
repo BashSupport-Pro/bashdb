@@ -4,8 +4,8 @@ if [[ "$1"x != x ]] ; then
   exit 1
 fi
 
-cmd=./debug.sh
-./debug.sh $BASHDB_LEVEL
+cmd=../example/debug.sh
+../example/debug.sh $BASHDB_LEVEL
 # ../../bash $cmd $x
 $cmd $BASHDB_LEVEL
 x=5

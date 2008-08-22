@@ -2,8 +2,8 @@ set trace-commands on
 # Test of miscellaneous commands: 
 # 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 #### source command...
-source data/prof1.cmd
-source data/prof2.cmd
+source ../data/prof1.cmd
+source ../data/prof2.cmd
 #########################################
 #### Test that ARGs are correct...
 print "_Dbg_arg#: ${#_Dbg_arg[@]}"

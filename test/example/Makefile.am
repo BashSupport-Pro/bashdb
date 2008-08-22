@@ -1,12 +1,17 @@
-check_DATA =           \
-	bug-args.sh.in \
-	bugIFS.sh.in   \
-	dbg-test1.sh   \
-	dbg-test1.sub  \
-	dbg-test2.sh   \
-	hanoi.sh.in    \
+check_DATA =            \
+	bug-args.sh.in  \
+	bugIFS.sh.in    \
+	dbg-test1.sh    \
+	dbg-test1.sub   \
+	dbg-test2.sh    \
+	debug.sh        \
+	hanoi.sh.in     \
 	interrupt.sh.in \
-	settrace.sh
+	parm.sh         \
+	restartbug.sh   \
+	settrace.sh     \
+	skip.sh         \
+	subshell.sh
 
 TESTS_ENVIRONMENT =      \
   srcdir="$(abs_srcdir)" \

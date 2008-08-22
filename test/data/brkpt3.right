@@ -28,11 +28,9 @@ Breakpoint 2 hit (2 times).
 17:	x=5; y=6;
 y=6
 +### Try canonicalization of filenames in the break command...
-+break ../test/subshell.sh:1
++break ../example/subshell.sh:1
 Breakpoint 3 set in file subshell.sh, line 1.
-+break subshell.sh:2
++break ./../example/subshell.sh:2
 Breakpoint 4 set in file subshell.sh, line 2.
-+break ./subshell.sh:3
-Breakpoint 5 set in file subshell.sh, line 3.
 +### quitting...
 +quit 

@@ -13,7 +13,7 @@ options:
     -q | --quiet     Quiet. Do not print introductory and quiet messages.
     -L libdir | --library libdir
                             set directory location of library helper file: dbg-main.sh
-                            The default directory is: ..
+                            The default directory is: 
     -T tmpdir | --tempdir   set directory location for temporary files: /tmp
     -t tty | --tty tty | --terminal tty
                             set debugger terminal

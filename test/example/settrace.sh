@@ -25,19 +25,19 @@ hanoi() {
 }
 
 if (( $# > 0 )) ; then
-  builddir=$1
-elif [[ -z ${builddir:-''} ]] ; then
-  builddir=$PWD/..
+  top_builddir=$1
+elif [[ -z ${top_builddir:-''} ]] ; then
+  top_builddir=$PWD/../..
 fi
 
 if (( $# > 1 )); then
   cmdfile=$2
 else
-  srcdir=${srcdir:-'.'}
-  cmdfile=${srcdir}/data/settrace.cmd
+  srcdir=${top_srcdir:-'.'}
+  cmdfile=${top_srcdir}/test/data/settrace.cmd
 fi
 
-source ${builddir}/bashdb-trace -q -L .. -B  -x $cmdfile
+source ${top_builddir}/bashdb-trace -q -L $top_builddir -B  -x $cmdfile
 typeset -i max=1
 init
 hanoi $max 'a' 'b' 'c'

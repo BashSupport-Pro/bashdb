@@ -11,8 +11,7 @@ break 17
 cont
 
 ###  Try canonicalization of filenames in the break command...
-b ../test/subshell.sh:1
-b subshell.sh:2
-b ./subshell.sh:3
+b ../example/subshell.sh:1
+b ./../example/subshell.sh:2
 ###  quitting...
 quit

@@ -27,9 +27,9 @@ break 22
 info break
 ###############################################################
 #### *** Test using file:line format on break...
-break ./example/dbg-test1.sh:23
-break ./example/dbg-test1.sh:0
-break ./example/dbg-test1.sh:1955
+break ../example/dbg-test1.sh:23
+break ../example/dbg-test1.sh:0
+break ../example/dbg-test1.sh:1955
 break 23
 info break
 delete 3

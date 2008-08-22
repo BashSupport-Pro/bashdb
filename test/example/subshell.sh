@@ -1,5 +1,5 @@
 #!../../bash
-# $Id: multi.sh,v 1.1 2006/01/02 23:34:26 rockyb Exp $
+# $Id: subshell.sh,v 1.1 2008/08/22 18:54:08 rockyb Exp $
 # Test debugger handling of lines  with multiple commands per line 
 # and subshells in a line
 

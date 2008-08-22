@@ -7,7 +7,7 @@ One-time breakpoint 1 set in file dbg-test1.sh, line 34.
 
 fn1 here
 (dbg-test1.sh:34):
-34:	source example/dbg-test1.sub
+34:	source ../example/dbg-test1.sub
 +# It is important to "next" rather than "step"
 +next 
 SOURCED LINENO 19

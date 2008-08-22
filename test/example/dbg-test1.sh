@@ -31,5 +31,5 @@ echo $(fn3 30)
 fn3 31
 fn1;
 fn3 33
-source example/dbg-test1.sub
+source ../example/dbg-test1.sub
 exit 0;
