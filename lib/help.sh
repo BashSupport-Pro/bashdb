@@ -36,7 +36,8 @@ _Dbg_help_add() {
 _Dbg_help_get_text() {
     _Dbg_help_text=''
     (( $# != 1 )) && return 2
-    _Dbg_command_index $1
+    typeset _Dbg_cmd="$1"
+    _Dbg_command_index "$_Dbg_cmd"
     typeset -i i=$?
     ((i==255)) && return 1
     _Dbg_help_text="${_Dbg_command_help[$i]}"
@@ -266,4 +267,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.7 2008/08/21 13:49:04 rockyb Exp $'
+'$Id: help.sh,v 1.8 2008/08/22 06:18:37 rockyb Exp $'

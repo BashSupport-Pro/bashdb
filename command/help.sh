@@ -46,15 +46,16 @@ function _Dbg_do_help {
       _Dbg_msg 'Type "help" followed by command name for full documentation.'
       return 0
   else
-    typeset -r dbg_cmd=$1
+    typeset expanded_alias; _Dbg_alias_expand "$1"
+    typeset _Dbg_cmd="$expanded_alias"
     typeset _Dbg_help_text=''
-    if _Dbg_help_get_text "$dbg_cmd" && [[ ! -z $_Dbg_help_text ]] ; then
+    if _Dbg_help_get_text "$_Dbg_cmd" && [[ ! -z $_Dbg_help_text ]] ; then
 	_Dbg_msg "$_Dbg_help_text"
 	typeset aliases_found=''
-	_Dbg_alias_find_aliased "$dbg_cmd"
+	_Dbg_alias_find_aliased "$_Dbg_cmd"
 	if [[ -n $aliases_found ]] ; then
 	    _Dbg_msg ''
-	    _Dbg_msg "Aliases for $dbg_cmd: $aliases_found"
+	    _Dbg_msg "Aliases for $_Dbg_cmd: $aliases_found"
 	fi
 	return 0
     fi

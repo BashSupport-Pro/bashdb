@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# frame.sh - Bourne Again Shell Debugger Call Stack routines
+# frame.sh - Call Stack routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -22,7 +22,7 @@
 
 # The top number items on the FUNCNAME stack are debugging routines
 # Set the index in FUNCNAME that should be reported as index 0 (or top).
-typeset -ir _Dbg_STACK_TOP=2
+typeset -i _Dbg_STACK_TOP=2
 
 # Where are we in stack? This can be changed by "up", "down" or "frame"
 # commands. On debugger entry, the value is set to _Dbg_STACK_TOP.
@@ -31,11 +31,13 @@ typeset -i  _Dbg_stack_pos
 #======================== FUNCTIONS  ============================#
 
 _Dbg_frame_adjust() {
+  (($# != 2)) && return -1
+
   typeset -i count=$1
   typeset -i signum=$2
 
   typeset -i retval
-  _Dbg_frame_int_setup $count || return
+  _Dbg_frame_int_setup $count || return 2
 
   typeset -i pos
   if (( signum==0 )) ; then
@@ -49,10 +51,10 @@ _Dbg_frame_adjust() {
   fi
     
   if (( pos <= _Dbg_STACK_TOP-1 )) ; then 
-    _Dbg_msg 'Would be beyond bottom-most (most recent) entry.'
+    _Dbg_errmsg 'Would be beyond bottom-most (most recent) entry.'
     return 1
   elif (( pos >= ${#FUNCNAME[@]}-3 )) ; then 
-    _Dbg_msg 'Would be beyond top-most (least recent) entry.'
+    _Dbg_errmsg 'Would be beyond top-most (least recent) entry.'
     return 1
   fi
 
@@ -72,7 +74,7 @@ _Dbg_frame_int_setup() {
   _Dbg_not_running && return 1
   eval "$_seteglob"
   if [[ $1 != '' && $1 != $signed_int_pat ]] ; then 
-      _Dbg_msg "Bad integer parameter: $1"
+      _Dbg_errmsg "Bad integer parameter: $1"
       eval "$_resteglob"
       return 1
   fi
@@ -91,50 +93,4 @@ _Dbg_print_frame() {
     typeset callstr=$fn
     [[ -n $args ]] && callstr="$callstr($args)"
     _Dbg_msg "$prefix$pos in file \`$filename' at line $line"
-}
-
-# Print info args. Like GDB's "info args"
-# $1 is an additional offset correction - this routine is called from two
-# different places and one routine has one more additional call on top.
-# This code assumes the's debugger version of
-# bash where FUNCNAME is an array, not a variable.
-
-_Dbg_do_info_args() {
-
-  typeset -i n=${#FUNCNAME[@]}-1  # remove us (_Dbg_do_info_args) from count
-
-  eval "$_seteglob"
-  if [[ $1 != $int_pat ]] ; then 
-    _Dbg_msg "Bad integer parameter: $1"
-    eval "$_resteglob"
-    return 1
-  fi
-
-  typeset -i i=_Dbg_stack_pos+$1
-
-  (( i > n )) && return 1
-
-  # Figure out which index in BASH_ARGV is position "i" (the place where
-  # we start our stack trace from). variable "r" will be that place.
-
-  typeset -i q
-  typeset -i r=0
-  for (( q=0 ; q<i ; q++ )) ; do 
-    (( r = r + ${BASH_ARGC[$q]} ))
-  done
-
-  # Print out parameter list.
-  if (( 0 != ${#BASH_ARGC[@]} )) ; then
-
-    typeset -i arg_count=${BASH_ARGC[$i]}
-
-    ((r += arg_count - 1))
-
-    typeset -i s
-    for (( s=1; s <= arg_count ; s++ )) ; do 
-      _Dbg_printf "$%d = %s" $s "${BASH_ARGV[$r]}"
-      ((r--))
-    done
-  fi
-  return 0
 }

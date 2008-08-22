@@ -17,6 +17,7 @@ pkgdata_DATA =        \
 	frame.sh     \
 	handle.sh    \
 	help.sh      \
+	info.sh      \
 	kill.sh      \
 	linetrace.sh \
 	load.sh      \

@@ -15,7 +15,42 @@ test_print_frame()
     assertEquals "->0 in file \`dbg-cmds.sh' at line 2" "$msg"
 }
 
+typeset -r signed_int_pat='?([-+])+([0-9])'
+test_frame_adjust()
+{
+    _Dbg_errmsg() {
+	errmsg+=("$1")
+    }
+    _Dbg_print_source_line() {
+	:
+    }
+    _Dbg_running=1
+    typeset -a errmsg=()
+
+    # Test frame_adjust parameter checking
+    _Dbg_frame_adjust a
+    _Dbg_frame_adjust
+    assertNotEquals 0 "$?"
+
+    _Dbg_STACK_TOP=0
+    # Test absolute positioning - ok values (0..3)
+    for i in 0 1 -1 ; do
+	_Dbg_frame_adjust $i 0
+	assertEquals 0 ${#errmsg[@]}
+    done
+
+    # Test invalid values
+    for pair in '3 0' '5 -1' '4 +1' '-6 0'; do 
+	unset errmsg; errmsg=()
+	typeset _Dbg_stack_pos=2
+	_Dbg_frame_adjust $pair
+	assertNotEquals 0 "$?"
+	assertNotEquals 0 ${#errmsg[@]}
+    done
+}
+
 top_srcdir=@top_srcdir@
+. ${top_srcdir}/lib/run.sh
 . ${top_srcdir}/lib/frame.sh
 
 # load shunit2
