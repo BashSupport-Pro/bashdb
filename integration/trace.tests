@@ -1,0 +1,11 @@
+#!/bin/bash -f
+# -*- shell-script -*-
+#$Id: trace.tests,v 1.1 2008/08/22 19:08:04 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
+
+debugged_script="$srcdir/../example/hanoi.sh"
+
+$SH ${top_builddir}/bashdb -B -q -L $top_builddir -X $debugged_script

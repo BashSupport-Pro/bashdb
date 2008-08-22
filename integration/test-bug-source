@@ -1,0 +1,20 @@
+#!/bin/sh
+# -*- shell-script -*-
+#$Id: test-bug-source,v 1.1 2008/08/22 19:08:00 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
+
+TEST_NAME='bug-source'
+
+. ${builddir}/../check-common.sh
+
+cmdfile="$srcdir/data/bug-source.cmd"
+
+(cd $top_builddir/test/integration && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
+
+check_output $TEST_FILE $RIGHT_FILE
+
+# Return code tells testing mechanism whether passed or not.
+exit $?

@@ -1,0 +1,22 @@
+#!/bin/sh
+# -*- shell-script -*-
+#$Id: test-restart,v 1.1 2008/08/22 19:08:04 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
+
+TEST_NAME='restart'
+. ${top_builddir}/test/check-common.sh
+
+debugged_script="$top_builddir/test/example/restarbug.sh"
+
+echo 'Skipping restart test for now'
+exit 77
+
+(cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
+
+check_output $TEST_FILE $RIGHT_FILE
+
+# Return code tells testing mechanism whether passed or not.
+exit $?

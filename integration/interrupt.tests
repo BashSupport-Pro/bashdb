@@ -1,0 +1,14 @@
+#!../../bash
+# -*- shell-script -*-
+#$Id: interrupt.tests,v 1.1 2008/08/22 19:07:59 rockyb Exp $
+
+[ -z "$srcdir" ] && export srcdir=$PWD
+[ -z "$builddir" ] && export builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/..
+
+CHECK_FILE=interrupt.check
+$SH ${top_builddir}/test/example/interrupt.sh > $CHECK_FILE & 
+sleep 1; kill -TERM %1
+while [[ ! -s $CHECK_FILE ]] ; do
+  sleep 1
+done
