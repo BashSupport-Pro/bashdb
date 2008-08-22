@@ -241,13 +241,11 @@ _Dbg_debug_trap_handler() {
     _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
-  else
-    if ((_Dbg_linetrace==1)) ; then 
-      if ((_Dbg_linetrace_delay)) ; then
-	  sleep $_Dbg_linetrace_delay
-      fi
-      _Dbg_print_linetrace
+  elif ((_Dbg_linetrace==1)) ; then 
+    if ((_Dbg_linetrace_delay)) ; then
+	sleep $_Dbg_linetrace_delay
     fi
+    _Dbg_print_linetrace
   fi
   _Dbg_set_to_return_from_debugger 1
   return $_Dbg_inside_skip
@@ -507,4 +505,4 @@ _Dbg_init_trap TRAP   "print" "showstack" "stop"
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_sig_ver=\
-'$Id: sig.sh,v 1.3 2008/08/21 01:34:24 rockyb Exp $'
+'$Id: sig.sh,v 1.4 2008/08/22 21:38:15 rockyb Exp $'

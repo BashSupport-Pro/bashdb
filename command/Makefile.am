@@ -19,7 +19,7 @@ pkgdata_DATA =        \
 	help.sh      \
 	info.sh      \
 	kill.sh      \
-	linetrace.sh \
+	list.sh      \
 	load.sh      \
 	log.sh       \
 	pwd.sh       \
