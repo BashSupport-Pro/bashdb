@@ -62,7 +62,7 @@ _Dbg_alias_find_index() {
 }
 
 # Return in help_aliases an array of strings that are aliases
- #of $1
+# of $1
 _Dbg_alias_find_aliased() {
     (($# != 1)) &&  return 255
     typeset find_name=$1

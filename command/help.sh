@@ -259,9 +259,16 @@ l .             Same as above.
                 return ;;
 	    * )
 	   _Dbg_errmsg "Undefined command: \"$dbg_cmd\".  Try \"help\"."
-  	   return ;;
+  	   return 1 ;;
 	esac
     fi
+    typeset aliases_found=''
+    _Dbg_alias_find_aliased "$dbg_cmd"
+    if [[ -n $aliases_found ]] ; then
+	_Dbg_msg ''
+	_Dbg_msg "Aliases for $dbg_cmd: $aliases_found"
+    fi
+    return 0
 
     _Dbg_msg 'bashdb commands:
 List/search source lines:                 Control script execution:
