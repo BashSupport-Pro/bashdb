@@ -24,6 +24,8 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
+define(DEBUGGER, bashdb)
+define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 3.1)
 define(relstatus, 0.10cvs)
 
@@ -46,7 +48,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.57 2008/08/23 16:56:21 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.58 2008/08/23 21:40:18 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -68,7 +70,7 @@ BASHVERS=OK_BASH_VERS
 RELSTATUS=relstatus
 
 
-AC_CONFIG_SRCDIR(bashdb.in)
+AC_CONFIG_SRCDIR(DEBUGGER.in)
 if test x$ac_srcdir = x ; then
   ac_srcdir=.
 fi
@@ -91,17 +93,17 @@ fi
 ## --with-bash can be used to tell the bashdb script and the regression
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
-AC_ARG_WITH(bash, AC_HELP_STRING([--with-bash], 
-		  [location of bash OK_BASH_VERS program]), SH_PROG=$withval)
+AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL], 
+		  [location of POSIXSHELL program]), SH_PROG=$withval)
 
 if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
 then
-  AC_PATH_PROG(SH_PROG, bash, no)
+  AC_PATH_PROG(SH_PROG, POSIXSHELL, no)
 fi
 
 if test "$SH_PROG" = no; then
-  AC_MSG_ERROR([I didn't find the bash executable.\
-  You might want to use the --with-bash option.])
+  AC_MSG_ERROR([I didn't find the DEBUGGER executable.\
+  You might want to use the --with-DEBUGGER option.])
 fi
 
 if test "${enable_getopt}" != "no" ; then
@@ -111,7 +113,7 @@ if test "${enable_getopt}" != "no" ; then
     TRY_GETOPT=1
   else
     AC_MSG_WARN([getopt doesn't seem to handle long options correctly.])
-    AC_MSG_WARN([Disabling long-options in bashdb.])
+    AC_MSG_WARN([Disabling long-options in DEBUGGER.])
     TRY_GETOPT=0
   fi  
 else
@@ -178,7 +180,7 @@ AC_SUBST_DIR(INTERPRETER_NAME,"${bindir}/"`echo bash | sed "$ac_transform"`)
 # Get the fully expanded name of pkgdatadir. This is used in bashdb.in
 # and dbg-main.sh.in and for installing debugger files.
 
-pkgdatadir=$datadir/bashdb
+pkgdatadir=$datadir/DEBUGGER
 AC_SUBST_DIR(PKGDATADIR, $pkgdatadir)
 
 dnl We use a diff in regression testing
@@ -226,7 +228,7 @@ AC_CONFIG_FILES([Makefile \
 	test/unit/Makefile])
 
 # Additional files needing substitution of values (not Makefiles).
-AC_CONFIG_FILES([bashdb], [chmod +x bashdb])
+AC_CONFIG_FILES([kshdb], [chmod +x DEBUGGER])
 AC_CONFIG_FILES([test/example/bugIFS.sh], 
                 [chmod +x test/example/bugIFS.sh])
 AC_CONFIG_FILES([test/example/hanoi.sh], 
@@ -254,8 +256,8 @@ AC_CONFIG_FILES([ \
 	dbg-main.sh \
 	dbg-pre.sh \
 	doc/macros.texi \
+	emacs/dbg-test.el \
 	test/integration/check-common.sh \
-        emacs/bashdb-test.el \
 	])
 
 AC_CONFIG_COMMANDS([default],[[
