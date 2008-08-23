@@ -35,7 +35,7 @@ function _Dbg_do_help {
       _Dbg_help_sort_command_names
       _Dbg_msg 'Available commands:'
       typeset commands="${_Dbg_sorted_command_names[@]}"
-      typeset columnized=''; 
+      typeset columnized=''
       columnize "$commands" 65
       typeset -i i
       for ((i=0; i<${#columnized[@]}; i++)) ; do 
