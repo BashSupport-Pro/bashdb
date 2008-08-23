@@ -1,6 +1,6 @@
 #!/bin/bash
 # -*- shell-script -*-
-#$Id: test-watch2,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+#$Id: test-watch2,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -8,7 +8,7 @@
 
 TEST_NAME='watch2'
 
-. ${top_builddir}/test/check-common.sh
+. ${top_builddir}/test/integration/check-common.sh
 
 debugged_script="$top_srcdir/test/example/dbg-test1.sh"
 

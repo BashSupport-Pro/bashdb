@@ -1,6 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-debug,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+#$Id: test-debug,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -8,7 +8,7 @@
 
 TEST_NAME='debug'
 
-. ${top_builddir}/test/check-common.sh
+. ${top_builddir}/test/integration/check-common.sh
 
 RIGHT_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.right"
 debugged_script="$top_builddir/test/example/debug.sh"

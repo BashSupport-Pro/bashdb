@@ -1,12 +1,12 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-interrupt,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+#$Id: test-interrupt,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
 [ -z "$top_builddir" ] && export top_builddir=$builddir/../..
 
-. ${top_builddir}/test/check-common.sh
+. ${top_builddir}/test/integration/check-common.sh
 
 TEST_NAME=interrupt
 TEST_FILE="$builddir/${TEST_NAME}.check"

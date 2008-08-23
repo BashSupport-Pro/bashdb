@@ -1,4 +1,3 @@
 *.check
 Makefile
 Makefile.in
-check-common.sh

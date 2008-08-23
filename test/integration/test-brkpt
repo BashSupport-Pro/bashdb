@@ -1,5 +1,5 @@
 #!/bin/sh
-#$Id: test-brkpt,v 1.1 2008/08/22 19:25:06 rockyb Exp $
+#$Id: test-brkpt,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 # -*- shell-script -*-
 
 [ -z "$srcdir" ] && srcdir=$PWD
@@ -9,14 +9,14 @@ if test -z $top_builddir ; then
   top_builddir=../..
 fi
 
-
-. ${builddir}/../check-common.sh
+. ${top_builddir}/test/integration/check-common.sh
 
 tests=${@:-"brkpt1 brkpt2 brkpt3"}
 for SUBTEST in $tests ; do
   echo "checking $SUBTEST..."
   TEST_NAME=$SUBTEST
-  . ${builddir}/../check-common.sh
+
+. ${top_builddir}/test/integration/check-common.sh
   TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
   RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
   (cd $top_builddir/test/integration && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)

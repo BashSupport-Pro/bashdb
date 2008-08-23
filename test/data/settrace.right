@@ -11,10 +11,10 @@
   7:   }
   8:   
   9:   hanoi() { 
- 10:     local -i n=$1
- 11:     local -r a=$2
- 12:     local -r b=$3
- 13:     local -r c=$4
+ 10:     typeset -i n=$1
+ 11:     typeset -r a=$2
+ 12:     typeset -r b=$3
+ 13:     typeset -r c=$4
  14:   
 +info files
 Source files for which have been read in:

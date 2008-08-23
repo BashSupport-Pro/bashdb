@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: test-skip,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+#$Id: test-skip,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -8,7 +8,7 @@
 
 TEST_NAME='skip'
 
-. ${top_builddir}/test/check-common.sh
+. ${top_builddir}/test/integration/check-common.sh
 
 debugged_script="$top_builddir/test/example/skip.sh"
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)

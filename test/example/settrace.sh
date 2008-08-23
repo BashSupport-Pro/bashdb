@@ -7,10 +7,10 @@ init() {
 }
 
 hanoi() { 
-  local -i n=$1
-  local -r a=$2
-  local -r b=$3
-  local -r c=$4
+  typeset -i n=$1
+  typeset -r a=$2
+  typeset -r b=$3
+  typeset -r c=$4
 
   _Dbg_set_trace
   if (( n > 0 )) ; then

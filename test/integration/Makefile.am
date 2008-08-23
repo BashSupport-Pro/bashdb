@@ -1,19 +1,20 @@
 check_DATA = \
-	brkpt1.tests     \
-	brkpt2.tests     \
-	brkpt3.tests     \
-	bug-source.tests \
-	interrupt.tests  \
-	lopts.tests      \
-	multi.sh         \
-	setshow.tests 	 \
-	settrace.tests 	 \
-	sig.sh           \
-	sig.tests        \
-	sopts.tests      \
-	subshell1.tests  \
-	subshell2.tests  \
-	subshell3.tests  \
+	brkpt1.tests       \
+	brkpt2.tests       \
+	brkpt3.tests       \
+	bug-source.tests   \
+	check-common.sh.in \
+	interrupt.tests    \
+	lopts.tests        \
+	multi.sh           \
+	setshow.tests 	   \
+	settrace.tests 	   \
+	sig.sh             \
+	sig.tests          \
+	sopts.tests        \
+	subshell1.tests    \
+	subshell2.tests    \
+	subshell3.tests    \
 	subshell4.tests
 
 TESTS = \

@@ -1,13 +1,14 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: test-bug-args,v 1.1 2008/08/22 19:25:07 rockyb Exp $
+#$Id: test-bug-args,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 
 [ -z "$srcdir" ] && srcdir=$PWD
 [ -z "$builddir" ] && builddir=$PWD
+[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
 
 TEST_NAME='bug-args'
 
-. ${builddir}/../check-common.sh
+. ${top_builddir}/test/integration/check-common.sh
 
 debugged_script="${top_builddir}/test/example/bug-args.sh"
 
