@@ -118,7 +118,7 @@ if ((_Dbg_try_getopt && 0 == $? )) ; then
 	fi
 	shift
 	;;
-      -x|--command) BASHDB_INPUT="$BASHDB_INPUT $2"; shift ;;  
+      -x|--command) DBG_INPUT="$DBG_INPUT $2"; shift ;;  
       -X|--trace) _Dbg_opt_linetrace=1 ;;  
       # -Y|--vtrace) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
       -V|--version) show_version=1 ;;
@@ -151,7 +151,7 @@ else
 	fi
 	;;
       V) show_version=1 ;;
-      x) BASHDB_INPUT="$BASHDB_INPUT $OPTARG" ;;  
+      x) DBG_INPUT="$DBG_INPUT $OPTARG" ;;  
       X) _Dbg_opt_linetrace=1 ;;  
       # Y) _Dbg_opt_linetrace=1 ; _Dbg_opt_linetrace_expand=1 ;;  
       *) 

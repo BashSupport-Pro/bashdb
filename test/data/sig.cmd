@@ -18,7 +18,7 @@ info signals
 continue
 ###  Should have printed a stack trace above...
 continue
-where
+where 1
 continue
 kill
 y

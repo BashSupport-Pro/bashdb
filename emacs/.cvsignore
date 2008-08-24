@@ -1,5 +1,5 @@
 Makefile
 Makefile.in
 bashdb.elc
-bashdb-test.el
+dbg-test.el
 elc-stamp

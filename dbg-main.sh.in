@@ -62,11 +62,12 @@ fi
 # List of command files to process
 typeset -a _Dbg_input
 
-# Have we already specified  where to read debugger input from?
-# Note: index 0 is only set by bashdb. It is not used otherwise for I/O
-# like those indices >= _Dbg_INPUT_START_DESC are.
-if [ -n "$BASHDB_INPUT" ] ; then 
-  _Dbg_input=($BASHDB_INPUT)
+# Have we already specified where to read debugger input from?  
+#
+# Note: index 0 is only set by the debugger. It is not used otherwise for
+# I/O like those indices >= _Dbg_INPUT_START_DESC are.
+if [ -n "$DBG_INPUT" ] ; then 
+  _Dbg_input=($DBG_INPUT)
   _Dbg_do_source ${_Dbg_input[0]}
   _Dbg_no_init=1
 fi

@@ -1397,8 +1397,8 @@ then, avoid those or consult what is used by the debugger. Run
 use including those used by the debugger.}
 
 A number of environment variables are also reserved for use; these
-start with @code{BASHDB_}. For example: @env{BASHDB_INPUT},
-@env{BASHDB_LEVEL} and, @env{BASHDB_QUIT_ON_QUIT} (@pxref{Debug,
+start with @code{DBG_}. For example: @env{DBG_INPUT},
+@env{DBG_LEVEL} and, @env{DBG_QUIT_ON_QUIT} (@pxref{Debug,
 ,Debug}), @env{DBG_RESTART_FILE} (@pxref{Starting, ,Starting}), to
 name a few.  Finally, there are some @acronym{BASH} environment
 dynamic variables and these start with @env{BASH_}. For example

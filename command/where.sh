@@ -29,7 +29,7 @@
 # not a variable.
 
 _Dbg_help_add where \
-"where [N]	-- Print a backtrace of calling functions and sourced files.
+"where [N] -- Print a backtrace of calling functions and sourced files.
 
 The backtrace contains function names, arguments, line numbers, and
 files. If N is given, list only N calls."

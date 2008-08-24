@@ -10,6 +10,7 @@ pkgdata_DATA =      	\
 	fns.sh  	\
 	frame.sh        \
 	help.sh    	\
+	hook.sh    	\
 	hist.sh    	\
 	info.sh    	\
 	journal.sh    	\

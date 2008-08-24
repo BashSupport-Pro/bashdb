@@ -48,7 +48,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.58 2008/08/23 21:40:18 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.59 2008/08/24 02:27:36 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -228,7 +228,7 @@ AC_CONFIG_FILES([Makefile \
 	test/unit/Makefile])
 
 # Additional files needing substitution of values (not Makefiles).
-AC_CONFIG_FILES([kshdb], [chmod +x DEBUGGER])
+AC_CONFIG_FILES([bashdb], [chmod +x DEBUGGER])
 AC_CONFIG_FILES([test/example/bugIFS.sh], 
                 [chmod +x test/example/bugIFS.sh])
 AC_CONFIG_FILES([test/example/hanoi.sh], 
