@@ -18,6 +18,9 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add tty \
+'tty -- Set the output device for debugger output.'
+
 # Set output tty
 _Dbg_do_tty() {
   if [[ -z "$1" ]] ; then

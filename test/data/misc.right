@@ -64,11 +64,12 @@ POSSIBILITY OF SUCH DAMAGES.
 +help 
 Available commands:
   
-  alias      debug    edit     frame   next     show    trace      where
-  break      delete   enable   handle  print    signal  unalias  
-  commands   disable  eval     help    quit     skip    undisplay
-  condition  display  examine  info    restart  source  untrace  
-  continue   down     file     kill    set      step    up       
+  /          debug    enable   help  print    signal  unalias  
+  alias      delete   eval     info  pwd      skip    undisplay
+  break      disable  examine  kill  quit     source  untrace  
+  commands   display  file     list  restart  step    up       
+  condition  down     frame    load  set      trace   watch    
+  continue   edit     handle   next  show     tty     where    
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -102,8 +103,7 @@ bashdb's prompt is:
 +help set editing
 Set editing of command lines as they are typed is off.
 +help tty
-tt  tty-name     Set the output device for debugger output
-                 Long command name: tty.
+tty -- Set the output device for debugger output.
 +help info
 List of info subcommands:
 

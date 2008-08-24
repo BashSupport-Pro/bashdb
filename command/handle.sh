@@ -22,12 +22,12 @@
 # Process debugger "handle" command. 
 
 _Dbg_help_add handle \
-"handle SIGNAL {stop|nostop|stack|nostack|print|noprint}	-- Specify how to handle SIGNAL.
+"handle SIGNAL ACTION -- Specify how to handle SIGNAL.
 
 SIGNAL is a signal name like SIGSEGV, but numeric signals like 11
 (which is usually equivalent on \*nix systems) is okay too. 
 
-Recognized actions include \"stop\", \"nostop\", \"print\", and
+ACTION is one of \"stop\", \"nostop\", \"print\", and
 \"noprint\". \"Stop\" indicates entering debugger if this signal
 happens. \"Print\" indicates printing a message if this signal is
 encountered. \"Stack\" is like \"print\" but except the entire call

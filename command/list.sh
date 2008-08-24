@@ -18,9 +18,19 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add list \
+'list [START|.|FN] [COUNT] -- List lines of a script.
+
+START is the starting line or dot (.) for current line. Subsequent
+list commands continue from the last line listed. If a function name
+is given list the text of the function.
+
+If COUNT is omitted, use the setting LISTSIZE. Use "set listsize" to 
+change this setting.'
 
 # l [start|.] [cnt] List cnt lines from line start.
 # l sub       List source code fn
+
 _Dbg_do_list() {
   if [[ -n $1 ]] ; then
     first_arg=$1
@@ -72,7 +82,7 @@ _Dbg_do_search_back() {
       _Dbg_last_search_pat=$delim_search_pat
   esac
   typeset -i i
-  typeset -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
+  typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
   for (( i=_Dbg_listline-1; i > 0 ; i-- )) ; do
     typeset source_line
     _Dbg_get_source_line $i
@@ -89,6 +99,9 @@ _Dbg_do_search_back() {
   return 1
 
 }
+
+_Dbg_help_add '/' \
+'/search/ -- Search forward and list line of a script.'
 
 # /search/
 _Dbg_do_search() {

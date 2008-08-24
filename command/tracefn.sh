@@ -17,7 +17,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add trace \
-'trace FN	-- Wrap FN in set -x .. set -x tracing.'
+'trace FN -- Wrap FN in set -x .. set -x tracing.'
 
 # Wrap "set -x .. set +x" around a call to function $1.
 # Normally we also save and restrore any trap DEBUG functions. However

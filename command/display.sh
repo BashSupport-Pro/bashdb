@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add display \
-"display [EXP]	- Set display expression or list all display expressions."
+"display [EXP] -- Set display expression or list all display expressions."
 
 # Set display command or list all current display expressions
 _Dbg_do_display() {

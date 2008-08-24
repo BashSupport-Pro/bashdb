@@ -18,6 +18,9 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add pwd \
+'pwd -- Show working directory.'
+
 _Dbg_do_pwd() {
   local _Dbg_cwd=$(pwd)
   (( _Dbg_basename_only )) && _Dbg_cwd=${_Dbg_cwd##*/}

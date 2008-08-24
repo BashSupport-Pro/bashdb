@@ -18,6 +18,9 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+_Dbg_help_add watch \
+'watch [ARITH?] EXP -- Set or clear a watch expression.'
+
 # Set or list watch command
 _Dbg_do_watch() {
   if [ -z "$2" ]; then

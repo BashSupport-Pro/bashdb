@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add disable \
-"disable {n}...	- Disable breakpoint entry/entries."
+"disable {n}...	-- Disable breakpoint entry/entries."
 
 # Disable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_disable() {
