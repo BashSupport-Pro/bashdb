@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.34 2008/08/17 15:13:05 rockyb Exp $
+#$Id: Makefile.am,v 1.35 2008/08/25 14:11:03 rockyb Exp $
 
 subdirs = command lib doc emacs test
 if BUILD_BUILTINS
@@ -47,11 +47,6 @@ EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc dbg-main.sh.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     getopt-test.sh \
 	     ChangeLog ChangeLog.0 
-
-readarray$(EXEEXT): $(readarray_OBJECTS) $(readarray_DEPENDENCIES) 
-	@rm -f readarray$(EXEEXT)
-	$(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ \
-	    $(readarray_LDFLAGS) $(readarray_OBJECTS) $(readarray_LDADD) $(LIBS)
 
 # 
 # This is ugly. Bash 3.0 requires things to be different than where 
