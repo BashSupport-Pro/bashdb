@@ -34,7 +34,7 @@ typeset -ir _Dbg_INPUT_START_DESC=4
 typeset -i  _Dbg_MAX_INPUT_DESC=9  # logfile can reduce this
 typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
 
-# Are we inside the middle of a "skip" command?
+# Return code to indicated the next command should be skipped.
 typeset -i  _Dbg_inside_skip=0
 
 # keep a list of source'd command files. If the entry is "" then we are 
@@ -461,11 +461,10 @@ _Dbg_onecmd() {
 	  if [[ $_Dbg_cmd == sk* ]] ; then
 	    _Dbg_inside_skip=1
 	    _Dbg_last_cmd='skip'
-	    return 1
 	  else
 	    _Dbg_last_cmd='next'
-	    return 0
 	  fi
+	  return $_Dbg_inside_skip
 	  ;;
 
 	# print globbed or substituted variables
@@ -845,4 +844,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.8 2008/08/20 10:54:03 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.9 2008/08/25 12:40:44 rockyb Exp $'
