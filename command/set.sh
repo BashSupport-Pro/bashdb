@@ -102,19 +102,6 @@ _Dbg_do_set() {
       esac
       return 0
       ;;
-    e | ed | edi | edit | editi | editin | editing )
-      typeset onoff=${1:-'on'}
-      case $onoff in 
-	on | 1 ) 
-	  _Dbg_edit='-e'
-	  ;;
-	off | 0 )
-	  _Dbg_edit=''
-	  ;;
-	* )
-	  _Dbg_msg "\"on\" or \"off\" expected."
-      esac
-      ;;
     d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
       typeset onoff=${1:-'on'}
       case $onoff in 
