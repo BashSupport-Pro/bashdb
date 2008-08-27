@@ -1,19 +1,12 @@
-# $Id: check-common.sh.in,v 1.1 2008/08/23 16:56:21 rockyb Exp $
+# $Id: check-common.sh.in,v 1.2 2008/08/27 14:02:50 rockyb Exp $
 # -*- shell-script -*-
 
 srcdir=@srcdir@
 builddir=@builddir@
-if test -z "$THIS_SH" ; then 
-  THIS_SH=@SH_PROG@
-fi
+[ -z "$SH" ] && SH=@SH_PROG@
 
-# Could/should probably replace all uses of THIS_SH with BASH.
-SH=$THIS_SH
-
-top_builddir=@abs_top_builddir@
-top_srcdir=@abs_top_srcdir@
-
-export BASH top_builddir top_srcdir srcdir builddir
+export top_builddir=@abs_top_builddir@
+export top_srcdir=@abs_top_srcdir@
 
 check_output() {
   testfile="$1"
@@ -32,10 +25,19 @@ run_debugger() {
   debugged_script=$1
   bashdb_opts=${2:-"-B -q -L ${top_builddir}"}
   cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
-  $BASH ${top_builddir}/bashdb $bashdb_opts -x $cmdfile $debugged_script
+  $SH -- ${top_builddir}/bashdb $bashdb_opts -x $cmdfile $debugged_script
 }
 
 TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
 RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
 TEST_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.check"
 RIGHT_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.right"
+
+run_test_check() {
+    short_script_name=${1:-$TEST_NAME}
+    debugged_script="${top_srcdir}/test/example/${short_script_name}.sh"
+    (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
+    check_output $TEST_FILE $RIGHT_FILE
+    # Return code tells testing mechanism whether passed or not.
+    exit $?
+}

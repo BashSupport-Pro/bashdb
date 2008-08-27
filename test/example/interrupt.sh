@@ -1,4 +1,5 @@
 #!/bin/bash
+# $Id: interrupt.sh,v 1.10 2008/08/27 14:02:49 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
