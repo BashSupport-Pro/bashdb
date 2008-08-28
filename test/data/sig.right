@@ -41,9 +41,9 @@ Program received signal SIGTERM (15)...
 ->0 in file `eval.sh' at line 2
 ##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 394
 ##2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.sh' at line 162
-##3 _Dbg_process_commands() called from file `hook.sh' at line 187
+##3 _Dbg_process_commands() called from file `hook.sh' at line 199
 ##4 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
-##5 source("sig.sh") called from file `bashdb' at line 160
+##5 source("sig.sh") called from file `bashdb' at line 163
 ##6 main() called from file `bashdb' at line 0
 +### Should have printed a stack trace above...
 +continue 
@@ -52,11 +52,11 @@ Program received signal SIGTERM (15)...
 +continue 
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 23
-##1 source("sig.sh") called from file `bashdb' at line 160
+##1 source("sig.sh") called from file `bashdb' at line 163
 ##2 main() called from file `bashdb' at line 0
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 24
-##1 source("sig.sh") called from file `bashdb' at line 160
+##1 source("sig.sh") called from file `bashdb' at line 163
 ##2 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +kill 

@@ -31,7 +31,7 @@ cont 34
 info program
 L
 ###  List stack frame...
-where
+where 2
 ###  Try up...
 up
 list
@@ -49,9 +49,9 @@ next
 ###  Try continue file:line (but will hit another breakpoint)...
 cont ../example/dbg-test1.sh:35
 step 2
-T
+T 2
 step 10
-T
+T 2
 ###  Try x command...
 x j
 ###  Try continue break no args (here)...

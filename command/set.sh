@@ -102,6 +102,19 @@ _Dbg_do_set() {
       esac
       return 0
       ;;
+    d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+      typeset onoff=${1:-'on'}
+      case $onoff in 
+	on | 1 ) 
+	  _Dbg_write_journal_eval "_Dbg_debug_debugger=1"
+	  ;;
+	off | 0 )
+	  _Dbg_write_journal_eval "_Dbg_debug_debugger=0"
+	  ;;
+	* )
+	  _Dbg_msg "\"on\" or \"off\" expected."
+      esac
+      ;;
     e | ed | edi | edit | editi | editin | editing )
       typeset onoff=${1:-'on'}
       case $onoff in 
@@ -115,17 +128,17 @@ _Dbg_do_set() {
 	  _Dbg_msg "\"on\" or \"off\" expected."
       esac
       ;;
-    d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-      typeset onoff=${1:-'on'}
+    force )
+      typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_debug_debugger=1"
+	  _Dbg_write_journal_eval "_Dbg_step_auto_force=1"
 	  ;;
 	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_debug_debugger=0"
+	  _Dbg_write_journal_eval "_Dbg_step_auto_force=0"
 	  ;;
 	* )
-	  _Dbg_msg "\"on\" or \"off\" expected."
+	  _Dbg_errmsg "\"on\" or \"off\" expected."
       esac
       ;;
    hi|his|hist|histo|histor|history)

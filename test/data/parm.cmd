@@ -6,9 +6,9 @@ set trace-commands on
 #  evaluation of dollar variables $1, $2
 #
 ###  Try a simple stack command...
-where
+where 1
 step 2
-where
+where 2
 ###  Try printing a dollar variable...
 p $1
 ###  Same thing using eval...
@@ -18,7 +18,7 @@ a 4 echo "\\$1 at line 4 has value $1"
 c fn2
 # cont
 ###  First parameter should have embedded blanks...
-where
+where 8
 p "dollar 1: $1"
 ###  Same thing using eval...
 e echo "\\$1 is $1"
@@ -31,14 +31,14 @@ return
 return
 ###  Should not have done above-listed x=\"fn2\" assignment
 p $x
-where
+where 7
 return
-where
+where 6
 return
-where
+where 5
 return
 return
-where
+where 3
 ### * Testing that exit status preserved on eval and print...
 c 29
 e echo "eval says exit was $?"

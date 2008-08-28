@@ -24,7 +24,7 @@ down -1
 T 2
 # Should go to next-to-least-recent frame
 frame -2
-where
+where 2
 # Let's add another stack entry
 continue hanoi
 where 3

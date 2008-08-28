@@ -1,8 +1,8 @@
 set trace-commands on
 # Debugger test of 'finish' command
 continue fn2
-where
+where 8
 finish
-where
+where 7
 print $x
 quit

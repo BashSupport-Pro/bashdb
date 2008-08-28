@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.40 2008/08/17 15:13:05 rockyb Exp $'
+'$Id: bashdb.in,v 1.41 2008/08/28 02:38:50 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -45,6 +45,9 @@ typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 typeset     _Dbg_bashdb_main=@BASHDB_MAIN@
 typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
 # typeset    _Dbg_libdir=@PKGDATADIR@
+
+# Name we refer to ourselves by
+typeset _Dbg_debugger_name='@PACKAGE@'
 
 typeset    _Dbg_main=dbg-main.sh
 typeset    _Dbg_bindir=$(dirname $0)

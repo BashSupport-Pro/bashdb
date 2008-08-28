@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.31 2008/08/23 12:09:14 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.32 2008/08/28 02:38:50 rockyb Exp $'
 
 declare -a _Dbg_script_args=("$@")
 
@@ -44,6 +44,9 @@ typeset _Dbg_bindir=$(dirname $0)
 typeset _Dbg_tmpdir=/tmp
 typeset -i _Dbg_opt_linetrace=0
 typeset _Dbg_cmd='' # If command string given on command line, this is it.
+
+# Name we refer to ourselves by
+typeset _Dbg_debugger_name='@PACKAGE@'
 
 # Use gdb-style annotate?
 typeset -i _Dbg_annotate=0

@@ -299,6 +299,7 @@ autoeval: Evaluate unrecognized commands is off.
 basename: Show short filenames (the basename) in debug output is on.
 debugger: Allow debugging the debugger is off.
 editing:  Editing of command lines as they are typed is on.
+force: Show stepping forces a new line is off.
 filename: The filename in which to record the command history is
 save: Saving of history save is on.
 size: Debugger history size is 256

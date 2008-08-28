@@ -7,18 +7,14 @@
 +# evaluation of dollar variables $1, $2
 +# 
 +### Try a simple stack command...
-+where 
++where 1
 ->0 in file `parm.sh' at line 26
-##1 source("parm.sh") called from file `bashdb' at line 160
-##2 main() called from file `bashdb' at line 0
 +step 2
 (parm.sh:3):
 3:	fn1() {
-+where 
++where 2
 ->0 in file `parm.sh' at line 3
 ##1 fn1("5") called from file `parm.sh' at line 27
-##2 source("parm.sh") called from file `bashdb' at line 160
-##3 main() called from file `bashdb' at line 0
 +### Try printing a dollar variable...
 +print $1
 5
@@ -40,7 +36,7 @@ $1 at line 4 has value 0
 14:	fn2() {
 +# cont
 +### First parameter should have embedded blanks...
-+where 
++where 8
 ->0 in file `parm.sh' at line 14
 ##1 fn2("testing 1", "2 3") called from file `parm.sh' at line 6
 ##2 fn1("0") called from file `parm.sh' at line 10
@@ -49,8 +45,6 @@ $1 at line 4 has value 0
 ##5 fn1("3") called from file `parm.sh' at line 10
 ##6 fn1("4") called from file `parm.sh' at line 10
 ##7 fn1("5") called from file `parm.sh' at line 27
-##8 source("parm.sh") called from file `bashdb' at line 160
-##9 main() called from file `bashdb' at line 0
 +print "dollar 1: $1"
 dollar 1: testing 1
 +### Same thing using eval...
@@ -76,7 +70,7 @@ fn2: testing 1 2 3
 +### Should not have done above-listed x="fn2" assignment
 +print $x
 fn2 started
-+where 
++where 7
 ->0 in file `parm.sh' at line 7
 ##1 fn1("0") called from file `parm.sh' at line 10
 ##2 fn1("1") called from file `parm.sh' at line 10
@@ -84,43 +78,35 @@ fn2 started
 ##4 fn1("3") called from file `parm.sh' at line 10
 ##5 fn1("4") called from file `parm.sh' at line 10
 ##6 fn1("5") called from file `parm.sh' at line 27
-##7 source("parm.sh") called from file `bashdb' at line 160
-##8 main() called from file `bashdb' at line 0
 +return 
 (parm.sh:11):
 11:	  x="fn1 returning"
-+where 
++where 6
 ->0 in file `parm.sh' at line 11
 ##1 fn1("1") called from file `parm.sh' at line 10
 ##2 fn1("2") called from file `parm.sh' at line 10
 ##3 fn1("3") called from file `parm.sh' at line 10
 ##4 fn1("4") called from file `parm.sh' at line 10
 ##5 fn1("5") called from file `parm.sh' at line 27
-##6 source("parm.sh") called from file `bashdb' at line 160
-##7 main() called from file `bashdb' at line 0
 +return 
 (parm.sh:11):
 11:	  x="fn1 returning"
-+where 
++where 5
 ->0 in file `parm.sh' at line 11
 ##1 fn1("2") called from file `parm.sh' at line 10
 ##2 fn1("3") called from file `parm.sh' at line 10
 ##3 fn1("4") called from file `parm.sh' at line 10
 ##4 fn1("5") called from file `parm.sh' at line 27
-##5 source("parm.sh") called from file `bashdb' at line 160
-##6 main() called from file `bashdb' at line 0
 +return 
 (parm.sh:11):
 11:	  x="fn1 returning"
 +return 
 (parm.sh:11):
 11:	  x="fn1 returning"
-+where 
++where 3
 ->0 in file `parm.sh' at line 11
 ##1 fn1("4") called from file `parm.sh' at line 10
 ##2 fn1("5") called from file `parm.sh' at line 27
-##3 source("parm.sh") called from file `bashdb' at line 160
-##4 main() called from file `bashdb' at line 0
 +### * Testing that exit status preserved on eval and print...
 +continue 29
 One-time breakpoint 3 set in file parm.sh, line 29.

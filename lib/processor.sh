@@ -348,7 +348,7 @@ _Dbg_onecmd() {
 	debug )
 	  _Dbg_do_debug $args
 	  # Skip over the execute statement which presumably we ran above.
-	  _Dbg_do_next_step_skip 'skip' 1
+	  _Dbg_do_next_skip 'skip' 1
 	  IFS="$_Dbg_old_IFS";
 	  return 1
 	  _Dbg_last_cmd='debug'
@@ -457,7 +457,7 @@ _Dbg_onecmd() {
 	n | ne | nex | next | s | st | ste | step | sk | ski | skip )
 	  _Dbg_last_next_step_cmd="$_Dbg_cmd"
 	  _Dbg_last_next_step_args=$args
-	  _Dbg_do_next_step_skip $_Dbg_cmd $args
+	  _Dbg_do_next_skip $_Dbg_cmd $args
 	  if [[ $_Dbg_cmd == sk* ]] ; then
 	    _Dbg_inside_skip=1
 	    _Dbg_last_cmd='skip'
@@ -537,6 +537,12 @@ _Dbg_onecmd() {
 	# Run a debugger comamnd file
 	so | sou | sour | sourc | source )
 	  _Dbg_do_source $args
+	  ;;
+
+	# single-step 
+	step | 'step+' | 'step-' )
+	  _Dbg_do_step "$_Dbg_cmd" $args
+	  return 0
 	  ;;
 
 	# toggle execution trace
@@ -844,4 +850,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.9 2008/08/25 12:40:44 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.10 2008/08/28 02:38:50 rockyb Exp $'

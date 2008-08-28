@@ -54,11 +54,9 @@ One-time breakpoint 1 set in file hanoi.sh, line 13.
 +frame -2
 (hanoi.sh:43):
 43:	hanoi $max "a" "b" "c"
-+where 
++where 2
 ##0 in file `hanoi.sh' at line 13
 ->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
-##2 source("hanoi.sh") called from file `bashdb' at line 160
-##3 main() called from file `bashdb' at line 0
 +# Let's add another stack entry
 +continue hanoi
 One-time breakpoint 2 set in file hanoi.sh, line 13.
