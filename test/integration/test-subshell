@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: test-subshell,v 1.2 2008/08/23 16:56:21 rockyb Exp $
+#$Id: test-subshell,v 1.3 2008/08/29 02:55:44 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -10,12 +10,13 @@
 
 tests=${@:-"subshell1 subshell2 subshell3"}
 
-for SUBTEST in $tests; do
-  echo "checking $SUBTEST..."
-  RIGHT_FILE="${top_srcdir}/test/data/${SUBTEST}.right"
-  (cd $srcdir && $SH ${SUBTEST}.tests > $TEST_FILE 2>&1 < /dev/null)
+for TEST_NAME in $tests; do
+  echo "checking $TEST_NAME..."
+  RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
+  TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
+  (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-  check_output $TEST_FILE ${top_srcdir}/test/data/${SUBTEST}.right
+  check_output $TEST_FILE ${top_srcdir}/test/data/${TEST_NAME}.right
   rc=$?
   if test "$rc" -eq  0 ; then
     rm -f $TEST_FILE

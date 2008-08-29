@@ -105,7 +105,7 @@ _Dbg_debug_trap_handler() {
   fi
 
   # if in step mode, decrement counter
-  if ((_Dbg_step_ignore >= 0)) ; then 
+  if ((_Dbg_step_ignore > 0)) ; then 
     ((_Dbg_step_ignore--))
     _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
   fi
@@ -178,16 +178,14 @@ _Dbg_debug_trap_handler() {
 
     done
   fi
+  set +x
 
   # Check if step mode and number steps to ignore.
   if ((_Dbg_step_ignore == 0)); then
 
       if ((_Dbg_step_force)) ; then
-	  typeset _Dbg_frame_previous_file="$_Dbg_frame_last_file"
-	  typeset -i _Dbg_frame_previous_lineno="$_Dbg_frame_last_lineno"
-	  _Dbg_frame_save_frames 1
-	  if ((_Dbg_frame_previous_lineno == _Dbg_frame_last_lineno)) && \
-	      [ "$_Dbg_frame_previous_file" = "$_Dbg_frame_last_file" ] ; then
+	  if (( $_Dbg_last_lineno == $_curline )) \
+	      && [[ $_Dbg_last_source_file == $_cur_source_file ]] ; then 
 	      _Dbg_set_to_return_from_debugger 1
 	      return $_Dbg_rc
 	  fi

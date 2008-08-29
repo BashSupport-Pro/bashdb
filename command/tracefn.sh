@@ -32,14 +32,14 @@ function _Dbg_do_trace_fn {
 	_Dbg_errmsg "trace_fn: missing or invalid function name"
 	return 2
     fi
-    _Dbg_is_function "$fn" || {
+    _Dbg_is_function "$fn" $_Dbg_debug_debugger || {
 	_Dbg_errmsg "trace_fn: function \"$fn\" is not a function."
 	return 3
     }
     cmd=old_$(declare -f -- "$fn") || {
 	return 4
     }
-    ((_Dbg_debug_debugger)) && echo $cmd 
+    ((_Dbg_debug_debugger)) && echo "$cmd"
     typeset save_clear_debug_trap_cmd=''
     typeset restore_trap_cmd=''
     if (( clear_debug_trap )) ; then
@@ -58,7 +58,7 @@ function _Dbg_do_trace_fn {
     return \$rc
     }
 "
-    ((_Dbg_debug_debugger)) && echo $cmd 
+    ((_Dbg_debug_debugger)) && echo "$cmd"
     eval "$cmd" || return 6
     return 0
 }

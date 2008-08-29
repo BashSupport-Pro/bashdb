@@ -84,6 +84,9 @@ No breakpoints have been set.
 Num Type       Enb  Expression
 2   watchpoint y    $x
 +continue 
-(dbg-test1.sh:22):
-22:	x=22
+Watchpoint 2: $x changed:
+  old value: ''
+  new value: '22'
+(dbg-test1.sh:23):
+23:	y=23
 +quit 

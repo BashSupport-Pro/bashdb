@@ -41,7 +41,7 @@ ${line_number}:\t${source_line}"
   # currently at.
   if [[ $_Dbg_show_command == "on" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
-  elif [[ $_Dbg_last_curline == $_curline ]] \
+  elif [[ $_Dbg_last_lineno == $_curline ]] \
     && [[ $_Dbg_last_source_file == $_cur_source_file ]] \
     && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
     && $_Dbg_show_command == "auto" ]] ; then
@@ -85,7 +85,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
   # currently at.
   if [[ $_Dbg_show_command == "on" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
-  elif [[ $_Dbg_last_curline == $_curline ]] \
+  elif (( _Dbg_last_lineno == _curline )) \
     && [[ $_Dbg_last_source_file == $_cur_source_file ]] \
     && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
     && $_Dbg_show_command == "auto" ]] ; then
@@ -141,7 +141,7 @@ _Dbg_list() {
 }
 
 # This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: list.sh,v 1.2 2008/08/22 21:38:15 rockyb Exp $'
+_Dbg_list_ver='$Id: list.sh,v 1.3 2008/08/29 02:55:43 rockyb Exp $'
 
 #;;; Local Variables: ***
 #;;; mode:shell-script ***

@@ -42,6 +42,7 @@ _Dbg_do_quit() {
 
   ## write this to the next level up can read it.
   _Dbg_write_journal "BASHDB_QUIT_LEVELS=$BASHDB_QUIT_LEVELS"
+  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 
   # Reset signal handlers to their default but only if 
   # we are not in a subshell.
