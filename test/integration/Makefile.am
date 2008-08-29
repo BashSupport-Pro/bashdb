@@ -15,7 +15,9 @@ check_DATA = \
 	subshell1.tests    \
 	subshell2.tests    \
 	subshell3.tests    \
-	subshell4.tests
+	subshell4.tests    \
+	trace.tests	   \
+	trace2.tests
 
 TESTS = \
 	test-action     \
