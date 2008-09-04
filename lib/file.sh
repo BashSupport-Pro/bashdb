@@ -22,7 +22,7 @@
 typeset -a _Dbg_dir=('\$cdir' '\$cwd' )
 
 # Directory in which the script is located
-[[ -z _Dbg_cdir ]] && typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
+[[ -z ${_Dbg_cdir} ]] && [[ -n ${_Dbg_cdir} ]] && typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
 
 # See if we have compiled the readarray builtin. This speeds up reading
 # files into a bash array.
@@ -117,7 +117,7 @@ function _Dbg_is_file {
   typeset find_file=$1
 
   if [[ -z $find_file ]] ; then
-    _Dbg_msg "Internal debug error: null file to find"
+    _Dbg_errmsg "Internal debug error: null file to find"
     echo ''
     return
   fi
@@ -308,4 +308,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
+'$Id: file.sh,v 1.2 2008/09/04 03:02:23 rockyb Exp $'
