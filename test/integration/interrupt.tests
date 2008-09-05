@@ -1,14 +1,24 @@
 #!../../bash
 # -*- shell-script -*-
-#$Id: interrupt.tests,v 1.1 2008/08/22 19:25:06 rockyb Exp $
+#$Id: interrupt.tests,v 1.2 2008/09/05 00:11:08 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
 [ -z "$top_builddir" ] && export top_builddir=$builddir/..
 
 CHECK_FILE=interrupt.check
+started_markerfile=$top_builddir/test/interrupt.tst
+if [[ -f $started_markerfile ]] ; then
+    rm -f $started_markerfile || exit 77
+fi
+
 $SH ${top_builddir}/test/example/interrupt.sh > $CHECK_FILE & 
-sleep 1; kill -TERM %1
+while [[ ! -f $started_markerfile ]] ; do
+    sleep 1
+done
+
+kill -TERM %1
 while [[ ! -s $CHECK_FILE ]] ; do
   sleep 1
 done
+rm -f $started_markerfile
