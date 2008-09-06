@@ -15,7 +15,7 @@ tbreak fn3
 L
 step 2
 L
-### not not see line 25 above and not stop again. Continue to fn3...
+### Should not see line 25 above and not stop again. Continue to fn3...
 cont
 L
 ### Should end but stay in debugger..

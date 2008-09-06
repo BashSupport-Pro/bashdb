@@ -1,5 +1,5 @@
-#!/usr/local/bin/bash
-# $Id: interrupt.sh,v 1.13 2008/09/05 00:11:08 rockyb Exp $
+#!/bin/bash
+# $Id: interrupt.sh,v 1.14 2008/09/06 14:17:43 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -24,9 +24,8 @@ source ${top_builddir}bashdb-trace -q -B -L ../..
 ## echo "print: " ${_Dbg_sig_print[2]}
 ## echo "stop: " ${_Dbg_sig_stop[2]}
 
-started_markerfile=$top_builddir/test/interrupt.tst
 BASHDB_QUIT_ON_QUIT=1
 for i in `seq 100` ; do
-   touch $started_markerfile
+   touch $1
    sleep 5
 done

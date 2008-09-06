@@ -207,23 +207,23 @@ function _Dbg_is_traced {
 function _Dbg_linespec_setup {
   typeset linespec=${1:-''}
   if [[ -z $linespec ]] ; then
-    _Dbg_msg "Invalid line specification, null given"
+    _Dbg_errmsg "Invalid line specification, null given"
   fi
   typeset -a word=($(_Dbg_parse_linespec "$linespec"))
   if [[ ${#word[@]} == 0 ]] ; then
-    _Dbg_msg "Invalid line specification: $linespec"
+    _Dbg_errmsg "Invalid line specification: $linespec"
     return
   fi
   
   filename=${word[2]}
   typeset -ir is_function=${word[1]}
   line_number=${word[0]}
-  full_filename=`_Dbg_is_file $filename`
+  full_filename=$(_Dbg_is_file $filename)
 
   if (( is_function )) ; then
       if [[ -z $full_filename ]] ; then 
 	  _Dbg_readin "$filename"
-	  full_filename=`_Dbg_is_file $filename`
+	  full_filename=$(_Dbg_is_file $filename)
       fi
   fi
 }
@@ -288,4 +288,4 @@ function _Dbg_set_ftrace {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.2 2008/08/12 14:07:15 rockyb Exp $'
+'$Id: fns.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'

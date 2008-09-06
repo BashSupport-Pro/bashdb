@@ -22,7 +22,7 @@
 [[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.2 2008/08/18 21:08:01 rockyb Exp $'
+'$Id: brk.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -210,92 +210,6 @@ function _Dbg_print_brkpt_count {
 }
 
 #======================== BREAKPOINTS  ============================#
-
-# delete brkpt(s) at given file:line numbers. If no file is given
-# use the current file.
-_Dbg_do_clear_brkpt() {
-  # set -x
-  local -r n=${1:-$_curline}
-
-  local filename
-  local -i line_number
-  local full_filename
-
-  _Dbg_linespec_setup $n
-
-  if [[ -n $full_filename ]] ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to clear."
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      if (( $? == 0 )) ; then
-	_Dbg_unset_brkpt "$full_filename" "$line_number"
-	local -r found=$?
-	if [[ $found != 0 ]] ; then 
-	  _Dbg_msg "Removed $found breakpoint(s)."
-	else 
-	  _Dbg_msg "Didn't find any breakpoints to remove at $n."
-	fi
-      fi
-    fi
-  else
-    _Dbg_file_not_read_in $filename
-  fi
-}
-
-# list breakpoints and break condition.
-# If $1 is given just list those associated for that line.
-_Dbg_do_list_brkpt() {
-
-  local brkpt_num=${1:-''}
-  eval "$_seteglob"
-  if [[ -n $brkpt_num ]] ; then 
-    if [[ $brkpt_num != $int_pat ]]; then
-      _Dbg_msg "Bad breakpoint number $brkpt_num."
-    elif [[ -z ${_Dbg_brkpt_file[$brkpt_num]} ]] ; then
-      _Dbg_msg "Breakpoint entry $brkpt_num is not set."
-    else
-      local -r -i i=$brkpt_num
-      local source_file=${_Dbg_brkpt_file[$i]}
-      source_file=$(_Dbg_adjust_filename "$source_file")
-      _Dbg_msg "Num Type       Disp Enb What"
-      _Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
-	${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
-	${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
-	$source_file ${_Dbg_brkpt_line[$i]}
-      if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
-	_Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
-      fi
-      _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
-    fi
-    eval "$_resteglob"
-    return
-  fi
-
-  if [ ${#_Dbg_brkpt_line[@]} != 0 ]; then
-    local -i i
-
-    _Dbg_msg "Num Type       Disp Enb What"
-    for (( i=1; (( i <= _Dbg_brkpt_max )) ; i++ )) ; do
-      local source_file=${_Dbg_brkpt_file[$i]}
-      if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
-	source_file=$(_Dbg_adjust_filename "$source_file")
-	_Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
-	  ${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
-	  ${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
-	  $source_file ${_Dbg_brkpt_line[$i]}
-	if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
-	  _Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
-	fi
-	if (( _Dbg_brkpt_count[$i] != 0 )) ; then
-	  _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
-	fi
-      fi
-    done
-  else
-    _Dbg_msg "No breakpoints have been set."
-  fi
-}
 
 # clear all brkpts
 _Dbg_clear_all_brkpt() {
@@ -811,4 +725,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z $_Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.2 2008/08/18 21:08:01 rockyb Exp $'
+'$Id: brk.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'

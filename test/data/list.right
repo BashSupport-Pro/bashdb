@@ -77,7 +77,7 @@ See 'info files' for a list of known files and
  13:       echo "$name here"
  14:       x=6
 +list bogus
-Invalid line specification: bogus
+** Invalid line specification: bogus
 File  not found in read-in files.
 See 'info files' for a list of known files and
 'load' to read in a file.

@@ -82,6 +82,11 @@ _Dbg_frame_int_setup() {
   return 0
 }
 
+_Dbg_frame_lineno() {
+    _Dbg_frame_lineno=$_curline
+    return $Dbg_frame_lineno
+}
+
 # Print one line in a call stack
 _Dbg_print_frame() {
     typeset prefix=$1

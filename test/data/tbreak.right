@@ -37,7 +37,7 @@ Num Type       Disp Enb What
 3   breakpoint del  y   dbg-test1.sh:17
 No watch expressions have been set.
 No actions have been set.
-+### not not see line 25 above and not stop again. Continue to fn3...
++### Should not see line 25 above and not stop again. Continue to fn3...
 +continue 
 (dbg-test1.sh:17): 17: fn3() { +L No breakpoints have been set. No watch expressions have been set. No actions have been set. +### Should end but stay in debugger.. +continue
 fn1 here

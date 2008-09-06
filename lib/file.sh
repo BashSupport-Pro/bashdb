@@ -59,7 +59,8 @@ function _Dbg_resolve_expand_filename {
 
   if [[ ${find_file:0:1} == '/' ]] ; then 
     # Absolute file name
-    echo "$find_file"
+    full_find_file=$(_Dbg_expand_filename $find_file)
+    echo "$full_find_file"
     return 0
   elif [[ ${find_file:0:1} == '.' ]] ; then
     # Relative file name
@@ -91,26 +92,6 @@ function _Dbg_resolve_expand_filename {
   return 1
 }
 
-_Dbg_linespec_setup() {
-  local -a word=($(_Dbg_parse_linespec "$1"))
-  if [[ ${#word[@]} == 0 ]] ; then
-    _Dbg_msg "Invalid line specification: $1"
-    return
-  fi
-  
-  filename=${word[2]}
-  local -ir is_function=${word[1]}
-  line_number=${word[0]}
-  full_filename=$(_Dbg_is_file $filename)
-
-  if (( is_function )) ; then
-      if [[ -z $full_filename ]] ; then 
-	  _Dbg_readin "$filename"
-	  full_filename=$(_Dbg_is_file $filename)
-      fi
-  fi
-}
-  
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
 # '' is echo'd if no file found.
 function _Dbg_is_file {
@@ -124,19 +105,21 @@ function _Dbg_is_file {
 
   if [[ ${find_file:0:1} == '/' ]] ; then 
     # Absolute file name
-    for try_file in ${_Dbg_filenames[@]} ; do 
-      if [[ $try_file == $find_file ]] ; then
-	echo "$try_file"
-	return
-      fi
-    done
+      full_find_file=$(_Dbg_resolve_expand_filename $find_file)
+      for try_file in ${_Dbg_filenames[@]} ; do 
+	  if [[ $try_file == $full_find_file ]] ; then
+	      echo "$full_find_file"
+	      return 0
+	  fi
+      done
   elif [[ ${find_file:0:1} == '.' ]] ; then
     # Relative file name
     find_file=$(_Dbg_expand_filename ${_Dbg_init_cwd}/$find_file)
     for try_file in ${_Dbg_filenames[@]} ; do 
       if [[ $try_file == $find_file ]] ; then
-	echo "$try_file"
-	return
+	  full_find_file=$(_Dbg_resolve_expand_filename $find_file)
+	  echo "$full_find_file"
+	  return 0
       fi
     done
   else
@@ -154,12 +137,13 @@ function _Dbg_is_file {
 	fi
 	if [[ "$basename/$find_file" == $try_file ]] ; then
 	  echo "$try_file"
-	  return
+	  return 0
 	fi
       done
     done
   fi
   echo ""
+  return 1
 }
 
 # Turn filename $1 into something that is safe to use as a variable name
@@ -193,13 +177,11 @@ _Dbg_adjust_filename() {
 
 # Return the maximum line in $1
 _Dbg_get_maxline() {
-  # set -x
   typeset -r filename=$1
   typeset -r filevar=$(_Dbg_file2var $filename)
   typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
   [ $is_read ] || _Dbg_readin $filename 
   echo $(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
-  # set +x
 }
 
 # Check that line $2 is not greater than the number of lines in 
@@ -222,7 +204,6 @@ _Dbg_check_line() {
 # in array _Dbg_filenames
 
 function _Dbg_readin {
-  # set -xv
   typeset filename=${1:-$_cur_source_file}
 
   typeset -i line_count=0
@@ -303,9 +284,8 @@ function _Dbg_readin {
   
   # Add $filename to list of all filenames
   _Dbg_filenames[${#_Dbg_filenames[@]}]=$fullname;
-  # set +xv
 }
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.sh,v 1.2 2008/09/04 03:02:23 rockyb Exp $'
+'$Id: file.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'
