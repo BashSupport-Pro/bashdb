@@ -40,13 +40,13 @@ fi
 # is a relative name use _Dbg_dir to substitute a relative directory name.
 #
 function _Dbg_resolve_expand_filename {
-  typeset find_file=$1
 
-  if [[ -z "$find_file" ]] ; then
-    _Dbg_msg "Internal debug error: null file to find"
+  if (( $# == 0 )) ; then
+    _Dbg_errmsg "Internal debug error: null file to find"
     echo ''
     return 1
   fi
+  typeset find_file="$1"
 
   # Is this one of the files we've that has been specified in a debugger
   # "FILE" command?
@@ -88,7 +88,7 @@ function _Dbg_resolve_expand_filename {
       fi
     done
   fi
-  echo ""
+  echo ''
   return 1
 }
 
@@ -160,6 +160,7 @@ _Dbg_file2var() {
 _Dbg_glob_filename() {
   typeset cmd="filename=$(expr $1)"
   eval $cmd
+  [[ -r $filename ]]
 }
 
 # Either fill out or strip filename as determined by "basename_only"
@@ -288,4 +289,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'
+'$Id: file.sh,v 1.4 2008/09/06 15:26:33 rockyb Exp $'

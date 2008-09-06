@@ -2,6 +2,7 @@ Makefile
 Makefile.in
 test-alias.sh
 test-bashdb-trace.sh
+test-file.sh
 test-fns.sh
 test-frame.sh
 test-io.sh

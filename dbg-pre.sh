@@ -45,7 +45,7 @@ function _Dbg_expand_filename {
   typeset -x dirname=${filename%/*}
 
   # No slash given in filename? Then use . for dirname
-  [[ $dirname == $basename ]] && dirname='.'
+  [[ $dirname == $basename ]] && [[ $filename != '/' ]] && dirname='.'
 
   # Dirname is ''? Then use / for dirname
   dirname=${dirname:-/}
@@ -54,11 +54,11 @@ function _Dbg_expand_filename {
   typeset glob_cmd="dirname=$(expr $dirname)"
   eval "$glob_cmd 2>/dev/null"
 
-  typeset long_path;
+  typeset long_path
 
   [[ $basename == '.' ]] && basename=''
   if long_path=$( (cd "$dirname" ; pwd) ) ; then
-    if [[ $long_path == '/' ]] ; then
+    if [[ "$long_path" == '/' ]] ; then
       echo "/$basename"
     else
       echo "$long_path/$basename"
@@ -69,4 +69,3 @@ function _Dbg_expand_filename {
     return 1
   fi
 }
-
