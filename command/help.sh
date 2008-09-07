@@ -34,9 +34,10 @@ function _Dbg_do_help {
   if ((0 == $#)) ; then
       _Dbg_help_sort_command_names
       _Dbg_msg 'Available commands:'
-      typeset commands="${_Dbg_sorted_command_names[@]}"
+      typeset -a list=("${_Dbg_sorted_command_names[@]}")
       typeset columnized=''
-      columnize "$commands" 65
+      typeset -i width; ((width=_Dbg_linewidth-5))
+      typeset -a columnized; columnize $width
       typeset -i i
       for ((i=0; i<${#columnized[@]}; i++)) ; do 
 	  _Dbg_msg "  ${columnized[i]}"
@@ -169,14 +170,6 @@ not optional as it is here."
 		_Dbg_msg \
 "r               Execute until the current function or source file returns.
                 Long command name: finish."
-                return ;;
-	    hi | his | hist | histo | histor | history ) 
-		_Dbg_msg \
-"hi n            Rerun a debugger command from the debugger history. See also
-![-]n           H to list the history. An alternname form is !n or !-n. If 
-                the minus sign is used you going back n from the end rather 
-                than specifying an absolute history number. 
-                Long command name: history."
                 return ;;
 	    i | in | inf | info ) 
 	        _Dbg_info_help $2

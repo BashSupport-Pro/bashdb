@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: interrupt.sh,v 1.15 2008/09/06 15:26:33 rockyb Exp $
+# $Id: interrupt.sh,v 1.16 2008/09/07 01:28:43 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`

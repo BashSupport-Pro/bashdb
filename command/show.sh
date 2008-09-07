@@ -42,9 +42,19 @@ _Dbg_do_show() {
 
   case $show_cmd in 
     al | ali | alia | alias | aliase | aliases )
+      typeset -a list
+      typeset -i i
+      list=()
       for ((i=0; i<=_Dbg_alias_max_index; i++)) ; do
 	  [[ -z ${_Dbg_alias_names[i]} ]] && continue
-	  _Dbg_msg "\t${_Dbg_alias_names[i]}\t${_Dbg_alias_expansion[i]}"
+	  list+=("${_Dbg_alias_names[i]}: ${_Dbg_alias_expansion[i]}")
+      done
+      sort_list 0 ${#list[@]}-1
+      typeset -i width; ((width=_Dbg_linewidth-5))
+      typeset -a columnized; columnize $width  '  |  '
+      typeset -i i
+      for ((i=0; i<${#columnized[@]}; i++)) ; do 
+	  _Dbg_msg "  ${columnized[i]}"
       done
       return 0
       ;;

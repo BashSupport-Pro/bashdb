@@ -24,6 +24,7 @@
 
 # Set initial line tracing flag off
 typeset -i _Dbg_linetrace=0 
+typeset -i _Dbg_linewidth; _Dbg_linewidth=${COLUMNS:-80} 
 typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
 
@@ -262,6 +263,15 @@ _Dbg_do_set() {
 	* )
 	  _Dbg_msg "\"on\", \"off\" expected."
       esac
+      return 0
+      ;;
+    w | wi | wid | width )
+      if [[ $1 == $int_pat ]] ; then 
+	_Dbg_write_journal_eval "_Dbg_linewidth=$1"
+      else
+	_Dbg_msg "Integer argument expected; got: $1"
+	return 1
+      fi
       return 0
       ;;
     *)

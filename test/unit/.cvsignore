@@ -2,6 +2,7 @@ Makefile
 Makefile.in
 test-alias.sh
 test-bashdb-trace.sh
+test-columns.sh
 test-file.sh
 test-fns.sh
 test-frame.sh
@@ -10,4 +11,5 @@ test-pre.sh
 test-run.sh
 test-save-restore.sh
 test-set0.sh
+test-sort.sh
 test-tracefn.sh

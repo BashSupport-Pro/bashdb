@@ -1,7 +1,9 @@
 set trace-commands on
+set basename on
 # Test of miscellaneous commands: 
 # 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 #### source command...
+set width 75
 source ../data/prof1.cmd
 source ../data/prof2.cmd
 #########################################
@@ -11,7 +13,8 @@ print "\\$1: $1"
 print "\\$2: $2"
 #########################################
 #### Testing script args...
-info args
+## FIXME:
+## info args
 #########################################
 tty
 #### *** GNU things...
@@ -32,11 +35,11 @@ info
 H
 H 5
 H 5 3
-hi 11
+history 11
 !11
 !19:p
 !-3:p
-!-2
+! -2
 ! 2
 H -2
 H foo

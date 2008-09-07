@@ -240,7 +240,7 @@ _Dbg_onecmd() {
 
 	# Comment line
 	[#]* ) 
-	  _Dbg_remove_history_item
+	  _Dbg_history_remove_item
 	  _Dbg_last_cmd="#"
 	  ;;
 
@@ -640,9 +640,9 @@ _Dbg_onecmd() {
 	  _Dbg_do_clear_all_actions $args
 	  ;;
 
-	# Run debugger command history
+	# List debugger command history
 	H )
-	  _Dbg_remove_history_item
+	  _Dbg_history_remove_item
 	  _Dbg_do_history_list $args
 	  ;;
 
@@ -657,22 +657,11 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Has to come after !! of "shell" listed above
-	\!* | hi | his | hist | histo | histor | history )
-	  _Dbg_remove_history_item
-	  _Dbg_do_history_parse $args
-	  if (( $history_num >= 0 )) ; then 
-	    if (( $history_num < ${#_Dbg_history[@]} )) ; then 
-	      set ${_Dbg_history[$history_num]}
-	      _Dbg_cmd=$1
-	      shift
-	      args="$@"
-	      _Dbg_redo=1;
-	    else
-	      _Dbg_msg \
-	      "Number $history_num should be less than ${#_Dbg_history[@]}"
-	    fi
-	  fi
+        # Run an item from the command history
+	\!* | history )
+	  _Dbg_do_history $args
 	  ;;
+
 	'' )
 	  # Redo last_cmd
 	  if [[ -n $_Dbg_last_cmd ]] ; then 
@@ -686,7 +675,7 @@ _Dbg_onecmd() {
 	     _Dbg_do_eval $_Dbg_cmd $args
 	   else
              _Dbg_msg "Undefined command: \"$_Dbg_cmd\". Try \"help\"." 
-	     _Dbg_remove_history_item
+	     _Dbg_history_remove_item
 	     # local -a last_history=(`history 1`)
 	     # history -d ${last_history[0]}
 	   fi
@@ -852,4 +841,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.11 2008/08/29 02:55:43 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.12 2008/09/07 01:28:42 rockyb Exp $'

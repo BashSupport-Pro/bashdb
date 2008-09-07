@@ -1,20 +1,21 @@
+# -*- shell-script -*-
 # dbg-hist.sh - Bourne Again Shell Debugger history routines
 #
-#   Copyright (C) 2002, 2003, 2006, 2007 Rocky Bernstein
-#   rockyb@users.sourceforge.net
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein
+#   rocky@gnu.org
 #
-#   Bash is free software; you can redistribute it and/or modify it under
+#   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
 #   Software Foundation; either version 2, or (at your option) any later
 #   version.
 #
-#   Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
 #
 #   You should have received a copy of the GNU General Public License along
-#   with Bash; see the file COPYING.  If not, write to the Free Software
+#   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 typeset -i _Dbg_hi_last_stop=0
@@ -25,41 +26,15 @@ typeset -i _Dbg_history_save=1
 typeset -i _Dbg_history_length=${HISTSIZE:-256}  # gdb's default value
 typeset _Dbg_histfile=${HOME:-.}/.bashdb_hist
 
-_Dbg_read_history() {
-  if [[ -f $_Dbg_histfile ]] && [[ -r $_Dbg_histfile ]] ; then 
-    history -r $_Dbg_histfile
-    local -a last_history=(`history 1`)
-    local -i max_history=${last_history[0]}
-    if (( $max_history > $_Dbg_history_length )) ; then
-      max_history=$_Dbg_history_length
-    fi
-    local OLD_HISTTIMEFORMAT=${HISTTIMEFORMAT}
-    local hist
-    HISTTIMEFORMAT=''
-    local -i i
-    for (( i=1; (( i <= $max_history )) ; i++ )) ; do
-      last_history=(`history $i`)
-      hist=${last_history}[1]
-      # _Dbg_history[$i]=$hist
-    done
-    HISTTIMEFORMAT=${OLD_HISTTIMEFORMAT}
-  fi
-}
-
-# Remove the last command from the history list.
-_Dbg_remove_history_item() {
-  _Dbg_hi=${#_Dbg_history[@]}-1
-  unset _Dbg_history[$_Dbg_hi]
-}
-
 # Set to rerun history item, or print history if command is of the form
 #  !n:p. If command is "history" then $1 is number of history item. 
 # the history command index to run is returned or $_Dbg_hi if 
 # there's nothing to run.
 # Return value in $history_num
-_Dbg_do_history_parse() {
+_Dbg_history_parse() {
 
   history_num=$1
+  ((history_num < 0)) && ((history_num=${#_Dbg_history[@]}-1+$1))
   
   _Dbg_hi=${#_Dbg_history[@]}
   [[ -z $history_num ]] && let history_num=$_Dbg_hi-1
@@ -122,44 +97,31 @@ _Dbg_do_history_parse() {
   eval "$_resteglob"
 }
 
-# Print debugger history $1 is where to start or highest number if not given.
-# If $1 is negative, it is how many history items.
-# $2 is where to stop or 0 if not given.
-_Dbg_do_history_list() {
-
-  eval "$_seteglob"
-  if [[ $1 != $int_pat ]] && [[ $1 != -$int_pat ]] && [[ -n $1 ]] ; then 
-    _Dbg_msg "Invalid history number: $1"
-    eval "$_resteglob"
-    return 1
+_Dbg_history_read() {
+  if [[ -f $_Dbg_histfile ]] && [[ -r $_Dbg_histfile ]] ; then 
+    history -r $_Dbg_histfile
+    local -a last_history=(`history 1`)
+    local -i max_history=${last_history[0]}
+    if (( $max_history > $_Dbg_history_length )) ; then
+      max_history=$_Dbg_history_length
+    fi
+    local OLD_HISTTIMEFORMAT=${HISTTIMEFORMAT}
+    local hist
+    HISTTIMEFORMAT=''
+    local -i i
+    for (( i=1; (( i <= $max_history )) ; i++ )) ; do
+      last_history=(`history $i`)
+      hist=${last_history}[1]
+      # _Dbg_history[$i]=$hist
+    done
+    HISTTIMEFORMAT=${OLD_HISTTIMEFORMAT}
   fi
-  eval "$_resteglob"
-
-  _Dbg_hi=${#_Dbg_history[@]}
-  local -i n=${1:-$_Dbg_hi-1}
-  local -i stop=${2:0}
-  local -i i
-
-  # Were we given a count rather than a starting history number? 
-  if (( n<0 )) ; then
-    ((stop=_Dbg_hi+n))
-    ((n=_Dbg_hi-1))
-  elif (( n > _Dbg_hi-1 )) ; then
-    ((n=_Dbg_hi-1))
-  fi
-
-  for (( i=n ; (( i >= stop && i >= 0 )) ; i-- )) ; do
-    _Dbg_msg "${i}: ${_Dbg_history[$i]}"
-  done
 }
 
-_Dbg_read_history
+# Remove the last command from the history list.
+_Dbg_history_remove_item() {
+  _Dbg_hi=${#_Dbg_history[@]}-1
+  unset _Dbg_history[$_Dbg_hi]
+}
 
-# This is put at the so we have something at the end when we debug this.
-typeset -r _Dbg_hist_ver=\
-'$Id: hist.sh,v 1.1 2008/08/08 21:17:30 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***
+_Dbg_history_read

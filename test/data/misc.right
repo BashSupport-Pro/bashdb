@@ -1,8 +1,10 @@
 (dbg-test2.sh:24):
 24:	set -xv
++set basename on
 +# Test of miscellaneous commands:
 +# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 +#### source command...
++set width 75
 +source ../data/prof1.cmd
 +set trace-commands on
 +# Test a profile
@@ -30,8 +32,8 @@ $1:
 $2: 
 +######################################### 
 +#### Testing script args...
-+info args
-$1 = ./example/dbg-test2.sh
++## FIXME:
++## info args
 +######################################### 
 +tty 
 Argument required (terminal name for running target process).
@@ -63,13 +65,11 @@ POSSIBILITY OF SUCH DAMAGES.
 +#### help commands...
 +help 
 Available commands:
-  
-  /          debug    enable   help  print    signal  trace      watch
-  alias      delete   eval     info  pwd      skip    tty        where
-  break      disable  examine  kill  quit     source  unalias  
-  commands   display  file     list  restart  step    undisplay
-  condition  down     frame    load  set      step-   untrace  
-  continue   edit     handle   next  show     step+   up       
+  /          continue  down     file     info  print    show    step-    undisplay
+  alias      debug     edit     frame    kill  pwd      signal  step+    untrace  
+  break      delete    enable   handle   list  quit     skip    trace    up       
+  commands   disable   eval     help     load  restart  source  tty      watch    
+  condition  display   examine  history  next  set      step    unalias  where    
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -124,54 +124,53 @@ info warranty -- Various kinds of warranty you do not have
 Info subcommands are: args breakpoints display files functions program source sources stack terminal variables watchpoints
 +#### history...
 +H 
-27: info 
-26: help info
-25: help tty
-24: help set editing
-23: help set prompt
-22: help set listsize
-21: help set annotate
-20: help set ar
-19: help set foo
-18: help set
-17: help 
-16: info warranty
-15: tty 
-14: info args
-13: print "\$2: $2"
-12: print "\$1: $1"
-11: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-10: print "prof1.cmd called"
-9: set trace-commands on
-8: source ../data/prof1.cmd
-7: print calling prof1.cmd...
-6: print prof2.cmd called...
-5: set trace-commands on
-4: source ../data/prof2.cmd
-3: print "prof1.cmd called"
-2: set trace-commands on
-1: source ../data/prof1.cmd
+28: info 
+27: help info
+26: help tty
+25: help set editing
+24: help set prompt
+23: help set listsize
+22: help set annotate
+21: help set ar
+20: help set foo
+19: help set
+18: help 
+17: info warranty
+16: tty 
+15: print "\$2: $2"
+14: print "\$1: $1"
+13: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
+12: print "prof1.cmd called"
+11: set trace-commands on
+10: source ../data/prof1.cmd
+9: print calling prof1.cmd...
+8: print prof2.cmd called...
+7: set trace-commands on
+6: source ../data/prof2.cmd
+5: print "prof1.cmd called"
+4: set trace-commands on
+3: source ../data/prof1.cmd
+2: set width 75
+1: set basename on
 0: set trace-commands on
 +H 5
-5: set trace-commands on
-4: source ../data/prof2.cmd
-3: print "prof1.cmd called"
-2: set trace-commands on
-1: source ../data/prof1.cmd
+5: print "prof1.cmd called"
+4: set trace-commands on
+3: source ../data/prof1.cmd
+2: set width 75
+1: set basename on
 0: set trace-commands on
 +H 5 3
-5: set trace-commands on
-4: source ../data/prof2.cmd
-3: print "prof1.cmd called"
-+hi 11
-_Dbg_arg#: 0
+5: print "prof1.cmd called"
+4: set trace-commands on
+3: source ../data/prof1.cmd
++history 11
 +!11 
-_Dbg_arg#: 0
 +!19:p 
-19: help set foo
+19: help set
 +!-3:p 
-25: help tty
-+!-2 
+27: help info
++history -2
 List of info subcommands:
 
 info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
@@ -187,40 +186,41 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
-+! 2
++history 2
 +H -2
-27: info 
-26: help info
+28: info 
+27: help info
 +H foo
 Invalid history number: foo
 +H 100000
-27: info 
-26: help info
-25: help tty
-24: help set editing
-23: help set prompt
-22: help set listsize
-21: help set annotate
-20: help set ar
-19: help set foo
-18: help set
-17: help 
-16: info warranty
-15: tty 
-14: info args
-13: print "\$2: $2"
-12: print "\$1: $1"
-11: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
-10: print "prof1.cmd called"
-9: set trace-commands on
-8: source ../data/prof1.cmd
-7: print calling prof1.cmd...
-6: print prof2.cmd called...
-5: set trace-commands on
-4: source ../data/prof2.cmd
-3: print "prof1.cmd called"
-2: set trace-commands on
-1: source ../data/prof1.cmd
+28: info 
+27: help info
+26: help tty
+25: help set editing
+24: help set prompt
+23: help set listsize
+22: help set annotate
+21: help set ar
+20: help set foo
+19: help set
+18: help 
+17: info warranty
+16: tty 
+15: print "\$2: $2"
+14: print "\$1: $1"
+13: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
+12: print "prof1.cmd called"
+11: set trace-commands on
+10: source ../data/prof1.cmd
+9: print calling prof1.cmd...
+8: print prof2.cmd called...
+7: set trace-commands on
+6: source ../data/prof2.cmd
+5: print "prof1.cmd called"
+4: set trace-commands on
+3: source ../data/prof1.cmd
+2: set width 75
+1: set basename on
 0: set trace-commands on
 +history -2
 List of info subcommands:
@@ -239,7 +239,7 @@ info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
 +history 10000
-Number 10000 should be less than 28
+** Number 10000 (10000) should be less than 29
 +#### pwd/cd commands...
 +pwd 
 Working directory integration.

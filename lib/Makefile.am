@@ -15,6 +15,7 @@ pkgdata_DATA =      	\
 	info.sh    	\
 	journal.sh    	\
 	list.sh    	\
+	sort.sh    	\
 	msg.sh    	\
 	processor.sh  	\
 	run.sh  	\

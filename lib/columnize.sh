@@ -25,14 +25,8 @@
 # parameters are shifted by 1: $2 contains the list to columnize and
 # $3 the maximum width, etc.
 columnize() {
-    typeset -a list
-#     if [[ -n $KSH_VERSION ]] ; then
-# 	typeset -n columnized="$1"
-# 	shift
-#     fi
-    list=($1)
-    typeset -i displaywidth=${2:-80}
-    typeset colsep=${3:-'  '}
+    typeset -i displaywidth=${1:-80}
+    typeset colsep=${2:-'  '}
     typeset -i list_size=${#list[@]}
     if ((list_size == 0)) ; then
       columnized=('<empty>')
@@ -65,7 +59,7 @@ columnize() {
               if ((i >= list_size)); then
 		  break
 	      fi
-	      typeset item=${list[$i]}
+	      typeset item="${list[$i]}"
 	      ((colwidth < ${#item})) && colwidth=${#item}
           done
           colwidths+=($colwidth)
@@ -90,7 +84,7 @@ columnize() {
             if ((i >= list_size)); then
 		item=''
             else
-		item=${list[i]}
+		item="${list[i]}"
 	    fi
 	    
 	    texts[$text_size]="$item"
@@ -103,7 +97,7 @@ columnize() {
 	text_row=''
 	for (( col=0; col<text_size; col++ )); do
 	    fmt="%-${colwidths[col]}s"
-	    text_cell="$(printf $fmt ${texts[col]})"
+	    text_cell=$(printf $fmt "${texts[col]}")
 	    text_row+="$text_cell"
 	    ((col != text_size-1)) && text_row+="${colsep}"
 	done
@@ -113,17 +107,12 @@ columnize() {
 
 if [[ $0 == *columnize.sh ]] ; then 
     #
-    [[ -n $ZSH_NAME ]] && [[ -n $ZSH_VERSION ]] && setopt ksharrays
     print_columns() {
 	unset columnized
-	typeset columns
-	typeset columnized
-	if [[ -n $KSH_VERSION ]] ; then
-	    columnize columns "$@"
-	    columized=columns
-	else
-	    columnize "$@"
-	fi
+	typeset -a columnized
+        typeset -a list
+	list=($1)
+	columnize $2 $3
 	typeset -i i
 	echo '==============='
 	for ((i=0; i<${#columnized[@]}; i++)) ; do 
