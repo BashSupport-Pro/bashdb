@@ -58,14 +58,11 @@ function _Dbg_command_index {
 }
 _Dbg_help_sort_command_names() {
     ((${#_Dbg_command_names_sorted} > 0 )) && return 0
-    # Temporary file to save the journal information.
-    typeset _Dbg_sorted_cmdfile=$(_Dbg_tempname sorted_cmdfile)
-    typeset -i i
-    for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
-	printf "${_Dbg_command_names[i]}\n" >> $_Dbg_sorted_cmdfile
-    done
-    _Dbg_sorted_command_names=( $(sort $_Dbg_sorted_cmdfile) )
-    rm $_Dbg_sorted_cmdfile
+
+    typeset -a list
+    list=("${_Dbg_command_names[@]}")
+    sort_list 0 ${#list[@]}-1
+    _Dbg_sorted_command_names=("${list[@]}")
 }    
 
 typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
@@ -267,4 +264,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.8 2008/08/22 06:18:37 rockyb Exp $'
+'$Id: help.sh,v 1.9 2008/09/09 09:15:51 rockyb Exp $'
