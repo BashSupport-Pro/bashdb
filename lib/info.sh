@@ -109,7 +109,7 @@ _Dbg_info_help() {
       return 0
       ;;
     * )
-      _Dbg_msg \
+      _Dbg_errmsg \
     "Undefined info command: \"$info_cmd\".  Try \"help info\"."
   esac
 }
@@ -151,4 +151,4 @@ function _Dbg_info_signals {
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_info_ver=\
-'$Id: info.sh,v 1.2 2008/08/22 06:18:37 rockyb Exp $'
+'$Id: info.sh,v 1.3 2008/09/09 02:51:45 rockyb Exp $'

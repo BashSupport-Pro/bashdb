@@ -27,8 +27,8 @@
 _Dbg_help_add info ''
 
 _Dbg_do_info() {
-  local -r info_cmd=$1
-  local -ar subcmds=( args breakpoints display files functions program source \
+  typeset -r info_cmd=$1
+  typeset -ar subcmds=( args breakpoints display files functions program source \
                       sources stack terminal variables watchpoints )
   
   if [[ -n $info_cmd ]] ; then
@@ -54,8 +54,8 @@ _Dbg_do_info() {
         _Dbg_msg "Source files for which have been read in:
 "
         for file in ${_Dbg_filenames[@]} ; do  
-	  local filevar=$(_Dbg_file2var $file)
-	  local -i maxline=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
+	  typeset filevar=$(_Dbg_file2var $file)
+	  typeset -i maxline=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
 	  (( maxline++ )) 
 	  (( _Dbg_basename_only )) && file=${file##*/}
 	  _Dbg_msg "$file ($maxline lines)" ; 
@@ -99,7 +99,7 @@ _Dbg_do_info() {
       ;;
       so | sou | sourc | source )
         _Dbg_msg "Current script file is $_cur_source_file" 
-	local -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
+	typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
 	_Dbg_msg "Contains $max_line lines." ; 
         return
 	;;
@@ -143,7 +143,7 @@ POSSIBILITY OF SUCH DAMAGES.
 	return
 	;;
       *)
-	_Dbg_msg "Unknown subcommand: $info_cmd"
+	_Dbg_errmsg "Unknown subcommand: $info_cmd"
     esac
   fi
   _Dbg_msg "Info subcommands are: ${subcmds[@]}"

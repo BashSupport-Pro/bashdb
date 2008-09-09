@@ -22,7 +22,7 @@
 [[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'
+'$Id: brk.sh,v 1.4 2008/09/09 02:51:45 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -94,43 +94,43 @@ _Dbg_save_breakpoints() {
   local file
   for file in ${_Dbg_filenames[@]} ; do  
     local filevar="`_Dbg_file2var $file`"
-    declare -p _Dbg_brkpt_$filevar >> $_Dbg_statefile 2>/dev/null
+    typeset -p _Dbg_brkpt_$filevar >> $_Dbg_statefile 2>/dev/null
   done        
-  declare -p _Dbg_brkpt_line >> $_Dbg_statefile
-  declare -p _Dbg_brkpt_file >> $_Dbg_statefile 
-  declare -p _Dbg_brkpt_cond >> $_Dbg_statefile 
-  declare -p _Dbg_brkpt_count >> $_Dbg_statefile 
-  declare -p _Dbg_brkpt_enable >> $_Dbg_statefile
-  declare -p _Dbg_brkpt_onetime >> $_Dbg_statefile
-  declare -p _Dbg_brkpt_max >> $_Dbg_statefile
+  typeset -p _Dbg_brkpt_line >> $_Dbg_statefile
+  typeset -p _Dbg_brkpt_file >> $_Dbg_statefile 
+  typeset -p _Dbg_brkpt_cond >> $_Dbg_statefile 
+  typeset -p _Dbg_brkpt_count >> $_Dbg_statefile 
+  typeset -p _Dbg_brkpt_enable >> $_Dbg_statefile
+  typeset -p _Dbg_brkpt_onetime >> $_Dbg_statefile
+  typeset -p _Dbg_brkpt_max >> $_Dbg_statefile
 
 }
 
 _Dbg_save_actions() {
   for file in ${_Dbg_filenames[@]} ; do  
     local filevar="`_Dbg_file2var $file`"
-    declare -p _Dbg_action_$filevar >> $_Dbg_statefile 2>/dev/null
+    typeset -p _Dbg_action_$filevar >> $_Dbg_statefile 2>/dev/null
   done        
-  declare -p _Dbg_action_line >> $_Dbg_statefile
-  declare -p _Dbg_action_file >> $_Dbg_statefile
-  declare -p _Dbg_action_enable >> $_Dbg_statefile
-  declare -p _Dbg_action_stmt >> $_Dbg_statefile
-  declare -p _Dbg_action_max >> $_Dbg_statefile
+  typeset -p _Dbg_action_line >> $_Dbg_statefile
+  typeset -p _Dbg_action_file >> $_Dbg_statefile
+  typeset -p _Dbg_action_enable >> $_Dbg_statefile
+  typeset -p _Dbg_action_stmt >> $_Dbg_statefile
+  typeset -p _Dbg_action_max >> $_Dbg_statefile
 }
 
 _Dbg_save_watchpoints() {
-  declare -p _Dbg_watch_exp >> $_Dbg_statefile
-  declare -p _Dbg_watch_val >> $_Dbg_statefile
-  declare -p _Dbg_watch_arith >> $_Dbg_statefile
-  declare -p _Dbg_watch_count >> $_Dbg_statefile
-  declare -p _Dbg_watch_enable >> $_Dbg_statefile
-  declare -p _Dbg_watch_max >> $_Dbg_statefile
+  typeset -p _Dbg_watch_exp >> $_Dbg_statefile
+  typeset -p _Dbg_watch_val >> $_Dbg_statefile
+  typeset -p _Dbg_watch_arith >> $_Dbg_statefile
+  typeset -p _Dbg_watch_count >> $_Dbg_statefile
+  typeset -p _Dbg_watch_enable >> $_Dbg_statefile
+  typeset -p _Dbg_watch_max >> $_Dbg_statefile
 }
 
 _Dbg_save_display() {
-  declare -p _Dbg_disp_exp >> $_Dbg_statefile
-  declare -p _Dbg_disp_enable >> $_Dbg_statefile
-  declare -p _Dbg_disp_max >> $_Dbg_statefile
+  typeset -p _Dbg_disp_exp >> $_Dbg_statefile
+  typeset -p _Dbg_disp_enable >> $_Dbg_statefile
+  typeset -p _Dbg_disp_max >> $_Dbg_statefile
 }
 
 # Start out with general break/watchpoint functions first...
@@ -725,4 +725,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z $_Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'
+'$Id: brk.sh,v 1.4 2008/09/09 02:51:45 rockyb Exp $'
