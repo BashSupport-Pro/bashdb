@@ -29,8 +29,8 @@ _Dbg_do_show() {
   typeset show_cmd=$1
   typeset label=$2
 
-  # Warranty, copying, directories, and aliases are omitted below.
-  typeset -r subcmds="annotate args autoeval basename debugger editing force history linetrace listsize prompt trace-commands"
+  # Warranty, copying, directories, aliases, and warranty are omitted below.
+  typeset -r subcmds="annotate args autoeval basename debugger editing force history linetrace listsize prompt trace-commands width"
 
   if [[ -z $show_cmd ]] ; then 
       typeset thing
@@ -460,6 +460,12 @@ of promoting the sharing and reuse of software generally.
       ;;
     w | wa | war | warr | warra | warran | warrant | warranty )
       _Dbg_do_info warranty
+      return 0
+      ;;
+    wi | wid | width )
+      [[ -n $label ]] && label='width: '
+     _Dbg_msg \
+"${label}Line width is $_Dbg_linewidth."
       return 0
       ;;
     *)

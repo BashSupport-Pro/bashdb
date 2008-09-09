@@ -65,8 +65,8 @@ POSSIBILITY OF SUCH DAMAGES.
 +#### help commands...
 +help 
 Available commands:
-  /          continue  down     file     info  print    show    step-    undisplay
-  alias      debug     edit     frame    kill  pwd      signal  step+    untrace  
+  /          continue  down     file     info  print    show    step+    undisplay
+  alias      debug     edit     frame    kill  pwd      signal  step-    untrace  
   break      delete    enable   handle   list  quit     skip    trace    up       
   commands   disable   eval     help     load  restart  source  tty      watch    
   condition  display   examine  history  next  set      step    unalias  where    
@@ -121,7 +121,9 @@ info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
 +info 
-Info subcommands are: args breakpoints display files functions program source sources stack terminal variables watchpoints
+Info subcommands are:
+**   args         display  functions  source   stack     variables  
+**   breakpoints  files    program    sources  terminal  watchpoints
 +#### history...
 +H 
 28: info 
