@@ -122,8 +122,8 @@ info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
 +info 
 Info subcommands are:
-**   args         display  functions  source   stack     variables  
-**   breakpoints  files    program    sources  terminal  watchpoints
+  args         display  functions  source   stack     variables  
+  breakpoints  files    program    sources  terminal  watchpoints
 +#### history...
 +H 
 28: info 

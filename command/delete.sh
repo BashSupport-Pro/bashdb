@@ -24,9 +24,9 @@ With no BRKPT-NUM, delete all breakpoints."
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
 _Dbg_do_delete() {
-  local -r  to_go=$@
-  local -i  i
-  local -i  found=0
+  typeset to_go; to_go=$@
+  typeset -i  i
+  typeset -i  found=0
   
   # set -xv
   eval "$_seteglob"

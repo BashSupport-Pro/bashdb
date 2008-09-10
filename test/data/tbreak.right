@@ -59,7 +59,7 @@ Debugged program terminated normally. Use q to quit or R to restart.
 +where 
 ** The program is not being run.
 +info line
-No line number information available.
+** No line number information available.
 +step 
 ** The program is not being run.
 +next 

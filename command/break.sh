@@ -29,7 +29,12 @@ _Dbg_do_break() {
   typeset -i is_temp=$1
   shift
 
-  typeset n=${1:-$_curline}
+  typeset n
+  if (( $# > 0 )) ; then 
+      n="$1"
+  else
+      n="$_curline"
+  fi
   shift
 
   typeset condition=${1:-''}
@@ -54,7 +59,7 @@ _Dbg_do_break() {
 
   if [[ -n "$full_filename" ]]  ; then 
     if (( line_number ==  0 )) ; then 
-      _Dbg_errmsg "There is no line 0 to break at."
+      _Dbg_errmsg 'There is no line 0 to break at.'
     else 
       _Dbg_check_line $line_number "$full_filename"
       (( $? == 0 )) && \
@@ -93,7 +98,7 @@ _Dbg_do_clear_brkpt() {
       fi
     fi
   else
-    _Dbg_file_not_read_in $filename
+    _Dbg_file_not_read_in "$filename"
   fi
 }
 
@@ -101,9 +106,9 @@ _Dbg_do_clear_brkpt() {
 # If $1 is given just list those associated for that line.
 _Dbg_do_list_brkpt() {
 
-  typeset brkpt_num=${1:-''}
   eval "$_seteglob"
-  if [[ -n $brkpt_num ]] ; then 
+  if (( $# != 0  )) ; then 
+    typeset brkpt_num="$1"
     if [[ $brkpt_num != $int_pat ]]; then
       _Dbg_errmsg "Bad breakpoint number $brkpt_num."
     elif [[ -z ${_Dbg_brkpt_file[$brkpt_num]} ]] ; then
@@ -123,10 +128,8 @@ _Dbg_do_list_brkpt() {
       _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
     fi
     eval "$_resteglob"
-    return
-  fi
-
-  if [ ${#_Dbg_brkpt_line[@]} != 0 ]; then
+    return 0
+  elif (( ${#_Dbg_brkpt_line[@]} != 0 )); then
     typeset -i i
 
     _Dbg_msg "Num Type       Disp Enb What"

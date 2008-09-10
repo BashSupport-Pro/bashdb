@@ -22,7 +22,7 @@
 [[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.4 2008/09/09 02:51:45 rockyb Exp $'
+'$Id: brk.sh,v 1.5 2008/09/10 10:02:01 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -76,7 +76,7 @@ typeset -i  _Dbg_disp_max=0     # Needed because we can't figure out what
 
 # Error message for file not read in
 _Dbg_file_not_read_in() {
-    local -r filename=$(_Dbg_adjust_filename "$1")
+    typeset -r filename=$(_Dbg_adjust_filename "$1")
     _Dbg_msg "File $filename not found in read-in files."
     _Dbg_msg "See 'info files' for a list of known files and"
     _Dbg_msg "'load' to read in a file."
@@ -84,16 +84,16 @@ _Dbg_file_not_read_in() {
 
 # Error message for file not read in
 _Dbg_file_not_read_in() {
-    local -r filename=$(_Dbg_adjust_filename ${1:-""})
+    typeset -r filename=$(_Dbg_adjust_filename ${1:-""})
     _Dbg_msg "File $filename not found in read-in files."
     _Dbg_msg "See 'info files' for a list of known files and"
     _Dbg_msg "'load' to read in a file."
 }
 
 _Dbg_save_breakpoints() {
-  local file
+  typeset file
   for file in ${_Dbg_filenames[@]} ; do  
-    local filevar="`_Dbg_file2var $file`"
+    typeset filevar="`_Dbg_file2var $file`"
     typeset -p _Dbg_brkpt_$filevar >> $_Dbg_statefile 2>/dev/null
   done        
   typeset -p _Dbg_brkpt_line >> $_Dbg_statefile
@@ -108,7 +108,7 @@ _Dbg_save_breakpoints() {
 
 _Dbg_save_actions() {
   for file in ${_Dbg_filenames[@]} ; do  
-    local filevar="`_Dbg_file2var $file`"
+    typeset filevar="`_Dbg_file2var $file`"
     typeset -p _Dbg_action_$filevar >> $_Dbg_statefile 2>/dev/null
   done        
   typeset -p _Dbg_action_line >> $_Dbg_statefile
@@ -137,18 +137,18 @@ _Dbg_save_display() {
 
 # Enable/disable breakpoint or watchpoint by entry numbers.
 _Dbg_enable_disable() {
-  if [ -z "$1" ] ; then 
-    _Dbg_msg "Expecting a list of breakpoint/watchpoint numbers. Got none."
+  if (($# == 0)) ; then
+    _Dbg_errmsg "Expecting a list of breakpoint/watchpoint numbers. Got none."
     return 1
   fi
-  local -i on=$1
-  local en_dis=$2
+  typeset -i on=$1
+  typeset en_dis=$2
   shift; shift
 
   if [[ $1 = 'display' ]] ; then
     shift
-    local to_go="$@"
-    local i
+    typeset to_go="$@"
+    typeset i
     eval "$_seteglob"
     for i in $to_go ; do 
       case $i in
@@ -214,11 +214,11 @@ function _Dbg_print_brkpt_count {
 # clear all brkpts
 _Dbg_clear_all_brkpt() {
 
-  local -i k
+  typeset -i k
   for (( k=0; (( k < ${#_Dbg_filenames[@]} )) ; k++ )) ; do
-    local filename=${_filename[$k]}
-    local filevar="`_Dbg_file2var $filename`"
-    local brkpt_a="_Dbg_brkpt_${filevar}"
+    typeset filename=${_filename[$k]}
+    typeset filevar="`_Dbg_file2var $filename`"
+    typeset brkpt_a="_Dbg_brkpt_${filevar}"
     _Dbg_write_journal_eval "unset ${brkpt_a}[$k]"
   done
   _Dbg_write_journal_eval "_Dbg_brkpt_line=()"
@@ -278,7 +278,7 @@ _Dbg_set_brkpt() {
 
 # Internal routine to unset the actual breakpoint arrays
 _Dbg_unset_brkpt_arrays() {
-  local -i del=$1
+  typeset -i del=$1
   _Dbg_write_journal_eval "unset _Dbg_brkpt_line[$del]"
   _Dbg_write_journal_eval "unset _Dbg_brkpt_count[$del]"
   _Dbg_write_journal_eval "unset _Dbg_brkpt_file[$del]"
@@ -289,11 +289,11 @@ _Dbg_unset_brkpt_arrays() {
 
 # Internal routine to delete a breakpoint by file/line.
 _Dbg_unset_brkpt() {
-  local -r  filename=$1
-  local -ir line=$2
-  local -r filevar="`_Dbg_file2var $filename`"
-  local -r fullname="`_Dbg_expand_filename $filename`"
-  local -i found=0
+  typeset -r  filename=$1
+  typeset -ir line=$2
+  typeset -r filevar="`_Dbg_file2var $filename`"
+  typeset -r fullname="`_Dbg_expand_filename $filename`"
+  typeset -i found=0
   
   # set -xv
   local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
@@ -303,7 +303,7 @@ _Dbg_unset_brkpt() {
       _Dbg_msg "No breakpoint found at $filename:$line"
       continue
     fi
-    local brkpt_fullname=$(_Dbg_expand_filename ${_Dbg_brkpt_file[$del]})
+    typeset brkpt_fullname=$(_Dbg_expand_filename ${_Dbg_brkpt_file[$del]})
     if [[ $brkpt_fullname != $fullname ]] ; then 
       _Dbg_msg "Brkpt inconsistency:" \
 	"$filename[$line] lists ${_Dbg_brkpt_file[$del]} at entry $del"
@@ -320,20 +320,20 @@ _Dbg_unset_brkpt() {
 # Routine to a delete breakpoint by entry number: $1.
 # Returns whether or not anything was deleted.
 _Dbg_delete_brkpt_entry() {
-  local -r  del=$1
-  local -i  i
-  local -i  found=0
+  typeset -r  del=$1
+  typeset -i  i
+  typeset -i  found=0
   
   # set -xv
   if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
     _Dbg_msg "Breakpoint entry $del is not set."
     return 0
   fi
-  local filevar="`_Dbg_file2var ${_Dbg_brkpt_file[$del]}`"
-  local line=${_Dbg_brkpt_line[$del]}
-  local -r  entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
-  local     try 
-  local -a  new_val=()
+  typeset filevar="`_Dbg_file2var ${_Dbg_brkpt_file[$del]}`"
+  typeset line=${_Dbg_brkpt_line[$del]}
+  typeset -r  entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
+  typeset     try 
+  typeset -a  new_val=()
   for try in $entries ; do 
     if (( $try == $del )) ; then
       _Dbg_unset_brkpt_arrays $del
@@ -356,9 +356,9 @@ _Dbg_delete_brkpt_entry() {
 
 # Enable/disable breakpoint(s) by entry numbers.
 _Dbg_enable_disable_brkpt() {
-  local -i on=$1
-  local en_dis=$2
-  local -i i=$3
+  typeset -i on=$1
+  typeset en_dis=$2
+  typeset -i i=$3
   if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
     if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
       _Dbg_msg "Breakpoint entry $i already $en_dis so nothing done."
@@ -725,4 +725,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z $_Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.4 2008/09/09 02:51:45 rockyb Exp $'
+'$Id: brk.sh,v 1.5 2008/09/10 10:02:01 rockyb Exp $'

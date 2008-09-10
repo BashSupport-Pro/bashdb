@@ -26,98 +26,96 @@
 
 _Dbg_help_add info ''
 
-_Dbg_do_info() {
-  typeset -r info_cmd=$1
-  typeset -ar subcmds=( args breakpoints display files functions program source \
-                      sources stack terminal variables watchpoints )
+typeset -ar _Dbg_info_subcmds=( args breakpoints display files functions program source \
+    sources stack terminal variables watchpoints )
   
-  if [[ -n $info_cmd ]] ; then
-    shift
-    case $info_cmd in 
-      a | ar | arg | args )
-        _Dbg_do_info_args 3  # located in dbg-stack.sh
-	return
-	;;
-      b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
-      w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
-	_Dbg_do_list_brkpt $*
-	_Dbg_list_watch $*
-	return
-	;;
+_Dbg_do_info() {
+      
+  if (($# > 0)) ; then
+      typeset info_cmd=$1
+      shift
+      case $info_cmd in 
+	  a | ar | arg | args )
+              _Dbg_do_info_args 3  # located in dbg-stack.sh
+	      return 0
+	      ;;
+	  b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
+	      w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
+	      _Dbg_do_list_brkpt $*
+	      _Dbg_list_watch $*
+	      return
+	      ;;
 
-      d | di | dis| disp | displ | displa | display )
-	_Dbg_do_list_display $*
-	return
-	;;
+	  d | di | dis| disp | displ | displa | display )
+	      _Dbg_do_list_display $*
+	      return
+	      ;;
 
-      fi | file| files | sources )
-        _Dbg_msg "Source files for which have been read in:
+  fi | file| files | sources )
+              _Dbg_msg "Source files for which have been read in:
 "
-        for file in ${_Dbg_filenames[@]} ; do  
-	  typeset filevar=$(_Dbg_file2var $file)
-	  typeset -i maxline=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
-	  (( maxline++ )) 
-	  (( _Dbg_basename_only )) && file=${file##*/}
-	  _Dbg_msg "$file ($maxline lines)" ; 
-	done        
-        return
-	;;
+              for file in ${_Dbg_filenames[@]} ; do  
+		  typeset filevar=$(_Dbg_file2var $file)
+		  typeset -i maxline=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
+		  (( maxline++ )) 
+		  (( _Dbg_basename_only )) && file=${file##*/}
+		  _Dbg_msg "$file ($maxline lines)" ; 
+	      done        
+              return
+	      ;;
 
-      fu | fun| func | funct | functi | functio | function | functions )
-        _Dbg_do_list_subroutines $*
-        return
-	;;
+	  fu | fun| func | funct | functi | functio | function | functions )
+              _Dbg_do_list_subroutines $*
+              return
+	      ;;
 
-      h | ha | han | hand | handl | handle | \
-          si | sig | sign | signa | signal | signals )
-        _Dbg_info_signals
-        return
-	;;
+	  h | ha | han | hand | handl | handle | \
+              si | sig | sign | signa | signal | signals )
+              _Dbg_info_signals
+              return
+	      ;;
 
-      l | li | lin | line )
-        if (( ! _Dbg_running )) ; then
-	    _Dbg_msg "No line number information available."
-	    return
-	fi
+	  l | li | lin | line )
+              if (( ! _Dbg_running )) ; then
+		  _Dbg_errmsg "No line number information available."
+		  return $?
+	      fi
 
-        _Dbg_msg "Line $_Dbg_listline of \"$_cur_source_file\""
-	return
-	;;
-
-      p | pr | pro | prog | progr | progra | program )
-      if (( _Dbg_running )) ; then
-	  _Dbg_msg "Program stopped."
-	  if (( _Dbg_currentbp )) ; then
-	      _Dbg_msg "It stopped at breakpoint ${_Dbg_currentbp}."
-	  elif [[ -n $_Dbg_stop_reason ]] ; then
-	      _Dbg_msg "It stopped ${_Dbg_stop_reason}."
-	  fi
-      else
-	  _Dbg_msg "The program being debugged is not being run."
-      fi
-      return
-      ;;
-      so | sou | sourc | source )
-        _Dbg_msg "Current script file is $_cur_source_file" 
-	typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
-	_Dbg_msg "Contains $max_line lines." ; 
-        return
-	;;
-
-      st | sta | stac | stack )
-	_Dbg_do_backtrace 1 $*
-	return
-	;;
-      te | ter | term | termi | termin | termina | terminal | tt | tty )
-	_Dbg_msg "tty: $_Dbg_tty"
-	return;
-	;;
-      v | va | var | vari | varia | variab | variabl | variable | variables )
-	_Dbg_do_list_variables "$1"
-	return
-        ;;
-      w | wa | war | warr | warra | warran | warrant | warranty )
-        _Dbg_msg "
+              _Dbg_msg "Line $_Dbg_listline of \"$_cur_source_file\""
+	      return
+	      ;;
+	  
+	  p | pr | pro | prog | progr | progra | program )
+	      if (( _Dbg_running )) ; then
+		  _Dbg_msg "Program stopped."
+		  if (( _Dbg_currentbp )) ; then
+		      _Dbg_msg "It stopped at breakpoint ${_Dbg_currentbp}."
+		  elif [[ -n $_Dbg_stop_reason ]] ; then
+		      _Dbg_msg "It stopped ${_Dbg_stop_reason}."
+		  fi
+	      else
+		  _Dbg_errmsg "The program being debugged is not being run."
+	      fi
+	      return $?
+	      ;;
+	  
+	  so | sou | sourc | source )
+              _Dbg_msg "Current script file is $_cur_source_file" 
+	      typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
+	      _Dbg_msg "Contains $max_line lines." ; 
+              return
+	      ;;
+	  
+	  st | sta | stac | stack )
+	      _Dbg_do_backtrace 1 $*
+	      return $?
+	      ;;
+	  v | va | var | vari | varia | variab | variabl | variable | variables )
+	      _Dbg_do_list_variables "$1"
+	      return
+              ;;
+	  w | wa | war | warr | warra | warran | warrant | warranty )
+              _Dbg_msg "
 			    NO WARRANTY
 
   11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
@@ -140,20 +138,24 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 "
-	return
-	;;
-      *)
-	_Dbg_errmsg "Unknown info subcommand: $info_cmd"
-    esac
+	      return 0
+	      ;;
+	  *)
+	      _Dbg_errmsg "Unknown info subcommand: $info_cmd"
+	      msg=_Dbg_errmsg
+      esac
+  else
+      msg=_Dbg_msg
   fi
-  typeset -a list; list=(${subcmds[@]})
+  typeset -a list
+  list=(${_Dbg_info_subcmds[@]})
   typeset columnized=''
   typeset -i width; ((width=_Dbg_linewidth-5))
   typeset -a columnized; columnize $width
   typeset -i i
-  _Dbg_msg "Info subcommands are:"
+  $msg "Info subcommands are:"
   for ((i=0; i<${#columnized[@]}; i++)) ; do 
-      _Dbg_errmsg "  ${columnized[i]}"
+      $msg "  ${columnized[i]}"
   done
   return 1
 }
@@ -197,3 +199,5 @@ _Dbg_do_info_args() {
   fi
   return 0
 }
+
+_Dbg_alias_add 'i' info

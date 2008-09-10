@@ -60,10 +60,10 @@ _Dbg_frame_adjust() {
 
   ((_Dbg_stack_pos = pos))
   typeset -i j=_Dbg_stack_pos+2
-  _Dbg_listline=${BASH_LINENO[$j]}
+  _Dbg_listline="${BASH_LINENO[$j]}"
   ((j++))
-  _cur_source_file=${BASH_SOURCE[$j]}
-  _Dbg_print_source_line $_Dbg_listline
+  _cur_source_file="${BASH_SOURCE[$j]}"
+  _Dbg_print_source_line "$_Dbg_listline"
   return 0
 }
 
