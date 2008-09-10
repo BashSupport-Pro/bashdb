@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.35 2008/08/25 14:11:03 rockyb Exp $
+#$Id: Makefile.am,v 1.36 2008/09/10 15:04:11 rockyb Exp $
 
 subdirs = command lib doc emacs test
 if BUILD_BUILTINS
@@ -73,6 +73,8 @@ install-data-hook:
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
+
+test: check
 
 # Unit testing
 check-unit: test-unit
