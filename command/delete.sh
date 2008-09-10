@@ -28,7 +28,6 @@ _Dbg_do_delete() {
   typeset -i  i
   typeset -i  found=0
   
-  # set -xv
   eval "$_seteglob"
   for del in $to_go ; do 
     case $del in
@@ -40,12 +39,11 @@ _Dbg_do_delete() {
         ((found += $?))
 	;;
       * )
-	_Dbg_msg "Invalid entry number skipped: $del"
+	_Dbg_errmsg "Invalid entry number skipped: $del"
     esac
   done
   eval "$_resteglob"
-  [[ $found != 0 ]] && _Dbg_msg "Removed $found breakpoint(s)."
+  (( found != 0 )) && _Dbg_msg "Removed $found breakpoint(s)."
   return $found
-  # set +xv
 }
 
