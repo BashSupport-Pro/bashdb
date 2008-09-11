@@ -51,8 +51,11 @@ typeset -a _Dbg_input=()
 typeset _Dbg_space=' '
 
 # Should we allow editing of debugger commands? 
-# The value should either be '-e' or ''
+# The value should either be '-e' or ''. And if it is
+# on, the edit style indicates what style edit keystrokes.
 typeset _Dbg_edit='-e'
+typeset _Dbg_edit_style='emacs'  # or vi
+set -o $_Dbg_edit_style
 
 # What do we use for a debugger prompt? Technically we don't need to
 # use the above $bashdb_space in the assignment below, but we put it
@@ -841,4 +844,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.12 2008/09/07 01:28:42 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.13 2008/09/11 15:00:21 rockyb Exp $'

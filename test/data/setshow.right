@@ -302,6 +302,7 @@ autoeval: Evaluate unrecognized commands is off.
 basename: Show short filenames (the basename) in debug output is on.
 debugger: Allow debugging the debugger is off.
 editing:  Editing of command lines as they are typed is on.
+editing:  Edit style is emacs.
 force: Show stepping forces a new line is off.
 filename: The filename in which to record the command history is
 save: Saving of history save is on.
@@ -312,7 +313,7 @@ listsize: Number of source lines bashdb will list by default is 10.
 prompt:   bashdb's prompt is:
        "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
 trace-commands: State of command tracing is on.
-width: Line width is 115.
+width: Line width is 80.
 +#### and show...
 +show args
 Argument list to give script when debugged program starts is:
@@ -323,12 +324,13 @@ Argument list to give script when debugged program starts is:
        "now is the time".
 +set editing off
 +set editing fooo
-"on" or "off" expected.
+** "on", "off", "vi", or "emacs" expected.
 +show editing
 Editing of command lines as they are typed is off.
 +set editing
 +show editing
 Editing of command lines as they are typed is on.
+Edit style is emacs.
 +set misspelled 40
 Undefined set command "misspelled"
 +set listsize 40

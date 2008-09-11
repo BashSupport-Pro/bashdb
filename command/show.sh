@@ -389,10 +389,15 @@ of promoting the sharing and reuse of software generally.
       ;;
     e | ed | edi | edit | editi | editin | editing )
       [[ -n $label ]] && label='editing:  '
-      typeset onoff="on."
-      [[ -z $_Dbg_edit ]] && onoff='off.'
-     _Dbg_msg \
-"${label}Editing of command lines as they are typed is" $onoff
+     _Dbg_msg_nocr \
+"${label}Editing of command lines as they are typed is "
+      if [[ -z $_Dbg_edit ]] ; then 
+	  _Dbg_msg 'off.'
+      else
+	  _Dbg_msg 'on.'
+	  _Dbg_msg \
+"${label}Edit style is $_Dbg_edit_style."
+      fi
       return 0
       ;;
     force )

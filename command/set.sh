@@ -119,15 +119,27 @@ _Dbg_do_set() {
     e | ed | edi | edit | editi | editin | editing )
       typeset onoff=${1:-'on'}
       case $onoff in 
+	e | em | ema | emac | emacs ) 
+	  _Dbg_edit='-e'
+	  _Dbg_edit_style='emacs'
+	  ;;
 	on | 1 ) 
 	  _Dbg_edit='-e'
+	  _Dbg_edit_style='emacs'
 	  ;;
 	off | 0 )
 	  _Dbg_edit=''
+	  return 0
+	  ;;
+	v | vi ) 
+	  _Dbg_edit='-e'
+	  _Dbg_edit_style='vi'
 	  ;;
 	* )
-	  _Dbg_msg "\"on\" or \"off\" expected."
+	  _Dbg_errmsg '"on", "off", "vi", or "emacs" expected.'
+	  return 1
       esac
+      set -o $_Dbg_edit_style
       ;;
     force )
       typeset onoff=${1:-'off'}

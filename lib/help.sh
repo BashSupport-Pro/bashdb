@@ -124,10 +124,14 @@ Follow this command with any number of args, to be passed to the program."
       ;;
     e | ed | edi | edit | editi | editin | editing )
       [[ -n $label ]] && label='set editing   -- '
-      local onoff="off."
-      (( $_Dbg_edit )) && onoff='on.'
-      _Dbg_msg \
-"${label}Set editing of command lines as they are typed is" $onoff
+     _Dbg_msg_nocr \
+"${label}Set editing of command lines as they are typed is "
+      if [[ -z $_Dbg_edit ]] ; then 
+	  _Dbg_msg 'off.'
+      else
+	  _Dbg_msg 'on.'
+      fi
+      return 0
       ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
       [[ -n $label ]] && label='set linetrace -- '
@@ -264,4 +268,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.9 2008/09/09 09:15:51 rockyb Exp $'
+'$Id: help.sh,v 1.10 2008/09/11 15:00:21 rockyb Exp $'
