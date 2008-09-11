@@ -132,11 +132,15 @@ function _Dbg_process_commands {
     local args
     local rc
 
-    while read $_Dbg_edit -p "$_Dbg_prompt" \
-      _Dbg_cmd args \
-      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
-    do
-      if (( _Dbg_brkpt_commands_defining )) ; then
+    while : ; do 
+	set -o history
+	if ! read $_Dbg_edit -p "$_Dbg_prompt" _Dbg_cmd args \
+	    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
+	    set +o history
+	    break
+	fi
+	set +o history
+        if (( _Dbg_brkpt_commands_defining )) ; then
 	  case $_Dbg_cmd in
 	      silent ) 
 		  _Dbg_brkpt_commands_silent[$_Dbg_brkpt_commands_current]=1
@@ -218,8 +222,9 @@ _Dbg_onecmd() {
       fi
 
      # If "set trace-commands" is "on", echo the the command
+     typeset full_cmd="$_Dbg_cmd $args"
      if [[  $_Dbg_trace_commands == 'on' ]]  ; then
-       _Dbg_msg "+$_Dbg_cmd $args"
+       _Dbg_msg "+$full_cmd"
      fi
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
@@ -229,10 +234,11 @@ _Dbg_onecmd() {
      # how to get it to work. So we do this in two steps.
      _Dbg_write_journal \
         "_Dbg_history[${#_Dbg_history[@]}]=\"$dq_cmd $dq_args\""
+
      _Dbg_history[${#_Dbg_history[@]}]="$_Dbg_cmd $args"
-     # history -s "$_Dbg_cmd $args"
 
      _Dbg_hi=${#_Dbg_history[@]}
+     history -s -- "$full_cmd"
 
       local -i _Dbg_redo=1
       while (( $_Dbg_redo )) ; do
@@ -844,4 +850,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.13 2008/09/11 15:00:21 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.14 2008/09/11 20:03:39 rockyb Exp $'
