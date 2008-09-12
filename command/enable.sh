@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# disable.sh - gdb-like "disable" debugger command
+# enable.sh - gdb-like "enable" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -19,9 +19,9 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add enable \
-"enable {N}... -- Enable breakpoint entry/entries."
+'enable {N}... -- Enable breakpoint entry/entries.'
 
 # Enable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_enable() {
-  _Dbg_enable_disable 1 "enabled" $@
+  _Dbg_enable_disable 1 'enabled' $@
 }

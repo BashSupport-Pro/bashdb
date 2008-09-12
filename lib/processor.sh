@@ -394,7 +394,7 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='edit'
 	  ;;
 
-	# evaluate as bash command
+	# enable a breakpoint or watchpoint
 	en | ena | enab | enabl | enable )
 	  _Dbg_do_enable $args
 	  _Dbg_last_cmd='enable'
@@ -850,4 +850,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.14 2008/09/11 20:03:39 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.15 2008/09/12 07:39:01 rockyb Exp $'

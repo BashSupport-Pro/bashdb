@@ -2,14 +2,6 @@
 24:	set -xv
 +# Test of miscellaneous commands:
 +# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
-+#### Invalid commands...
-+show badcommand
-** Unknown show subcommand: badcommand
-** Show subcommands are:
-**   annotate  autoeval  debugger  force    linetrace  prompt          width
-**   args      basename  editing   history  listsize   trace-commands
-+another-bad-command 
-Undefined command: "another-bad-command". Try "help".
 +#### *** GNU things...
 +show warranty
 
@@ -294,6 +286,16 @@ make exceptions for this.  Our decision will be guided by the two goals
 of preserving the free status of all derivatives of our free software and
 of promoting the sharing and reuse of software generally.
 
++#### and show...
++set width 80
++#### Invalid commands...
++show badcommand
+** Unknown show subcommand: badcommand
+** Show subcommands are:
+**   annotate  autoeval  debugger  force    linetrace  prompt          width
+**   args      basename  editing   history  listsize   trace-commands
++another-bad-command 
+Undefined command: "another-bad-command". Try "help".
 +show 
 annotate: Annotation_level is 0.
 args:     Argument list to give script when debugged program starts is:
@@ -314,7 +316,6 @@ prompt:   bashdb's prompt is:
        "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
 trace-commands: State of command tracing is on.
 width: Line width is 80.
-+#### and show...
 +show args
 Argument list to give script when debugged program starts is:
        "-B -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
@@ -348,6 +349,9 @@ Argument required (integer to set it to.).
 Number of source lines bashdb will list by default is 40.
 +show annotate
 Annotation_level is 0.
++set width 40
++show width
+Line width is 40.
 +set history size
 Argument required (integer to set it to.).
 +set history size 10
@@ -372,47 +376,47 @@ size: Debugger history size is 10
 +######################### 
 +#### Test 'show commands'...
 +show commands
-30: show commands
-29: show history
-28: set history save on
+33: show commands
+32: show history
+31: set history save on
+30: show history
+29: set history save off
+28: show history save
 27: show history
-26: set history save off
-25: show history save
-24: show history
-23: set history size 10
-22: set history size
-21: show annotate
-20: show listsize
+26: set history size 10
+25: set history size
+24: show width
+23: set width 40
 +show commands +
-19: set annotate 1
-18: show annotate
-17: set annotate 6
-16: set annotate bad
-15: set listsize bad
-14: set listsize 40
-13: set misspelled 40
-12: show editing
-11: set editing
-10: show editing
-9: set editing fooo
+22: show annotate
+21: show listsize
+20: set annotate 1
+19: show annotate
+18: set annotate 6
+17: set annotate bad
+16: set listsize bad
+15: set listsize 40
+14: set misspelled 40
+13: show editing
+12: set editing
 +show commands -5
-32: show commands -5
-31: show commands +
-30: show commands
-29: show history
-28: set history save on
+35: show commands -5
+34: show commands +
+33: show commands
+32: show history
+31: set history save on
 +show commands 12
-12: show editing
-11: set editing
-10: show editing
-9: set editing fooo
-8: set editing off
-7: show args
-6: set args now is the time
-5: show args
-4: show 
-3: show copying
-2: show warranty
+12: set editing
+11: show editing
+10: set editing fooo
+9: set editing off
+8: show args
+7: set args now is the time
+6: show args
+5: show 
+4: show badcommand
+3: set width 80
+2: show copying
 +######################### 
 +#### Test 'autoeval'...
 +set autoeval on
