@@ -65,11 +65,12 @@ POSSIBILITY OF SUCH DAMAGES.
 +#### help commands...
 +help 
 Available commands:
-  /          continue  down     file     info  print    show    step+    undisplay
-  alias      debug     edit     frame    kill  pwd      signal  step-    untrace  
-  break      delete    enable   handle   list  quit     skip    trace    up       
-  commands   disable   eval     help     load  restart  source  tty      watch    
-  condition  display   examine  history  next  set      step    unalias  where    
+  /          debug    enable   help     next     show    step-      untrace
+  alias      delete   eval     history  print    signal  tbreak     up     
+  break      disable  examine  info     pwd      skip    trace      watch  
+  commands   display  file     kill     quit     source  tty        where  
+  condition  down     frame    list     restart  step    unalias  
+  continue   edit     handle   load     set      step+   undisplay
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.

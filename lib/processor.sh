@@ -561,7 +561,7 @@ _Dbg_onecmd() {
 	  _Dbg_do_trace
 	  ;;
 
-	# Set breakpoint on a line
+	# Set a one-time breakpoint
 	tb | tbr | tbre | tbrea | tbreak )
 	  _Dbg_do_break 1 $args 
 	  _Dbg_last_cmd='tbreak'
@@ -850,4 +850,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.15 2008/09/12 07:39:01 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.16 2008/09/13 14:33:07 rockyb Exp $'
