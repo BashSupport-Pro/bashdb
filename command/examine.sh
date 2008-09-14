@@ -19,7 +19,7 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add 'examine' \
-"examine EXPR -- Print value of an expression via \'declare', \`let' and failing these, eval. 
+"examine EXPR -- Print value of an expression via \'typeset', \`let' and failing these, eval. 
 
 Single variables and arithmetic expressions do not need leading $ for
 their value is to be substituted. However if neither these, variables
@@ -29,13 +29,13 @@ function _Dbg_do_examine {
   typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   typeset _Dbg_result
   if _Dbg_defined $_Dbg_expr ; then
-    _Dbg_result=$(declare -p $_Dbg_expr)
+    _Dbg_result=$(typeset -p $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
-  elif _Dbg_is_function $_Dbg_expr ; then 
-    _Dbg_result=$(declare -f $_Dbg_expr)
+  elif _Dbg_is_function "$_Dbg_expr" $_Dbg_debug_debugger; then 
+    _Dbg_result=$(typeset -f $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
   else 
-    local -i _Dbg_rc
+    typeset -i _Dbg_rc
     eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
     if (( $_Dbg_rc != 0 )) ; then
       _Dbg_do_print "$_Dbg_expr"
