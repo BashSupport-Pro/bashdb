@@ -146,8 +146,8 @@ function _Dbg_set_assoc_array_entry {
 # if $2 is nonzero, system functions, i.e. those whose name starts with
 # an underscore (_), are included in the search.
 _Dbg_is_function() {
+    (( 0 == $# )) && return 1
     typeset needed_fn=$1
-    [[ -z $needed_fn ]] && return 1
     typeset -i include_system=${2:-0}
     [[ ${needed_fn:0:1} == '_' ]] && ((!include_system)) && {
 	return 1
@@ -288,4 +288,4 @@ function _Dbg_set_ftrace {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.3 2008/09/06 14:17:42 rockyb Exp $'
+'$Id: fns.sh,v 1.4 2008/09/14 00:50:23 rockyb Exp $'

@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# Examine (x) command.
+# examine.sh: Examine debugger command.
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -19,11 +19,13 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add 'examine' \
-"examine EXPR	-- Print value of an expression via \'declare', \`let' and failing these, eval. 
+"examine EXPR -- Print value of an expression via \'declare', \`let' and failing these, eval. 
 
-Single variables and arithmetic expressions do not need leading $ for their value is to be substituted. However if neither these, variables need $ to have their value substituted. Long command name: examine"
+Single variables and arithmetic expressions do not need leading $ for
+their value is to be substituted. However if neither these, variables
+need $ to have their value substituted."
 
-function _Dbg_do_x {
+function _Dbg_do_examine {
   typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   typeset _Dbg_result
   if _Dbg_defined $_Dbg_expr ; then

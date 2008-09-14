@@ -409,7 +409,7 @@ _Dbg_onecmd() {
 
 	# intelligent print of variable, function or expression
 	examine )
-	  _Dbg_do_x "$args"
+	  _Dbg_do_examine "$args"
 	  ;;
 
 	# 
@@ -850,4 +850,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.16 2008/09/13 14:33:07 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.17 2008/09/14 00:50:23 rockyb Exp $'
