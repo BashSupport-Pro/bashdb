@@ -28,7 +28,10 @@ need $ to have their value substituted."
 function _Dbg_do_examine {
   typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
   typeset _Dbg_result
-  if _Dbg_defined $_Dbg_expr ; then
+  typeset isblank=$_Dbg_expr
+  if [[ -z $isblank ]] ; then
+      _Dbg_msg "$_Dbg_expr"
+  elif _Dbg_defined $_Dbg_expr ; then
     _Dbg_result=$(typeset -p $_Dbg_expr)
     _Dbg_msg "$_Dbg_result"
   elif _Dbg_is_function "$_Dbg_expr" $_Dbg_debug_debugger; then 
