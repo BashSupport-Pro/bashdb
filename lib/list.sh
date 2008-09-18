@@ -1,4 +1,5 @@
-# dbg-list.sh - Bourne Again Shell Debugger list/search commands
+# -*- shell-script -*-
+# list.sh - Bourne Again Shell Debugger list/search commands
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein
 #   rocky@gnu.org
 #
@@ -139,11 +140,3 @@ _Dbg_list() {
     (( _Dbg_listline > max_line && _Dbg_listline-- ))
     return 0
 }
-
-# This is put at the so we have something at the end when we debug this.
-_Dbg_list_ver='$Id: list.sh,v 1.3 2008/08/29 02:55:43 rockyb Exp $'
-
-#;;; Local Variables: ***
-#;;; mode:shell-script ***
-#;;; eval: (sh-set-shell "bash") ***
-#;;; End: ***

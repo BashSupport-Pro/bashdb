@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-hist.sh - Bourne Again Shell Debugger history routines
+# hist.sh - Bourne Again Shell Debugger history routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein
 #   rocky@gnu.org
@@ -98,7 +98,7 @@ _Dbg_history_parse() {
 }
 
 _Dbg_history_read() {
-  if [[ -f $_Dbg_histfile ]] && [[ -r $_Dbg_histfile ]] ; then 
+  if [[ -r $_Dbg_histfile ]] ; then 
     history -r $_Dbg_histfile
     local -a last_history=(`history 1`)
     local -i max_history=${last_history[0]}
