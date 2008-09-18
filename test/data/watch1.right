@@ -83,7 +83,7 @@ Watchpoint 2: $x changed:
 No breakpoints have been set.
 Num Type       Enb  Expression
 2   watchpoint y    $x
-+continue 
++cont 
 Watchpoint 2: $x changed:
   old value: ''
   new value: '22'

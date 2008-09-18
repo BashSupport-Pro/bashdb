@@ -26,27 +26,27 @@ their value is to be substituted. However if neither these, variables
 need $ to have their value substituted."
 
 function _Dbg_do_examine {
-  typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
-  typeset _Dbg_result
-  typeset isblank=$_Dbg_expr
-  if [[ -z $isblank ]] ; then
-      _Dbg_msg "$_Dbg_expr"
-  elif _Dbg_defined $_Dbg_expr ; then
-    _Dbg_result=$(typeset -p $_Dbg_expr)
-    _Dbg_msg "$_Dbg_result"
-  elif _Dbg_is_function "$_Dbg_expr" $_Dbg_debug_debugger; then 
-    _Dbg_result=$(typeset -f $_Dbg_expr)
-    _Dbg_msg "$_Dbg_result"
-  else 
-    typeset -i _Dbg_rc
-    eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
-    if (( $_Dbg_rc != 0 )) ; then
-      _Dbg_do_print "$_Dbg_expr"
-    else
-      _Dbg_msg "$_Dbg_result"
+    typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
+    typeset _Dbg_result
+    typeset isblank=$_Dbg_expr
+    if [[ -z $isblank ]] ; then
+	_Dbg_msg "$_Dbg_expr"
+    elif _Dbg_defined $_Dbg_expr ; then
+	_Dbg_result=$(typeset -p $_Dbg_expr)
+	_Dbg_msg "$_Dbg_result"
+    elif _Dbg_is_function "$_Dbg_expr" $_Dbg_debug_debugger; then 
+	_Dbg_result=$(typeset -f $_Dbg_expr)
+	_Dbg_msg "$_Dbg_result"
+    else 
+	typeset -i _Dbg_rc
+	eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
+	if (( $_Dbg_rc != 0 )) ; then
+	    _Dbg_do_print "$_Dbg_expr"
+	else
+	    _Dbg_msg "$_Dbg_result"
+	fi
     fi
-  fi
-  _Dbg_last_x_args="$_Dbg_x_args"
+    _Dbg_last_x_args="$_Dbg_x_args"
 }
 
 _Dbg_alias_add 'x' 'examine'

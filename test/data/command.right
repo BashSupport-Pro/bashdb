@@ -19,7 +19,7 @@ Type commands for when breakpoint 1 hit, one per line.
 Breakpoint 2 set in file dbg-test1.sh, line 25.
 +continue 
 Breakpoint 1 hit (1 times).
-+examine x
++x x
 declare -- x="22"
 (dbg-test1.sh:23):
 23:	y=23

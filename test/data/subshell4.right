@@ -1,104 +1,123 @@
 (subshell.sh:6):
 6:	x=1; y=2; z=3
++set showcommand 1
++print "Test step inside multi-statement lines and subshells..."
 Test step inside multi-statement lines and subshells...
++step 1
 (subshell.sh:6):
 6:	x=1; y=2; z=3
 y=2
++step 3
 (subshell.sh:7):
-7:	(cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
++print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 1
++step 
 (subshell.sh:7):
-7:	(cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 builtin echo "ho"
-7: step 
-6: p "BASH_SUBSHELL $BASH_SUBSHELL"
-5: step 
-4: p "BASH_SUBSHELL $BASH_SUBSHELL"
-3: step 3
-2: step 1
-1: print "Test step inside multi-statement lines and subshells..."
-0: set showcommand on
++H 
+8: step 
+7: print "BASH_SUBSHELL $BASH_SUBSHELL"
+6: step 
+5: print "BASH_SUBSHELL $BASH_SUBSHELL"
+4: step 3
+3: step 1
+2: print "Test step inside multi-statement lines and subshells..."
+1: set showcommand 1
+0: set trace-commands on
++print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 2
++step 
 ho
+(subshell.sh:8):
+8:	case `builtin echo "testing"; builtin echo 1,2,3`,`builtin echo 1,2,3` in
+case `builtin echo "testing"; builtin echo 1,2,3`,`builtin echo 1,2,3` in 
++H 
+10: step 
+9: print "BASH_SUBSHELL $BASH_SUBSHELL"
+8: step 
+7: print "BASH_SUBSHELL $BASH_SUBSHELL"
+6: step 
+5: print "BASH_SUBSHELL $BASH_SUBSHELL"
+4: step 3
+3: step 1
+2: print "Test step inside multi-statement lines and subshells..."
+1: set showcommand 1
+0: set trace-commands on
++print "BASH_SUBSHELL $BASH_SUBSHELL"
+BASH_SUBSHELL 0
++step 
 (subshell.sh:11):
-11:	*c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
+11:	  *c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
 ECHO_N=-n ECHO_C= ECHO_T=
-15: step 
-14: p "BASH_SUBSHELL $BASH_SUBSHELL"
-13: step 
-12: p "BASH_SUBSHELL $BASH_SUBSHELL"
-11: step 
-10: p "BASH_SUBSHELL $BASH_SUBSHELL"
-9: step 
-8: p "BASH_SUBSHELL $BASH_SUBSHELL"
-7: step 
-6: p "BASH_SUBSHELL $BASH_SUBSHELL"
-5: step 
-4: p "BASH_SUBSHELL $BASH_SUBSHELL"
-3: step 3
-2: step 1
-1: print "Test step inside multi-statement lines and subshells..."
-0: set showcommand on
++H 
+18: step 
+17: print "BASH_SUBSHELL $BASH_SUBSHELL"
+16: step 
+15: print "BASH_SUBSHELL $BASH_SUBSHELL"
+14: step 
+13: print "BASH_SUBSHELL $BASH_SUBSHELL"
+12: step 
+11: print "BASH_SUBSHELL $BASH_SUBSHELL"
+10: step 
+9: print "BASH_SUBSHELL $BASH_SUBSHELL"
+8: step 
+7: print "BASH_SUBSHELL $BASH_SUBSHELL"
+6: step 
+5: print "BASH_SUBSHELL $BASH_SUBSHELL"
+4: step 3
+3: step 1
+2: print "Test step inside multi-statement lines and subshells..."
+1: set showcommand 1
+0: set trace-commands on
++print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 0
++step 
 (subshell.sh:15):
-15:	(cd  . ; x=`builtin echo *`; (builtin echo "ho") )
-cd .
-17: step 
-16: p "BASH_SUBSHELL $BASH_SUBSHELL"
-15: step 
-14: p "BASH_SUBSHELL $BASH_SUBSHELL"
-13: step 
-12: p "BASH_SUBSHELL $BASH_SUBSHELL"
-11: step 
-10: p "BASH_SUBSHELL $BASH_SUBSHELL"
-9: step 
-8: p "BASH_SUBSHELL $BASH_SUBSHELL"
-7: step 
-6: p "BASH_SUBSHELL $BASH_SUBSHELL"
-5: step 
-4: p "BASH_SUBSHELL $BASH_SUBSHELL"
-3: step 3
-2: step 1
-1: print "Test step inside multi-statement lines and subshells..."
-0: set showcommand on
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+builtin cd .
++print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 1
++step 
 (subshell.sh:15):
-15:	(cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
++print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 1
++step 
 (subshell.sh:15):
-15:	(cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 builtin echo "ho"
++H 
+26: step 
+25: print "BASH_SUBSHELL $BASH_SUBSHELL"
+24: step 
+23: print "BASH_SUBSHELL $BASH_SUBSHELL"
+22: step 
+21: print "BASH_SUBSHELL $BASH_SUBSHELL"
+20: step 
+19: print "BASH_SUBSHELL $BASH_SUBSHELL"
+18: step 
+17: print "BASH_SUBSHELL $BASH_SUBSHELL"
+16: step 
+15: print "BASH_SUBSHELL $BASH_SUBSHELL"
+14: step 
+13: print "BASH_SUBSHELL $BASH_SUBSHELL"
+12: step 
+11: print "BASH_SUBSHELL $BASH_SUBSHELL"
+10: step 
+9: print "BASH_SUBSHELL $BASH_SUBSHELL"
+8: step 
+7: print "BASH_SUBSHELL $BASH_SUBSHELL"
+6: step 
+5: print "BASH_SUBSHELL $BASH_SUBSHELL"
+4: step 3
+3: step 1
+2: print "Test step inside multi-statement lines and subshells..."
+1: set showcommand 1
+0: set trace-commands on
++print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 2
-ho
-(subshell.sh:17):
-17:	x=5; y=6;
-x=5
-25: step 
-24: p "BASH_SUBSHELL $BASH_SUBSHELL"
-23: step 
-22: p "BASH_SUBSHELL $BASH_SUBSHELL"
-21: step 
-20: p "BASH_SUBSHELL $BASH_SUBSHELL"
-19: step 
-18: p "BASH_SUBSHELL $BASH_SUBSHELL"
-17: step 
-16: p "BASH_SUBSHELL $BASH_SUBSHELL"
-15: step 
-14: p "BASH_SUBSHELL $BASH_SUBSHELL"
-13: step 
-12: p "BASH_SUBSHELL $BASH_SUBSHELL"
-11: step 
-10: p "BASH_SUBSHELL $BASH_SUBSHELL"
-9: step 
-8: p "BASH_SUBSHELL $BASH_SUBSHELL"
-7: step 
-6: p "BASH_SUBSHELL $BASH_SUBSHELL"
-5: step 
-4: p "BASH_SUBSHELL $BASH_SUBSHELL"
-3: step 3
-2: step 1
-1: print "Test step inside multi-statement lines and subshells..."
-0: set showcommand on
-BASH_SUBSHELL 0
++quit 

@@ -3,7 +3,7 @@
 +set showcommand on
 +print "Test step inside multi-statement line..."
 Test step inside multi-statement line...
-+continue 15
++cont 15
 One-time breakpoint 1 set in file multi.sh, line 15.
 ho
 (multi.sh:15):
@@ -17,6 +17,6 @@ x=`builtin echo *`
 (multi.sh:15):
 15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 builtin echo "ho"
-+print "BASH_SUBSHELL $BASH_SUBSHELL"
++p "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 2
 +quit 0 56

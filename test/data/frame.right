@@ -15,11 +15,11 @@ One-time breakpoint 1 set in file hanoi.sh, line 13.
 +frame 0
 (hanoi.sh:13):
 13:	hanoi() { 
-+where 2
++bt 2
 ->0 in file `hanoi.sh' at line 13
 ##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
 +# How about after moving?
-+up 
++u 
 (hanoi.sh:43):
 43:	hanoi $max "a" "b" "c"
 +where 2
@@ -39,7 +39,7 @@ One-time breakpoint 1 set in file hanoi.sh, line 13.
 ##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
 +up 3
 ** Would be beyond top-most (least recent) entry.
-+where 2
++bt 2
 ->0 in file `hanoi.sh' at line 13
 ##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
 +# Try some negative numbers
@@ -47,7 +47,7 @@ One-time breakpoint 1 set in file hanoi.sh, line 13.
 +down -1
 (hanoi.sh:43):
 43:	hanoi $max "a" "b" "c"
-+where 2
++T 2
 ##0 in file `hanoi.sh' at line 13
 ->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
 +# Should go to next-to-least-recent frame
@@ -78,7 +78,7 @@ One-time breakpoint 2 set in file hanoi.sh, line 13.
 +frame +0
 (hanoi.sh:13):
 13:	hanoi() { 
-+where 3
++backtrace 3
 ->0 in file `hanoi.sh' at line 13
 ##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 22
 ##2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43

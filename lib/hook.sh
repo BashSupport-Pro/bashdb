@@ -178,7 +178,6 @@ _Dbg_debug_trap_handler() {
 
     done
   fi
-  set +x
 
   # Check if step mode and number steps to ignore.
   if ((_Dbg_step_ignore == 0)); then

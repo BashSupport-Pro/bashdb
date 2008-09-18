@@ -209,6 +209,7 @@ _Dbg_annotation() {
 # 
 _Dbg_onecmd() {
 
+    typeset full_cmd=$@
     typeset expanded_alias; _Dbg_alias_expand "$1"
     typeset _Dbg_cmd="$expanded_alias"
     # typeset _Dbg_cmd="$1"
@@ -219,10 +220,10 @@ _Dbg_onecmd() {
      if [[ -z $_Dbg_cmd ]]; then
 	_Dbg_cmd=$_Dbg_last_next_step_cmd
 	args=$_Dbg_last_next_step_args
+	full_cmd="$_Dbg_cmd $args"
       fi
 
      # If "set trace-commands" is "on", echo the the command
-     typeset full_cmd="$_Dbg_cmd $args"
      if [[  $_Dbg_trace_commands == 'on' ]]  ; then
        _Dbg_msg "+$full_cmd"
      fi
@@ -850,4 +851,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.17 2008/09/14 00:50:23 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.18 2008/09/18 01:19:09 rockyb Exp $'

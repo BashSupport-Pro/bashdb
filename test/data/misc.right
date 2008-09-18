@@ -173,7 +173,7 @@ Info subcommands are:
 19: help set
 +!-3:p 
 27: help info
-+history -2
++! -2
 List of info subcommands:
 
 info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
@@ -189,7 +189,7 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
-+history 2
++! 2
 +H -2
 28: info 
 27: help info

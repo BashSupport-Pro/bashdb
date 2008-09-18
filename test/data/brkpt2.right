@@ -26,7 +26,7 @@ Num Type       Disp Enb What
 	breakpoint already hit 1 time
 Num Type       Enb  Expression
 0   watchpoint y    $x
-+continue 
++c 
 Watchpoint 0: $x changed:
   old value: '22'
   new value: '23'
@@ -48,7 +48,7 @@ Num Type       Enb  Expression
 	breakpoint already hit 1 time
 1   watchpoint y    x > 26
 +### Continuing with a one-time line break (but will watch expression)...
-+continue 30
++cont 30
 One-time breakpoint 2 set in file dbg-test1.sh, line 30.
 Watchpoint 1: x > 26 changed:
   old value: '0'
@@ -85,7 +85,7 @@ Breakpoint 3 set in file dbg-test1.sh, line 5.
 (dbg-test1.sh:30):
 30:	echo $(fn3 30)
 +### Try continue with a line number...
-+continue 34
++cont 34
 One-time breakpoint 4 set in file dbg-test1.sh, line 34.
 
 Breakpoint 3 hit (1 times).
@@ -153,7 +153,7 @@ fn1 here
 (dbg-test1.sh:8):
 8:	    fn3
 +### Try continue file:line (but will hit another breakpoint)...
-+continue ../example/dbg-test1.sh:35
++cont ../example/dbg-test1.sh:35
 One-time breakpoint 5 set in file dbg-test1.sh, line 35.
 (dbg-test1.sh:34):
 34:	source ../example/dbg-test1.sub
@@ -161,7 +161,7 @@ One-time breakpoint 5 set in file dbg-test1.sh, line 35.
 SOURCED LINENO 19
 (dbg-test1.sub:20):
 20:	filename=${BASH_SOURCE[0]##*/}
-+where 2
++T 2
 ->0 in file `dbg-test1.sub' at line 20
 ##1 source("dbg-test1.sub") called from file `dbg-test1.sh' at line 34
 +step 10
@@ -169,31 +169,31 @@ SOURCED BASH_SOURCE[0] dbg-test1.sub
 SOURCED FN LINENO 5
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
-+where 2
++T 2
 ->0 in file `dbg-test1.sub' at line 11
 ##1 sourced_fn() called from file `dbg-test1.sub' at line 22
 +### Try x command...
-+examine j
++x j
 j
 +### Try continue break no args (here)...
 +break 
 Breakpoint 6 set in file dbg-test1.sub, line 11.
-+continue 
++cont 
 FUNCNAME[0]: sourced_fn called from dbg-test1.sub at line 22
 Breakpoint 6 hit (1 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
 +### another x command...
-+examine j
++x j
 declare -i j="1"
 +### another x command (+5 than value above) ...
-+examine j+5
++x j+5
 6
 +### x command of string y
-+examine y
++x y
 declare -- y="b"
 +### x of a function ...
-+examine fn2
++x fn2
 fn2 () 
 { 
     name="fn2";
@@ -201,16 +201,16 @@ fn2 ()
     x=6
 }
 +### Bad x expressions ...
-+examine bogus
++x bogus
 bogus
-+examine bogus+
++x bogus+
 bogus+
-+examine fn2+fn3
++x fn2+fn3
 fn2+fn3
-+examine fn2+3
++x fn2+3
 3
 +### another continue. Count on breakpoint should go up.
-+continue 
++cont 
 FUNCNAME[1]: source called from dbg-test1.sh at line 34
 Breakpoint 6 hit (2 times).
 (dbg-test1.sub:11):
@@ -232,13 +232,13 @@ Num Type       Enb  Expression
 0   watchpoint n    $x
 	breakpoint already hit 1 time
 No actions have been set.
-+continue 
++cont 
 FUNCNAME[2]: source called from bashdb at line 163
 Breakpoint 6 hit (3 times).
 (dbg-test1.sub:11):
 11:	        local -i j=i+1
 +### Test temporary break and its reporting
-+continue 13
++cont 13
 One-time breakpoint 7 set in file dbg-test1.sub, line 13.
 (dbg-test1.sub:13):
 13:		local filename=${BASH_SOURCE[$j]##*/}
@@ -246,7 +246,7 @@ One-time breakpoint 7 set in file dbg-test1.sub, line 13.
 Program stopped.
 It stopped at a breakpoint that has since been deleted.
 +### Should hit end of script but stay in debugger...
-+continue 
++cont 
 FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +info files

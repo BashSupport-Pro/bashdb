@@ -15,6 +15,6 @@ z=3
 7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
 +#### Should now be inside a subshell. Test from here...
-+print "BASH_SUBSHELL: $BASH_SUBSHELL"
++p "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
 +quit 0 2

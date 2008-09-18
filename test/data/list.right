@@ -133,7 +133,7 @@ Number of source lines bashdb will list by default is 10.
  21:   
  22:==>x=22
  23:   y=23
-+print "- command..."
++p "- command..."
 - command...
 +- 
  20:   }    
