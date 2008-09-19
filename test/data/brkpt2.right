@@ -114,10 +114,16 @@ No actions have been set.
 (dbg-test1.sh:32):
 32:	fn1;
 +list 
- 32:   fn1;
- 33:   fn3 33
- 34:   source ../example/dbg-test1.sub
- 35:   exit 0;
+  5:==>fn1() {
+  6:       echo "fn1 here"
+  7:       x=5
+  8:       fn3
+  9:   }    
+ 10:   
+ 11:   fn2() {
+ 12:       name="fn2"
+ 13:       echo "$name here"
+ 14:       x=6
 +### Try down 1...
 +down 1
 (dbg-test1.sh:5):

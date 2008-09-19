@@ -23,12 +23,12 @@ options:
     -V | --version          show version number and no-warranty and exit.
 
 Long options may be abbreviated, e.g. --lib is okay for --library.
-(bashdb:160):
-160:	  . "$_source_file"
+(dbg-test1.sh:22):
+22:	x=22
 +# Just a simple quit command.
 +quit 
-(bashdb:160):
-160:	  . "$_source_file"
+(dbg-test1.sh:22):
+22:	x=22
 +# Just a simple quit command.
 +quit 
 bashdb: Need to give a script name to debug.

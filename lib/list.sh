@@ -99,12 +99,19 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
 # lines. if $2 is omitted, use global variable $_curline.
 
 _Dbg_list() {
-    typeset filename=${1:-$_cur_source_file}
+    if (( $# > 0 )) ; then
+	filename=$1
+    else
+	filename=$_Dbg_frame_last_file
+    fi
+    typeset filename=$_cur_source_file
 
     if [[ $2 = . ]]; then
       _Dbg_listline=$_curline
     elif [[ -n $2 ]] ; then
       _Dbg_listline=$2
+    else
+      _Dbg_listline=$_curline
     fi
     (( _Dbg_listline==0 && _Dbg_listline++))
 
