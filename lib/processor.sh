@@ -658,7 +658,7 @@ _Dbg_onecmd() {
 
 	#  S List subroutine names
 	S )
-	  _Dbg_do_list_subroutines $args
+	  _Dbg_do_list_functions $args
 	  ;;
 
 	# Dump variables
@@ -851,4 +851,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.18 2008/09/18 01:19:09 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.19 2008/09/20 02:29:47 rockyb Exp $'

@@ -144,7 +144,7 @@ _Dbg_do_search() {
 
 # S [[!]pat] List Subroutine names [not] matching a pattern
 # Pass along whether or not to print "system" functions?
-_Dbg_do_list_subroutines() {
+_Dbg_do_list_functions() {
 
   typeset pat=$1
 

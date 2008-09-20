@@ -65,7 +65,7 @@ _Dbg_do_info() {
 	      ;;
 
 	  fu | fun| func | funct | functi | functio | function | functions )
-              _Dbg_do_list_subroutines $*
+              _Dbg_do_list_functions $*
               return
 	      ;;
 

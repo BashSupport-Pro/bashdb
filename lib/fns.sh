@@ -142,25 +142,11 @@ function _Dbg_set_assoc_array_entry {
   _Dbg_write_journal "$entry=\"$dq_value\""
 }
 
-# _Dbg_is_function returns 0 if $1 is a defined function or nonzero otherwise. 
-# if $2 is nonzero, system functions, i.e. those whose name starts with
-# an underscore (_), are included in the search.
-_Dbg_is_function() {
-    (( 0 == $# )) && return 1
-    typeset needed_fn=$1
-    typeset -i include_system=${2:-0}
-    [[ ${needed_fn:0:1} == '_' ]] && ((!include_system)) && {
-	return 1
-    }
-    declare -F $needed_fn >/dev/null 2>&1
-    return $?
-}
-
 # _get_function echoes a list of all of the functions.
 # if $1 is nonzero, system functions, i.e. those whose name starts with
 # an underscore (_), are included in the search.
 # FIXME add parameter search pattern.
-function _Dbg_get_functions {
+_Dbg_get_functions() {
     typeset -i include_system=${1:-0}
     typeset    pat=${2:-*}
     typeset -a fns_a
@@ -189,8 +175,22 @@ function _Dbg_get_functions {
     echo ${ret_fns[@]}
 }
 
+# _Dbg_is_function returns 0 if $1 is a defined function or nonzero otherwise. 
+# if $2 is nonzero, system functions, i.e. those whose name starts with
+# an underscore (_), are included in the search.
+_Dbg_is_function() {
+    (( 0 == $# )) && return 1
+    typeset needed_fn=$1
+    typeset -i include_system=${2:-0}
+    [[ ${needed_fn:0:1} == '_' ]] && ((!include_system)) && {
+	return 1
+    }
+    declare -F $needed_fn >/dev/null 2>&1
+    return $?
+}
+
 # Return 0 if set -x tracing is on
-function _Dbg_is_traced {
+_Dbg_is_traced() {
     # Is "x" in set options? 
     if [[ $- == *x* ]] ; then
 	return 0
@@ -288,4 +288,4 @@ function _Dbg_set_ftrace {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.4 2008/09/14 00:50:23 rockyb Exp $'
+'$Id: fns.sh,v 1.5 2008/09/20 02:29:47 rockyb Exp $'
