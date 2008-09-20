@@ -147,3 +147,15 @@ _Dbg_list() {
     (( _Dbg_listline > max_line && _Dbg_listline-- ))
     return 0
 }
+
+_Dbg_list_columns() {
+    typeset colsep='  '
+    (($# > 0 )) && { colsep="$1"; shift; }
+    (($# != 0)) && return 1
+    typeset -a columnized; columnize $_Dbg_linewidth "$colsep"
+    typeset -i i
+    for ((i=0; i<${#columnized[@]}; i++)) ; do 
+	_Dbg_msg "  ${columnized[i]}"
+    done
+
+}

@@ -49,13 +49,7 @@ _Dbg_do_show() {
 	  [[ -z ${_Dbg_alias_names[i]} ]] && continue
 	  list+=("${_Dbg_alias_names[i]}: ${_Dbg_alias_expansion[i]}")
       done
-      sort_list 0 ${#list[@]}-1
-      typeset -i width; ((width=_Dbg_linewidth-5))
-      typeset -a columnized; columnize $width  '  |  '
-      typeset -i i
-      for ((i=0; i<${#columnized[@]}; i++)) ; do 
-	  _Dbg_msg "  ${columnized[i]}"
-      done
+      _Dbg_list_columns '  |  '
       return 0
       ;;
     ar | arg | args )
