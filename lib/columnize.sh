@@ -26,7 +26,7 @@
 # $3 the maximum width, etc.
 columnize() {
     typeset -i displaywidth=${1:-80}
-    typeset colsep=${2:-'  '}
+    (($# < 2)) && typeset colsep='  ' || typeset colsep="$2"
     typeset -i list_size=${#list[@]}
     if ((list_size == 0)) ; then
       columnized=('<empty>')
@@ -55,11 +55,12 @@ columnize() {
           colwidth=0
 	  typeset -i row
           for (( row=0; row<=(nrows-1); row++ )); do
-              ((i=row + nrows*col))  # [rows, cols]
-              if ((i >= list_size)); then
+	      typeset -i j
+              ((j=row + nrows*col))  # [rows, cols]
+              if ((j >= list_size)); then
 		  break
 	      fi
-	      typeset item="${list[$i]}"
+	      typeset item="${list[j]}"
 	      ((colwidth < ${#item})) && colwidth=${#item}
           done
           colwidths+=($colwidth)
@@ -95,10 +96,11 @@ columnize() {
 	    unset texts[$text_size]
 	done
 	text_row=''
+	text_cell=''
 	for (( col=0; col<text_size; col++ )); do
 	    fmt="%-${colwidths[col]}s"
 	    text_cell=$(printf $fmt "${texts[col]}")
-	    text_row+="$text_cell"
+	    text_row+="${text_cell}"
 	    ((col != text_size-1)) && text_row+="${colsep}"
 	done
 	columnized+=("$text_row")
