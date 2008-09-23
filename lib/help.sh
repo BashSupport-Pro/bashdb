@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# help.sh - Bourne Again Shell Debugger Help Routines
+# help.sh - Debugger Help Routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
 #   Rocky Bernstein rocky@gnu.org
@@ -68,8 +68,17 @@ _Dbg_help_sort_command_names() {
 typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
 
 _Dbg_help_set() {
-  local -r set_cmd=$1
-  local label=$2
+
+  if (( $# == 0 )) ; then 
+      typeset thing
+      for thing in $_Dbg_set_cmds ; do 
+	_Dbg_help_set $thing 1
+      done
+      return 0
+  fi
+
+  local set_cmd="$1"
+  local label="$2"
 
   if [[ -z $set_cmd ]] ; then 
       local thing
@@ -268,4 +277,4 @@ number of lines to list."
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_help_ver=\
-'$Id: help.sh,v 1.10 2008/09/11 15:00:21 rockyb Exp $'
+'$Id: help.sh,v 1.11 2008/09/23 08:10:47 rockyb Exp $'
