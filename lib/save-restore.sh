@@ -80,3 +80,32 @@ function _Dbg_set_to_return_from_debugger {
 
   _Dbg_restore_user_vars
 }
+
+_Dbg_save_state() {
+  _Dbg_statefile=$(_Dbg_tempname statefile)
+  echo "" > $_Dbg_statefile
+  _Dbg_save_breakpoints
+  _Dbg_save_actions
+  _Dbg_save_watchpoints
+  _Dbg_save_display
+  _Dbg_save_Dbg_set
+  echo "unset DBG_RESTART_FILE" >> $_Dbg_statefile
+  echo "rm $_Dbg_statefile" >> $_Dbg_statefile
+  export DBG_RESTART_FILE="$_Dbg_statefile"
+  _Dbg_write_journal "export DBG_RESTART_FILE=\"$_Dbg_statefile\""
+
+}
+
+_Dbg_save_Dbg_set() {
+  declare -p _Dbg_basename_only  >> $_Dbg_statefile
+  declare -p _Dbg_debug_debugger >> $_Dbg_statefile
+  declare -p _Dbg_edit           >> $_Dbg_statefile
+  declare -p _Dbg_listsize       >> $_Dbg_statefile
+  declare -p _Dbg_prompt_str     >> $_Dbg_statefile
+  declare -p _Dbg_show_command   >> $_Dbg_statefile
+}
+
+_Dbg_restore_state() {
+  local statefile=$1
+  . $1
+}
