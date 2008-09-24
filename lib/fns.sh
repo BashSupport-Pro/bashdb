@@ -33,7 +33,7 @@ function _Dbg_copies {
 
 # _Dbg_defined returns 0 if $1 is a defined variable or 1 otherwise. 
 _Dbg_defined() {
-  declare -p $1 &>/dev/null
+  typeset -p $1 &>/dev/null
   if [[ $? != 0 ]] ; then 
     return 1
   else
@@ -44,6 +44,7 @@ _Dbg_defined() {
 # Add escapes to a string $1 so that when it is read back via "$1"
 # it is the same as $1.
 function _Dbg_esc_dq {
+  # builtin printf "%q\n" "$1"
   builtin echo $1 | sed -e 's/[`$\"]/\\\0/g' 
 }
 
@@ -288,4 +289,4 @@ function _Dbg_set_ftrace {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.5 2008/09/20 02:29:47 rockyb Exp $'
+'$Id: fns.sh,v 1.6 2008/09/24 13:57:55 rockyb Exp $'

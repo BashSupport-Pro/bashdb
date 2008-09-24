@@ -32,7 +32,7 @@ change this setting.'
 # l sub       List source code fn
 
 _Dbg_do_list() {
-  if [[ -n $1 ]] ; then
+  if (( $# > 0 )) ; then
     first_arg=$1
     shift
   else
@@ -41,7 +41,7 @@ _Dbg_do_list() {
 
   if [ $first_arg == '.' ] ; then
     _Dbg_list $_cur_source_file $*
-    return
+    return $?
   fi
 
   typeset filename
@@ -55,8 +55,10 @@ _Dbg_do_list() {
     _Dbg_check_line $line_number "$full_filename"
     (( $? == 0 )) && \
       _Dbg_list "$full_filename" "$line_number" $*
+    return $?
   else
     _Dbg_file_not_read_in $filename
+    return 1
   fi
 }
 

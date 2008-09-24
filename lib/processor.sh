@@ -454,8 +454,7 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='list'
 	  ;;
 
-	# List line.
-	# print lines in file
+	# Load (read in) lines of a file
 	lo | loa | load )
 	  _Dbg_do_load $args
 	  ;;
@@ -851,4 +850,4 @@ _Dbg_restore_state() {
   . $1
 }
 
-[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.19 2008/09/20 02:29:47 rockyb Exp $'
+[[ -z $_Dbg_processor_ver ]] && typeset -r _Dbg_processor_ver='$Id: processor.sh,v 1.20 2008/09/24 13:57:55 rockyb Exp $'
