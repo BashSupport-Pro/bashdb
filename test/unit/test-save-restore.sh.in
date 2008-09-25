@@ -19,15 +19,16 @@ test_save_restore_IFS_PS4()
     IFS="$old_IFS"
 }
 
-top_srcdir=@abs_top_srcdir@
+abs_top_srcdir=@abs_top_srcdir@
 srcdir=@srcdir@
-. ${top_srcdir}/dbg-pre.sh
-. ${top_srcdir}/lib/fns.sh
-. ${top_srcdir}/lib/file.sh
-. ${top_srcdir}/lib/save-restore.sh
+set -- -q  # Don't need to show banner
+. ${abs_top_srcdir}/dbg-pre.sh
+. ${abs_top_srcdir}/lib/journal.sh
+. ${abs_top_srcdir}/lib/fns.sh
+. ${abs_top_srcdir}/lib/file.sh
+. ${abs_top_srcdir}/lib/save-restore.sh
 
 # load shunit2
 srcdir=@srcdir@
 srcdir=${srcdir}/
 . ${srcdir}/shunit2
-

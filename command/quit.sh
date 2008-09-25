@@ -34,14 +34,14 @@ _Dbg_do_quit() {
     ((desired_quit_levels=BASH_SUBSHELL+1))
   fi
 
-  ((BASHDB_QUIT_LEVELS+=desired_quit_levels))
+  ((_Dbg_QUIT_LEVELS+=desired_quit_levels))
 
   # Reduce the number of recorded levels that we need to leave by
-  # if BASHDB_QUIT_LEVELS is greater than 0.
-  ((BASHDB_QUIT_LEVELS--))
+  # if _Dbg_QUIT_LEVELS is greater than 0.
+  ((_Dbg_QUIT_LEVELS--))
 
   ## write this to the next level up can read it.
-  _Dbg_write_journal "BASHDB_QUIT_LEVELS=$BASHDB_QUIT_LEVELS"
+  _Dbg_write_journal "_Dbg_QUIT_LEVELS=$_Dbg_QUIT_LEVELS"
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 
   # Reset signal handlers to their default but only if 
@@ -49,10 +49,10 @@ _Dbg_do_quit() {
   if (( BASH_SUBSHELL == 0 )) ; then
 
     # If we were told to restart from deep down, restart instead of quit.
-    if [ -n "$BASHDB_RESTART_COMMAND" ] ; then 
+    if [ -n "$_Dbg_RESTART_COMMAND" ] ; then 
       _Dbg_erase_journals
       _Dbg_save_state
-      exec $BASHDB_RESTART_COMMAND
+      exec $_Dbg_RESTART_COMMAND
     fi
 
     _Dbg_cleanup

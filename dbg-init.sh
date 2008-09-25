@@ -102,22 +102,12 @@ typeset _Dbg_pname=${_Dbg_orig_0##*/}
 typeset -r _Dbg_space_IFS=' 	
 '
 
-# $_Dbg_tmpdir could have been set by bashdb script rather than
-# bash --debugger
-typeset _Dbg_tmpdir=/tmp
-
-# Create temporary file based on $1
-# file $1
-_Dbg_tempname() {
-  echo "$_Dbg_tmpdir/bashdb$1$$"
-}
-
-# If BASHDB_QUIT_LEVELS is set to a positive number, this is the number
+# If _Dbg_QUIT_LEVELS is set to a positive number, this is the number
 # of levels (subshell or shell nestings) or we should exit out of.
-[[ -z $BASHDB_QUIT_LEVELS ]] && BASHDB_QUIT_LEVELS=0
+[[ -z $_Dbg_QUIT_LEVELS ]] && _Dbg_QUIT_LEVELS=0
 
 # This is put at the so we have something at the end to stop at 
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.sh,v 1.2 2008/08/21 01:34:22 rockyb Exp $'
+'$Id: dbg-init.sh,v 1.3 2008/09/25 08:09:27 rockyb Exp $'

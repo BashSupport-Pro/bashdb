@@ -69,3 +69,12 @@ function _Dbg_expand_filename {
     return 1
   fi
 }
+
+# $_Dbg_tmpdir could have been set by the top-level debugger script.
+[[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
+
+# Create temporary file based on $1
+# file $1
+_Dbg_tempname() {
+  echo "$_Dbg_tmpdir/${_Dbg_debugger_name}$1$$"
+}

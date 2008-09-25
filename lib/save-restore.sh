@@ -55,6 +55,16 @@ function _Dbg_set_debugger_entry {
   _Dbg_set_debugger_internal
   _cur_source_file="`_Dbg_resolve_expand_filename $_cur_source_file`"
   _cur_filevar="`_Dbg_file2var $_cur_source_file`"
+
+  # Read in the journal to pick up variable settings that might have
+  # been left from a subshell.
+  _Dbg_source_journal
+
+  if (( $_Dbg_QUIT_LEVELS > 0 )) ; then
+    _Dbg_do_quit $_Dbg_debugged_exit_code
+  fi
+
+
 }
 
 function _Dbg_set_to_return_from_debugger {

@@ -147,7 +147,7 @@ _Dbg_exit_handler() {
   # leave quietly on termination, then do it!
 
   if [[ ${_Dbg_sig_stop[0]} != "stop" ]] \
-    || (( BASHDB_QUIT_LEVELS != 0 )) \
+    || (( _Dbg_QUIT_LEVELS != 0 )) \
     || (( BASHDB_QUIT_ON_QUIT )) ; then 
     _Dbg_do_quit
     # We don't return from here.
@@ -272,7 +272,7 @@ _Dbg_subexit_handler() {
     return 0
   fi
   _Dbg_source_journal
-  if (( $BASHDB_QUIT_LEVELS > 0 )) ; then
+  if (( $_Dbg_QUIT_LEVELS > 0 )) ; then
     _Dbg_do_quit $_Dbg_debugged_exit_code
   fi
 }

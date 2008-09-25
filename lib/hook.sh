@@ -18,7 +18,7 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-typeset BASHDB_RESTART_COMMAND=''
+typeset _Dbg_RESTART_COMMAND=''
 
 # This is set to 1 if you want to debug debugger routines, i.e. routines
 # which start _Dbg_. But you better should know what you are doing
@@ -95,14 +95,6 @@ _Dbg_debug_trap_handler() {
   unset _Dbg_arg[0]       # Get rid of line number; makes array count
                           # correct; also listing all _Dbg_arg works
                           # like $*.
-
-  # Read in the journal to pick up variable settings that might have
-  # been left from a subshell.
-  _Dbg_source_journal
-
-  if (( $BASHDB_QUIT_LEVELS > 0 )) ; then
-    _Dbg_do_quit $_Dbg_debugged_exit_code
-  fi
 
   # if in step mode, decrement counter
   if ((_Dbg_step_ignore > 0)) ; then 

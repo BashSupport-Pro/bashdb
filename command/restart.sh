@@ -56,7 +56,7 @@ _Dbg_do_restart() {
   # discover the restart at the last minute and issue the restart.
   if (( BASH_SUBSHELL > 0 )) ; then 
     _Dbg_msg "Note you are in a subshell. We will need to leave that first."
-    _Dbg_write_journal "BASHDB_RESTART_COMMAND=\"$exec_cmd\""
+    _Dbg_write_journal "_Dbg_RESTART_COMMAND=\"$exec_cmd\""
     _Dbg_do_quit 0
   fi
   _Dbg_cleanup
