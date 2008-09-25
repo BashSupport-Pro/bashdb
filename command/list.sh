@@ -32,34 +32,35 @@ change this setting.'
 # l sub       List source code fn
 
 _Dbg_do_list() {
-  if (( $# > 0 )) ; then
-    first_arg=$1
-    shift
-  else
-    first_arg=.
-  fi
+    typeset first_arg
+    if (( $# > 0 )) ; then
+	first_arg="$1"
+	shift
+    else
+	first_arg='.'
+    fi
 
-  if [ $first_arg == '.' ] ; then
-    _Dbg_list $_cur_source_file $*
-    return $?
-  fi
+    if [[ $first_arg == '.' ]] ; then
+	_Dbg_list $_cur_source_file $*
+	return $?
+    fi
 
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  _Dbg_linespec_setup $first_arg
-
-  if [[ -n $full_filename ]] ; then 
-    (( $line_number ==  0 )) && line_number=1
-    _Dbg_check_line $line_number "$full_filename"
-    (( $? == 0 )) && \
-      _Dbg_list "$full_filename" "$line_number" $*
-    return $?
-  else
-    _Dbg_file_not_read_in $filename
-    return 1
-  fi
+    typeset filename
+    typeset -i line_number
+    typeset full_filename
+    
+    _Dbg_linespec_setup $first_arg
+    
+    if [[ -n $full_filename ]] ; then 
+	(( $line_number ==  0 )) && line_number=1
+	_Dbg_check_line $line_number "$full_filename"
+	(( $? == 0 )) && \
+	    _Dbg_list "$full_filename" "$line_number" $*
+	return $?
+    else
+	_Dbg_file_not_read_in $filename
+	return 1
+    fi
 }
 
 # /search/

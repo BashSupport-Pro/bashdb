@@ -251,31 +251,31 @@ _Dbg_onecmd() {
 	# Comment line
 	[#]* ) 
 	  _Dbg_history_remove_item
-	  _Dbg_last_cmd="#"
+	  _Dbg_last_cmd='#'
 	  ;;
 
 	# List window up to _curline
 	- )
-	  local -i start_line=(_curline+1-$_Dbg_listsize)
-	  local -i count=($_Dbg_listsize)
+	  typeset -i start_line=(_curline+1-$_Dbg_listsize)
+	  typeset -i count=($_Dbg_listsize)
 	  if (( start_line <= 0 )) ; then
 	    ((count=count+start_line-1))
-	    start_line=1;
+	    start_line=1
 	  fi
 	  _Dbg_list $_cur_source_file $start_line $count
-	  _Dbg_last_cmd="list"
+	  _Dbg_last_cmd='list'
 	  ;;
 
 	# list current line
 	. )
 	  _Dbg_list $_cur_source_file $_curline 1
-	  _Dbg_last_cmd="list"
+	  _Dbg_last_cmd='list'
 	  ;;
 
 	# Search forwards for pattern
 	/* )
 	  _Dbg_do_search $_Dbg_cmd
-	  _Dbg_last_cmd="search"
+	  _Dbg_last_cmd='search'
 	  ;;
 
 	# Search backwards for pattern
@@ -287,19 +287,19 @@ _Dbg_onecmd() {
 	# Set action to be silently run when a line is hit
 	a )
 	  _Dbg_do_action $args 
-	  _Dbg_last_cmd="action"
+	  _Dbg_last_cmd='action'
          ;;
 
 	# Add a debugger command alias
 	alias )
 	  _Dbg_do_alias $args 
-	  _Dbg_last_cmd="alias"
+	  _Dbg_last_cmd='alias'
          ;;
 
 	# Set breakpoint on a line
 	break )
 	  _Dbg_do_break 0 $args 
-	  _Dbg_last_cmd="break"
+	  _Dbg_last_cmd='break'
 	  ;;
 
 	# Continue
@@ -320,25 +320,25 @@ _Dbg_onecmd() {
 	  local cd_command="cd $args"
 	  eval $cd_command
 	  _Dbg_do_pwd
-	  _Dbg_last_cmd="cd"
+	  _Dbg_last_cmd='cd'
 	  ;;
 
 	# commands
 	comm | comma | comman | command | commands )
 	  _Dbg_do_commands $args
-	  _Dbg_last_cmd="commands"
+	  _Dbg_last_cmd='commands'
 	  ;;
 
 	# complete
 	com | comp | compl | comple |complet | complete )
 	  _Dbg_do_complete $args
-	  _Dbg_last_cmd="complete"
+	  _Dbg_last_cmd='complete'
 	  ;;
 
 	# Breakpoint/Watchpoint Conditions
 	cond | condi |condit |conditi | conditio | condition )
 	  _Dbg_do_condition $args
-	  _Dbg_last_cmd="condition"
+	  _Dbg_last_cmd='condition'
 	  ;;
 
 	# Delete all breakpoints by line number.
