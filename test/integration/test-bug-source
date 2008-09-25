@@ -1,20 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # -*- shell-script -*-
-#$Id: test-bug-source,v 1.2 2008/08/23 16:56:21 rockyb Exp $
+t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
-[ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
-[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
-
-TEST_NAME='bug-source'
-
-. ${top_builddir}/test/integration/check-common.sh
-
-cmdfile="$srcdir/data/bug-source.cmd"
-
-(cd $top_builddir/test/integration && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
-
-check_output $TEST_FILE $RIGHT_FILE
-
-# Return code tells testing mechanism whether passed or not.
-exit $?
+. ${builddir}/check-common.sh
+run_test_check dbg-test1

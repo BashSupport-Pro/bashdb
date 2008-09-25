@@ -2,7 +2,6 @@ check_DATA = \
 	brkpt1.tests       \
 	brkpt2.tests       \
 	brkpt3.tests       \
-	bug-source.tests   \
 	check-common.sh.in \
 	interrupt.tests    \
 	lopts.tests        \
