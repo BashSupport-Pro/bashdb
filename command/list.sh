@@ -259,3 +259,5 @@ _Dbg_do_list_variables() {
   done
   GLOBIGNORE=$_Dbg_old_glob
 }
+
+_Dbg_alias_add l list

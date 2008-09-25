@@ -449,7 +449,7 @@ _Dbg_onecmd() {
 
 	# List line.
 	# print lines in file
-	l | li | lis | list )
+	list )
 	  _Dbg_do_list $args
 	  _Dbg_last_cmd='list'
 	  ;;
