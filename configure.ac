@@ -48,7 +48,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.62 2008/09/07 01:28:42 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.63 2008/09/26 19:17:50 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -200,7 +200,8 @@ else
   done
 fi
 
-AM_CONDITIONAL(INSTALL_EMACS_LISP, test "x$lispdir" != "x")
+AM_CONDITIONAL(INSTALL_EMACS_LISP, 
+	       [test "x$lispdir" != "x" -a "x$EMACS" != "xno"])
 
 build_readarray=$BASH_SRC
 if test x"$build_readarray" != x; then

@@ -14,13 +14,18 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.36 2008/09/10 15:04:11 rockyb Exp $
+#$Id: Makefile.am,v 1.37 2008/09/26 19:17:50 rockyb Exp $
 
-subdirs = command lib doc emacs test
-if BUILD_BUILTINS
-SUBDIRS = builtin $(subdirs)
+subdirs = command lib doc test
+if INSTALL_EMACS_LISP
+emacs = emacs
 else
-SUBDIRS = $(subdirs)
+emacs =
+endif
+if BUILD_BUILTINS
+SUBDIRS = builtin $(subdirs) $(emacs)
+else
+SUBDIRS = $(subdirs) $(emacs)
 endif
 
 man:
