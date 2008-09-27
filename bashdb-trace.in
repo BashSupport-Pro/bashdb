@@ -27,7 +27,7 @@ _Dbg_trace_old_set_opts=$-
 set +u
 
 typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.32 2008/08/28 02:38:50 rockyb Exp $'
+'$Id: bashdb-trace.in,v 1.33 2008/09/27 14:54:45 rockyb Exp $'
 
 declare -a _Dbg_script_args=("$@")
 
@@ -146,8 +146,8 @@ _Dbg_set_trace() {
 #     echo $i
 #   done
 #   _Dbg_linetrace_off
-#   BASHDB_QUIT_ON_QUIT=1   # Set this to make sure not to stay in debugger
-#                           # after program terminates. Might also do earlier.
+#   _Dbg_QUIT_ON_QUIT=1   # Set this to make sure not to stay in debugger
+#                         # after program terminates. Might also do earlier.
 
 _Dbg_linetrace_on() {
   set -o functrace

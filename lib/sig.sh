@@ -26,7 +26,7 @@ typeset _Dbg_old_setopts
 # Place to save debugged program's exit handler, if any.
 typeset _Dbg_old_EXIT_handler=''  
 
-typeset -i BASHDB_QUIT_ON_QUIT=0
+typeset -i _Dbg_QUIT_ON_QUIT=0
 
 # Return code that debugged program reports
 typeset -i _Dbg_program_exit_code=0
@@ -148,7 +148,7 @@ _Dbg_exit_handler() {
 
   if [[ ${_Dbg_sig_stop[0]} != "stop" ]] \
     || (( _Dbg_QUIT_LEVELS != 0 )) \
-    || (( BASHDB_QUIT_ON_QUIT )) ; then 
+    || (( _Dbg_QUIT_ON_QUIT )) ; then 
     _Dbg_do_quit
     # We don't return from here.
   fi

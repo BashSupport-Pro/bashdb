@@ -1,5 +1,5 @@
 #!@SH_PROG@
-# $Id: hanoi.sh.in,v 1.4 2008/08/23 12:09:16 rockyb Exp $
+# $Id: hanoi.sh.in,v 1.5 2008/09/27 14:54:48 rockyb Exp $
 # Towers of Hanoi
 # We've added calls to set line tracing if the 1st argument is "trace"
 
@@ -43,5 +43,5 @@ init
 hanoi $max "a" "b" "c"
 if (( $tracing )) ; then
   _Dbg_linetrace_off
-  BASHDB_QUIT_ON_QUIT=1
+  _Dbg_QUIT_ON_QUIT=1
 fi

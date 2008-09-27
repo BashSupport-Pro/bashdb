@@ -1191,10 +1191,10 @@ You can also turn on and off line tracing. Here's an example
      echo $i
   done
   _Dbg_linetrace_off
-   BASHDB_QUIT_ON_QUIT=1  
+   _Dbg_QUIT_ON_QUIT=1  
 @end smallexample 
 
-The @code{BASHDB_QUIT_ON_QUIT}  variable make sure the program doesn't
+The @code{_Dbg_QUIT_ON_QUIT}  variable make sure the program doesn't
 stay inside the debugger after it quits. It can also be set earlier in
 the program.
 
@@ -1398,7 +1398,7 @@ use including those used by the debugger.}
 
 A number of environment variables are also reserved for use; these
 start with @code{DBG_}. For example: @env{DBG_INPUT},
-@env{DBG_LEVEL} and, @env{DBG_QUIT_ON_QUIT} (@pxref{Debug,
+@env{DBG_LEVEL} and, @env{_Dbg_QUIT_ON_QUIT} (@pxref{Debug,
 ,Debug}), @env{DBG_RESTART_FILE} (@pxref{Starting, ,Starting}), to
 name a few.  Finally, there are some @acronym{BASH} environment
 dynamic variables and these start with @env{BASH_}. For example
@@ -1624,7 +1624,7 @@ while @code{quit} may leave you at the place the subshell was invoked
 which may be in the middle of another command such as an assingment
 statement or condition test.
 
-If the environment variable @code{BASHDB_QUIT_ON_QUIT} is set, when the
+If the environment variable @code{_Dbg_QUIT_ON_QUIT} is set, when the
 program terminates, the debugger will also terminate too. This may be
 useful if you are debugging a script which calls another script and
 you want this inner script just to return to the outer script.

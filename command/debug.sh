@@ -55,11 +55,11 @@ _Dbg_do_debug() {
   else
     _Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
   fi
-  local -r old_quit_on_quit=$BASHDB_QUIT_ON_QUIT
-  export BASHDB_QUIT_ON_QUIT=1
+  local -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
+  export _Dbg_QUIT_ON_QUITo=1
   export BASHDB_BASENAME_ONLY="$_Dbg_basename_only"
   ((BASHDB_LEVEL++))
   $_Dbg_debug_cmd
   ((BASHDB_LEVEL--))
-  export BASHDB_QUIT_ON_QUIT=$old_quit_on_quit
+  export _Dbg_QUIT_ON_QUIT=$old_quit_on_quit
 }

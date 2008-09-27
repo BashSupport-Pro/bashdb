@@ -1,5 +1,5 @@
 #!@SH_PROG@
-# $Id: interrupt.sh.in,v 1.3 2008/09/06 14:17:43 rockyb Exp $
+# $Id: interrupt.sh.in,v 1.4 2008/09/27 14:54:48 rockyb Exp $
 
 if test -z "$srcdir"  ; then
   srcdir=`pwd`
@@ -24,7 +24,7 @@ source ${top_builddir}bashdb-trace -q -B -L @top_builddir@
 ## echo "print: " ${_Dbg_sig_print[2]}
 ## echo "stop: " ${_Dbg_sig_stop[2]}
 
-BASHDB_QUIT_ON_QUIT=1
+_Dbg_QUIT_ON_QUIT=1
 for i in `seq 100` ; do
    touch $1
    sleep 5

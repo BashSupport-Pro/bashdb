@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.41 2008/08/28 02:38:50 rockyb Exp $'
+'$Id: bashdb.in,v 1.42 2008/09/27 14:54:45 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -148,7 +148,7 @@ fi
 if ((_Dbg_opt_linetrace)) ; then 
   # No stepping.
   _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
-  BASHDB_QUIT_ON_QUIT=1
+  _Dbg_QUIT_ON_QUIT=1
 else 
   # Set to skip over the next 4 statements
   _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
