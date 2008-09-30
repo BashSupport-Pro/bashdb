@@ -90,7 +90,7 @@ typeset -r real_pat='[0-9]*([0-9]).?([0-9])*'
 
 # Set tty to use for output. 
 if [[ -z $_Dbg_tty ]] ; then 
-  typeset _Dbg_tty;
+  typeset -x _Dbg_tty
   _Dbg_tty=$(tty)
   [[ $? != 0 ]] && _Dbg_tty=''
 fi
@@ -110,4 +110,4 @@ typeset -r _Dbg_space_IFS='
 # when we debug this. By stopping at the end all of the above functions
 # and variables can be tested.
 typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.sh,v 1.3 2008/09/25 08:09:27 rockyb Exp $'
+'$Id: dbg-init.sh,v 1.4 2008/09/30 23:03:46 rockyb Exp $'
