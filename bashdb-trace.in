@@ -50,7 +50,6 @@ typeset prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset _Dbg_libdir=@PKGDATADIR@
 typeset _Dbg_bindir=$(dirname $0)
 typeset _Dbg_tmpdir=/tmp
-typeset -i _Dbg_opt_linetrace=0
 typeset _Dbg_cmd='' # If command string given on command line, this is it.
 
 # What to set for location of helper routines? 
@@ -62,11 +61,12 @@ if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
     fi
 fi
 
-# Parse just the libdir option
+# Parse just the library option
+typeset -ax _Dbg_script_args=("$@")
 typeset -i i
 for ((i=0; $i<${#_Dbg_script_args[@]}-1; i++)) ; do 
     typeset arg=${_Dbg_script_args[$i]}
-    if [[ $arg == '-L' || $arg == '--libdir' ]] ; then
+    if [[ $arg == '-L' || $arg == '--library' ]] ; then
 	((i++))
 	_Dbg_libdir="${_Dbg_script_args[$i]}"
 	break
@@ -80,11 +80,8 @@ if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then
   exit 1
 fi
 
-# Note that this is called via bashdb rather than "bash --debugger"
-_Dbg_script=1
-
-[[ -r $_Dbg_libdir/dbg-main ]] || {
-  echo "${_Dbg_pname}: cannot read debugger file $_Dbg_libdir/$_Dbg_main." >&2
+[[ -r $_Dbg_libdir/dbg-main.sh ]] || {
+  echo "${_Dbg_pname}: cannot read debugger file $_Dbg_libdir/dbg-main.sh" >&2
   echo "${_Dbg_pname}: Perhaps bashdb is installed incorrectly." >&2
   exit 1
 }
@@ -96,6 +93,9 @@ if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   echo "${_Dbg_pname}: Use -T try directory location." >&2
   exit 1
 fi
+
+# Note that this is called via bashdb rather than "bash --debugger"
+_Dbg_script=1
 
 _Dbg_set_trace_init=1
 

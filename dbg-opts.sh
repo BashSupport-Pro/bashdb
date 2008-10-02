@@ -118,7 +118,7 @@ _Dbg_parse_options() {
 		    _Dbg_tty=$OPTLARG
 		fi
 		;;
-	    trace ) 
+	    X | trace ) 
 		_Dbg_linetrace=1        ;;
 	    '?' )  # Path taken on a bad option
 		echo "Use -h or --help to see options" >&2
