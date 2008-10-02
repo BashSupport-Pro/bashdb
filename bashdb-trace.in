@@ -26,10 +26,18 @@ typeset _Dbg_trace_old_set_opts
 _Dbg_trace_old_set_opts=$-
 set +u
 
-typeset _Dbg_ver=\
-'$Id: bashdb-trace.in,v 1.33 2008/09/27 14:54:45 rockyb Exp $'
+# Name we refer to ourselves by
+typeset _Dbg_debugger_name='@PACKAGE@'
 
-declare -a _Dbg_script_args=("$@")
+# The shell we are configured to run under.
+typeset _Dbg_shell='@SH_PROG@'
+
+# The short shell name. Helps keep code common in bash, zsh, and ksh debuggers.
+# Equivalent to 
+typeset _Dbg_shell_name=${_Dbg_shell##*/}
+
+# Original $0. Note we can't set this in an include.
+typeset _Dbg_orig_0=$0
 
 # Equivalent to basename $0; the short program name
 typeset _Dbg_pname=${0##*/}  
@@ -38,19 +46,12 @@ typeset _Dbg_pname=${0##*/}
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
 typeset _Dbg_main=dbg-main.sh
-prefix=@prefix@  # cygwin gets PKGDATADIR wrong
+typeset prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset _Dbg_libdir=@PKGDATADIR@
 typeset _Dbg_bindir=$(dirname $0)
 typeset _Dbg_tmpdir=/tmp
 typeset -i _Dbg_opt_linetrace=0
 typeset _Dbg_cmd='' # If command string given on command line, this is it.
-
-# Name we refer to ourselves by
-typeset _Dbg_debugger_name='@PACKAGE@'
-
-# Use gdb-style annotate?
-typeset -i _Dbg_annotate=0
-typeset -i _Dbg_try_getopt=@TRY_GETOPT@
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
@@ -73,13 +74,22 @@ for ((i=0; $i<${#_Dbg_script_args[@]}-1; i++)) ; do
 done
 if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
   echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
-  echo "${_Dbg_pname}: Perhaps bashdb is installed wrong (if its installed)." >&2
-  echo "${_Dbg_pname}: Try running bashdb using -L (with a different directory)." >&2
-  echo "${_Dbg_pname}: Run bashdb --help for a list and explanation of options." >&2
+  echo "${_Dbg_pname}: Perhaps @PACKAGE@ is installed wrong (if its installed)." >&2
+  echo "${_Dbg_pname}: Try running @PACKAGE@ using -L (with a different directory)." >&2
+  echo "${_Dbg_pname}: Run @PACKAGE@ --help for a list and explanation of options." >&2
   exit 1
 fi
 
-. $_Dbg_libdir/dbg-opts.sh
+# Note that this is called via bashdb rather than "bash --debugger"
+_Dbg_script=1
+
+[[ -r $_Dbg_libdir/dbg-main ]] || {
+  echo "${_Dbg_pname}: cannot read debugger file $_Dbg_libdir/$_Dbg_main." >&2
+  echo "${_Dbg_pname}: Perhaps bashdb is installed incorrectly." >&2
+  exit 1
+}
+
+. $_Dbg_libdir/dbg-main.sh
 
 if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   echo "${_Dbg_pname}: cannot write to temp directory $_Dbg_tmpdir." >&2
@@ -87,34 +97,6 @@ if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   exit 1
 fi
 
-[[ -r $_Dbg_libdir/$_Dbg_main ]] || {
-  echo "${_Dbg_pname}: cannot read debugger file $_Dbg_libdir/$_Dbg_main." >&2
-  echo "${_Dbg_pname}: Perhaps bashdb is installed incorrectly." >&2
-  exit 1
-}
-
-# Note that this is called via bashdb rather than "bash --debugger"
-_Dbg_script=1
-
-. ${_Dbg_libdir}/dbg-pre.sh
-
-if [[ -z $_Dbg_quiet ]] ; then 
-  echo "Bourne-Again Shell Debugger, release $_Dbg_release"
-  cat <<EOF
-Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
-This is free software, covered by the GNU General Public License, and you are
-welcome to change it and/or distribute copies of it under certain conditions.
-
-EOF
-fi
-
-if (( show_version == 1 )) ; then 
-cat <<EOF
-There is absolutely no warranty for BASHDB.  Type "show warranty" for details.
-EOF
-  exit 1
-fi
-. $_Dbg_libdir/dbg-main.sh
 _Dbg_set_trace_init=1
 
 # Older alias for _Dbg_debugger()
@@ -187,6 +169,7 @@ _Dbg_handler() {
   _Dbg_step_ignore=-1
 }
 
+_Dbg_init_default_traps
 set -${_Dbg_trace_old_set_opts}
 unset _Dbg_trace_old_set_opts
 # end of bashdb-trace

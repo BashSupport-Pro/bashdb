@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.42 2008/09/27 14:54:45 rockyb Exp $'
+'$Id: bashdb.in,v 1.43 2008/10/02 02:37:31 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -34,26 +34,38 @@ function _Dbg_eval {
   eval $*  # Type: "x $*" to see what's being run.
 }
 
-typeset -a _Dbg_script_args=("$@")
+# Name we refer to ourselves by
+typeset _Dbg_debugger_name='@PACKAGE@'
+
+# The shell we are configured to run under.
+typeset _Dbg_shell='@SH_PROG@'
+
+# The short shell name. Helps keep code common in bash, zsh, and ksh debuggers.
+typeset _Dbg_shell_name=${_Dbg_shell##*/}  # Equivalent to basename(_Dbg_shell)
+
+# Original $0. Note we can't set this in an include.
+typeset _Dbg_orig_0=$0
 
 # Equivalent to basename $0; the short program name
-typeset _Dbg_pname=${0##*/}; typeset _Dbg_tmpdir=/tmp
+typeset _Dbg_pname=${0##*/}  
 
+## Stuff set by autoconf/configure ###
+typeset prefix=@prefix@
+typeset _Dbg_libdir=@PKGDATADIR@
+###
+
+[[ ! -d $_Dbg_libdir ]] && _Dbg_libdir='.'
+# Parse just the libdir option
 # Show basename only in location listing. This is needed in regression tests
 typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
 
-typeset     _Dbg_bashdb_main=@BASHDB_MAIN@
+typeset    _Dbg_bashdb_main=@BASHDB_MAIN@
 typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
 # typeset    _Dbg_libdir=@PKGDATADIR@
-
-# Name we refer to ourselves by
-typeset _Dbg_debugger_name='@PACKAGE@'
 
 typeset    _Dbg_main=dbg-main.sh
 typeset    _Dbg_bindir=$(dirname $0)
 typeset    _Dbg_cmd='' # If command string given on command line, this is it.
-
-typeset -i _Dbg_try_getopt=@TRY_GETOPT@
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
@@ -64,11 +76,12 @@ if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
     fi
 fi
 
-# Parse just the libdir option
+# Parse just the library option
+typeset -ax _Dbg_script_args=("$@")
 typeset -i i
 for ((i=0; $i<${#_Dbg_script_args[@]}-1; i++)) ; do 
     typeset arg=${_Dbg_script_args[$i]}
-    if [[ $arg == '-L' || $arg == '--libdir' ]] ; then
+    if [[ $arg == '-L' || $arg == '--library' ]] ; then
 	((i++))
 	_Dbg_libdir="${_Dbg_script_args[$i]}"
 	break
@@ -76,20 +89,30 @@ for ((i=0; $i<${#_Dbg_script_args[@]}-1; i++)) ; do
 done
 if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
   echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
-  echo "${_Dbg_pname}: Perhaps bashdb is installed wrong (if its installed)." >&2
-  echo "${_Dbg_pname}: Try running bashdb using -L (with a different directory)." >&2
-  echo "${_Dbg_pname}: Run bashdb --help for a list and explanation of options." >&2
+  echo "${_Dbg_pname}: Perhaps @PACKAGE@ is installed wrong (if its installed)." >&2
+  echo "${_Dbg_pname}: Try running @PACKAGE@ using -L (with a different directory)." >&2
+  echo "${_Dbg_pname}: Run @PACKAGE@ --help for a list and explanation of options." >&2
   exit 1
 fi
 
-. $_Dbg_libdir/dbg-opts.sh
-
-[[ $# == 0 && -z $show_version && -z $_Dbg_cmd ]] && {
-  echo "${_Dbg_pname}: Need to give a script name to debug."
+# Pull in the rest of the debugger code.
+typeset _Dbg_main="$_Dbg_libdir/dbg-main.sh"
+if [[ ! -r $_Dbg_main ]] ; then 
+  print "${_Dbg_pname}: Can't read debugger library file '${_Dbg_main}'."
+  print "${_Dbg_pname}: Perhaps @PACKAGE@ is installed wrong (if its installed)." >&2
+  print "${_Dbg_pname}: Try running @PACKAGE@ using -L (with a different directory)." >&2
+  print "${_Dbg_pname}: Run @PACKAGE@ --help for a list and explanation of options." >&2
   exit 1
-}
+    
+fi
 
-_source_file=$1
+. $_Dbg_libdir/dbg-main.sh ;
+
+# I don't know why when this is done in dbg-opts.sh it doesn't have
+# an effect.
+((OPTLIND > 0)) && shift "$((OPTLIND - 1))"
+    
+_source_file="$1"
 shift
 
 if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
@@ -98,68 +121,28 @@ if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   exit 1
 fi
 
-[[ -r $_Dbg_libdir/$_Dbg_main ]] || {
-  echo "${_Dbg_pname}: cannot read debugger file $_Dbg_libdir/$_Dbg_main." >&2
-  echo "${_Dbg_pname}: Perhaps bashdb is installed incorrectly." >&2
-  exit 1
-}
-
 # Note that this is called via bashdb rather than "bash --debugger"
-. ${_Dbg_libdir}/dbg-pre.sh
-
 _Dbg_script=1
 
-if [[ -z $_Dbg_quiet ]] ; then 
-  echo "Bourne-Again Shell Debugger, release $_Dbg_release"
-  printf '
-Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
-This is free software, covered by the GNU General Public License, and you are
-welcome to change it and/or distribute copies of it under certain conditions.
-
-'
-fi
-
-if ((show_version)) ; then 
-printf '
-There is absolutely no warranty for bashdb.  Type "show warranty" for details.
-'
-  exit 1
-fi
-
 if [[ ! -r "$_source_file" ]] && [[ -z $_Dbg_cmd ]] ; then
-  echo "${_Dbg_pname}: cannot read program to debug: $_source_file." >&2
+  echo "${_Dbg_pname}: cannot read program to debug: ${_source_file}." >&2
   exit 1
 else
   typeset -r _Dbg_source_file=$(_Dbg_expand_filename $_source_file)
 fi
 
-# Pull in the rest of the debugger code.
-typeset _Dbg_main="$_Dbg_libdir/dbg-main.sh"
-if [[ ! -r $_Dbg_main ]] ; then 
-  print "${_Dbg_pname}: Can't read debugger library file '${_Dbg_main}'."
-  print "${_Dbg_pname}: Perhaps bashdb is installed wrong (if its installed)." >&2
-  print "${_Dbg_pname}: Try running bashdb using -L (with a different directory)." >&2
-  print "${_Dbg_pname}: Run bashdb --help for a list and explanation of options." >&2
-  exit 1
-    
-fi
-. $_Dbg_libdir/dbg-main.sh ;
-
-if ((_Dbg_opt_linetrace)) ; then 
+if ((_Dbg_linetrace)) ; then 
   # No stepping.
   _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
   _Dbg_QUIT_ON_QUIT=1
 else 
-  # Set to skip over the next 4 statements
-  _Dbg_write_journal_eval "_Dbg_step_ignore=5" 
+  # Set to skip over statements up to ". $_source_file"
+  _Dbg_write_journal_eval "_Dbg_step_ignore=4" 
 fi
+_Dbg_init_default_traps
 trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 set -o functrace
 if [[ -z $_Dbg_cmd ]] ; then 
-  if ((_Dbg_opt_linetrace)) ; then 
-    ((_Dbg_opt_linetrace_expand)) && _Dbg_linetrace_expand=1
-    _Dbg_linetrace=1
-  fi
   . "$_source_file"
 else 
   _Dbg_eval "$_Dbg_cmd"

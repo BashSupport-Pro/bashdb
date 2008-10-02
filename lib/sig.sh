@@ -301,9 +301,11 @@ _Dbg_init_trap() {
   fi
 }
 
-_Dbg_init_trap EXIT   "noprint" "nostack" "stop" 
-_Dbg_init_trap ILL    "print" "showstack" "stop" 
-_Dbg_init_trap INT    "print" "showstack" "stop" 
-_Dbg_init_trap QUIT   "print" "showstack" "stop" 
-_Dbg_init_trap TERM   "print" "showstack" "stop" 
-_Dbg_init_trap TRAP   "print" "showstack" "stop" 
+_Dbg_init_default_traps() {
+    _Dbg_init_trap EXIT   "noprint" "nostack" "stop" 
+    _Dbg_init_trap ILL    "print" "showstack" "stop" 
+    _Dbg_init_trap INT    "print" "showstack" "stop" 
+    _Dbg_init_trap QUIT   "print" "showstack" "stop" 
+    _Dbg_init_trap TERM   "print" "showstack" "stop" 
+    _Dbg_init_trap TRAP   "print" "showstack" "stop" 
+}

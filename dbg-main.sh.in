@@ -24,10 +24,9 @@ if [[ -z "${BASH_SOURCE[0]}" ]] ; then
   exit 2
 fi
 
-# $_Dbg_libdir could have been set by bashdb script.
-# If not, set if "bash --debugger"
-prefix=@prefix@  # cygwin gets PKGDATADIR wrong
-[ -z $_Dbg_libdir ] && typeset _Dbg_libdir=@PKGDATADIR@
+# Stuff common to bashdb and bashdb-trace. Include the rest of options
+# processing. Also includes things which have to come before other includes
+. ${_Dbg_libdir}/dbg-pre.sh
 
 # Note: "init" comes first and "cmds" has to come after "io". Otherwise 
 # these are sorted alphabetically.

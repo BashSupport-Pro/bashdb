@@ -37,7 +37,6 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 #
 AC_SUBST(BASHVERS)
 AC_SUBST(RELSTATUS)
-AC_SUBST(TRY_GETOPT)
 AC_SUBST(BASH_SRC)
 AC_SUBST(PIC)
 AC_SUBST(WL)
@@ -48,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.63 2008/09/26 19:17:50 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.64 2008/10/02 02:37:31 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -58,14 +57,10 @@ AC_PREREQ(2.53)
 AC_ARG_PROGRAM
 AM_INIT_AUTOMAKE([no-define])
 
-AC_ARG_ENABLE([gnugetopt],
-	AC_HELP_STRING([--enable-getopt], 
-	[Allow GNU-style long options (default enabled)]))
-
 AC_BASHDB_PACKAGE([bashdb])
 
 # Brought over from bash/configure.in to substitute OK_BASH_VERS
-# and RELSTATUS in dbg-pre.sh.in and version.texi
+# and RELSTATUS in bashdb.in and version.texi
 BASHVERS=OK_BASH_VERS
 RELSTATUS=relstatus
 
@@ -104,20 +99,6 @@ fi
 if test "$SH_PROG" = no; then
   AC_MSG_ERROR([I didn't find the DEBUGGER executable.\
   You might want to use the --with-DEBUGGER option.])
-fi
-
-if test "${enable_getopt}" != "no" ; then
-  $SH_PROG ./getopt-test.sh
-  if test $? -eq 0 ; then
-    AC_MSG_RESULT([Good! Your long options seem to be working okay.])
-    TRY_GETOPT=1
-  else
-    AC_MSG_WARN([getopt doesn't seem to handle long options correctly.])
-    AC_MSG_WARN([Disabling long-options in DEBUGGER.])
-    TRY_GETOPT=0
-  fi  
-else
-  TRY_GETOPT=0
 fi
 
 bash_version=`$SH_PROG --version`
@@ -261,7 +242,6 @@ AC_CONFIG_FILES([ \
 	bashdb-main.inc \
 	bashdb-trace \
 	dbg-main.sh \
-	dbg-pre.sh \
 	doc/macros.texi \
 	emacs/dbg-test.el \
 	test/integration/check-common.sh \

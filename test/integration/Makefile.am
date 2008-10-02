@@ -56,3 +56,5 @@ abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
 EXTRA_DIST = $(TESTS) $(check_DATA) README
+
+test: check

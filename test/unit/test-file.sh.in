@@ -43,7 +43,7 @@ test_resolve_expand_filename()
     assertEquals '/' "$filename"
     filename=$(_Dbg_resolve_expand_filename .)
     assertEquals '0' $?
-    assertEquals '/' "${filename[0]}"
+    assertEquals '/' "${filename:0:1}"
     filename=$(_Dbg_resolve_expand_filename ./fdafdsa)
     assertEquals '0' $?
     typeset -i size=${#filename}

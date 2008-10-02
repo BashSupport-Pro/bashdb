@@ -26,44 +26,44 @@ _Dbg_help_add restart \
 
 _Dbg_do_restart() {
 
-  local script_args
-  if (( $# != 0 )) ; then 
-    script_args="$@"
-  else
-    script_args="${_Dbg_script_args[@]}"
-  fi
-
-  local exec_cmd="$_Dbg_orig_0 $script_args";
-  if (( _Dbg_script )) ; then
-    [ -z "$BASH" ] && BASH='bash'
-    local bash_opt=''
-    [[ $orig_0 =~ (.*/|^)bashdb$ ]] && bash_opt='--debugger '
-    if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
-      script_args="${bash_opt}-c \"$BASH_EXECUTION_STRING\""
+    typeset script_args
+    if (( $# == 0 )) ; then 
+	script_args="${_Dbg_orig_script_args[@]}"
     else
-      script_args="${bash_opt}$_Dbg_orig_0 $script_args";
+	script_args="$@"
     fi
-    exec_cmd="$BASH $script_args";
-  elif [[ -n "$BASH" ]] ; then
-      local exec_cmd="$BASH $_Dbg_orig_0 $script_args";
-  fi
 
-  _Dbg_msg "Restarting with: $script_args"
+    typeset exec_cmd="$_Dbg_orig_0 $script_args";
+    if (( _Dbg_script )) ; then
+	[ -z "$BASH" ] && BASH='bash'
+	local bash_opt=''
+	[[ $orig_0 =~ (.*/|^)bashdb$ ]] && bash_opt='--debugger '
+	if [[ $_cur_source_file == $_Dbg_bogus_file ]] ; then
+	    script_args="${bash_opt}-c \"$BASH_EXECUTION_STRING\""
+	else
+	    script_args="${bash_opt}$_Dbg_orig_0 $script_args";
+	fi
+	exec_cmd="$BASH $script_args";
+    elif [[ -n "$BASH" ]] ; then
+	local exec_cmd="$BASH $_Dbg_orig_0 $script_args";
+    fi
 
-  # If we are in a subshell we need to get out of those levels
-  # first before we restart. The strategy is to write into persistent
-  # storage the restart command, and issue a "quit." The quit should
-  # discover the restart at the last minute and issue the restart.
-  if (( BASH_SUBSHELL > 0 )) ; then 
-    _Dbg_msg "Note you are in a subshell. We will need to leave that first."
-    _Dbg_write_journal "_Dbg_RESTART_COMMAND=\"$exec_cmd\""
-    _Dbg_do_quit 0
-  fi
-  _Dbg_cleanup
-  _Dbg_save_state
-  builtin cd $_Dbg_init_cwd
+    _Dbg_msg "Restarting with: $script_args"
 
-  exec $exec_cmd
+    # If we are in a subshell we need to get out of those levels
+    # first before we restart. The strategy is to write into persistent
+    # storage the restart command, and issue a "quit." The quit should
+    # discover the restart at the last minute and issue the restart.
+    if (( BASH_SUBSHELL > 0 )) ; then 
+	_Dbg_msg "Note you are in a subshell. We will need to leave that first."
+	_Dbg_write_journal "_Dbg_RESTART_COMMAND=\"$exec_cmd\""
+	_Dbg_do_quit 0
+    fi
+    _Dbg_cleanup
+    _Dbg_save_state
+    builtin cd $_Dbg_init_cwd
+
+    exec $exec_cmd
 }
 
 _Dbg_alias_add R restart

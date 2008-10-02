@@ -124,4 +124,4 @@ _Dbg_history_remove_item() {
   unset _Dbg_history[$_Dbg_hi]
 }
 
-_Dbg_history_read
+# _Dbg_history_read

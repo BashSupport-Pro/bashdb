@@ -26,7 +26,7 @@
 # used in only one sub-part (e.g. variables for break/watch/actions) to o
 # the corresponding file.
 
-[[ -z $_Dbg_release ]] || return
+[[ -n "$_Dbg_release" ]] && return
 typeset -r _Dbg_release='bash-3.1-0.10cvs'
 
 # Expand filename given as $1.
@@ -70,11 +70,40 @@ function _Dbg_expand_filename {
   fi
 }
 
-# $_Dbg_tmpdir could have been set by the top-level debugger script.
-[[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
-
 # Create temporary file based on $1
 # file $1
 _Dbg_tempname() {
   echo "$_Dbg_tmpdir/${_Dbg_debugger_name}$1$$"
 }
+
+# Process command-line options
+OPTLIND=1
+. ${_Dbg_libdir}/dbg-opts.sh
+_Dbg_parse_options "$@"
+
+if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
+  echo "${_Dbg_pname}: cannot write to temp directory $_Dbg_tmpdir." >&2
+  echo "${_Dbg_pname}: Use -T try directory location." >&2
+  exit 1
+fi
+
+# Save the initial working directory so we can reset it on a restart.
+typeset -x _Dbg_init_cwd=$PWD
+
+typeset -i _Dbg_running=1      # True we are not finished running the program
+
+typeset -i _Dbg_currentbp=0    # If nonzero, the breakpoint number that we 
+                               # are currently stopped at.
+
+# Sets whether or not to display command before executing it.
+typeset _Dbg_trace_commands='off'
+
+# Known normal IFS consisting of a space, tab and newline
+typeset -x _Dbg_space_IFS=' 	
+'
+
+# Number of statements to run before entering the debugger.  Is used
+# intially to get out of sourced dbg-main.inc script and in top-level
+# debugger script to not stop in remaining debugger statements before
+# the sourcing the script to be debugged.
+typeset -i _Dbg_step_ignore=1

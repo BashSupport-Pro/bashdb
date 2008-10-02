@@ -27,15 +27,6 @@
 typeset _cur_fn             # current function of debugged program
 typeset -i _cur_line        # current line number of debugged program
 
-# Number of statements to run before entering the debugger.
-# Is used intially to get out of sourced dbg-main.sh script
-# and in bashdb script to not stop in remaining bashdb statements
-# before the sourcing the script to be debugged.
-typeset -i _Dbg_step_ignore=1
-
-# Save the initial working directory so we can reset it on a restart.
-typeset _Dbg_init_cwd=$PWD
-
 # If called from bashdb script rather than via "bash --debugger", skip
 # over some initial setup commands, like the initial "source" function
 # of debugged shell script.
@@ -49,30 +40,16 @@ fi
 
 typeset -r _Dbg_orig_0=$0
 if [[ -n $_Dbg_script ]] ; then 
-  ((_Dbg_have_set0)) && [[ -n $_source_file ]] && builtin set0 $_source_file
+  if ((_Dbg_have_set0)) && [[ -n $_source_file ]] ; then
+      builtin set0 $_source_file
+  fi
   _Dbg_step_ignore=3
 else 
-  . ${_Dbg_libdir}/dbg-pre.sh
-  [[ -z $_Dbg_source_file ]] && \
-      typeset -r _Dbg_source_file=$(_Dbg_expand_filename $_Dbg_orig_0)
   typeset -i _Dbg_n=$#
   typeset -i _Dbg_i
-  typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
-  typeset -a _Dbg_script_args
-  for (( _Dbg_i=0; _Dbg_i<_Dbg_n ; _Dbg_i++ )) ; do
-    _Dbg_script_args[$_Dbg_i]=$1
-    shift
-  done
-  # Now that we've trashed the script parameters above, restore them.
-  _Dbg_set_str='set --'
-  for (( _Dbg_i=0; _Dbg_i<_Dbg_n ; _Dbg_i++ )) ; do
-    _Dbg_set_str="$_Dbg_set_str \"${_Dbg_script_args[$_Dbg_i]}\""
-  done
-  eval $_Dbg_set_str
 fi
 
 typeset -i _Dbg_need_input=1   # True if we need to reassign input.
-typeset -i _Dbg_running=1      # True we are not finished running the program
 typeset -i _Dbg_currentbp=0    # If nonzero, the breakpoint number that we 
                                # are currently stopped at.
 typeset last_next_step_cmd='s' # Default is step.
@@ -95,19 +72,6 @@ if [[ -z $_Dbg_tty ]] ; then
   [[ $? != 0 ]] && _Dbg_tty=''
 fi
 
-# Equivalent to basename $_Dbg_orig_0 -- the short program name
-typeset _Dbg_pname=${_Dbg_orig_0##*/} 
-
-# Known normal IFS consisting of a space, tab and newline
-typeset -r _Dbg_space_IFS=' 	
-'
-
 # If _Dbg_QUIT_LEVELS is set to a positive number, this is the number
 # of levels (subshell or shell nestings) or we should exit out of.
 [[ -z $_Dbg_QUIT_LEVELS ]] && _Dbg_QUIT_LEVELS=0
-
-# This is put at the so we have something at the end to stop at 
-# when we debug this. By stopping at the end all of the above functions
-# and variables can be tested.
-typeset -r _Dbg_init_ver=\
-'$Id: dbg-init.sh,v 1.4 2008/09/30 23:03:46 rockyb Exp $'
