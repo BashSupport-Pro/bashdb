@@ -40,8 +40,8 @@ fi
 
 typeset -r _Dbg_orig_0=$0
 if [[ -n $_Dbg_script ]] ; then 
-  if ((_Dbg_have_set0)) && [[ -n $_source_file ]] ; then
-      builtin set0 $_source_file
+  if ((_Dbg_have_set0)) && [[ -n $_Dbg_script_file ]] ; then
+      builtin set0 $_Dbg_script_file
   fi
   _Dbg_step_ignore=3
 else 

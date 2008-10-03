@@ -28,7 +28,7 @@
 typeset -a _Dbg_filenames          # names of all source files read
 typeset -a _Dbg_override_filenames # name translations given via the debugger
                                    # "file" command.
-typeset _cur_source_file  # current source file of debugged program
+typeset _Dbg_frame_last_filename  # current source file of debugged program
 typeset _cur_filevar      # source file mangled so it can be used in a variable
 typeset -i _curline       # current line number of debugged program
 
@@ -98,10 +98,10 @@ function _Dbg_progess_done {
 # $source_line. The hope is that this has been declared "typeset" in the 
 # caller.
 
-# If $2 is omitted, # use _cur_source_file, if $1 is omitted use _curline.
+# If $2 is omitted, # use _Dbg_frame_last_filename, if $1 is omitted use _curline.
 function _Dbg_get_source_line {
   typeset lineno=${1:-$_curline}
-  typeset filename=${2:-$_cur_source_file}
+  typeset filename=${2:-$_Dbg_frame_last_filename}
   typeset filevar=$(_Dbg_file2var $filename)
   typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
   [[ $is_read ]] || _Dbg_readin $filename 
@@ -111,4 +111,4 @@ function _Dbg_get_source_line {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.sh,v 1.3 2008/08/21 01:34:22 rockyb Exp $'
+'$Id: dbg-io.sh,v 1.4 2008/10/03 08:57:25 rockyb Exp $'

@@ -41,7 +41,7 @@ _Dbg_do_list() {
     fi
 
     if [[ $first_arg == '.' ]] ; then
-	_Dbg_list $_cur_source_file $*
+	_Dbg_list $_Dbg_frame_last_filename $*
 	return $?
     fi
 

@@ -176,7 +176,7 @@ _Dbg_debug_trap_handler() {
 
       if ((_Dbg_step_force)) ; then
 	  if (( $_Dbg_last_lineno == $_curline )) \
-	      && [[ $_Dbg_last_source_file == $_cur_source_file ]] ; then 
+	      && [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then 
 	      _Dbg_set_to_return_from_debugger 1
 	      return $_Dbg_rc
 	  fi

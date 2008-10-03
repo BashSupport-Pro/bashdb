@@ -205,7 +205,7 @@ _Dbg_check_line() {
 # in array _Dbg_filenames
 
 function _Dbg_readin {
-  typeset filename=${1:-$_cur_source_file}
+  typeset filename=${1:-$_Dbg_frame_last_filename}
 
   typeset -i line_count=0
   typeset filevar
@@ -289,4 +289,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.sh,v 1.4 2008/09/06 15:26:33 rockyb Exp $'
+'$Id: file.sh,v 1.5 2008/10/03 08:57:25 rockyb Exp $'

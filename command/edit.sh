@@ -35,7 +35,7 @@ _Dbg_do_edit() {
   typeset editor=${EDITOR:-ex}
   if (( $# == 1 )) ; then
     line_number=$_curline
-    full_filename=$_cur_source_file
+    full_filename=$_Dbg_frame_last_filename
   else
     _Dbg_linespec_setup $1
   fi

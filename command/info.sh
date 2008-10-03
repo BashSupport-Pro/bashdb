@@ -81,7 +81,7 @@ _Dbg_do_info() {
 		  return $?
 	      fi
 
-              _Dbg_msg "Line $_Dbg_listline of \"$_cur_source_file\""
+              _Dbg_msg "Line $_Dbg_listline of \"$_Dbg_frame_last_filename\""
 	      return
 	      ;;
 	  
@@ -100,7 +100,7 @@ _Dbg_do_info() {
 	      ;;
 	  
 	  so | sou | sourc | source )
-              _Dbg_msg "Current script file is $_cur_source_file" 
+              _Dbg_msg "Current script file is $_Dbg_frame_last_filename" 
 	      typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
 	      _Dbg_msg "Contains $max_line lines." ; 
               return

@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: test-restart,v 1.2 2008/08/23 16:56:21 rockyb Exp $
+#$Id: test-restart,v 1.3 2008/10/03 08:57:25 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -9,7 +9,7 @@
 TEST_NAME='restart'
 . ${top_builddir}/test/integration/check-common.sh
 
-debugged_script="$top_builddir/test/example/restarbug.sh"
+debugged_script="$top_builddir/test/example/restartbug.sh"
 
 echo 'Skipping restart test for now'
 exit 77

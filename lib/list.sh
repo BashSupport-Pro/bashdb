@@ -26,11 +26,11 @@ typeset _Dbg_last_search_pat
 typeset -i _Dbg_listline
 
 # Print source line in standard format for line $1 of filename $2.  If
-# $2 is omitted, use _cur_source_file, if $1 is omitted use _curline.
+# $2 is omitted, use _Dbg_frame_last_filename, if $1 is omitted use _curline.
 
 function _Dbg_print_source_line {
   typeset line_number=${1:-$_curline}
-  typeset filename=${2:-$_cur_source_file}
+  typeset filename=${2:-$_Dbg_frame_last_filename}
   typeset source_line
   _Dbg_get_source_line $line_number $filename
   filename=$(_Dbg_adjust_filename "$filename")
@@ -43,7 +43,7 @@ ${line_number}:\t${source_line}"
   if [[ $_Dbg_show_command == "on" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
   elif [[ $_Dbg_last_lineno == $_curline ]] \
-    && [[ $_Dbg_last_source_file == $_cur_source_file ]] \
+    && [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] \
     && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
     && $_Dbg_show_command == "auto" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
@@ -54,7 +54,7 @@ ${line_number}:\t${source_line}"
 # is in effect.
 _Dbg_print_linetrace() {
   typeset line_number=${1:-$_curline}
-  typeset filename=${2:-$_cur_source_file}
+  typeset filename=${2:-$_Dbg_frame_last_filename}
 
   # Remove main + sig-handler  + print_lintrace FUNCNAMES.
   typeset -i depth=${#FUNCNAME[@]}-3  
@@ -87,7 +87,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
   if [[ $_Dbg_show_command == "on" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
   elif (( _Dbg_last_lineno == _curline )) \
-    && [[ $_Dbg_last_source_file == $_cur_source_file ]] \
+    && [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] \
     && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
     && $_Dbg_show_command == "auto" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
@@ -95,7 +95,7 @@ level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
 }
 
 # list $3 lines starting at line $2 of file $1. If $1 is '', use
-# $_cur_source_file value.  If $3 is ommited, print $_Dbg_listsize
+# $_Dbg_frame_last_filename value.  If $3 is ommited, print $_Dbg_listsize
 # lines. if $2 is omitted, use global variable $_curline.
 
 _Dbg_list() {
@@ -104,7 +104,7 @@ _Dbg_list() {
     else
 	filename=$_Dbg_frame_last_file
     fi
-    typeset filename=$_cur_source_file
+    typeset filename=$_Dbg_frame_last_filename
 
     if [[ $2 = . ]]; then
       _Dbg_listline=$_curline
@@ -141,7 +141,7 @@ _Dbg_list() {
      _Dbg_get_source_line $_Dbg_listline $filename
 
      (( _Dbg_listline == _curline )) \
-       && [[ $filename == $_cur_source_file ]] &&  prefix="==>"
+       && [[ $filename == $_Dbg_frame_last_filename ]] &&  prefix="==>"
      _Dbg_printf "%3d:%s%s" $_Dbg_listline "$prefix" "$source_line"
     done
     (( _Dbg_listline > max_line && _Dbg_listline-- ))

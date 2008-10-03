@@ -49,12 +49,12 @@ function _Dbg_set_debugger_entry {
 
   _Dbg_old_IFS="$IFS"
   _Dbg_old_PS4="$PS4"
-  _cur_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
+  _Dbg_frame_last_filename=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
   _Dbg_stack_pos=$_Dbg_STACK_TOP
   _Dbg_listline=_curline
   _Dbg_set_debugger_internal
-  _cur_source_file="`_Dbg_resolve_expand_filename $_cur_source_file`"
-  _cur_filevar="`_Dbg_file2var $_cur_source_file`"
+  _Dbg_frame_last_filename="`_Dbg_resolve_expand_filename $_Dbg_frame_last_filename`"
+  _cur_filevar="`_Dbg_file2var $_Dbg_frame_last_filename`"
 
   # Read in the journal to pick up variable settings that might have
   # been left from a subshell.
@@ -75,7 +75,7 @@ function _Dbg_set_to_return_from_debugger {
   if (( $1 != 0 )) ; then
     _Dbg_last_bash_command="$_Dbg_bash_command"
     _Dbg_last_lineno="$_curline"
-    _Dbg_last_source_file="$_cur_source_file"
+    _Dbg_last_source_file="$_Dbg_frame_last_filename"
   else
     _Dbg_last_lineno=${BASH_LINENO[1]}
     _Dbg_last_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}

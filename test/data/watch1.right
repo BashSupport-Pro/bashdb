@@ -71,7 +71,7 @@ Watchpoint 2: $x changed:
 +l 
 144:==>set -o functrace
 145:   if [[ -z $_Dbg_cmd ]] ; then 
-146:     . "$_source_file"
+146:     . "$_Dbg_script_file"
 147:   else 
 148:     _Dbg_eval "$_Dbg_cmd"
 149:   fi

@@ -240,9 +240,9 @@ function _Dbg_parse_linespec {
   eval "$_seteglob"
   case "$linespec" in
 
-    # line number only - use _cur_source_file for filename
+    # line number only - use _Dbg_frame_last_filename for filename
     $int_pat )	
-      echo "$linespec 0 $_cur_source_file"
+      echo "$linespec 0 $_Dbg_frame_last_filename"
       ;;
     
     # file:line
@@ -289,4 +289,4 @@ function _Dbg_set_ftrace {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.6 2008/09/24 13:57:55 rockyb Exp $'
+'$Id: fns.sh,v 1.7 2008/10/03 08:57:25 rockyb Exp $'

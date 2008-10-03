@@ -262,13 +262,13 @@ _Dbg_onecmd() {
 	    ((count=count+start_line-1))
 	    start_line=1
 	  fi
-	  _Dbg_list $_cur_source_file $start_line $count
+	  _Dbg_list $_Dbg_frame_last_filename $start_line $count
 	  _Dbg_last_cmd='list'
 	  ;;
 
 	# list current line
 	. )
-	  _Dbg_list $_cur_source_file $_curline 1
+	  _Dbg_list $_Dbg_frame_last_filename $_curline 1
 	  _Dbg_last_cmd='list'
 	  ;;
 
@@ -609,7 +609,7 @@ _Dbg_onecmd() {
 	w | wi | win | wind | windo | window )
 	  ((_startline=_curline - _Dbg_listsize/2))
 	  (( $_startline <= 0 )) && _startline=1
-	  _Dbg_list $_cur_source_file $_startline
+	  _Dbg_list $_Dbg_frame_last_filename $_startline
 	  ;;
 
 	# watch variable
