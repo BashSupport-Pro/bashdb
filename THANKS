@@ -1,4 +1,4 @@
-The following kind people have contributed to this debugger. 
+The following kind people have contributed to this debugger:
 
 Eric Blake <ebb9 at byu dot edu> - packaging/build fixes. cygwin packaging
 Manfred Tremmel <Manfred.Tremmel at iiv.de> - RPM building for SuSE
@@ -10,3 +10,11 @@ Mikael Andersson  snikkt at telia dot com - "V" command auto* fixes
 Oleksandr Moskalenko  <malex at tagancha dot org> Debian packaging
 Matt Fleming          - NetBSD packaging
 Alberto Griggio       - Annotate patch #1781965 (for pydb)
+
+-- 
+
+The following software is used in this debugger:
+
+getopts_long.sh by Stéphane Chazelas - GNU-compatible long-options parsing
+shunit2 by Kate Ward - unit tests
+Nikolaj Schumacher - unit tests for GNU Emacs

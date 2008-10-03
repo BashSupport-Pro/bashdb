@@ -1,8 +1,6 @@
 #!/bin/bash -f
 # -*- shell-script -*-
 
-(( 3 == ${BASH_VERSINFO[0]} )) && exit 77
-
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
 [ -z "$top_builddir" ] && export top_builddir=$builddir/../..
@@ -11,9 +9,14 @@
 
 TEST_NAME=interrupt
 TEST_FILE="$builddir/${TEST_NAME}.check"
-(cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-ls -l $TEST_FILE
+if (( 3 == ${BASH_VERSINFO[0]} )) ; then
+    test_script=${TEST_NAME}-3.tests
+elif (( 4 == ${BASH_VERSINFO[0]} )) ; then
+    test_script=${TEST_NAME}.tests
+fi
+
+(cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
 check_output $TEST_FILE ${top_builddir}/test/data/${TEST_NAME}.right
 

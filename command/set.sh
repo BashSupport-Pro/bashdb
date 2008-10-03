@@ -48,8 +48,13 @@ _Dbg_do_set() {
       _Dbg_script_args=()
       typeset -i i
       typeset -i n=$#
+      typeset -i m=${#_Dbg_orig_script_args[@]}
       for (( i=0; i<n ; i++ )) ; do
-	_Dbg_write_journal_eval "_Dbg_script_args[$i]=$1"
+	_Dbg_write_journal_eval "_Dbg_orig_script_args[$i]=$1"
+	shift
+      done
+      for ((  ; i<m ; i++ )) ; do
+	_Dbg_write_journal_eval "unset _Dbg_orig_script_args[$i]"
 	shift
       done
       ;;

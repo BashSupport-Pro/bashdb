@@ -4,6 +4,7 @@ check_DATA = \
 	brkpt3.tests       \
 	check-common.sh.in \
 	interrupt.tests    \
+	interrupt-3.tests  \
 	lopts.tests        \
 	multi.sh           \
 	setshow.tests 	   \
