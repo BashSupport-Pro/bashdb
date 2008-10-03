@@ -50,7 +50,6 @@ typeset prefix=@prefix@  # cygwin gets PKGDATADIR wrong
 typeset _Dbg_libdir=@PKGDATADIR@
 typeset _Dbg_bindir=$(dirname $0)
 typeset _Dbg_tmpdir=/tmp
-typeset _Dbg_cmd='' # If command string given on command line, this is it.
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then

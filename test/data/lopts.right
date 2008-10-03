@@ -1,28 +1,3 @@
-usage:
-    bashdb [OPTIONS] <script_file>
-
-Runs bash <script_file> under a debugger.
-
-options: 
-    -A | --annotate  LEVEL  set annotation level.
-    -B | --basename         basename only on source listings. 
-                            (Needed in regression tests)
-    -h | --help             print this help
-    -n | --nx |--no-init    Don't run initialization files
-    -c cmd | --eval-command cmd  Run this passed argument as a script
-    -q | --quiet     Quiet. Do not print introductory and quiet messages.
-    -L libdir | --library libdir
-                            set directory location of library helper file: dbg-main.sh
-                            The default directory is: 
-    -T tmpdir | --tempdir   set directory location for temporary files: /tmp
-    -t tty | --tty tty | --terminal tty
-                            set debugger terminal
-    -x command | --command cmdfile
-                            execute debugger commands from cmdfile
-    -X | --trace            set line tracing
-    -V | --version          show version number and no-warranty and exit.
-
-Long options may be abbreviated, e.g. --lib is okay for --library.
 (dbg-test1.sh:22):
 22:	x=22
 +# Just a simple quit command.
@@ -31,6 +6,6 @@ Long options may be abbreviated, e.g. --lib is okay for --library.
 22:	x=22
 +# Just a simple quit command.
 +quit 
-bashdb: Need to give a script name to debug.
-bashdb: unrecognized option `--badopt'
-Use --help for option help. Terminating...
+bashdb: need to give a script to debug or use the -c option.
+bad option: `--badopt'
+Use -h or --help to see options.

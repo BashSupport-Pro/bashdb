@@ -29,11 +29,12 @@ options:
     -A | --annotate  LEVEL  Set the annotation level.
     -B | --basename         Show basename only on source file listings. 
                             (Needed in regression tests)
-    -L libdir | --library libdir
+    -L libdir | --library DIRECTORY
                             Set the directory location of library helper file: $_Dbg_main
+    -c | --command STRING   Run STRING instead of a script file
     -n | --nx | --no-init   Don't run initialization files.
     -V | --version          Print the debugger version number.
-    -x command | --command CMDFILE
+    -x | --eval-command CMDFILE
                             Execute debugger commands from CMDFILE.
 "
   exit 100
@@ -73,7 +74,7 @@ _Dbg_parse_options() {
     while getopts_long A:Bc:x:hL:nqTt:VX opt \
 	annotate required_argument           \
 	basename 0                           \
-	cmdfile  required_argument           \
+	command  required_argument           \
 	debugger 0                           \
 	eval-command required_argument       \
     	help     0                           \
@@ -91,13 +92,11 @@ _Dbg_parse_options() {
 	    B | basename )
 		_Dbg_basename_only=1  	;;
 	    c | eval-command )
-		_Dbg_cmd="$OPTLARG" 	;;
+		BASH_EXECUTION_STRING="$OPTLARG" ;;
 	    debugger ) 
 		# This option is for compatibility with bash --debugger
 		;;  
 
-	    x | command )
-		DBG_INPUT=$OPTLARG	;;
 	    h | help )
 		_Dbg_usage		;;
 	    L | library ) 		;;
@@ -118,18 +117,20 @@ _Dbg_parse_options() {
 		    _Dbg_tty=$OPTLARG
 		fi
 		;;
+	    x | command )
+		DBG_INPUT=$OPTLARG	;;
 	    X | trace ) 
 		_Dbg_linetrace=1        ;;
 	    '?' )  # Path taken on a bad option
-		echo "Use -h or --help to see options" >&2
+		echo  >&2 'Use -h or --help to see options.'
 		exit 2                  ;;
 	    * ) 
-		echo "Unknown option $opt. Use -h or --help to see options" >&2
+		echo "Unknown option $opt. Use -h or --help to see options." >&2
 		exit 2		;;
 	esac
     done
     shift "$(($OPTLIND - 1))"
-    
+
     if (( ! _Dbg_o_quiet && ! _Dbg_o_version )); then 
 	echo "Bourne-Again Shell Debugger, release $_Dbg_release"
 	printf '
@@ -158,13 +159,12 @@ welcome to change it and/or distribute copies of it under certain conditions.
     _Dbg_script_args=("$@")
 }
 
-[[ -n $DBG_INPUT ]] && typeset -p DBG_INPUT
-
 
 # Stand-alone Testing. 
 if [[ -n "$_Dbg_dbg_opts_test" ]] ; then
     OPTLIND=1
     _Dbg_libdir='.'
+    [[ -n $_Dbg_input ]] && typeset -p _Dbg_input
     _Dbg_parse_options "$@"
     typeset -p _Dbg_annotate
     typeset -p _Dbg_linetrace

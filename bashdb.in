@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.44 2008/10/03 08:57:25 rockyb Exp $'
+'$Id: bashdb.in,v 1.45 2008/10/03 15:24:02 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -65,7 +65,6 @@ typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
 
 typeset    _Dbg_main=dbg-main.sh
 typeset    _Dbg_bindir=$(dirname $0)
-typeset    _Dbg_cmd='' # If command string given on command line, this is it.
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
@@ -111,6 +110,11 @@ fi
 # I don't know why when this is done in dbg-opts.sh it doesn't have
 # an effect.
 ((OPTLIND > 0)) && shift "$((OPTLIND - 1))"
+
+if (($# == 0)) && [[ -z $BASH_EXECUTION_STRING ]] ; then
+    echo >&2 "${_Dbg_pname}: need to give a script to debug or use the -c option."
+    exit 1
+fi
     
 _Dbg_script_file="$1"
 shift
@@ -124,7 +128,7 @@ fi
 # Note that this is called via bashdb rather than "bash --debugger"
 _Dbg_script=1
 
-if [[ ! -r "$_Dbg_script_file" ]] && [[ -z $_Dbg_cmd ]] ; then
+if [[ ! -r "$_Dbg_script_file" ]] && [[ -z $BASH_EXECUTION_STRING ]] ; then
   echo "${_Dbg_pname}: cannot read program to debug: ${_Dbg_script_file}." >&2
   exit 1
 else
@@ -142,7 +146,7 @@ fi
 _Dbg_init_default_traps
 trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 set -o functrace
-if [[ -z $_Dbg_cmd ]] ; then 
+if [[ -z $BASH_EXECUTION_STRING ]] ; then 
   . "$_Dbg_script_file"
 else 
   _Dbg_eval "$_Dbg_cmd"

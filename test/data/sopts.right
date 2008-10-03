@@ -1,6 +1,6 @@
-test1
-Debugged program terminated normally. Use q to quit or R to restart.
+(bashdb:156):
+156:	
 +# Just a simple quit command.
 +quit 
-bashdb: invalid option -- e
-Use --help for option help. Terminating...
+bad option: `-e'
+Use -h or --help to see options.

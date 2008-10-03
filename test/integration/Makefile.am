@@ -33,9 +33,9 @@ TESTS = \
 	test-frame      \
 	test-interrupt  \
 	test-list       \
+	test-lopts 	\
 	test-misc       \
 	test-multi	\
-	test-opts 	\
 	test-parm	\
 	test-restart	\
 	test-search	\
@@ -43,6 +43,7 @@ TESTS = \
 	test-settrace 	\
 	test-sig 	\
 	test-skip 	\
+	test-sopts 	\
 	test-subshell 	\
 	test-tbreak	\
 	test-trace	\

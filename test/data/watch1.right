@@ -65,18 +65,18 @@ Restarting with: ... -B -q -L .. -x data/restart2.cmd example/dbg-test1.sh
 Watchpoint 2: $x changed:
   old value: '22'
   new value: ''
-(bashdb:144):
-144:	set -o functrace
+(bashdb:148):
+148:	set -o functrace
 +# 2nd part of Restart test
 +l 
-144:==>set -o functrace
-145:   if [[ -z $_Dbg_cmd ]] ; then 
-146:     . "$_Dbg_script_file"
-147:   else 
-148:     _Dbg_eval "$_Dbg_cmd"
-149:   fi
-150:   
-151:   # end of bashdb
+148:==>set -o functrace
+149:   if [[ -z $BASH_EXECUTION_STRING ]] ; then 
+150:     . "$_Dbg_script_file"
+151:   else 
+152:     _Dbg_eval "$_Dbg_cmd"
+153:   fi
+154:   
+155:   # end of bashdb
 +info break
 No breakpoints have been set.
 Num Type       Enb  Expression
