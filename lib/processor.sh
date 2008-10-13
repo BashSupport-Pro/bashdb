@@ -41,9 +41,6 @@ typeset -i  _Dbg_inside_skip=0
 # interactive.
 typeset -a _Dbg_cmdfile=('')
 
-# List of command files to process
-typeset -a _Dbg_input=()
-
 # A variable holding a space is set so it can be used in a "set prompt" command
 # ("read" in the main command loop will remove a trailing space so we need
 # another way to allow a user to enter spaces in the prompt.)

@@ -50,14 +50,6 @@ elif [[ $(tty) != 'not a tty' ]] ; then
   _Dbg_do_source $(tty)
 fi
 
-# ================== INITIALIZATION =====================================
-
-if [[ -r /dev/stdin ]] ; then
-  _Dbg_do_source /dev/stdin
-elif [[ $(tty) != 'not a tty' ]] ; then
-  _Dbg_do_source $(tty)
-fi
-
 # List of command files to process
 typeset -a _Dbg_input
 
@@ -68,6 +60,7 @@ typeset -a _Dbg_input
 if [ -n "$DBG_INPUT" ] ; then 
   _Dbg_input=($DBG_INPUT)
   _Dbg_do_source ${_Dbg_input[0]}
+  # BASH_EXECUTION_STRING=$DBG_INPUT
   _Dbg_no_init=1
 fi
 
