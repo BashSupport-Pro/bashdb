@@ -14,8 +14,8 @@
 6:	y=2
 +break 7
 Breakpoint 1 set in file restartbug.sh, line 7.
-+restart -B -q -L .. -x restart2.cmd restartbug.sh
-Restarting with: -B -q -L .. -x restart2.cmd restartbug.sh
++restart -B -q -L ... restartbug.sh
+Restarting with ... restartbug.sh
 (restartbug.sh:4):
 4:	x=1
 +# 2nd part of Restart test
