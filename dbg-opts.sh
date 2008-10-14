@@ -92,11 +92,10 @@ _Dbg_parse_options() {
 	    B | basename )
 		_Dbg_basename_only=1  	;;
 	    c | command )
-		BASH_EXECUTION_STRING="$OPTLARG" ;;
+		_Dbg_EXECUTION_STRING="$OPTLARG" ;;
 	    debugger ) 
 		# This option is for compatibility with bash --debugger
 		;;  
-
 	    h | help )
 		_Dbg_usage		;;
 	    L | library ) 		;;
@@ -117,7 +116,7 @@ _Dbg_parse_options() {
 		    _Dbg_tty=$OPTLARG
 		fi
 		;;
-	    x | command )
+	    x | eval-command )
 		DBG_INPUT=$OPTLARG	;;
 	    X | trace ) 
 		_Dbg_linetrace=1        ;;
@@ -132,7 +131,7 @@ _Dbg_parse_options() {
     shift "$(($OPTLIND - 1))"
 
     if (( ! _Dbg_o_quiet && ! _Dbg_o_version )); then 
-	echo "Bourne-Again Shell Debugger, release $_Dbg_release"
+	print "$_Dbg_shell_name Shell Debugger, release $_Dbg_release"
 	printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are

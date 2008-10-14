@@ -39,7 +39,7 @@ _Dbg_do_restart() {
 	local bash_opt=''
 	[[ $orig_0 =~ (.*/|^)bashdb$ ]] && bash_opt='--debugger '
 	if [[ $_Dbg_frame_last_filename == $_Dbg_bogus_file ]] ; then
-	    script_args="${bash_opt}-c \"$BASH_EXECUTION_STRING\""
+	    script_args="${bash_opt}-c \"$_Dbg_EXECUTION_STRING\""
 	else
 	    script_args="${bash_opt}$_Dbg_orig_0 $script_args";
 	fi

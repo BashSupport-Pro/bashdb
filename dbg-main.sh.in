@@ -60,7 +60,6 @@ typeset -a _Dbg_input
 if [ -n "$DBG_INPUT" ] ; then 
   _Dbg_input=($DBG_INPUT)
   _Dbg_do_source ${_Dbg_input[0]}
-  # BASH_EXECUTION_STRING=$DBG_INPUT
   _Dbg_no_init=1
 fi
 

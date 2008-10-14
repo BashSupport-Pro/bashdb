@@ -215,13 +215,13 @@ _Dbg_debug_trap_handler() {
 
 # Cleanup routine: erase temp files before exiting.
 _Dbg_cleanup() {
-  rm $_Dbg_evalfile 2>/dev/null
-  set +u
-  if [[ -n $BASH_EXECUTION_STRING ]] && [[ -r $_Dbg_script_file ]] ; then
-      rm $_Dbg_script_file
-  fi
-  _Dbg_erase_journals
-  _Dbg_restore_user_vars
+    rm $_Dbg_evalfile 2>/dev/null
+    set +u
+    if [[ -n $_Dbg_EXECUTION_STRING ]] && [[ -r $_Dbg_script_file ]] ; then
+	rm $_Dbg_script_file
+    fi
+    _Dbg_erase_journals
+    _Dbg_restore_user_vars
 }
 
 # Somehow we can't put this in _Dbg_cleanup and have it work.

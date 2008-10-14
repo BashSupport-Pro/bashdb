@@ -215,7 +215,7 @@ function _Dbg_readin {
   if [[ -z filename ]] || [[ filename == _Dbg_bogus_file ]] ; then 
     filevar='ABOGUSA'
     source_array="_Dbg_source_${filevar}"
-    typeset cmd="${source_array}[0]=\"$BASH_EXECUTION_STRING\""
+    typeset cmd="${source_array}[0]=\"$_Dbg_EXECUTION_STRING\""
     eval $cmd
 
   else 
@@ -289,4 +289,4 @@ function _Dbg_readin {
 
 # This is put at the so we have something at the end when we debug this.
 [[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.sh,v 1.5 2008/10/03 08:57:25 rockyb Exp $'
+'$Id: file.sh,v 1.6 2008/10/14 01:16:28 rockyb Exp $'
