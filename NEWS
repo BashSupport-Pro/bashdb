@@ -1,9 +1,24 @@
-Version 3.1 0.10cvs
+Version 4.0
+2008-10-27
+
+ - Major rewrite and reorganization of code.
+ - compatible with bash 4.0
+ - "alias" command added, short commands names are now aliases and not 
+   hard-coded in
+ - autoeval mode added: if set, commands that aren't debugger commands are 
+   eval'd
+ - Add step+, step-, and "set force": force stepping to go to another line.
  - Add builtin set0. Debugger will $0 (program name) if possible.
+ - "help" now shows lists of commands in columns
  - Add set/show annotate. Add Emacs support for this
+ - Add gdb-like "edit" command to edit source where stopped.
  - Dbg_set_trace -> Dbg_debugger more often
- - Start unit tests. 
- - Lots of code cleanups.
+ - Add unit tests via Kate Ward's shunit2.
+ - add trace/untrace to add xtrace to a function.
+ - Portable long options support via Stéphane Chazelas
+ - More (most?) debugger variables now start with _Dbg_.
+ - Greatly improve GNU Emacs support via gdba. 
+ - Many bug fixes.
 
 Version 3.1 0.09
 2007-10-27
@@ -611,4 +626,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.36 2008/07/13 20:38:29 rockyb Exp $
+$Id: NEWS,v 1.37 2008/10/14 20:56:48 rockyb Exp $
