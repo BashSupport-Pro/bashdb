@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.64 2008/10/02 02:37:31 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.65 2008/10/14 17:30:20 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -79,7 +79,7 @@ if test x$EMACS = xno ; then
   emacs_lisp=no
 else 
   $EMACS -batch -q -no-site-file -eval \
-  '(if (not (and (= emacs-major-version 21) (<= emacs-minor-version 3))) (error "This gud is for Emacs 21.0 to 21.3."))'
+  '(if (<= emacs-major-version 21) (error "You need GNU Emacs 22 or better for GNU Emacs support."))'
   if test $? -ne 0 ; then
     emacs_lisp=no
   fi
