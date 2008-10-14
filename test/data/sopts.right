@@ -1,5 +1,5 @@
-(bashdb:156):
-156:	
+(bashdbcmd11711:1):
+1:	echo test1
 +# Just a simple quit command.
 +quit 
 bad option: `-e'

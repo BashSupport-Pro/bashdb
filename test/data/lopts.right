@@ -6,6 +6,9 @@
 22:	x=22
 +# Just a simple quit command.
 +quit 
-bashdb: need to give a script to debug or use the -c option.
+(bashdbcmd123:1):
+1:	builtin echo test1a
++# Just a simple quit command.
++quit 
 bad option: `--badopt'
 Use -h or --help to see options.

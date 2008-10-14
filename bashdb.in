@@ -25,13 +25,13 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.45 2008/10/03 15:24:02 rockyb Exp $'
+'$Id: bashdb.in,v 1.46 2008/10/14 00:45:29 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
 # in a traceback ("where").
 function _Dbg_eval {
-  eval $*  # Type: "x $*" to see what's being run.
+  eval $*  
 }
 
 # Name we refer to ourselves by
@@ -128,9 +128,14 @@ fi
 # Note that this is called via bashdb rather than "bash --debugger"
 _Dbg_script=1
 
-if [[ ! -r "$_Dbg_script_file" ]] && [[ -z $BASH_EXECUTION_STRING ]] ; then
-  echo "${_Dbg_pname}: cannot read program to debug: ${_Dbg_script_file}." >&2
-  exit 1
+if [[ -n $BASH_EXECUTION_STRING ]] ; then
+    _Dbg_script_file=$(_Dbg_tempname cmd)
+    echo "$BASH_EXECUTION_STRING" >$_Dbg_script_file
+fi
+
+if [[ ! -r "$_Dbg_script_file" ]] ; then
+    echo "${_Dbg_pname}: cannot read program to debug: ${_Dbg_script_file}." >&2
+    exit 1
 else
   typeset -r _Dbg_Dbg_script_file=$(_Dbg_expand_filename $_Dbg_script_file)
 fi
@@ -141,15 +146,11 @@ if ((_Dbg_linetrace)) ; then
   _Dbg_QUIT_ON_QUIT=1
 else 
   # Set to skip over statements up to ". $_Dbg_script_file"
-  _Dbg_write_journal_eval "_Dbg_step_ignore=4" 
+  _Dbg_write_journal_eval "_Dbg_step_ignore=3" 
 fi
 _Dbg_init_default_traps
 trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 set -o functrace
-if [[ -z $BASH_EXECUTION_STRING ]] ; then 
-  . "$_Dbg_script_file"
-else 
-  _Dbg_eval "$_Dbg_cmd"
-fi
+. "$_Dbg_script_file"
 
 # end of bashdb

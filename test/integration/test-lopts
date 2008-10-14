@@ -2,7 +2,6 @@
 # -*- shell-script -*-
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 # Test debugger long options.
-exit 77
 
 [ -z "$builddir" ] && builddir=$PWD
 . ${builddir}/check-common.sh
@@ -10,7 +9,7 @@ TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
 RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
 (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-cat ${TEST_FILE} | sed -e "s|The default directory is: .*|The default directory is: |" > ${TEST_FILTERED_FILE}
+cat ${TEST_FILE} | sed -e "s|The default directory is: .*|The default directory is: |" | sed -e "s|(bashdbcmd.*:1):|(bashdbcmd123:1):|" >${TEST_FILTERED_FILE}
 
 check_output $TEST_FILTERED_FILE $RIGHT_FILE
 exit $rc

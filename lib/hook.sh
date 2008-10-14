@@ -212,3 +212,22 @@ _Dbg_debug_trap_handler() {
   _Dbg_set_to_return_from_debugger 1
   return $_Dbg_inside_skip
 }
+
+# Cleanup routine: erase temp files before exiting.
+_Dbg_cleanup() {
+  rm $_Dbg_evalfile 2>/dev/null
+  set +u
+  if [[ -n $BASH_EXECUTION_STRING ]] && [[ -r $_Dbg_script_file ]] ; then
+      rm $_Dbg_script_file
+  fi
+  _Dbg_erase_journals
+  _Dbg_restore_user_vars
+}
+
+# Somehow we can't put this in _Dbg_cleanup and have it work.
+# I am not sure why.
+_Dbg_cleanup2() {
+  _Dbg_erase_journals
+  trap - EXIT
+}
+

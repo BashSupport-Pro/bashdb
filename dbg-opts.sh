@@ -91,7 +91,7 @@ _Dbg_parse_options() {
 		_Dbg_o_annotate=$OPTLARG;;
 	    B | basename )
 		_Dbg_basename_only=1  	;;
-	    c | eval-command )
+	    c | command )
 		BASH_EXECUTION_STRING="$OPTLARG" ;;
 	    debugger ) 
 		# This option is for compatibility with bash --debugger

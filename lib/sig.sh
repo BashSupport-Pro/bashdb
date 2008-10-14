@@ -58,20 +58,6 @@ typeset -i _Dbg_return_level=0
 # Place to save values of $1, $2, etc.
 typeset -a _Dbg_arg=()
 
-# Cleanup routine: erase temp files before exiting.
-_Dbg_cleanup() {
-  rm $_Dbg_evalfile 2>/dev/null
-  _Dbg_erase_journals
-  _Dbg_restore_user_vars
-}
-
-# Somehow we can't put this in _Dbg_cleanup and have it work.
-# I am not sure why.
-_Dbg_cleanup2() {
-  _Dbg_erase_journals
-  trap - EXIT
-}
-
 # Save value of handler variable _Dbg_old_$sig
 _Dbg_save_handler() {
   typeset -r sig=$1
