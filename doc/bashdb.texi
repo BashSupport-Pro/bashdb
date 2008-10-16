@@ -936,8 +936,7 @@ following list.
 @subsection Command-line options for @code{bashdb} script
 
 You can run @DBG in various alternative modes---for example, in batch
-mode or quiet mode. If @code{getopts} support is available the script
-also allows long-form command options.
+mode or quiet mode. 
 
 @table @code
 @item -h | --help
@@ -945,14 +944,24 @@ also allows long-form command options.
 @cindex @code{--help}
 This option causes @value{DBG} to print some basic help and exit.
 
-@item -V
+@item -V | --version
 @cindex @code{-V}
 This option causes @DBG to print its version number,
 no-warranty blurb, and exit.
 
-@item -c | --exec-command @var{cmd}
+@item -A | --annodate @var{level}
+@cindex @code{-A}
+@cindex @code{--annotate}
+Add additional output which allows front-ends to track what's going on
+without having to poll for such vital information. The default
+annotation level is 0 (none). If you are running inside GNU Emacs
+using the Emacs code from this package, an annotation level 3 when set
+will allow for automatic tracking of frames and
+breakpoints. @xref{Annotate}.
+
+@item -c | --command @var{cmd}
 @cindex @code{-c}
-@cindex @code{--exec-command}
+@cindex @code{--command}
 Run the string instead of running a script
 
 @item -B | --basename
@@ -984,9 +993,9 @@ messages are also suppressed in batch mode.
 output to go to. Note that the debugger output is independent of the
 debugged script output.
 
-@item -x | --command
+@item -x | --eval-command
 @cindex @code{-x}
-@cindex @code{--command} @var{cmdfile}
+@cindex @code{--eval-command} @var{cmdfile}
 execute debugger commands from @var{cmdfile}.
 @item -L | --library @var{directory}
 
@@ -1489,49 +1498,16 @@ display a short list of named classes of commands:
 @flushleft
 @smallexample
 bashdb<0> @b{help}
-bashdb commands:
-List/search source lines:                 Control script execution:
--------------------------                 -------------------------
- l [start|.] [cnt] List cnt lines         T [n]        Stack trace
-                   from line start        s [n]        Single step [n times]
- l sub       List source code fn          n [n]        Next, steps over subs
- - or .      List previous/current line   <CR>/<Enter> Repeat last n or s 
- w [line]    List around line             c [linespec] Continue [to linespec]
- f filename  View source in file          L            List all breakpoints
- /pat/       Search forward for pat       b linespec   Set breakpoint
- ?pat?       Search backward for pat      del [n].. or D Delete a/all breaks
-                                                         by entry number
-Debugger controls:                        skip         skip execution of cmd
--------------------------                 cl linespec  Delete breakpoints by
- H [num]         Show last num commands                line spec
- q [exp] or ^D   Quit returning exp       R [args]     Attempt a restart
- info [cmd]      Get info on cmd.         u [n]        Go up stack by n or 1.
- !n or hi n      Run debugger history n   do [n]       Go down stack by n or 1.
- h or ? [cmd]    Get help on command      W [var]      Add watchpoint. If no
- info [cmd]      Get info on cmd                       no expr, delete all
- show [cmd]      Show settings            We [expr]    Add Watchpoint arith 
-                                                       expr
- so file         read in dbg commands     t            Toggle trace
-                                          en/di n      enable/disable brkpt,
- set x y         set a debugger variable               watchpoint, or display
- e bash-cmd      evaluate a bash command  tb linespec  Add one-time break
- disp expr       add a display expr       a linespec cmd eval "cmd" at linespec
- M               Show module versions     A            delete all actions
- x expr          evaluate expression      ret          jump out of fn or source
-                 (via declare, let, eval) finish       execute until return
- deb             debug into another       cond n exp   set breakpoint condition
-                 shell script
- !! cmd [args]   execute shell command "cmd" with "args"
- file filename   Set script filename to read for current source.
-
-Data Examination: also see e, t, x
--------------------------                 
- p variable      Print variable 
- V [[!]pat]      List variable(s) matching or not (!) matching pattern pat
- S [[!]pat]      List subroutine names [not] matching pattern pat
+Available commands:
+  /          debug    enable   help     next     show    step-      untrace
+  alias      delete   eval     history  print    signal  tbreak     up     
+  break      disable  examine  info     pwd      skip    trace      watch  
+  commands   display  file     kill     quit     source  tty        where  
+  condition  down     frame    list     restart  step    unalias  
+  continue   edit     handle   load     set      step+   undisplay
 
 Readline command line editing (emacs/vi mode) is available.
-For more help, type h <cmd> or consult online-documentation.
+Type "help" followed by command name for full documentation.
 @end smallexample
 @end flushleft
 @c the above line break eliminates huge line overfull...
@@ -2190,10 +2166,10 @@ your script may stop even sooner, due to a breakpoint or a signal.
 @table @code
 @kindex step
 @kindex s @r{(@code{step})}
-@item step
+@item step@ovar{+|-} @ovar{count}
 Continue running your script until control reaches a different source
-line, then stop it and return control to @value{DBG}.  This command is
-abbreviated @code{s}.
+line, then stop it and return control to @value{DBG}.  An default
+alias alias for this is @code{s}.
 
 The @code{step} command only stops at the first instruction of a source
 line.  This prevents the multiple stops that could otherwise occur in
@@ -2202,10 +2178,17 @@ to stop if a function that has debugging information is called within
 the line.  In other words, @code{step} @emph{steps inside} any functions
 called within the line.
 
-@item step @ovar{count}
-Continue running as in @code{step}, but do so @var{count} times.  If a
-breakpoint is reached, or a signal not related to stepping occurs before
-@var{count} steps, stepping stops right away.
+Sometimes you want to step ensure that the next line is different from
+the one you currently are on. To do this, add the @code{+} suffix. And
+if you find you want to do this all of the time there is a setting
+@code{force} that will have this be the default behavior. On the other
+hand if you want to be explicit about not having this behavior even
+when @code{force} is in effect add the @code{-} suffix.
+
+With a count, continue running as in @code{step}, but do so
+@var{count} times.  If a breakpoint is reached, or a signal not
+related to stepping occurs before @var{count} steps, stepping stops
+right away.
 @end table
 
 @node Next
@@ -3240,6 +3223,7 @@ You can alter the way @acronym{BASH}
 interacts with you in various ways given below. 
 
 @menu
+* Alias::                Debugger Command aliases
 * Annotate::             Annotation Level (set annotate)
 * Autoeval::             Evaluate unrecognized commands
 * Basename::             Show basenames of file names only (set basename)
@@ -3254,6 +3238,18 @@ interacts with you in various ways given below.
 * History::              Command history (history, !, H)
 * Command Completion::   Command completion (complete)
 @end menu
+
+@node Alias
+@subsection Debugger Command Aliases (@samp{alias})
+@table @code
+@kindex alias @var{name} @var{command}
+@item alias @var{name} @var{command}
+Add @var{name} as an alias for @var{command}
+
+@kindex unalias @var{name} @var{command}
+Remove @var{name} as an alias for @var{command}
+@item unalias @var{name} @var{command}
+@end table
 
 @node Annotate
 @subsection Annotation Level (@samp{set annotate})

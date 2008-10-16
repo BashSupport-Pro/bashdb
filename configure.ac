@@ -27,7 +27,7 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.0)
-define(relstatus, 0.10cvs)
+define(relstatus, cvs)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.65 2008/10/14 17:30:20 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.66 2008/10/16 00:29:27 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
