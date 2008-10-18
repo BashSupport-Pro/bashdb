@@ -1,5 +1,5 @@
-#!/bin/sh
-#$Id: test-brkpt,v 1.2 2008/08/23 16:56:21 rockyb Exp $
+#!/bin/bash
+#$Id: test-brkpt,v 1.3 2008/10/18 19:49:34 rockyb Exp $
 # -*- shell-script -*-
 
 [ -z "$srcdir" ] && srcdir=$PWD
