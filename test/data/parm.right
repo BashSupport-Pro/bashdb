@@ -46,15 +46,15 @@ $1 at line 4 has value 0
 ##6 fn1("4") called from file `parm.sh' at line 10
 ##7 fn1("5") called from file `parm.sh' at line 27
 +p "dollar 1: $1"
-dollar 1: testing 1
+dollar 1: testing\ 1
 +### Same thing using eval...
 +e echo "\$1 is $1"
-$1 is testing 1
+$1 is testing\ 1
 +### Should have embedded blanks...
 +p $2
-2 3
+2\ 3
 +e echo "\$2 is $2"
-$2 is 2 3
+$2 is 2\ 3
 +continue fn3
 One-time breakpoint 2 set in file parm.sh, line 21.
 fn2: testing 1 2 3

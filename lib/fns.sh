@@ -44,8 +44,7 @@ _Dbg_defined() {
 # Add escapes to a string $1 so that when it is read back via "$1"
 # it is the same as $1.
 function _Dbg_esc_dq {
-  # builtin printf "%q\n" "$1"
-  builtin echo $1 | sed -e 's/[`$\"]/\\\0/g' 
+  builtin printf "%q\n" "$1"
 }
 
 # Add escapes to a string $1 so that when it is read back via "$1"
@@ -289,4 +288,4 @@ function _Dbg_set_ftrace {
 
 # This is put at the end so we have something at the end when we debug this.
 [[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.7 2008/10/03 08:57:25 rockyb Exp $'
+'$Id: fns.sh,v 1.8 2008/10/18 10:27:16 rockyb Exp $'
