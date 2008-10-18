@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.67 2008/10/18 10:47:08 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.68 2008/10/18 12:00:50 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -203,7 +203,6 @@ AC_CONFIG_FILES([Makefile \
 	builtin/Makefile \
 	command/Makefile \
 	doc/Makefile \
-	emacs/Makefile \
 	lib/Makefile \
 	test/Makefile \
 	test/data/Makefile \
@@ -245,9 +244,15 @@ AC_CONFIG_FILES([ \
 	bashdb-trace \
 	dbg-main.sh \
 	doc/macros.texi \
-	emacs/dbg-test.el \
 	test/integration/check-common.sh \
 	])
+
+if test x$EMACS != xno ; then
+   AC_CONFIG_FILES([ \
+	emacs/Makefile \
+	emacs/dbg-test.el \
+	])
+fi
 
 AC_CONFIG_COMMANDS([default],[[
 # Keep old dates on these files to prevent rebuilding.
@@ -268,8 +273,13 @@ echo "Bash version: $bash_version"
 echo "Location: $SH_PROG"
 if test x"$build_readarray" != x; then
    echo "We will try to build the readarray builtin to speed up loading"
-   echo "located at $BASH_SRC."
+   echo "located at ${BASH_SRC}."
 else
    echo 'We will not try to build the builtins to speed up loading and set $0.'
+fi
+if test x$EMACS = xno ; then
+   echo "We will not install GNU Emacs files."
+else
+   echo "Will install GNU Emacs files."
 fi
 
