@@ -26,8 +26,8 @@
 # used in only one sub-part (e.g. variables for break/watch/actions) to o
 # the corresponding file.
 
-[[ -n "$_Dbg_release" ]] && return
-typeset -r _Dbg_release='bash-3.1-0.10cvs'
+# Will be set to 1 if the top-level call is a debugger.
+typeset -i _Dbg_script=0
 
 # Expand filename given as $1.
 # we echo the expanded name or return $1 unchanged if a bad filename.
@@ -51,8 +51,7 @@ function _Dbg_expand_filename {
   dirname=${dirname:-/}
 
   # Handle tilde expansion in dirname
-  typeset glob_cmd="dirname=$(expr $dirname)"
-  eval "$glob_cmd 2>/dev/null"
+  dirname=$(builtin echo $dirname)
 
   typeset long_path
 
