@@ -26,9 +26,6 @@
 # used in only one sub-part (e.g. variables for break/watch/actions) to o
 # the corresponding file.
 
-# Will be set to 1 if the top-level call is a debugger.
-typeset -i _Dbg_script=0
-
 # Expand filename given as $1.
 # we echo the expanded name or return $1 unchanged if a bad filename.
 # Return is 0 if good or 1 if bad.
@@ -51,7 +48,7 @@ function _Dbg_expand_filename {
   dirname=${dirname:-/}
 
   # Handle tilde expansion in dirname
-  dirname=$(builtin echo $dirname)
+  dirname=$(echo $dirname)
 
   typeset long_path
 
@@ -76,8 +73,8 @@ _Dbg_tempname() {
 }
 
 # Process command-line options
-OPTLIND=1
 . ${_Dbg_libdir}/dbg-opts.sh
+OPTLIND=1
 _Dbg_parse_options "$@"
 
 if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
