@@ -1,11 +1,11 @@
 #!/bin/bash -f
 # -*- shell-script -*-
 
-[ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
-[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
 
-. ${top_builddir}/test/integration/check-common.sh
+. ${builddir}/check-common.sh
+
+[[ $(uname -o) == Cygwin ]] && exit 77
 
 TEST_NAME=interrupt
 TEST_FILE="$builddir/${TEST_NAME}.check"
