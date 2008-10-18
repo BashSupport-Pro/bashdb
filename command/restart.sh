@@ -41,7 +41,6 @@ _Dbg_do_restart() {
         bashdb | */bashdb )
             bash_opt='--debugger ' ;;
         esac
-	[[ $orig_0 =~ (.*/|^)bashdb$ ]] && bash_opt='--debugger '
 	if [[ $_Dbg_frame_last_filename == $_Dbg_bogus_file ]] ; then
 	    script_args="${bash_opt}-c \"$_Dbg_EXECUTION_STRING\""
 	else
