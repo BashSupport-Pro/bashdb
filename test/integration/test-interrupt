@@ -5,7 +5,7 @@
 
 . ${builddir}/check-common.sh
 
-[[ $host_os == cygwin ]] && exit 77
+[[ $host_os == cygwin ]] || [[ $host_os = darwin* ]] && exit 77
 
 TEST_NAME=interrupt
 TEST_FILE="$builddir/${TEST_NAME}.check"
