@@ -1,4 +1,4 @@
-# $Id: check-common.sh.in,v 1.3 2008/10/02 09:48:50 rockyb Exp $
+# $Id: check-common.sh.in,v 1.4 2008/10/18 15:01:56 rockyb Exp $
 # -*- shell-script -*-
 
 srcdir=@srcdir@
@@ -8,6 +8,7 @@ builddir=@builddir@
 export top_builddir=@abs_top_builddir@
 export top_srcdir=@abs_top_srcdir@
 export abs_top_srcdir=@abs_top_srcdir@
+export host_os=@host_os@
 
 check_output() {
   testfile="$1"

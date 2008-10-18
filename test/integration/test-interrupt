@@ -5,7 +5,7 @@
 
 . ${builddir}/check-common.sh
 
-[[ $(uname -o) == Cygwin ]] && exit 77
+[[ $host_os == cygwin ]] && exit 77
 
 TEST_NAME=interrupt
 TEST_FILE="$builddir/${TEST_NAME}.check"

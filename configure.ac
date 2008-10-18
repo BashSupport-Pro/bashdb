@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.68 2008/10/18 12:00:50 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.69 2008/10/18 15:01:55 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -123,12 +123,24 @@ AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src],
 		  [location of bash OK_BASH_VERS source code]), 
 		  BASH_SRC=$withval)
 
-dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
 AC_PROG_CC
-AM_PROG_CC_C_O
+if test x"$BASH_SRC" != x ; then
+   if test ! -d $BASH_SRC ; then
+     AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
+   else 
+     AM_PROG_CC_C_O
+     dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
+     PIC=$lt_prog_compiler_pic_CXX
+     WL=$lt_prog_compiler_wl_CXX
+     build_readarray=$BASH_SRC
+     AC_CHECK_HEADERS(unistd.h string.h,,
+         [AC_MSG_WARN([Missing some C headers. Disabling readarray])
+         build_readarray=])
+     AC_CHECK_FUNCS(getline)
+   fi 
+fi
+AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_readarray" != x)
 AM_PROG_LIBTOOL
-PIC=$lt_prog_compiler_pic_CXX
-WL=$lt_prog_compiler_wl_CXX
 
 if test -z "$BASHDB_MAIN" ; then
   BASHDB_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
@@ -186,17 +198,6 @@ fi
 AM_CONDITIONAL(INSTALL_EMACS_LISP, 
 	       [test "x$lispdir" != "x" -a "x$EMACS" != "xno"])
 
-build_readarray=$BASH_SRC
-if test x"$build_readarray" != x; then
-   AC_CHECK_HEADERS(unistd.h string.h,,
-   [AC_MSG_WARN([Missing some C headers. Disabling readarray])
-   build_readarray=])
-   AC_CHECK_FUNCS(getline)
-elif test ! -d $BASH_SRC ; then
-   AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
-fi
-
-AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_readarray" != x)
 
 #Makefiles
 AC_CONFIG_FILES([Makefile \
@@ -244,14 +245,12 @@ AC_CONFIG_FILES([ \
 	bashdb-trace \
 	dbg-main.sh \
 	doc/macros.texi \
+	emacs/Makefile \
 	test/integration/check-common.sh \
 	])
 
 if test x$EMACS != xno ; then
-   AC_CONFIG_FILES([ \
-	emacs/Makefile \
-	emacs/dbg-test.el \
-	])
+   AC_CONFIG_FILES([ emacs/dbg-test.el ])
 fi
 
 AC_CONFIG_COMMANDS([default],[[
