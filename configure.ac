@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.69 2008/10/18 15:01:55 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.70 2008/10/19 06:26:54 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -152,7 +152,7 @@ fi
 
 # Create a suitable transform ( without the $ -> $$ escaping added
 # because of $program_transform_name being used in a Makefile
-# This transform is needed because bashbd must be executed by the
+# This transform is needed because bashdb must be executed by the
 # bashdb-bash regardless if a program transform has taken place
 ac_transform=`echo "$program_transform_name" | sed 's/\\$\\$/\\$/g'`
 

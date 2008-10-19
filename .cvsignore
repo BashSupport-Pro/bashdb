@@ -7,6 +7,7 @@ autom4te*.cache
 bash
 bashdb
 bashdb-*.tar.gz
+bashdb-main
 bashdb-trace
 config.cache
 config.h
