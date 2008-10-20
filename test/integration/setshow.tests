@@ -1,6 +1,6 @@
 #!/bin/sh
 # -*- shell-script -*-
-#$Id: setshow.tests,v 1.1 2008/08/22 19:25:06 rockyb Exp $
+#$Id: setshow.tests,v 1.2 2008/10/20 17:39:13 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
@@ -9,4 +9,4 @@
 cmdfile="$top_srcdir/test/data/setshow.cmd"
 debugged_script="$top_builddir/test/example/dbg-test2.sh"
 
-$SH ${top_builddir}/bashdb -B -q -L ${top_builddir} -x $cmdfile $debugged_script testarg1 testarg2
+$SH ${top_builddir}/bashdb -B --no-init -q -L ${top_builddir} -x $cmdfile $debugged_script testarg1 testarg2

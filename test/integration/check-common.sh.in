@@ -1,4 +1,4 @@
-# $Id: check-common.sh.in,v 1.4 2008/10/18 15:01:56 rockyb Exp $
+# $Id: check-common.sh.in,v 1.5 2008/10/20 17:39:13 rockyb Exp $
 # -*- shell-script -*-
 
 srcdir=@srcdir@
@@ -25,7 +25,7 @@ check_output() {
 # $TEST_NAME have been set previously
 run_debugger() {
   debugged_script=$1
-  bashdb_opts=${2:-"-B -q -L ${top_builddir}"}
+  bashdb_opts=${2:-"-B --no-init -q -L ${top_builddir}"}
   cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
   $SH -- ${top_builddir}/bashdb $bashdb_opts -x $cmdfile $debugged_script
 }

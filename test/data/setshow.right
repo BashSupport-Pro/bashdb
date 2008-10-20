@@ -300,7 +300,7 @@ Undefined command: "another-bad-command". Try "help".
 +show 
 annotate: Annotation_level is 0.
 args:     Argument list to give script when debugged program starts is:
-       "-B -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
+       "-B --no-init -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
 autoeval: Evaluate unrecognized commands is off.
 basename: Show short filenames (the basename) in debug output is on.
 debugger: Allow debugging the debugger is off.
@@ -319,7 +319,7 @@ trace-commands: State of command tracing is on.
 width: Line width is 80.
 +show args
 Argument list to give script when debugged program starts is:
-       "-B -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
+       "-B --no-init -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
 +set args now is the time
 +show args
 Argument list to give script when debugged program starts is:
