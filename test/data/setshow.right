@@ -288,6 +288,7 @@ of promoting the sharing and reuse of software generally.
 
 +#### and show...
 +set width 80
++set history size 256
 +#### Invalid commands...
 +show badcommand
 ** Unknown show subcommand: badcommand
@@ -376,45 +377,45 @@ size: Debugger history size is 10
 +######################### 
 +#### Test 'show commands'...
 +show commands
-33: show commands
-32: show history
-31: set history save on
-30: show history
-29: set history save off
-28: show history save
-27: show history
-26: set history size 10
-25: set history size
-24: show width
-23: set width 40
+34: show commands
+33: show history
+32: set history save on
+31: show history
+30: set history save off
+29: show history save
+28: show history
+27: set history size 10
+26: set history size
+25: show width
+24: set width 40
 +show commands +
-22: show annotate
-21: show listsize
-20: set annotate 1
-19: show annotate
-18: set annotate 6
-17: set annotate bad
-16: set listsize bad
-15: set listsize 40
-14: set misspelled 40
-13: show editing
-12: set editing
+23: show annotate
+22: show listsize
+21: set annotate 1
+20: show annotate
+19: set annotate 6
+18: set annotate bad
+17: set listsize bad
+16: set listsize 40
+15: set misspelled 40
+14: show editing
+13: set editing
 +show commands -5
-35: show commands -5
-34: show commands +
-33: show commands
-32: show history
-31: set history save on
+36: show commands -5
+35: show commands +
+34: show commands
+33: show history
+32: set history save on
 +show commands 12
-12: set editing
-11: show editing
-10: set editing fooo
-9: set editing off
-8: show args
-7: set args now is the time
-6: show args
-5: show 
-4: show badcommand
+12: show editing
+11: set editing fooo
+10: set editing off
+9: show args
+8: set args now is the time
+7: show args
+6: show 
+5: show badcommand
+4: set history size 256
 3: set width 80
 2: show copying
 +######################### 

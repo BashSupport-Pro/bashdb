@@ -6,6 +6,7 @@ show warranty
 show copying
 #### and show...
 set width 80
+set history size 256
 #### Invalid commands...
 show badcommand
 another-bad-command

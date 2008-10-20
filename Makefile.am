@@ -14,7 +14,7 @@
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.41 2008/10/19 06:28:24 rockyb Exp $
+#$Id: Makefile.am,v 1.42 2008/10/20 03:14:21 rockyb Exp $
 
 subdirs = command lib doc test
 if INSTALL_EMACS_LISP
@@ -45,7 +45,7 @@ pkgdata_DATA = dbg-init.sh         \
                dbg-opts.sh         \
                dbg-pre.sh          \
 	       dbg-set-d-vars.inc  \
-	       bashdb-main         \
+	       bashdb-main.inc     \
 	       bashdb-trace        \
 	       getopts_long.sh
 
