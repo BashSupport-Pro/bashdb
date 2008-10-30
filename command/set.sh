@@ -60,11 +60,11 @@ _Dbg_do_set() {
       ;;
     an | ann | anno | annot | annota | annotat | annotate )
       eval "$_seteglob"
-      if [[ -z $2 ]] ; then
-	  _Dbg_msg "Argument required (integer to set it to.)."
+      if (( $# != 1 )) ; then
+	  _Dbg_msg "A single argument is required (got $# arguments)."
       elif [[ $1 == $int_pat ]] ; then 
-	if (( $1 > 1 )) ; then
-	  _Dbg_msg "annotation level must be 0 or 1"
+	if (( $1 > 3 )) ; then
+	  _Dbg_msg "annotation level must be 0..3"
 	else
 	_Dbg_write_journal_eval "_Dbg_annotate=$1"
 	fi
