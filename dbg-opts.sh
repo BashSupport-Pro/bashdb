@@ -47,7 +47,7 @@ _Dbg_show_version() {
 
 }
 
-# Script arguments before adulteration by _Dbg_parse_otps
+# Script arguments before adulteration by _Dbg_parse_opts
 typeset -ax _Dbg_orig_script_args
 _Dbg_orig_script_args=($@)
 
