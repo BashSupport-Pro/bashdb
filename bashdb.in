@@ -25,7 +25,7 @@
 # normally.
 
 [[ -z $_Dbg_ver ]] && typeset _Dbg_ver=\
-'$Id: bashdb.in,v 1.47 2008/10/14 01:16:28 rockyb Exp $'
+'$Id: bashdb.in,v 1.48 2008/10/30 08:22:23 rockyb Exp $'
 
 # This routine gets called via the -c or --command option and its sole
 # purpose is to capture the command string such as via "x $*" or 
@@ -39,6 +39,9 @@ typeset _Dbg_debugger_name='@PACKAGE@'
 
 # The shell we are configured to run under.
 typeset _Dbg_shell='@SH_PROG@'
+
+# The release name we are configured to run under.
+typeset _Dbg_release='@PACKAGE_VERSION@'
 
 # The short shell name. Helps keep code common in bash, zsh, and ksh debuggers.
 typeset _Dbg_shell_name=${_Dbg_shell##*/}  # Equivalent to basename(_Dbg_shell)

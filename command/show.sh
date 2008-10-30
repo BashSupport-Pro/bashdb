@@ -482,11 +482,4 @@ of promoting the sharing and reuse of software generally.
   esac
 }
 
-_Dbg_do_show_version()
-{
-  _Dbg_printf "%-12s => $_Dbg_release" "Release"
-  _Dbg_msg "=================================================================="
-  if [[ -n $_Dbg_script ]] ; then
-    _Dbg_printf "%-12s => $_Dbg_ver", "$_Dbg_debugger_name"
-  fi
-}
+

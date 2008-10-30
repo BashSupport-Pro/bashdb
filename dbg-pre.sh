@@ -26,6 +26,18 @@
 # used in only one sub-part (e.g. variables for break/watch/actions) to o
 # the corresponding file.
 
+# This function is overwritten by when lib/fns.sh gets loaded
+_Dbg_msg()
+{
+  echo $*
+}
+
+# Used by "show version" as well as --version
+_Dbg_do_show_version()
+{
+  _Dbg_msg "$_Dbg_debugger_name, release $_Dbg_release"
+}
+
 # Expand filename given as $1.
 # we echo the expanded name or return $1 unchanged if a bad filename.
 # Return is 0 if good or 1 if bad.

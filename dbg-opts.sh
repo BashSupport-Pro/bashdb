@@ -130,8 +130,11 @@ _Dbg_parse_options() {
     done
     shift "$(($OPTLIND - 1))"
 
-    if (( ! _Dbg_o_quiet && ! _Dbg_o_version )); then 
-	echo "$_Dbg_shell_name Shell Debugger, release $_Dbg_release"
+    if (( _Dbg_o_version )) ; then
+	_Dbg_do_show_version
+	exit 0
+    elif (( ! _Dbg_o_quiet )); then 
+	echo "$_Dbg_shell_name debugger, release $_Dbg_release"
 	printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
@@ -139,7 +142,6 @@ welcome to change it and/or distribute copies of it under certain conditions.
 
 '
     fi
-    (( _Dbg_o_version )) && _Dbg_show_version
 
     if [[ -n $_Dbg_o_annotate ]] ; then
 	if [[ ${_Dbg_o_annotate} == [0-9]* ]] ; then
