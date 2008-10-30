@@ -14,6 +14,10 @@ test_preserve_set_opts()
 	libdir=@PKGDATADIR@
     fi
     if [[ -f $libdir/dbg-opts.sh ]] ; then
+	# Name we refer to ourselves by
+	typeset _Dbg_debugger_name='@PACKAGE@'
+	# The release name we are configured to run under.
+	typeset _Dbg_release='@PACKAGE_VERSION@'
 	. ${top_builddir}/bashdb-trace -L $libdir
 	assertEquals $old_opts $-
     else
