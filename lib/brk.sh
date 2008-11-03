@@ -22,7 +22,7 @@
 [[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.5 2008/09/10 10:02:01 rockyb Exp $'
+'$Id: brk.sh,v 1.6 2008/11/03 20:05:35 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -278,97 +278,98 @@ _Dbg_set_brkpt() {
 
 # Internal routine to unset the actual breakpoint arrays
 _Dbg_unset_brkpt_arrays() {
-  typeset -i del=$1
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_line[$del]"
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_count[$del]"
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_file[$del]"
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_enable[$del]"
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_cond[$del]"
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_onetime[$del]"
+    (( $# != 1 )) && return 1
+    typeset -i del=$1
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_line[$del]"
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_count[$del]"
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_file[$del]"
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_enable[$del]"
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_cond[$del]"
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_onetime[$del]"
+    return 0
 }
 
 # Internal routine to delete a breakpoint by file/line.
 _Dbg_unset_brkpt() {
-  typeset -r  filename=$1
-  typeset -ir line=$2
-  typeset -r filevar="`_Dbg_file2var $filename`"
-  typeset -r fullname="`_Dbg_expand_filename $filename`"
-  typeset -i found=0
+    (( $# != 2 )) && return 0
+    typeset -r  filename=$1
+    typeset -ir line=$2
+    typeset -r filevar="`_Dbg_file2var $filename`"
+    typeset -r fullname="`_Dbg_expand_filename $filename`"
+    typeset -i found=0
   
-  # set -xv
-  local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
-  local -i del
-  for del in $entries ; do 
-    if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
-      _Dbg_msg "No breakpoint found at $filename:$line"
-      continue
-    fi
-    typeset brkpt_fullname=$(_Dbg_expand_filename ${_Dbg_brkpt_file[$del]})
-    if [[ $brkpt_fullname != $fullname ]] ; then 
-      _Dbg_msg "Brkpt inconsistency:" \
-	"$filename[$line] lists ${_Dbg_brkpt_file[$del]} at entry $del"
-    else
-      _Dbg_unset_brkpt_arrays $del
-      ((found++))
-    fi
-  done
-  _Dbg_write_journal_eval "unset _Dbg_brkpt_$filevar[$line]"
-  return $found
-  # set +xv
+    local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
+    local -i del
+    for del in $entries ; do 
+	if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
+	    _Dbg_msg "No breakpoint found at $filename:$line"
+	    continue
+	fi
+	typeset brkpt_fullname=$(_Dbg_expand_filename ${_Dbg_brkpt_file[$del]})
+	if [[ $brkpt_fullname != $fullname ]] ; then 
+	    _Dbg_msg "Brkpt inconsistency:" \
+		"$filename[$line] lists ${_Dbg_brkpt_file[$del]} at entry $del"
+	else
+	    _Dbg_unset_brkpt_arrays $del
+	    ((found++))
+	fi
+    done
+    _Dbg_write_journal_eval "unset _Dbg_brkpt_$filevar[$line]"
+    return $found
 }
 
 # Routine to a delete breakpoint by entry number: $1.
 # Returns whether or not anything was deleted.
 _Dbg_delete_brkpt_entry() {
-  typeset -r  del=$1
-  typeset -i  i
-  typeset -i  found=0
-  
-  # set -xv
-  if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
-    _Dbg_msg "Breakpoint entry $del is not set."
-    return 0
-  fi
-  typeset filevar="`_Dbg_file2var ${_Dbg_brkpt_file[$del]}`"
-  typeset line=${_Dbg_brkpt_line[$del]}
-  typeset -r  entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
-  typeset     try 
-  typeset -a  new_val=()
-  for try in $entries ; do 
-    if (( $try == $del )) ; then
-      _Dbg_unset_brkpt_arrays $del
-      found=1
-    else
-      if [[ -n ${_Dbg_brkpt_file[$try]} ]] ; then
-	new_val[${#new_val[@]}]=$try
-      fi
+    (( $# == 0 )) && return 0
+    typeset -r  del=$1
+    typeset -i  i
+    typeset -i  found=0
+    
+    if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
+	_Dbg_msg "Breakpoint entry $del is not set."
+	return 0
     fi
-  done
-  if [[ ${#new_val[@]} == 0 ]] ; then 
-   _Dbg_write_journal_eval "unset _Dbg_brkpt_$filevar[$line]"
-  else
-    _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line "${new_val[@]}"
-  fi
-
-  return $found
-  # set +xv
+    typeset filevar="`_Dbg_file2var ${_Dbg_brkpt_file[$del]}`"
+    typeset line=${_Dbg_brkpt_line[$del]}
+    typeset -r  entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
+    typeset     try 
+    typeset -a  new_val=()
+    for try in $entries ; do 
+	if (( $try == $del )) ; then
+	    _Dbg_unset_brkpt_arrays $del
+	    found=1
+	else
+	    if [[ -n ${_Dbg_brkpt_file[$try]} ]] ; then
+		new_val[${#new_val[@]}]=$try
+	    fi
+	fi
+    done
+    if [[ ${#new_val[@]} == 0 ]] ; then 
+	_Dbg_write_journal_eval "unset _Dbg_brkpt_$filevar[$line]"
+    else
+	_Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line "${new_val[@]}"
+    fi
+    
+    return $found
 }
 
 # Enable/disable breakpoint(s) by entry numbers.
 _Dbg_enable_disable_brkpt() {
-  typeset -i on=$1
-  typeset en_dis=$2
-  typeset -i i=$3
-  if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
-    if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
-      _Dbg_msg "Breakpoint entry $i already $en_dis so nothing done."
+    (($# != 3)) && return 1
+    typeset -i on=$1
+    typeset en_dis=$2
+    typeset -i i=$3
+    if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
+	if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
+	    _Dbg_msg "Breakpoint entry $i already $en_dis so nothing done."
+	else
+	    _Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
+	    _Dbg_msg "Breakpoint entry $i $en_dis."
+	fi
     else
-      _Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
-      _Dbg_msg "Breakpoint entry $i $en_dis."
+	_Dbg_msg "Breakpoint entry $i doesn't exist so nothing done."
     fi
-  else
-    _Dbg_msg "Breakpoint entry $i doesn't exist so nothing done."
-  fi
 }
 
 #======================== WATCHPOINTS  ============================#
@@ -377,7 +378,7 @@ _Dbg_get_watch_exp_eval() {
   local -i i=$1
   local new_val
 
-  if [[ `eval echo \"${_Dbg_watch_exp[$i]}\"` == "" ]]; then
+  if [[ $(eval echo \"${_Dbg_watch_exp[$i]}\") == "" ]]; then
     new_val=''
   elif (( ${_Dbg_watch_arith[$i]} == 1 )) ; then
     . ${_Dbg_libdir}/dbg-set-d-vars.inc
@@ -725,4 +726,4 @@ _Dbg_enable_disable_display() {
 }
 
 [[ -z $_Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.5 2008/09/10 10:02:01 rockyb Exp $'
+'$Id: brk.sh,v 1.6 2008/11/03 20:05:35 rockyb Exp $'
