@@ -13,7 +13,7 @@ No watch expressions have been set.
 +############################################################### 
 +#### Test enable/disable...
 +enable 1
-Breakpoint entry 1 already enabled so nothing done.
+** Breakpoint entry 1 already enabled, so nothing done.
 +disable 1
 Breakpoint entry 1 disabled.
 +################################################################ 
@@ -115,7 +115,7 @@ Num Type       Disp Enb What
 No watch expressions have been set.
 +enable 2 6
 Breakpoint entry 2 enabled.
-Breakpoint entry 6 already enabled so nothing done.
+** Breakpoint entry 6 already enabled, so nothing done.
 +delete 2 6
 Removed 2 breakpoint(s).
 +#### Test info break...

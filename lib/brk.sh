@@ -22,7 +22,7 @@
 [[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.6 2008/11/03 20:05:35 rockyb Exp $'
+'$Id: brk.sh,v 1.7 2008/11/08 10:27:39 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -163,8 +163,8 @@ _Dbg_enable_disable() {
     return 0
   elif [[ $1 = 'action' ]] ; then
     shift
-    local to_go="$@"
-    local i
+    typeset to_go="$@"
+    typeset i
     eval "$_seteglob"
     for i in $to_go ; do 
       case $i in
@@ -179,8 +179,8 @@ _Dbg_enable_disable() {
     return 0
   fi
 
-  local to_go="$@"
-  local i
+  typeset to_go="$@"
+  typeset i
   eval "$_seteglob"
   for i in $to_go ; do 
     case $i in
@@ -232,48 +232,49 @@ _Dbg_clear_all_brkpt() {
 # Internal routine to a set breakpoint unconditonally. 
 
 _Dbg_set_brkpt() {
-  local source_file=$1
-  local -ir line=$2
-  local -ir is_temp=$3
-  local -r  condition=${4:-1}
-
-  local -r filevar="`_Dbg_file2var $source_file`"
-
-  local val_str=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
-
-  # Increment brkpt_max here because we are 1-origin
-  ((_Dbg_brkpt_max++))
-
-  if [ -z "$val_str" ] ; then 
-    val_str=$_Dbg_brkpt_max
-  else
-    val_str="$val_str $_Dbg_brkpt_max"
-  fi
-
-  _Dbg_brkpt_line[$_Dbg_brkpt_max]=$line
-  _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
-  _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
-  _Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp
-  _Dbg_brkpt_count[$_Dbg_brkpt_max]=0
-  _Dbg_brkpt_enable[$_Dbg_brkpt_max]=1
-
-  local dq_source_file=$(_Dbg_esc_dq "$source_file")
-  local dq_condition=$(_Dbg_esc_dq "$condition")
-  _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$line"
-  _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
-  _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
-  _Dbg_write_journal "_Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp"
-  _Dbg_write_journal "_Dbg_brkpt_count[$_Dbg_brkpt_max]=\"0\""
-  _Dbg_write_journal "_Dbg_brkpt_enable[$_Dbg_brkpt_max]=1"
-
-  _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line $val_str
-  source_file=$(_Dbg_adjust_filename "$source_file")
-  if (( $is_temp == 0 )) ; then 
-    _Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
-  else 
-    _Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
-  fi
-  _Dbg_write_journal "_Dbg_brkpt_max=$_Dbg_brkpt_max"
+    (( $# < 3 || $# > 4 )) && return 1
+    typeset source_file=$1
+    typeset -ir line=$2
+    typeset -ir is_temp=$3
+    typeset -r  condition=${4:-1}
+    
+    typeset -r filevar="$(_Dbg_file2var $source_file)"
+    
+    typeset val_str=$(_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line)
+    
+    # Increment brkpt_max here because we are 1-origin
+    ((_Dbg_brkpt_max++))
+    
+    if [ -z "$val_str" ] ; then 
+	val_str=$_Dbg_brkpt_max
+    else
+	val_str="$val_str $_Dbg_brkpt_max"
+    fi
+    
+    _Dbg_brkpt_line[$_Dbg_brkpt_max]=$line
+    _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
+    _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
+    _Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp
+    _Dbg_brkpt_count[$_Dbg_brkpt_max]=0
+    _Dbg_brkpt_enable[$_Dbg_brkpt_max]=1
+    
+    typeset dq_source_file=$(_Dbg_esc_dq "$source_file")
+    typeset dq_condition=$(_Dbg_esc_dq "$condition")
+    _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$line"
+    _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
+    _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
+    _Dbg_write_journal "_Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp"
+    _Dbg_write_journal "_Dbg_brkpt_count[$_Dbg_brkpt_max]=\"0\""
+    _Dbg_write_journal "_Dbg_brkpt_enable[$_Dbg_brkpt_max]=1"
+    
+    _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line $val_str
+    source_file=$(_Dbg_adjust_filename "$source_file")
+    if (( $is_temp == 0 )) ; then 
+	_Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
+    else 
+	_Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
+    fi
+    _Dbg_write_journal "_Dbg_brkpt_max=$_Dbg_brkpt_max"
 }
 
 # Internal routine to unset the actual breakpoint arrays
@@ -294,12 +295,13 @@ _Dbg_unset_brkpt() {
     (( $# != 2 )) && return 0
     typeset -r  filename=$1
     typeset -ir line=$2
-    typeset -r filevar="`_Dbg_file2var $filename`"
-    typeset -r fullname="`_Dbg_expand_filename $filename`"
+    typeset -r filevar="$(_Dbg_file2var $filename)"
+    typeset -r fullname="$(_Dbg_expand_filename $filename)"
     typeset -i found=0
   
-    local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
-    local -i del
+    # FIXME: combine with _Dbg_unset_brkpt
+    typeset -r entries=$(_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line)
+    typeset -i del
     for del in $entries ; do 
 	if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
 	    _Dbg_msg "No breakpoint found at $filename:$line"
@@ -330,9 +332,9 @@ _Dbg_delete_brkpt_entry() {
 	_Dbg_msg "Breakpoint entry $del is not set."
 	return 0
     fi
-    typeset filevar="`_Dbg_file2var ${_Dbg_brkpt_file[$del]}`"
+    typeset filevar="$(_Dbg_file2var ${_Dbg_brkpt_file[$del]})"
     typeset line=${_Dbg_brkpt_line[$del]}
-    typeset -r  entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line`
+    typeset -r  entries=$(_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line)
     typeset     try 
     typeset -a  new_val=()
     for try in $entries ; do 
@@ -350,7 +352,7 @@ _Dbg_delete_brkpt_entry() {
     else
 	_Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line "${new_val[@]}"
     fi
-    
+
     return $found
 }
 
@@ -362,21 +364,23 @@ _Dbg_enable_disable_brkpt() {
     typeset -i i=$3
     if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
 	if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
-	    _Dbg_msg "Breakpoint entry $i already $en_dis so nothing done."
+	    _Dbg_errmsg "Breakpoint entry $i already ${en_dis}, so nothing done."
 	else
 	    _Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
 	    _Dbg_msg "Breakpoint entry $i $en_dis."
+	    return 0
 	fi
     else
-	_Dbg_msg "Breakpoint entry $i doesn't exist so nothing done."
+	_Dbg_errmsg "Breakpoint entry $i doesn't exist, so nothing done."
+	return 1
     fi
 }
 
 #======================== WATCHPOINTS  ============================#
 
 _Dbg_get_watch_exp_eval() {
-  local -i i=$1
-  local new_val
+  typeset -i i=$1
+  typeset new_val
 
   if [[ $(eval echo \"${_Dbg_watch_exp[$i]}\") == "" ]]; then
     new_val=''
@@ -392,9 +396,9 @@ _Dbg_get_watch_exp_eval() {
 
 # Enable/disable watchpoint(s) by entry numbers.
 _Dbg_enable_disable_watch() {
-  local -i on=$1
-  local en_dis=$2
-  local -i i=$3
+  typeset -i on=$1
+  typeset en_dis=$2
+  typeset -i i=$3
   if [ -n "${_Dbg_watch_exp[$i]}" ] ; then
     if [[ ${_Dbg_watch_enable[$i]} == $on ]] ; then
       _Dbg_msg "Watchpoint entry $i already $en_dis so nothing done."
@@ -409,7 +413,7 @@ _Dbg_enable_disable_watch() {
 
 _Dbg_list_watch() {
   if [ ${#_Dbg_watch_exp[@]} != 0 ]; then
-    local i=0 j
+    typeset i=0 j
     _Dbg_msg "Num Type       Enb  Expression"
     for (( i=0; (( i < _Dbg_watch_max )); i++ )) ; do
       if [ -n "${_Dbg_watch_exp[$i]}" ] ;then
@@ -425,7 +429,7 @@ _Dbg_list_watch() {
 }
 
 _Dbg_delete_watch_entry() {
-  local -i del=$1
+  typeset -i del=$1
 
   if [ -n "${_Dbg_watch_exp[$del]}" ] ; then
     _Dbg_write_journal_eval "unset _Dbg_watch_exp[$del]"
@@ -439,7 +443,7 @@ _Dbg_delete_watch_entry() {
 
 _Dbg_clear_watch() {
   if (( $# < 1 )) ; then
-    local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
+    typeset _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
     read $_Dbg_edit -p "Delete all watchpoints? (y/n): " \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
 
@@ -473,19 +477,19 @@ _Dbg_clear_watch() {
 
 _Dbg_do_action() {
   
-  local n=${1:-$_curline}
+  typeset n=${1:-$_curline}
   shift
 
-  local stmt;
+  typeset stmt;
   if [ -z "$1" ] ; then
     condition=1
   else 
     condition="$*"
   fi
 
-  local filename
-  local -i line_number
-  local full_filename
+  typeset filename
+  typeset -i line_number
+  typeset full_filename
 
   _Dbg_linespec_setup $n
 
@@ -505,18 +509,18 @@ _Dbg_do_action() {
 # clear all actions
 _Dbg_do_clear_all_actions() {
 
-  local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
+  typeset _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
   read $_Dbg_edit -p "Delete all actions? (y/n): " \
     <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
 
   if [[ $REPLY != [Yy]* ]] ; then 
     return 1
   fi
-  local -i k
+  typeset -i k
   for (( k=0; (( k < ${#_Dbg_filenames[@]} )) ; k++ )) ; do
-    local filename=${_filename[$k]}
-    local filevar="`_Dbg_file2var $filename`"
-    local action_a="_Dbg_action_${filevar}"
+    typeset filename=${_filename[$k]}
+    typeset filevar="`_Dbg_file2var $filename`"
+    typeset action_a="_Dbg_action_${filevar}"
     unset ${action_a}[$k]
   done
   _Dbg_write_journal_eval "_Dbg_action_line=()"
@@ -529,12 +533,11 @@ _Dbg_do_clear_all_actions() {
 # delete actions(s) at given file:line numbers. If no file is given
 # use the current file.
 _Dbg_do_clear_action() {
-  # set -x
-  local -r n=${1:-$_curline}
+  typeset -r n=${1:-$_curline}
 
-  local filename
-  local -i line_number
-  local full_filename
+  typeset filename
+  typeset -i line_number
+  typeset full_filename
 
   _Dbg_linespec_setup $n
 
@@ -545,7 +548,7 @@ _Dbg_do_clear_action() {
       _Dbg_check_line $line_number "$full_filename"
       (( $? == 0 )) && \
 	_Dbg_unset_action "$full_filename" "$line_number"
-      local -r found=$?
+      typeset -r found=$?
       if [[ $found != 0 ]] ; then 
 	_Dbg_msg "Removed $found action(s)."
       else 
@@ -562,12 +565,12 @@ _Dbg_list_action() {
 
   if [ ${#_Dbg_action_line[@]} != 0 ]; then
     _Dbg_msg "Actions at following places:"
-    local -i i
+    typeset -i i
 
     _Dbg_msg "Num Enb Stmt               file:line"
     for (( i=0; (( i < _Dbg_action_max )) ; i++ )) ; do
       if [[ -n ${_Dbg_action_line[$i]} ]] ; then
-	local source_file=${_Dbg_action_file[$i]}
+	typeset source_file=${_Dbg_action_file[$i]}
 	source_file=$(_Dbg_adjust_filename "$source_file")
 	_Dbg_printf "%-3d %3d %-18s %s:%s" $i ${_Dbg_action_enable[$i]} \
 	  "${_Dbg_action_stmt[$i]}" \
@@ -582,12 +585,12 @@ _Dbg_list_action() {
 # Internal routine to a set breakpoint unconditonally. 
 
 _Dbg_set_action() {
-  local source_file=$1
-  local -ir line=$2
-  local -r stmt=${3:-1}
-  local -r filevar="`_Dbg_file2var $source_file`"
+  typeset source_file=$1
+  typeset -ir line=$2
+  typeset -r stmt=${3:-1}
+  typeset -r filevar="`_Dbg_file2var $source_file`"
 
-  local val_str=`_Dbg_get_assoc_array_entry "_Dbg_action_$filevar" $line`
+  typeset val_str=`_Dbg_get_assoc_array_entry "_Dbg_action_$filevar" $line`
   if [ -z "$val_str" ] ; then 
     val_str=$_Dbg_action_max
   else
@@ -599,8 +602,8 @@ _Dbg_set_action() {
   _Dbg_action_stmt[$_Dbg_action_max]="$stmt"
   _Dbg_action_enable[$_Dbg_action_max]=1
 
-  local dq_source_file=$(_Dbg_esc_dq "$source_file")
-  local dq_stmt=$(_Dbg_esc_dq "stmt")
+  typeset dq_source_file=$(_Dbg_esc_dq "$source_file")
+  typeset dq_stmt=$(_Dbg_esc_dq "stmt")
 
   _Dbg_write_journal "_Dbg_action_line[$_Dbg_action_max]=$line"
   _Dbg_write_journal "_Dbg_action_file[$_Dbg_action_max]=\"$dq_source_file\""
@@ -616,14 +619,13 @@ _Dbg_set_action() {
 
 # Internal routine to delete a breakpoint by file/line.
 _Dbg_unset_action() {
-  local -r  filename=$1
-  local -ir line=$2
-  local -r filevar="`_Dbg_file2var $filename`"
-  local -i found=0
+  typeset -r  filename=$1
+  typeset -ir line=$2
+  typeset -r filevar="`_Dbg_file2var $filename`"
+  typeset -i found=0
   
-  # set -xv
-  local -r entries=`_Dbg_get_assoc_array_entry "_Dbg_action_$filevar" $line`
-  local -i del
+  typeset -r entries=`_Dbg_get_assoc_array_entry "_Dbg_action_$filevar" $line`
+  typeset -i del
   for del in $entries ; do 
     if [[ -z ${_Dbg_action_file[$del]} ]] ; then
       _Dbg_msg "No action found at $filename:$line"
@@ -647,11 +649,10 @@ _Dbg_unset_action() {
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
 _Dbg_do_action_delete() {
-  local -r  to_go=$@
-  local -i  i
-  local -i  found=0
+  typeset -r  to_go=$@
+  typeset -i  i
+  typeset -i  found=0
   
-  # set -xv
   eval "$_seteglob"
   for del in $to_go ; do 
     case $del in
@@ -677,12 +678,12 @@ _Dbg_disp_enable_disable() {
     _Dbg_msg "Expecting a list of display numbers. Got none."
     return 1
   fi
-  local -i on=$1
-  local en_dis=$2
+  typeset -i on=$1
+  typeset en_dis=$2
   shift; shift
 
-  local to_go="$@"
-  local i
+  typeset to_go="$@"
+  typeset i
   eval "$_seteglob"
   for i in $to_go ; do 
     case $i in
@@ -698,7 +699,7 @@ _Dbg_disp_enable_disable() {
 }
 
 _Dbg_eval_all_display() {
-  local -i i
+  typeset -i i
   for (( i=0; i < _Dbg_disp_max ; i++ )) ; do
     if [ -n "${_Dbg_disp_exp[$i]}" ] \
       && [[ ${_Dbg_disp_enable[i]} != 0 ]] ; then
@@ -710,20 +711,17 @@ _Dbg_eval_all_display() {
 
 # Enable/disable display(s) by entry numbers.
 _Dbg_enable_disable_display() {
-  local -i on=$1
-  local en_dis=$2
-  local -i i=$3
+  typeset -i on=$1
+  typeset en_dis=$2
+  typeset -i i=$3
   if [ -n "${_Dbg_disp_exp[$i]}" ] ; then
     if [[ ${_Dbg_disp_enable[$i]} == $on ]] ; then
-      _Dbg_msg "Display entry $i already $en_dis so nothing done."
+      _Dbg_errmsg "Display entry $i already ${en_dis}, so nothing done."
     else
       _Dbg_write_journal_eval "_Dbg_disp_enable[$i]=$on"
       _Dbg_msg "Display entry $i $en_dis."
     fi
   else
-    _Dbg_msg "Display entry $i doesn't exist so nothing done."
+    _Dbg_errmsg "Display entry $i doesn't exist, so nothing done."
   fi
 }
-
-[[ -z $_Dbg_brk_ver ]] && typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.6 2008/11/03 20:05:35 rockyb Exp $'
