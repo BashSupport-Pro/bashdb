@@ -1,7 +1,7 @@
 pkgdatadir        = ${datadir}/@PACKAGE@/lib
 pkgdata_DATA =      	\
 	alias.sh    	\
-	brk.sh    	\
+	break.sh    	\
 	columnize.sh  	\
 	commands.sh  	\
 	complete.sh  	\

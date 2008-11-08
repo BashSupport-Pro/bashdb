@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# brk.sh - Bourne Again Shell Debugger Break/Watch/Action routines
+# break.sh - Bourne Again Shell Debugger Break/Watch/Action routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -22,7 +22,7 @@
 [[ -n $_Dbg_brk_ver ]] && return 1
 
 typeset -r _Dbg_brk_ver=\
-'$Id: brk.sh,v 1.7 2008/11/08 10:27:39 rockyb Exp $'
+'$Id: break.sh,v 1.1 2008/11/08 21:19:39 rockyb Exp $'
 
 typeset -ar _Dbg_yn=("n" "y")         
 typeset -ar _Dbg_keep=('keep' 'del')  
@@ -93,7 +93,7 @@ _Dbg_file_not_read_in() {
 _Dbg_save_breakpoints() {
   typeset file
   for file in ${_Dbg_filenames[@]} ; do  
-    typeset filevar="`_Dbg_file2var $file`"
+    typeset filevar="$(_Dbg_file2var $file)"
     typeset -p _Dbg_brkpt_$filevar >> $_Dbg_statefile 2>/dev/null
   done        
   typeset -p _Dbg_brkpt_line >> $_Dbg_statefile
@@ -217,7 +217,7 @@ _Dbg_clear_all_brkpt() {
   typeset -i k
   for (( k=0; (( k < ${#_Dbg_filenames[@]} )) ; k++ )) ; do
     typeset filename=${_filename[$k]}
-    typeset filevar="`_Dbg_file2var $filename`"
+    typeset filevar="$(_Dbg_file2var $filename)"
     typeset brkpt_a="_Dbg_brkpt_${filevar}"
     _Dbg_write_journal_eval "unset ${brkpt_a}[$k]"
   done
@@ -234,13 +234,13 @@ _Dbg_clear_all_brkpt() {
 _Dbg_set_brkpt() {
     (( $# < 3 || $# > 4 )) && return 1
     typeset source_file=$1
-    typeset -ir line=$2
+    typeset -ir lineno=$2
     typeset -ir is_temp=$3
     typeset -r  condition=${4:-1}
     
     typeset -r filevar="$(_Dbg_file2var $source_file)"
     
-    typeset val_str=$(_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $line)
+    typeset val_str=$(_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $lineno)
     
     # Increment brkpt_max here because we are 1-origin
     ((_Dbg_brkpt_max++))
@@ -251,7 +251,7 @@ _Dbg_set_brkpt() {
 	val_str="$val_str $_Dbg_brkpt_max"
     fi
     
-    _Dbg_brkpt_line[$_Dbg_brkpt_max]=$line
+    _Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno
     _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
     _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
     _Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp
@@ -260,19 +260,19 @@ _Dbg_set_brkpt() {
     
     typeset dq_source_file=$(_Dbg_esc_dq "$source_file")
     typeset dq_condition=$(_Dbg_esc_dq "$condition")
-    _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$line"
+    _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno"
     _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
     _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
     _Dbg_write_journal "_Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp"
     _Dbg_write_journal "_Dbg_brkpt_count[$_Dbg_brkpt_max]=\"0\""
     _Dbg_write_journal "_Dbg_brkpt_enable[$_Dbg_brkpt_max]=1"
     
-    _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $line $val_str
+    _Dbg_set_assoc_array_entry "_Dbg_brkpt_$filevar" $lineno $val_str
     source_file=$(_Dbg_adjust_filename "$source_file")
     if (( $is_temp == 0 )) ; then 
-	_Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
+	_Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $lineno."
     else 
-	_Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $line."
+	_Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $lineno."
     fi
     _Dbg_write_journal "_Dbg_brkpt_max=$_Dbg_brkpt_max"
 }
@@ -644,7 +644,6 @@ _Dbg_unset_action() {
   done
   _Dbg_write_journal_eval unset _Dbg_action_$filevar[$line]
   return $found
-  # set +xv
 }
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
@@ -667,7 +666,6 @@ _Dbg_do_action_delete() {
   eval "$_resteglob"
   [[ $found != 0 ]] && _Dbg_msg "Removed $found action(s)."
   return $found
-  # set +xv
 }
 
 #======================== DISPLAYs  ============================#
