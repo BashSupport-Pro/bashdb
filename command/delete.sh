@@ -26,7 +26,7 @@ With no BRKPT-NUM, delete all breakpoints."
 _Dbg_do_delete() {
   typeset to_go; to_go=$@
   typeset -i  i
-  typeset -i  found=0
+  typeset -i  tot_found=0
   
   eval "$_seteglob"
   for del in $to_go ; do 
@@ -36,14 +36,14 @@ _Dbg_do_delete() {
         ;;
       $int_pat )
 	_Dbg_delete_brkpt_entry $del
-        ((found += $?))
+        ((tot_found += $?))
 	;;
       * )
 	_Dbg_errmsg "Invalid entry number skipped: $del"
     esac
   done
   eval "$_resteglob"
-  (( found != 0 )) && _Dbg_msg "Removed $found breakpoint(s)."
-  return $found
+  (( tot_found != 0 )) && _Dbg_msg "Removed $tot_found breakpoint(s)."
+  return $tot_found
 }
 

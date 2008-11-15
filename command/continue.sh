@@ -18,12 +18,6 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-# Print a stack backtrace.  
-# $1 is an additional offset correction - this routine is called from two
-# different places and one routine has one more additional call on top.
-# $2 is the maximum number of entries to include.
-# $3 is which entry we start from; the "up", "down" and the "frame"
-# commands may shift this.
 
 _Dbg_help_add continue \
 'continue [LOC | - ] -- Continue script execution. 
@@ -44,23 +38,23 @@ function _Dbg_do_continue {
   typeset full_filename
 
   if [[ $1 == '-' ]] ; then
-    _Dbg_restore_debug_trap=0
-    return 0
+      _Dbg_restore_debug_trap=0
+      return 0
   fi
 
-  _Dbg_linespec_setup $1
-
-  if [[ -n $full_filename ]] ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg 'There is no line 0 to continue at.'
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_set_brkpt "$full_filename" "$line_number" 1 1
-      return 0
-    fi
+  _Dbg_linespec_setup "$1"
+  
+  if [[ -n "$full_filename" ]] ; then 
+      if (( line_number ==  0 )) ; then 
+	  _Dbg_errmsg 'There is no line 0 to continue at.'
+      else 
+	  _Dbg_check_line $line_number "$full_filename"
+	  (( $? == 0 )) && \
+	      _Dbg_set_brkpt "$full_filename" "$line_number" 1 1
+	  return 0
+      fi
   else
-    _Dbg_file_not_read_in $filename
+      _Dbg_file_not_read_in "$filename"
   fi
   return 1
 }

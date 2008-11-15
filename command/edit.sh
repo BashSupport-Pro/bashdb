@@ -31,18 +31,18 @@ _Dbg_do_edit() {
       _Dbg_errmsg "got $# parameters, but need 0 or 1."
       return 2
   fi
-  typeset -i line_number
   typeset editor=${EDITOR:-ex}
-  if (( $# == 1 )) ; then
+  typeset -i line_number
+  if (( $# == 0 )) ; then
     line_number=$_curline
-    full_filename=$_Dbg_frame_last_filename
+    full_filename="$_Dbg_frame_last_filename"
   else
-    _Dbg_linespec_setup $1
+    _Dbg_linespec_setup "$1"
   fi
   if [[ ! -r $full_filename ]]  ; then 
       _Dbg_errmsg "File $full_filename is not readable"
   fi
-  $($editor +$line_number $full_filename)
+  $editor +$line_number $full_filename
 }
 
 _Dbg_alias_add 'ed' 'edit'
