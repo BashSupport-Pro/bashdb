@@ -10,6 +10,7 @@ bashdb-*.tar.gz
 bashdb-*.tar.bz2
 bashdb-main
 bashdb-trace
+bug
 config.cache
 config.h
 config.h.in
