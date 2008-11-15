@@ -40,17 +40,17 @@ _Dbg_do_break() {
   typeset -i is_temp=$1
   shift
 
-  typeset n
+  typeset linespec
   if (( $# > 0 )) ; then 
-      n="$1"
+      linespec="$1"
   else
-      n="$_curline"
+      linespec="$_curline"
   fi
   shift
 
   typeset condition=${1:-''}
-  if [[ "$n" == 'if' ]]; then
-    n=$_curline
+  if [[ "$linespec" == 'if' ]]; then
+    linespec=$_curline
   elif [[ -z $condition ]] ; then
     condition=1
   elif [[ $condition == 'if' ]] ; then
@@ -66,7 +66,7 @@ _Dbg_do_break() {
   typeset -i line_number
   typeset full_filename
 
-  _Dbg_linespec_setup "$n"
+  _Dbg_linespec_setup "$linespec"
 
   if [[ -n "$full_filename" ]]  ; then 
     if (( line_number ==  0 )) ; then 
@@ -84,7 +84,6 @@ _Dbg_do_break() {
 # delete brkpt(s) at given file:line numbers. If no file is given
 # use the current file.
 _Dbg_do_clear_brkpt() {
-  # set -x
   typeset -r n=${1:-$_curline}
 
   typeset filename

@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# Eval command.
+# Eval and Print commands.
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
 #   rocky@gnu.org
@@ -41,7 +41,6 @@ _Dbg_do_eval() {
 }
 
 _Dbg_alias_add 'e' 'eval'
-
 
 # The arguments in the last "print" command.
 typeset _Dbg_last_print_args=''
