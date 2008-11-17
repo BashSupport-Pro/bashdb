@@ -1,4 +1,9 @@
-Version 4.0
+Version 4.0-0.2
+2008-11-17
+
+- Minor bug fixes
+
+Version 4.0-0.1
 2008-10-27
 
  - Major rewrite and reorganization of code.
@@ -626,4 +631,4 @@ occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
 
-$Id: NEWS,v 1.37 2008/10/14 20:56:48 rockyb Exp $
+$Id: NEWS,v 1.38 2008/11/17 08:29:26 rockyb Exp $
