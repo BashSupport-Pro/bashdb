@@ -8,7 +8,7 @@ bash
 bashdb
 bashdb-*.tar.gz
 bashdb-*.tar.bz2
-bashdb-main
+bashdb-main.inc
 bashdb-trace
 bug
 config.cache
