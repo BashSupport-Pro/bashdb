@@ -1,6 +1,7 @@
 Makefile
 Makefile.in
 test-alias.sh
+test-break.sh
 test-bashdb-trace.sh
 test-columns.sh
 test-file.sh
