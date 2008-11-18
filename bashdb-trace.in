@@ -1,5 +1,7 @@
 # -*- shell-script -*-
 # This program needs to be SOURCE'd and is not called as an executable
+# Note: bashdb-trace is created from bashdb-trace.in
+#
 #   Copyright (C) 2006, 2007, 2008  Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -33,7 +35,6 @@ typeset _Dbg_debugger_name='@PACKAGE@'
 typeset _Dbg_shell='@SH_PROG@'
 
 # The short shell name. Helps keep code common in bash, zsh, and ksh debuggers.
-# Equivalent to 
 typeset _Dbg_shell_name=${_Dbg_shell##*/}
 
 # Original $0. Note we can't set this in an include.
@@ -137,7 +138,7 @@ _Dbg_linetrace_on() {
   trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 }
 
-# Turn on line tracing. Sort of a nicer replacement for
+# Turn off line tracing. Sort of a nicer replacement for
 # set +x.
 #
 # See _Dbg_linetrace_on() for an example.
