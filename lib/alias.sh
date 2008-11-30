@@ -58,7 +58,7 @@ _Dbg_alias_find_index() {
     for ((i=0; i <= $_Dbg_alias_max_index; i++)) ; do
 	[[ ${_Dbg_alias_names[i]} == "$find_name" ]] && return $i
     done
-    return -1
+    return -- -1
 }
 
 # Return in help_aliases an array of strings that are aliases
