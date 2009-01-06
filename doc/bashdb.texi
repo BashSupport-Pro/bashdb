@@ -1,5 +1,5 @@
 \input texinfo      @c -*-texinfo-*-
-@c Copyright 2002, 2003, 2004, 2006, 2007, 2008
+@c Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009
 @c Rocky Bernstein for the Free Software Foundation
 @c
 @c TODO: 
@@ -68,7 +68,7 @@ This is the @value{EDITION} Edition, @value{UPDATED},
 of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
 for BASH
 
-Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein for the Free Software Foundation.
+Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein for the Free Software Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -176,7 +176,7 @@ This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
 This is the @value{EDITION} Edition, @value{UPDATED}, for BASH.
 
-Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
+Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
 
 @menu
 * Summary::                     Overview of Debugger with a sample session
@@ -521,26 +521,27 @@ a(nother) GUI interface called DDD that supports @value{DBG}.
 
 @node Interactive Line Tracing Session
 @section Interactive Line Tracing Session
+@anchor{PS4}
 
-One of the things I had found annoying about @code{set -x} tracing is
-that no position information given in the trace output, in particular
-the line number and the file name.  However I learn in
-@url{http://raz.cx/blog/2005/08/handy-bash-debugging-trick.html} that
-one can set @code{$PS4} to rectify this.
+One of the things I had found disappointing about the
+default @code{set -x} tracing behavior is that no position information
+is given in the trace output, in particular the line number and the file
+name.  However with the introduction in Bash 3.0 of the introspection
+variables, aslo needed to support the debugger, one can set 
+@cindex @code{$PS4}
+@code{$PS4} to rectify this. (I became of this in a defunct blog
+@url{http://raz.cx/blog/2005/08/handy-bash-debugging-trick.html}.)
 
 Here's what I use:
 @smallexample
   PS4='($@{BASH_SOURCE@}:$@{LINENO@}): $@{FUNCNAME[0]@} - [$@{SHLVL@},$@{BASH_SUBSHELL@}, $?]
+'
 @end smallexample
-Note that the is in single quotes, not double quotes so that those
-variables don't get expanded at the time when the @code{export} command is
-run. 
-
-Note that you need to use single quotes, not double quotes so that
-those variables don't get expanded at the time when the assignment to
-@code{PS4} command is run. Variables which have a dollar in front of
-them in the @code{PS4} string are expanded in the current environment
-of the line that is about to be run.
+Note that the string is in single quotes, not double quotes and there
+is a newline in the string. By using single quotes, variables which
+have a dollar in front of them in the string are expanded in the
+current environment of the line that is about to be run rather than at
+the time the variable @code{PS4} is set.
 
 You might want to add this in your shell's start-up script, e.g.,
 @code{.bashrc}, or @code{.profile}.
