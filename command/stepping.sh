@@ -94,10 +94,12 @@ _Dbg_do_step() {
     _Dbg_step_ignore=-1
     return 0
   fi
+  _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
 
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
   _Dbg_write_journal "_Dbg_step_force=$_Dbg_step_force"
   _Dbg_write_journal "_Dbg_last_step_next_cmd=$_Dbg_last_step_next_cmd"
+  _Dbg_write_journal "_Dbg_old_set_opts=$_Dbg_old_set_opts"
   return 1
 }
 _Dbg_alias_add 's'  'step'
@@ -116,7 +118,7 @@ _Dbg_do_next_skip() {
   else
     _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
   fi
-  _Dbg_write_journal "_Dbg_old_set_opts=\"$_Dbg_old_set_opts\""
+  _Dbg_write_journal_eval "_Dbg_old_set_opts=\"$_Dbg_old_set_opts\""
 
   if [[ $count == [0-9]* ]] ; then
     let _Dbg_step_ignore=${count:-1}

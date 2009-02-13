@@ -1,0 +1,7 @@
+set trace-co on
+# Debugger test bug where "step" wasn't clearing out the "next" flag
+#
+next
+step
+step
+quit

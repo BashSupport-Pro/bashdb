@@ -11,6 +11,8 @@ check_DATA = \
 	bug-args.right \
 	bug-source.cmd \
 	bug-source.right \
+	bug-step.cmd \
+	bug-step.right \
 	bugIFS.cmd \
 	bugIFS.right \
 	command.cmd \
