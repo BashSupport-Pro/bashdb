@@ -4,7 +4,7 @@ dnl
 dnl
 dnl Process this file with autoconf to produce a configure script.
 
-# Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008
+# Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009
 # Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.0)
-define(relstatus, 0.2)
+define(relstatus, 0.3cvs)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.74 2008/11/28 17:40:25 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.75 2009/03/27 23:40:35 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
