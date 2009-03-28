@@ -31,7 +31,7 @@ typeset -i  _Dbg_stack_pos
 #======================== FUNCTIONS  ============================#
 
 _Dbg_frame_adjust() {
-  (($# != 2)) && return -- -1
+  (($# != 2)) && return 255
 
   typeset -i count=$1
   typeset -i signum=$2

@@ -32,12 +32,14 @@ _Dbg_alias_add() {
 # Remove alias $1 from our list of command aliases.
 _Dbg_alias_remove() {
     (( $# != 1 )) && return 1
-    _Dbg_alias_find_index "$1"
-    typeset -i i=$?
-    ((i==-1)) && return 1
-    unset "_Dbg_alias_names[$i]"
-    unset "_Dbg_alias_expansion[$i]"
-    return 0
+    typeset -i i
+    if i=$(_Dbg_alias_find_index "$1") ; then
+      unset "_Dbg_alias_names[$i]"
+      unset "_Dbg_alias_expansion[$i]"
+      return 0
+    else
+      return 1
+    fi
 }
 
 # Expand alias $1. The result is set in variable expanded_alias which
@@ -45,9 +47,9 @@ _Dbg_alias_remove() {
 _Dbg_alias_expand() {
     (( $# != 1 )) && return 1
     expanded_alias=$1
-    _Dbg_alias_find_index "$1"
-    typeset -i i=$?
-    [[ -n ${_Dbg_alias_expansion[$i]} ]] && expanded_alias=${_Dbg_alias_expansion[$i]}
+    typeset -i i
+    i=$(_Dbg_alias_find_index "$1")
+    (( $? == 0 )) && [[ -n ${_Dbg_alias_expansion[$i]} ]] && expanded_alias=${_Dbg_alias_expansion[$i]}
     return 0
 }
 
@@ -56,9 +58,9 @@ _Dbg_alias_find_index() {
     typeset find_name=$1
     typeset -i i
     for ((i=0; i <= $_Dbg_alias_max_index; i++)) ; do
-	[[ ${_Dbg_alias_names[i]} == "$find_name" ]] && return $i
+	[[ ${_Dbg_alias_names[i]} == "$find_name" ]] && echo $i && return 0
     done
-    return -- -1
+    return 1
 }
 
 # Return in help_aliases an array of strings that are aliases
