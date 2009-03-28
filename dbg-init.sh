@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-init.inc - Bourne Again Shell Debugger Global Variables
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -38,7 +38,7 @@ if [[ -r $_Dbg_libdir/builtin/set0 ]] ; then
   fi
 fi
 
-typeset -r _Dbg_orig_0=$0
+typeset _Dbg_orig_0=$0
 if [[ -n $_Dbg_script ]] ; then 
   if ((_Dbg_have_set0)) && [[ -n $_Dbg_script_file ]] ; then
       builtin set0 $_Dbg_script_file

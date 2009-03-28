@@ -23,6 +23,10 @@ test_preserve_set_opts()
     else
 	echo 'Skipping test - building outside of source complications'
     fi
+
+    (. ${top_builddir}/bashdb-trace -L $libdir/dbg-opts.sh)
+    assertEquals $? 1
+
 }
 
 # load shunit2

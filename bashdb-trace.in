@@ -72,8 +72,12 @@ for ((i=0; $i<${#_Dbg_script_args[@]}-1; i++)) ; do
 	break
     fi
 done
-if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
-  echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
+if [[ ! -d $_Dbg_libdir ]] || [[ ! -r $_Dbg_libdir ]] ; then 
+  if [[ ! -d $_Dbg_libdir ]] ; then
+      echo "${_Dbg_pname}: '${_Dbg_libdir}' is not a directory." 1>&2
+  elif [[ ! -r $_Dbg_libdir ]] ; then
+      echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
+  fi
   echo "${_Dbg_pname}: Perhaps @PACKAGE@ is installed wrong (if its installed)." >&2
   echo "${_Dbg_pname}: Try running @PACKAGE@ using -L (with a different directory)." >&2
   echo "${_Dbg_pname}: Run @PACKAGE@ --help for a list and explanation of options." >&2
