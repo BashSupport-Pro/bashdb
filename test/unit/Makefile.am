@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.16 2008/11/08 10:27:39 rockyb Exp $
+#$Id: Makefile.am,v 1.17 2009/06/16 00:09:08 rockyb Exp $
 
 if BUILD_BUILTINS
 BUILTIN_TESTS=test-set0.sh
@@ -16,6 +16,7 @@ TESTS = $(BUILTIN_TESTS)     \
         test-fns.sh          \
         test-frame.sh        \
         test-io.sh           \
+        test-msg.sh          \
         test-pre.sh          \
         test-run.sh          \
         test-sort.sh         \
@@ -31,6 +32,10 @@ EXTRA_DIST = $(TESTS) shunit2 \
      test-columns.sh.in       \
      test-file.sh.in          \
      test-fns.sh.in           \
+     test-frame.sh.in         \
+     test-io.sh.in            \
+     test-msg.sh.in           \
+     test-pre.sh              \
      test-run.sh.in           \
      test-sort.sh.in          \
      test-save-restore.sh.in

@@ -24,6 +24,17 @@
 
 	* configure.ac, doc/bashdb.texi: Update release number
 
+2009-03-02 Monday 02:52  Rocky Bernstein <rocky@gnu.org>
+
+	* htdocs/index.html: pydbg -> pydbgr
+
+2009-02-22 Sunday 07:48  Rocky Bernstein <rocky@gnu.org>
+
+	* htdocs/: bashdb-break.png, bashdb-break_thumb.png,
+	  bashdb-ddd.png, bashdb-ddd_thumb.png, bashdb-where.png,
+	  bashdb-where_thumb.png, index.html, index.html~, jc.css,
+	  sflogo.png: Add web pages
+
 2009-02-13 Friday 21:37  Rocky Bernstein <rocky@gnu.org>
 
 	* command/stepping.sh, test/data/Makefile.am,

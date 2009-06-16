@@ -334,7 +334,7 @@ Editing of command lines as they are typed is off.
 Editing of command lines as they are typed is on.
 Edit style is emacs.
 +set misspelled 40
-Undefined set command "misspelled"
+Undefined set subcommand "misspelled". Try "help set".
 +set listsize 40
 +set listsize bad
 Integer argument expected; got: bad

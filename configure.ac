@@ -47,7 +47,7 @@ AC_SUBST(DIFF_OPTS)
 AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.76 2009/04/10 09:58:39 rockyb Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.77 2009/06/16 00:09:07 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -233,7 +233,8 @@ AC_CONFIG_FILES([test/unit/test-file.sh],
 		[chmod +x test/unit/test-file.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
-AC_CONFIG_FILES([test/unit/test-io.sh], [chmod +x test/unit/test-io.sh])
+AC_CONFIG_FILES([test/unit/test-msg.sh], [chmod +x test/unit/test-msg.sh])
+AC_CONFIG_FILES([test/unit/test-io.sh],  [chmod +x test/unit/test-io.sh])
 AC_CONFIG_FILES([test/unit/test-pre.sh], [chmod +x test/unit/test-pre.sh])
 AC_CONFIG_FILES([test/unit/test-run.sh], [chmod +x test/unit/test-run.sh])
 AC_CONFIG_FILES([test/unit/test-save-restore.sh], 

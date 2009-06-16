@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # msg.sh - Bourne Again Shell Debugger Input/Output routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -91,7 +91,48 @@ function _Dbg_printf_nocr {
   fi
 }
 
+_Dbg_confirm() {
+    if (( $# < 1 || $# > 2 )) ; then
+	_Dbg_response='error'
+	return 0
+    fi
+    _Dbg_confirm_prompt=$1
+    typeset _Dbg_confirm_default=${2:-'no'}
+    while : ; do 
+	if ! read $_Dbg_edit -p "$_Dbg_confirm_prompt" _Dbg_response args \
+	    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
+	    break
+	fi
+
+	case "$_Dbg_response" in
+	    'y' | 'yes' | 'yeah' | 'ya' | 'ja' | 'si' | 'oui' | 'ok' | 'okay' )
+		_Dbg_response='y'
+		return 0
+		;;
+	    'n' | 'no' | 'nope' | 'nyet' | 'nein' | 'non' )
+		_Dbg_response='n'
+		return 0
+		;;
+	    *)
+		if [[ $_Dbg_response =~ '^[ \t]*$' ]] ; then
+		    set +x
+		    return 0
+		else
+		    _Dbg_msg "I don't understand \"$_Dbg_response\"."
+		    _Dbg_msg "Please try again entering 'yes' or 'no'."
+		    _Dbg_response=''
+		fi
+		;;
+	esac
+
+    done
+}
+
 # Common funnel for "Undefined command" message
 _Dbg_undefined_cmd() {
-  _Dbg_msg "Undefined $1 command \"$2\""
+    if (( $# == 2 )) ; then
+	_Dbg_msg "Undefined $1 subcommand \"$2\". Try \"help $1\"."
+    else
+	_Dbg_msg "Undefined command \"$1\". Try \"help\"."
+    fi
 }
