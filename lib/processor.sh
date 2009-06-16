@@ -680,7 +680,7 @@ _Dbg_onecmd() {
 	   if (( _Dbg_autoeval )) ; then
 	     _Dbg_do_eval $_Dbg_cmd $args
 	   else
-             _Dbg_msg "Undefined command: \"$_Dbg_cmd\". Try \"help\"." 
+             _Dbg_undefined_cmd "$_Dbg_cmd"
 	     _Dbg_history_remove_item
 	     # local -a last_history=(`history 1`)
 	     # history -d ${last_history[0]}

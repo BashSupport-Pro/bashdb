@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # kill.sh - gdb-like "kill" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -43,11 +43,12 @@ _Dbg_do_kill() {
       return 1
   fi
       
-  read $_Dbg_edit -p "Do hard kill and terminate the debugger? (y/n): " \
-      <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
+  _Dbg_confirm "Send kill signal ${signal} which may terminate the debugger? (y/N): " 'N'
 
-  if [[ $REPLY = [Yy]* ]] ; then 
+  if [[ $_Dbg_response = 'y' ]] ; then 
       kill $signal $$
+  else
+      _Dbg_msg "Kill not done - not confirmed."
   fi
   return 0
 }
