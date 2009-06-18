@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -150,8 +150,8 @@ _Dbg_debug_trap_handler() {
 	    _Dbg_stop_reason='at a breakpoint that has since been deleted'
 	    _Dbg_delete_brkpt_entry $_Dbg_i
 	  else
-	    _Dbg_stop_reason='at breakpoint'
-	    _Dbg_currentbp=$_Dbg_i
+	    _Dbg_brkpt_num=$_Dbg_i
+	     _Dbg_stop_reason="at breakpoint $_Dbg_brkpt_num"
 	    _Dbg_msg \
               "Breakpoint $_Dbg_i hit (${_Dbg_brkpt_count[$_Dbg_i]} times)."
 	  fi

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # info.sh - gdb-like "info" debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -88,9 +88,7 @@ _Dbg_do_info() {
 	  p | pr | pro | prog | progr | progra | program )
 	      if (( _Dbg_running )) ; then
 		  _Dbg_msg "Program stopped."
-		  if (( _Dbg_currentbp )) ; then
-		      _Dbg_msg "It stopped at breakpoint ${_Dbg_currentbp}."
-		  elif [[ -n $_Dbg_stop_reason ]] ; then
+		  if [[ -n $_Dbg_stop_reason ]] ; then
 		      _Dbg_msg "It stopped ${_Dbg_stop_reason}."
 		  fi
 	      else
