@@ -1,6 +1,6 @@
 # -*- shell-script -*-
-# dbg-pre.inc.in - Bourne Again Shell Debugger Global Variables
-#   Copyright (C) 2002, 2003, 2004, 2008 Rocky Bernstein rocky@gnu.org
+# dbg-pre.sh - Code common to bashdb and bashdb-trace that has to run first
+#   Copyright (C) 2002, 2003, 2004, 2008, 2009 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -100,7 +100,7 @@ typeset -x _Dbg_init_cwd=$PWD
 
 typeset -i _Dbg_running=1      # True we are not finished running the program
 
-typeset -i _Dbg_currentbp=0    # If nonzero, the breakpoint number that we 
+typeset -i _Dbg_brkpt_num=0    # If nonzero, the breakpoint number that we 
                                # are currently stopped at.
 
 # Sets whether or not to display command before executing it.
