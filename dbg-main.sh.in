@@ -67,7 +67,7 @@ if [[ -z $_Dbg_no_init && -r ~/.bashdbinit ]] ; then
   _Dbg_do_source ~/.bashdbinit
 fi
 
-# BASHDB_LEVEL is the number of times we are nested inside a debugger
+# _Dbg_DEBUGGER_LEVEL is the number of times we are nested inside a debugger
 # by virtue of running "debug" for example.
 if [[ -z "${_Dbg_DEBUGGER_LEVEL}" ]] ; then
   typeset -ix _Dbg_DEBUGGER_LEVEL=1
