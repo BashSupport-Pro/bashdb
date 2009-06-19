@@ -8,6 +8,7 @@ test-file.sh
 test-fns.sh
 test-frame.sh
 test-io.sh
+test-msg.sh
 test-pre.sh
 test-run.sh
 test-save-restore.sh
