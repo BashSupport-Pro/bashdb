@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Set up to Debug into another script...
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -58,8 +58,8 @@ _Dbg_do_debug() {
   local -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
   export _Dbg_QUIT_ON_QUITo=1
   export BASHDB_BASENAME_ONLY="$_Dbg_basename_only"
-  ((BASHDB_LEVEL++))
+  ((_Dbg_DEBUGGER_LEVEL++))
   $_Dbg_debug_cmd
-  ((BASHDB_LEVEL--))
+  ((_Dbg_DEBUGGER_LEVEL--))
   export _Dbg_QUIT_ON_QUIT=$old_quit_on_quit
 }

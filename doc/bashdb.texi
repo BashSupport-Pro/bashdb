@@ -124,7 +124,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @end tex
 
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein for the Free Software
+Copyright @copyright{} 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein for the Free Software
 Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -261,7 +261,7 @@ factorial of a number: fact(0) is 1 and fact(n) is n*fact(n-1).
 @smallexample
 $ @b{bashdb -L .  /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -653,7 +653,7 @@ the @code{bashdb} command:
 @smallexample
 @b{/usr/local/bin/bashdb -X /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -2161,7 +2161,7 @@ is used. In either case the options are prepended to cause the
 debugger to run.
 
 The nesting level of the debugger is saved inside environment variable
-@code{BASHDB_LEVEL}. The debugger prompt indicates the level of nesting
+@code{_Dbg_DEBUGGER_LEVEL}. The debugger prompt indicates the level of nesting
 by enclosing the history in that many nestings of @code{<>} symbols.
 
 @end table
@@ -2567,7 +2567,7 @@ regression-tests @file{parm.sh}.
 @group
 % ../bashdb -n -L .. parm.sh
 Bourne-Again Shell Debugger, release @value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

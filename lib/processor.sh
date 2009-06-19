@@ -97,7 +97,7 @@ function _Dbg_process_commands {
     typeset _Dbg_less=''
     typeset result  # Used by copies to return a value.
     
-    if _Dbg_copies '>' $BASHDB_LEVEL ; then
+    if _Dbg_copies '>' $_Dbg_DEBUGGER_LEVEL ; then
 	_Dbg_greater=$result
 	_Dbg_less=${result//>/<}
     fi

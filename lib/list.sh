@@ -71,7 +71,7 @@ _Dbg_print_linetrace() {
   _Dbg_get_source_line $line_number $filename
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
-level $BASHDB_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
+level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
   if (( _Dbg_linetrace_expand )) ; then
 #    typeset expanded_source_line
 #    # Replace all double quotes (") with and an escape (\")

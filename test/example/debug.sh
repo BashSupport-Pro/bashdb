@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 if [[ "$1"x != x ]] ; then 
   echo "passed $1"
   exit 1
 fi
 
 cmd=../example/debug.sh
-../example/debug.sh $BASHDB_LEVEL
+../example/debug.sh $_Dbg_DEBUGGER_LEVEL
 # ../../bash $cmd $x
-$cmd $BASHDB_LEVEL
+$cmd $_Dbg_DEBUGGER_LEVEL
 x=5
