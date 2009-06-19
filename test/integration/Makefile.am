@@ -28,6 +28,7 @@ TESTS = \
 	test-command    \
 	test-complete   \
 	test-debug      \
+	test-enable     \
 	test-display    \
 	test-finish     \
 	test-frame      \

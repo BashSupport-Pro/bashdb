@@ -8,6 +8,7 @@ check_DATA =            \
 	debug.sh        \
 	hanoi.sh.in     \
 	interrupt.sh.in \
+	nexting.sh      \
 	parm.sh         \
 	restartbug.sh   \
 	settrace.sh     \

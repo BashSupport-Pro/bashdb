@@ -25,6 +25,8 @@ check_DATA = \
 	debug2.cmd \
 	display.cmd \
 	display.right \
+	enable.cmd \
+	enable.right \
 	finish.cmd \
 	finish.right \
 	frame.cmd \
