@@ -51,15 +51,26 @@ for the debugger to get called when your program is sent a signal.
 
 =head1 OPTIONS
 
-The long options listed befow are available if the C<getopt> command
-is installed on your system. The short options can always be used.
-
 =over 4
 
 =item -h | --help
 
 Print a usage message on standard error and exit with a return code
 of 100.
+
+Z<>
+
+=item -A | --annotation I<level>
+
+Sets to output additional stack and status information which allows
+front-ends such as emacs to track what's going on without polling. 
+
+This is needed in for regression testing. Using this
+option is equivalent to issuing:
+
+  set annotation LEVEL
+
+inside the debugger.
 
 Z<>
 
@@ -91,7 +102,7 @@ Z<>
 
 =item -c I<command-string>
 
-Instead of specifying the name of a bash script file, one can give an
+Instead of specifying the name of a script file, one can give an
 execution string that is to be debugged. Use this option to do that.
 
 If you invoke the debugger via C<bash --debugger>, the filename that will
@@ -234,6 +245,6 @@ The current version is maintained (or not) by Rocky Bernstein.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.9 2007/03/02 05:42:46 rockyb Exp $>
+I<$Id: bashdb-man.pod,v 1.10 2009/06/22 22:41:10 rockyb Exp $>
 
 =cut

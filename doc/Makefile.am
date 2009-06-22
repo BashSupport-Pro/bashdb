@@ -1,6 +1,6 @@
 ##############################################################################
-# $Id: Makefile.am,v 1.4 2007/05/14 00:37:49 rockyb Exp $
-#  Copyright (C) 2003 Rocky Bernstein
+# $Id: Makefile.am,v 1.5 2009/06/22 22:41:10 rockyb Exp $
+#  Copyright (C) 2003, 2009 Rocky Bernstein
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
@@ -17,30 +17,30 @@
 ##############################################################################
 
 EXT=1
-man1_MANS = bashdb.$(EXT)
+man1_MANS = @PACKAGE@.$(EXT)
 
 # bashdb.texi and bashdb.info are derived but are included to
 # make "make distcheck" work.
 EXTRA_DIST = $(man1_MANS) macros.texi \
-	bashdb.info bashdb-man.pod bashdb-man.html
+	@PACKAGE@.info @PACKAGE@-man.pod @PACKAGE@-man.html
 
-info_TEXINFOS = bashdb.texi 
+info_TEXINFOS =  bashdb.texi 
 bashdb_TEXINFOS = fdl.texi gpl.texi copyright.texi
 
 all: $(INFO_DEPS) $(man1_MANS) html 
 
 man: $(man1_MANS)
 
-html: bashdb.html bashdb-man.html
+html: @PACKAGE@.html @PACKAGE@-man.html
 
-bashdb.html: bashdb.texi
-	texi2html $(srcdir)/bashdb.texi || true
+@PACKAGE@.html: @PACKAGE@.texi
+	texi2html $(srcdir)/@PACKAGE@.texi || true
 
-bashdb-man.html: bashdb-man.pod
-	pod2html --infile=$(srcdir)/bashdb-man.pod --outfile=$@
+@PACKAGE@-man.html: @PACKAGE@-man.pod
+	pod2html --infile=$(srcdir)/@PACKAGE@-man.pod --outfile=$@
 
-$(man1_MANS): bashdb-man.pod
-	pod2man --release=$(PACKAGE_VERSION) --center="GNU Tools" --section=$(EXT) $(srcdir)/bashdb-man.pod >$@
+$(man1_MANS): @PACKAGE@-man.pod
+	pod2man --release=$(PACKAGE_VERSION) --name=@PACKAGE@ --center="GNU Tools" --section=$(EXT) $(srcdir)/@PACKAGE@-man.pod >$@
 
 %.ps.gz: %.ps
 	gzip -9c $< > $@
@@ -63,4 +63,4 @@ $(man1_MANS): bashdb-man.pod
 
 all-formats: pdf dvi txt ps html
 
-MOSTLYCLEANFILES = bashdb.tgs bashdb.ps.gz bashdb.pdf bashdb.html bashdb_toc.html bashdb_foot.html $(man1_MANS) bashdb-man.html
+MOSTLYCLEANFILES = @PACKAGE@.tgs @PACKAGE@.ps.gz @PACKAGE@.pdf @PACKAGE@.html @PACKAGE@_toc.html @PACKAGE@_foot.html $(man1_MANS) @PACKAGE@-man.html
