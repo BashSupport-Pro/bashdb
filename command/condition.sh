@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # condition.sh - gdb-like "condition" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -27,28 +27,26 @@ breakpoint N is reached."
 # Set a condition for a given breakpoint $1 is a breakpoint number
 # $2 is a condition. If not given, set "unconditional" or 1.
 # returns 0 if success or 1 if fail.
-_Dbg_do_condition() {
-  # set -x
-  local -r n=$1
-  shift 
-  local condition="$@"
-  # set -xv
+function _Dbg_do_condition {
 
-  if [[ -z $n ]]; then
-    _Dbg_msg 'Argument required (breakpoint number).'
+  if (( $# < 1 )) ; then
+    _Dbg_errmsg 'condition: Argument required (breakpoint number).'
     return 1
   fi
+
+  typeset -r n=$1
+  shift 
 
   eval "$_seteglob"
   if [[ $n != $int_pat ]]; then
     eval "$_resteglob"
-    _Dbg_msg "Bad breakpoint number: $n"
+    _Dbg_errmsg "condition: Bad breakpoint number: $n"
     return 1
   fi
   eval "$_resteglob"
 
   if [[ -z ${_Dbg_brkpt_file[$n]} ]] ; then
-    _Dbg_msg "Breakpoint entry $n is not set. Condition not changed."
+    _Dbg_msg "condition: Breakpoint entry $n is not set. Condition not changed."
     return 1
   fi
   

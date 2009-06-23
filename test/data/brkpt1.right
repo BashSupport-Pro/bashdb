@@ -81,9 +81,9 @@ Num Type       Disp Enb What
 	stop only if y > 25
 No watch expressions have been set.
 +condition 23
-Breakpoint entry 23 is not set. Condition not changed.
+condition: Breakpoint entry 23 is not set. Condition not changed.
 +condition 
-Argument required (breakpoint number).
+** condition: Argument required (breakpoint number).
 +info break
 Num Type       Disp Enb What
 2   breakpoint keep y   dbg-test1.sh:22
@@ -94,12 +94,13 @@ Num Type       Disp Enb What
 	stop only if y > 25
 No watch expressions have been set.
 +condition x==1
-Bad breakpoint number: x==1
+** condition: Bad breakpoint number: x==1
 +condition 4 x==1
+Breakpoint 4 now unconditional.
 +condition bad
-Bad breakpoint number: bad
+** condition: Bad breakpoint number: bad
 +condition 30 y==1
-Breakpoint entry 30 is not set. Condition not changed.
+condition: Breakpoint entry 30 is not set. Condition not changed.
 +disable 2 5
 Breakpoint entry 2 disabled.
 Breakpoint entry 5 disabled.
@@ -107,7 +108,6 @@ Breakpoint entry 5 disabled.
 Num Type       Disp Enb What
 2   breakpoint keep n   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
-	stop only if x==1
 5   breakpoint keep n   dbg-test1.sh:23
 	stop only if x==0
 6   breakpoint keep y   dbg-test1.sh:24
