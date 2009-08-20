@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # stepping.sh - Debugger next, skip and step commmands.
 #
-#   Copyright (C) 2006, 2008 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2006, 2008, 2009 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -98,8 +98,7 @@ _Dbg_do_step() {
 
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
   _Dbg_write_journal "_Dbg_step_force=$_Dbg_step_force"
-  _Dbg_write_journal "_Dbg_last_step_next_cmd=$_Dbg_last_step_next_cmd"
-  _Dbg_write_journal "_Dbg_old_set_opts=$_Dbg_old_set_opts"
+  _Dbg_write_journal "_Dbg_old_set_opts='$_Dbg_old_set_opts'"
   return 1
 }
 _Dbg_alias_add 's'  'step'
@@ -118,7 +117,7 @@ _Dbg_do_next_skip() {
   else
     _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
   fi
-  _Dbg_write_journal_eval "_Dbg_old_set_opts=\"$_Dbg_old_set_opts\""
+  _Dbg_write_journal_eval "_Dbg_old_set_opts='$_Dbg_old_set_opts'"
 
   if [[ $count == [0-9]* ]] ; then
     let _Dbg_step_ignore=${count:-1}

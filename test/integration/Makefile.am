@@ -45,6 +45,8 @@ TESTS = \
 	test-sig 	\
 	test-skip 	\
 	test-sopts 	\
+	test-bug-step 	\
+	test-bug-step-subshell \
 	test-subshell 	\
 	test-tbreak	\
 	test-trace	\

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-processor.sh - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
 #   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -29,7 +29,6 @@
 #                       safely used (as per the bash manual on redirection)
 # _Dbg-input_desc       is the current descriptor in use. "sourc"ing other
 #                       command files will increase this descriptor
-
 typeset -ir _Dbg_INPUT_START_DESC=4
 typeset -i  _Dbg_MAX_INPUT_DESC=9  # logfile can reduce this
 typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
@@ -304,9 +303,8 @@ _Dbg_onecmd() {
 	  
 	  _Dbg_last_cmd='continue'
 	  if _Dbg_do_continue $args ; then
-	    _Dbg_write_journal \
-	      "_Dbg_old_set_opts=\"$_Dbg_old_set_opts -o functrace\""
-	    _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
+	    _Dbg_write_journal_eval \
+	      "_Dbg_old_set_opts='$_Dbg_old_set_opts -o functrace'"
 	    return 0
 	  fi
 	  ;;

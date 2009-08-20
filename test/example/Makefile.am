@@ -1,6 +1,7 @@
 check_DATA =            \
 	bug-args.sh.in  \
 	bug-step.sh     \
+	bug-step-subshell.sh \
 	bugIFS.sh.in    \
 	dbg-test1.sh    \
 	dbg-test1.sub   \

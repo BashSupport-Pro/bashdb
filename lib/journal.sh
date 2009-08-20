@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Things related to variable journaling.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -34,11 +34,11 @@ _Dbg_write_journal_eval() {
 
 # append a command into journal file and then run the command.
 _Dbg_write_journal_var() {
-  typeset var_name=$1
+  typeset var_name="$1"
   typeset val
-  typeset val_cmd="$val=\${$var_name}"
-  eval $val_cmd
-  _Dbg_write_journal "${var_name}=${val}" 
+  typeset val_cmd="$val='\${$var_name}'"
+  eval "$val_cmd"
+  _Dbg_write_journal "${var_name}='${val}'" 
 }
 
 _Dbg_write_journal_avar() {

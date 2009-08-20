@@ -13,6 +13,8 @@ check_DATA = \
 	bug-source.right \
 	bug-step.cmd \
 	bug-step.right \
+	bug-step-subshell.cmd \
+	bug-step-subshell.right \
 	bugIFS.cmd \
 	bugIFS.right \
 	command.cmd \
