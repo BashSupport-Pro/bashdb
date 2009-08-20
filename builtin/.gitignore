@@ -1,4 +1,8 @@
+/*~
 /.deps
 /Makefile
 /Makefile.in
-/*~
+/readarray
+/readarray-readarray.o
+/set0
+/set0-set0.o

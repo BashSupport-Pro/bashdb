@@ -304,8 +304,9 @@ _Dbg_onecmd() {
 	  
 	  _Dbg_last_cmd='continue'
 	  if _Dbg_do_continue $args ; then
-	    _Dbg_write_journal_eval \
+	    _Dbg_write_journal \
 	      "_Dbg_old_set_opts=\"$_Dbg_old_set_opts -o functrace\""
+	    _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
 	    return 0
 	  fi
 	  ;;
