@@ -28,7 +28,9 @@ typeset -a _Dbg_dir=('\$cdir' '\$cwd' )
 # files into a bash array.
 typeset -i _Dbg_have_readarray=0
 
-if [[ -r $_Dbg_libdir/builtin/readarray ]] ; then
+if ra=$(type -p readarray) && [ -z "$ra" ] ; then
+    _Dbg_have_readarray=1
+elif [[ -r $_Dbg_libdir/builtin/readarray ]] ; then
   if enable -f $_Dbg_libdir/builtin/readarray  readarray >/dev/null 2>&1 ; then
     _Dbg_have_readarray=1
   fi
