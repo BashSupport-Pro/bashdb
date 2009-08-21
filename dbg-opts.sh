@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-opts.sh - bashdb command options processing. The bane of programming.
 #
-#   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2009 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -134,7 +134,7 @@ _Dbg_parse_options() {
 	_Dbg_do_show_version
 	exit 0
     elif (( ! _Dbg_o_quiet )); then 
-	echo "$_Dbg_shell_name debugger, release $_Dbg_release"
+	echo "$_Dbg_shell_name Shell Debugger, release $_Dbg_release"
 	printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
@@ -142,18 +142,19 @@ welcome to change it and/or distribute copies of it under certain conditions.
 
 '
     fi
+    (( _Dbg_o_version )) && _Dbg_show_version
 
     if [[ -n $_Dbg_o_annotate ]] ; then
 	if [[ ${_Dbg_o_annotate} == [0-9]* ]] ; then
 	    _Dbg_annotate=$_Dbg_o_annotate
 	    if (( _Dbg_annotate > 3 || _Dbg_annotate < 0)); then
-		print "Annotation level must be less between 0 and 3. Got: $_Dbg_annotate." >&2
-		print "Setting Annotation level to 0." >&2
+		echo "Annotation level must be less between 0 and 3. Got: $_Dbg_annotate." >&2
+		echo "Setting Annotation level to 0." >&2
 		_Dbg_annotate=0
 	    fi
 	else
-	    print "Annotate option should be an integer, got ${_Dbg_o_annotate}." >&2
-	    print "Setting annotation level to 0." >&2
+	    echo "Annotate option should be an integer, got ${_Dbg_o_annotate}." >&2
+	    echo "Setting annotation level to 0." >&2
 	fi
     fi
     unset _Dbg_o_annotate _Dbg_o_version _Dbg_o_quiet

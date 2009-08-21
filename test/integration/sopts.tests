@@ -15,3 +15,4 @@ debugged_script="${top_srcdir}/example/dbg-test1.sh"
 $SH ${top_builddir}/bashdb -B -q -L ${top_builddir} -x $contcmd -c 'echo test1'
 # Note -B needs to come before -e
 $SH ${top_builddir}/bashdb -B -e -q --library ${top_builddir} -x $contcmd -c 'echo not run'
+$SH ${top_builddir}/bashdb -B -A9 -q --library ${top_builddir} -x $contcmd -c 'echo not run'
