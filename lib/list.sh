@@ -28,11 +28,11 @@ typeset -i _Dbg_listline
 # Print source line in standard format for line $1 of filename $2.  If
 # $2 is omitted, use _Dbg_frame_last_filename, if $1 is omitted use _curline.
 
-function _Dbg_print_source_line {
+function _Dbg_print_location_and_command {
   typeset line_number=${1:-$_curline}
   typeset filename=${2:-$_Dbg_frame_last_filename}
   typeset source_line
-  _Dbg_get_source_line $line_number $filename
+  _Dbg_get_source_line $line_number "$filename"
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
 ${line_number}:\t${source_line}"

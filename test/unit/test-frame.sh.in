@@ -21,7 +21,7 @@ test_frame_adjust()
     _Dbg_errmsg() {
 	errmsg+=("$1")
     }
-    _Dbg_print_source_line() {
+    _Dbg_print_location_and_command() {
 	:
     }
     _Dbg_running=1

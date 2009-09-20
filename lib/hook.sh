@@ -114,7 +114,7 @@ _Dbg_debug_trap_handler() {
 	_Dbg_msg "Watchpoint $_Dbg_i: ${_Dbg_watch_exp[$_Dbg_i]} changed:"
 	_Dbg_msg "  old value: '$old_val'"
 	_Dbg_msg "  new value: '$new_val'"
-	_Dbg_print_source_line
+	_Dbg_print_location_and_command
 	_Dbg_watch_val[$_Dbg_i]=$new_val
 	_Dbg_process_commands
 	_Dbg_set_to_return_from_debugger 1
@@ -161,7 +161,7 @@ _Dbg_debug_trap_handler() {
 	      # Run any commands associated with this breakpoint
 	      _Dbg_bp_commands $_Dbg_i
 	  fi
-	  _Dbg_print_source_line
+	  _Dbg_print_location_and_command
 	  _Dbg_process_commands		# enter debugger
 	  _Dbg_set_to_return_from_debugger 1
 	  return $_Dbg_rc
@@ -182,7 +182,7 @@ _Dbg_debug_trap_handler() {
 	  fi
       fi
 
-    _Dbg_print_source_line
+    _Dbg_print_location_and_command
 
     _Dbg_stop_reason='after being stepped'
     _Dbg_process_commands		# enter debugger
@@ -192,14 +192,14 @@ _Dbg_debug_trap_handler() {
     # here because a trap RETURN
     _Dbg_stop_reason='on a return'
     _Dbg_return_level=0
-    _Dbg_print_source_line
+    _Dbg_print_location_and_command
     _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
   elif (( -1 == _Dbg_return_level )) ; then
     # here because we are fielding a signal.
     _Dbg_stop_reason='on fielding signal'
-    _Dbg_print_source_line
+    _Dbg_print_location_and_command
     _Dbg_process_commands		# enter debugger
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc
