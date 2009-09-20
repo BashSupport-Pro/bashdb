@@ -49,7 +49,10 @@ _Dbg_show_version() {
 
 # Script arguments before adulteration by _Dbg_parse_opts
 typeset -ax _Dbg_orig_script_args
-_Dbg_orig_script_args=($@)
+# The 'eval' is used below to preserve embedded spaces which might
+# occur for example in $@. Short of using a loop I'm not sure of an
+# easier way to copy an array in bash.
+eval "_Dbg_orig_script_args=(\"\$@\")"
 
 # The following globals are set by _Dbg_parse_opts. Any values set are 
 # the default values.

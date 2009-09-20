@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 # list.sh - Bourne Again Shell Debugger list/search commands
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -54,7 +54,7 @@ ${line_number}:\t${source_line}"
 # is in effect.
 _Dbg_print_linetrace() {
   typeset line_number=${1:-$_curline}
-  typeset filename=${2:-$_Dbg_frame_last_filename}
+  typeset filename=${2:-"$_Dbg_frame_last_filename"}
 
   # Remove main + sig-handler  + print_lintrace FUNCNAMES.
   typeset -i depth=${#FUNCNAME[@]}-3  
@@ -68,7 +68,7 @@ _Dbg_print_linetrace() {
   (( depth < 0 )) && return
 
   typeset source_line
-  _Dbg_get_source_line $line_number $filename
+  _Dbg_get_source_line $line_number "$filename"
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
 level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
@@ -120,10 +120,10 @@ _Dbg_list() {
 
     typeset source_line
 
-    typeset filevar=`_Dbg_file2var $filename`
+    typeset filevar=$(_Dbg_file2var "$filename")
     typeset is_read
     is_read=`_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar`
-    [ $is_read ] || _Dbg_readin $filename
+    [ $is_read ] || _Dbg_readin "$filename"
     typeset -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar`
     #   echo "debug: -- max_line: $max_line --"
 
@@ -138,7 +138,7 @@ _Dbg_list() {
             ; _Dbg_listline++ )) ; do
      typeset prefix="   "
      typeset source_line
-     _Dbg_get_source_line $_Dbg_listline $filename
+     _Dbg_get_source_line $_Dbg_listline "$filename"
 
      (( _Dbg_listline == _curline )) \
        && [[ $filename == $_Dbg_frame_last_filename ]] &&  prefix="==>"

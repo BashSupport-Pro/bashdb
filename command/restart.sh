@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # restart.sh - gdb-like "restart" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -25,15 +25,15 @@ _Dbg_help_add restart \
 'restart [args] -- Attempt to restart the program.'
 
 _Dbg_do_restart() {
-
     typeset script_args
+    # We need to escape any embedded blanks in script_args and such.
     if (( $# == 0 )) ; then 
-	script_args="${_Dbg_orig_script_args[@]}"
+	printf -v script_args "%q " "${_Dbg_orig_script_args[@]}"
     else
-	script_args="$@"
+	printf -v script_args "%q " "$@"
     fi
 
-    typeset exec_cmd="$_Dbg_orig_0 $script_args";
+    typeset exec_cmd_prefix="$_Dbg_orig_0"
     if (( _Dbg_script )) ; then
 	[ -z "$BASH" ] && BASH='bash'
         typeset bash_opt=''
@@ -46,9 +46,9 @@ _Dbg_do_restart() {
 	else
 	    script_args="${bash_opt}$_Dbg_orig_0 $script_args";
 	fi
-	exec_cmd="$BASH $script_args";
+	exec_cmd_prefix="$BASH $script_args"
     elif [[ -n "$BASH" ]] ; then
-	local exec_cmd="$BASH $_Dbg_orig_0 $script_args";
+	local exec_cmd_prefix="$BASH $_Dbg_orig_0 $script_args"
     fi
 
     _Dbg_msg "Restarting with: $script_args"
@@ -59,14 +59,14 @@ _Dbg_do_restart() {
     # discover the restart at the last minute and issue the restart.
     if (( BASH_SUBSHELL > 0 )) ; then 
 	_Dbg_msg "Note you are in a subshell. We will need to leave that first."
-	_Dbg_write_journal "_Dbg_RESTART_COMMAND=\"$exec_cmd\""
+	_Dbg_write_journal "_Dbg_RESTART_COMMAND=\"$exec_cmd_prefix $script_args\""
 	_Dbg_do_quit 0
     fi
     _Dbg_cleanup
     _Dbg_save_state
     builtin cd $_Dbg_init_cwd
 
-    exec $exec_cmd
+    eval "exec $exec_cmd_prefix $script_args"
 }
 
 _Dbg_alias_add R restart

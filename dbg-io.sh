@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-io.sh - Bourne Again Shell Debugger Input/Output routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -102,13 +102,10 @@ function _Dbg_progess_done {
 function _Dbg_get_source_line {
   typeset lineno=${1:-$_curline}
   typeset filename=${2:-$_Dbg_frame_last_filename}
-  typeset filevar=$(_Dbg_file2var $filename)
+  typeset filevar=$(_Dbg_file2var "$filename")
   typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
-  [[ $is_read ]] || _Dbg_readin $filename 
+  [[ $is_read ]] || _Dbg_readin "$filename"
   
-  source_line=`_Dbg_get_assoc_array_entry _Dbg_source_${filevar} $lineno`
+  source_line=$(_Dbg_get_assoc_array_entry _Dbg_source_${filevar} $lineno)
 }
 
-# This is put at the so we have something at the end when we debug this.
-[[ -z _Dbg_io_ver ]] && typeset -r _Dbg_io_ver=\
-'$Id: dbg-io.sh,v 1.4 2008/10/03 08:57:25 rockyb Exp $'

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # save-restore.sh - Bourne Again Shell Debugger Utility Functions
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -39,7 +39,6 @@ function _Dbg_restore_user_vars {
 # a parameter to this routine.
 
 function _Dbg_set_debugger_entry {
-
   # Nuke DEBUG trap
   trap '' DEBUG
 
@@ -53,7 +52,7 @@ function _Dbg_set_debugger_entry {
   _Dbg_stack_pos=$_Dbg_STACK_TOP
   _Dbg_listline=_curline
   _Dbg_set_debugger_internal
-  _Dbg_frame_last_filename="`_Dbg_resolve_expand_filename $_Dbg_frame_last_filename`"
+  _Dbg_frame_last_filename=$(_Dbg_resolve_expand_filename "$_Dbg_frame_last_filename")
   _cur_filevar="`_Dbg_file2var $_Dbg_frame_last_filename`"
 
   # Read in the journal to pick up variable settings that might have
@@ -63,8 +62,6 @@ function _Dbg_set_debugger_entry {
   if (( $_Dbg_QUIT_LEVELS > 0 )) ; then
     _Dbg_do_quit $_Dbg_debugged_exit_code
   fi
-
-
 }
 
 function _Dbg_set_to_return_from_debugger {
@@ -102,7 +99,6 @@ _Dbg_save_state() {
   echo "rm $_Dbg_statefile" >> $_Dbg_statefile
   export DBG_RESTART_FILE="$_Dbg_statefile"
   _Dbg_write_journal "export DBG_RESTART_FILE=\"$_Dbg_statefile\""
-
 }
 
 _Dbg_save_Dbg_set() {

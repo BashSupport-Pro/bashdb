@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # list.sh - Some listing commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -41,7 +41,7 @@ _Dbg_do_list() {
     fi
 
     if [[ $first_arg == '.' ]] ; then
-	_Dbg_list $_Dbg_frame_last_filename $*
+	_Dbg_list "$_Dbg_frame_last_filename" $*
 	return $?
     fi
 
@@ -49,7 +49,7 @@ _Dbg_do_list() {
     typeset -i line_number
     typeset full_filename
     
-    _Dbg_linespec_setup $first_arg
+    _Dbg_linespec_setup "$first_arg"
     
     if [[ -n $full_filename ]] ; then 
 	(( $line_number ==  0 )) && line_number=1
@@ -58,7 +58,7 @@ _Dbg_do_list() {
 	    _Dbg_list "$full_filename" "$line_number" $*
 	return $?
     else
-	_Dbg_file_not_read_in $filename
+	_Dbg_file_not_read_in "$filename"
 	return 1
     fi
 }
@@ -154,7 +154,7 @@ _Dbg_do_list_functions() {
   typeset -a fns_a
   fns_a=(`_Dbg_get_functions 0 "$pat"`)
   typeset -i i
-  for (( i=0; (( i < ${#fns_a[@]} )) ; i++ )) ; do
+  for (( i=0; i < ${#fns_a[@]}; i++ )) ; do
     _Dbg_msg ${fns_a[$i]}
   done
 }

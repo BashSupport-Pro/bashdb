@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-hist.sh - Bourne Again Shell Debugger history routines
 #
-#   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -68,7 +68,7 @@ _Dbg_do_history_list() {
     ((n=_Dbg_hi-1))
   fi
 
-  for (( i=n ; (( i >= stop && i >= 0 )) ; i-- )) ; do
+  for (( i=n ; i >= stop && i >= 0; i-- )) ; do
     _Dbg_msg "${i}: ${_Dbg_history[$i]}"
   done
 }

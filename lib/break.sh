@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # break.sh - Bourne Again Shell Debugger Break/Watch/Action routines
 #
-#   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -76,18 +76,10 @@ typeset -i  _Dbg_disp_max=0     # Needed because we can't figure out what
 
 # Error message for file not read in
 _Dbg_file_not_read_in() {
-    typeset -r filename=$(_Dbg_adjust_filename "$1")
-    _Dbg_msg "File $filename not found in read-in files."
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
-}
-
-# Error message for file not read in
-_Dbg_file_not_read_in() {
-    typeset -r filename=$(_Dbg_adjust_filename ${1:-""})
-    _Dbg_msg "File $filename not found in read-in files."
-    _Dbg_msg "See 'info files' for a list of known files and"
-    _Dbg_msg "'load' to read in a file."
+    typeset -r filename=$(_Dbg_adjust_filename "$filename")
+    _Dbg_errmsg "File \"$filename\" not found in read-in files."
+    _Dbg_errmsg "See 'info files' for a list of known files and"
+    _Dbg_errmsg "'load' to read in a file."
 }
 
 _Dbg_save_breakpoints() {
@@ -238,7 +230,7 @@ _Dbg_set_brkpt() {
     typeset -ir is_temp=$3
     typeset -r  condition=${4:-1}
     
-    typeset -r filevar="$(_Dbg_file2var $source_file)"
+    typeset -r filevar=$(_Dbg_file2var "$source_file")
     
     typeset val_str=$(_Dbg_get_assoc_array_entry "_Dbg_brkpt_$filevar" $lineno)
     

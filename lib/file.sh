@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Things related to file handling.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -52,7 +52,7 @@ function _Dbg_resolve_expand_filename {
 
   # Is this one of the files we've that has been specified in a debugger
   # "FILE" command?
-  typeset -r filevar=$(_Dbg_file2var $find_file)
+  typeset -r filevar=$(_Dbg_file2var "$find_file")
   typeset file_cmd_file=$(_Dbg_get_assoc_scalar_entry "_Dbg_file_cmd_" $filevar)
   if [[ -n "$file_cmd_file" ]] ; then
     echo "$file_cmd_file"
@@ -61,15 +61,15 @@ function _Dbg_resolve_expand_filename {
 
   if [[ ${find_file:0:1} == '/' ]] ; then 
     # Absolute file name
-    full_find_file=$(_Dbg_expand_filename $find_file)
+    full_find_file=$(_Dbg_expand_filename "$find_file")
     echo "$full_find_file"
     return 0
   elif [[ ${find_file:0:1} == '.' ]] ; then
     # Relative file name
-    full_find_file=$(_Dbg_expand_filename ${_Dbg_init_cwd}/$find_file)
-    if [[ -z "$full_find_file" ]] || [[ ! -r $full_find_file ]]; then
+    full_find_file=$(_Dbg_expand_filename "${_Dbg_init_cwd}/$find_file")
+    if [[ -z $full_find_file ]] || [[ ! -r $full_find_file ]]; then
       # Try using cwd rather that Dbg_init_cwd
-      full_find_file=$(_Dbg_expand_filename $find_file)
+      full_find_file=$(_Dbg_expand_filename "$find_file")
     fi
     echo "$full_find_file"
     return 0
@@ -107,22 +107,23 @@ function _Dbg_is_file {
 
   if [[ ${find_file:0:1} == '/' ]] ; then 
     # Absolute file name
-      full_find_file=$(_Dbg_resolve_expand_filename $find_file)
-      for try_file in ${_Dbg_filenames[@]} ; do 
-	  if [[ $try_file == $full_find_file ]] ; then
+      full_find_file=$(_Dbg_resolve_expand_filename "$find_file")
+      typeset -i i
+      for (( i=0 ; i<${#_Dbg_filenames[@]}; i++)) ; do 
+	  if [[ ${_Dbg_filenames[i]} == $full_find_file ]] ; then
 	      echo "$full_find_file"
 	      return 0
 	  fi
       done
   elif [[ ${find_file:0:1} == '.' ]] ; then
     # Relative file name
-    find_file=$(_Dbg_expand_filename ${_Dbg_init_cwd}/$find_file)
-    for try_file in ${_Dbg_filenames[@]} ; do 
-      if [[ $try_file == $find_file ]] ; then
-	  full_find_file=$(_Dbg_resolve_expand_filename $find_file)
-	  echo "$full_find_file"
-	  return 0
-      fi
+    find_file=$(_Dbg_expand_filename "${_Dbg_init_cwd}/$find_file")
+    for (( i=0 ; i<${#_Dbg_filenames[@]}; i++)) ; do 
+	if [[ ${_Dbg_filenames[i]} == $find_file ]] ; then
+	    full_find_file=$(_Dbg_resolve_expand_filename "$find_file")
+	    echo "$full_find_file"
+	    return 0
+	fi
     done
   else
     # Resolve file using _Dbg_dir
@@ -150,8 +151,8 @@ function _Dbg_is_file {
 
 # Turn filename $1 into something that is safe to use as a variable name
 _Dbg_file2var() {
-  typeset filename=$(_Dbg_expand_filename $1)
-  typeset varname=`builtin echo $filename | tr '=~+%* .?/"[]<>-' 'ETPpABDQSqLRlGM'`
+  typeset filename=$(_Dbg_expand_filename "$1")
+  typeset varname=$(builtin echo $filename | tr '=~+%* .?/"[]<>-' 'ETPpABDQSqLRlGM')
   builtin echo $varname
 }
 
@@ -168,7 +169,7 @@ _Dbg_glob_filename() {
 # Either fill out or strip filename as determined by "basename_only"
 # and annotate settings
 _Dbg_adjust_filename() {
-  typeset -r filename="$1"
+  typeset -r filename=$1
   if (( _Dbg_annotate == 1 )) ; then
     echo $(_Dbg_resolve_expand_filename $filename)
   elif ((_Dbg_basename_only)) ; then
@@ -180,10 +181,10 @@ _Dbg_adjust_filename() {
 
 # Return the maximum line in $1
 _Dbg_get_maxline() {
-  typeset -r filename=$1
-  typeset -r filevar=$(_Dbg_file2var $filename)
+  typeset -r filename="$1"
+  typeset -r filevar=$(_Dbg_file2var "$filename")
   typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
-  [ $is_read ] || _Dbg_readin $filename 
+  [ $is_read ] || _Dbg_readin "$filename "
   echo $(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
 }
 
@@ -192,7 +193,7 @@ _Dbg_get_maxline() {
 _Dbg_check_line() {
   typeset -ir line_number=$1
   typeset filename=$2
-  typeset -i max_line=$(_Dbg_get_maxline $filename)
+  typeset -i max_line=$(_Dbg_get_maxline "$filename")
   if (( $line_number >  max_line )) ; then 
     (( _Dbg_basename_only )) && filename=${filename##*/}
     _Dbg_msg "Line $line_number is too large." \
@@ -221,8 +222,8 @@ function _Dbg_readin {
     eval $cmd
 
   else 
-    typeset fullname=$(_Dbg_resolve_expand_filename $filename)
-    filevar=`_Dbg_file2var $filename`
+    typeset fullname=$(_Dbg_resolve_expand_filename "$filename")
+    filevar=$(_Dbg_file2var "$filename")
     if [[ -r $fullname ]] ; then
       typeset -r progress_prefix="Reading $filename"
       source_array="_Dbg_source_${filevar}"
@@ -237,7 +238,7 @@ function _Dbg_readin {
 	fi
 	builtin readarray -t -O 1 -c $BIGFILE \
 	  -C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
-	  $source_array < $fullname 
+	  $source_array < "$fullname"
 	(( line_count > BIGFILE)) && _Dbg_progess_done
 	
       else
@@ -288,7 +289,3 @@ function _Dbg_readin {
   # Add $filename to list of all filenames
   _Dbg_filenames[${#_Dbg_filenames[@]}]=$fullname;
 }
-
-# This is put at the so we have something at the end when we debug this.
-[[ -z _Dbg_file_ver ]] && typeset -r _Dbg_file_ver=\
-'$Id: file.sh,v 1.6 2008/10/14 01:16:28 rockyb Exp $'

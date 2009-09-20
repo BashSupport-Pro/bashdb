@@ -54,8 +54,10 @@ _Dbg_do_info() {
   fi | file| files | sources )
               _Dbg_msg "Source files for which have been read in:
 "
-              for file in ${_Dbg_filenames[@]} ; do  
-		  typeset filevar=$(_Dbg_file2var $file)
+	      typeset -i i
+	      for i in ${!_Dbg_filenames[@]} ; do
+		  typeset file=${_Dbg_filenames[i]}
+		  typeset filevar=$(_Dbg_file2var "$file")
 		  typeset -i maxline=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $filevar)
 		  (( maxline++ )) 
 		  (( _Dbg_basename_only )) && file=${file##*/}

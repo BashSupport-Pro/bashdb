@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # display.sh - gdb-like "(un)display" and list display debugger commands
-
-#   Copyright (C) 2002, 2003, 2006, 2007, 2008 Rocky Bernstein 
+#
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -39,7 +39,7 @@ _Dbg_do_list_display() {
     local i=0 j
     _Dbg_msg "Display expressions:"
     _Dbg_msg "Num Enb Expression          "
-    for (( i=0; (( i < _Dbg_disp_max )); i++ )) ; do
+    for (( i=0; i < _Dbg_disp_max; i++ )) ; do
       if [ -n "${_Dbg_disp_exp[$i]}" ] ;then
 	_Dbg_printf '%-3d %3d %s' \
 	  $i ${_Dbg_disp_enable[$i]} "${_Dbg_disp_exp[$i]}"
