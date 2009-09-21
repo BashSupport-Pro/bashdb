@@ -161,7 +161,8 @@ _Dbg_file2var() {
 # The result will be in variable $filename which is assumed to be 
 # local'd by the caller
 _Dbg_glob_filename() {
-  typeset cmd="filename=$(expr $1)"
+  printf -v filename "%q" "$1"
+  typeset cmd="filename=$filename"
   eval $cmd
   [[ -r $filename ]]
 }

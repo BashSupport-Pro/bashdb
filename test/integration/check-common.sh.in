@@ -11,12 +11,12 @@ export abs_top_srcdir=@abs_top_srcdir@
 export host_os=@host_os@
 
 check_output() {
-  testfile="$1"
-  rightfile="$2"
+  testfile=$1
+  rightfile=$2
   # Bourne sh
   # set -o noglob
 
-  @DIFF@ @DIFF_OPTS@ $testfile $rightfile && rm -f $testfile
+  @DIFF@ @DIFF_OPTS@ "$testfile" "$rightfile" && rm -f "$testfile"
   return $?
 }
 
@@ -27,7 +27,7 @@ run_debugger() {
   debugged_script=$1
   bashdb_opts=${2:-"-B --no-init -q -L ${top_builddir}"}
   cmdfile=${3:-"${top_builddir}/test/data/${TEST_NAME}.cmd"}
-  $SH -- ${top_builddir}/bashdb $bashdb_opts -x $cmdfile $debugged_script
+  $SH -- ${top_builddir}/bashdb $bashdb_opts -x "$cmdfile" "$debugged_script"
 }
 
 TEST_FILE="${top_builddir}/test/${TEST_NAME}.check"
@@ -38,8 +38,8 @@ RIGHT_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.right"
 run_test_check() {
     short_script_name=${1:-$TEST_NAME}
     debugged_script="${top_srcdir}/test/example/${short_script_name}.sh"
-    (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
-    check_output $TEST_FILE $RIGHT_FILE
+    (cd $srcdir && run_debugger "$debugged_script" 2>&1 >"$TEST_FILE" </dev/null)
+    check_output "$TEST_FILE" "$RIGHT_FILE"
     # Return code tells testing mechanism whether passed or not.
     exit $?
 }

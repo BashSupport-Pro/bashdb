@@ -1,3 +1,71 @@
+2009-09-21  rocky <rocky@gnu.org>
+
+	* lib/file.sh: One more place I need to quote a variable with a file
+	path
+
+2009-09-20  rocky <rocky@gnu.org>
+
+	* lib/fns.sh: One more place we need to quote variable which contian
+	file paths.
+
+2009-09-20  rocky <rocky@gnu.org>
+
+	* lib/frame.sh, lib/hook.sh, lib/list.sh,
+	test/unit/test-frame.sh.in: Fix one more place where we need to
+	quote function arguments. print_source_line ->
+	print_location_and_command to match zshdb and kshdb.
+
+2009-09-20  rocky <rocky@gnu.org>
+
+	* command/break.sh, command/display.sh, command/history.sh,
+	command/info.sh, command/list.sh, command/restart.sh, dbg-io.sh,
+	dbg-opts.sh, lib/break.sh, lib/file.sh, lib/fns.sh, lib/list.sh,
+	lib/save-restore.sh, test/data/list.right: Make sure to quote
+	filenames in argument passing so as to be able to handle files with
+	embedded blanks. Problem reported by Fritz Mehner.  Keep in sync
+	with kshdb and zshdb.
+
+2009-08-21  R. Bernstein <rocky@gnu.org>
+
+	* lib/file.sh: Should be able to use builtin readarray which is
+	provided with bash 4
+
+2009-08-21  R. Bernstein <rocky@gnu.org>
+
+	* dbg-opts.sh, test/data/sopts.right, test/integration/sopts.tests: 
+	Use echo, not print. This is not zsh or ksh. Thanks again to Nicolai
+	Lissner.
+
+2009-08-21  R. Bernstein <rocky@gnu.org>
+
+	* htdocs/index.html: another link typo
+
+2009-08-21  R. Bernstein <rocky@gnu.org>
+
+	* htdocs/index.html: Typo
+
+2009-08-21  R. Bernstein <rocky@gnu.org>
+
+	* htdocs/index.html: Correct the git location.
+
+2009-08-20  R. Bernstein <rocky@gnu.org>
+
+	* command/stepping.sh, dbg-opts.sh, lib/journal.sh,
+	lib/processor.sh, test/data/Makefile.am,
+	test/data/bug-step-subshell.cmd, test/data/bug-step-subshell.right,
+	test/data/sig.right, test/example/Makefile.am,
+	test/example/bug-step-subshell.sh, test/integration/Makefile.am,
+	test/integration/test-bug-step-subshell: Fix bug in stepping inside
+	a subshell. Thanks to Nicolai Lissner.
+
+2009-08-20  rocky <rocky@gnu.org>
+
+	* ChangeLog, Makefile.am, builtin/.gitignore, lib/processor.sh,
+	test/.gitignore, test/data/sig.right: lib/processor.sh : Try to make
+	sure we have quotes around: _Dbg_old_set_opts="$_Dbg_old_set_opts -o
+	functrace". Bug and fix reported by Nicolai Lissner
+	Makefile.am/ChangeLog: adjust for git rather than CVS
+
 2009-06-26  rocky <rocky@sanchez.(none)>
 
 	* .gitignore, builtin/.gitignore, command/.gitignore,

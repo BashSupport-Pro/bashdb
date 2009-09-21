@@ -32,12 +32,12 @@ _Dbg_do_source() {
   fi
 
   typeset filename
-  _Dbg_glob_filename $1
+  _Dbg_glob_filename "$1"
   if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
     if ((_Dbg_input_desc < _Dbg_MAX_INPUT_DESC )) ; then 
       ((_Dbg_input_desc++))
       _Dbg_input[$_Dbg_input_desc]=$filename
-      typeset _Dbg_redirect_cmd="exec $_Dbg_input_desc<$filename"
+      typeset _Dbg_redirect_cmd="exec $_Dbg_input_desc<\"$filename\""
       eval $_Dbg_redirect_cmd
       _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]=$filename
     else 
@@ -47,7 +47,7 @@ _Dbg_do_source() {
       return 2
     fi
   else
-    _Dbg_errmsg "Source file $filename is not readable."
+    _Dbg_errmsg "Source file \"$filename\" is not readable."
     return 3
   fi
   return 0
