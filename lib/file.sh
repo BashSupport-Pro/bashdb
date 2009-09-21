@@ -266,7 +266,7 @@ function _Dbg_readin {
 	  if [[ $rc != 0 ]]  ; then 
 	    break;
 	  fi
-	done  < $fullname
+	done  < "$fullname"
 	# The last read in the loop above failed. So we've actually 
 	# read one more than the number of lines.
 	typeset -r remove_last_index_cmd="unset $source_array[$i]"
