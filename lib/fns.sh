@@ -251,7 +251,7 @@ function _Dbg_parse_linespec {
       typeset line_word=${linespec##*:}
       typeset file_word=${linespec%${line_word}}
       file_word=${file_word%?}
-      echo "$line_word 0 $file_word"
+      echo "$line_word 0 \"$file_word\""
       ;;
 
     # Function name or error
