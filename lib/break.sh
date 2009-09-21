@@ -130,14 +130,14 @@ _Dbg_save_display() {
 # Enable/disable breakpoint or watchpoint by entry numbers.
 _Dbg_enable_disable() {
   if (($# == 0)) ; then
-    _Dbg_errmsg "Expecting a list of breakpoint/watchpoint numbers. Got none."
+    _Dbg_errmsg 'Expecting a list of breakpoint/watchpoint numbers. Got none.'
     return 1
   fi
   typeset -i on=$1
   typeset en_dis=$2
   shift; shift
 
-  if [[ $1 = 'display' ]] ; then
+  if [[ $1 == 'display' ]] ; then
     shift
     typeset to_go="$@"
     typeset i
@@ -148,12 +148,12 @@ _Dbg_enable_disable() {
 	  _Dbg_enable_disable_display $on $en_dis $i
 	;;
 	* )
-	  _Dbg_msg "Invalid entry number skipped: $i"
+	  _Dbg_errmsg "Invalid entry number skipped: $i"
       esac
     done
     eval "$_resteglob"
     return 0
-  elif [[ $1 = 'action' ]] ; then
+  elif [[ $1 == 'action' ]] ; then
     shift
     typeset to_go="$@"
     typeset i
@@ -164,7 +164,7 @@ _Dbg_enable_disable() {
 	  _Dbg_enable_disable_action $on $en_dis $i
 	;;
 	* )
-	  _Dbg_msg "Invalid entry number skipped: $i"
+	  _Dbg_errmsg "Invalid entry number skipped: $i"
       esac
     done
     eval "$_resteglob"
@@ -183,13 +183,16 @@ _Dbg_enable_disable() {
         _Dbg_enable_disable_brkpt $on $en_dis $i
 	;;
       * )
-      _Dbg_msg "Invalid entry number skipped: $i"
+      _Dbg_errmsg "Invalid entry number skipped: $i"
     esac
   done
   eval "$_resteglob"
   return 0
 }
 
+# Print a message regarding how many times we've encounterd
+# breakpoint number $1 if the number of times is greater than 0.
+# Uses global array _Dbg_brkpt_counts.
 function _Dbg_print_brkpt_count {
   typeset -ir i=$1
   if (( _Dbg_brkpt_count[$i] != 0 )) ; then
@@ -225,7 +228,8 @@ _Dbg_clear_all_brkpt() {
 
 _Dbg_set_brkpt() {
     (( $# < 3 || $# > 4 )) && return 1
-    typeset source_file=$1
+    typeset source_file
+    source_file=$(_Dbg_expand_filename "$1")
     typeset -ir lineno=$2
     typeset -ir is_temp=$3
     typeset -r  condition=${4:-1}
@@ -250,7 +254,8 @@ _Dbg_set_brkpt() {
     _Dbg_brkpt_count[$_Dbg_brkpt_max]=0
     _Dbg_brkpt_enable[$_Dbg_brkpt_max]=1
     
-    typeset dq_source_file=$(_Dbg_esc_dq "$source_file")
+    typeset dq_source_file
+    dq_source_file=$(_Dbg_esc_dq "$source_file")
     typeset dq_condition=$(_Dbg_esc_dq "$condition")
     _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno"
     _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
@@ -321,7 +326,7 @@ _Dbg_delete_brkpt_entry() {
     typeset -i  found=0
     
     if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
-	_Dbg_msg "Breakpoint entry $del is not set."
+	_Dbg_errmsg "No breakpoint number $del."
 	return 0
     fi
     typeset filevar="$(_Dbg_file2var ${_Dbg_brkpt_file[$del]})"

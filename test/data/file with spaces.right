@@ -13,4 +13,8 @@ file with spaces.sh (4 lines)
 3:	echo "file with spaces here"
 +break 2
 Breakpoint 1 set in file file with spaces.sh, line 2.
++info break
+Num Type       Disp Enb What
+1   breakpoint keep y   file with spaces.sh:2
+No watch expressions have been set.
 +quit 

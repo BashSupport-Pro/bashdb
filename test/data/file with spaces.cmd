@@ -4,4 +4,5 @@ info files
 list
 step
 break 2
+info break
 quit
