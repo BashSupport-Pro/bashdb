@@ -10,6 +10,8 @@ TEST_NAME='sig'
 
 . ${top_builddir}/test/integration/check-common.sh
 
+[[ $(uname -s) == 'Darwin' ]] && \
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-Darwin.right"
 FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
 FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
 (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
