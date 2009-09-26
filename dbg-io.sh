@@ -92,20 +92,3 @@ function _Dbg_progess_done {
     fi
     _Dbg_msg $1
 }
-
-
-# Return text for source line for line $1 of filename $2 in variable
-# $source_line. The hope is that this has been declared "typeset" in the 
-# caller.
-
-# If $2 is omitted, # use _Dbg_frame_last_filename, if $1 is omitted use _curline.
-function _Dbg_get_source_line {
-  typeset lineno=${1:-$_curline}
-  typeset filename=${2:-$_Dbg_frame_last_filename}
-  typeset filevar=$(_Dbg_file2var "$filename")
-  typeset is_read=$(_Dbg_get_assoc_scalar_entry "_Dbg_read_" $filevar)
-  [[ $is_read ]] || _Dbg_readin "$filename"
-  
-  source_line=$(_Dbg_get_assoc_array_entry _Dbg_source_${filevar} $lineno)
-}
-
