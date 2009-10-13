@@ -25,18 +25,20 @@ SHORT INSTRUCTIONS:
    On systems which don't install GNU Make by default you may have to use
    "gmake" instead of "make".
 
-   Some systems have trouble with GNU long options (getopt). For those 
-   systems you may want to add --disable-getopt to configure.
+   In creating files and directories for the bashdb, beware that the
+   umask of the account performing the installation is consulted as it
+   would be for any new file or directory. In particular, if your
+   umask is, for example, 007, then directories that get created will
+   have permission drwx------ which only allows that user to access
+   the debugger support files. Since the root account sometimes has
+   that umask, you may want to set the umask to something more
+   permissive like 022, before running the "make install".
 
 That's it!   
 
 - - - - 
 
-This debugger needs a debugger-enabled version of Bash 3.1 or 3.2
-which contains things like the ability to step into functions
-automatically, give tracebacks, and list source-file information. When
-configuring bash 3.1 or 3.2, the option --enable-debugger should be
-used.
+This debugger needs a debugger-enabled version of Bash 3.2 or greater.
 
 It is possible to try out the debugger without installing it by using
 the bashdb script that is in this directory. To do so you would invoke
@@ -129,5 +131,3 @@ instructions.
    script. See above for a larger discussion of the difference.
    
 No, really. that's it!
-
-$Id: INSTALL,v 1.5 2007/10/27 03:23:50 rockyb Exp $
