@@ -7,6 +7,7 @@ pkgdata_DATA =      	\
 	complete.sh  	\
 	dbg-call.sh  	\
 	file.sh  	\
+	filecache.sh  	\
 	fns.sh  	\
 	frame.sh        \
 	help.sh    	\

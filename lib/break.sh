@@ -73,15 +73,6 @@ typeset -i  _Dbg_disp_max=0     # Needed because we can't figure out what
 
 #========================= FUNCTIONS   ============================#
 
-
-# Error message for file not read in
-_Dbg_file_not_read_in() {
-    typeset -r filename=$(_Dbg_adjust_filename "$filename")
-    _Dbg_errmsg "File \"$filename\" not found in read-in files."
-    _Dbg_errmsg "See 'info files' for a list of known files and"
-    _Dbg_errmsg "'load' to read in a file."
-}
-
 _Dbg_save_breakpoints() {
   typeset file
   for file in ${_Dbg_filenames[@]} ; do  

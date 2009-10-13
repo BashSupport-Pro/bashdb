@@ -64,6 +64,7 @@ check_DATA = \
 	settrace.right \
 	sig.cmd \
 	sig.right \
+	sig-Darwin.right \
 	skip.cmd \
 	skip.right \
 	sopts.right \
