@@ -20,9 +20,9 @@ typeset _Dbg_bashdb_main=@BASHDB_MAIN@
 typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
 . ${_Dbg_libdir}/dbg-pre.sh
 if [[ -z $_Dbg_quiet ]] ; then 
-  echo "Bourne-Again Shell Debugger, release $_Dbg_release"
+  echo "Bourne-Again Shell Debugger, release @PACKAGE_VERSION@"
   printf '
-Copyright 2002, 2003, 2004, 2006, 2007, 2008 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

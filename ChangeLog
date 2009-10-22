@@ -1,3 +1,35 @@
+2009-09-25  rocky <rocky@gnu.org>
+
+	* dbg-io.sh, lib/Makefile.am, lib/break.sh, lib/file.sh,
+	lib/filecache.sh, test/data/Makefile.am: Create filecache.sh from
+	hither and yon: this reduces the size of those other files and
+	consolidates this in one place and keeps in sync with kshdb and
+	zshdb.
+
+2009-09-25  R. Bernstein <rocky@atwood.corp.ce-interactive.com>
+
+	* test/data/sig-Darwin.right, test/integration/test-sig: Darwin
+	handles signals differently?
+
+2009-09-21  R. Bernstein <rocky@gnu.org>
+
+	* command/break.sh, lib/break.sh, test/data/file with spaces.cmd,
+	test/data/file with spaces.right: Need to quote filenames in "info
+	break". Some error messages tagged as such. Some = -> ==. Keep in
+	better sync with zshdb.
+
+2009-09-21  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/source.sh, configure.ac, dbg-main.sh.in,
+	lib/file.sh, test/data/file with spaces.cmd, test/data/file with
+	spaces.right, test/example/file with spaces.sh,
+	test/integration/check-common.sh.in,
+	test/integration/test-file-with-spaces, test/unit/test-file.sh.in: 
+	Add unit/integration test into git repository. Haven't figured out
+	how test which have files with embedded spaces into the tarball
+	though.  In the process, a couple more bugs dealing with blanks in
+	command file names found/fixed.  Change release name.
+
 2009-09-21  rocky <rocky@gnu.org>
 
 	* lib/file.sh: One more place I need to quote a variable with a file
