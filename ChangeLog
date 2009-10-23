@@ -1,3 +1,29 @@
+2009-10-22  rocky <rocky@gnu.org>
+
+	* bashdb-main.inc.in, dbg-opts.sh: Remove the triplicate banner
+	problem by brute force - check that _Dbg_shell name is set.
+
+2009-10-22  rocky <rocky@gnu.org>
+
+	Merge branch 'master' of
+	ssh://rockyb@bashdb.git.sourceforge.net/gitroot/bashdb/bashdb
+
+2009-10-22  rocky <rocky@gnu.org>
+
+	* ChangeLog, bashdb-main.inc.in: Need to use @PACKAGE_VERSION@
+	rather than $_Dbg_release because we may be called via bash
+	--debugger.
+
+2009-10-13  R. Bernstein <rocky@gnu.org>
+
+	Merge branch 'master' of
+	ssh://rockyb@bashdb.git.sourceforge.net/gitroot/bashdb/bashdb
+
+2009-10-13  R. Bernstein <rocky@gnu.org>
+
+	* INSTALL: Note that umask changes permissions on an install:
+	Tracker #2872847
+
 2009-09-25  rocky <rocky@gnu.org>
 
 	* dbg-io.sh, lib/Makefile.am, lib/break.sh, lib/file.sh,

@@ -32,12 +32,12 @@ fi
 # these are sorted alphabetically.
 typeset -r _Dbg_includes='init io'
 
-for file in $_Dbg_includes ; do 
-  source ${_Dbg_libdir}/dbg-${file}.sh
+for _Dbg_file in $_Dbg_includes ; do 
+  source ${_Dbg_libdir}/dbg-${_Dbg_file}.sh
 done
 
-for file in ${_Dbg_libdir}/lib/*.sh ; do 
-    source $file
+for _Dbg_file in ${_Dbg_libdir}/lib/*.sh ; do 
+    source $_Dbg_file
 done
 
 for file in ${_Dbg_libdir}/command/*.sh ; do 

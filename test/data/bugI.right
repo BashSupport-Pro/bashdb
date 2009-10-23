@@ -1,0 +1,9 @@
+(bugI.sh:3):
+3:	for i in /bin /etc; do
++# Debugger test of a conflict with the use of variable i
++# 
++continue 
+/bin
+/etc
+Debugged program terminated normally. Use q to quit or R to restart.
++quit 

@@ -23,6 +23,7 @@ TESTS = \
 	test-action     \
 	test-brkpt      \
 	test-bug-args   \
+	test-bugI       \
 	test-bugIFS     \
 	test-bug-source \
 	test-command    \
