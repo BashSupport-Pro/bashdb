@@ -1,5 +1,16 @@
 2009-10-22  rocky <rocky@gnu.org>
 
+	* ChangeLog, bashdb.in, dbg-main.sh.in, test/data/Makefile.am,
+	test/data/bugI.cmd, test/data/bugI.right, test/example/Makefile.am,
+	test/example/bugI.sh, test/integration/Makefile.am,
+	test/integration/test-bugI: bashdb.in: Remove variable name confict
+	which occurs when the source code uses a variable "i". Stupid huh?
+	Thanks to Rob Woolley for isolate the bug and reporting it.
+	dbg-main.sh.in: avoid same problem which might occur if someones
+	uses a variable called "file".
+
+2009-10-22  rocky <rocky@gnu.org>
+
 	* bashdb-main.inc.in, dbg-opts.sh: Remove the triplicate banner
 	problem by brute force - check that _Dbg_shell name is set.
 
