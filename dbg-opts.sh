@@ -136,7 +136,7 @@ _Dbg_parse_options() {
     if (( _Dbg_o_version )) ; then
 	_Dbg_do_show_version
 	exit 0
-    elif (( ! _Dbg_o_quiet )); then 
+    elif (( ! _Dbg_o_quiet )) && [[ -n "$_Dbg_shell_name" ]] ; then 
 	echo "$_Dbg_shell_name Shell Debugger, release $_Dbg_release"
 	printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
