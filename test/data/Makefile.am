@@ -40,6 +40,7 @@ check_DATA = \
 	list.right \
 	lopts.right \
 	misc-output.right \
+	misc-output-41.right \
 	misc.cmd \
 	misc.right \
 	multi1.cmd \
@@ -66,6 +67,7 @@ check_DATA = \
 	settrace.right \
 	sig.cmd \
 	sig.right \
+	sig-41.right \
 	sig-Darwin.right \
 	skip.cmd \
 	skip.right \

@@ -1,4 +1,4 @@
-#!/bin/bash -f
+#!/usr/bin/env bash
 # -*- shell-script -*-
 #$Id: test-misc,v 1.3 2008/08/23 17:09:36 rockyb Exp $
 
@@ -19,6 +19,11 @@ debugged_script="$top_builddir/test/example/dbg-test2.sh"
 cat ${TEST_FILE} | sed -e "s:1 = .*/dbg-test2.sh:1 = ./example/dbg-test2.sh:" \
 | sed -e 's:record the command history is .*:record the command history is: ' \
 > ${TEST_FILTERED_FILE}
+
+if (( BASH_VERSINFO[0] > 4 || \
+    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1) )) ; then 
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-output-41.right"
+fi
 
 check_output $TEST_FILTERED_FILE $RIGHT_FILE
 rc=$?

@@ -107,7 +107,7 @@ bash_version=`$SH_PROG --version`
 [bash_major=`$SH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
 [bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS'|'3.2'|'3.1')
+  'OK_BASH_VERS'|'3.2'|'3.1'|'4.1')
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
