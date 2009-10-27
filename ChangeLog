@@ -1,3 +1,19 @@
+2009-10-26  R. Bernstein <rocky@gnu.org>
+
+	* configure.ac, test/data/Makefile.am,
+	test/data/misc-output-41.right, test/data/sig-41.right,
+	test/integration/test-misc, test/integration/test-sig,
+	test/unit/test-sort.sh.in: Changes to not complain when bash 4.1 is
+	installed/used.
+
+2009-10-23  R. Bernstein <rocky@gnu.org>
+
+	* emacs/bashdb.el: Remove Emacs compilation warnings.
+
+2009-10-22  rocky <rocky@gnu.org>
+
+	* ChangeLog, NEWS: What's up.
+
 2009-10-22  rocky <rocky@gnu.org>
 
 	* ChangeLog, bashdb.in, dbg-main.sh.in, test/data/Makefile.am,
