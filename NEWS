@@ -3,11 +3,12 @@ Version 4.0-0.4
 
 - Handle file names with embedded blanks. More parameters in calls are now
   quoted properly
-- Remove the triplicate banner when running bash --debugger
+- Add "set force", "step+", and "step-" commands.
 - Preface more variable names with _Dbg_. Missed a use with "i" which 
+  wreaked havoc in debugging some programs which used variable i.
 - Use builtin readarray if bash 4 (or greater) detected.
 - Fix bug in stepping inside a subshell
-- Add "set force", "step+", and "step-" commands.
+- Remove the triplicate banner when running bash --debugger
 - Tolerate bash 4.1
 
 Version 4.0-0.3
