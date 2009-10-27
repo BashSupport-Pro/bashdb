@@ -7,6 +7,7 @@ Version 4.0-0.4
 - Preface more variable names with _Dbg_. Missed a use with "i" which 
 - Use builtin readarray if bash 4 (or greater) detected.
 - Fix bug in stepping inside a subshell
+- Add "set force", "step+", and "step-" commands.
 - Tolerate bash 4.1
 
 Version 4.0-0.3

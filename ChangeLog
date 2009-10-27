@@ -1,3 +1,11 @@
+2009-10-27  rocky <rocky@gnu.org>
+
+	* NEWS: What's up.
+
+2009-10-27  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac: Get ready for 4.0-0.4 release.
+
 2009-10-26  R. Bernstein <rocky@gnu.org>
 
 	* configure.ac, test/data/Makefile.am,
