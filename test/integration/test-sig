@@ -11,10 +11,8 @@ TEST_NAME='sig'
 . ${top_builddir}/test/integration/check-common.sh
 
 if (( BASH_VERSINFO[0] > 4 || \
-    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1) )) ; then 
+    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 0) )) ; then 
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-41.right"
-elif [[ $(uname -s) == 'Darwin' ]] ; then
-    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-Darwin.right"
 elif [[ $(uname -s) == 'SunOS' ]] ; then
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-SunOS.right"
 fi
