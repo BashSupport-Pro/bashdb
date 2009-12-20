@@ -16,6 +16,8 @@ check_DATA = \
 	subshell2.tests    \
 	subshell3.tests    \
 	subshell4.tests    \
+	test-misc.in       \
+	test-setshow.in    \
 	trace.tests	   \
 	trace2.tests
 

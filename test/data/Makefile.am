@@ -69,6 +69,7 @@ check_DATA = \
 	sig.right \
 	sig-41.right \
 	sig-Darwin.right \
+	sig-SunOS.right \
 	skip.cmd \
 	skip.right \
 	sopts.right \
