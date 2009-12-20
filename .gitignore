@@ -1,8 +1,11 @@
+/*~
 /Makefile
 /Makefile.in
 /aclocal.m4
 /autom4te.cache
 /bashdb
+/bashdb-4.*tar.gz
+/bashdb-4.*tar.bz2
 /bashdb-main.inc
 /bashdb-trace
 /compile
@@ -20,4 +23,3 @@
 /libtool
 /missing
 /stamp-h1
-/*~

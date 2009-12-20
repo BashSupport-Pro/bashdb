@@ -1,5 +1,7 @@
+/*.check
+/*~
 /Makefile
 /Makefile.in
 /check-common.sh
-/*.check
-/*~
+/test-misc
+/test-setshow
