@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # -*- shell-script -*-
 #$Id: test-settrace,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 

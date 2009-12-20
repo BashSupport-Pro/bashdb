@@ -242,6 +242,10 @@ AC_CONFIG_FILES([test/unit/test-save-restore.sh],
 AC_CONFIG_FILES([test/unit/test-set0.sh], [chmod +x test/unit/test-set0.sh])
 AC_CONFIG_FILES([test/unit/test-sort.sh], 
 		[chmod +x test/unit/test-sort.sh])
+AC_CONFIG_FILES([test/integration/test-misc],
+	        [chmod +x test/integration/test-misc])
+AC_CONFIG_FILES([test/integration/test-setshow],
+	        [chmod +x test/integration/test-setshow])
 
 AC_CONFIG_FILES([ \
 	bashdb-main.inc \

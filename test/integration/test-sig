@@ -15,6 +15,8 @@ if (( BASH_VERSINFO[0] > 4 || \
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-41.right"
 elif [[ $(uname -s) == 'Darwin' ]] ; then
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-Darwin.right"
+elif [[ $(uname -s) == 'SunOS' ]] ; then
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-SunOS.right"
 fi
 FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
 FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"

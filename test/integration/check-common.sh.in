@@ -3,7 +3,7 @@
 
 srcdir=@srcdir@
 builddir=@builddir@
-[ -z "$SH" ] && SH=@SH_PROG@
+[ -z "$SH" ] && export SH=@SH_PROG@
 
 export top_builddir=@abs_top_builddir@
 export top_srcdir=@abs_top_srcdir@

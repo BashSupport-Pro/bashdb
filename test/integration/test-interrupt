@@ -5,7 +5,12 @@
 
 . ${builddir}/check-common.sh
 
-[[ $host_os == cygwin ]] || [[ $host_os = darwin* ]] && exit 77
+case $host_os in 
+    cygwin | darwin* | solaris* )
+	exit ;;
+    * )
+	break ;;
+esac
 
 TEST_NAME=interrupt
 TEST_FILE="$builddir/${TEST_NAME}.check"

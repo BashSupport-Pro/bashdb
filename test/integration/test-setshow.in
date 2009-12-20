@@ -1,4 +1,4 @@
-#!/opt/csw/bin/bash -f
+#!@SH_PROG@ -f
 # -*- shell-script -*-
 #$Id: test-setshow,v 1.3 2008/08/23 17:09:36 rockyb Exp $
 
@@ -12,8 +12,8 @@ TEST_NAME='setshow'
 
 (cd $srcdir && $SH ${srcdir}/${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-cat ${TEST_FILE} | /opt/csw/bin/gsed -e "s:-L .* -x .*/data/setshow\.cmd .*/example/dbg-test2.sh:-L .. -x data/setshow.cmd example/dbg-test2.sh:" \
-| /opt/csw/bin/gsed -e 's:record the command history is .*:record the command history is: ' \
+cat ${TEST_FILE} | @SED@ -e "s:-L .* -x .*/data/setshow\.cmd .*/example/dbg-test2.sh:-L .. -x data/setshow.cmd example/dbg-test2.sh:" \
+| @SED@ -e 's:record the command history is .*:record the command history is: ' \
 > ${TEST_FILTERED_FILE}
 
 check_output $TEST_FILTERED_FILE $RIGHT_FILE
