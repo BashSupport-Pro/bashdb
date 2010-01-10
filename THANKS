@@ -11,7 +11,10 @@ Oleksandr Moskalenko  <malex at tagancha dot org> Debian packaging
 Matt Fleming          - NetBSD packaging
 Alberto Griggio       - Annotate patch #1781965 (for pydb)
 
--- 
+The O'Reilly book on the Korn shell by Bill Rosenblatt suggested that
+it might be possible to write a debugger.
+
+--
 
 The following software is used in this debugger:
 

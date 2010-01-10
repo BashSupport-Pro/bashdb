@@ -1,19 +1,31 @@
-This is a complete rewrite of the Korn Shell debugger from Bill
-Rosenblatt's `Learning the Korn Shell', published by O'Reilly and
-Associates (ISBN 1-56592-054-6). Michael Loukides, Gary Vaughan, and
-Cigy Cyriac made some additional changes.
+Here we have a gdb-like debugger for Bash 3.0 and higher.
 
-The command syntax generally follows that of the GNU debugger gdb.
+There are 3 ways to get into the debugger. If bash (with debugger
+support enabled which is the default) is installed and the debugger
+are *both* installed properly. Then:
 
-However this code now depends on a number of debugging support
-features that are neither part of the POSIX 1003.1 standard and are
-not in older POSIX-like shells. I added support for debugging in bash
-2.05b, which has been encorporated with changes into bash 3.0 with
-some change. Note though that you can't use the bashdb code from 2.05b
-in bash 3.0 since not all of the changes are upward
-compatible. Instead you need the code from the correct 3.x bashdb
-distribution.
+   bash --debugger -- bash-script-name script-arg1 script-arg2...
+
+If bash isn't installed in a way that will find bashdb, then:
+
+   bashdb [bashdb-opts] -- bash-script-name script-arg1 script-arg2...
+
+The downside here is that $0 will be "bashdb" not
+bash-script-name. Also call stack will show the invocation to bashdb.
+
+Finally, to invoke the debugger from the script
+
+  # my script
+  # work, work, work, ...
+
+  # Load debugger support
+  source <bashdb-installation>/bashdb-trace -L <basdb-installation>
+  # work, work, work or not...
+  _Dbg_debugger   # Calls the debugger at the line below
+  stop_here
+
+An advantage of the above is that there is no overhead up until you
+invoke the debugger. Typically for large bash programs like
+configuration scripts, this is a big win.
 
 See INSTALL for generic GNU configure installation instructions.
-
-$Id: README,v 1.5 2008/08/09 19:42:15 rockyb Exp $
