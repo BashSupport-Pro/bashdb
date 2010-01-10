@@ -9,7 +9,7 @@ case $host_os in
     cygwin | darwin* | solaris* )
 	exit ;;
     * )
-	break ;;
+	: ;;
 esac
 
 TEST_NAME=interrupt

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-opts.sh - bashdb command options processing. The bane of programming.
 #
-#   Copyright (C) 2008, 2009 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2009, 2010 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -36,6 +36,8 @@ options:
     -V | --version          Print the debugger version number.
     -x | --eval-command CMDFILE
                             Execute debugger commands from CMDFILE.
+    --tty | --terminal      Set terminal to output to
+    --tempdir DIRECTORY     Set diretory to use for writing temporary files.
 "
   exit 100
 }
@@ -86,6 +88,8 @@ _Dbg_parse_options() {
 	nx       0                           \
 	quiet    0                           \
         tempdir  required_argument           \
+        tty      required_argument           \
+        terminal required_argument           \
 	version  0                           \
 	'' "$@"
     do

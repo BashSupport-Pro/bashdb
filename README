@@ -19,13 +19,35 @@ Finally, to invoke the debugger from the script
   # work, work, work, ...
 
   # Load debugger support
-  source <bashdb-installation>/bashdb-trace -L <basdb-installation>
+  source <bashdb-installation>/bashdb-trace -L <bashdb-installation>
   # work, work, work or not...
-  _Dbg_debugger   # Calls the debugger at the line below
+  _Dbg_debugger; :   # Calls the debugger at the line below
   stop_here
 
 An advantage of the above is that there is no overhead up until you
 invoke the debugger. Typically for large bash programs like
 configuration scripts, this is a big win.
+
+IMPORTANT NOTE IF YOU USE THE ABOVE TO DEBUG CONFIGURE SCRIPTS...
+
+stdin is closed by configure early on. This causes the debugger to quit. 
+You can get around this invoking a command script that sets debugger
+up input and output. Run tty to figure out what the terminal tty is set to.
+  $ tty
+  /dev/pts/3
+  $ 
+
+Above it came out to /dev/pts/3. Let's go with that. Put the folliwng 
+in a file say /tmp/bashdb-configure
+
+  source /dev/pts/3
+  tty /dev/pts/3
+
+Now arrange to read that configuration file using the -x or --eval-command
+switch:
+
+  source <bashdb-installation>/bashdb-trace -L <bashdb-installation> -x /tmp/bashdb-configure
+
+- - -
 
 See INSTALL for generic GNU configure installation instructions.
