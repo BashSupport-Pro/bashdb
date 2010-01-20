@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2010 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -53,7 +53,8 @@ _Dbg_alias_expand() {
     return 0
 }
 
-# Return the index in _Dbg_command_names of $1 or -1 if not there.
+# Echo the index in _Dbg_command_names if found. Return
+# 0 if found and 1 if not there.
 _Dbg_alias_find_index() {
     typeset find_name=$1
     typeset -i i
