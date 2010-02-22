@@ -106,8 +106,12 @@ fi
 bash_version=`$SH_PROG --version`
 [bash_major=`$SH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
 [bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
+bash_4_or_greater=no
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS'|'3.2'|'3.1'|'4.1')
+  'OK_BASH_VERS' | '4.1')
+    bash_4_or_greater=yes
+    ;;
+  '3.2' | '3.1' )
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
@@ -122,12 +126,15 @@ AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main],
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
 		  [location of bash OK_BASH_VERS source code]), 
 		  BASH_SRC=$withval)
-
 AC_PROG_CC
-if test x"$BASH_SRC" != x ; then
+
+if test "$BASH_SRC" != x ; then
    if test ! -d $BASH_SRC ; then
      AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
-   else 
+   elif test "$bash_4_or_greater" = "yes" ; then
+     AC_MSG_NOTICE([--with-bash-src source not needed bash 4 or greater])
+         build_readarray=
+   else
      AM_PROG_CC_C_O
      dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
      PIC=$lt_prog_compiler_pic_CXX
@@ -280,10 +287,10 @@ echo "Location: $SH_PROG"
 if test x"$build_readarray" != x; then
    echo "We will try to build the readarray builtin to speed up loading"
    echo "located at ${BASH_SRC}."
-else
+elif test "$bash_4_or_greater" = no ; then
    echo 'We will not try to build the builtins to speed up loading and set $0.'
 fi
-if test x$EMACS = xno ; then
+if test "$EMACS" = no ; then
    echo "We will not install GNU Emacs files."
 else
    echo "Will install GNU Emacs files."
