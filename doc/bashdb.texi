@@ -944,9 +944,10 @@ the debugger isn't involved before the first call, there is no
 overhead; the script will run at the same speed as if there were no
 debugger up to the point where it is first invoked.
 @menu
-* Debugging a Running Shell Script
+* Debugging a Running Shell Script::
 * Program-Controlled Line Tracing::
 @end menu
+@node Debugging a Running Shell Script
 @subsection Debugging a Running Shell Script
 In this section we'll show how to modify your script so that it enters
 the debugger when you send it a signal, and then we will show how you

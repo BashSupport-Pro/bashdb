@@ -1,3 +1,37 @@
+2009-12-20  rocky <rocky@gnu.org>
+
+	* .gitignore, test/integration/.gitignore: Administrivia
+
+2009-12-20  rocky <rocky@gnu.org>
+
+	* test/data/sig-SunOS.right, test/integration/test-misc,
+	test/integration/test-setshow, test/integration/test-sig: Looks like
+	sig line fixes back ported to bash 4.0. No need for a SunOS-specific
+	file.  test-misc and test-setshow are derived from .in files.
+
+2009-12-20  rocky <rocky@gnu.org>
+
+	* test/data/Makefile.am, test/integration/Makefile.am: Tolerance for
+	Solaris and older sed, sh and whatnot - forgot to add new files to
+	distro
+
+2009-12-20  rocky <rocky@gnu.org>
+
+	* configure.ac, test/data/sig-SunOS.right,
+	test/integration/check-common.sh.in,
+	test/integration/settrace.tests, test/integration/test-interrupt,
+	test/integration/test-misc, test/integration/test-misc.in,
+	test/integration/test-multi, test/integration/test-parm,
+	test/integration/test-setshow, test/integration/test-setshow.in,
+	test/integration/test-settrace, test/integration/test-sig,
+	test/integration/test-subshell, test/integration/test-tbreak,
+	test/integration/test-trace: Tolerance for Solaris and older sed, sh
+	and whatnot
+
+2009-10-27  rocky <rocky@gnu.org>
+
+	* ChangeLog, htdocs/index.html: sf Piwik analytics.
+
 2009-10-27  rocky <rocky@gnu.org>
 
 	* ChangeLog, NEWS: See previous
