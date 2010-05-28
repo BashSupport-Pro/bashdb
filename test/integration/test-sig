@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -f
 # -*- shell-script -*-
 #$Id: test-sig,v 1.3 2008/08/23 17:09:36 rockyb Exp $
 
@@ -10,18 +10,14 @@ TEST_NAME='sig'
 
 . ${top_builddir}/test/integration/check-common.sh
 
-if (( BASH_VERSINFO[0] > 4 || \
-    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 0) )) ; then 
-    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-41.right"
-elif [[ $(uname -s) == 'SunOS' ]] ; then
-    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-SunOS.right"
-fi
 FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
 FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
 (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-grep -v '^sig.tests: line 12' $RIGHT_FILE >${FILTERED_RIGHT_FILE}
-grep -v '^sig.tests: line 12' $TEST_FILE >${FILTERED_TEST_FILE}
+grep -v '^sig.tests: line 12' $RIGHT_FILE>${FILTERED_RIGHT_FILE}
+grep -v '^sig.tests: line 12' $TEST_FILE \
+  | sed -e "s:in file \`sig.sh' at line [0-9][0-9]*:in file \`sig.sh' at line 55:" \
+  | sed -e "s:in file \`eval.sh' at line [0-9][0-9]*:in file \`eval.sh' at line 55:" >${FILTERED_TEST_FILE}
 check_output $FILTERED_TEST_FILE $FILTERED_RIGHT_FILE
 rc=$?
 
