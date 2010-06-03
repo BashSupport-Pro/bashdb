@@ -1327,7 +1327,7 @@ information about signal handling, @pxref{Signals, ,Signals}
 
 You can abbreviate the long name of @DBG command to the first
 few letters of the command name, if that abbreviation is unambiguous;
-and you can repeat the @code{next} o r@code{step} commands by typing
+and you can repeat the @code{next} or @code{step} commands by typing
 just @key{RET}. Some commands which require a parameter, such as 
 @code{print} remember the argument that was given to them. 
 
