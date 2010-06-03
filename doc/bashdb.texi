@@ -1335,16 +1335,16 @@ just @key{RET}. Some commands which require a parameter, such as
 * Command Syntax::       How to give commands to the BASH debugger
 * Help::                 How to ask for help (help)
 * Quit::                 Leaving the debugger (quit, kill)
-* Program Information::  Status and Debugger settings (info, show)
 * Stopping::             Stopping and continuing (break, watch, step, cont...)
 * Stack::                Examining the stack frame (where, up, down, frame)
 * List::                 Printing source files (list)
 * Edit::                 Editing source files (edit)
 * Search::               Searching source files (/pat/ ?pat?)
 * Data::                 Examining data (print, examine, info variables)
+* Auto Display::         Executing expressions on stop (display, undisplay)
 * Evaluation/Execution:: Arbitrary execution (eval, shell)
 * Interfacing to the OS:: Interfacing to the OS (cd, pwd)
-* Auto Display::         Executing expressions on stop (display, undisplay)
+* Information and Settings::  Status and Debugger settings (info, show)
 * Controlling bashdb::   Controlling bashdb (annotate, file, prompt, history...)
 @end menu
 
@@ -2333,129 +2333,6 @@ program. Supply either the signal name, e.g.@: @code{SIGINT}, or the
 signal number @code{15}.
 @end table
 
-@node Program Information
-@section Status and Debugger Settings (@samp{info}, @samp{show})
-
-@menu
-* Info::        Showing information about the program being debugged
-* Show::        Show information about the debugger
-@end menu
-
-In addition to @code{help}, you can use the @acronym{BASH} commands @code{info}
-and @code{show} to inquire about the state of your program, or the
-state of @acronym{BASH} itself.  Each command supports many topics of inquiry;
-here we introduce each of them in the appropriate context.  The
-listings under @code{info} and under @code{show} in the Index point to
-all the sub-commands.  @xref{Command Index}.
-
-@node Info
-@subsection Showing information about the program being debugged (@samp{info})
-@c @group
-This @code{info} command (abbreviated @code{i}) is for describing the state of
-your program.  For example, you can list the current @code{$1}, @code{$2}
-parameters with @code{info args}, or list the breakpoints you have set
-with @code{info breakpoints} or @code{info watchpoints}.  You can get
-a complete list of the @code{info} sub-commands with @w{@code{help
-info}}.
-
-@table @code
-@kindex info args
-@item info args
-Argument variables (e.g.@: $1, $2, ...) of the current stack frame.
-@kindex info breakpoints
-@item info breakpoints
-Status of user-settable breakpoints
-@kindex info display
-@item info display
-Show all display expressions
-@kindex info files
-@item info files
-Source files in the program
-@kindex info functions
-@item info functions
-All function names
-@kindex info line
-@item info line
-list current line number and and file name
-@kindex info program
-@item info program
-Execution status of the program.
-@kindex info signals
-@item info signals
-What debugger does when program gets various signals
-@kindex info source
-@item info source
-Information about the current source file
-@kindex info stack
-@item info stack
-Backtrace of the stack
-@kindex info terminal
-@item info terminal
-Print terminal device
-@kindex info variables
-@item info variables
-All global and static variable names
-@end table
-
-@c @end group
-
-@node Show
-@subsection Show information about the debugger (@samp{show})
-
-In contrast to @code{info}, @code{show} is for describing the state of
-@acronym{BASH} itself.  You can change most of the things you can
-@code{show}, by using the related command @code{set};
-
-The distinction between @code{info} and @code{show} however is a bit
-fuzzy and is kept here to try to follow the GDB interface.
-For example, to list the arguments given to your script use
-@code{show args}; @code{info args} does something different.
-
-Here are three miscellaneous @code{show} subcommands, all of which are
-exceptional in lacking corresponding @code{set} commands:
-
-@table @code
-@kindex show version
-@cindex version number
-@item show version
-Show what version of @acronym{BASH} is running.  You should include this
-information in @acronym{BASH} bug-reports.  If multiple versions of
-@acronym{BASH} are in use at your site, you may need to determine which
-version of @acronym{BASH} you are running; as @acronym{BASH} evolves, new
-commands are introduced, and old ones may wither away.  Also, many
-system vendors ship variant versions of @value{BASH}, and there are
-variant versions of @acronym{BASH} in @sc{gnu}/Linux distributions as well.
-The version number is the same as the one announced when you start
-@value{BASH}.
-
-@kindex show copying
-@item show copying
-Display information about permission for copying @value{BASH}.
-
-@item show linetrace
-
-Show if line tracing is enabled. See also @ref{Line Tracing}.
-
-@item show logging
-
-Show summary information of logging variables which can be set via
-@code{set logging}. See also @ref{Logging}.
-
-@item show logging file
-
-Show the current logging file.
-
-@item show logging overwrite
-
-Show whether logging overwrites or appends to the log file.
-
-@kindex show warranty
-@item show warranty
-Display the @sc{gnu} ``NO WARRANTY'' statement, or a warranty,
-if your version of @DBG comes with one.
-
-@end table
-
 @node Stack
 @section Examining the Stack Frame (@samp{where}, @samp{frame}, @samp{up}, @samp{down})
 
@@ -2982,6 +2859,65 @@ FUNCNAME='([0]="_Dbg_cmd_list_variables" [1]="_Dbg_cmdloop" [2]="_Dbg_debug_trap
 
 @end table
 
+@node Auto Display
+@section Automatic display (@samp{display}, @samp{undisplay})
+@cindex automatic display
+@cindex display of expressions
+
+If you find that you want to print the value of an expression
+frequently (to see how it changes), you might want to add it to the
+@dfn{automatic display list} so that @value{DBG} evaluates a
+statement each time your program stops.  Each expression added to the
+list is given a number to identify it; to remove an expression from
+the list, you specify that number.  The automatic display looks like
+this:
+
+@example
+2 (echo $x): 38
+@end example
+
+@noindent
+This display shows item numbers, expressions and their current values.  
+
+@table @code
+@kindex display
+@item display @var{expr}
+Add the expression @var{expr} to the list of expressions to display
+each time your program stops.
+
+@item display
+Display the current values of the expressions on the list, just as is
+done when your program stops.
+
+@kindex delete display
+@kindex undisplay @var{dnums}@dots{}
+@item undisplay @var{dnums}@dots{}
+@itemx delete display @var{dnums}@dots{}
+Remove item numbers @var{dnums} from the list of expressions to display.
+
+@code{undisplay} does not repeat if you press @key{RET} after using it.
+(Otherwise you would just get the error @samp{No display number @dots{}}.)
+
+@kindex disable display
+@item disable display @var{dnums}@dots{}
+Disable the display of item numbers @var{dnums}.  A disabled display
+item is not printed automatically, but is not forgotten.  It may be
+enabled again later.
+
+@kindex enable display
+@item enable display @var{dnums}@dots{}
+Enable display of item numbers @var{dnums}.  It becomes effective once
+again in auto display of its expression, until you specify otherwise.
+
+@kindex info display
+@item info display
+Print the list of expressions previously set up to display
+automatically, each one with its item number, but without showing the
+values.  This includes disabled expressions, which are marked as such.
+It also includes expressions which would not be displayed right now
+because they refer to automatic variables not currently available.
+@end table
+
 @node Evaluation/Execution
 @section Running Arbitrary BASH and Shell commands (@samp{eval}, @samp{shell})
 
@@ -3047,63 +2983,127 @@ Prints the working directory as the program sees things.
 
 @end table
 
-@node Auto Display
-@section Automatic display (@samp{display}, @samp{undisplay})
-@cindex automatic display
-@cindex display of expressions
+@node Information and Settings
+@section Status and Debugger Settings (@samp{info}, @samp{show})
 
-If you find that you want to print the value of an expression
-frequently (to see how it changes), you might want to add it to the
-@dfn{automatic display list} so that @value{DBG} evaluates a
-statement each time your program stops.  Each expression added to the
-list is given a number to identify it; to remove an expression from
-the list, you specify that number.  The automatic display looks like
-this:
+@menu
+* Info::        Showing information about the program being debugged
+* Show::        Show information about the debugger
+@end menu
 
-@example
-2 (echo $x): 38
-@end example
+In addition to @code{help}, you can use the @acronym{BASH} commands @code{info}
+and @code{show} to inquire about the state of your program, or the
+state of @acronym{BASH} itself.  Each command supports many topics of inquiry;
+here we introduce each of them in the appropriate context.  The
+listings under @code{info} and under @code{show} in the Index point to
+all the sub-commands.  @xref{Command Index}.
 
-@noindent
-This display shows item numbers, expressions and their current values.  
+@node Info
+@subsection Showing information about the program being debugged (@samp{info})
+@c @group
+This @code{info} command (abbreviated @code{i}) is for describing the state of
+your program.  For example, you can list the current @code{$1}, @code{$2}
+parameters with @code{info args}, or list the breakpoints you have set
+with @code{info breakpoints} or @code{info watchpoints}.  You can get
+a complete list of the @code{info} sub-commands with @w{@code{help
+info}}.
 
 @table @code
-@kindex display
-@item display @var{expr}
-Add the expression @var{expr} to the list of expressions to display
-each time your program stops.
-
-@item display
-Display the current values of the expressions on the list, just as is
-done when your program stops.
-
-@kindex delete display
-@kindex undisplay @var{dnums}@dots{}
-@item undisplay @var{dnums}@dots{}
-@itemx delete display @var{dnums}@dots{}
-Remove item numbers @var{dnums} from the list of expressions to display.
-
-@code{undisplay} does not repeat if you press @key{RET} after using it.
-(Otherwise you would just get the error @samp{No display number @dots{}}.)
-
-@kindex disable display
-@item disable display @var{dnums}@dots{}
-Disable the display of item numbers @var{dnums}.  A disabled display
-item is not printed automatically, but is not forgotten.  It may be
-enabled again later.
-
-@kindex enable display
-@item enable display @var{dnums}@dots{}
-Enable display of item numbers @var{dnums}.  It becomes effective once
-again in auto display of its expression, until you specify otherwise.
-
+@kindex info args
+@item info args
+Argument variables (e.g.@: $1, $2, ...) of the current stack frame.
+@kindex info breakpoints
+@item info breakpoints
+Status of user-settable breakpoints
 @kindex info display
 @item info display
-Print the list of expressions previously set up to display
-automatically, each one with its item number, but without showing the
-values.  This includes disabled expressions, which are marked as such.
-It also includes expressions which would not be displayed right now
-because they refer to automatic variables not currently available.
+Show all display expressions
+@kindex info files
+@item info files
+Source files in the program
+@kindex info functions
+@item info functions
+All function names
+@kindex info line
+@item info line
+list current line number and and file name
+@kindex info program
+@item info program
+Execution status of the program.
+@kindex info signals
+@item info signals
+What debugger does when program gets various signals
+@kindex info source
+@item info source
+Information about the current source file
+@kindex info stack
+@item info stack
+Backtrace of the stack
+@kindex info terminal
+@item info terminal
+Print terminal device
+@kindex info variables
+@item info variables
+All global and static variable names
+@end table
+
+@c @end group
+
+@node Show
+@subsection Show information about the debugger (@samp{show})
+
+In contrast to @code{info}, @code{show} is for describing the state of
+@acronym{BASH} itself.  You can change most of the things you can
+@code{show}, by using the related command @code{set};
+
+The distinction between @code{info} and @code{show} however is a bit
+fuzzy and is kept here to try to follow the GDB interface.
+For example, to list the arguments given to your script use
+@code{show args}; @code{info args} does something different.
+
+Here are three miscellaneous @code{show} subcommands, all of which are
+exceptional in lacking corresponding @code{set} commands:
+
+@table @code
+@kindex show version
+@cindex version number
+@item show version
+Show what version of @acronym{BASH} is running.  You should include this
+information in @acronym{BASH} bug-reports.  If multiple versions of
+@acronym{BASH} are in use at your site, you may need to determine which
+version of @acronym{BASH} you are running; as @acronym{BASH} evolves, new
+commands are introduced, and old ones may wither away.  Also, many
+system vendors ship variant versions of @value{BASH}, and there are
+variant versions of @acronym{BASH} in @sc{gnu}/Linux distributions as well.
+The version number is the same as the one announced when you start
+@value{BASH}.
+
+@kindex show copying
+@item show copying
+Display information about permission for copying @value{BASH}.
+
+@item show linetrace
+
+Show if line tracing is enabled. See also @ref{Line Tracing}.
+
+@item show logging
+
+Show summary information of logging variables which can be set via
+@code{set logging}. See also @ref{Logging}.
+
+@item show logging file
+
+Show the current logging file.
+
+@item show logging overwrite
+
+Show whether logging overwrites or appends to the log file.
+
+@kindex show warranty
+@item show warranty
+Display the @sc{gnu} ``NO WARRANTY'' statement, or a warranty,
+if your version of @DBG comes with one.
+
 @end table
 
 @node Controlling bashdb
