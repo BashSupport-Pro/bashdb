@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # restart.sh - gdb-like "restart" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -46,9 +46,9 @@ _Dbg_do_restart() {
 	else
 	    script_args="${bash_opt}$_Dbg_orig_0 $script_args";
 	fi
-	exec_cmd_prefix="$BASH $script_args"
+	exec_cmd_prefix="$BASH"
     elif [[ -n "$BASH" ]] ; then
-	local exec_cmd_prefix="$BASH $_Dbg_orig_0 $script_args"
+	local exec_cmd_prefix="$BASH $_Dbg_orig_0"
     fi
 
     _Dbg_msg "Restarting with: $script_args"
