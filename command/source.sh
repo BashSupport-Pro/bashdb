@@ -34,18 +34,11 @@ _Dbg_do_source() {
   typeset filename
   _Dbg_glob_filename "$1"
   if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
-    if ((_Dbg_input_desc < _Dbg_MAX_INPUT_DESC )) ; then 
-      ((_Dbg_input_desc++))
-      _Dbg_input[$_Dbg_input_desc]=$filename
-      typeset _Dbg_redirect_cmd="exec $_Dbg_input_desc<\"$filename\""
-      eval $_Dbg_redirect_cmd
-      _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]=$filename
-    else 
-      typeset -i max_nesting
-      ((max_nesting=_Dbg_MAX_INPUT_DESC-_Dbg_INPUT_START_DESC+1))
-      _Dbg_errmsg "Source nesting too deep; nesting can't be greater than $max_nesting."
-      return 2
-    fi
+      # Open new input file descriptor and save number in _Dbg_fd.
+      exec {_Dbg_fdi}<"$filename"
+      _Dbg_fd[++_Dbg_fd_last]=$_Dbg_fdi
+      # We'll store the filename for good measure too.
+      _Dbg_cmdfile+=("$filename")
   else
     _Dbg_errmsg "Source file \"$filename\" is not readable."
     return 3

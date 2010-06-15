@@ -85,7 +85,7 @@ set editing   -- Set editing of command lines as they are typed is on.
 set linetrace -- Set tracing execution of lines before executed is off.
 set listsize  -- Set number of source lines bashdb will list by default.
 set prompt    -- bashdb's prompt is:
-       "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
+       "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
 set showcommand -- Set showing the command to execute is auto.
 set trace-commands -- Set showing debugger commands is on.
 +help set foo
@@ -100,7 +100,7 @@ Set annotation level.
 Set number of source lines bashdb will list by default.
 +help set prompt
 bashdb's prompt is:
-       "bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
+       "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
 +help set editing
 Set editing of command lines as they are typed is on.
 +help tty

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-processor.sh - Bourne Again Shell Debugger Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
 #   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -24,21 +24,8 @@
 # Main-line debugger read/execute command loop
 
 # ==================== VARIABLES =======================================
-# _Dbg_INPUT_START_DESC is the lowest descriptor we use for reading.
-# _Dbg_MAX_INPUT_DESC   is the maximum input descriptor that can be 
-#                       safely used (as per the bash manual on redirection)
-# _Dbg-input_desc       is the current descriptor in use. "sourc"ing other
-#                       command files will increase this descriptor
-typeset -ir _Dbg_INPUT_START_DESC=4
-typeset -i  _Dbg_MAX_INPUT_DESC=9  # logfile can reduce this
-typeset -i  _Dbg_input_desc=_Dbg_INPUT_START_DESC-1 # will ++ before use
-
-# Return code to indicated the next command should be skipped.
+# Are we inside the middle of a "skip" command?
 typeset -i  _Dbg_inside_skip=0
-
-# keep a list of source'd command files. If the entry is "" then we are 
-# interactive.
-typeset -a _Dbg_cmdfile=('')
 
 # A variable holding a space is set so it can be used in a "set prompt" command
 # ("read" in the main command loop will remove a trailing space so we need
@@ -58,13 +45,26 @@ set -o $_Dbg_edit_style
 # in to suggest to a user that this is how one gets a spaces into the
 # prompt.
 
-typeset _Dbg_prompt_str='bashdb${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space'
+typeset _Dbg_prompt_str='$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space'
 
 # The arguments in the last "x" command.
 typeset _Dbg_last_x_args=''
 
 # The canonical name of last command run.
 typeset _Dbg_last_cmd=''
+
+# A list of debugger command input-file descriptors.
+# Duplicate standard input
+typeset -i _Dbg_fdi ; exec {_Dbg_fdi}<&0
+
+typeset -i _Dbg_fd_last=0
+
+# keep a list of source'd command files. If the entry is "" then we are 
+# interactive.
+typeset -a _Dbg_cmdfile=('')
+
+# A list of debugger command input-file descriptors.
+typeset -a _Dbg_fd=($_Dbg_fdi)
 
 # ===================== FUNCTIONS =======================================
 
@@ -89,7 +89,7 @@ function _Dbg_process_commands {
   _Dbg_eval_all_display
 
   # Loop over all pending open input file descriptors
-  while (( $_Dbg_input_desc >= $_Dbg_INPUT_START_DESC )) ; do
+  while (( $_Dbg_fd_last > 0)) ; do
 
     # Set up prompt to show shell and subshell levels.
     typeset _Dbg_greater=''
@@ -124,12 +124,13 @@ function _Dbg_process_commands {
     eval "local _Dbg_prompt=$_Dbg_prompt_str"
     _Dbg_preloop
 
-    local _Dbg_cmd 
-    local args
-    local rc
+    typeset _Dbg_cmd 
+    typeset args
+    typeset rc
 
     while : ; do 
 	set -o history
+	_Dbg_input_desc=${_Dbg_fd[_Dbg_fd_last]}
 	if ! read $_Dbg_edit -p "$_Dbg_prompt" _Dbg_cmd args \
 	    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
 	    set +o history
@@ -179,11 +180,7 @@ function _Dbg_process_commands {
 
     done  # while read $_Dbg_edit -p ...
 
-    ((_Dbg_input_desc--))
-
-    # Remove last entry of $_Dbg_cmdfile
-    unset _Dbg_cmdfile[${#_Dbg_cmdfile[@]}]
-
+    unset _Dbg_fd[_Dbg_fd_last--]
   done  # Loop over all open pending file descriptors
 
   # EOF hit. Same as quit without arguments
