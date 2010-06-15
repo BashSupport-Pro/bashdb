@@ -105,6 +105,8 @@ bashdb's prompt is:
 Set editing of command lines as they are typed is on.
 +help tty
 tty -- Set the output device for debugger output.
+
+Aliases for help: h
 +help info
 List of info subcommands:
 
@@ -121,6 +123,8 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
+
+Aliases for info: i
 +info 
 Info subcommands are:
   args         display  functions  source   stack     variables  
@@ -189,6 +193,8 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
+
+Aliases for info: i
 +! 2
 +H -2
 28: info 
@@ -241,6 +247,8 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
+
+Aliases for info: i
 +history 10000
 ** Number 10000 (10000) should be less than 29
 +#### pwd/cd commands...

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - Debugger Help Routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010
 #   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -20,52 +20,29 @@
 
 [[ -n $_Dbg_help_ver ]] && return 1
 
-# Command aliases are stored here.
-typeset -a _Dbg_command_names=()
+# A place to put help command text
+typeset -A _Dbg_command_help
+export _Dbg_command_help
 typeset -a _Dbg_command_names_sorted=()
-typeset -a _Dbg_command_help=()
 
-# Add an new alias in the alias table
-_Dbg_help_add() {
-    (( $# != 2 )) && return 1
-    _Dbg_command_names+=("$1")
-    _Dbg_command_help+=("$2")
+# Add help text $2 for command $1
+function _Dbg_help_add {
+    (($# != 2)) && return 1
+     _Dbg_command_help[$1]="$2"
      return 0
 }
 
-_Dbg_help_get_text() {
-    _Dbg_help_text=''
-    (( $# != 1 )) && return 2
-    typeset _Dbg_cmd="$1"
-    _Dbg_command_index "$_Dbg_cmd"
-    typeset -i i=$?
-    ((i==255)) && return 1
-    _Dbg_help_text="${_Dbg_command_help[$i]}"
-    return 0
-    
-}
-
-# Return the index in _Dbg_command_names of $1 or 255 if not there.
-# We assume we'll never have 255 command names.
-function _Dbg_command_index {
-    (($# != 1)) &&  return 255
-    typeset find_name=$1
-    typeset -i i
-    for ((i=0; i<${#_Dbg_command_names[@]}; i++)) ; do
-	[[ ${_Dbg_command_names[$i]} == $find_name ]] && return $i
-    done
-    return 255
-}
 _Dbg_help_sort_command_names() {
     ((${#_Dbg_command_names_sorted} > 0 )) && return 0
 
     typeset -a list
-    list=("${_Dbg_command_names[@]}")
+    list=("${!_Dbg_command_help[@]}")
     sort_list 0 ${#list[@]}-1
     _Dbg_sorted_command_names=("${list[@]}")
 }    
 
-typeset -r _Dbg_set_cmds="args annotate autoeval basename debugger editing linetrace listsize prompt showcommand trace-commands"
+typeset _Dbg_set_cmds="args annotate autoeval basename debugger 
+editing linetrace listsize prompt showcommand trace-commands"
 
 _Dbg_help_set() {
 
