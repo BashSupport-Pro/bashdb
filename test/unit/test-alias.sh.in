@@ -17,7 +17,7 @@ test_alias()
 
     _Dbg_alias_add exit quit
     _Dbg_alias_find_aliased quit
-    assertEquals 'q, exit' "$aliases_found"
+    assertEquals 'exit, q' "$aliases_found"
 
     _Dbg_alias_remove q
     expanded_alias=''; _Dbg_alias_expand q
