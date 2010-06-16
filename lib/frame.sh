@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # frame.sh - Call Stack routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010
+#   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -27,6 +27,11 @@ typeset -i _Dbg_STACK_TOP=2
 # Where are we in stack? This can be changed by "up", "down" or "frame"
 # commands. On debugger entry, the value is set to _Dbg_STACK_TOP.
 typeset -i  _Dbg_stack_pos   
+
+# Save the last-entered frame for to determine stopping when
+# "set force" or step+ is in effect.
+typeset _Dbg_frame_last_filename=''
+typeset -i _Dbg_frame_last_lineno=0
 
 #======================== FUNCTIONS  ============================#
 
@@ -83,8 +88,7 @@ _Dbg_frame_int_setup() {
 }
 
 _Dbg_frame_lineno() {
-    _Dbg_frame_lineno=$_curline
-    return $Dbg_frame_lineno
+    return $Dbg_frame_last_lineno
 }
 
 # Print one line in a call stack

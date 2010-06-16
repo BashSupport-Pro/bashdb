@@ -33,7 +33,7 @@ by using "delete" on the breakpoint number.
 If no location specification is given, use the current line.'
 
 # Add breakpoint(s) at given line number of the current file.  $1 is
-# the line number or _curline if omitted.  $2 is a condition to test
+# the line number or _Dbg_frame_last_lineno if omitted.  $2 is a condition to test
 # for whether to stop.
 _Dbg_do_break() {
 
@@ -44,13 +44,13 @@ _Dbg_do_break() {
   if (( $# > 0 )) ; then 
       linespec="$1"
   else
-      linespec="$_curline"
+      linespec="$_Dbg_frame_last_lineno"
   fi
   shift
 
   typeset condition=${1:-''}
   if [[ "$linespec" == 'if' ]]; then
-    linespec=$_curline
+    linespec=$_Dbg_frame_last_lineno
   elif [[ -z $condition ]] ; then
     condition=1
   elif [[ $condition == 'if' ]] ; then
@@ -84,7 +84,7 @@ _Dbg_do_break() {
 # delete brkpt(s) at given file:line numbers. If no file is given
 # use the current file.
 _Dbg_do_clear_brkpt() {
-  typeset -r n=${1:-$_curline}
+  typeset -r n=${1:-$_Dbg_frame_last_lineno}
 
   typeset filename
   typeset -i line_number

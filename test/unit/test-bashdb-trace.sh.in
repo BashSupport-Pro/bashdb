@@ -33,6 +33,7 @@ test_preserve_set_opts()
 prefix=@prefix@
 top_builddir=@abs_top_builddir@
 top_srcdir=@abs_top_srcdir@
+. ${top_srcdir}/lib/filecache.sh
 . ${top_srcdir}/lib/sig.sh
 . ${top_srcdir}/lib/help.sh
 . ${top_srcdir}/command/tracefn.sh

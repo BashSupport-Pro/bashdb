@@ -85,10 +85,9 @@ _Dbg_do_search_back() {
       _Dbg_last_search_pat=$delim_search_pat
   esac
   typeset -i i
-  typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
   for (( i=_Dbg_listline-1; i > 0 ; i-- )) ; do
     typeset source_line
-    _Dbg_get_source_line $i
+    _Dbg_get_source_line $i "$_Dbg_frame_last_filename"
     eval "$_seteglob"
     if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
       eval "$_resteglob"
@@ -127,10 +126,9 @@ _Dbg_do_search() {
       _Dbg_last_search_pat=$delim_search_pat
   esac
   typeset -i i
-  typeset -i max_line=`_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar`
   for (( i=_Dbg_listline+1; i < max_line ; i++ )) ; do
     typeset source_line
-    _Dbg_get_source_line $i
+    _Dbg_get_source_line $i "$_Dbg_frame_last_filename"
     eval "$_seteglob"
     if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
       eval "$_resteglob"

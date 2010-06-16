@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # fns.sh - Bourne Again Shell Debugger Utility Functions
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009 Rocky Bernstein
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010
+#   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -77,69 +77,6 @@ function _Dbg_split {
   array=( $text )
   echo ${array[@]}
   IFS=$old_IFS
-}
-
-# Return value of eval($1$2). Until bash has associative arrays,
-# this is how we simulate such a datatype. In Perl this would be returning
-# the value of  $1{$2}.
-
-function _Dbg_get_assoc_scalar_entry {
-    typeset prefix=$1
-    typeset entry=${2:-''}
-    typeset cmd="echo \$${prefix}${entry}"
-    eval $cmd
-}
-
-# Set eval($1$2)=$2. Until bash has associative arrays,
-# this is how we simulate such a datatype. In Perl this would be
-# $1{$2}=$3.
-
-function _Dbg_set_assoc_scalar_entry {
-  typeset prefix=$1
-  typeset entry=$2
-  typeset value=$3
-  typeset cmd="${prefix}${entry}=$value"
-  eval $cmd
-
-  typeset dq_value=$(_Dbg_esc_dq "$value")
-  _Dbg_write_journal "${prefix}${entry}=\"$dq_value\""
-
-}
-
-# Return value of eval($1[$2]). If $2 is omitted, use _curline.  Until
-# bash has associative arrays which can contain array elements this is
-# how we simulate such a datatype.
-
-function _Dbg_get_assoc_array_entry {
-  typeset prefix=$1
-  typeset lineno=${2:-$_curline}
-
-  [[ -z $prefix ]] && _Dbg_msg "Internal debug error (gae) bad prefix"
-  typeset entry="$prefix[$lineno]"
-  typeset cmd="echo \"\${$entry}\""
-  eval $cmd
-}
-
-# Evaluate eval($1[$2]=$3). If $2 is omitted, use _curline.  Until
-# bash has associative arrays cich can contain array elements this is
-# how we simulate such a datatype.
-
-function _Dbg_set_assoc_array_entry {
-  typeset prefix=$1
-  typeset lineno=$2
-  shift; shift
-  typeset value=$*
-  
-  [[ -z "$prefix" ]] && _Dbg_msg "Internal debug error (sae1) bad prefix"
-  [[ -z "$lineno" ]] && _Dbg_msg "Internal debug error (sae2) bad lineno"
-  [[ -z "$value" ]] && _Dbg_msg "Internal debug error (sae3) bad value"
-
-  typeset entry="$prefix[$lineno]"
-  typeset cmd="$entry=\"$value\""
-  eval $cmd
-
-  typeset dq_value=$(_Dbg_esc_dq "$value")
-  _Dbg_write_journal "$entry=\"$dq_value\""
 }
 
 # _get_function echoes a list of all of the functions.
@@ -286,7 +223,3 @@ function _Dbg_set_ftrace {
 	  # _Dbg_msg "Tracing $tmsg for function $func"
   done
 }
-
-# This is put at the end so we have something at the end when we debug this.
-[[ -z $_Dbg_fns_ver ]] && typeset -r _Dbg_fns_ver=\
-'$Id: fns.sh,v 1.8 2008/10/18 10:27:16 rockyb Exp $'

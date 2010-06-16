@@ -64,7 +64,7 @@ _Dbg_do_backtrace() {
   if (( k == 0 )) ; then
     typeset filename=${BASH_SOURCE[$i]}
     (( _Dbg_basename_only )) && filename=${filename##*/}
-    _Dbg_print_frame "$prefix" "$k" '' "$filename" "$_curline" ''
+    _Dbg_print_frame "$prefix" "$k" '' "$filename" "$_Dbg_frame_last_lineno" ''
     ((count--)) ; ((k++))
   fi
 

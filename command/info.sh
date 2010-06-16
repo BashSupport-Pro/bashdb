@@ -51,14 +51,13 @@ _Dbg_do_info() {
 	      return
 	      ;;
 
-  fi | file| files | sources )
-              _Dbg_msg "Source files for which have been read in:
-"
+	  file | files )
+              _Dbg_msg "Source files which we have recorded info about:"
 	      for file in "${!_Dbg_file2canonic[@]}" ; do
 		  typeset -i lines=$(_Dbg_get_maxline "$file")
-		  _Dbg_msg "  ${file}: ${_Dbg_file2canonic[$file]}, $lines line		  _Dbg_msg "$file ($maxline lines)" ; 
+		  _Dbg_msg "  ${file}: ${_Dbg_file2canonic[$file]}, $lines lines"
 	      done        
-              return
+              return 0
 	      ;;
 
 	  fu | fun| func | funct | functi | functio | function | functions )
@@ -96,9 +95,11 @@ _Dbg_do_info() {
 	  
 	  so | sou | sourc | source )
               _Dbg_msg "Current script file is $_Dbg_frame_last_filename" 
-	      typeset -i max_line=$(_Dbg_get_assoc_scalar_entry "_Dbg_maxline_" $_cur_filevar)
-	      _Dbg_msg "Contains $max_line lines." ; 
-              return
+              _Dbg_msg "Located in ${_Dbg_file2canonic[$_Dbg_frame_last_filename]}" 
+	      typeset -i max_line
+	      max_line=$(_Dbg_get_maxline $_Dbg_frame_last_filename)
+	      _Dbg_msg "Contains $max_line lines."
+              return 0
 	      ;;
 	  
 	  st | sta | stac | stack )

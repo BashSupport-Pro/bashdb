@@ -27,9 +27,6 @@
 
 typeset -a _Dbg_override_filenames # name translations given via the debugger
                                    # "file" command.
-typeset _Dbg_frame_last_filename  # current source file of debugged program
-typeset _cur_filevar      # source file mangled so it can be used in a variable
-typeset -i _curline       # current line number of debugged program
 
 # ===================== FUNCTIONS =======================================
 

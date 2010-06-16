@@ -28,7 +28,7 @@ test_breakpoint() {
     assertNotEquals '0' "$?"
 
     # This should work
-    _curline=5
+    _Dbg_frame_last_lineno=5
     _Dbg_set_brkpt test.sh 5 0
     assertEquals 'Breakpoint 1 set in file test.sh, line 5.' "${msgs[0]}" 
     msgs=()

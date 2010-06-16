@@ -75,9 +75,6 @@ typeset -A _Dbg_brkpt_file2linenos; _Dbg_brkpt_file2linenos=()
 # Maps a resolved filename to a list of breakpoint entries.
 typeset -A _Dbg_brkpt_file2brkpt; _Dbg_brkpt_file2brkpt=()
 
-# Maps a resolved filename to a list of breakpoint entries.
-typeset -A _Dbg_brkpt_file2brkpt; _Dbg_brkpt_file2brkpt=()
- 
 # Note: we loop over possibly sparse arrays with _Dbg_brkpt_max by adding one
 # and testing for an entry. Could add yet another array to list only 
 # used indices. Bash is kind of primitive.
@@ -488,13 +485,12 @@ _Dbg_clear_watch() {
 
 #======================== ACTIONs  ============================#
 
-# Add actions(s) at given line number of the current file.  $1 is
-# the line number or _curline if omitted.  $2 is a condition to test
-# for whether to stop.
-
+# Add actions(s) at given line number of the current file.  $1 is the
+# line number or _Dbg_frame_last_lineno if omitted.  $2 is a
+# condition to test for whether to stop.
 _Dbg_do_action() {
   
-  typeset n=${1:-$_curline}
+  typeset n=${1:-$_Dbg_frame_last_lineno}
   shift
 
   typeset stmt;
@@ -550,7 +546,7 @@ _Dbg_do_clear_all_actions() {
 # delete actions(s) at given file:line numbers. If no file is given
 # use the current file.
 _Dbg_do_clear_action() {
-  typeset -r n=${1:-$_curline}
+  typeset -r n=${1:-$_Dbg_frame_last_lineno}
 
   typeset filename
   typeset -i line_number
@@ -624,7 +620,7 @@ _Dbg_set_action() {
     # Add line number with a leading and trailing space. Delimiting the
     # number with space helps do a string search for the line number.
     _Dbg_action_file2linenos[$source_file]+=" $lineno "
-    _Dbg_brkpt_file2action[$source_file]+=" $_Dbg_action_max "
+    _Dbg_action_file2action[$source_file]+=" $_Dbg_action_max "
 
     source_file=$(_Dbg_adjust_filename "$source_file")
     _Dbg_msg "Breakpoint $_Dbg_action_max set at ${source_file}:$lineno."
@@ -662,7 +658,7 @@ _Dbg_unset_action() {
   return $found
 }
 
-# Routine to a delete breakpoint/watchpoint by entry numbers.
+# Routine to a delete actions by entry numbers.
 _Dbg_do_action_delete() {
   typeset -r  to_go=$@
   typeset -i  i

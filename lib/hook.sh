@@ -1,7 +1,8 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 
+#   2009, 2010 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -116,34 +117,35 @@ _Dbg_debug_trap_handler() {
 	_Dbg_msg "  new value: '$new_val'"
 	_Dbg_print_location_and_command
 	_Dbg_watch_val[$_Dbg_i]=$new_val
-	_Dbg_process_commands
-	_Dbg_set_to_return_from_debugger 1
+	_Dbg_hook_enter_debugger "on a watch trigger"
 	return $_Dbg_rc
       fi
     fi
   done
 
-  # Run applicable action statement
-  typeset entries=`_Dbg_get_assoc_array_entry "_Dbg_action_$_cur_filevar" $_curline`
-  if [[ $entries != "" ]]  ; then
-    typeset -i _Dbg_i
-    for _Dbg_i in $entries ; do
-      if [[ ${_Dbg_action_enable[_Dbg_i]} != 0 ]] ; then
-	. ${_Dbg_libdir}/dbg-set-d-vars.inc
-	eval "${_Dbg_action_stmt[$_Dbg_i]}"
-      fi
-    done
-  fi
+  # We are restoring IFS here! probably in dbg-set-dvars.inc
+  # # Run applicable action statement
+  # typeset entries=_Dbg_action_file2linenos[$_Dbg_frame_last_filename]
+  # if [[ $entries != "" ]]  ; then
+  #   typeset -i _Dbg_i
+  #   for _Dbg_i in $entries ; do
+  #     if [[ ${_Dbg_action_enable[_Dbg_i]} != 0 ]] ; then
+  # 	. ${_Dbg_libdir}/dbg-set-d-vars.inc
+  # 	eval "${_Dbg_action_stmt[$_Dbg_i]}"
+  #     fi
+  #   done
+  # fi
 
   # check if breakpoint reached
-  typeset -r entries=`_Dbg_get_assoc_array_entry "_Dbg_brkpt_$_cur_filevar" $_curline`
+  typeset entries=
+  entries=${_Dbg_brkpt_file2linenos[$_Dbg_frame_last_filename]}
   if [[ $entries != "" ]]  ; then
     typeset -i _Dbg_i
     for _Dbg_i in $entries ; do
       if [[ ${_Dbg_brkpt_enable[_Dbg_i]:0} != 0 ]] ; then
 	typeset -i cond
 	. ${_Dbg_libdir}/dbg-set-d-vars.inc
-	eval let cond=${_Dbg_brkpt_cond[$_Dbg_i]:0}
+	cond=${_Dbg_brkpt_cond[$_Dbg_i]:0}
 	if [[ $cond != 0 ]] ; then
 	  ((_Dbg_brkpt_count[_Dbg_i]++))
 	  if [[ ${_Dbg_brkpt_onetime[_Dbg_i]:0} == 1 ]] ; then
@@ -161,9 +163,7 @@ _Dbg_debug_trap_handler() {
 	      # Run any commands associated with this breakpoint
 	      _Dbg_bp_commands $_Dbg_i
 	  fi
-	  _Dbg_print_location_and_command
-	  _Dbg_process_commands		# enter debugger
-	  _Dbg_set_to_return_from_debugger 1
+	  _Dbg_hook_enter_debugger _Dbg_stop_reason
 	  return $_Dbg_rc
 	fi
       fi
@@ -175,34 +175,24 @@ _Dbg_debug_trap_handler() {
   if ((_Dbg_step_ignore == 0)); then
 
       if ((_Dbg_step_force)) ; then
-	  if (( $_Dbg_last_lineno == $_curline )) \
+	  if (( $_Dbg_last_lineno == $_Dbg_frame_last_lineno )) \
 	      && [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then 
 	      _Dbg_set_to_return_from_debugger 1
 	      return $_Dbg_rc
 	  fi
       fi
 
-    _Dbg_print_location_and_command
-
-    _Dbg_stop_reason='after being stepped'
-    _Dbg_process_commands		# enter debugger
-    _Dbg_set_to_return_from_debugger 1
-    return $_Dbg_rc
+      _Dbg_hook_enter_debugger 'after being stepped'
+      return $_Dbg_rc
   elif (( ${#FUNCNAME[@]} == _Dbg_return_level )) ; then
-    # here because a trap RETURN
-    _Dbg_stop_reason='on a return'
-    _Dbg_return_level=0
-    _Dbg_print_location_and_command
-    _Dbg_process_commands		# enter debugger
-    _Dbg_set_to_return_from_debugger 1
-    return $_Dbg_rc
+      # here because a trap RETURN
+      _Dbg_return_level=0
+      _Dbg_hook_enter_debugger 'on a return'
+      return $_Dbg_rc
   elif (( -1 == _Dbg_return_level )) ; then
-    # here because we are fielding a signal.
-    _Dbg_stop_reason='on fielding signal'
-    _Dbg_print_location_and_command
-    _Dbg_process_commands		# enter debugger
-    _Dbg_set_to_return_from_debugger 1
-    return $_Dbg_rc
+      # here because we are fielding a signal.
+      _Dbg_hook_enter_debugger 'on fielding signal'
+      return $_Dbg_rc
   elif ((_Dbg_linetrace==1)) ; then 
     if ((_Dbg_linetrace_delay)) ; then
 	sleep $_Dbg_linetrace_delay
@@ -211,6 +201,15 @@ _Dbg_debug_trap_handler() {
   fi
   _Dbg_set_to_return_from_debugger 1
   return $_Dbg_inside_skip
+}
+
+# Go into the command loop
+_Dbg_hook_enter_debugger() {
+    _Dbg_stop_reason="$1"
+    _Dbg_print_location_and_command
+    _Dbg_process_commands
+    _Dbg_set_to_return_from_debugger 1
+    return $_Dbg_rc # _Dbg_rc set to $? by above
 }
 
 # Cleanup routine: erase temp files before exiting.

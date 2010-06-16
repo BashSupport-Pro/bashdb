@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # save-restore.sh - Bourne Again Shell Debugger Utility Functions
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009 Rocky Bernstein
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010
+#   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -43,15 +43,15 @@ function _Dbg_set_debugger_entry {
   trap '' DEBUG
 
   _cur_fn=${FUNCNAME[2]}
-  let _curline=${BASH_LINENO[1]}
-  ((_curline < 1)) && let _curline=1
+  _Dbg_frame_last_lineno=${BASH_LINENO[1]}
+  ((_Dbg_frame_last_lineno < 1)) && let _Dbg_frame_last_lineno=1
 
   _Dbg_old_IFS="$IFS"
   _Dbg_old_PS4="$PS4"
-  _Dbg_frame_last_filename=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
   _Dbg_stack_pos=$_Dbg_STACK_TOP
-  _Dbg_listline=_curline
+  _Dbg_listline=_Dbg_frame_last_lineno
   _Dbg_set_debugger_internal
+  _Dbg_frame_last_filename=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
   _Dbg_frame_last_filename=$(_Dbg_resolve_expand_filename "$_Dbg_frame_last_filename")
 
   # Read in the journal to pick up variable settings that might have
@@ -69,7 +69,6 @@ function _Dbg_set_to_return_from_debugger {
   _Dbg_stop_reason=''
   if (( $1 != 0 )) ; then
     _Dbg_last_bash_command="$_Dbg_bash_command"
-    _Dbg_last_lineno="$_curline"
     _Dbg_last_source_file="$_Dbg_frame_last_filename"
   else
     _Dbg_last_lineno=${BASH_LINENO[1]}

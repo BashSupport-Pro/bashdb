@@ -34,7 +34,7 @@ _Dbg_do_edit() {
   typeset editor=${EDITOR:-ex}
   typeset -i line_number
   if (( $# == 0 )) ; then
-    line_number=$_curline
+o    line_number=$_Dbg_frame_last_lineno
     full_filename="$_Dbg_frame_last_filename"
   else
     _Dbg_linespec_setup "$1"

@@ -247,9 +247,9 @@ _Dbg_onecmd() {
 	  _Dbg_last_cmd='#'
 	  ;;
 
-	# List window up to _curline
+	# List window up to _Dbg_frame_last_lineno
 	- )
-	  typeset -i start_line=(_curline+1-$_Dbg_listsize)
+	  typeset -i start_line=(_Dbg_frame_last_lineno+1-$_Dbg_listsize)
 	  typeset -i count=($_Dbg_listsize)
 	  if (( start_line <= 0 )) ; then
 	    ((count=count+start_line-1))
@@ -261,7 +261,7 @@ _Dbg_onecmd() {
 
 	# list current line
 	. )
-	  _Dbg_list $_Dbg_frame_last_filename $_curline 1
+	  _Dbg_list $_Dbg_frame_last_filename $_Dbg_frame_last_lineno 1
 	  _Dbg_last_cmd='list'
 	  ;;
 
@@ -596,13 +596,6 @@ _Dbg_onecmd() {
 	# Show version information
 	ve | ver | vers | versi | versio | version | M )
 	  _Dbg_do_show_versions
-	  ;;
-
-	# List window around line.
-	w | wi | win | wind | windo | window )
-	  ((_startline=_curline - _Dbg_listsize/2))
-	  (( $_startline <= 0 )) && _startline=1
-	  _Dbg_list $_Dbg_frame_last_filename $_startline
 	  ;;
 
 	# watch variable
