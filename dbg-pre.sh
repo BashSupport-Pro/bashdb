@@ -1,6 +1,8 @@
 # -*- shell-script -*-
 # dbg-pre.sh - Code common to bashdb and bashdb-trace that has to run first
-#   Copyright (C) 2002, 2003, 2004, 2008, 2009 Rocky Bernstein rocky@gnu.org
+#
+#   Copyright (C) 2002, 2003, 2004, 2008, 2009, 2010
+#   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -16,15 +18,13 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-# We put definiitions common to both the script debugger and bash
-# --debugger. In contrast to other routines this is sourced early --
-# before most of the bashdb script is run. The other routines are
-# done near the end of the bashdb script. In this way the script can
-# has access to definitions that --debugger has without duplicating code.
+# We put definitions common to both the script debugger and
+# dbg-trace.sh. In contrast to other routines, this code is sourced
+# early -- before most of the debugger script is run.
 
-# Note: the trend now is to move initializations which are generally
-# used in only one sub-part (e.g. variables for break/watch/actions) to o
-# the corresponding file.
+# Note: initializations which are mostly used in only one sub-part
+# (e.g. variables for break/watch/actions) are in the corresponding
+# file: either in lib or (less good) command.
 
 # This function is overwritten by when lib/fns.sh gets loaded
 _Dbg_msg()
@@ -50,8 +50,8 @@ function _Dbg_expand_filename {
   typeset -r filename="$1"
 
   # Break out basename and dirname
-  typeset basename=${filename##*/}
-  typeset -x dirname=${filename%/*}
+  typeset basename="${filename##*/}"
+  typeset -x dirname="${filename%/*}"
 
   # No slash given in filename? Then use . for dirname
   [[ $dirname == $basename ]] && [[ $filename != '/' ]] && dirname='.'

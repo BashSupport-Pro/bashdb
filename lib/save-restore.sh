@@ -53,7 +53,6 @@ function _Dbg_set_debugger_entry {
   _Dbg_listline=_curline
   _Dbg_set_debugger_internal
   _Dbg_frame_last_filename=$(_Dbg_resolve_expand_filename "$_Dbg_frame_last_filename")
-  _cur_filevar="`_Dbg_file2var $_Dbg_frame_last_filename`"
 
   # Read in the journal to pick up variable settings that might have
   # been left from a subshell.

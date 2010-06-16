@@ -25,7 +25,6 @@
 # _Dbg_read_mungedfilename is array which contains the value '1' if the
 #  filename has been read in.
 
-typeset -a _Dbg_filenames          # names of all source files read
 typeset -a _Dbg_override_filenames # name translations given via the debugger
                                    # "file" command.
 typeset _Dbg_frame_last_filename  # current source file of debugged program

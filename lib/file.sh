@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Things related to file handling.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -19,22 +19,36 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Directory search patch for unqualified file names
-typeset -a _Dbg_dir=('\$cdir' '\$cwd' )
+
+typeset -a _Dbg_dir
+_Dbg_dir=('\$cdir' '\$cwd' )
 
 # Directory in which the script is located
 [[ -z ${_Dbg_cdir} ]] && [[ -n ${_Dbg_cdir} ]] && typeset -r _Dbg_cdir=${_Dbg_source_file%/*}
 
-# See if we have compiled the readarray builtin. This speeds up reading
-# files into a bash array.
-typeset -i _Dbg_have_readarray=0
-
-if ra=$(type -p readarray) && [ -z "$ra" ] ; then
-    _Dbg_have_readarray=1
-elif [[ -r $_Dbg_libdir/builtin/readarray ]] ; then
-  if enable -f $_Dbg_libdir/builtin/readarray  readarray >/dev/null 2>&1 ; then
-    _Dbg_have_readarray=1
+# Either fill out or strip filename as determined by "basename_only"
+# and annotate settings
+_Dbg_adjust_filename() {
+  typeset -r filename="$1"
+  if (( _Dbg_annotate == 1 )) ; then
+    echo $(_Dbg_resolve_expand_filename $filename)
+  elif ((_Dbg_basename_only)) ; then
+    echo ${filename##*/}
+  else
+    echo $filename
   fi
-fi
+}
+
+# $1 contains the name you want to glob. return 0 if exists and is
+# readable or 1 if not. 
+# The result will be in variable $filename which is assumed to be 
+# local'd by the caller
+_Dbg_glob_filename() {
+  printf -v filename "%q" "$1"
+  typeset cmd="filename=$filename"
+  eval $cmd
+  [[ -r $filename ]]
+}
 
 #
 # Resolve $1 to a full file name which exists. First see if filename has been
@@ -52,10 +66,10 @@ function _Dbg_resolve_expand_filename {
 
   # Is this one of the files we've that has been specified in a debugger
   # "FILE" command?
-  typeset -r filevar=$(_Dbg_file2var "$find_file")
-  typeset file_cmd_file=$(_Dbg_get_assoc_scalar_entry "_Dbg_file_cmd_" $filevar)
-  if [[ -n "$file_cmd_file" ]] ; then
-    echo "$file_cmd_file"
+  typeset found_file
+  found_file="${_Dbg_file2canonic[$find_file]}"
+  if [[ -n  $found_file ]] ; then
+    echo "$found_file"
     return 0
   fi
 
@@ -67,7 +81,7 @@ function _Dbg_resolve_expand_filename {
   elif [[ ${find_file:0:1} == '.' ]] ; then
     # Relative file name
     full_find_file=$(_Dbg_expand_filename "${_Dbg_init_cwd}/$find_file")
-    if [[ -z $full_find_file ]] || [[ ! -r $full_find_file ]]; then
+    if [[ -z "$full_find_file" ]] || [[ ! -r $full_find_file ]]; then
       # Try using cwd rather that Dbg_init_cwd
       full_find_file=$(_Dbg_expand_filename "$find_file")
     fi
@@ -92,35 +106,4 @@ function _Dbg_resolve_expand_filename {
   fi
   echo ''
   return 1
-}
-
-# Turn filename $1 into something that is safe to use as a variable name
-_Dbg_file2var() {
-  typeset filename=$(_Dbg_expand_filename "$1")
-  typeset varname=$(builtin echo $filename | tr '=~+%* .?/"[]<>-' 'ETPpABDQSqLRlGM')
-  builtin echo $varname
-}
-
-# $1 contains the name you want to glob. return 1 if exists and is
-# readible or 0 if not. 
-# The result will be in variable $filename which is assumed to be 
-# local'd by the caller
-_Dbg_glob_filename() {
-  printf -v filename "%q" "$1"
-  typeset cmd="filename=$filename"
-  eval $cmd
-  [[ -r $filename ]]
-}
-
-# Either fill out or strip filename as determined by "basename_only"
-# and annotate settings
-_Dbg_adjust_filename() {
-  typeset -r filename=$1
-  if (( _Dbg_annotate == 1 )) ; then
-    echo $(_Dbg_resolve_expand_filename $filename)
-  elif ((_Dbg_basename_only)) ; then
-    echo ${filename##*/}
-  else
-    echo $filename
-  fi
 }
