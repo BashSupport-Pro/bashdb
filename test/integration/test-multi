@@ -18,7 +18,7 @@ for SUBTEST in multi1 multi2 multi3 multi4 ; do
 
   check_output $TEST_FILE $RIGHT_FILE
   rc=$?
-  if test "$rc" -eq  0 ; then
+  if test "$rc" -eq  1 ; then
     exit $rc
   fi
 done

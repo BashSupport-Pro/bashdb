@@ -67,13 +67,15 @@ function _Dbg_set_to_return_from_debugger {
   _Dbg_rc=$?
 
   _Dbg_stop_reason=''
+  # FIXME: put in a frame setup routine and remove from set_entry
   if (( $1 != 0 )) ; then
-    _Dbg_last_bash_command="$_Dbg_bash_command"
-    _Dbg_last_source_file="$_Dbg_frame_last_filename"
+      _Dbg_last_lineno=${BASH_LINENO[2]}
+      _Dbg_last_bash_command="$_Dbg_bash_command"
+      _Dbg_last_source_file="$_Dbg_frame_last_filename"
   else
-    _Dbg_last_lineno=${BASH_LINENO[1]}
-    _Dbg_last_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
-    _Dbg_last_bash_command="**unsaved _bashdb command**"
+      _Dbg_last_lineno=${BASH_LINENO[1]}
+      _Dbg_last_source_file=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
+      _Dbg_last_bash_command="**unsaved _bashdb command**"
   fi
 
   if (( _Dbg_restore_debug_trap )) ; then

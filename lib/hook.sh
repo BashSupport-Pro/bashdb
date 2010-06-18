@@ -150,12 +150,12 @@ _Dbg_debug_trap_handler() {
 	    ## FIXME: should probably add this (from zshdb):
 	    ## _Dbg_frame_save_frames 1
 	    ((_Dbg_brkpt_counts[_Dbg_brkpt_num]++))
-	    _Dbg_msg \
-              "Breakpoint $_Dbg_brkpt_num hit (${_Dbg_brkpt_counts[_Dbg_brkpt_num]} times)."
 	    if (( ${_Dbg_brkpt_onetime[_Dbg_brkpt_num]} == 1 )) ; then
 		_Dbg_stop_reason='at a breakpoint that has since been deleted'
 		_Dbg_delete_brkpt_entry $_Dbg_brkpt_num
 	    else
+	    _Dbg_msg \
+              "Breakpoint $_Dbg_brkpt_num hit (${_Dbg_brkpt_counts[_Dbg_brkpt_num]} times)."
 		_Dbg_stop_reason="at breakpoint $_Dbg_brkpt_num"
 	    fi
 	    _Dbg_hook_enter_debugger "$_Dbg_stop_reason"
