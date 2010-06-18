@@ -69,10 +69,10 @@ Watchpoint 2: $x changed:
 156:	set -o functrace
 +# 2nd part of Restart test
 +l 
-156:==>set -o functrace
-157:   . "$_Dbg_script_file"
+156: => set -o functrace
+157:    . "$_Dbg_script_file"
 158:   
-159:   # end of bashdb
+159:    # end of bashdb
 +info break
 No breakpoints have been set.
 Num Type       Enb  Expression

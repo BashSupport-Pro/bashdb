@@ -26,6 +26,7 @@ pkgdata_DATA =        \
 	pwd.sh       \
 	quit.sh      \
 	restart.sh   \
+	search.sh    \
 	set.sh       \
 	show.sh      \
 	signal.sh    \

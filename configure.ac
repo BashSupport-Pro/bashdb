@@ -26,7 +26,7 @@ dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
-define(OK_BASH_VERS, 4.0)
+define(OK_BASH_VERS, 4.1)
 define(relstatus, 0.4)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
@@ -111,18 +111,16 @@ case "${bash_major}.${bash_minor}" in
   'OK_BASH_VERS' | '4.1')
     bash_4_or_greater=yes
     ;;
-  '3.2' | '3.1' )
-    ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash 4.0, 3.2 or 3.1.])
+    AC_MSG_ERROR([This package is only known to work with Bash 4.1.])
     ;; 
 esac
 
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
 		  [location of dbg-main.sh]), BASHDB_MAIN=$withval)
 
-# See if we build readarray.c
+# See if we build set0.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
 		  [location of bash OK_BASH_VERS source code]), 
 		  BASH_SRC=$withval)
@@ -131,22 +129,19 @@ AC_PROG_CC
 if test "$BASH_SRC" != x ; then
    if test ! -d $BASH_SRC ; then
      AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
-   elif test "$bash_4_or_greater" = "yes" ; then
-     AC_MSG_NOTICE([--with-bash-src source not needed bash 4 or greater])
-         build_readarray=
    else
      AM_PROG_CC_C_O
      dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
      PIC=$lt_prog_compiler_pic_CXX
      WL=$lt_prog_compiler_wl_CXX
-     build_readarray=$BASH_SRC
+     build_set0=$BASH_SRC
      AC_CHECK_HEADERS(unistd.h string.h,,
          [AC_MSG_WARN([Missing some C headers. Disabling readarray])
-         build_readarray=])
+         build_set0=])
      AC_CHECK_FUNCS(getline)
    fi 
 fi
-AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_readarray" != x)
+AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
 
 if test -z "$BASHDB_MAIN" ; then
@@ -285,11 +280,11 @@ echo
 echo "========================================================="
 echo "Bash version: $bash_version"
 echo "Location: $SH_PROG"
-if test x"$build_readarray" != x; then
-   echo "We will try to build the readarray builtin to speed up loading"
-   echo "located at ${BASH_SRC}."
+if test x"$build_set0" != x; then
+   echo "We will try to build the set0 builtin to set variable \$0"
+   echo "using source located at ${BASH_SRC}."
 elif test "$bash_4_or_greater" = no ; then
-   echo 'We will not try to build the builtins to speed up loading and set $0.'
+   echo 'We will not try to build the set $0 builtin.'
 fi
 if test "$EMACS" = no ; then
    echo "We will not install GNU Emacs files."
