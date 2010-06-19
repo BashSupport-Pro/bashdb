@@ -2,10 +2,10 @@
 4:	x=1
 +# Test Restart command
 +list 
-  4:==>x=1
-  5:   cd /
-  6:   y=2
-  7:   z=0
+  4: => x=1
+  5:    cd /
+  6:    y=2
+  7:    z=0
 +step 
 (restartbug.sh:5):
 5:	cd /

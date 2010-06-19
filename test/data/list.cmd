@@ -22,8 +22,6 @@ set trace-commands on
 list fn1
 list bogus
 #########################################################
-### Testing window command..."
-window 
 ###  Testing '.'
 l . 
 # 
@@ -35,16 +33,12 @@ show listsize
 ###  Setting listsize to 3...
 set listsize 3
 l 10
-###  Window command...
-w
 p "- command..."
 -
 ###  Setting listsize to 4...
 set listsize 4
 show listsize
 l 10
-###  Window command...
-w
 ###  '-' command...
 -
 #<-This comment doesn't have a space after 
