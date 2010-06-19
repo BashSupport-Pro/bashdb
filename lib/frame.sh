@@ -22,7 +22,7 @@
 
 # The top number items on the FUNCNAME stack are debugging routines
 # Set the index in FUNCNAME that should be reported as index 0 (or top).
-typeset -i _Dbg_STACK_TOP=2
+typeset -i _Dbg_STACK_TOP=3
 
 # Where are we in stack? This can be changed by "up", "down" or "frame"
 # commands. On debugger entry, the value is set to _Dbg_STACK_TOP.

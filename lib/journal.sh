@@ -36,7 +36,7 @@ _Dbg_write_journal_eval() {
 _Dbg_write_journal_var() {
   typeset var_name="$1"
   typeset val
-  typeset val_cmd="$val='\${$var_name}'"
+  typeset val_cmd="val='\${$var_name}'"
   eval "$val_cmd"
   _Dbg_write_journal "${var_name}='${val}'" 
 }

@@ -191,6 +191,10 @@ _Dbg_debug_trap_handler() {
 	    sleep $_Dbg_linetrace_delay
 	fi
 	_Dbg_print_linetrace
+	# FIXME: DRY code.
+	_Dbg_set_to_return_from_debugger 1
+	_Dbg_last_lineno=${BASH_LINENO[0]}
+	return $_Dbg_inside_skip
     fi
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_inside_skip
