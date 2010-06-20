@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # -*- shell-script -*-
-#$Id: test-parm,v 1.2 2008/08/23 16:56:21 rockyb Exp $
 
 [ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD

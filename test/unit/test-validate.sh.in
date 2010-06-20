@@ -1,0 +1,69 @@
+#!@SH_PROG@
+# -*- shell-script -*-
+
+test_is_function()
+{
+    _Dbg_is_function 
+    assertFalse 'No function given; is_function should report false' $? 
+
+    unset -f function_test
+    _Dbg_is_function function_test
+    assertFalse 'function_test should not be defined' "$?"
+
+    typeset -i function_test=1
+    _Dbg_is_function function_test
+    assertFalse 'test_function should still not be defined' "$?"
+
+    function_test() { :; }
+    _Dbg_is_function function_test
+    assertTrue 'test_function should now be defined' "$?"
+
+    function another_function_test { :; }
+    _Dbg_is_function another_function_test "$?"
+
+    _function_test() { :; }
+    _Dbg_is_function _function_test
+    assertFalse 'fn _function_test is system fn; is_function should report false' $? 
+
+    _Dbg_is_function _function_test 1 
+    assertTrue 'fn _function_test is system fn which we want; should report true' $? 
+
+}
+
+# Test _Dbg_is_int
+test_is_integer()
+{
+    _Dbg_is_int
+    assertFalse 'No integer given; is_int should report false' $? 
+
+    for arg in a a1 '-+-' ; do
+	_Dbg_is_int $arg
+	assertFalse "$arg is not an integer; is_int should report false" $? 
+    done
+
+    for arg in 0 123 9999999 ; do
+	_Dbg_is_int $arg
+	assertTrue "$arg is not an integer; is_int should report true" $? 
+    done
+}
+
+# Make sure @top_srcdir@ has a trailing slash
+if [ '@abs_top_srcdir@' = '' ] ; then
+  echo "Something is wrong: abs_top_srcdir is not set."
+ exit 1
+fi
+abs_top_srcdir=@abs_top_srcdir@
+abs_top_srcdir=${abs_top_srcdir%%/}/
+
+_Dbg_libdir=$abs_top_srcdir
+set -- -q  # Don't need to show banner
+. $abs_top_srcdir/dbg-init.sh
+. $abs_top_srcdir/dbg-pre.sh
+. $abs_top_srcdir/lib/journal.sh
+. $abs_top_srcdir/lib/save-restore.sh
+. $abs_top_srcdir/lib/validate.sh
+
+# load shunit2
+shunit_file=${abs_top_srcdir}test/unit/shunit2
+. ${shunit_file}
+

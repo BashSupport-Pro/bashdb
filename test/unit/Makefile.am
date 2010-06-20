@@ -20,7 +20,8 @@ TESTS = $(BUILTIN_TESTS)     \
         test-pre.sh          \
         test-run.sh          \
         test-sort.sh         \
-        test-save-restore.sh
+        test-save-restore.sh \
+        test-validate.sh
 
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
@@ -38,4 +39,5 @@ EXTRA_DIST = $(TESTS) shunit2 \
      test-pre.sh              \
      test-run.sh.in           \
      test-sort.sh.in          \
-     test-save-restore.sh.in
+     test-save-restore.sh.in  \
+     test-validate.sh.in

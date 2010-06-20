@@ -21,6 +21,7 @@ pkgdata_DATA =      	\
 	processor.sh  	\
 	run.sh  	\
 	save-restore.sh \
-	sig.sh
+	sig.sh	        \
+	validate.sh
 
 EXTRA_DIST = $(pkgdata_DATA)
