@@ -3,9 +3,13 @@
 +set basename on
 +# Debugger test of action command
 +# 
-+# Try a simple action action...
++# Show actions
 +a 
 No actions have been set.
++# Delete actions when there are none
++A 
+** No actions to delete.
++# Try a simple action action...
 +a 23 x=60
 Action 1 set in file dbg-test1.sh, line 23.
 +L 
