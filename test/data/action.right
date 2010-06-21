@@ -1,16 +1,23 @@
 (dbg-test1.sh:22):
 22:	x=22
++set basename on
 +# Debugger test of action command
 +# 
-+# Try a simple action breakpoint...
++# Try a simple action action...
++a 
+No actions have been set.
 +a 23 x=60
-Action 1 set at dbg-test1.sh:23.
+Action 1 set in file dbg-test1.sh, line 23.
 +L 
 No breakpoints have been set.
 No watch expressions have been set.
 Actions at following places:
 Num Enb Stmt               file:line
-0     1 x=60               dbg-test1.sh:23
+1     1 x=60               dbg-test1.sh:23
++a 
+Actions at following places:
+Num Enb Stmt               file:line
+1     1 x=60               dbg-test1.sh:23
 +cont 24
 One-time breakpoint 1 set in file dbg-test1.sh, line 24.
 (dbg-test1.sh:24):

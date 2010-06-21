@@ -26,7 +26,7 @@
 
 _Dbg_help_add info ''
 
-typeset -ar _Dbg_info_subcmds=( args breakpoints display files functions program source \
+typeset -a _Dbg_info_subcmds=( args breakpoints display files functions program source \
     sources stack terminal variables watchpoints )
   
 _Dbg_do_info() {
@@ -55,7 +55,13 @@ _Dbg_do_info() {
               _Dbg_msg "Source files which we have recorded info about:"
 	      for file in "${!_Dbg_file2canonic[@]}" ; do
 		  typeset -i lines=$(_Dbg_get_maxline "$file")
-		  _Dbg_msg "  ${file}: ${_Dbg_file2canonic[$file]}, $lines lines"
+		  typeset canonic_file=${_Dbg_file2canonic[$file]}
+		  if (( _Dbg_basename_only )) ; then 
+		      # Do the same with canonic_file ?
+		      file=${file##*/}
+		      canonic_file=${canonic_file##*/}
+		  fi
+		  _Dbg_msg "  ${file}: ${canonic_file}, $lines lines"
 	      done        
               return 0
 	      ;;

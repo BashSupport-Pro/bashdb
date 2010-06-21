@@ -103,6 +103,8 @@ _Dbg_debug_trap_handler() {
     if ((_Dbg_step_ignore > 0)) ; then 
 	((_Dbg_step_ignore--))
 	_Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
+	# Can't return here because we may want to stop for another
+	# reason.
     fi
     
     # look for watchpoints.
@@ -124,25 +126,21 @@ _Dbg_debug_trap_handler() {
 	    fi
 	fi
     done
-    
+
+    typeset full_filename
+    full_filename=$(_Dbg_is_file "$_Dbg_frame_last_filename")
+    if [[ -r $full_filename ]] ; then 
+	_Dbg_file2canonic[$_Dbg_frame_last_filename]="$full_filename"
+    fi
+
     # Run applicable action statement
-    typeset entries=_Dbg_action_file2linenos[$_Dbg_frame_last_filename]
-    if [[ $entries != "" ]]  ; then
-	typeset -i _Dbg_i
-	for _Dbg_i in $entries ; do
-	    if [[ ${_Dbg_action_enable[_Dbg_i]} != 0 ]] ; then
-  		. ${_Dbg_libdir}/dbg-set-d-vars.inc
-  		eval "${_Dbg_action_stmt[$_Dbg_i]}"
-		# We've reset some variables like IFS and PS4 to make eval look
-		# like they were before debugger entry - so reset them now.
-		_Dbg_set_debugger_internal
-	    fi
-	done
+    if ((_Dbg_action_count > 0)) ; then 
+	_Dbg_hook_action_hit "$full_filename"
     fi
     
     # check if breakpoint reached
     if ((_Dbg_brkpt_count > 0)) ; then 
-	if _Dbg_hook_breakpoint_hit ; then 
+	if _Dbg_hook_breakpoint_hit "$full_filename"; then 
 	    if ((_Dbg_step_force)) ; then
 		typeset _Dbg_frame_previous_file="$_Dbg_frame_last_filename"
 		typeset -i _Dbg_frame_previous_lineno="$_Dbg_frame_last_lineno"
@@ -200,19 +198,43 @@ _Dbg_debug_trap_handler() {
     return $_Dbg_inside_skip
 }
 
+_Dbg_hook_action_hit() {
+    typeset full_filename="$1"
+    typeset lineno=$_Dbg_frame_last_lineno
+
+    # FIXME: combine with _Dbg_unset_action
+    typeset -a linenos
+    [[ -z $full_filename ]] && return 1
+    eval "linenos=(${_Dbg_action_file2linenos[$full_filename]})"
+    typeset -a action_nos
+    eval "action_nos=(${_Dbg_action_file2action[$full_filename]})"
+
+    typeset -i _Dbg_i
+    # Check action within full_filename
+    for ((_Dbg_i=0; _Dbg_i < ${#linenos[@]}; _Dbg_i++)); do 
+	if (( linenos[_Dbg_i] == lineno )) ; then
+	    (( _Dbg_action_num = action_nos[_Dbg_i] ))
+	    stmt="${_Dbg_action_stmt[$_Dbg_action_num]}"
+  	    . ${_Dbg_libdir}/dbg-set-d-vars.inc
+  	    eval "$stmt"
+	    # We've reset some variables like IFS and PS4 to make eval look
+	    # like they were before debugger entry - so reset them now.
+	    _Dbg_set_debugger_internal
+	    return 0
+	fi
+    done
+    return 1
+}
+
 # Return 0 if we are at a breakpoint position or 1 if not.
 # Sets _Dbg_brkpt_num to the breakpoint number found.
 _Dbg_hook_breakpoint_hit() {
-    typeset full_filenaname
-    filename="$_Dbg_frame_last_filename"
-    lineno=$_Dbg_frame_last_lineno
-    full_filename=$(_Dbg_is_file $filename)
-    [[ -z $full_filename ]] && full_filename="$filename"
-    if [[ -r $full_filename ]] ; then 
-	_Dbg_file2canonic[$filename]="$full_filename"
-    fi
+    typeset full_filename="$1"
+    typeset lineno=$_Dbg_frame_last_lineno
+
     # FIXME: combine with _Dbg_unset_brkpt
     typeset -a linenos
+    [[ -z $full_filename ]] && return 1
     [[ -z ${_Dbg_brkpt_file2linenos[$full_filename]} ]] && return 1
     eval "linenos=(${_Dbg_brkpt_file2linenos[$full_filename]})"
     typeset -a brkpt_nos
@@ -257,4 +279,3 @@ _Dbg_cleanup2() {
   _Dbg_erase_journals
   trap - EXIT
 }
-

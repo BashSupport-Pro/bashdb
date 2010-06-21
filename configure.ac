@@ -223,6 +223,8 @@ AC_CONFIG_FILES([test/example/interrupt.sh],
 		[chmod +x test/example/interrupt.sh])
 AC_CONFIG_FILES([test/example/bug-args.sh], 
                 [chmod +x test/example/bug-args.sh])
+AC_CONFIG_FILES([test/unit/test-action.sh], 
+                [chmod +x test/unit/test-action.sh])
 AC_CONFIG_FILES([test/unit/test-alias.sh], 
                 [chmod +x test/unit/test-alias.sh])
 AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh], 

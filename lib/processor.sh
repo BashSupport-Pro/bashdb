@@ -278,9 +278,8 @@ _Dbg_onecmd() {
 	  ;;
 
 	# Set action to be silently run when a line is hit
-	a )
+	action )
 	  _Dbg_do_action $args 
-	  _Dbg_last_cmd='action'
          ;;
 
 	# Add a debugger command alias

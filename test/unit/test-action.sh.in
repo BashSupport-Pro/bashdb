@@ -1,5 +1,7 @@
 #!@SH_PROG@
 # -*- shell-script -*-
+PS4='-(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]
+'
 
 # Test breakpoint set, unset, enable, disable, clear
 test_action()
@@ -32,7 +34,7 @@ test_action()
     _Dbg_set_action 1 2 3 4 5
     assertNotEquals '0' "$?"
 
-    _Dbg_set_action $shunit_file x=1 5
+    _Dbg_set_action "$shunit_file" x=1 5
     assertNotEquals '0' "$?"
 
     assertEquals 0 $_Dbg_action_count

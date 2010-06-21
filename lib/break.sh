@@ -25,15 +25,6 @@ _Dbg_keep=('keep' 'del')
 
 typeset -ar _Dbg_yn=("n" "y")         
 
-# action data structures
-typeset -ai _Dbg_action_line=()     # Line number of breakpoint
-typeset -a  _Dbg_action_file=()     # filename of breakpoint
-typeset -ai _Dbg_action_enable=()   # 1/0 if enabled or not
-typeset -a  _Dbg_action_stmt=()     # Statement to eval when line is hit.
-typeset -i  _Dbg_action_max=0       # Needed because we can't figure 
-                                       # out what the max index is and arrays 
-                                       # can be sparse
-
 # Note: we loop over possibly sparse arrays with _Dbg_brkpt_max by adding one
 # and testing for an entry. Could add yet another array to list only 
 # used indices. Bash is kind of primitive.
@@ -62,12 +53,6 @@ typeset -a  _Dbg_brkpt_cond; _Dbg_brkpt_cond=()
 # Needed because we can't figure out what the max index is and arrays
 # can be sparse.
 typeset -i  _Dbg_brkpt_max=0 
-
-# Maps a resolved filename to a list of action line numbers in that file
-typeset -A _Dbg_action_file2linenos; _Dbg_action_file2linenos=()
-
-# Maps a resolved filename to a list of action entries.
-typeset -A _Dbg_action_file2action; _Dbg_action_file2action=()
 
 # Maps a resolved filename to a list of beakpoint line numbers in that file
 typeset -A _Dbg_brkpt_file2linenos; _Dbg_brkpt_file2linenos=()
@@ -111,14 +96,6 @@ _Dbg_save_breakpoints() {
   typeset -p _Dbg_brkpt_file2linenos >> $_Dbg_statefile
   typeset -p _Dbg_brkpt_file2brkpt   >> $_Dbg_statefile
 
-}
-
-_Dbg_save_actions() {
-  typeset -p _Dbg_action_line >> $_Dbg_statefile
-  typeset -p _Dbg_action_file >> $_Dbg_statefile
-  typeset -p _Dbg_action_enable >> $_Dbg_statefile
-  typeset -p _Dbg_action_stmt >> $_Dbg_statefile
-  typeset -p _Dbg_action_max >> $_Dbg_statefile
 }
 
 _Dbg_save_watchpoints() {
@@ -255,8 +232,8 @@ _Dbg_set_brkpt() {
     typeset dq_source_file
     dq_source_file=$(_Dbg_esc_dq "$source_file")
     typeset dq_condition=$(_Dbg_esc_dq "$condition")
-    _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno"
-    _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
+    _Dbg_write_journal_eval "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno"
+    _Dbg_write_journal_eval "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
     _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
     _Dbg_write_journal "_Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp"
     _Dbg_write_journal "_Dbg_brkpt_counts[$_Dbg_brkpt_max]=\"0\""
@@ -482,203 +459,6 @@ _Dbg_clear_watch() {
   
   eval "$_resteglob"
 }   
-
-#======================== ACTIONs  ============================#
-
-# Add actions(s) at given line number of the current file.  $1 is the
-# line number or _Dbg_frame_last_lineno if omitted.  $2 is a
-# condition to test for whether to stop.
-_Dbg_do_action() {
-  
-  typeset n=${1:-$_Dbg_frame_last_lineno}
-  shift
-
-  typeset stmt;
-  if [ -z "$1" ] ; then
-    condition=1
-  else 
-    condition="$*"
-  fi
-
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  _Dbg_linespec_setup $n
-
-  if [[ -n $full_filename ]] ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to set action at."
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_set_action "$full_filename" "$line_number" "$condition" 
-    fi
-  else
-    _Dbg_file_not_read_in $filename
-  fi
-}
-
-# clear all actions
-_Dbg_do_clear_all_actions() {
-
-  typeset _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
-  read $_Dbg_edit -p "Delete all actions? (y/n): " \
-    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
-
-  if [[ $REPLY != [Yy]* ]] ; then 
-    return 1
-  fi
-  typeset -i k
-  for (( k=0; (( k < ${#_Dbg_filenames[@]} )) ; k++ )) ; do
-    typeset filename=${_filename[$k]}
-    typeset filevar="`_Dbg_file2var $filename`"
-    typeset action_a="_Dbg_action_${filevar}"
-    unset ${action_a}[$k]
-  done
-  _Dbg_write_journal_eval "_Dbg_action_line=()"
-  _Dbg_write_journal_eval "_Dbg_action_stmt=()"
-  _Dbg_write_journal_eval "_Dbg_action_file=()"
-  _Dbg_write_journal_eval "_Dbg_action_enable=()"
-  return 0
-}
-
-# delete actions(s) at given file:line numbers. If no file is given
-# use the current file.
-_Dbg_do_clear_action() {
-  typeset -r n=${1:-$_Dbg_frame_last_lineno}
-
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  _Dbg_linespec_setup $n
-
-  if [[ -n $full_filename ]] ; then 
-    if (( $line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to clear action at."
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_unset_action "$full_filename" "$line_number"
-      typeset -r found=$?
-      if [[ $found != 0 ]] ; then 
-	_Dbg_msg "Removed $found action(s)."
-      else 
-	_Dbg_msg "Didn't find any actions to remove at $n."
-      fi
-    fi
-  else
-    _Dbg_file_not_read_in $filename
-  fi
-}
-
-# list actions
-_Dbg_list_action() {
-
-  if [ ${#_Dbg_action_line[@]} != 0 ]; then
-    _Dbg_msg "Actions at following places:"
-    typeset -i i
-
-    _Dbg_msg "Num Enb Stmt               file:line"
-    for (( i=0; (( i < _Dbg_action_max )) ; i++ )) ; do
-      if [[ -n ${_Dbg_action_line[$i]} ]] ; then
-	typeset source_file=${_Dbg_action_file[$i]}
-	source_file=$(_Dbg_adjust_filename "$source_file")
-	_Dbg_printf "%-3d %3d %-18s %s:%s" $i ${_Dbg_action_enable[$i]} \
-	  "${_Dbg_action_stmt[$i]}" \
-	  $source_file ${_Dbg_action_line[$i]}
-      fi
-    done
-  else
-    _Dbg_msg "No actions have been set."
-  fi
-}
-
-# Internal routine to a set breakpoint unconditonally. 
-
-_Dbg_set_action() {
-    typeset source_file
-    source_file=$(_Dbg_expand_filename "$1")
-
-    typeset -ir lineno=$2
-    typeset -r stmt=${3:-1}
-
-    _Dbg_action_line[$_Dbg_action_max]=$lineno
-    _Dbg_action_file[$_Dbg_action_max]="$source_file"
-    _Dbg_action_stmt[$_Dbg_action_max]="$stmt"
-    _Dbg_action_enable[$_Dbg_action_max]=1
-    
-    typeset dq_source_file=$(_Dbg_esc_dq "$source_file")
-    typeset dq_stmt=$(_Dbg_esc_dq "stmt")
-
-    _Dbg_write_journal "_Dbg_action_line[$_Dbg_action_max]=$lineno"
-    _Dbg_write_journal "_Dbg_action_file[$_Dbg_action_max]=\"$dq_source_file\""
-    _Dbg_write_journal "_Dbg_action_stmt[$_Dbg_action_max]=\"$dq_stmt\""
-    _Dbg_write_journal "_Dbg_action_enable[$_Dbg_action_max]=1"
-
-    # Add line number with a leading and trailing space. Delimiting the
-    # number with space helps do a string search for the line number.
-    _Dbg_action_file2linenos[$source_file]+=" $lineno "
-    _Dbg_action_file2action[$source_file]+=" $_Dbg_action_max "
-
-    source_file=$(_Dbg_adjust_filename "$source_file")
-    _Dbg_msg "Breakpoint $_Dbg_action_max set at ${source_file}:$lineno."
-    ((_Dbg_action_max++))
-    _Dbg_write_journal "_Dbg_action_max=$_Dbg_action_max"
-    return 0
-}
-
-# Internal routine to delete a breakpoint by file/line.
-_Dbg_unset_action() {
-  typeset -r  filename=$1
-  typeset -ir line=$2
-  typeset -r filevar="`_Dbg_file2var $filename`"
-  typeset -i found=0
-  
-  typeset -r entries=`_Dbg_get_assoc_array_entry "_Dbg_action_$filevar" $line`
-  typeset -i del
-  for del in $entries ; do 
-    if [[ -z ${_Dbg_action_file[$del]} ]] ; then
-      _Dbg_msg "No action found at $filename:$line"
-      continue
-    fi
-    if [[ ${_Dbg_action_file[$del]} != $filename ]] ; then 
-      _Dbg_msg "action inconsistency:" \
-	"$filename[$line] lists ${_Dbg_action_file[$del]} at entry $del"
-    else
-      _Dbg_write_journal_eval "unset _Dbg_action_line[$del]"
-      _Dbg_write_journal_eval "unset _Dbg_action_stmt[$del]"
-      _Dbg_write_journal_eval "unset _Dbg_action_file[$del]"
-      _Dbg_write_journal_eval "unset _Dbg_action_enable[$del]"
-      ((found++))
-    fi
-  done
-  _Dbg_write_journal_eval unset _Dbg_action_$filevar[$line]
-  return $found
-}
-
-# Routine to a delete actions by entry numbers.
-_Dbg_do_action_delete() {
-  typeset -r  to_go=$@
-  typeset -i  i
-  typeset -i  found=0
-  
-  eval "$_seteglob"
-  for del in $to_go ; do 
-    case $del in
-      $int_pat )
-	_Dbg_delete_action_entry $del
-        ((found += $?))
-	;;
-      * )
-	_Dbg_msg "Invalid entry number skipped: $del"
-    esac
-  done
-  eval "$_resteglob"
-  [[ $found != 0 ]] && _Dbg_msg "Removed $found action(s)."
-  return $found
-}
 
 #======================== DISPLAYs  ============================#
 

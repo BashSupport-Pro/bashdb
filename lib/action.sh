@@ -56,7 +56,7 @@ function _Dbg_save_actions {
   typeset -p _Dbg_action_stmt         >> $_Dbg_statefile
   typeset -p _Dbg_action_max          >> $_Dbg_statefile
   typeset -p _Dbg_action_file2linenos >> $_Dbg_statefile
-  typeset -p _Dbg_action_file2brkpt   >> $_Dbg_statefile
+  typeset -p _Dbg_action_file2action  >> $_Dbg_statefile
 }
 
 # list actions
@@ -141,11 +141,11 @@ _Dbg_unset_action() {
     typeset -i i
     for ((i=0; i < ${#linenos[@]}; i++)); do 
 	if (( linenos[i] == lineno )) ; then
-	    # Got a match, find breakpoint entry number
+	    # Got a match, find action entry number
 	    typeset -i action_num
 	    (( action_num = action_nos[i] ))
 	    _Dbg_unset_action_arrays $action_num
-	    linenos[i]=()  # This is the zsh way to unset an array element
+	    unset linenos[i]
 	    _Dbg_action_file2linenos[$fullname]=${linenos[@]}
 	    return 0
 	fi

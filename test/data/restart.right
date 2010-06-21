@@ -20,10 +20,10 @@ Restarting with ... restartbug.sh
 4:	x=1
 +# 2nd part of Restart test
 +l 
-  4:==>x=1
-  5:   cd /
-  6:   y=2
-  7:   z=0
+  4: => x=1
+  5:    cd /
+  6:    y=2
+  7:    z=0
 +info break
 Num Type       Disp Enb What
 1   breakpoint keep y   restartbug.sh:7
