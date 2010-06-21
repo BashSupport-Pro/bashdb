@@ -60,9 +60,14 @@ TESTS_ENVIRONMENT = \
   srcdir="$(abs_srcdir)" \
   builddir="$(abs_builddir)"
 
+SOURCES=$(patsubst %,%.in, $(TESTS))
+
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
-EXTRA_DIST = $(TESTS) $(check_DATA) README
+EXTRA_DIST = $(TESTS) $(check_DATA) $(SOURCES) README
+
+CLEANFILES = *.check
 
 test: check
+test-integration: check

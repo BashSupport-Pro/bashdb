@@ -4,7 +4,7 @@
 +# 
 +# Try a simple action breakpoint...
 +a 23 x=60
-Breakpoint 0 set at dbg-test1.sh:23.
+Action 1 set at dbg-test1.sh:23.
 +L 
 No breakpoints have been set.
 No watch expressions have been set.
