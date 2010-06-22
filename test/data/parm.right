@@ -23,7 +23,7 @@
 5
 +### Setting an action to print $1
 +a 4 echo "\$1 at line 4 has value $1"
-Breakpoint 0 set at parm.sh:4.
+Action 1 set in file parm.sh, line 4.
 +c fn2
 One-time breakpoint 1 set in file parm.sh, line 14.
 $1 at line 4 has value 5
@@ -117,8 +117,7 @@ eval says exit was 5
 +p "print says exit was $?"
 print says exit was 5
 +info files
-Source files for which have been read in:
-
-parm.sh (34 lines)
+Source files which we have recorded info about:
+  parm.sh: parm.sh, 33 lines
 +### * quitting...
 +quit 
