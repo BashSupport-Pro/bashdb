@@ -22,4 +22,5 @@ info break
 info program
 c
 info break
+info program
 quit

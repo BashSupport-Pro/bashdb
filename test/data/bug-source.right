@@ -24,8 +24,8 @@ FUNCNAME[3]: main called from bashdb at line 0
 +break sourced_fn
 Breakpoint 2 set in file dbg-test1.sub, line 3.
 +info files
-Source files for which have been read in:
-
-dbg-test1.sh (36 lines)
-dbg-test1.sub (29 lines)
+Source files which we have recorded info about:
+  dbg-test1.sub: dbg-test1.sub, 28 lines
+  dbg-test1.sub: dbg-test1.sub, 28 lines
+  dbg-test1.sh: dbg-test1.sh, 35 lines
 +quit 

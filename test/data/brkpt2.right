@@ -32,8 +32,11 @@ Watchpoint 0: $x changed:
   new value: '23'
 (dbg-test1.sh:24):
 24:	for i in 0 1 3 ; do
+(dbg-test1.sh:24):
+24:	for i in 0 1 3 ; do
 +info program
 Program stopped.
+It stopped on a watch trigger.
 +### Try disable expression...
 +disable 1w
 Watchpoint entry 0 disabled.
@@ -53,6 +56,8 @@ One-time breakpoint 2 set in file dbg-test1.sh, line 30.
 Watchpoint 1: x > 26 changed:
   old value: '0'
   new value: '1'
+(dbg-test1.sh:28):
+28:	y=b
 (dbg-test1.sh:28):
 28:	y=b
 +L 
@@ -114,31 +119,31 @@ No actions have been set.
 (dbg-test1.sh:32):
 32:	fn1;
 +list 
-  5:==>fn1() {
-  6:       echo "fn1 here"
-  7:       x=5
-  8:       fn3
-  9:   }    
- 10:   
- 11:   fn2() {
- 12:       name="fn2"
- 13:       echo "$name here"
- 14:       x=6
+  5: => fn1() {
+  6:        echo "fn1 here"
+  7:        x=5
+  8:        fn3
+  9:    }    
+ 10:    
+ 11:    fn2() {
+ 12:        name="fn2"
+ 13:        echo "$name here"
+ 14:        x=6
 +### Try down 1...
 +down 1
 (dbg-test1.sh:5):
 5:	fn1() {
 +list 
-  5:==>fn1() {
-  6:       echo "fn1 here"
-  7:       x=5
-  8:       fn3
-  9:   }    
- 10:   
- 11:   fn2() {
- 12:       name="fn2"
- 13:       echo "$name here"
- 14:       x=6
+  5: => fn1() {
+  6:        echo "fn1 here"
+  7:        x=5
+  8:        fn3
+  9:    }    
+ 10:    
+ 11:    fn2() {
+ 12:        name="fn2"
+ 13:        echo "$name here"
+ 14:        x=6
 +### frame 0...
 +frame 0
 (dbg-test1.sh:5):
@@ -256,9 +261,9 @@ It stopped at a breakpoint that has since been deleted.
 FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +info files
-Source files for which have been read in:
-
-dbg-test1.sh (36 lines)
-dbg-test1.sub (29 lines)
+Source files which we have recorded info about:
+  dbg-test1.sub: dbg-test1.sub, 35 lines
+  dbg-test1.sh: dbg-test1.sh, 35 lines
+  dbg-test1.sh: dbg-test1.sh, 35 lines
 +### quitting...
 +quit 

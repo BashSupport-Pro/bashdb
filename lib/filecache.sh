@@ -70,12 +70,12 @@ _Dbg_get_maxline() {
     _Dbg_set_source_array_var "$1" || return $?
     typeset -r line_count_cmd="line_count=\${#$_Dbg_source_array_var[@]}"
     eval $line_count_cmd
-    eval "typeset last_line=\${${_Dbg_source_array_var}[$line_count-1]}"
+    eval "typeset last_line=\${${_Dbg_source_array_var}[$line_count]}"
     # If the file had a final newline the last line of the data read in
     # is the empty string.  We want to count the last line whether or
     # not it had a newline.
-    typeset -i last_not_null
-    [[ -z $last_line ]] && last_line_is_null=1 || last_line_is_null=0
+    typeset -i last_not_null=0
+    # [[ -z $last_line ]] && last_line_is_null=1 || last_line_is_null=0
     ((line_count=line_count-last_line_is_null))
     echo $line_count
     return $?
