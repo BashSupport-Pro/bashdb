@@ -23,19 +23,20 @@ test_breakpoint() {
 
     # Test parameter count checking for _Dbg_set_brkpt
     _Dbg_set_brkpt 
-    assertNotEquals '0' "$?"
+    assertNotEquals 'set breakpoint no parameters' '0' "$?"
     _Dbg_set_brkpt 1 2 3 4 5
-    assertNotEquals '0' "$?"
+    assertNotEquals 'set breakpoint too many parameter' '0' "$?"
 
     # This should work
     _Dbg_frame_last_lineno=5
     _Dbg_set_brkpt test.sh 5 0
-    assertEquals 'Breakpoint 1 set in file test.sh, line 5.' "${msgs[0]}" 
+    assertEquals 'simple set breakpoint' \
+	'Breakpoint 1 set in file test.sh, line 5.' "${msgs[0]}" 
     msgs=()
 
     # Test parameter count checking for _Dbg_unset_brkpt
     _Dbg_unset_brkpt
-    assertEquals '0' "$?"
+    assertEquals 'unset_brkpt no params invalid' '0' "$?"
     _Dbg_unset_brkpt 1 2 3
     assertEquals '0' "$?"
 # FIXME
@@ -47,7 +48,7 @@ test_breakpoint() {
     msgs=()
     # This should work and remove a breakpoint
     _Dbg_unset_brkpt test.sh 5
-    assertEquals '1' "$?"
+    assertEquals 'valid unset_brkpt' '1' "$?"
     assertEquals '0' "${#msgs[@]}"
 
 # FIXME
@@ -59,21 +60,24 @@ test_breakpoint() {
     msgs=(); errmsgs=()
     # Enable/disable parameter checking
     _Dbg_enable_disable_brkpt
-    assertEquals '1' "$?"
+    assertEquals 'enable_disable_brkpt' '1' "$?"
 
     # Enable a non-existent breakpoint
     msgs=()
     _Dbg_enable_disable_brkpt 1 'enabled' 1
-    assertEquals "Breakpoint entry 1 doesn't exist, so nothing done." "${errmsgs[0]}" 
+    assertEquals "enable_disable_brkpt enabled" \
+	"Breakpoint entry 1 doesn't exist, so nothing done." "${errmsgs[0]}" 
 
     msgs=(); errmsgs=()
     # Add another breakpoint for testing
     _Dbg_set_brkpt test.sh 6 1
-    assertEquals 'One-time breakpoint 2 set in file test.sh, line 6.' "${msgs[0]}" 
+    assertEquals 'add 2nd breakpoint' \
+	'One-time breakpoint 2 set in file test.sh, line 6.' "${msgs[0]}" 
 
     msgs=(); errmsgs=()
     _Dbg_enable_disable_brkpt 1 'enabled' 2
-    assertEquals 'Breakpoint entry 2 already enabled, so nothing done.' "${errmsgs[0]}" 
+    assertEquals 'redundant 2nd breakpoint enable' \
+	'Breakpoint entry 2 already enabled, so nothing done.' "${errmsgs[0]}" 
 
     msgs=(); errmsgs=()
     _Dbg_enable_disable_brkpt 0 'enabled' 2

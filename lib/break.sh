@@ -270,10 +270,14 @@ _Dbg_unset_brkpt_arrays() {
 }
 
 # Internal routine to delete a breakpoint by file/line.
+# We return the number of breakponts found or zer if we didn't find
+# a breakpoint
 function _Dbg_unset_brkpt {
     (( $# != 2 )) && return 0
-    typeset -r  filename=$1
+
+    typeset    filename=$1
     typeset -i lineno=$2
+    typeset -i found=0
     typeset    fullname
     fullname=$(_Dbg_expand_filename "$filename")
   
@@ -284,7 +288,7 @@ function _Dbg_unset_brkpt {
     eval "brkpt_nos=(${_Dbg_brkpt_file2brkpt[$fullname]})"
 
     typeset -i i
-    for ((i=0; i < ${#linenos[@]}; i++)); do 
+    for ((i=0; i <= ${#linenos[@]}; i++)); do 
 	if (( linenos[i] == lineno )) ; then
 	    # Got a match, find breakpoint entry number
 	    typeset -i brkpt_num
@@ -292,10 +296,13 @@ function _Dbg_unset_brkpt {
 	    _Dbg_unset_brkpt_arrays $brkpt_num
 	    unset linenos[i]
 	    _Dbg_brkpt_file2linenos[$fullname]=${linenos[@]}
-	    return 1
+	    (( found ++ ))
 	fi
     done
-    _Dbg_msg "No breakpoint found at $filename:$lineno"
+    if (( found == 0 )) ; then
+	(( _Dbg_basename_only )) && filename=${filename##*/}
+	_Dbg_errmsg "No breakpoint found at $filename, line ${lineno}."
+    fi
     return $found
 }
 
@@ -314,8 +321,8 @@ function _Dbg_delete_brkpt_entry() {
     typeset    source_file=${_Dbg_brkpt_file[$del]}
     typeset -i lineno=${_Dbg_brkpt_line[$del]}
     typeset -i try 
-    typeset -a new_lineno_val; new_lineno_val=()
-    typeset -a new_brkpt_nos; new_brkpt_nos=()
+    typeset    new_lineno_val=''
+    typeset    new_brkpt_nos=''
     typeset -i i=-1
     typeset -a brkpt_nos
     brkpt_nos=(${_Dbg_brkpt_file2brkpt[$source_file]})
@@ -329,17 +336,20 @@ function _Dbg_delete_brkpt_entry() {
 	    _Dbg_unset_brkpt_arrays $del
 	    ((found++))
 	else
-	    new_lineno_val+=$try
-	    new_brkpt_nos+=${brkpt_nos[$i]}
+	    new_lineno_val+=" $try "
+	    new_brkpt_nos+=" ${brkpt_nos[$i]} "
 	fi
     done
     if (( found > 0 )) ; then
 	if (( ${#new_lineno_val[@]} == 0 )) ; then 
+	    # Remove array entirely
 	    _Dbg_write_journal_eval "unset '_Dbg_brkpt_file2linenos[$source_file]'"
 	    _Dbg_write_journal_eval "unset '_Dbg_brkpt_file2brkpt[$source_file]'"
 	else
-	    _Dbg_write_journal_eval "_Dbg_brkpt_file2linenos[$source_file]=${new_lineno_val}"
-	    _Dbg_write_journal_eval "_Dbg_brkpt_file2brkpt[$source_file]=${new_brkpt_nos}"
+	    # Replace array entries with reduced set.
+	    _Dbg_write_journal_eval "_Dbg_brkpt_file2linenos[$source_file]=\"${new_lineno_val}\""
+	    _Dbg_write_journal_eval "_Dbg_brkpt_file2brkpt[$source_file]=\"$new_brkpt_nos\""
+	    set +x
 	fi
     fi
     

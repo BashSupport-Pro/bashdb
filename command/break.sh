@@ -102,8 +102,6 @@ _Dbg_do_clear_brkpt() {
 	typeset -r found=$?
 	if [[ $found != 0 ]] ; then 
 	  _Dbg_msg "Removed $found breakpoint(s)."
-	else 
-	  _Dbg_msg "Didn't find any breakpoints to remove at $n."
 	fi
       fi
     fi
