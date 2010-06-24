@@ -156,6 +156,12 @@ _Dbg_debug_trap_handler() {
               "Breakpoint $_Dbg_brkpt_num hit (${_Dbg_brkpt_counts[_Dbg_brkpt_num]} times)."
 		_Dbg_stop_reason="at breakpoint $_Dbg_brkpt_num"
 	    fi
+	    # We're sneaky and check commands_end because start could 
+	    # legitimately be 0.
+	    if (( ${_Dbg_brkpt_commands_end[$_Dbg_brkpt_num]} )) ; then
+		# Run any commands associated with this breakpoint
+		_Dbg_bp_commands $_Dbg_brkpt_num
+	    fi
 	    _Dbg_hook_enter_debugger "$_Dbg_stop_reason"
 	    return $?
 	fi
