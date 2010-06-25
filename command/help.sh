@@ -60,10 +60,10 @@ function _Dbg_do_help {
 	    fi
 	fi
 	aliases_found=''
-	_Dbg_alias_find_aliased "$_Dbg_cmd"
+	_Dbg_alias_find_aliased "$dbg_cmd"
 	if [[ -n $aliases_found ]] ; then
 	    _Dbg_msg ''
-	    _Dbg_msg "Aliases for $_Dbg_cmd: $aliases_found"
+	    _Dbg_msg "Aliases for $dbg_cmd: $aliases_found"
 	fi
 	return 0
     fi

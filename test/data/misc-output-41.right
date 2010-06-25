@@ -65,12 +65,12 @@ POSSIBILITY OF SUCH DAMAGES.
 +#### help commands...
 +help 
 Available commands:
-  /          continue  edit     handle   load     set     step-    undisplay
-  action     debug     enable   help     next     show    step+    untrace  
-  alias      delete    eval     history  print    signal  tbreak   up       
-  break      disable   examine  info     pwd      skip    trace    watch    
-  commands   display   file     kill     quit     source  tty      where    
-  condition  down      frame    list     restart  step    unalias
+  /          continue  edit     frame    list   restart  step    unalias  
+  action     debug     enable   handle   load   set      step-   undisplay
+  alias      delete    eval     help     next   show     step+   untrace  
+  break      disable   examine  history  print  signal   tbreak  up       
+  commands   display   file     info     pwd    skip     trace   watch    
+  condition  down      finish   kill     quit   source   tty     where    
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -105,8 +105,6 @@ bashdb's prompt is:
 Set editing of command lines as they are typed is on.
 +help tty
 tty -- Set the output device for debugger output.
-
-Aliases for help: h
 +help info
 List of info subcommands:
 

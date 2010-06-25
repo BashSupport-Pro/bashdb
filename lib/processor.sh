@@ -412,13 +412,10 @@ _Dbg_onecmd() {
 	  ;;
 
 	# 
-	fin | fini | finis | finish | r )
-
-	  (( _Dbg_return_level=${#FUNCNAME[@]}-3 ))
-	  _Dbg_last_cmd='finish'
-	  return 0
+	fin | fini | finis | finish )
+	  _Dbg_do_finish && return 0
 	  ;;
-
+	
 	#  Set stack frame
 	frame )
 	  _Dbg_do_frame $args
