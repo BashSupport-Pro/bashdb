@@ -119,7 +119,6 @@ _Dbg_debug_trap_handler() {
 		_Dbg_msg "Watchpoint $_Dbg_i: ${_Dbg_watch_exp[$_Dbg_i]} changed:"
 		_Dbg_msg "  old value: '$old_val'"
 		_Dbg_msg "  new value: '$new_val'"
-		_Dbg_print_location_and_command
 		_Dbg_watch_val[$_Dbg_i]=$new_val
 		_Dbg_hook_enter_debugger "on a watch trigger"
 		return $_Dbg_rc

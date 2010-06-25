@@ -143,7 +143,7 @@ _Dbg_parse_options() {
     elif (( ! _Dbg_o_quiet )) && [[ -n "$_Dbg_shell_name" ]] ; then 
 	echo "$_Dbg_shell_name Shell Debugger, release $_Dbg_release"
 	printf '
-Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

@@ -32,8 +32,6 @@ Watchpoint 0: $x changed:
   new value: '23'
 (dbg-test1.sh:24):
 24:	for i in 0 1 3 ; do
-(dbg-test1.sh:24):
-24:	for i in 0 1 3 ; do
 +info program
 Program stopped.
 It stopped on a watch trigger.
@@ -56,8 +54,6 @@ One-time breakpoint 2 set in file dbg-test1.sh, line 30.
 Watchpoint 1: x > 26 changed:
   old value: '0'
   new value: '1'
-(dbg-test1.sh:28):
-28:	y=b
 (dbg-test1.sh:28):
 28:	y=b
 +L 
