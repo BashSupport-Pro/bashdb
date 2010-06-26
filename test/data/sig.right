@@ -1,5 +1,5 @@
 (sig.sh:7):
-7:	if [[ "$1"x != x ]] ; then
+7:	if [[ "$1"x != x ]] ; then 
 +# Test that debugged program's signals are saved and restored across
 +# debug calls.
 +### Testing that we have our signal set up...
@@ -38,26 +38,30 @@ SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND
 SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
 +continue 
 Program received signal SIGTERM (15)...
-->0 in file `eval.sh' at line 55
-##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 399
-##2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.sh' at line 168
-##3 _Dbg_process_commands() called from file `hook.sh' at line 188
-##4 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
-##5 source("sig.sh") called from file `bashdb' at line 157
-##6 main() called from file `bashdb' at line 0
+##0 in file `sig.sh' at line 55
+##1 _Dbg_sig_handler("15", "[[ "$1"x != x ]]") called from file `eval.sh' at line 1
+->2 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 398
+##3 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.sh' at line 168
+##4 _Dbg_process_commands() called from file `hook.sh' at line 265
+##5 _Dbg_hook_enter_debugger("after being stepped") called from file `hook.sh' at line 181
+##6 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
+##7 source("sig.sh") called from file `bashdb' at line 157
+##8 main() called from file `bashdb' at line 0
 +### Should have printed a stack trace above...
 +continue 
 +where 1
 ->0 in file `sig.sh' at line 55
 +continue 
 Program received signal SIGINT (2)...
-->0 in file `sig.sh' at line 55
-##1 source("sig.sh") called from file `bashdb' at line 157
-##2 main() called from file `bashdb' at line 0
+##0 in file `sig.sh' at line 55
+##1 _Dbg_sig_handler("2", "kill -INT $$") called from file `sig.sh' at line 1
+->2 source("sig.sh") called from file `bashdb' at line 157
+##3 main() called from file `bashdb' at line 0
 Program received signal SIGINT (2)...
-->0 in file `sig.sh' at line 55
-##1 source("sig.sh") called from file `bashdb' at line 157
-##2 main() called from file `bashdb' at line 0
+##0 in file `sig.sh' at line 55
+##1 _Dbg_sig_handler("2", "kill -INT $$") called from file `sig.sh' at line 1
+->2 source("sig.sh") called from file `bashdb' at line 157
+##3 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +kill 
 sig.tests: line 12: 13093 Killed                  $SH ${top_builddir}/bashdb -B -q -L $top_builddir -x $cmdfile $debugged_script

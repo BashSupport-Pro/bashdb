@@ -1,8 +1,8 @@
 # -*- shell-script -*-
-# where.sh - gdb-like "where" debugger command
+# where.sh - gdb-like "bt", "where", or "bt" backtrace debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 Rocky
+#   Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -29,95 +29,100 @@
 # not a variable.
 
 _Dbg_help_add where \
-"where [N] -- Print a backtrace of calling functions and sourced files.
+"where [COUNT [FRAME-INDEX]] 
+
+Print a backtrace of calling functions and sourced files.
 
 The backtrace contains function names, arguments, line numbers, and
-files. If N is given, list only N calls."
+files. If COUNT is given, list only COUNT calls. If IGNORE-TOP is
+given that many frame entries are ignored"
 
+# FIXME: $1 is a hidden parameter not shown in help. $2 is COUNT.
+# $3 is FRAME-INDEX.
 _Dbg_do_backtrace() {
 
-  _Dbg_not_running && return 1
+    _Dbg_not_running && return 1
+    
+    typeset -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_backtrace) from count
 
-  typeset -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_info_args) from count
+    typeset -i ignore_count=${1:-0}
+    eval "$_seteglob"
 
-  eval "$_seteglob"
-  if [[ $1 != $int_pat ]] ; then 
-    _Dbg_errmsg "Bad integer parameter: $1"
-    eval "$_resteglob"
-    return 1
-  fi
-  if [[ $2 != '' && $2 != $int_pat ]] ; then 
-    _Dbg_errmsg "Bad integer parameter: $2"
-    eval "$_resteglob"
-    return 1
-  fi
-  eval "$_resteglob"
-
-  typeset prefix='##'
-  typeset -i count=${2:-$n}
-  typeset -i k=${3:-0}
-  typeset -i i=_Dbg_STACK_TOP+k+$1
-  typeset -i j=i
-
-  (( j > n )) && return 1
-  (( i == _Dbg_stack_pos+$1 )) && prefix='->'
-  if (( k == 0 )) ; then
-    typeset filename=${BASH_SOURCE[$i]}
-    (( _Dbg_basename_only )) && filename=${filename##*/}
-    _Dbg_print_frame "$prefix" "$k" '' "$filename" "$_Dbg_frame_last_lineno" ''
-    ((count--)) ; ((k++))
-  fi
-
-  # Figure out which index in BASH_ARGV is position "i" (the place where
-  # we start our stack trace from). variable "r" will be that place.
-
-  typeset -i q
-  typeset -i r=0
-  for (( q=0 ; q<i ; q++ )) ; do 
-    [[ -z ${BASH_ARGC[$q]} ]] && break
-    (( r = r + ${BASH_ARGC[$q]} ))
-  done
-
-  # Loop which dumps out stack trace.
-  for ((  ; (( i <= n && count > 0 )) ; i++ )) ; do 
-    typeset -i arg_count=${BASH_ARGC[$i]}
-    ((j++)) ; ((count--))
-    prefix='##'
-    (( i == _Dbg_stack_pos+$1-1)) && prefix='->'
-    if (( i == n )) ; then 
-      # main()'s file is the same as the first caller
-      j=i  
+    $(_Dbg_is_int $ignore_count) || {
+	_Dbg_errmsg "Bad integer parameter: $ignore_count"
+	return 1
+    }
+    
+    typeset -i count=${2:-$n}
+    $(_Dbg_is_int $count) || {
+	_Dbg_errmsg "Bad integer COUNT parameter: $count"
+	return 1
+    }
+    
+    typeset prefix='##'
+    typeset -i k=${3:-0}
+    typeset -i i=_Dbg_STACK_TOP+k+$1
+    typeset -i j=i
+    
+    (( j > n )) && return 1
+    (( i == _Dbg_stack_pos+$1 )) && prefix='->'
+    if (( k == 0 )) ; then
+	typeset filename=${BASH_SOURCE[$i]}
+	(( _Dbg_basename_only )) && filename=${filename##*/}
+	_Dbg_print_frame "$prefix" "$k" '' "$filename" "$_Dbg_frame_last_lineno" ''
+	((count--)) ; ((k++))
     fi
-
-    _Dbg_msg_nocr "$prefix$k ${FUNCNAME[$i]}("
-
-    typeset parms=''
-
-    # Print out parameter list.
-    if (( 0 != ${#BASH_ARGC[@]} )) ; then
-      typeset -i s
-      for (( s=0; s < arg_count; s++ )) ; do 
-	if (( s != 0 )) ; then 
-	  parms="\"${BASH_ARGV[$r]}\", $parms"
-	elif [[ ${FUNCNAME[$i]} == "source" ]] \
-	  && (( _Dbg_basename_only )); then
-	  typeset filename=${BASH_ARGV[$r]}
-	  filename=${filename##*/}
-	  parms="\"$filename\""
-	else
-	  parms="\"${BASH_ARGV[$r]}\""
+    
+    # Figure out which index in BASH_ARGV is position "i" (the place where
+    # we start our stack trace from). variable "r" will be that place.
+    
+    typeset -i q
+    typeset -i r=0
+    for (( q=0 ; q<i ; q++ )) ; do 
+	[[ -z ${BASH_ARGC[$q]} ]] && break
+	(( r = r + ${BASH_ARGC[$q]} ))
+    done
+    
+    # Loop which dumps out stack trace.
+    for ((  ; (( i <= n && count > 0 )) ; i++ )) ; do 
+	typeset -i arg_count=${BASH_ARGC[$i]}
+	((j++)) ; ((count--))
+	prefix='##'
+	(( i == _Dbg_stack_pos+$1-1)) && prefix='->'
+	if (( i == n )) ; then 
+	    # main()'s file is the same as the first caller
+	    j=i  
 	fi
-	((r++))
-      done
-    fi
-
-    typeset filename=${BASH_SOURCE[$j]}
-    (( _Dbg_basename_only )) && filename=${filename##*/}
-    _Dbg_msg "$parms) called from file \`$filename'" \
-      "at line ${BASH_LINENO[$i]}"
-    ((k++))
-  done
-  return 0
+	
+	_Dbg_msg_nocr "$prefix$k ${FUNCNAME[$i]}("
+	
+	typeset parms=''
+	
+	# Print out parameter list.
+	if (( 0 != ${#BASH_ARGC[@]} )) ; then
+	    typeset -i s
+	    for (( s=0; s < arg_count; s++ )) ; do 
+		if (( s != 0 )) ; then 
+		    parms="\"${BASH_ARGV[$r]}\", $parms"
+		elif [[ ${FUNCNAME[$i]} == "source" ]] \
+		    && (( _Dbg_basename_only )); then
+		    typeset filename=${BASH_ARGV[$r]}
+		    filename=${filename##*/}
+		    parms="\"$filename\""
+		else
+		    parms="\"${BASH_ARGV[$r]}\""
+		fi
+		((r++))
+	    done
+	fi
+	
+	typeset filename=${BASH_SOURCE[$j]}
+	(( _Dbg_basename_only )) && filename=${filename##*/}
+	_Dbg_msg "$parms) called from file \`$filename'" \
+	    "at line ${BASH_LINENO[$i]}"
+	((k++))
+    done
+    return 0
 }
 
 _Dbg_alias_add 'T' 'where'

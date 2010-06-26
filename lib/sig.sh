@@ -183,12 +183,14 @@ _Dbg_sig_handler() {
 
   if [[ ${_Dbg_sig_print[$_Dbg_signum]} == "print" ]] || \
      [[ ${_Dbg_sig_stop[$_Dbg_signum]} == "stop" ]] ; then
-    typeset -r name=`_Dbg_signum2name $_Dbg_signum`
+    typeset -r name=$(_Dbg_signum2name $_Dbg_signum)
     # Note: use the same message that gdb does for this.
     _Dbg_msg "Program received signal $name ($_Dbg_signum)..."
     if [[ ${_Dbg_sig_show_stack[$_Dbg_signum]} == "showstack" ]] ; then 
-      typeset -i n=${#FUNCNAME[@]}
+      typeset -i n=${#FUNCNAME[@]}+2
+      _Dbg_STACK_TOP=1
       _Dbg_do_backtrace 0 $n 0
+      _Dbg_STACK_TOP=3
     fi
   fi
   if [[ ${_Dbg_sig_stop[$_Dbg_signum]} == "stop" ]] ; then
