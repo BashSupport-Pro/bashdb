@@ -28,6 +28,13 @@ typeset -i _Dbg_STACK_TOP=3
 # commands. On debugger entry, the value is set to _Dbg_STACK_TOP.
 typeset -i  _Dbg_stack_pos   
 
+# The number of entries on the call stack at the time the hook was
+# entered, excluding hook call. _Dbg_stack_pos = 0 refers then to 
+# _Dbg_stack_size. _Dbg_stack_pos = 1 refers to _Dbg_stack_pos-1
+# and so on
+
+typeset -i _Dbg_stack_size
+
 # Save the last-entered frame for to determine stopping when
 # "set force" or step+ is in effect.
 typeset _Dbg_frame_last_filename=''

@@ -42,16 +42,22 @@ function _Dbg_set_debugger_entry {
   # Nuke DEBUG trap
   trap '' DEBUG
 
-  _cur_fn=${FUNCNAME[2]}
+  # How many function are on the stack that are part of the debugger? 
+  # Normally this gets called from the trace hook. so this routine plus
+  # the trace hook should are on the FUNCNAME stack and should be ignored
+  typeset -li discard_top_fn_count=${1:-2}
+
+  _Dbg_cur_fn=${FUNCNAME[$discard_top_fn_count]}
   _Dbg_frame_last_lineno=${BASH_LINENO[1]}
   ((_Dbg_frame_last_lineno < 1)) && let _Dbg_frame_last_lineno=1
 
   _Dbg_old_IFS="$IFS"
   _Dbg_old_PS4="$PS4"
   _Dbg_stack_pos=$_Dbg_STACK_TOP
+  _Dbg_stack_size=${#FUNCNAME[@]-$discard_top_fn_count}
   _Dbg_listline=_Dbg_frame_last_lineno
   _Dbg_set_debugger_internal
-  _Dbg_frame_last_filename=${BASH_SOURCE[2]:-$_Dbg_bogus_file}
+  _Dbg_frame_last_filename=${BASH_SOURCE[$discard_top_fn_count]:-$_Dbg_bogus_file}
   _Dbg_frame_last_filename=$(_Dbg_resolve_expand_filename "$_Dbg_frame_last_filename")
 
   # Read in the journal to pick up variable settings that might have

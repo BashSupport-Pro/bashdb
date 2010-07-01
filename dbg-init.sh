@@ -24,7 +24,7 @@
 
 [[ -z $_Dbg_init_ver ]] || return
 
-typeset _cur_fn             # current function of debugged program
+typeset _Dbg_cur_fn          # current function of debugged program
 typeset -i _cur_line        # current line number of debugged program
 
 # If called from bashdb script rather than via "bash --debugger", skip
