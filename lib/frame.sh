@@ -25,7 +25,7 @@
 typeset -i _Dbg_STACK_TOP=3
 
 # Where are we in stack? This can be changed by "up", "down" or "frame"
-# commands. On debugger entry, the value is set to _Dbg_STACK_TOP.
+# commands. On debugger entry, the value is set to _Dbg_stack_size-1
 typeset -i  _Dbg_stack_pos   
 
 # The number of entries on the call stack at the time the hook was
@@ -42,39 +42,37 @@ typeset -i _Dbg_frame_last_lineno=0
 
 #======================== FUNCTIONS  ============================#
 
-_Dbg_frame_adjust() {
+function _Dbg_frame_adjust {
   (($# != 2)) && return 255
 
-  typeset -i count=$1
-  typeset -i signum=$2
+  typeset -li count=$1
+  typeset -li signum=$2
 
-  typeset -i retval
+  typeset -li retval
   _Dbg_frame_int_setup $count || return 2
-
+  
   typeset -i pos
   if (( signum==0 )) ; then
-    if (( count < 0 )) ; then
-      ((pos=${#FUNCNAME[@]}-3+count))
-    else
-      ((pos=_Dbg_STACK_TOP+count))
-    fi
+      if (( count < 0 )) ; then
+	  ((pos = _Dbg_stack_size + count))
+      else
+	  ((pos = _Dbg_stack_size - 1 - count))
+      fi
   else
     ((pos=_Dbg_stack_pos+(count*signum)))
   fi
     
-  if (( pos <= _Dbg_STACK_TOP-1 )) ; then 
+  if (( pos < 0 )) ; then 
     _Dbg_errmsg 'Would be beyond bottom-most (most recent) entry.'
     return 1
-  elif (( pos >= ${#FUNCNAME[@]}-3 )) ; then 
+  elif (( pos >= _Dbg_stack_size )) ; then 
     _Dbg_errmsg 'Would be beyond top-most (least recent) entry.'
     return 1
   fi
 
   ((_Dbg_stack_pos = pos))
-  typeset -i j=_Dbg_stack_pos+2
-  _Dbg_listline="${BASH_LINENO[$j]}"
-  ((j++))
-  _Dbg_frame_last_filename="${BASH_SOURCE[$j]}"
+  _Dbg_listline="${BASH_LINENO[pos]}"
+  _Dbg_frame_last_filename="${BASH_SOURCE[pos+1]}"
   _Dbg_print_location_and_command "$_Dbg_listline"
   return 0
 }
@@ -92,6 +90,33 @@ _Dbg_frame_int_setup() {
   fi
   eval "$_resteglob"
   return 0
+}
+
+# Print "##" or "->" depending on whether or not $1 (POS) is a number
+# between 0 and _Dbg_stack_size-1. For POS, 0 is the top-most
+# (newest) entry. For _Dbg_stack_pos, 0 is the bottom-most entry.
+# 0 is returnd on success, nonzero on failure.
+_Dbg_frame_prefix() {
+    typeset -l prefix='??'
+    typeset -li rc=0
+    if (($# == 1)) ; then
+	typeset -li pos=$1
+	typeset -li adjusted_pos
+	((adjusted_pos=_Dbg_stack_size-1-pos))
+	if ((adjusted_pos < 0)) ; then
+	    rc=2
+	elif ((adjusted_pos >= _Dbg_stack_size)) ; then
+	    rc=3
+	elif (( adjusted_pos == _Dbg_stack_pos )) ; then
+	    prefix='->'
+	else
+	    prefix='##'
+	fi
+    else
+	rc=1
+    fi
+    echo -n $prefix
+    return $rc
 }
 
 _Dbg_frame_lineno() {

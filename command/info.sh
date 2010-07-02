@@ -164,8 +164,6 @@ POSSIBILITY OF SUCH DAMAGES.
 
 _Dbg_do_info_args() {
 
-  typeset -i n=${#FUNCNAME[@]}-1  # remove us (_Dbg_do_info_args) from count
-
   eval "$_seteglob"
   if [[ $1 != $int_pat ]] ; then 
     _Dbg_msg "Bad integer parameter: $1"
@@ -175,7 +173,7 @@ _Dbg_do_info_args() {
 
   typeset -i i=_Dbg_stack_pos+$1
 
-  (( i > n )) && return 1
+  (( i >= _Ddbg_stack_size )) && return 1
 
   # Figure out which index in BASH_ARGV is position "i" (the place where
   # we start our stack trace from). variable "r" will be that place.

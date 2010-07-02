@@ -39,62 +39,47 @@ given that many frame entries are ignored"
 
 # FIXME: $1 is a hidden parameter not shown in help. $2 is COUNT.
 # $3 is FRAME-INDEX.
-_Dbg_do_backtrace() {
+function _Dbg_do_backtrace {
 
     _Dbg_not_running && return 1
     
-    typeset -i n=${#FUNCNAME[@]}-1 # remove us (_Dbg_do_backtrace) from count
-
-    typeset -i ignore_count=${1:-0}
-    eval "$_seteglob"
-
-    $(_Dbg_is_int $ignore_count) || {
-	_Dbg_errmsg "Bad integer parameter: $ignore_count"
-	return 1
-    }
-    
-    typeset -i count=${2:-$n}
+    typeset -il count=${1:-$_Dbg_stack_size}
     $(_Dbg_is_int $count) || {
 	_Dbg_errmsg "Bad integer COUNT parameter: $count"
 	return 1
     }
     
-    typeset prefix='##'
-    typeset -i k=${3:-0}
-    typeset -i i=_Dbg_STACK_TOP+k+$1
-    typeset -i j=i
+    typeset -il frame_start=${2:-0}
+
+    $(_Dbg_is_int $frame_start) || {
+	_Dbg_errmsg "Bad integer parameter: $ignore_count"
+	return 1
+    }
     
-    (( j > n )) && return 1
-    (( i == _Dbg_stack_pos+$1 )) && prefix='->'
-    if (( k == 0 )) ; then
-	typeset filename=${BASH_SOURCE[$i]}
-	(( _Dbg_basename_only )) && filename=${filename##*/}
-	_Dbg_print_frame "$prefix" "$k" '' "$filename" "$_Dbg_frame_last_lineno" ''
-	((count--)) ; ((k++))
-    fi
+    # k is where we are in the stack after removing extraneous top-most
+    # stack entries caused by debugger entry
+    typeset -i k=${3:-((${#FUNCNAME[@]}-$_Dbg_stack_size))}
+
+    # i is the logical frame value - 0 most recent frame.
+    typeset -i i=frame_start
     
     # Figure out which index in BASH_ARGV is position "i" (the place where
     # we start our stack trace from). variable "r" will be that place.
     
     typeset -i q
     typeset -i r=0
-    for (( q=0 ; q<i ; q++ )) ; do 
+    for (( q=0 ; q<k ; q++ )) ; do 
 	[[ -z ${BASH_ARGC[$q]} ]] && break
 	(( r = r + ${BASH_ARGC[$q]} ))
     done
     
     # Loop which dumps out stack trace.
-    for ((  ; (( i <= n && count > 0 )) ; i++ )) ; do 
-	typeset -i arg_count=${BASH_ARGC[$i]}
-	((j++)) ; ((count--))
-	prefix='##'
-	(( i == _Dbg_stack_pos+$1-1)) && prefix='->'
-	if (( i == n )) ; then 
-	    # main()'s file is the same as the first caller
-	    j=i  
-	fi
+    for ((  ; (( i <= _Dbg_stack_size && count > 0 )) ; i++ )) ; do 
+	typeset -il arg_count=${BASH_ARGC[$r]}
+	typeset -l prefix='##'
+	(( _Dbg_stack_size-i+1 == _Dbg_stack_pos )) && prefix='->'
 	
-	_Dbg_msg_nocr "$prefix$k ${FUNCNAME[$i]}("
+	_Dbg_msg_nocr "$prefix$i ${FUNCNAME[$k]}("
 	
 	typeset parms=''
 	
@@ -104,7 +89,7 @@ _Dbg_do_backtrace() {
 	    for (( s=0; s < arg_count; s++ )) ; do 
 		if (( s != 0 )) ; then 
 		    parms="\"${BASH_ARGV[$r]}\", $parms"
-		elif [[ ${FUNCNAME[$i]} == "source" ]] \
+		elif [[ ${FUNCNAME[$k]} == "source" ]] \
 		    && (( _Dbg_basename_only )); then
 		    typeset filename=${BASH_ARGV[$r]}
 		    filename=${filename##*/}
@@ -116,10 +101,12 @@ _Dbg_do_backtrace() {
 	    done
 	fi
 	
-	typeset filename=${BASH_SOURCE[$j]}
+	typeset filename=${BASH_SOURCE[$k]}
 	(( _Dbg_basename_only )) && filename=${filename##*/}
 	_Dbg_msg "$parms) called from file \`$filename'" \
-	    "at line ${BASH_LINENO[$i]}"
+	    "at line ${BASH_LINENO[$k]}"
+
+	((count--))
 	((k++))
     done
     return 0

@@ -53,8 +53,8 @@ function _Dbg_set_debugger_entry {
 
   _Dbg_old_IFS="$IFS"
   _Dbg_old_PS4="$PS4"
-  _Dbg_stack_pos=$_Dbg_STACK_TOP
-  _Dbg_stack_size=${#FUNCNAME[@]-$discard_top_fn_count}
+  ((_Dbg_stack_size = ${#FUNCNAME[@]} - discard_top_fn_count))
+  ((_Dbg_stack_pos  = _Dbg_stack_size - 1))
   _Dbg_listline=_Dbg_frame_last_lineno
   _Dbg_set_debugger_internal
   _Dbg_frame_last_filename=${BASH_SOURCE[$discard_top_fn_count]:-$_Dbg_bogus_file}

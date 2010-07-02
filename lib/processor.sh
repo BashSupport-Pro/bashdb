@@ -616,7 +616,7 @@ _Dbg_onecmd() {
 
 	# Frame Stack listing
 	where )
-	  _Dbg_do_backtrace 2 $args
+	  _Dbg_do_backtrace $args
 	  ;;
 
 	# List all breakpoints and actions.
