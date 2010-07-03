@@ -47,7 +47,7 @@ _Dbg_check_line() {
     fi
 
     if (( $line_number >  max_line )) ; then 
-	(( _Dbg_basename_only )) && filename=${filename##*/}
+	filename=_Dbg_file_canonic "$filename"
 	_Dbg_errmsg "Line $line_number is too large." \
 	    "File $filename has only $max_line lines."
 	return 1
