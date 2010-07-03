@@ -1,6 +1,30 @@
 #!@SH_PROG@
 # -*- shell-script -*-
 
+# Test _Dbg_file_canonic
+test_file_canonic()
+{
+    _Dbg_basename_only=0
+    for file in /tmp/foo.bar /a/b/foo.bar foo.bar ; do 
+	typeset canonic_file
+	canonic_file=$(_Dbg_file_canonic "$file")
+	assertEquals 'canonic_file should return 0' '0' $?
+	assertEquals 'canonic_file should do nothing' "$file" "$canonic_file"
+    done
+
+    _Dbg_basename_only=1
+    typeset canonic_file
+    for file in /tmp/foo.bar /a/b/foo.bar foo.bar ; do 
+	canonic_file=$(_Dbg_file_canonic "$file")
+	assertEquals 'canonic_file should return 0' '0' $?
+	assertEquals 'canonic_file should shorten file' 'foo.bar' "$canonic_file"
+    done
+    canonic_file=$(_Dbg_file_canonic)
+    assertNotEquals 'canonic_file not should return 0' '0' $?
+    # Other tests need _Dbg_basename_only = 0
+    _Dbg_basename_only=0
+}
+
 # Test _Dbg_glob_filename
 test_glob_filename()
 {

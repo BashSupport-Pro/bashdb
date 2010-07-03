@@ -39,6 +39,19 @@ _Dbg_adjust_filename() {
   fi
 }
 
+# Canonicalize $1. For now if _Dbg_basename_only is set we just want
+# the basename of that.
+function _Dbg_file_canonic {
+    if (( $# != 1 )) ; then
+	echo '??'
+	return 1
+    fi
+    typeset -l filename="$1"
+    (( _Dbg_basename_only )) && filename=${filename##*/}
+    echo $filename
+    return 0
+}
+
 # $1 contains the name you want to glob. return 0 if exists and is
 # readable or 1 if not. 
 # The result will be in variable $filename which is assumed to be 

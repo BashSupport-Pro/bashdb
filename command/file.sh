@@ -35,7 +35,7 @@ _Dbg_do_file() {
   fi
   typeset filevar=$(_Dbg_file2var ${BASH_SOURCE[3]})
   _Dbg_set_assoc_scalar_entry "_Dbg_file_cmd_" $filevar "$filename"
-  typeset source_file="${BASH_SOURCE[3]}"
-  (( _Dbg_basename_only )) && source_file=${source_file##*/}
+  typeset source_file
+  source_file=$(_Dbg_file_canonic "${BASH_SOURCE[3]}")
   _Dbg_msg "File $filename will be used when $source_file is referenced."
 }

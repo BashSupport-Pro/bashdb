@@ -77,8 +77,8 @@ function _Dbg_do_backtrace {
     # Position 0 is special in that get the line number not from the
     # stack but ultimately from LINENO which was saved in the hook call.
     if (( frame_start == 0 )) ; then
-	typeset filename=${BASH_SOURCE[$k]}
-	(( _Dbg_basename_only )) && filename=${filename##*/}
+	typeset filename
+	filename=_Dbg_file_canonic "${BASH_SOURCE[$k]}"
 	_Dbg_print_frame $(_Dbg_frame_prefix $i) "0" '' "$filename" "$_Dbg_frame_last_lineno" ''
 	((count--)) ; ((k++)); ((i++))
     fi
@@ -96,11 +96,8 @@ function _Dbg_do_backtrace {
 	    for (( s=0; s < arg_count; s++ )) ; do 
 		if (( s != 0 )) ; then 
 		    parms="\"${BASH_ARGV[$r]}\", $parms"
-		elif [[ ${FUNCNAME[$k]} == "source" ]] \
-		    && (( _Dbg_basename_only )); then
-		    typeset filename=${BASH_ARGV[$r]}
-		    filename=${filename##*/}
-		    parms="\"$filename\""
+		elif [[ ${FUNCNAME[$k]} == "source" ]] ; then
+		    parms=\"$(_Dbg_file_canonic "${BASH_ARGV[$r]}")\"
 		else
 		    parms="\"${BASH_ARGV[$r]}\""
 		fi
@@ -108,8 +105,8 @@ function _Dbg_do_backtrace {
 	    done
 	fi
 	
-	typeset filename=${BASH_SOURCE[$k]}
-	(( _Dbg_basename_only )) && filename=${filename##*/}
+	typeset filename
+	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$k]}")
 	_Dbg_msg "$parms) called from file \`$filename'" \
 	    "at line ${BASH_LINENO[$k]}"
 
