@@ -92,6 +92,17 @@ _Dbg_frame_int_setup() {
   return 0
 }
 
+# Turn position $1 which uses 0 to represent the least-recent stack entry
+# into one where 0 is the most-recent stack entry. _Dbg_stack_size is used
+# for this.
+function _Dbg_frame_canonic_pos 
+{
+    typeset -li pos=$1
+    typeset -li canonic_pos
+    ((canonic_pos = _Dbg_stack_size-1-pos))
+    echo -n $canonic_pos
+}
+
 # Print "##" or "->" depending on whether or not $1 (POS) is a number
 # between 0 and _Dbg_stack_size-1. For POS, 0 is the top-most
 # (newest) entry. For _Dbg_stack_pos, 0 is the bottom-most entry.
@@ -100,14 +111,13 @@ _Dbg_frame_prefix() {
     typeset -l prefix='??'
     typeset -li rc=0
     if (($# == 1)) ; then
-	typeset -li pos=$1
-	typeset -li adjusted_pos
-	((adjusted_pos=_Dbg_stack_size-1-pos))
-	if ((adjusted_pos < 0)) ; then
+	typeset -li canonic_pos
+	canonic_pos=$(_Dbg_frame_canonic_pos $1)
+	if ((canonic_pos < 0)) ; then
 	    rc=2
-	elif ((adjusted_pos >= _Dbg_stack_size)) ; then
+	elif ((canonic_pos >= _Dbg_stack_size)) ; then
 	    rc=3
-	elif (( adjusted_pos == _Dbg_stack_pos )) ; then
+	elif (( canonic_pos == _Dbg_stack_pos )) ; then
 	    prefix='->'
 	else
 	    prefix='##'

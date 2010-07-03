@@ -72,14 +72,21 @@ function _Dbg_do_backtrace {
 	[[ -z ${BASH_ARGC[$q]} ]] && break
 	(( r = r + ${BASH_ARGC[$q]} ))
     done
-    
+
+
+    # Position 0 is special in that get the line number not from the
+    # stack but ultimately from LINENO which was saved in the hook call.
+    if (( frame_start == 0 )) ; then
+	typeset filename=${BASH_SOURCE[$k]}
+	(( _Dbg_basename_only )) && filename=${filename##*/}
+	_Dbg_print_frame $(_Dbg_frame_prefix $i) "0" '' "$filename" "$_Dbg_frame_last_lineno" ''
+	((count--)) ; ((k++)); ((i++))
+    fi
+
     # Loop which dumps out stack trace.
     for ((  ; (( i <= _Dbg_stack_size && count > 0 )) ; i++ )) ; do 
 	typeset -il arg_count=${BASH_ARGC[$r]}
-	typeset -l prefix='##'
-	(( _Dbg_stack_size-i+1 == _Dbg_stack_pos )) && prefix='->'
-	
-	_Dbg_msg_nocr "$prefix$i ${FUNCNAME[$k]}("
+	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$k]}'('
 	
 	typeset parms=''
 	

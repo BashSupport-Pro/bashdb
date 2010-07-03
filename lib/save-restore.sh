@@ -45,7 +45,7 @@ function _Dbg_set_debugger_entry {
   # How many function are on the stack that are part of the debugger? 
   # Normally this gets called from the trace hook. so this routine plus
   # the trace hook should are on the FUNCNAME stack and should be ignored
-  typeset -li discard_top_fn_count=${1:-2}
+  typeset -li discard_top_fn_count=${1:-1}
 
   _Dbg_cur_fn=${FUNCNAME[$discard_top_fn_count]}
   _Dbg_frame_last_lineno=${BASH_LINENO[1]}
