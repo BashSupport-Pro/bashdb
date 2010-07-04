@@ -30,7 +30,7 @@ typeset -i  _Dbg_stack_pos
 
 # The number of entries on the call stack at the time the hook was
 # entered, excluding hook call. _Dbg_stack_pos = 0 refers then to 
-# _Dbg_stack_size. _Dbg_stack_pos = 1 refers to _Dbg_stack_pos-1
+# _Dbg_stack_size. _Dbg_stack_pos = 1 refers to _Dbg_stack_size-1
 # and so on
 
 typeset -i _Dbg_stack_size
@@ -99,7 +99,7 @@ function _Dbg_frame_canonic_pos
 {
     typeset -li pos=$1
     typeset -li canonic_pos
-    ((canonic_pos = _Dbg_stack_size-1-pos))
+    ((canonic_pos = _Dbg_stack_size-pos))
     echo -n $canonic_pos
 }
 
@@ -115,9 +115,9 @@ _Dbg_frame_prefix() {
 	canonic_pos=$(_Dbg_frame_canonic_pos $1)
 	if ((canonic_pos < 0)) ; then
 	    rc=2
-	elif ((canonic_pos >= _Dbg_stack_size)) ; then
+	elif ((canonic_pos > _Dbg_stack_size)) ; then
 	    rc=3
-	elif (( canonic_pos == _Dbg_stack_pos )) ; then
+	elif (( $canonic_pos == $_Dbg_stack_pos )) ; then
 	    prefix='->'
 	else
 	    prefix='##'

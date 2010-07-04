@@ -18,7 +18,7 @@ test_print_frame()
 test_frame_prefix()
 {
     typeset -li _Dbg_stack_size=10
-    typeset -li _Dbg_stack_pos=9
+    typeset -li _Dbg_stack_pos=10
     typeset -li i
     for i in 1 2 3 ; do
 	typeset prefix=$(_Dbg_frame_prefix i)
@@ -28,7 +28,7 @@ test_frame_prefix()
     typeset prefix=$(_Dbg_frame_prefix 0)
     assertEquals 'Should give 0 return' 0 $?
     assertEquals 'prefix should be ->' '->' $prefix
-    for i in -1 10 30 ; do
+    for i in -1 11 30 ; do
 	typeset prefix=$(_Dbg_frame_prefix i)
 	assertEquals 'prefix should be ??' '??' $prefix
     done

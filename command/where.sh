@@ -58,29 +58,32 @@ function _Dbg_do_backtrace {
     
     # k is where we are in the stack after removing extraneous top-most
     # stack entries caused by debugger entry
-    typeset -i k=${3:-((${#FUNCNAME[@]}-$_Dbg_stack_size))}
+    typeset -i k=${3:-((${#FUNCNAME[@]}-_Dbg_stack_size))}
 
     # i is the logical frame value - 0 most recent frame.
     typeset -i i=frame_start
     
     # Figure out which index in BASH_ARGV is position "i" (the place where
     # we start our stack trace from). variable "r" will be that place.
-    
+
     typeset -i q
     typeset -i r=0
-    for (( q=0 ; q<k ; q++ )) ; do 
+    for (( q=0 ; q<=k ; q++ )) ; do 
 	[[ -z ${BASH_ARGC[$q]} ]] && break
 	(( r = r + ${BASH_ARGC[$q]} ))
     done
+    # typeset -p BASH_ARGC
+    # typeset -p BASH_ARGV
+    # typeset -p r
 
-
+    typeset -l filename
     # Position 0 is special in that get the line number not from the
     # stack but ultimately from LINENO which was saved in the hook call.
     if (( frame_start == 0 )) ; then
-	typeset filename
-	filename=_Dbg_file_canonic "${BASH_SOURCE[$k]}"
+	((count--)) ; ((k++));
+	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$k]}")
 	_Dbg_print_frame $(_Dbg_frame_prefix $i) "0" '' "$filename" "$_Dbg_frame_last_lineno" ''
-	((count--)) ; ((k++)); ((i++))
+	((i++))
     fi
 
     # Loop which dumps out stack trace.
@@ -105,7 +108,6 @@ function _Dbg_do_backtrace {
 	    done
 	fi
 	
-	typeset filename
 	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$k]}")
 	_Dbg_msg "$parms) called from file \`$filename'" \
 	    "at line ${BASH_LINENO[$k]}"

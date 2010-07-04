@@ -45,7 +45,7 @@ function _Dbg_set_debugger_entry {
   # How many function are on the stack that are part of the debugger? 
   # Normally this gets called from the trace hook. so this routine plus
   # the trace hook should are on the FUNCNAME stack and should be ignored
-  typeset -li discard_top_fn_count=${1:-1}
+  typeset -li discard_top_fn_count=${1:-2}
 
   _Dbg_cur_fn=${FUNCNAME[$discard_top_fn_count]}
   _Dbg_frame_last_lineno=${BASH_LINENO[1]}
@@ -53,8 +53,8 @@ function _Dbg_set_debugger_entry {
 
   _Dbg_old_IFS="$IFS"
   _Dbg_old_PS4="$PS4"
-  ((_Dbg_stack_size = ${#FUNCNAME[@]} - discard_top_fn_count))
-  ((_Dbg_stack_pos  = _Dbg_stack_size - 1))
+  ((_Dbg_stack_size = ${#FUNCNAME[@]} +1 - discard_top_fn_count))
+  _Dbg_stack_pos=_Dbg_stack_size
   _Dbg_listline=_Dbg_frame_last_lineno
   _Dbg_set_debugger_internal
   _Dbg_frame_last_filename=${BASH_SOURCE[$discard_top_fn_count]:-$_Dbg_bogus_file}
