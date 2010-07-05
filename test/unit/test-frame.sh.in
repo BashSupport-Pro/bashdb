@@ -17,22 +17,40 @@ test_print_frame()
 
 test_frame_prefix()
 {
-    typeset -li _Dbg_stack_size=10
-    typeset -li _Dbg_stack_pos=10
+    typeset -li _Dbg_stack_size=4
+    typeset -li _Dbg_stack_pos=0
     typeset -li i
-    for i in 1 2 3 ; do
-	typeset prefix=$(_Dbg_frame_prefix i)
+    typeset -l prefix
+    for i in 0 1 2 3 ; do
+	_Dbg_stack_pos=$i
+	prefix=$(_Dbg_frame_prefix i)
 	assertEquals 'Should give 0 return' 0 $?
-	assertEquals 'prefix should be ##' '##' $prefix
+	assertEquals "prefix $i should be ->" '->' $prefix
     done
-    typeset prefix=$(_Dbg_frame_prefix 0)
-    assertEquals 'Should give 0 return' 0 $?
-    assertEquals 'prefix should be ->' '->' $prefix
-    for i in -1 11 30 ; do
-	typeset prefix=$(_Dbg_frame_prefix i)
-	assertEquals 'prefix should be ??' '??' $prefix
+    _Dbg_stack_pos=0
+    for i in 1 2 3 ; do
+	prefix=$(_Dbg_frame_prefix i)
+	assertEquals 'Should give 0 return' 0 $?
+	assertEquals "prefix $i should be ##" '##' $prefix
     done
+    for i in -1 4 11 ; do
+	prefix=$(_Dbg_frame_prefix i)
+	assertEquals "prefix $i should be ??" '??' $prefix
+    done
+    prefix=$(_Dbg_frame_prefix 1 2 )
+    assertNotEquals "invalid _Dbg_frame_prefix call ($?)" 0 '$?'
 }
+
+test_frame_adjusted_pos() 
+{
+    typeset -li pos
+    pos=$(_Dbg_frame_adjusted_pos -1)
+    typeset -li pos2
+    (( pos2 = _Dbg_stack_size - 1 ))
+    pos2=$(_Dbg_frame_adjusted_pos $pos2)
+    assertEquals "_Dbg_frame_adjusted_pos -1 should be _Dbg_stack_size-1" $pos $pos2
+}
+
 
 typeset -r signed_int_pat='?([-+])+([0-9])'
 test_frame_adjust()
@@ -45,8 +63,9 @@ test_frame_adjust()
     }
     _Dbg_running=1
     _Dbg_stack_size=${#FUNCNAME[@]}
-    typeset -a errmsg=()
-
+    typeset -la errmsg=()
+    typeset -li i
+    
     # Test frame_adjust parameter checking
     _Dbg_frame_adjust a
     assertNotEquals "Invalid frame_adjust 'a'" 0 "$?"
@@ -57,6 +76,7 @@ test_frame_adjust()
     _Dbg_stack_size=${#FUNCNAME[@]}
     _Dbg_running=1
     # Test absolute positioning - ok values (0..3)
+    _Dbg_stack_pos=0
     for i in 0 1 -1 ; do
     	_Dbg_frame_adjust $i 0
     	assertEquals "_Dbg_frame_adjust $i should work - " 0 ${#errmsg[@]}
@@ -80,4 +100,3 @@ top_srcdir=@top_srcdir@
 srcdir=@srcdir@
 srcdir=${srcdir}/
 . ${srcdir}/shunit2
-

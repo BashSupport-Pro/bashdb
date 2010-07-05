@@ -53,8 +53,8 @@ function _Dbg_set_debugger_entry {
 
   _Dbg_old_IFS="$IFS"
   _Dbg_old_PS4="$PS4"
-  ((_Dbg_stack_size = ${#FUNCNAME[@]} +1 - discard_top_fn_count))
-  _Dbg_stack_pos=_Dbg_stack_size
+  ((_Dbg_stack_size = ${#FUNCNAME[@]} + 1 - discard_top_fn_count))
+  _Dbg_stack_pos=_0
   _Dbg_listline=_Dbg_frame_last_lineno
   _Dbg_set_debugger_internal
   _Dbg_frame_last_filename=${BASH_SOURCE[$discard_top_fn_count]:-$_Dbg_bogus_file}
@@ -95,7 +95,7 @@ function _Dbg_set_to_return_from_debugger {
 
 _Dbg_save_state() {
   _Dbg_statefile=$(_Dbg_tempname statefile)
-  echo "" > $_Dbg_statefile
+  echo '' > $_Dbg_statefile
   _Dbg_save_breakpoints
   _Dbg_save_actions
   _Dbg_save_watchpoints

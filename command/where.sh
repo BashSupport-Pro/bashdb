@@ -56,12 +56,8 @@ function _Dbg_do_backtrace {
 	return 1
     }
     
-    # k is where we are in the stack after removing extraneous top-most
-    # stack entries caused by debugger entry
-    typeset -i k=${3:-((${#FUNCNAME[@]}-_Dbg_stack_size))}
-
     # i is the logical frame value - 0 most recent frame.
-    typeset -i i=frame_start
+    typeset -il i=frame_start
     
     # Figure out which index in BASH_ARGV is position "i" (the place where
     # we start our stack trace from). variable "r" will be that place.
@@ -72,24 +68,38 @@ function _Dbg_do_backtrace {
 	[[ -z ${BASH_ARGC[$q]} ]] && break
 	(( r = r + ${BASH_ARGC[$q]} ))
     done
-    # typeset -p BASH_ARGC
-    # typeset -p BASH_ARGV
-    # typeset -p r
 
-    typeset -l filename
+    ## DEBUG
+    ##  typeset -p BASH_ARGC
+    ## typeset -p BASH_ARGV
+    ## typeset -p r
+
+    typeset -li adjusted_pos
+    
+    ## DEBUG
+    ## typeset -p pos
+    ## typeset -p BASH_LINENO
+    ## typeset -p BASH_SOURCE
+    ## typeset -p FUNCNAME
+
+    typeset -l  filename
+    typeset -li adjusted_pos
     # Position 0 is special in that get the line number not from the
     # stack but ultimately from LINENO which was saved in the hook call.
     if (( frame_start == 0 )) ; then
-	((count--)) ; ((k++));
-	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$k]}")
-	_Dbg_print_frame $(_Dbg_frame_prefix $i) "0" '' "$filename" "$_Dbg_frame_last_lineno" ''
-	((i++))
+	((count--)) ; 
+	adjusted_pos=$(_Dbg_frame_adjusted_pos 0)
+	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos]}")
+	_Dbg_print_frame $(_Dbg_frame_prefix 0) '0' '' "$filename" "$_Dbg_frame_last_lineno" ''
     fi
 
     # Loop which dumps out stack trace.
-    for ((  ; (( i <= _Dbg_stack_size && count > 0 )) ; i++ )) ; do 
+    for ((  i=frame_start+1 ; 
+	    i <= _Dbg_stack_size && count > 0 ;
+	    i++ )) ; do 
 	typeset -il arg_count=${BASH_ARGC[$r]}
-	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$k]}'('
+	adjusted_pos=$(_Dbg_frame_adjusted_pos $i)
+	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$adjusted_pos-1]}'('
 	
 	typeset parms=''
 	
@@ -99,7 +109,7 @@ function _Dbg_do_backtrace {
 	    for (( s=0; s < arg_count; s++ )) ; do 
 		if (( s != 0 )) ; then 
 		    parms="\"${BASH_ARGV[$r]}\", $parms"
-		elif [[ ${FUNCNAME[$k]} == "source" ]] ; then
+		elif [[ ${FUNCNAME[$i]} == "source" ]] ; then
 		    parms=\"$(_Dbg_file_canonic "${BASH_ARGV[$r]}")\"
 		else
 		    parms="\"${BASH_ARGV[$r]}\""
@@ -108,12 +118,11 @@ function _Dbg_do_backtrace {
 	    done
 	fi
 	
-	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$k]}")
+	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos-1]}")
 	_Dbg_msg "$parms) called from file \`$filename'" \
-	    "at line ${BASH_LINENO[$k]}"
+	    "at line ${BASH_LINENO[$adjusted_pos-1]}"
 
 	((count--))
-	((k++))
     done
     return 0
 }

@@ -24,16 +24,20 @@
 # Set the index in FUNCNAME that should be reported as index 0 (or top).
 typeset -i _Dbg_STACK_TOP=3
 
-# Where are we in stack? This can be changed by "up", "down" or "frame"
-# commands. On debugger entry, the value is set to _Dbg_stack_size-1
-typeset -i  _Dbg_stack_pos   
-
-# The number of entries on the call stack at the time the hook was
-# entered, excluding hook call. _Dbg_stack_pos = 0 refers then to 
-# _Dbg_stack_size. _Dbg_stack_pos = 1 refers to _Dbg_stack_size-1
-# and so on
-
+# _Dbg_stack_size: the number of entries on the call stack at the time
+# the hook was entered. Note that bash updates the stack inside the
+# debugger so it is important to save this value on entry. Also 
+# note that the most recent entries are pushed or at position 0.
+# Thus to get position 0 of the debugged program we need to ignore leading
+# any debugger frames.
 typeset -i _Dbg_stack_size
+
+# Where are we in stack? This can be changed by "up", "down" or
+# "frame" commands. 0 means the most recent stack frame with respect
+# to the debugged program and _Dbg_stack_size is the
+# least-recent. Note that inside the debugger the stack is still
+# updated.  On debugger entry, the value is set to 0
+typeset -i  _Dbg_stack_pos   
 
 # Save the last-entered frame for to determine stopping when
 # "set force" or step+ is in effect.
@@ -61,18 +65,27 @@ function _Dbg_frame_adjust {
   else
     ((pos=_Dbg_stack_pos+(count*signum)))
   fi
-    
+
   if (( pos < 0 )) ; then 
     _Dbg_errmsg 'Would be beyond bottom-most (most recent) entry.'
     return 1
-  elif (( pos >= _Dbg_stack_size )) ; then 
+
+  elif (( $pos >= $_Dbg_stack_size )) ; then 
     _Dbg_errmsg 'Would be beyond top-most (least recent) entry.'
     return 1
   fi
 
-  ((_Dbg_stack_pos = pos))
-  _Dbg_listline="${BASH_LINENO[pos]}"
-  _Dbg_frame_last_filename="${BASH_SOURCE[pos+1]}"
+  typeset -li adjusted_pos
+  adjusted_pos=$(_Dbg_frame_adjusted_pos $pos)
+  _Dbg_stack_pos=$pos
+
+  ## DEBUG
+  ## typeset -p pos
+  ## typeset -p adjusted_pos
+  ## typeset -p BASH_LINENO
+  ## typeset -p BASH_SOURCE
+  _Dbg_listline="${BASH_LINENO[adjusted_pos-1]}"
+  _Dbg_frame_last_filename="${BASH_SOURCE[adjusted_pos]}"
   _Dbg_print_location_and_command "$_Dbg_listline"
   return 0
 }
@@ -92,15 +105,18 @@ _Dbg_frame_int_setup() {
   return 0
 }
 
-# Turn position $1 which uses 0 to represent the least-recent stack entry
-# into one where 0 is the most-recent stack entry. _Dbg_stack_size is used
-# for this.
-function _Dbg_frame_canonic_pos 
+# Turn position $1 which uses 0 to represent the most-recent stack entry
+# into which may have additional internal debugger frames pushed on.
+function _Dbg_frame_adjusted_pos 
 {
-    typeset -li pos=$1
-    typeset -li canonic_pos
-    ((canonic_pos = _Dbg_stack_size-pos))
-    echo -n $canonic_pos
+    if (($# != 1)) ; then
+	echo -n '-1'
+	return 1
+    fi
+    typeset -li pos
+    ((pos=${#FUNCNAME[@]} - _Dbg_stack_size + $1))
+    echo -n $pos
+    return 0
 }
 
 # Print "##" or "->" depending on whether or not $1 (POS) is a number
@@ -111,13 +127,12 @@ _Dbg_frame_prefix() {
     typeset -l prefix='??'
     typeset -li rc=0
     if (($# == 1)) ; then
-	typeset -li canonic_pos
-	canonic_pos=$(_Dbg_frame_canonic_pos $1)
-	if ((canonic_pos < 0)) ; then
+	typeset -li pos=$1
+	if ((pos < 0)) ; then
 	    rc=2
-	elif ((canonic_pos > _Dbg_stack_size)) ; then
+	elif ((pos >= _Dbg_stack_size)) ; then
 	    rc=3
-	elif (( $canonic_pos == $_Dbg_stack_pos )) ; then
+	elif (( $pos == $_Dbg_stack_pos )) ; then
 	    prefix='->'
 	else
 	    prefix='##'
