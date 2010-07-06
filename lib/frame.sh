@@ -145,7 +145,7 @@ _Dbg_frame_lineno() {
 }
 
 # Print one line in a call stack
-_Dbg_print_frame() {
+_Dbg_frame_print() {
     typeset prefix=$1
     typeset -i pos=$2
     typeset fn=$3

@@ -10,7 +10,7 @@ test_print_frame()
     }
     
     msg=''
-    _Dbg_print_frame '->' 0 '' dbg-cmds.sh 2 ''
+    _Dbg_frame_print '->' 0 '' dbg-cmds.sh 2 ''
 
     assertEquals "->0 in file \`dbg-cmds.sh' at line 2" "$msg"
 }

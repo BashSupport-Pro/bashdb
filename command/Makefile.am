@@ -10,6 +10,7 @@ pkgdata_DATA =        \
 	delete.sh     \
 	display.sh    \
 	disable.sh    \
+	down.sh       \
 	edit.sh       \
 	enable.sh     \
 	eval.sh       \
@@ -36,6 +37,7 @@ pkgdata_DATA =        \
 	stepping.sh   \
 	tracefn.sh    \
 	tty.sh	      \
+	up.sh	      \
 	watch.sh      \
 	where.sh
 

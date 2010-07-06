@@ -64,7 +64,7 @@ function _Dbg_do_backtrace {
 
     typeset -i q
     typeset -i r=0
-    for (( q=0 ; q<=k ; q++ )) ; do 
+    for (( q=0 ; q<frame_start ; q++ )) ; do 
 	[[ -z ${BASH_ARGC[$q]} ]] && break
 	(( r = r + ${BASH_ARGC[$q]} ))
     done
@@ -73,6 +73,8 @@ function _Dbg_do_backtrace {
     ##  typeset -p BASH_ARGC
     ## typeset -p BASH_ARGV
     ## typeset -p r
+    ## typeset -p FUNCNAME
+    ## echo "Adjusted pos $(_Dbg_frame_adjusted_pos 0)"
 
     typeset -li adjusted_pos
     
@@ -90,7 +92,7 @@ function _Dbg_do_backtrace {
 	((count--)) ; 
 	adjusted_pos=$(_Dbg_frame_adjusted_pos 0)
 	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos]}")
-	_Dbg_print_frame $(_Dbg_frame_prefix 0) '0' '' "$filename" "$_Dbg_frame_last_lineno" ''
+	_Dbg_frame_print $(_Dbg_frame_prefix 0) '0' '' "$filename" "$_Dbg_frame_last_lineno" ''
     fi
 
     # Loop which dumps out stack trace.

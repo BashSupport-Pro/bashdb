@@ -300,7 +300,7 @@ function _Dbg_unset_brkpt {
 	fi
     done
     if (( found == 0 )) ; then
-	filename=_Dbg_file_canonic "$filename"
+	filename=$(_Dbg_file_canonic "$filename")
 	_Dbg_errmsg "No breakpoint found at $filename, line ${lineno}."
     fi
     return $found
