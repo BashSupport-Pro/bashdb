@@ -20,10 +20,6 @@
 
 #================ VARIABLE INITIALIZATIONS ====================#
 
-# The top number items on the FUNCNAME stack are debugging routines
-# Set the index in FUNCNAME that should be reported as index 0 (or top).
-typeset -i _Dbg_STACK_TOP=3
-
 # _Dbg_stack_size: the number of entries on the call stack at the time
 # the hook was entered. Note that bash updates the stack inside the
 # debugger so it is important to save this value on entry. Also 

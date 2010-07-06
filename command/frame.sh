@@ -21,10 +21,14 @@
 # Move default values down $1 or one in the stack. 
 
 _Dbg_help_add frame \
-'frame FRAME-NUM -- Move the current frame to the FRAME-NUM.
+'frame [FRAME-NUMBER]
 
-If FRAME-NUM is negative, count back from the least-recent frame; -1
-is the oldest frame. FRAME-NUM can be any arithmetic expression.'
+Change the current frame to frame FRAME-NUMBER if specified, or the
+most-recent frame, 0, if no frame number specified.
+
+A negative number indicates the position from the other or 
+least-recently-entered end.  So "frame -1" moves to the oldest frame.
+'
 
 _Dbg_do_frame() {
   _Dbg_not_running && return 1
