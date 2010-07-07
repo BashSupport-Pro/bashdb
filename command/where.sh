@@ -106,10 +106,16 @@ function _Dbg_do_backtrace {
 		_Dbg_parm_str=\"$(_Dbg_file_canonic "${BASH_ARGV[$_Dbg_next_argv-1]}")\"
 	    fi
 	fi
-	
+
+	typeset -l lineno
+	if (( adjusted_pos == ${#BASH_SOURCE[@]} )) ; then
+	    lineno=0
+	    ((adjusted_pos--))
+	else
+	    lineno=${BASH_LINENO[$adjusted_pos-1]}
+	fi
 	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos]}")
-	_Dbg_msg "($_Dbg_parm_str) called from file \`$filename'" \
-	    "at line ${BASH_LINENO[$adjusted_pos-1]}"
+	_Dbg_msg "($_Dbg_parm_str) called from file \`$filename'" "at line $lineno"
 
 	((count--))
     done
