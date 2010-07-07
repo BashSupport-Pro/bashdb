@@ -126,15 +126,19 @@ _Dbg_frame_fn_param_str() {
     _Dbg_is_int "$_Dbg_next_argc" || return 2
     _Dbg_is_int "$_Dbg_next_argv" || return 3
 
-    # +1 to compensate for this call.
-    typeset -il arg_count=BASH_ARGC[$_Dbg_next_argc+1]
-    if ((arg_count == 0)) ; then
+    # add 1 to argument count to compensate for this call (of zero
+    # parameters) and at the same time we update _Dbg_next_argc for the
+    # next call.
+    # 
+    ((_Dbg_next_argc++))
+    typeset -il arg_count=BASH_ARGC[$_Dbg_next_argc]
+    if (($arg_count == 0)) ; then
 	_Dbg_parm_str=''
     else
 	typeset -il i
 	_Dbg_parm_str="\"${BASH_ARGV[$_Dbg_next_argv+arg_count-1]}\""
-	for (( i=arg_count-1; i > 0; i-- )) ; do
-	    _Dbg_parm_str+=", \"${BASH_ARGV[$_Dbg_next_argv-i+1]}\""
+	for (( i=1; i <= arg_count-1; i++ )) ; do
+	    _Dbg_parm_str+=", \"${BASH_ARGV[$_Dbg_next_argv+arg_count-i-1]}\""
 	done
 	((_Dbg_next_argv+=arg_count))
     fi

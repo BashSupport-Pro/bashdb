@@ -59,6 +59,19 @@ get_parms()
     ## typeset -p BASH_ARGC
     ## typeset -p FUNCNAME
     _Dbg_frame_fn_param_str
+    if [[ "$1" == "test-two" ]] ; then 
+	_Dbg_frame_fn_param_str
+    fi
+}
+
+double_call()
+{
+    _Dbg_next_argc=0
+    _Dbg_next_argv=0
+    get_parms test-two a b 
+    assertEquals 2 $_Dbg_next_argc
+    assertEquals 6 $_Dbg_next_argv
+    assertEquals '"d", "e", "f"' "$_Dbg_parm_str"
 }
 
 test_frame_fn_param_str()
@@ -72,11 +85,40 @@ test_frame_fn_param_str()
     _Dbg_next_argv='bogus'
     _Dbg_frame_fn_param_str
     assertNotEquals "Invalid _Dbg_next_argv" 0 "$?"
+
+    _Dbg_next_argc=0
     _Dbg_next_argv=0
     get_parms first second
     assertEquals "valid _Dbg_frame_fn_param_str" 0 "$?"
     assertEquals '"first", "second"' "$_Dbg_parm_str"
+    assertEquals 1 $_Dbg_next_argc
+    assertEquals 2 $_Dbg_next_argv
 
+    _Dbg_next_argc=0
+    _Dbg_next_argv=0
+    get_parms another-test
+    assertEquals "valid _Dbg_frame_fn_param_str" 0 "$?"
+    assertEquals '"another-test"' "$_Dbg_parm_str"
+
+    _Dbg_next_argc=0
+    _Dbg_next_argv=0
+    get_parms three parameters now
+    assertEquals "valid _Dbg_frame_fn_param_str" 0 "$?"
+    assertEquals '"three", "parameters", "now"' "$_Dbg_parm_str"
+
+    _Dbg_next_argc=0
+    _Dbg_next_argv=0
+    get_parms
+    assertEquals "valid _Dbg_frame_fn_param_str" 0 "$?"
+    assertEquals '' "$_Dbg_parm_str"
+
+    _Dbg_next_argc=0
+    _Dbg_next_argv=0
+    get_parms
+    assertEquals "valid _Dbg_frame_fn_param_str" 0 "$?"
+    assertEquals '' "$_Dbg_parm_str"
+
+    double_call d e f
 }
 
 test_frame_prefix()
