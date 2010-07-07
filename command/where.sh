@@ -58,24 +58,6 @@ function _Dbg_do_backtrace {
     
     # i is the logical frame value - 0 most recent frame.
     typeset -il i=frame_start
-    
-    # Figure out which index in BASH_ARGV is position "i" (the place where
-    # we start our stack trace from). variable "r" will be that place.
-
-    typeset -i q
-    typeset -i r=0
-    for (( q=0 ; q<frame_start ; q++ )) ; do 
-	[[ -z ${BASH_ARGC[$q]} ]] && break
-	(( r = r + ${BASH_ARGC[$q]} ))
-    done
-
-    ## DEBUG
-    ##  typeset -p BASH_ARGC
-    ## typeset -p BASH_ARGV
-    ## typeset -p r
-    ## typeset -p FUNCNAME
-    ## echo "Adjusted pos $(_Dbg_frame_adjusted_pos 0)"
-
     typeset -li adjusted_pos
     
     ## DEBUG
@@ -95,33 +77,40 @@ function _Dbg_do_backtrace {
 	_Dbg_frame_print $(_Dbg_frame_prefix 0) '0' '' "$filename" "$_Dbg_frame_last_lineno" ''
     fi
 
+    typeset -i skip_fns
+    ((skip_fns=${#FUNCNAME[@]} - _Dbg_stack_size + 1))
+    _Dbg_frame_set_fn_param $skip_fns
+
     # Loop which dumps out stack trace.
+    ## DEBUG
+    ## typeset -p BASH_ARGC
+    ## typeset -p BASH_ARGV
+    ## typeset -p FUNCNAME
+    ## typeset -p _Dbg_next_argc
+    ## typeset -p _Dbg_next_argv
+    ## echo "Adjusted pos $(_Dbg_frame_adjusted_pos 0)"
+
     for ((  i=frame_start+1 ; 
 	    i <= _Dbg_stack_size && count > 0 ;
 	    i++ )) ; do 
-	typeset -il arg_count=${BASH_ARGC[$r]}
+	typeset -il arg_count=${BASH_ARGC[$_Dbg_next_argc]}
 	adjusted_pos=$(_Dbg_frame_adjusted_pos $i)
-	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$adjusted_pos-1]}'('
+	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$adjusted_pos-1]}
 	
 	typeset parms=''
 	
 	# Print out parameter list.
 	if (( 0 != ${#BASH_ARGC[@]} )) ; then
-	    typeset -i s
-	    for (( s=0; s < arg_count; s++ )) ; do 
-		if (( s != 0 )) ; then 
-		    parms="\"${BASH_ARGV[$r]}\", $parms"
-		elif [[ ${FUNCNAME[$i]} == "source" ]] ; then
-		    parms=\"$(_Dbg_file_canonic "${BASH_ARGV[$r]}")\"
-		else
-		    parms="\"${BASH_ARGV[$r]}\""
-		fi
-		((r++))
-	    done
+	    _Dbg_frame_fn_param_str
+	    if [[ ${FUNCNAME[$i]} == "source" ]] \
+		&& ((1 == _Dbg_next_argc-1)) ; then
+		_Dbg_parm_str=\
+		\"$(_Dbg_file_canonic "${BASH_ARGV[$_Dbg_next_argv-1]}")\"
+	    fi
 	fi
 	
-	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos-1]}")
-	_Dbg_msg "$parms) called from file \`$filename'" \
+	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos]}")
+	_Dbg_msg "($_Dbg_parm_str) called from file \`$filename'" \
 	    "at line ${BASH_LINENO[$adjusted_pos-1]}"
 
 	((count--))

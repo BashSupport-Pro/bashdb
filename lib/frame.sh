@@ -145,6 +145,31 @@ _Dbg_frame_fn_param_str() {
     return 0
 }
 
+_Dbg_frame_set_fn_param() { 
+    (($# == 1)) || return 1
+    typeset -li skip_count=$1
+    # Set to ignore this call in computation
+    _Dbg_next_argc=1
+    _Dbg_next_argv=1
+
+    typeset -li i
+    for (( i=1; i <= $skip_count; i++ )) ; do
+	typeset -li arg_count=${BASH_ARGC[$i]}
+	((_Dbg_next_argv+=arg_count))
+    done
+    # After this function returns argv will be one greater. So adjust
+    # for that now.
+    ((_Dbg_next_argc=skip_count))
+    ((_Dbg_next_argv--))
+
+    ## Debug:
+    ## typeset -p BASH_ARGC
+    ## typeset -p BASH_ARGV
+    ## typeset -p FUNCNAME
+    ## typeset -p _Dbg_next_argc
+    ## typeset -p _Dbg_next_argv
+}
+
 # Print "##" or "->" depending on whether or not $1 (POS) is a number
 # between 0 and _Dbg_stack_size-1. For POS, 0 is the top-most
 # (newest) entry. For _Dbg_stack_pos, 0 is the bottom-most entry.
