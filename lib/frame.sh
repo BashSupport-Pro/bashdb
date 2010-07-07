@@ -54,9 +54,9 @@ function _Dbg_frame_adjust {
   typeset -i pos
   if (( signum==0 )) ; then
       if (( count < 0 )) ; then
-	  ((pos = _Dbg_stack_size + count))
+	  ((pos = _Dbg_stack_size + count - 1))
       else
-	  ((pos = _Dbg_stack_size - 1 - count))
+	  ((pos = count))
       fi
   else
     ((pos=_Dbg_stack_pos+(count*signum)))
@@ -66,7 +66,7 @@ function _Dbg_frame_adjust {
     _Dbg_errmsg 'Would be beyond bottom-most (most recent) entry.'
     return 1
 
-  elif (( $pos >= $_Dbg_stack_size )) ; then 
+  elif (( pos >= _Dbg_stack_size - 1 )) ; then 
     _Dbg_errmsg 'Would be beyond top-most (least recent) entry.'
     return 1
   fi
@@ -80,6 +80,7 @@ function _Dbg_frame_adjust {
   ## typeset -p adjusted_pos
   ## typeset -p BASH_LINENO
   ## typeset -p BASH_SOURCE
+
   _Dbg_listline="${BASH_LINENO[adjusted_pos-1]}"
   _Dbg_frame_last_filename="${BASH_SOURCE[adjusted_pos]}"
   _Dbg_print_location_and_command "$_Dbg_listline"

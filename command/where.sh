@@ -102,10 +102,8 @@ function _Dbg_do_backtrace {
 	# Print out parameter list.
 	if (( 0 != ${#BASH_ARGC[@]} )) ; then
 	    _Dbg_frame_fn_param_str
-	    if [[ ${FUNCNAME[$i]} == "source" ]] \
-		&& ((1 == _Dbg_next_argc-1)) ; then
-		_Dbg_parm_str=\
-		\"$(_Dbg_file_canonic "${BASH_ARGV[$_Dbg_next_argv-1]}")\"
+	    if [[ ${FUNCNAME[$adjusted_pos-1]} == "source" ]] ; then
+		_Dbg_parm_str=\"$(_Dbg_file_canonic "${BASH_ARGV[$_Dbg_next_argv-1]}")\"
 	    fi
 	fi
 	
