@@ -1,58 +1,7 @@
 #!@SH_PROG@
 # -*- shell-script -*-
+shopt -s extdebug 
 
-test_print_frame()
-{
-    typeset result='bogus'
-
-    function _Dbg_msg {
-	msg=$1
-    }
-    
-    msg=''
-    _Dbg_frame_print '->' 0 '' dbg-cmds.sh 2 ''
-
-    assertEquals "->0 in file \`dbg-cmds.sh' at line 2" "$msg"
-}
-
-test_frame_prefix()
-{
-    typeset -li _Dbg_stack_size=4
-    typeset -li _Dbg_stack_pos=0
-    typeset -li i
-    typeset -l prefix
-    for i in 0 1 2 3 ; do
-	_Dbg_stack_pos=$i
-	prefix=$(_Dbg_frame_prefix i)
-	assertEquals 'Should give 0 return' 0 $?
-	assertEquals "prefix $i should be ->" '->' $prefix
-    done
-    _Dbg_stack_pos=0
-    for i in 1 2 3 ; do
-	prefix=$(_Dbg_frame_prefix i)
-	assertEquals 'Should give 0 return' 0 $?
-	assertEquals "prefix $i should be ##" '##' $prefix
-    done
-    for i in -1 4 11 ; do
-	prefix=$(_Dbg_frame_prefix i)
-	assertEquals "prefix $i should be ??" '??' $prefix
-    done
-    prefix=$(_Dbg_frame_prefix 1 2 )
-    assertNotEquals "invalid _Dbg_frame_prefix call ($?)" 0 '$?'
-}
-
-test_frame_adjusted_pos() 
-{
-    typeset -li pos
-    pos=$(_Dbg_frame_adjusted_pos -1)
-    typeset -li pos2
-    (( pos2 = _Dbg_stack_size - 1 ))
-    pos2=$(_Dbg_frame_adjusted_pos $pos2)
-    assertEquals "_Dbg_frame_adjusted_pos -1 should be _Dbg_stack_size-1" $pos $pos2
-}
-
-
-typeset -r signed_int_pat='?([-+])+([0-9])'
 test_frame_adjust()
 {
     _Dbg_errmsg() {
@@ -92,9 +41,99 @@ test_frame_adjust()
     done
 }
 
-top_srcdir=@top_srcdir@
-. ${top_srcdir}/lib/run.sh
-. ${top_srcdir}/lib/frame.sh
+test_frame_adjusted_pos() 
+{
+    _Dbg_running=1
+    _Dbg_stack_size=0
+    typeset -li pos
+    pos=$(_Dbg_frame_adjusted_pos -1)
+    typeset -li pos2
+    (( pos2 = _Dbg_stack_size - 1 ))
+    pos2=$(_Dbg_frame_adjusted_pos $pos2)
+    assertEquals "_Dbg_frame_adjusted_pos -1 should be _Dbg_stack_size-1" $pos $pos2
+}
+
+get_parms() 
+{
+    ## typeset -p BASH_ARGV
+    ## typeset -p BASH_ARGC
+    ## typeset -p FUNCNAME
+    _Dbg_frame_fn_param_str
+}
+
+test_frame_fn_param_str()
+{
+    _Dbg_frame_fn_param_str 'a'
+    assertNotEquals "Wrong number of params" 0 "$?"
+    _Dbg_frame_next_argc='bogus'
+    _Dbg_frame_fn_param_str
+    assertNotEquals "Invalid _Dbg_next_argc" 0 "$?"
+    _Dbg_next_argc=0
+    _Dbg_next_argv='bogus'
+    _Dbg_frame_fn_param_str
+    assertNotEquals "Invalid _Dbg_next_argv" 0 "$?"
+    _Dbg_next_argv=0
+    get_parms first second
+    assertEquals "valid _Dbg_frame_fn_param_str" 0 "$?"
+    assertEquals '"first", "second"' "$_Dbg_parm_str"
+
+}
+
+test_frame_prefix()
+{
+    typeset -li _Dbg_stack_size=4
+    typeset -li _Dbg_stack_pos=0
+    typeset -li i
+    typeset -l prefix
+    for i in 0 1 2 3 ; do
+	_Dbg_stack_pos=$i
+	prefix=$(_Dbg_frame_prefix i)
+	assertEquals 'Should give 0 return' 0 $?
+	assertEquals "prefix $i should be ->" '->' $prefix
+    done
+    _Dbg_stack_pos=0
+    for i in 1 2 3 ; do
+	prefix=$(_Dbg_frame_prefix i)
+	assertEquals 'Should give 0 return' 0 $?
+	assertEquals "prefix $i should be ##" '##' $prefix
+    done
+    for i in -1 4 11 ; do
+	prefix=$(_Dbg_frame_prefix i)
+	assertEquals "prefix $i should be ??" '??' $prefix
+    done
+    prefix=$(_Dbg_frame_prefix 1 2 )
+    assertNotEquals "invalid _Dbg_frame_prefix call ($?)" 0 '$?'
+}
+
+test_frame_print()
+{
+    typeset result='bogus'
+
+    function _Dbg_msg {
+	msg=$1
+    }
+    
+    msg=''
+    _Dbg_frame_print '->' 0 '' dbg-cmds.sh 2 ''
+
+    assertEquals "->0 in file \`dbg-cmds.sh' at line 2" "$msg"
+}
+
+# Make sure ../.. has a trailing slash
+if [ '@abs_top_srcdir@' = '' ] ; then
+  echo "Something is wrong: abs_top_srcdir is not set."
+ exit 1
+fi
+abs_top_srcdir=@abs_top_srcdir@
+abs_top_srcdir=${abs_top_srcdir%%/}/
+
+_Dbg_libdir=$abs_top_srcdir
+set -- -q  # Don't need to show banner
+. ${abs_top_srcdir}dbg-init.sh
+. ${abs_top_srcdir}dbg-pre.sh
+. ${abs_top_srcdir}lib/frame.sh
+. ${abs_top_srcdir}lib/run.sh
+. ${abs_top_srcdir}lib/validate.sh
 
 # load shunit2
 srcdir=@srcdir@

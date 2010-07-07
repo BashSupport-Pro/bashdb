@@ -86,12 +86,12 @@ _Dbg_get_maxline() {
 # caller.
 
 # If $2 is omitted, # use _Dbg_frame_filename, if $1 is omitted use 
-# _Dbg_frame_lineno. The return value is put in source_line.
+# _Dbg_frame_last_lineno. The return value is put in source_line.
 function _Dbg_get_source_line {
     typeset -i lineno
     if (( $# == 0 )); then
 	Dbg_frame_lineno
-	lineno=$Dbg_frame_lineno
+	lineno=$_Dbg_frame_last_lineno
     else
 	lineno=$1
 	shift

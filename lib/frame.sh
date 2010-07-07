@@ -115,11 +115,37 @@ function _Dbg_frame_adjusted_pos
     return 0
 }
 
+# Creates a parameter string for return in non-local variable
+# _Dbg_parm_str. This is obtained from BASH_ARGC and BASH_ARGV.  On
+# entry, _Dbg_next_argc, and _Dbg_next_argv should be set. These
+# variables and _Dbg_parm_str are updated on exit.  _Dbg_next_argc is
+# and integer index into BASH_ARGC and _Dbg_next_argv is and index
+# into BASH_ARGV. On return 
+_Dbg_frame_fn_param_str() { 
+    (($# == 0)) || return 1
+    _Dbg_is_int "$_Dbg_next_argc" || return 2
+    _Dbg_is_int "$_Dbg_next_argv" || return 3
+
+    # +1 to compensate for this call.
+    typeset -il arg_count=BASH_ARGC[$_Dbg_next_argc+1]
+    if ((arg_count == 0)) ; then
+	_Dbg_parm_str=''
+    else
+	typeset -il i
+	_Dbg_parm_str="\"${BASH_ARGV[$_Dbg_next_argv+arg_count-1]}\""
+	for (( i=arg_count-1; i > 0; i-- )) ; do
+	    _Dbg_parm_str+=", \"${BASH_ARGV[$_Dbg_next_argv-i+1]}\""
+	done
+	((_Dbg_next_argv+=arg_count))
+    fi
+    return 0
+}
+
 # Print "##" or "->" depending on whether or not $1 (POS) is a number
 # between 0 and _Dbg_stack_size-1. For POS, 0 is the top-most
 # (newest) entry. For _Dbg_stack_pos, 0 is the bottom-most entry.
 # 0 is returnd on success, nonzero on failure.
-_Dbg_frame_prefix() {
+function _Dbg_frame_prefix {
     typeset -l prefix='??'
     typeset -li rc=0
     if (($# == 1)) ; then
@@ -140,12 +166,8 @@ _Dbg_frame_prefix() {
     return $rc
 }
 
-_Dbg_frame_lineno() {
-    return $Dbg_frame_last_lineno
-}
-
 # Print one line in a call stack
-_Dbg_frame_print() {
+function _Dbg_frame_print {
     typeset prefix=$1
     typeset -i pos=$2
     typeset fn=$3
