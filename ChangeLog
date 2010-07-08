@@ -1,5 +1,14 @@
 2010-07-08  rocky <rocky@gnu.org>
 
+	* .gitignore, Makefile.am, bashdb-main.inc.in: We need
+	bashdb-main.inc (and bashdb-main.inc.in)
+
+2010-07-08  rocky <rocky@gnu.org>
+
+	* ChangeLog: What's up.
+
+2010-07-08  rocky <rocky@gnu.org>
+
 	* ChangeLog, Makefile.am, builtin/Makefile.am,
 	test/integration/Makefile.am, test/unit/Makefile.am: "make dist"
 	works again.

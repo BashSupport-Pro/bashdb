@@ -16,6 +16,8 @@ Breakpoint 1 hit (1 times).
 +info program
 Program stopped.
 It stopped at breakpoint 1.
+Next statement to be run is:
+	y=23
 +# 
 +### Try watch...
 +watch x
@@ -35,6 +37,8 @@ Watchpoint 0: $x changed:
 +info program
 Program stopped.
 It stopped on a watch trigger.
+Next statement to be run is:
+	for i in 0 1 3
 +### Try disable expression...
 +disable 1w
 Watchpoint entry 0 disabled.
@@ -95,6 +99,8 @@ Breakpoint 3 hit (1 times).
 +info program
 Program stopped.
 It stopped at breakpoint 3.
+Next statement to be run is:
+	fn1
 +L 
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
@@ -151,6 +157,8 @@ No actions have been set.
 +info program
 Program stopped.
 It stopped after being stepped.
+Next statement to be run is:
+	echo "fn1 here"
 +step 
 fn1 here
 (dbg-test1.sh:7):
@@ -252,6 +260,8 @@ One-time breakpoint 7 set in file dbg-test1.sub, line 13.
 +info program
 Program stopped.
 It stopped at a breakpoint that has since been deleted.
+Next statement to be run is:
+	local filename=${BASH_SOURCE[$j]##*/}
 +### Should hit end of script but stay in debugger...
 +cont 
 FUNCNAME[3]: main called from bashdb at line 0

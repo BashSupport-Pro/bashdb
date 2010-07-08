@@ -93,6 +93,9 @@ _Dbg_do_info() {
 		  if [[ -n $_Dbg_stop_reason ]] ; then
 		      _Dbg_msg "It stopped ${_Dbg_stop_reason}."
 		  fi
+		  if [[ -n $_Dbg_bash_command ]] ; then
+		      _Dbg_msg "Next statement to be run is:\n\t${_Dbg_bash_command}"
+		  fi
 	      else
 		  _Dbg_errmsg "The program being debugged is not being run."
 	      fi

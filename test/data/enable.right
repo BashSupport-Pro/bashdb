@@ -54,6 +54,8 @@ No watch expressions have been set.
 +info program
 Program stopped.
 It stopped at breakpoint 3.
+Next statement to be run is:
+	p
 +c 
 nexting.sh:6
 ===
@@ -70,4 +72,6 @@ No watch expressions have been set.
 +info program
 Program stopped.
 It stopped at breakpoint 3.
+Next statement to be run is:
+	x=6
 +quit 
