@@ -72,6 +72,8 @@ _Dbg_debug_trap_handler() {
     # Shift off "RETURN";  we do not need that any more.
     shift 
     
+    ######################### FIXME: 
+    # use common code with hook.sh _Debug_trap_handler
     _Dbg_bash_command=$1
     shift
     
@@ -91,13 +93,15 @@ _Dbg_debug_trap_handler() {
     
     # Populate _Dbg_arg with $1, $2, etc.
     for (( _Dbg_i=1 ; _Dbg_n > 0; _Dbg_n-- )) ; do
-	_Dbg_arg[$_Dbg_i]=$1
+	_Dbg_arg[$_Dbg_i]="$1"
 	((_Dbg_i++))
 	shift
     done
     unset _Dbg_arg[0]       # Get rid of line number; makes array count
                             # correct; also listing all _Dbg_arg works
                             # like $*.
+    ########################################
+
 
     # if in step mode, decrement counter
     if ((_Dbg_step_ignore > 0)) ; then 
@@ -120,7 +124,7 @@ _Dbg_debug_trap_handler() {
 		_Dbg_msg "  old value: '$old_val'"
 		_Dbg_msg "  new value: '$new_val'"
 		_Dbg_watch_val[$_Dbg_i]=$new_val
-		_Dbg_hook_enter_debugger "on a watch trigger"
+		_Dbg_hook_enter_debugger 'on a watch trigger'
 		return $_Dbg_rc
 	    fi
 	fi
@@ -261,7 +265,7 @@ _Dbg_hook_breakpoint_hit() {
 # Go into the command loop
 _Dbg_hook_enter_debugger() {
     _Dbg_stop_reason="$1"
-    _Dbg_print_location_and_command
+    [[ 'noprint' != $2 ]] && _Dbg_print_location_and_command
     _Dbg_process_commands
     _Dbg_set_to_return_from_debugger 1
     return $_Dbg_rc # _Dbg_rc set to $? by above
