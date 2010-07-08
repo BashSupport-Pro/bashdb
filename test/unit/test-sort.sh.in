@@ -31,11 +31,10 @@ test_sort()
     check=(1 2 3 4)
     do_one
     list=(' 4' '3 ' '2' '1')
-    if (( BASH_VERSINFO[0] > 4 || \
-	(BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1) )) ; then 
-	check=('1' '2' '3 ' ' 4')
-    else
+    if [[ ' 4' < '1' ]] ; then
 	check=(' 4' '1' '2' '3 ')
+    else
+	check=('1' '2' '3 ' ' 4')
     fi
     do_one
 
