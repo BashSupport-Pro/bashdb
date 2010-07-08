@@ -241,8 +241,8 @@ _Dbg_set_brkpt() {
     
     # Add line number with a leading and trailing space. Delimiting the
     # number with space helps do a string search for the line number.
-    _Dbg_brkpt_file2linenos[$source_file]+=" $lineno "
-    _Dbg_brkpt_file2brkpt[$source_file]+=" $_Dbg_brkpt_max "
+    _Dbg_write_journal_eval "_Dbg_brkpt_file2linenos[$source_file]+=\" $lineno \""
+    _Dbg_write_journal_eval "_Dbg_brkpt_file2brkpt[$source_file]+=\" $_Dbg_brkpt_max \""
     
     source_file=$(_Dbg_adjust_filename "$source_file")
     if (( $is_temp == 0 )) ; then 

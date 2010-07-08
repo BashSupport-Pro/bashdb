@@ -60,7 +60,6 @@ nexting.sh:6
 Breakpoint 3 hit (2 times).
 (nexting.sh:6):
 6:	p ; x=6
-x=6
 +info break
 Num Type       Disp Enb What
 1   breakpoint keep y   nexting.sh:5

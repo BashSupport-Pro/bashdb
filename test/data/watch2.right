@@ -13,7 +13,7 @@ Breakpoint 1 set in file dbg-test1.sh, line 17.
  0: echo "x is $x, ? is $?"
 +continue 
 Breakpoint 1 hit (1 times). (dbg-test1.sh:17): 17: fn3() { 0 (echo "x is $x, ? is $?"): x is 29, ? is 0 + continue
-Breakpoint 1 hit (1 times).
+Breakpoint 1 hit (2 times).
 (dbg-test1.sh:17):
 17:	fn3() {
  0 (echo "x is $x, ? is $?"): x is 29, ? is 0

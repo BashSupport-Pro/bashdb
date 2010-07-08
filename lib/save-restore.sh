@@ -74,8 +74,8 @@ function _Dbg_set_to_return_from_debugger {
 
   _Dbg_stop_reason=''
   # FIXME: put in a frame setup routine and remove from set_entry
+  _Dbg_last_lineno=${_Dbg_frame_last_lineno}
   if (( $1 != 0 )) ; then
-      _Dbg_last_lineno=${BASH_LINENO[2]}
       _Dbg_last_bash_command="$_Dbg_bash_command"
       _Dbg_last_source_file="$_Dbg_frame_last_filename"
   else

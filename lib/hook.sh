@@ -143,6 +143,7 @@ _Dbg_debug_trap_handler() {
     
     # check if breakpoint reached
     if ((_Dbg_brkpt_count > 0)) ; then 
+	
 	if _Dbg_hook_breakpoint_hit "$full_filename"; then 
 	    if ((_Dbg_step_force)) ; then
 		typeset _Dbg_frame_previous_file="$_Dbg_frame_last_filename"
@@ -151,6 +152,8 @@ _Dbg_debug_trap_handler() {
 	    ## FIXME: should probably add this (from zshdb):
 	    ## _Dbg_frame_save_frames 1
 	    ((_Dbg_brkpt_counts[_Dbg_brkpt_num]++))
+	    _Dbg_write_journal \
+		"_Dbg_brkpt_counts[$_Dbg_brkpt_num]=${_Dbg_brkpt_counts[_Dbg_brkpt_num]}"
 	    if (( ${_Dbg_brkpt_onetime[_Dbg_brkpt_num]} == 1 )) ; then
 		_Dbg_stop_reason='at a breakpoint that has since been deleted'
 		_Dbg_delete_brkpt_entry $_Dbg_brkpt_num
@@ -166,14 +169,14 @@ _Dbg_debug_trap_handler() {
 		_Dbg_bp_commands $_Dbg_brkpt_num
 	    fi
 	    _Dbg_hook_enter_debugger "$_Dbg_stop_reason"
-	    return $?
+	    _Dbg_set_to_return_from_debugger 1
+	    return $_Dbg_rc
 	fi
     fi
     
 
     # Check if step mode and number steps to ignore.
     if ((_Dbg_step_ignore == 0)); then
-	
 	if ((_Dbg_step_force)) ; then
 	    if (( $_Dbg_last_lineno == $_Dbg_frame_last_lineno )) \
 		&& [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then 

@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Things related to variable journaling.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009,
+#   2010 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -28,40 +28,40 @@ typeset _Dbg_journal=$(_Dbg_tempname journal)
 
 # append a command into journal file and then run the command.
 _Dbg_write_journal_eval() {
-  _Dbg_write_journal "$*" 
-  eval "$*"
+    _Dbg_write_journal "$*" 
+    eval "$*"
 }
 
 # append a command into journal file and then run the command.
 _Dbg_write_journal_var() {
-  typeset var_name="$1"
-  typeset val
-  typeset val_cmd="val='\${$var_name}'"
-  eval "$val_cmd"
-  _Dbg_write_journal "${var_name}='${val}'" 
+    typeset var_name="$1"
+    typeset val
+    typeset val_cmd="val='\${$var_name}'"
+    eval "$val_cmd"
+    _Dbg_write_journal "${var_name}='${val}'" 
 }
 
 _Dbg_write_journal_avar() {
-  typeset decl_str=$(declare -p $1)
-  typeset -a decl_a
-  decl_a=($decl_str)
-  typeset -a decl_a2
-  decl_a2=${decl_a[@]:2}
-  _Dbg_write_journal ${decl_a2[@]}
+    typeset decl_str=$(declare -p $1)
+    typeset -a decl_a
+    decl_a=($decl_str)
+    typeset -a decl_a2
+    decl_a2=${decl_a[@]:2}
+    _Dbg_write_journal ${decl_a2[@]}
 }
 
 # Append a command into journal file. But we only need to do
 # if we are in a subshell.
 _Dbg_write_journal() {
-  if (( $BASH_SUBSHELL != 0 )) ; then
-    echo "$@" >> ${_Dbg_journal} 2>/dev/null
-  fi
-  # return $?
+    if (( $BASH_SUBSHELL != 0 )) ; then
+	echo "$@" >> ${_Dbg_journal} 2>/dev/null
+    fi
+    # return $?
 }
 
 # Remove all journal files.
 _Dbg_erase_journals() {
-  rm ${_Dbg_journal} 2>/dev/null
+    rm ${_Dbg_journal} 2>/dev/null
 }
 
 # read in or "source" in journal file which will set variables.
@@ -74,6 +74,6 @@ _Dbg_source_journal() {
 }
 
 if [ ! -f _Dbg_journal ] ; then 
-  typeset -i _Dbg_QUIT_LEVELS=0
-  _Dbg_write_journal "_Dbg_QUIT_LEVELS=0"
+    typeset -i _Dbg_QUIT_LEVELS=0
+    _Dbg_write_journal "_Dbg_QUIT_LEVELS=0"
 fi
