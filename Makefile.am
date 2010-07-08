@@ -47,10 +47,11 @@ pkgdata_DATA = dbg-init.sh         \
                dbg-opts.sh         \
                dbg-pre.sh          \
 	       dbg-set-d-vars.inc  \
+	       bashdb-main.inc     \
 	       bashdb-trace        \
 	       getopts_long.sh
 
-EXTRA_DIST = bashdb.in bashdb-trace.in \
+EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     ChangeLog ChangeLog.0 
 
