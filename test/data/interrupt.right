@@ -1,3 +1,4 @@
 Program received signal SIGTERM (15)...
-##0 in file `interrupt.sh' at line 0
+->0 in file `interrupt.sh' at line 0
 ##1 main() called from file `interrupt.sh' at line 0
+
