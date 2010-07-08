@@ -1,5 +1,11 @@
 2010-07-08  rocky <rocky@gnu.org>
 
+	* ChangeLog, Makefile.am, builtin/Makefile.am,
+	test/integration/Makefile.am, test/unit/Makefile.am: "make dist"
+	works again.
+
+2010-07-08  rocky <rocky@gnu.org>
+
 	* .gitignore, configure.ac, dbg-main.sh, dbg-main.sh.in: dbg-main.sh
 	is no longer derived. Default init file is now  $HOME/.bashdbrc
 	rather than $HOEM/.bashdbinit
