@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # dbg-main.sh - Bourne Again Shell Debugger Main Include
 
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010
+#    Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -20,8 +20,8 @@
 
 # Are we using a debugger-enabled bash? If not let's stop right here.
 if [[ -z "${BASH_SOURCE[0]}" ]] ; then 
-  echo "Sorry, you need to use a debugger-enabled version of bash." 2>&1
-  exit 2
+    echo "Sorry, you need to use a debugger-enabled version of bash." 2>&1
+    exit 2
 fi
 
 # Stuff common to bashdb and bashdb-trace. Include the rest of options
@@ -33,21 +33,21 @@ fi
 typeset -r _Dbg_includes='init io'
 
 for _Dbg_file in $_Dbg_includes ; do 
-  source ${_Dbg_libdir}/dbg-${_Dbg_file}.sh
+    source ${_Dbg_libdir}/dbg-${_Dbg_file}.sh
 done
 
 for _Dbg_file in ${_Dbg_libdir}/lib/*.sh ; do 
     source $_Dbg_file
 done
 
-for file in ${_Dbg_libdir}/command/*.sh ; do 
-  source $file
+for _Dbg_file in ${_Dbg_libdir}/command/*.sh ; do 
+    source $_Dbg_file
 done
 
 if [[ -r /dev/stdin ]] ; then
-  _Dbg_do_source /dev/stdin
+    _Dbg_do_source /dev/stdin
 elif [[ $(tty) != 'not a tty' ]] ; then
-  _Dbg_do_source $(tty)
+    _Dbg_do_source $(tty)
 fi
 
 # List of command files to process
@@ -57,20 +57,21 @@ typeset -a _Dbg_input
 #
 # Note: index 0 is only set by the debugger. It is not used otherwise for
 # I/O like those indices >= _Dbg_INPUT_START_DESC are.
-if [ -n "$DBG_INPUT" ] ; then 
-  _Dbg_input=("$DBG_INPUT")
-  _Dbg_do_source "${_Dbg_input[0]}"
-  _Dbg_no_init=1
+if [[ -n "$DBG_INPUT" ]] ; then 
+    _Dbg_input=("$DBG_INPUT")
+    _Dbg_do_source "${_Dbg_input[0]}"
+    _Dbg_no_init=1
 fi
 
-if [[ -z $_Dbg_no_init && -r ~/.bashdbinit ]] ; then
-  _Dbg_do_source ~/.bashdbinit
+typeset _Dbg_startup_cmdfile=${HOME:-~}/.${_Dbg_debugger_name}rc
+if [[ -z $_Dbg_no_init && -r $_Dbg_startup_cmdfile ]] ; then
+    _Dbg_do_source $_Dbg_startup_cmdfile
 fi
 
 # _Dbg_DEBUGGER_LEVEL is the number of times we are nested inside a debugger
 # by virtue of running "debug" for example.
 if [[ -z "${_Dbg_DEBUGGER_LEVEL}" ]] ; then
-  typeset -ix _Dbg_DEBUGGER_LEVEL=1
+    typeset -ix _Dbg_DEBUGGER_LEVEL=1
 fi
 
 # This is put at the so we have something at the end to stop at 
@@ -83,4 +84,4 @@ if [[ ${_Dbg_libdir:0:1} == '.' ]] ; then
 fi
 
 [ -n "$DBG_RESTART_FILE" ] \
-   && [ -r "$DBG_RESTART_FILE" ] &&  source $DBG_RESTART_FILE
+    && [ -r "$DBG_RESTART_FILE" ] &&  source $DBG_RESTART_FILE

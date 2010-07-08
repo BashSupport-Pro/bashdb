@@ -259,7 +259,6 @@ AC_CONFIG_FILES([test/integration/test-setshow],
 AC_CONFIG_FILES([ \
 	bashdb-main.inc \
 	bashdb-trace \
-	dbg-main.sh \
 	doc/macros.texi \
 	emacs/Makefile \
 	test/integration/check-common.sh \

@@ -6,7 +6,6 @@
 /bashdb
 /bashdb-4.*tar.gz
 /bashdb-4.*tar.bz2
-/bashdb-main.inc
 /bashdb-trace
 /compile
 /config.guess
@@ -16,7 +15,6 @@
 /config.status
 /config.sub
 /configure
-/dbg-main.sh
 /depcomp
 /elisp-comp
 /install-sh
