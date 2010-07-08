@@ -71,37 +71,11 @@ _Dbg_debug_trap_handler() {
     
     # Shift off "RETURN";  we do not need that any more.
     shift 
-    
-    ######################### FIXME: 
-    # use common code with hook.sh _Debug_trap_handler
+
     _Dbg_bash_command=$1
     shift
-    
-    # Save values of $1 $2 $3 when debugged program was stopped
-    # We use the loop below rather than _Dbg_set_args="(@)" because
-    # we want to preserve embedded blanks in the arguments.
-    typeset -i _Dbg_n=${#@}
-    typeset -i _Dbg_i
-    typeset -i _Dbg_arg_max=${#_Dbg_arg[@]}
-    
-    # If there has been a shift since the last time we entered,
-    # it is possible that _Dbg_arg will contain too many values.
-    # So remove those that have disappeared.
-    for (( _Dbg_i=_Dbg_arg_max; _Dbg_i > _Dbg_n ; _Dbg_i-- )) ; do
-	unset _Dbg_arg[$_Dbg_i]
-    done
-    
-    # Populate _Dbg_arg with $1, $2, etc.
-    for (( _Dbg_i=1 ; _Dbg_n > 0; _Dbg_n-- )) ; do
-	_Dbg_arg[$_Dbg_i]="$1"
-	((_Dbg_i++))
-	shift
-    done
-    unset _Dbg_arg[0]       # Get rid of line number; makes array count
-                            # correct; also listing all _Dbg_arg works
-                            # like $*.
-    ########################################
 
+    _Dbg_save_args "$@"
 
     # if in step mode, decrement counter
     if ((_Dbg_step_ignore > 0)) ; then 
