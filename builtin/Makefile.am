@@ -1,17 +1,9 @@
 pkgdatadir        = ${datadir}/@PACKAGE@/builtin
 bindir            = ${datadir}/@PACKAGE@/builtin
 if BUILD_BUILTINS
-pkgdata_DATA      = readarray set0
-bin_PROGRAMS      =  readarray set0
-noinst_PROGRAMS   =  readarray set0
-readarray_SOURCES =  readarray.c
-readarray_CFLAGS  =  -I @BASH_SRC@ -I @BASH_SRC@/include -I@BASH_SRC@/builtins @PIC@
-readarray_LDFLAGS =  -shared
-
-readarray$(EXEEXT): $(readarray_OBJECTS) $(readarray_DEPENDENCIES) 
-	@rm -f $@
-	$(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ \
-	    $(readarray_LDFLAGS) $(readarray_OBJECTS) $(readarray_LDADD) $(LIBS)
+pkgdata_DATA      = set0
+bin_PROGRAMS      = set0
+noinst_PROGRAMS   = set0
 
 set0_SOURCES =  set0.c
 set0_CFLAGS  =  -I @BASH_SRC@ -I @BASH_SRC@/include -I@BASH_SRC@/builtins @PIC@

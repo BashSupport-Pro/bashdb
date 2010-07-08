@@ -27,6 +27,7 @@ abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
 EXTRA_DIST = $(TESTS) shunit2 \
+     test-action.sh.in        \
      test-alias.sh.in         \
      test-bashdb-trace.sh.in  \
      test-break.sh.in         \
