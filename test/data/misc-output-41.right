@@ -66,7 +66,7 @@ POSSIBILITY OF SUCH DAMAGES.
 +help 
 Available commands:
   /          continue  edit     frame    list   restart  step    unalias  
-  action     debug     enable   handle   load   set      step-   undisplay
+  action     debug     enable   handle   load   set      step+   undisplay
   alias      delete    eval     help     next   show     step+   untrace  
   break      disable   examine  history  print  signal   tbreak  up       
   commands   display   file     info     pwd    skip     trace   watch    

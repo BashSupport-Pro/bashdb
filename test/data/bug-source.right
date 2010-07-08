@@ -26,6 +26,6 @@ Breakpoint 2 set in file dbg-test1.sub, line 3.
 +info files
 Source files which we have recorded info about:
   dbg-test1.sub: dbg-test1.sub, 28 lines
-  dbg-test1.sub: dbg-test1.sub, 28 lines
   dbg-test1.sh: dbg-test1.sh, 35 lines
+  dbg-test1.sub: dbg-test1.sub, 28 lines
 +quit 
