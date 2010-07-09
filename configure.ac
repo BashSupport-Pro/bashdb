@@ -189,8 +189,8 @@ if test "$DIFF" = no ; then
 else 
    dnl Try for GNU diff options.
   # MSDOG output uses \r\n rather than \n in tests
-  for diff_opt in -w --unified ; do 
-    if $DIFF $diff_opt . . > /dev/null 2>&1; then
+  for diff_opt in -w --unified -b ; do 
+    if $DIFF $diff_opt $0 $0 > /dev/null 2>&1; then
       AC_MSG_RESULT([adding $diff_opt to diff in regression tests])
       DIFF_OPTS="$DIFF_OPTS $diff_opt"
     fi
