@@ -23,7 +23,7 @@ Breakpoint 2 hit (1 times).
 +disable display 0
 Display entry 0 disabled.
 +info display
-Display expressions:
+Auto-display statements now in effect:
 Num Enb Expression          
 0     0 echo $x
 +step 
@@ -37,7 +37,7 @@ Breakpoint 2 hit (2 times).
 +enable display 0
 Display entry 0 enabled.
 +info display
-Display expressions:
+Auto-display statements now in effect:
 Num Enb Expression          
 0     1 echo $x
 +### Try display to show again status ...
@@ -50,7 +50,7 @@ Breakpoint 2 hit (3 times).
 25:	  ((x += i))
  0 (echo $x): 23
 +info display
-Display expressions:
+Auto-display statements now in effect:
 Num Enb Expression          
 0     1 echo $x
 +cont 
@@ -58,7 +58,10 @@ Num Enb Expression
 28:	y=b
  0 (echo $x): 27
 +### Try undisplay to delete ...
++undisplay 
+** You need to pass in some display numbers.
 +undisplay 0
+Display entry 0 unset.
 +info display
 No display expressions have been set.
 +step 

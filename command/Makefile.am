@@ -38,6 +38,7 @@ pkgdata_DATA =        \
 	tracefn.sh    \
 	tty.sh	      \
 	up.sh	      \
+	undisplay.sh  \
 	watch.sh      \
 	where.sh
 

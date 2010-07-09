@@ -21,6 +21,7 @@ cont 28
 info display
 cont
 ###  Try undisplay to delete ...
+undisplay
 undisplay 0
 info display
 step

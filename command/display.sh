@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # display.sh - gdb-like "(un)display" and list display debugger commands
 #
-#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2010
+#   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -19,7 +19,17 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add display \
-"display [EXP] -- Set display expression or list all display expressions."
+"display [STMT] 
+
+Evalute STMT each time the debugger is stopped. If STMT is omitted, show
+all of the display statements that are active.
+
+Examples:
+  display echo \$x  # show the current value of x each time debugger stops
+  display          # see what display statements are in effect
+  info display     # same as above
+
+See also 'undisplay' and 'info display'."
 
 # Set display command or list all current display expressions
 _Dbg_do_display() {
@@ -37,7 +47,7 @@ _Dbg_do_display() {
 _Dbg_do_list_display() {
   if [ ${#_Dbg_disp_exp[@]} != 0 ]; then
     local i=0 j
-    _Dbg_msg "Display expressions:"
+    _Dbg_msg "Auto-display statements now in effect:"
     _Dbg_msg "Num Enb Expression          "
     for (( i=0; i < _Dbg_disp_max; i++ )) ; do
       if [ -n "${_Dbg_disp_exp[$i]}" ] ;then
@@ -47,19 +57,5 @@ _Dbg_do_list_display() {
     done
   else
     _Dbg_msg "No display expressions have been set."
-  fi
-}
-
-_Dbg_help_add undisplay \
-"undisplay [EXP]	- Set display expression or list all display expressions."
-
-_Dbg_do_undisplay() {
-  local -i del=$1
-
-  if [ -n "${_Dbg_disp_exp[$del]}" ] ; then
-    _Dbg_write_journal_eval "unset _Dbg_disp_exp[$del]"
-    _Dbg_write_journal_eval "unset _Dbg_disp_enable[$del]"
-  else
-    _Dbg_msg "Display entry $del doesn't exist so nothing done."
   fi
 }
