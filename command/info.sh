@@ -53,11 +53,12 @@ _Dbg_do_info() {
 
 	  file | files )
               _Dbg_msg "Source files which we have recorded info about:"
-	      typeset -al list=(${!_Dbg_file2canonic[@]})
+	      typeset -a list=(${!_Dbg_file2canonic[@]})
 	      sort_list 0 ${#list[@]}-1
-	      for file in "${list[@]}" ; do
+	      for file in ${list[@]} ; do
 		  typeset -i lines=$(_Dbg_get_maxline "$file")
-		  typeset canonic_file=${_Dbg_file2canonic[$file]}
+		  typeset canonic_file
+		  canonic_file="${_Dbg_file2canonic[$file]}"
 		  if (( _Dbg_basename_only )) ; then 
 		      # Do the same with canonic_file ?
 		      file=${file##*/}
