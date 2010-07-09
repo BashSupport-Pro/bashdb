@@ -1,3 +1,21 @@
+Version 4.1-0.4
+2007-07-09
+
+- Rewrite to use bash associative arrays (first in 4.0) and automatic 
+  file descriptor selection for input (first in 4.1). As a result, we
+  need bash 4.1 or greater.
+
+- "info program" shows the command to be executed. 
+
+- tests run clean on Solaris 
+
+- many help corrections and improvements
+
+- .bashdbinit is now $HOME/.bashdbrc
+
+- code is cleaner, more reliable and more maintainable (at least by
+  me). Some small bugs fixed.
+
 Version 4.0-0.4
 2009-10-27
 
