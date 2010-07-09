@@ -1,3 +1,42 @@
+2010-07-09  rocky <rocky@gnu.org>
+
+	* command/info.sh: Was incorrectly lowercasing file names in "info
+	files"
+
+2010-07-09  rocky <rocky@gnu.org>
+
+	* .gitignore, command/Makefile.am, command/display.sh,
+	command/edit.sh, command/undisplay.sh, lib/Makefile.am,
+	lib/break.sh, lib/display.sh, test/data/display.cmd,
+	test/data/display.right: "undisplay" command now takes a list of
+	display numbers and gives and error if no numbers passed. Help text
+	improved for "display" and "undisplay". Commands and library
+	routines for display and undisplay are now broken out into
+	individual files.
+
+2010-07-08  rocky <rocky@gnu.org>
+
+	* command/info.sh, test/data/brkpt2.right,
+	test/data/bug-source.right, test/data/misc-output-41.right: "info
+	files" lists files in sorted order now.
+
+2010-07-09  rocky <rocky@gnu.org>
+
+	* test/integration/test-misc.in: Ignore differences between
+	collating sequence for step- and step+. (Seen on Solaris for
+	example.)
+
+2010-07-08  rocky <rocky@gnu.org>
+
+	* test/unit/test-sort.sh.in: Better check based on run-time colating
+	sequence.
+
+2010-07-08  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/info.sh, test/data/brkpt2.right,
+	test/data/enable.right: "info program" now shows statement to be
+	run.
+
 2010-07-08  rocky <rocky@gnu.org>
 
 	* .gitignore, Makefile.am, bashdb-main.inc.in: We need

@@ -644,7 +644,7 @@ _Dbg_onecmd() {
 
 	# Dump variables
 	V )
-	  _Dbg_do_list_variables "$args"
+	  _Dbg_do_info_variables "$args"
 	  ;;
 
 	# Has to come after !! of "shell" listed above

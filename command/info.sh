@@ -18,17 +18,17 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-# Print info args. Like GDB's "info args"
-# $1 is an additional offset correction - this routine is called from two
-# different places and one routine has one more additional call on top.
-# This code assumes the's debugger version of
-# bash where FUNCNAME is an array, not a variable.
-
 _Dbg_help_add info ''
 
 typeset -a _Dbg_info_subcmds=( args breakpoints display files functions program source \
     sources stack terminal variables watchpoints )
   
+
+# Load in "info" subcommands
+for _Dbg_file in ${_Dbg_libdir}/command/info_sub/*.sh ; do 
+    source $_Dbg_file
+done
+
 _Dbg_do_info() {
       
   if (($# > 0)) ; then
@@ -41,37 +41,23 @@ _Dbg_do_info() {
 	      ;;
 	  b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
 	      w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
-	      _Dbg_do_list_brkpt $*
-	      _Dbg_list_watch $*
-	      return
+	      _Dbg_do_info_brkpts $*
+	      return $?
 	      ;;
 
 	  d | di | dis| disp | displ | displa | display )
-	      _Dbg_do_list_display $*
+	      _Dbg_do_info_display $*
 	      return
 	      ;;
 
 	  file | files )
-              _Dbg_msg "Source files which we have recorded info about:"
-	      typeset -a list=(${!_Dbg_file2canonic[@]})
-	      sort_list 0 ${#list[@]}-1
-	      for file in ${list[@]} ; do
-		  typeset -i lines=$(_Dbg_get_maxline "$file")
-		  typeset canonic_file
-		  canonic_file="${_Dbg_file2canonic[$file]}"
-		  if (( _Dbg_basename_only )) ; then 
-		      # Do the same with canonic_file ?
-		      file=${file##*/}
-		      canonic_file=${canonic_file##*/}
-		  fi
-		  _Dbg_msg "  ${file}: ${canonic_file}, $lines lines"
-	      done        
-              return 0
+	      _Dbg_do_info_files
+	      return $?
 	      ;;
 
 	  fu | fun| func | funct | functi | functio | function | functions )
-              _Dbg_do_list_functions $*
-              return
+              _Dbg_do_info_functions $*
+              return $?
 	      ;;
 
 	  h | ha | han | hand | handl | handle | \
@@ -91,17 +77,7 @@ _Dbg_do_info() {
 	      ;;
 	  
 	  p | pr | pro | prog | progr | progra | program )
-	      if (( _Dbg_running )) ; then
-		  _Dbg_msg "Program stopped."
-		  if [[ -n $_Dbg_stop_reason ]] ; then
-		      _Dbg_msg "It stopped ${_Dbg_stop_reason}."
-		  fi
-		  if [[ -n $_Dbg_bash_command ]] ; then
-		      _Dbg_msg "Next statement to be run is:\n\t${_Dbg_bash_command}"
-		  fi
-	      else
-		  _Dbg_errmsg "The program being debugged is not being run."
-	      fi
+	      _Dbg_do_info_program
 	      return $?
 	      ;;
 	  
@@ -119,33 +95,11 @@ _Dbg_do_info() {
 	      return $?
 	      ;;
 	  v | va | var | vari | varia | variab | variabl | variable | variables )
-	      _Dbg_do_list_variables "$1"
+	      _Dbg_do_info_variables "$1"
 	      return
               ;;
 	  w | wa | war | warr | warra | warran | warrant | warranty )
-              _Dbg_msg "
-			    NO WARRANTY
-
-  11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
-OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-PROVIDE THE PROGRAM \"AS IS\" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
-OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
-TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
-PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
-REPAIR OR CORRECTION.
-
-  12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
-INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
-OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
-TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
-YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
-PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGES.
-"
+	      _Dbg_do_info_warranty
 	      return 0
 	      ;;
 	  *)
@@ -167,43 +121,4 @@ POSSIBILITY OF SUCH DAMAGES.
   done
   return 1
 }
-
-_Dbg_do_info_args() {
-
-  eval "$_seteglob"
-  if [[ $1 != $int_pat ]] ; then 
-    _Dbg_msg "Bad integer parameter: $1"
-    eval "$_resteglob"
-    return 1
-  fi
-
-  typeset -i i=_Dbg_stack_pos+$1
-
-  (( i >= _Ddbg_stack_size )) && return 1
-
-  # Figure out which index in BASH_ARGV is position "i" (the place where
-  # we start our stack trace from). variable "r" will be that place.
-
-  typeset -i q
-  typeset -i r=0
-  for (( q=0 ; q<i ; q++ )) ; do 
-    (( r = r + ${BASH_ARGC[$q]} ))
-  done
-
-  # Print out parameter list.
-  if (( 0 != ${#BASH_ARGC[@]} )) ; then
-
-    typeset -i arg_count=${BASH_ARGC[$i]}
-
-    ((r += arg_count - 1))
-
-    typeset -i s
-    for (( s=1; s <= arg_count ; s++ )) ; do 
-      _Dbg_printf "$%d = %s" $s "${BASH_ARGV[$r]}"
-      ((r--))
-    done
-  fi
-  return 0
-}
-
 _Dbg_alias_add 'i' info

@@ -21,13 +21,13 @@
 _Dbg_help_add display \
 "display [STMT] 
 
-Evalute STMT each time the debugger is stopped. If STMT is omitted, show
-all of the display statements that are active.
+Evalute STMT each time the debugger is stopped. If STMT is omitted, evaluate
+all of the display statements that are active. In contrast, 'info display'
+shows the display statements without evaluating them.
 
 Examples:
   display echo \$x  # show the current value of x each time debugger stops
-  display          # see what display statements are in effect
-  info display     # same as above
+  display          # evaluate all display statements
 
 See also 'undisplay' and 'info display'."
 
@@ -40,22 +40,5 @@ _Dbg_do_display() {
     _Dbg_disp_exp[$n]="$@"
     _Dbg_disp_enable[$n]=1
     _Dbg_printf '%2d: %s' $n "${_Dbg_disp_exp[$n]}"
-  fi
-}
-
-# List display command(s)
-_Dbg_do_list_display() {
-  if [ ${#_Dbg_disp_exp[@]} != 0 ]; then
-    local i=0 j
-    _Dbg_msg "Auto-display statements now in effect:"
-    _Dbg_msg "Num Enb Expression          "
-    for (( i=0; i < _Dbg_disp_max; i++ )) ; do
-      if [ -n "${_Dbg_disp_exp[$i]}" ] ;then
-	_Dbg_printf '%-3d %3d %s' \
-	  $i ${_Dbg_disp_enable[$i]} "${_Dbg_disp_exp[$i]}"
-      fi
-    done
-  else
-    _Dbg_msg "No display expressions have been set."
   fi
 }
