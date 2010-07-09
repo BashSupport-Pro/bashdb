@@ -1,5 +1,25 @@
 2010-07-09  rocky <rocky@gnu.org>
 
+	* configure.ac, test/integration/Makefile.am: Diff configure test
+	and option tweak for Solaris
+
+2010-07-09  rocky <rocky@gnu.org>
+
+	* test/example/interrupt.sh.in: Don't assume seq is available. (Not
+	found on Solaris.)
+
+2010-07-09  rocky <rocky@gnu.org>
+
+	* NEWS: What's up.
+
+2010-07-09  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/Makefile.am, command/info_sub/.gitignore,
+	command/info_sub/Makefile.am, configure.ac: Fix up packaging in the
+	presence of the new command/info_sub directory.
+
+2010-07-09  rocky <rocky@gnu.org>
+
 	* ChangeLog, command/Makefile.am, command/display.sh,
 	command/info.sh, command/info_sub/.gitignore,
 	command/info_sub/args.sh, command/info_sub/brkpts.sh,

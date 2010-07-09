@@ -432,7 +432,7 @@ _Dbg_onecmd() {
 	  ;;
 
 	#  Info subcommands
-	i | in | inf | info )
+	in | inf | info )
 	  _Dbg_do_info $args
 	  ;;
 
