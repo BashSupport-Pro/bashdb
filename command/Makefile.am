@@ -1,3 +1,4 @@
+SUBDIRS           = info_sub
 pkgdatadir        = ${datadir}/@PACKAGE@/command
 pkgdata_DATA =        \
 	action.sh     \
@@ -22,14 +23,6 @@ pkgdata_DATA =        \
 	help.sh       \
 	history.sh    \
 	info.sh       \
-	info_sub/args.sh      \
-	info_sub/brkpts.sh    \
-	info_sub/display.sh   \
-	info_sub/files.sh     \
-	info_sub/functions.sh \
-	info_sub/program.sh   \
-	info_sub/variables.sh \
-	info_sub/warranty.sh  \
 	kill.sh       \
 	list.sh       \
 	load.sh       \

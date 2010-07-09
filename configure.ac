@@ -205,6 +205,7 @@ AM_CONDITIONAL(INSTALL_EMACS_LISP,
 AC_CONFIG_FILES([Makefile \
 	builtin/Makefile \
 	command/Makefile \
+	command/info_sub/Makefile \
 	doc/Makefile \
 	lib/Makefile \
 	test/Makefile \

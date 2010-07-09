@@ -1,5 +1,19 @@
 2010-07-09  rocky <rocky@gnu.org>
 
+	* ChangeLog, command/Makefile.am, command/display.sh,
+	command/info.sh, command/info_sub/.gitignore,
+	command/info_sub/args.sh, command/info_sub/brkpts.sh,
+	command/info_sub/display.sh, command/info_sub/files.sh,
+	command/info_sub/functions.sh, command/info_sub/program.sh,
+	command/info_sub/variables.sh, command/info_sub/warranty.sh,
+	command/list.sh, command/next.sh, command/step.sh,
+	command/stepping.sh, lib/processor.sh: Break commands into smaller
+	files: "skip" and "next" separated from "step". Info subcommands are
+	now in info_sub and info subcommand names have been regularized to
+	_Dbg_do_info_xxx.
+
+2010-07-09  rocky <rocky@gnu.org>
+
 	* command/info.sh: Was incorrectly lowercasing file names in "info
 	files"
 
