@@ -1,5 +1,5 @@
 Version 4.1-0.4
-2007-07-09
+2010-07-09
 
 - Rewrite to use bash associative arrays (first in 4.0) and automatic 
   file descriptor selection for input (first in 4.1). As a result, we
