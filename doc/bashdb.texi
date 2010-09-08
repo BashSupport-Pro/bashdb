@@ -528,7 +528,7 @@ One of the things I had found disappointing about the
 default @code{set -x} tracing behavior is that no position information
 is given in the trace output, in particular the line number and the file
 name.  However with the introduction in Bash 3.0 of the introspection
-variables, aslo needed to support the debugger, one can set 
+variables, also needed to support the debugger, one can set 
 @code{$PS4} to rectify this. (I became of this in a defunct blog
 @url{http://raz.cx/blog/2005/08/handy-bash-debugging-trick.html}.)
 
