@@ -119,7 +119,6 @@ function _Dbg_is_file {
 
   if [[ -z $find_file ]] ; then
     _Dbg_errmsg "Internal debug error _Dbg_is_file(): file argument null"
-    echo $(caller 1)
     echo ''
     return 1
   fi

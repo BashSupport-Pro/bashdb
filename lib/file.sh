@@ -23,7 +23,7 @@
 typeset -a _Dbg_dir
 _Dbg_dir=('\$cdir' '\$cwd' )
 
-# Directory in which the script is located
+# _Dbg_cdir is the directory in which the script is located.
 [[ -z ${_Dbg_cdir} ]] && typeset _Dbg_cdir=${_Dbg_source_file%/*}
 [[ -z ${_Dbg_cdir} ]] && typeset _Dbg_cdir=$(pwd)
 
