@@ -111,16 +111,17 @@ function _Dbg_get_source_line {
 # '' is echo'd if no file found.
 function _Dbg_is_file {
   if (( $# == 0 )) ; then
-    _Dbg_errmsg "Internal debug error: null file to find"
+    _Dbg_errmsg "Internal debug error _Dbg_is_file(): null file to find"
     echo ''
     return 1
   fi
   typeset find_file="$1"
 
   if [[ -z $find_file ]] ; then
-    _Dbg_errmsg "Internal debug error: null file to find"
+    _Dbg_errmsg "Internal debug error _Dbg_is_file(): file argument null"
+    echo $(caller 1)
     echo ''
-    return
+    return 1
   fi
 
   if [[ ${find_file:0:1} == '/' ]] ; then 
