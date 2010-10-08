@@ -98,13 +98,12 @@ function _Dbg_get_source_line {
     fi
     typeset filename
     if (( $# == 0 )) ; then
-	_Dbg_frame_file
+	filename="$_Dbg_frame_filename"
     else
-	filename=$_Dbg_frame_filename
-	filename=$1
+	filename="$1"
     fi
-  _Dbg_readin_if_new $filename
-  eval "source_line=\${$_Dbg_source_array_var[lineno]}"
+    _Dbg_readin_if_new "$filename"
+    eval "source_line=\${$_Dbg_source_array_var[lineno]}"
 }
 
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
@@ -223,8 +222,8 @@ _Dbg_readin_if_new() {
     (( $# != 1 )) && return 1
     typeset filename="$1"
     _Dbg_set_source_array_var "$filename"
-    if [[ -z $fullname ]] ; then 
-	_Dbg_readin $filename
+    if [[ -z "$fullname" ]] ; then 
+	_Dbg_readin "$filename"
 	typeset rc=$?
 	(( $? != 0 )) && return $rc
 	[[ -z $fullname ]] && return 1

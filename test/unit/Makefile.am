@@ -13,8 +13,10 @@ TESTS = $(BUILTIN_TESTS)     \
         test-bashdb-trace.sh \
 	test-columns.sh      \
         test-file.sh         \
+        test-filecache.sh    \
         test-fns.sh          \
         test-frame.sh        \
+        test-get-sourceline.sh \
         test-io.sh           \
         test-msg.sh          \
         test-pre.sh          \
@@ -33,8 +35,10 @@ EXTRA_DIST = $(TESTS) shunit2 \
      test-break.sh.in         \
      test-columns.sh.in       \
      test-file.sh.in          \
+     test-filecache.sh.in     \
      test-fns.sh.in           \
      test-frame.sh.in         \
+     test-get-sourceline.sh.in \
      test-io.sh.in            \
      test-msg.sh.in           \
      test-pre.sh              \
