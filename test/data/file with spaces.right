@@ -2,12 +2,11 @@
 2:	x=1
 +# Debugger test of handling a file path with embedded spaces
 +info files
-Source files for which have been read in:
-
-file with spaces.sh (4 lines)
+Source files which we have recorded info about:
+  file with spaces.sh: file with spaces.sh, 3 lines
 +list 
-  2:==>x=1
-  3:   echo "file with spaces here"
+  2: => x=1
+  3:    echo "file with spaces here"
 +step 
 (file with spaces.sh:3):
 3:	echo "file with spaces here"
@@ -15,6 +14,6 @@ file with spaces.sh (4 lines)
 Breakpoint 1 set in file file with spaces.sh, line 2.
 +info break
 Num Type       Disp Enb What
-1   breakpoint keep y   file with spaces.sh:2
+1   breakpoint keep y   file\ with\ spaces.sh:2
 No watch expressions have been set.
 +quit 

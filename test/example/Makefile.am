@@ -8,7 +8,6 @@ check_DATA =            \
 	dbg-test1.sub   \
 	dbg-test2.sh    \
 	debug.sh        \
-	file\ with\ spaces.sh     \
 	hanoi.sh.in     \
 	interrupt.sh.in \
 	nexting.sh      \
@@ -25,5 +24,5 @@ TESTS_ENVIRONMENT =      \
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
-EXTRA_DIST = $(check_DATA) README "dir with spacestest.sh"
+EXTRA_DIST = $(check_DATA) README
 

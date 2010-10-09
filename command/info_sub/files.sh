@@ -19,16 +19,21 @@
 
 _Dbg_do_info_files() {
     _Dbg_msg "Source files which we have recorded info about:"
-    typeset -a list=(${!_Dbg_file2canonic[@]})
+    typeset -a list=()
+    typeset -i i=0
+    for key in "${!_Dbg_file2canonic[@]}"; do 
+	list[$i]="$key"
+	((i++))
+    done
     sort_list 0 ${#list[@]}-1
-    for file in ${list[@]} ; do
+    for file in "${list[@]}" ; do
 	typeset -i lines=$(_Dbg_get_maxline "$file")
 	typeset canonic_file
 	canonic_file="${_Dbg_file2canonic[$file]}"
 	if (( _Dbg_basename_only )) ; then 
 	    # Do the same with canonic_file ?
-	    file=${file##*/}
-	    canonic_file=${canonic_file##*/}
+	    file="${file##*/}"
+	    canonic_file="${canonic_file##*/}"
 	fi
 	_Dbg_msg "  ${file}: ${canonic_file}, $lines lines"
     done        

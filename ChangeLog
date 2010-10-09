@@ -1,3 +1,40 @@
+2010-10-08  rocky <rocky@gnu.org>
+
+	* configure.ac, lib/filecache.sh, test/example/Makefile.am,
+	test/example/dir with spaces/bug.sh, test/unit/.gitignore,
+	test/unit/Makefile.am, test/unit/test-get-sourceline.sh.in: 
+	filecache.sh: _Dbg_get_source_line was buggy if directory name had
+	embedded spaces.
+
+2010-09-16  rocky <rocky@gnu.org>
+
+	* lib/file.sh, lib/filecache.sh: Remove debug output. Change a
+	comment.
+
+2010-09-16  rocky <rocky@gnu.org>
+
+	* lib/file.sh, lib/filecache.sh: file.sh: Wasn't _Dbg_cdir properly.
+	Fall back to $(pwd) when all else fails. filecache.sh: more specific
+	internal error messages.
+
+2010-09-08  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2010-09-08  rocky <rocky@gnu.org>
+
+	* NEWS: Wrong date on last release
+
+2010-09-07  rocky <rocky@gnu.org>
+
+	* doc/bashdb.texi: Correct spelling typo.
+
+2010-07-09  rocky <rocky@gnu.org>
+
+	* ChangeLog, lib/processor.sh: Remove some hardwired-aliases.
+
 2010-07-09  rocky <rocky@gnu.org>
 
 	* configure.ac, test/integration/Makefile.am: Diff configure test

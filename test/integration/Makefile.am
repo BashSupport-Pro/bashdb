@@ -33,6 +33,7 @@ TESTS = \
 	test-debug      \
 	test-display    \
 	test-enable     \
+	test-file-with-spaces  \
 	test-finish     \
 	test-frame      \
 	test-interrupt  \
