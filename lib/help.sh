@@ -41,7 +41,7 @@ _Dbg_help_sort_command_names() {
     _Dbg_sorted_command_names=("${list[@]}")
 }    
 
-typeset _Dbg_set_cmds="args annotate autoeval basename debugger 
+typeset _Dbg_set_cmds="args annotate autoeval autolist basename debugger 
 editing linetrace listsize prompt showcommand trace-commands"
 
 _Dbg_help_set() {
@@ -84,12 +84,20 @@ Follow this command with any number of args, to be passed to the program."
 "${label}Set annotation level.$post_label"
       return 0
       ;;
-    au | aut | auto | autoe | autoev | autoeva | autoeval )
+    autoe | autoev | autoeva | autoeval )
       [[ -n $label ]] && label='set autoeval  -- '
       local onoff="off."
       (( $_Dbg_autoeval != 0 )) && onoff='on.'
       _Dbg_msg \
 "${label}Evaluate unrecognized commands is" $onoff
+      return 0
+      ;;
+    autol | autoli | autolis | autolist )
+      [[ -n $label ]] && label='set autolist  -- '
+      typeset -l onoff="off."
+      (( $_Dbg_autoeval != 0 )) && onoff='on.'
+      _Dbg_msg \
+"${label}Run list command is ${onoff}"
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
@@ -161,7 +169,7 @@ Follow this command with any number of args, to be passed to the program."
   esac
 }
 
-typeset -r _Dbg_show_cmds="aliases annotate args autoeval basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
+typeset -r _Dbg_show_cmds="aliases annotate args autoeval autolist basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
 
 _Dbg_help_show() {
   typeset -r show_cmd=$1
@@ -191,9 +199,14 @@ _Dbg_help_show() {
 "show annotate    -- Show annotation_level"
       return 0
       ;;
-    au | aut | auto | autoe | autoev | autoeva | autoeval )
+    autoe | autoev | autoeva | autoeval )
       _Dbg_msg \
-"show auotoeval   -- Show if we evaluate unrecognized commands"
+"show autoeval    -- Show if we evaluate unrecognized commands"
+      return 0
+      ;;
+    autol | autoli | autolis | autolist )
+      _Dbg_msg \
+"show autolist    -- Run list before command loop?"
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )

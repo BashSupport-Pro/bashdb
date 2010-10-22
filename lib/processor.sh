@@ -27,6 +27,11 @@
 # Are we inside the middle of a "skip" command?
 typeset -i  _Dbg_inside_skip=0
 
+# Hooks that get run on each command loop
+typeset -A _Dbg_cmdloop_hooks
+_Dbg_cmdloop_hooks['display']='_Dbg_eval_all_display'
+
+
 # A variable holding a space is set so it can be used in a "set prompt" command
 # ("read" in the main command loop will remove a trailing space so we need
 # another way to allow a user to enter spaces in the prompt.)
@@ -85,8 +90,12 @@ function _Dbg_process_commands {
   _Dbg_step_ignore=-1  # Nuke any prior step ignore counts
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 
-  # Evaluate all the display expressions
-  _Dbg_eval_all_display
+  typeset -l key
+
+  # Evaluate all hooks
+  for key in ${!_Dbg_cmdloop_hooks[@]} ; do
+      ${_Dbg_cmdloop_hooks[$key]}
+  done
 
   # Loop over all pending open input file descriptors
   while (( $_Dbg_fd_last > 0)) ; do

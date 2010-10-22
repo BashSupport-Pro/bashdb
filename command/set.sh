@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # set.sh - debugger settings
 #
-#   Copyright (C) 2002,2003,2006,2007,2008 Rocky Bernstein 
+#   Copyright (C) 2002,2003,2006,2007,2008,2010 Rocky Bernstein 
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -76,7 +76,7 @@ _Dbg_do_set() {
       eval "$_resteglob"
       return 0
       ;;
-    au | aut | auto | autoe | autoev | autoeva | autoeval )
+    autoe | autoev | autoeva | autoeval )
       typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
@@ -84,6 +84,21 @@ _Dbg_do_set() {
 	  ;;
 	off | 0 )
 	  _Dbg_write_journal_eval "_Dbg_autoeval=0"
+	  ;;
+	* )
+	  _Dbg_msg "\"on\" or \"off\" expected."
+	  return 1
+      esac
+      return 0
+      ;;
+    autol | autoli | autolis | autolist )
+      typeset onoff=${1:-'off'}
+      case $onoff in 
+	on | 1 ) 
+	  _Dbg_write_journal_eval "_Dbg_cmdloop_hooks['list']=_Dbg_do_list"
+	  ;;
+	off | 0 )
+	  _Dbg_write_journal_eval "unset _Dbg_cmdloop_hooks['list']"
 	  ;;
 	* )
 	  _Dbg_msg "\"on\" or \"off\" expected."

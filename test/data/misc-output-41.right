@@ -79,6 +79,7 @@ set args -- Set argument list to give program being debugged when it is started.
 Follow this command with any number of args, to be passed to the program.
 set annotate  -- Set annotation level.
 set autoeval  -- Evaluate unrecognized commands is off.
+set autolist  -- Run list command is off.
 set basename  -- Set short filenames (the basename) in debug output is on.
 set debugger  -- Set debugging the debugger is debugger
 set editing   -- Set editing of command lines as they are typed is on.

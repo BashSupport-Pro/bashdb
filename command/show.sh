@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # show.sh - Show debugger settings
 #
-#   Copyright (C) 2002, 2003, 2006, 2007, 2008
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010
 #   Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -30,7 +30,7 @@ _Dbg_do_show() {
   typeset label=$2
 
   # Warranty, copying, directories, aliases, and warranty are omitted below.
-  typeset -r subcmds="annotate args autoeval basename debugger editing force history linetrace listsize prompt trace-commands width"
+  typeset -r subcmds="annotate args autoeval autolist basename debugger editing force history linetrace listsize prompt trace-commands width"
 
   if [[ -z $show_cmd ]] ; then 
       typeset thing
@@ -65,10 +65,18 @@ _Dbg_do_show() {
 "${label}Annotation_level is $_Dbg_annotate."
       return 0
       ;;
-    au | aut | auto | autoe | autoev | autoeva | autoeval )
+    autoe | autoev | autoeva | autoeval )
       [[ -n $label ]] && label='autoeval: '
       _Dbg_msg \
 "${label}Evaluate unrecognized commands is" $(_Dbg_onoff $_Dbg_autoeval)
+      return 0
+      ;;
+    autol | autoli | autolis | autolist )
+      [[ -n $label ]] && label='autolist: '
+      typeset -l onoff="on."
+      [[ -z ${_Dbg_cmdloop_hooks['list']} ]] && onoff='off.'
+      _Dbg_msg \
+"${label}Auto run of 'list' command is ${onoff}"
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
