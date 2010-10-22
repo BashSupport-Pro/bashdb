@@ -1,6 +1,7 @@
 (dbg-test1.sh:22):
 22:	x=22
 +set basename on
+Show short filenames (the basename) in debug output is on.
 +# Debugger test of action command
 +# 
 +# Show actions

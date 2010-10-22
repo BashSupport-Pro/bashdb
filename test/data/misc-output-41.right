@@ -1,6 +1,7 @@
 (dbg-test2.sh:24):
 24:	set -xv
 +set basename on
+Show short filenames (the basename) in debug output is on.
 +# Test of miscellaneous commands:
 +# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
 +#### source command...

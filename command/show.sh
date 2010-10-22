@@ -30,7 +30,7 @@ _Dbg_do_show() {
   typeset label=$2
 
   # Warranty, copying, directories, aliases, and warranty are omitted below.
-  typeset -r subcmds="annotate args autoeval autolist basename debugger editing force history linetrace listsize prompt trace-commands width"
+  typeset -r subcmds="annotate args autoeval autolist basename debugger different editing history linetrace listsize prompt trace-commands width"
 
   if [[ -z $show_cmd ]] ; then 
       typeset thing
@@ -402,8 +402,8 @@ of promoting the sharing and reuse of software generally.
       fi
       return 0
       ;;
-    force )
-      [[ -n $label ]] && label='force: '
+    force | diff | differ | different )
+      [[ -n $label ]] && label='different: '
       _Dbg_msg \
 "${label}Show stepping forces a new line is" $(_Dbg_onoff $_Dbg_step_auto_force)
       return 0
