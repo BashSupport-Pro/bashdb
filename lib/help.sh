@@ -232,7 +232,7 @@ number of lines to list."
       ;;
     di|dir|dire|direc|direct|directo|director|directori|directorie|directories)
       _Dbg_msg \
-"show directories -- Show if we are set to debug the debugger"
+"show directories -- Show file directories searched for listing source."
       ;;
     lin | line | linet | linetr | linetra | linetrac | linetrace )
       _Dbg_msg \
