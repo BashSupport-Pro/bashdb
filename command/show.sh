@@ -378,7 +378,7 @@ of promoting the sharing and reuse of software generally.
 "${label}Allow debugging the debugger is" $onoff
       return 0
       ;;
-    di|dir|dire|direc|direct|directo|director|directori|directorie|directories)
+    dir|dire|direc|direct|directo|director|directori|directorie|directories)
       typeset list=${_Dbg_dir[0]}
       typeset -i n=${#_Dbg_dir[@]}
       typeset -i i
