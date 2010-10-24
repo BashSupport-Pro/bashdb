@@ -1,34 +1,25 @@
-(dbg-test2.sh:24):
-24:	set -xv
-+# Test of miscellaneous commands:
-+# 'source', 'info args', 'show args', 'show warranty', 'show copying', etc.
-+#### *** GNU things...
-+show warranty
+# -*- shell-script -*-
+# "show copying" debugger command
+#
+#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
+#
+#   zshdb is free software; you can redistribute it and/or modify it under
+#   the terms of the GNU General Public License as published by the Free
+#   Software Foundation; either version 2, or (at your option) any later
+#   version.
+#
+#   zshdb is distributed in the hope that it will be useful, but WITHOUT ANY
+#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#   for more details.
+#   
+#   You should have received a copy of the GNU General Public License along
+#   with zshdb; see the file COPYING.  If not, write to the Free Software
+#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-			    NO WARRANTY
-
-  11. BECAUSE THE PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
-FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW.  EXCEPT WHEN
-OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
-PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED
-OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE ENTIRE RISK AS
-TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU.  SHOULD THE
-PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING,
-REPAIR OR CORRECTION.
-
-  12. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
-WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
-REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES,
-INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING
-OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED
-TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
-YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
-PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGES.
-
-+show copying
-
+_Dbg_do_show_copying() {
+      _Dbg_msg \
+"
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 
@@ -92,13 +83,13 @@ modification follow.
 
   0. This License applies to any program or other work which contains
 a notice placed by the copyright holder saying it may be distributed
-under the terms of this General Public License.  The "Program", below,
-refers to any such program or work, and a "work based on the Program"
+under the terms of this General Public License.  The \"Program\", below,
+refers to any such program or work, and a \"work based on the Program\"
 means either the Program or any derivative work under copyright law:
 that is to say, a work containing the Program or a portion of it,
 either verbatim or with modifications and/or translated into another
 language.  (Hereinafter, translation is included without limitation in
-the term "modification".)  Each licensee is addressed as "you".
+the term \"modification\".)  Each licensee is addressed as \"you\".
 
 Activities other than copying, distribution and modification are not
 covered by this License; they are outside its scope.  The act of
@@ -271,8 +262,8 @@ be similar in spirit to the present version, but may differ in detail to
 address new problems or concerns.
 
 Each version is given a distinguishing version number.  If the Program
-specifies a version number of this License which applies to it and "any
-later version", you have the option of following the terms and conditions
+specifies a version number of this License which applies to it and \"any
+later version\", you have the option of following the terms and conditions
 either of that version or of any later version published by the Free
 Software Foundation.  If the Program does not specify a version number of
 this License, you may choose any version ever published by the Free Software
@@ -285,148 +276,6 @@ Software Foundation, write to the Free Software Foundation; we sometimes
 make exceptions for this.  Our decision will be guided by the two goals
 of preserving the free status of all derivatives of our free software and
 of promoting the sharing and reuse of software generally.
-
-+#### and show...
-+set width 80
-+set history size 256
-+#### Invalid commands...
-+show badcommand
-** Unknown show subcommand: badcommand
-** Show subcommands are:
-**   annotate  autolist  different  linetrace  trace-commands
-**   args      basename  editing    listsize   width         
-**   autoeval  debugger  history    prompt   
-+another-bad-command 
-Undefined command "another-bad-command". Try "help".
-+show 
-annotate: Annotation_level is 0.
-args:     Argument list to give script when debugged program starts is:
-       "-B --no-init -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
-autoeval: Evaluate unrecognized commands is off.
-autolist: Auto run of 'list' command is off.
-basename: Show short filenames (the basename) in debug output is on.
-debugging: Allow debugging the debugger is off
-different: Show stepping forces a new line is off.
-editing:  Editing of command lines as they are typed is on.
-editing:  Edit style is emacs.
-filename: The filename in which to record the command history is
-save: Saving of history save is on.
-size: Debugger history size is 256
-line tracing: Show line tracing is off.
-line tracing: Show line trace delay is 0.
-listsize: Number of source lines bashdb will list by default is 10.
-prompt:   bashdb's prompt is:
-       "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-trace-commands: State of command tracing is on.
-width: Line width is 80.
-+show args
-Argument list to give script when debugged program starts is:
-       "-B --no-init -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
-+set args now is the time
-+show args
-Argument list to give script when debugged program starts is:
-       "now is the time".
-+set editing off
-+set editing fooo
-** "on", "off", "vi", or "emacs" expected.
-+show editing
-Editing of command lines as they are typed is off.
-+set editing
-+show editing
-Editing of command lines as they are typed is on.
-Edit style is emacs.
-+set misspelled 40
-Undefined set subcommand "misspelled". Try "help set".
-+set listsize 40
-+set listsize bad
-Integer argument expected; got: bad
-+set annotate bad
-Integer argument expected; got: bad
-+set annotate 6
-annotation level must be 0..3
-+show annotate
-Annotation_level is 0.
-+set annotate 1
-+show listsize
-Number of source lines bashdb will list by default is 40.
-+show annotate
-Annotation_level is 1.
-+set width 40
-+show width
-Line width is 40.
-+set history size
-Argument required (integer to set it to.).
-+set history size 10
-+show history
-filename: The filename in which to record the command history is
-save: Saving of history save is on.
-size: Debugger history size is 10
-+show history save
-filename: The filename in which to record the command history is
-save: Saving of history save is on.
-size: Debugger history size is 10
-+set history save off
-+show history
-filename: The filename in which to record the command history is
-save: Saving of history save is off.
-size: Debugger history size is 10
-+set history save on
-+show history
-filename: The filename in which to record the command history is
-save: Saving of history save is on.
-size: Debugger history size is 10
-+######################### 
-+#### Test 'show commands'...
-+show commands
-34: show commands
-33: show history
-32: set history save on
-31: show history
-30: set history save off
-29: show history save
-28: show history
-27: set history size 10
-26: set history size
-25: show width
-24: set width 40
-+show commands +
-23: show annotate
-22: show listsize
-21: set annotate 1
-20: show annotate
-19: set annotate 6
-18: set annotate bad
-17: set listsize bad
-16: set listsize 40
-15: set misspelled 40
-14: show editing
-13: set editing
-+show commands -5
-36: show commands -5
-35: show commands +
-34: show commands
-33: show history
-32: set history save on
-+show commands 12
-12: show editing
-11: set editing fooo
-10: set editing off
-9: show args
-8: set args now is the time
-7: show args
-6: show 
-5: show badcommand
-4: set history size 256
-3: set width 80
-2: show copying
-+######################### 
-+#### Test 'autoeval'...
-+set autoeval on
-Evaluate unrecognized commands is on.
-+xx=1 ; declare -p xx
-declare -- xx="1"
-+set autoeval off
-Evaluate unrecognized commands is off.
-+xx=1 ; declare -p xx
-Undefined command "xx=1". Try "help".
-+quit 
+"
+    return 0
+}
