@@ -26,51 +26,51 @@ typeset _Dbg_show_command="auto"
 _Dbg_help_add show ''  # Help routine is elsewhere
 
 _Dbg_do_show() {
-  typeset show_cmd=$1
-  typeset label=$2
+    typeset show_cmd=$1
+    typeset label=$2
 
-  # Warranty, copying, directories, aliases, and warranty are omitted below.
-  typeset -r subcmds="annotate args autoeval autolist basename debugger different editing history linetrace listsize prompt trace-commands width"
+    # Warranty, copying, directories, aliases, and warranty are omitted below.
+    typeset -r subcmds="annotate args autoeval autolist basename debugger different editing history linetrace listsize prompt trace-commands width"
 
-  if [[ -z $show_cmd ]] ; then 
-      typeset thing
-      for thing in $subcmds ; do 
-	_Dbg_do_show $thing 1
-      done
-      return 0
-  fi
+    if [[ -z $show_cmd ]] ; then 
+	typeset thing
+	for thing in $subcmds ; do 
+	    _Dbg_do_show $thing 1
+	done
+	return 0
+    fi
 
-  case $show_cmd in 
-    al | ali | alia | alias | aliase | aliases )
-      typeset -a list
-      typeset -i i
-      list=()
-      for ((i=0; i<=_Dbg_alias_max_index; i++)) ; do
-	  [[ -z ${_Dbg_alias_names[i]} ]] && continue
-	  list+=("${_Dbg_alias_names[i]}: ${_Dbg_alias_expansion[i]}")
-      done
-      _Dbg_list_columns '  |  '
-      return 0
-      ;;
-    ar | arg | args )
-      [[ -n $label ]] && label='args:     '
-      _Dbg_msg \
-"${label}Argument list to give script when debugged program starts is:\n" \
-"      \"${_Dbg_orig_script_args[@]}\"."
-      return 0
-      ;;
-    an | ann | anno | annot | annota | annotat | annotate )
-      [[ -n $label ]] && label='annotate: '
-     _Dbg_msg \
+    case $show_cmd in 
+	al | ali | alia | alias | aliase | aliases )
+	    typeset -a list
+	    typeset -i i
+	    list=()
+	    for ((i=0; i<=_Dbg_alias_max_index; i++)) ; do
+		[[ -z ${_Dbg_alias_names[i]} ]] && continue
+		list+=("${_Dbg_alias_names[i]}: ${_Dbg_alias_expansion[i]}")
+	    done
+	    _Dbg_list_columns '  |  '
+	    return 0
+	    ;;
+	ar | arg | args )
+	    [[ -n $label ]] && label='args:     '
+	    _Dbg_msg \
+		"${label}Argument list to give script when debugged program starts is:\n" \
+		"      \"${_Dbg_orig_script_args[@]}\"."
+	    return 0
+	    ;;
+	an | ann | anno | annot | annota | annotat | annotate )
+	    [[ -n $label ]] && label='annotate: '
+	    _Dbg_msg \
 "${label}Annotation_level is $_Dbg_annotate."
-      return 0
-      ;;
-    autoe | autoev | autoeva | autoeval )
-      [[ -n $label ]] && label='autoeval: '
-      _Dbg_msg \
+          return 0
+	  ;;
+	autoe | autoev | autoeva | autoeval )
+	    [[ -n $label ]] && label='autoeval: '
+	    _Dbg_msg \
 "${label}Evaluate unrecognized commands is" $(_Dbg_onoff $_Dbg_set_autoeval)
       return 0
-      ;;
+        ;;
     autol | autoli | autolis | autolist )
       [[ -n $label ]] && label='autolist: '
       typeset -l onoff="on."
@@ -405,7 +405,7 @@ of promoting the sharing and reuse of software generally.
     force | diff | differ | different )
       [[ -n $label ]] && label='different: '
       _Dbg_msg \
-"${label}Show stepping forces a new line is" $(_Dbg_onoff $_Dbg_step_auto_force)
+"${label}Show stepping forces a new line is" $(_Dbg_onoff $_Dbg_set_different)
       return 0
       ;;
     hi|his|hist|histo|histor|history)

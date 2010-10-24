@@ -23,6 +23,7 @@ pkgdata_DATA =      	\
 	processor.sh  	\
 	run.sh  	\
 	save-restore.sh \
+	setshow.sh      \
 	sig.sh	        \
 	validate.sh
 

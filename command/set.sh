@@ -77,19 +77,8 @@ _Dbg_do_set() {
       return 0
       ;;
     autoe | autoev | autoeva | autoeval )
-      typeset onoff=${1:-'off'}
-      case $onoff in 
-	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_set_autoeval=1"
-	  ;;
-	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_set_autoeval=0"
-	  ;;
-	* )
-	  _Dbg_msg "\"on\" or \"off\" expected."
-	  return 1
-      esac
-      return 0
+	  _Dbg_set_onoff "$1" 'autoeval'
+	  return $?
       ;;
     autol | autoli | autolis | autolist )
       typeset onoff=${1:-'off'}
@@ -108,35 +97,12 @@ _Dbg_do_set() {
       return 0
       ;;
     b | ba | bas | base | basen | basena | basenam | basename )
-      typeset onoff=${1:-'off'}
-      case $onoff in 
-	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_set_basename=1"
-	  ;;
-	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_set_basename=0"
-	  ;;
-	* )
-	  _Dbg_msg "\"on\" or \"off\" expected."
-	  return 1
-      esac
-      _Dbg_do_show 'basename'
-      return 0
+	  _Dbg_set_onoff "$1" 'basename'
+	  return $?
       ;;
     d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-      typeset onoff=${1:-'on'}
-      case $onoff in 
-	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_debug_debugger=1"
-	  ;;
-	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_debug_debugger=0"
-	  ;;
-	* )
-	  _Dbg_msg "\"on\" or \"off\" expected."
-      esac
-      _Dbg_do_show 'debugging'
-      return 0
+	  _Dbg_set_onoff $1 'debugging'
+	  return $?
       ;;
     e | ed | edi | edit | editi | editin | editing )
       typeset onoff=${1:-'on'}
@@ -164,21 +130,9 @@ _Dbg_do_set() {
       set -o $_Dbg_edit_style
       ;;
     force | dif | diff | differ | different )
-      typeset onoff=${1:-'off'}
-      case $onoff in 
-	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_step_auto_force=1"
+	  _Dbg_set_onoff "$1" 'different'
+	  return $?
 	  ;;
-	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_step_auto_force=0"
-	  ;;
-	* )
-	  _Dbg_errmsg "\"on\" or \"off\" expected."
-	  return 1
-      esac
-      _Dbg_do_show 'different'
-      return 0
-      ;;
    hi|his|hist|histo|histor|history)
       case $1 in 
 	sa | sav | save )

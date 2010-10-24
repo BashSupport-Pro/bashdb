@@ -422,9 +422,11 @@ size: Debugger history size is 10
 +######################### 
 +#### Test 'autoeval'...
 +set autoeval on
+Evaluate unrecognized commands is on.
 +xx=1 ; declare -p xx
 declare -- xx="1"
 +set autoeval off
+Evaluate unrecognized commands is off.
 +xx=1 ; declare -p xx
 Undefined command "xx=1". Try "help".
 +quit 
