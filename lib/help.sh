@@ -87,7 +87,7 @@ Follow this command with any number of args, to be passed to the program."
     autoe | autoev | autoeva | autoeval )
       [[ -n $label ]] && label='set autoeval  -- '
       local onoff="off."
-      (( $_Dbg_autoeval != 0 )) && onoff='on.'
+      (( $_Dbg_set_autoeval != 0 )) && onoff='on.'
       _Dbg_msg \
 "${label}Evaluate unrecognized commands is" $onoff
       return 0
@@ -103,7 +103,7 @@ Follow this command with any number of args, to be passed to the program."
     b | ba | bas | base | basen | basena | basenam | basename )
       [[ -n $label ]] && label='set basename  -- '
       local onoff="off."
-      (( $_Dbg_basename_only != 0 )) && onoff='on.'
+      (( $_Dbg_set_basename != 0 )) && onoff='on.'
       _Dbg_msg \
 "${label}Set short filenames (the basename) in debug output is" $onoff
       return 0

@@ -4,7 +4,7 @@
 # Test _Dbg_file_canonic
 test_file_canonic()
 {
-    _Dbg_basename_only=0
+    _Dbg_set_basename=0
     for file in /tmp/foo.bar /a/b/foo.bar foo.bar ; do 
 	typeset canonic_file
 	canonic_file=$(_Dbg_file_canonic "$file")
@@ -12,7 +12,7 @@ test_file_canonic()
 	assertEquals 'canonic_file should do nothing' "$file" "$canonic_file"
     done
 
-    _Dbg_basename_only=1
+    _Dbg_set_basename=1
     typeset canonic_file
     for file in /tmp/foo.bar /a/b/foo.bar foo.bar ; do 
 	canonic_file=$(_Dbg_file_canonic "$file")
@@ -21,8 +21,8 @@ test_file_canonic()
     done
     canonic_file=$(_Dbg_file_canonic)
     assertNotEquals 'canonic_file not should return 0' '0' $?
-    # Other tests need _Dbg_basename_only = 0
-    _Dbg_basename_only=0
+    # Other tests need _Dbg_set_basename = 0
+    _Dbg_set_basename=0
 }
 
 # Test _Dbg_glob_filename
@@ -74,7 +74,7 @@ test_adjust_filename()
     assertEquals 'abc' $filename
     filename=$(_Dbg_adjust_filename /abc)
     assertEquals '/abc' $filename
-    _Dbg_basename_only=1
+    _Dbg_set_basename=1
     filename=$(_Dbg_adjust_filename /abc)
     assertEquals 'abc' $filename
 }

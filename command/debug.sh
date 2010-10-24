@@ -50,14 +50,14 @@ _Dbg_do_debug() {
   eval "$_resteglob"
   eval $set_Dbg_debug_cmd
 
-  if (( _Dbg_basename_only )) ; then 
+  if (( _Dbg_set_basename )) ; then 
     _Dbg_msg "Debugging new script with $script_cmd"
   else
     _Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
   fi
   local -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
   export _Dbg_QUIT_ON_QUITo=1
-  export BASHDB_BASENAME_ONLY="$_Dbg_basename_only"
+  export BASHDB_BASENAME_ONLY="$_Dbg_set_basename"
   ((_Dbg_DEBUGGER_LEVEL++))
   $_Dbg_debug_cmd
   ((_Dbg_DEBUGGER_LEVEL--))

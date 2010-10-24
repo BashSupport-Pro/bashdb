@@ -26,7 +26,7 @@ typeset -i _Dbg_linewidth; _Dbg_linewidth=${COLUMNS:-80}
 typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
 
-typeset -i _Dbg_autoeval=0     # Evaluate unrecognized commands?
+typeset -i _Dbg_set_autoeval=0     # Evaluate unrecognized commands?
 typeset -i _Dbg_listsize=10    # How many lines in a listing? 
 
 # Sets whether or not to display command before executing it.
@@ -80,10 +80,10 @@ _Dbg_do_set() {
       typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_autoeval=1"
+	  _Dbg_write_journal_eval "_Dbg_set_autoeval=1"
 	  ;;
 	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_autoeval=0"
+	  _Dbg_write_journal_eval "_Dbg_set_autoeval=0"
 	  ;;
 	* )
 	  _Dbg_msg "\"on\" or \"off\" expected."
@@ -111,10 +111,10 @@ _Dbg_do_set() {
       typeset onoff=${1:-'off'}
       case $onoff in 
 	on | 1 ) 
-	  _Dbg_write_journal_eval "_Dbg_basename_only=1"
+	  _Dbg_write_journal_eval "_Dbg_set_basename=1"
 	  ;;
 	off | 0 )
-	  _Dbg_write_journal_eval "_Dbg_basename_only=0"
+	  _Dbg_write_journal_eval "_Dbg_set_basename=0"
 	  ;;
 	* )
 	  _Dbg_msg "\"on\" or \"off\" expected."

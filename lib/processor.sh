@@ -671,7 +671,7 @@ _Dbg_onecmd() {
 	  ;;
 	* ) 
 
-	   if (( _Dbg_autoeval )) ; then
+	   if (( _Dbg_set_autoeval )) ; then
 	     _Dbg_do_eval $_Dbg_cmd $args
 	   else
              _Dbg_undefined_cmd "$_Dbg_cmd"

@@ -44,7 +44,7 @@ typeset _Dbg_orig_0=$0
 typeset _Dbg_pname=${0##*/}  
 
 # Show basename only in location listing. This is needed in regression tests
-typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
+typeset -i _Dbg_set_basename=${BASHDB_BASENAME_ONLY:-0}
 
 typeset _Dbg_main=dbg-main.sh
 typeset prefix=@prefix@  # cygwin gets PKGDATADIR wrong

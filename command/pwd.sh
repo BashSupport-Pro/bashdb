@@ -23,6 +23,6 @@ _Dbg_help_add pwd \
 
 _Dbg_do_pwd() {
   local _Dbg_cwd=$(pwd)
-  (( _Dbg_basename_only )) && _Dbg_cwd=${_Dbg_cwd##*/}
+  (( _Dbg_set_basename )) && _Dbg_cwd=${_Dbg_cwd##*/}
   _Dbg_msg "Working directory ${_Dbg_cwd}."
 }

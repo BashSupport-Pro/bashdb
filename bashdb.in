@@ -60,7 +60,7 @@ typeset _Dbg_libdir=@PKGDATADIR@
 [[ ! -d $_Dbg_libdir ]] && _Dbg_libdir='.'
 # Parse just the libdir option
 # Show basename only in location listing. This is needed in regression tests
-typeset -i _Dbg_basename_only=${BASHDB_BASENAME_ONLY:-0}
+typeset -i _Dbg_set_basename=${BASHDB_BASENAME_ONLY:-0}
 
 typeset    _Dbg_bashdb_main=@BASHDB_MAIN@
 typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)

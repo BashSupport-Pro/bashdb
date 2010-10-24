@@ -135,7 +135,7 @@ _Dbg_save_state() {
 }
 
 _Dbg_save_Dbg_set() {
-  declare -p _Dbg_basename_only  >> $_Dbg_statefile
+  declare -p _Dbg_set_basename    >> $_Dbg_statefile
   declare -p _Dbg_debug_debugger >> $_Dbg_statefile
   declare -p _Dbg_edit           >> $_Dbg_statefile
   declare -p _Dbg_listsize       >> $_Dbg_statefile

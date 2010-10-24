@@ -33,14 +33,14 @@ _Dbg_adjust_filename() {
   typeset -r filename="$1"
   if (( _Dbg_annotate == 1 )) ; then
     echo $(_Dbg_resolve_expand_filename $filename)
-  elif ((_Dbg_basename_only)) ; then
+  elif ((_Dbg_set_basename)) ; then
     echo ${filename##*/}
   else
     echo $filename
   fi
 }
 
-# Canonicalize $1. For now if _Dbg_basename_only is set we just want
+# Canonicalize $1. For now if _Dbg_set_basename is set we just want
 # the basename of that.
 function _Dbg_file_canonic {
     if (( $# != 1 )) ; then
@@ -48,7 +48,7 @@ function _Dbg_file_canonic {
 	return 1
     fi
     typeset -l filename="$1"
-    (( _Dbg_basename_only )) && filename=${filename##*/}
+    (( _Dbg_set_basename )) && filename=${filename##*/}
     echo $filename
     return 0
 }
