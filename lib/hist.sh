@@ -22,7 +22,7 @@ typeset -i _Dbg_hi_last_stop=0
 typeset -i _Dbg_hi=0           # Current next history entry to store into.
 typeset -a _Dbg_history=()
 
-typeset -i _Dbg_history_save=1
+typeset -i _Dbg_set_history=1
 typeset -i _Dbg_history_length=${HISTSIZE:-256}  # gdb's default value
 typeset _Dbg_histfile=${HOME:-.}/.bashdb_hist
 

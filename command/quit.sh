@@ -58,7 +58,7 @@ _Dbg_do_quit() {
     _Dbg_cleanup
 
     # Save history file
-    if (( $_Dbg_history_save )) ; then
+    if (( $_Dbg_set_history )) ; then
 	history -w $_Dbg_histfile
     fi
 

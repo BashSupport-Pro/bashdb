@@ -206,6 +206,8 @@ AC_CONFIG_FILES([Makefile \
 	builtin/Makefile \
 	command/Makefile \
 	command/info_sub/Makefile \
+	command/set_sub/Makefile \
+	command/show_sub/Makefile \
 	doc/Makefile \
 	lib/Makefile \
 	test/Makefile \

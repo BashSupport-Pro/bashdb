@@ -160,7 +160,7 @@ Follow this command with any number of args, to be passed to the program."
     t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
       [[ -n $label ]] && label='set trace-commands -- '
       _Dbg_msg \
-"${label}Set showing debugger commands is $_Dbg_trace_commands."
+"${label}Set showing debugger commands is $_Dbg_set_trace_commands."
       return 0
       ;;
     * )
