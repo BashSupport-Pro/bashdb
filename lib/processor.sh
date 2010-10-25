@@ -258,8 +258,8 @@ _Dbg_onecmd() {
 
 	# List window up to _Dbg_frame_last_lineno
 	- )
-	  typeset -i start_line=(_Dbg_frame_last_lineno+1-$_Dbg_listsize)
-	  typeset -i count=($_Dbg_listsize)
+	  typeset -i start_line=(_Dbg_frame_last_lineno+1-$_Dbg_set_listsize)
+	  typeset -i count=($_Dbg_set_listsize)
 	  if (( start_line <= 0 )) ; then
 	    ((count=count+start_line-1))
 	    start_line=1

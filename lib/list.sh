@@ -40,12 +40,12 @@ ${line_number}:\t${source_line}"
   # If we are at the same place in the file but the command has changed,
   # then we have multiple commands on the line. So print which one we are
   # currently at.
-  if [[ $_Dbg_show_command == "on" ]] ; then
+  if [[ $_Dbg_set_show_command == "on" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
   elif [[ $_Dbg_last_lineno == $_Dbg_frame_last_lineno ]] \
     && [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] \
     && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
-    && $_Dbg_show_command == "auto" ]] ; then
+    && $_Dbg_set_show_command == "auto" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
   fi
 }
@@ -84,18 +84,18 @@ level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_lin
   # If we are at the same place in the file but the command has changed,
   # then we have multiple commands on the line. So print which one we are
   # currently at.
-  if [[ $_Dbg_show_command == "on" ]] ; then
+  if [[ $_Dbg_set_show_command == "on" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
   elif (( _Dbg_last_lineno == _Dbg_frame_last_lineno )) \
     && [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] \
     && [[ $_Dbg_last_bash_command != $_Dbg_bash_command \
-    && $_Dbg_show_command == "auto" ]] ; then
+    && $_Dbg_set_show_command == "auto" ]] ; then
       _Dbg_msg "$_Dbg_bash_command"
   fi
 }
 
 # list $3 lines starting at line $2 of file $1. If $1 is '', use
-# $_Dbg_frame_last_filename value.  If $3 is ommited, print $_Dbg_listsize
+# $_Dbg_frame_last_filename value.  If $3 is ommited, print $_Dbg_set_listsize
 # lines. if $2 is omitted, use global variable $_Dbg_frame_last_lineno.
 
 _Dbg_list() {
@@ -116,7 +116,7 @@ _Dbg_list() {
     (( _Dbg_listline==0 && _Dbg_listline++ ))
 
     typeset -i cnt
-    cnt=${3:-$_Dbg_listsize}
+    cnt=${3:-$_Dbg_set_listsize}
     typeset -i n
     n=$((_Dbg_listline+cnt-1))
 
@@ -157,7 +157,7 @@ _Dbg_list_columns() {
     typeset colsep='  '
     (($# > 0 )) && { colsep="$1"; shift; }
     (($# != 0)) && return 1
-    typeset -a columnized; columnize $_Dbg_linewidth "$colsep"
+    typeset -a columnized; columnize $_Dbg_set_linewidth "$colsep"
     typeset -i i
     for ((i=0; i<${#columnized[@]}; i++)) ; do 
 	_Dbg_msg "  ${columnized[i]}"

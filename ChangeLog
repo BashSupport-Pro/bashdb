@@ -1,3 +1,16 @@
+2010-10-25  rocky <rocky@gnu.org>
+
+	* lib/filecache.sh: Sync with zshdb.
+
+2010-10-24  rocky <rocky@gnu.org>
+
+	* NEWS: What's up.
+
+2010-10-24  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/set_sub/Makefile.am,
+	command/show_sub/Makefile.am: Build administrivia.
+
 2010-10-24  rocky <rocky@gnu.org>
 
 	* command/Makefile.am, command/quit.sh, command/set.sh,

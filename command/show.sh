@@ -18,11 +18,6 @@
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-# Sets whether or not to display command to be executed in debugger prompt.
-# If yes, always show. If auto, show only if the same line is to be run
-# but the command is different.
-typeset _Dbg_show_command="auto"
-
 _Dbg_help_add show ''  # Help routine is elsewhere
 
 # Load in "show" subcommands
@@ -159,7 +154,7 @@ _Dbg_do_show() {
 	    [[ -n $label ]] && label='listsize: '
 	    _Dbg_msg \
 		"${label}Number of source lines ${_Dbg_debugger_name} will list by default is" \
-		"$_Dbg_listsize."
+		"$_Dbg_set_listsize."
 	    return 0
 	    ;;
 
@@ -178,7 +173,7 @@ _Dbg_do_show() {
 	    [[ -n $label ]] && label='showcommand: '
 	    _Dbg_msg \
 		"${label}Show commands in debugger prompt is" \
-		"$_Dbg_show_command."
+		"$_Dbg_set_show_command."
 	    return 0
 	    ;;
 	t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
@@ -199,14 +194,14 @@ _Dbg_do_show() {
 	wi | wid | width )
 	    [[ -n $label ]] && label='width: '
 	    _Dbg_msg \
-		"${label}Line width is $_Dbg_linewidth."
+		"${label}Line width is $_Dbg_set_linewidth."
 	    return 0
 	    ;;
 	*)
 	    _Dbg_errmsg "Unknown show subcommand: $show_cmd"
 	    typeset -a list; list=(${subcmds[@]})
 	    typeset columnized=''
-	    typeset -i width; ((width=_Dbg_linewidth-5))
+	    typeset -i width; ((width=_Dbg_set_linewidth-5))
 	    typeset -a columnized; columnize $width
 	    typeset -i i
 	    _Dbg_errmsg "Show subcommands are:"

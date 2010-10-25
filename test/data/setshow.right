@@ -339,7 +339,7 @@ Edit style is emacs.
 Undefined set subcommand "misspelled". Try "help set".
 +set listsize 40
 +set listsize bad
-Integer argument expected; got: bad
+**Integer argument expected; got: bad
 +set annotate bad
 Integer argument expected; got: bad
 +set annotate 6

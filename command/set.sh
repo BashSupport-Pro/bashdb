@@ -22,15 +22,7 @@
 # If yes, always show. If auto, show only if the same line is to be run
 # but the command is different.
 
-typeset -i _Dbg_linewidth; _Dbg_linewidth=${COLUMNS:-80} 
-typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
-typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
-
 typeset -i _Dbg_set_autoeval=0     # Evaluate unrecognized commands?
-typeset -i _Dbg_listsize=10        # How many lines in a listing? 
-
-# Sets whether or not to display command before executing it.
-typeset _Dbg_set_trace_commands='off'
 
 _Dbg_help_add set ''  # Help routine is elsewhere
 
@@ -49,44 +41,16 @@ _Dbg_do_set() {
   shift
   case $set_cmd in 
       ar | arg | args )
-	  # We use the loop below rather than _Dbg_set_args="(@)" because
-	  # we want to preserve embedded blanks in the arguments.
-	  _Dbg_script_args=()
-	  typeset -i i
-	  typeset -i n=$#
-	  typeset -i m=${#_Dbg_orig_script_args[@]}
-	  for (( i=0; i<n ; i++ )) ; do
-	      _Dbg_write_journal_eval "_Dbg_orig_script_args[$i]=$1"
-	      shift
-	  done
-	  for ((  ; i<m ; i++ )) ; do
-	      _Dbg_write_journal_eval "unset _Dbg_orig_script_args[$i]"
-	      shift
-	  done
+	  _Dbg_do_set_args $@
 	  ;;
       an | ann | anno | annot | annota | annotat | annotate )
 	  _Dbg_do_set_annotate $@
-	  return $?
 	  ;;
       autoe | autoev | autoeva | autoeval )
 	  _Dbg_set_onoff "$1" 'autoeval'
-	  return $?
 	  ;;
       autol | autoli | autolis | autolist )
-	  typeset onoff=${1:-'off'}
-	  case $onoff in 
-	      on | 1 ) 
-		  _Dbg_write_journal_eval "_Dbg_cmdloop_hooks['list']=_Dbg_do_list"
-		  ;;
-	      off | 0 )
-		  _Dbg_write_journal_eval "unset _Dbg_cmdloop_hooks['list']"
-		  ;;
-	      * )
-		  _Dbg_msg "\"on\" or \"off\" expected."
-		  return 1
-	  esac
-	  _Dbg_do_show 'autolist'
-	  return 0
+	  _Dbg_do_set_autolist $@
 	  ;;
       b | ba | bas | base | basen | basena | basenam | basename )
 	  _Dbg_set_onoff "$1" 'basename'
@@ -109,106 +73,29 @@ _Dbg_do_set() {
 	  return $?
 	  ;;
       lin | line | linet | linetr | linetra | linetrac | linetrace )
-	  typeset onoff=${1:-'off'}
-	  case $onoff in 
-	      on | 1 ) 
-		  _Dbg_write_journal_eval "_Dbg_linetrace=1"
-		  ;;
-	      off | 0 )
-		  _Dbg_write_journal_eval "_Dbg_linetrace=0"
-		  ;;
-	      d | de | del | dela | delay )
-		  eval "$_seteglob"
-		  if [[ $2 != $int_pat ]] ; then 
-		      _Dbg_msg "Bad int parameter: $2"
-		      eval "$_resteglob"
-		      return 1
-		  fi
-		  eval "$_resteglob"
-		  _Dbg_write_journal_eval "_Dbg_linetrace_delay=$2"
-		  ;;
-	      e | ex | exp | expa | expan | expand )
-		  typeset onoff=${2:-'on'}
-		  case $onoff in 
-		      on | 1 ) 
-			  _Dbg_write_journal_eval "_Dbg_linetrace_expand=1"
-			  ;;
-		      off | 0 )
-			  _Dbg_write_journal_eval "_Dbg_linetrace_expand=0"
-			  ;;
-		      * )
-			  _Dbg_msg "\"expand\", \"on\" or \"off\" expected."
-			  ;;
-		  esac
-		  ;;
-	      
-	      * )
-		  _Dbg_msg "\"expand\", \"on\" or \"off\" expected."
-		  return 1
-	  esac
-	  return 0
+	  _Dbg_do_set_linetrace $@
 	  ;;
       li | lis | list | lists | listsi | listsiz | listsize )
-	  eval "$_seteglob"
-	  if [[ $1 == $int_pat ]] ; then 
-	      _Dbg_write_journal_eval "_Dbg_listsize=$1"
-	  else
-	      eval "$_resteglob"
-	      _Dbg_msg "Integer argument expected; got: $1"
-	      return 1
-	  fi
-	  eval "$_resteglob"
-	  return 0
+	  _Dbg_do_set_listsize $@
 	  ;;
       lo | log | logg | loggi | loggin | logging )
-	  _Dbg_cmd_set_logging $*
+	  _Dbg_cmd_set_logging $@
 	  ;;
       p | pr | pro | prom | promp | prompt )
 	  _Dbg_prompt_str="$1"
 	  ;;
       sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
-	  case $1 in 
-	      1 )
-		  _Dbg_write_journal_eval "_Dbg_show_command=on"
-		  ;;
-	      0 )
-		  _Dbg_write_journal_eval "_Dbg_show_command=off"
-		  ;;
-	      on | off | auto )
-		  _Dbg_write_journal_eval "_Dbg_show_command=$1"
-		  ;;
-	      * )
-		  _Dbg_msg "\"on\", \"off\" or \"auto\" expected."
-	  esac
-	  return 0
+	  _Dbg_do_set_showcommand $@
 	  ;;
       t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
-	  case $1 in 
-	      1 )
-		  _Dbg_write_journal_eval "_Dbg_set_trace_commands=on"
-		  ;;
-	      0 )
-		  _Dbg_write_journal_eval "_Dbg_set_trace_commands=off"
-		  ;;
-	      on | off )
-		  _Dbg_write_journal_eval "_Dbg_set_trace_commands=$1"
-		  ;;
-	      * )
-		  _Dbg_msg "\"on\", \"off\" expected."
-	  esac
-	  return 0
+	  _Dbg_do_set_trace_commands $@
 	  ;;
       w | wi | wid | width )
-	  if [[ $1 == $int_pat ]] ; then 
-	      _Dbg_write_journal_eval "_Dbg_linewidth=$1"
-	  else
-	      _Dbg_msg "Integer argument expected; got: $1"
-	      return 1
-	  fi
-	  return 0
+	  _Dbg_do_set_linewidth $@
 	  ;;
       *)
 	  _Dbg_undefined_cmd "set" "$set_cmd"
 	  return 1
   esac
+  return $?
 }

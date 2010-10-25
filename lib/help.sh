@@ -154,7 +154,7 @@ Follow this command with any number of args, to be passed to the program."
     sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
       [[ -n $label ]] && label='set showcommand -- '
       _Dbg_msg \
-"${label}Set showing the command to execute is $_Dbg_show_command."
+"${label}Set showing the command to execute is $_Dbg_set_show_command."
       return 0
       ;;
     t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )

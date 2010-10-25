@@ -112,7 +112,7 @@ _Dbg_do_info() {
   typeset -a list
   list=(${_Dbg_info_subcmds[@]})
   typeset columnized=''
-  typeset -i width; ((width=_Dbg_linewidth-5))
+  typeset -i width; ((width=_Dbg_set_linewidth-5))
   typeset -a columnized; columnize $width
   typeset -i i
   $msg "Info subcommands are:"
