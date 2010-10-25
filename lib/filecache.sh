@@ -1,20 +1,20 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2009, 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2009, 2010 Rocky Bernstein rocky@gnu.org
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
 #   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
+#   with this program; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 # Keys are the canonic expanded filename. _Dbg_filenames[filename] is
@@ -34,7 +34,6 @@ typeset _Dbg_bogus_file=' A really bogus file'
 
 # Check that line $2 is not greater than the number of lines in 
 # file $1
-
 _Dbg_check_line() {
     (( $# != 2 )) && return 1
     typeset -i line_number=$1
@@ -53,24 +52,24 @@ _Dbg_check_line() {
 	return 1
     fi
     return 0
-
 }
 
 # Error message for file not read in
-_Dbg_file_not_read_in() {
+function _Dbg_file_not_read_in {
     typeset -r filename=$(_Dbg_adjust_filename "$1")
     _Dbg_errmsg "File \"$filename\" not found in read-in files."
     _Dbg_errmsg "See 'info files' for a list of known files and"
     _Dbg_errmsg "'load' to read in a file."
 }
 
-# Return the maximum line in $1
-_Dbg_get_maxline() {
+# Return the maximum line of filename $1. $1 is expected to be
+# read in already and therefore stored in _Dbg_file2canonic.
+function _Dbg_get_maxline {
     (( $# != 1 )) && return -1
     _Dbg_set_source_array_var "$1" || return $?
     typeset -r line_count_cmd="line_count=\${#$_Dbg_source_array_var[@]}"
     eval $line_count_cmd
-    eval "typeset last_line=\${${_Dbg_source_array_var}[$line_count]}"
+    eval "typeset last_line; last_line=\${${_Dbg_source_array_var}[$line_count]}"
     # If the file had a final newline the last line of the data read in
     # is the empty string.  We want to count the last line whether or
     # not it had a newline.
@@ -107,7 +106,7 @@ function _Dbg_get_source_line {
 }
 
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
-# '' is echo'd if no file found.
+# '' is echo'd if no file found. Return 0 if found, 1 if not.
 function _Dbg_is_file {
   if (( $# == 0 )) ; then
     _Dbg_errmsg "Internal debug error _Dbg_is_file(): null file to find"
@@ -214,6 +213,7 @@ function _Dbg_readin {
     
     # Add $filename to list of all filenames
     _Dbg_filenames[$fullname]=$_Dbg_source_array_var;
+    return 0
 }
 
 # Read in file $1 unless it has already been read in.
