@@ -1,5 +1,20 @@
 2010-10-25  rocky <rocky@gnu.org>
 
+	* test/unit/test-filecache.sh.in: Remove use of "wc" and "cut"
+
+2010-10-25  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/info.sh, command/set.sh,
+	command/set_sub/Makefile.am, command/set_sub/args.sh,
+	command/set_sub/autolist.sh, command/set_sub/linetrace.sh,
+	command/set_sub/linewidth.sh, command/set_sub/listsize.sh,
+	command/set_sub/showcommand.sh, command/set_sub/trace-commands.sh,
+	command/show.sh, lib/help.sh, lib/list.sh, lib/processor.sh,
+	lib/save-restore.sh, test/data/setshow.right: Move most of set
+	subcommands to set_sub.
+
+2010-10-25  rocky <rocky@gnu.org>
+
 	* lib/filecache.sh: Sync with zshdb.
 
 2010-10-24  rocky <rocky@gnu.org>

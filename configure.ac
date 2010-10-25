@@ -256,6 +256,8 @@ AC_CONFIG_FILES([test/unit/test-sort.sh],
 AC_CONFIG_FILES([test/unit/test-validate.sh], 
 		[chmod +x test/unit/test-validate.sh])
 
+AC_CONFIG_FILES([test/integration/test-delete],
+	        [chmod +x test/integration/test-delete])
 AC_CONFIG_FILES([test/integration/test-misc],
 	        [chmod +x test/integration/test-misc])
 AC_CONFIG_FILES([test/integration/test-setshow],

@@ -16,6 +16,7 @@ check_DATA = \
 	subshell2.tests    \
 	subshell3.tests    \
 	subshell4.tests    \
+	test-delete.in     \
 	test-misc.in       \
 	test-setshow.in    \
 	trace.tests	   \
@@ -31,6 +32,7 @@ TESTS = \
 	test-command    \
 	test-complete   \
 	test-debug      \
+	test-delete     \
 	test-display    \
 	test-enable     \
 	test-file-with-spaces  \

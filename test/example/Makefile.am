@@ -15,6 +15,7 @@ check_DATA =            \
 	restartbug.sh   \
 	settrace.sh     \
 	skip.sh         \
+	stepping.sh     \
 	subshell.sh
 
 TESTS_ENVIRONMENT =      \

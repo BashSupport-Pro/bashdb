@@ -27,6 +27,8 @@ check_DATA = \
 	debug.cmd \
 	debug.right \
 	debug2.cmd \
+	delete.right \
+	delete.cmd \
 	display.cmd \
 	display.right \
 	enable.cmd \
