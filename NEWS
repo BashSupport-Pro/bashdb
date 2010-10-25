@@ -1,5 +1,11 @@
 Version 4.1-0.5
+2010-10-27
+
 - Add set/show autolist.
+- Fix bugs when file contained spaces in a directory portion of the path
+- "Set force" depricated. Use "set different".
+- Code reorganization to support subcommands (set/show/info) and allow
+  for growth
 
 Version 4.1-0.4
 2010-07-09
