@@ -1,3 +1,85 @@
+2010-10-24  rocky <rocky@gnu.org>
+
+	* command/Makefile.am, command/quit.sh, command/set.sh,
+	command/set_sub/.gitignore, command/set_sub/Makefile.am,
+	command/set_sub/annotate.sh, command/set_sub/editing.sh,
+	command/set_sub/history.sh, command/show.sh,
+	command/show_sub/Makefile.am, configure.ac, dbg-opts.sh,
+	dbg-pre.sh, lib/file.sh, lib/help.sh, lib/hist.sh,
+	lib/processor.sh, test/unit/test-file.sh.in: Move set subcommands
+	into set_sub. Administrivia for auto*.
+
+2010-10-23  rocky <rocky@gnu.org>
+
+	* command/show.sh, command/show_sub/.gitignore,
+	command/show_sub/alias.sh, command/show_sub/copying.sh,
+	command/show_sub/debugging.sh, command/show_sub/editing.sh,
+	test/data/setshow.right: Make show.sh code and moore modular smaller
+	by adding show_sub.
+
+2010-10-23  rocky <rocky@gnu.org>
+
+	* command/set.sh, command/show.sh, command/step.sh,
+	lib/Makefile.am, lib/cmd-hooks.sh, lib/setshow.sh,
+	test/data/setshow.right: Dry code more. More to come. Forgot to add
+	cmd-hooks.sh.
+
+2010-10-23  rocky <rocky@gnu.org>
+
+	* bashdb-trace.in, bashdb.in, command/debug.sh,
+	command/info_sub/files.sh, command/pwd.sh, command/set.sh,
+	command/show.sh, dbg-opts.sh, lib/file.sh, lib/help.sh,
+	lib/processor.sh, lib/save-restore.sh, test/unit/test-file.sh.in: 
+	Preparation of drying set/show code.
+
+2010-10-22  rocky <rocky@gnu.org>
+
+	* command/show.sh, lib/help.sh: Minimum abbreviation on "show
+	directory" is now "show dir" since we added "set different".
+
+2010-10-22  rocky <rocky@gnu.org>
+
+	* command/set.sh, command/show.sh, test/data/action.right,
+	test/data/misc-output-41.right, test/data/setshow.right: Echo
+	setting for on/off "set" subcommands after changing.
+
+2010-10-22  rocky <rocky@gnu.org>
+
+	* lib/help.sh: A small "show autolist" bug fixed.
+
+2010-10-22  rocky <rocky@gnu.org>
+
+	* lib/help.sh: "help show directories" text correction.
+
+2010-10-22  rocky <rocky@gnu.org>
+
+	* NEWS: What's up.
+
+2010-10-21  rocky <rocky@gnu.org>
+
+	* command/set.sh, command/show.sh, configure.ac, lib/help.sh,
+	lib/processor.sh, test/data/complete.right,
+	test/data/misc-output-41.right, test/data/setshow.right,
+	test/data/sig.right: Add set/show autolist. We're now in 4.1.05dev
+	territory now.
+
+2010-10-11  rocky <rocky@gnu.org>
+
+	* test/unit/test-get-sourceline.sh.in: Small change.
+
+2010-10-11  rocky <rocky@gnu.org>
+
+	* test/unit/test-get-sourceline.sh.in: Unit test administrivia.
+
+2010-10-09  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/info_sub/files.sh, test/data/file with
+	spaces.right, test/example/Makefile.am,
+	test/integration/Makefile.am, test/integration/check-common.sh.in,
+	test/integration/test-file-with-spaces,
+	test/unit/test-get-sourceline.sh.in: Fix up "info files" to work
+	with file names with spaces.
+
 2010-10-08  rocky <rocky@gnu.org>
 
 	* configure.ac, lib/filecache.sh, test/example/Makefile.am,

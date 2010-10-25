@@ -1,6 +1,6 @@
-pkgdatadir        = ${datadir}/@PACKAGE@/command/show_sub
+pkgdatadir        = ${datadir}/@PACKAGE@/command/set_sub
 pkgdata_DATA =       	\
-	annotating.sh  	\
+	annotate.sh  	\
 	editing.sh     	\
 	history.sh
 
