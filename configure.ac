@@ -27,7 +27,7 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.1)
-define(relstatus, 0.5dev)
+define(relstatus, 0.5)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
