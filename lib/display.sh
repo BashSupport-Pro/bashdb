@@ -1,22 +1,23 @@
 # -*- shell-script -*-
-# dispaly.sh - Bourne Again Shell Debugger display routines
+# display.sh - Bourne Again Shell Debugger display routines
 #
 #   Copyright (C) 2010 Rocky Bernstein 
 #   rocky@gnu.org
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with Bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this Program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 #================ VARIABLE INITIALIZATIONS ====================#
 
@@ -24,7 +25,7 @@
 typeset -a  _Dbg_disp_exp=() # Watchpoint expressions
 typeset -ai _Dbg_disp_enable=() # 1/0 if enabled or not
 typeset -i  _Dbg_disp_max=0     # Needed because we can't figure out what
-                                    # the max index is and arrays can be sparse
+                                # the max index is and arrays can be sparse
 
 
 #========================= FUNCTIONS   ============================#
@@ -37,28 +38,29 @@ _Dbg_save_display() {
 
 # Enable/disable display by entry numbers.
 _Dbg_disp_enable_disable() {
-  if [ -z "$1" ] ; then 
-    _Dbg_msg "Expecting a list of display numbers. Got none."
-    return 1
-  fi
-  typeset -i on=$1
-  typeset en_dis=$2
-  shift; shift
-
-  typeset to_go="$@"
-  typeset i
-  eval "$_seteglob"
-  for i in $to_go ; do 
-    case $i in
-      $int_pat )
-        _Dbg_enable_disable_display $on $en_dis $i
-	;;
-      * )
-      _Dbg_msg "Invalid entry number skipped: $i"
-    esac
-  done
-  eval "$_resteglob"
-  return 0
+    if (($# < 2)) ; then 
+	_Dbg_errmsg "Expecting at least two parameters. Got: ${#}."
+	return 1
+    fi
+    typeset -i on=$1
+    typeset en_dis=$2
+    shift; shift
+    
+    typeset to_go="$@"
+    typeset i
+    eval "$_seteglob"
+    for i in $to_go ; do 
+	case $i in
+	    $int_pat )
+                _Dbg_enable_disable_display $on $en_dis $i
+		;;
+	    * )
+                _Dbg_errmsg "Invalid entry number $i skipped"
+		;;
+	esac
+    done
+    eval "$_resteglob"
+    return 0
 }
 
 _Dbg_eval_all_display() {
@@ -66,8 +68,8 @@ _Dbg_eval_all_display() {
   for (( i=0; i < _Dbg_disp_max ; i++ )) ; do
     if [ -n "${_Dbg_disp_exp[$i]}" ] \
       && [[ ${_Dbg_disp_enable[i]} != 0 ]] ; then
-      _Dbg_printf_nocr "%2d (%s): " $i "${_Dbg_disp_exp[i]}"
-      _Dbg_do_eval "${_Dbg_disp_exp[i]}"
+      _Dbg_printf_nocr "%2d: %s = " $i "${_Dbg_disp_exp[i]}"
+      _Dbg_do_eval "_Dbg_msg ${_Dbg_disp_exp[i]}"
     fi
   done
 }  

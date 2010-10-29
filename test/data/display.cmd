@@ -2,7 +2,7 @@ set trace-commands on
 # Test break, watch, watche, step, next, continue and stack handling
 #
 ###  Try a simple display...
-display echo $x
+display $x
 break 23
 break 25
 cont

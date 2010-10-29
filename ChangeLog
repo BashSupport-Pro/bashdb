@@ -1,3 +1,16 @@
+2010-10-27  rocky <rocky@gnu.org>
+
+	* configure.ac: Update for release.
+
+2010-10-25  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac, test/data/Makefile.am,
+	test/data/delete.cmd, test/data/delete.right,
+	test/example/Makefile.am, test/example/stepping.sh,
+	test/integration/.gitignore, test/integration/Makefile.am,
+	test/integration/test-delete.in: Add test-delete integration test
+	from zshdb.
+
 2010-10-25  rocky <rocky@gnu.org>
 
 	* test/unit/test-filecache.sh.in: Remove use of "wc" and "cut"

@@ -4,19 +4,20 @@
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
 #   rocky@gnu.org
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   Bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with Bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 _Dbg_confirm() {
     if (( $# < 1 || $# > 2 )) ; then
@@ -97,35 +98,24 @@ function _Dbg_msg_nocr {
 
 # print message to output device
 function _Dbg_printf {
-  typeset format=$1
-  shift
-  if (( _Dbg_logging )) ; then
-    builtin printf "$format" "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty ]] ; then
-      builtin printf "$format" "$@" >>$_Dbg_tty
-    else
-      builtin printf "$format" "$@"
-    fi
-  fi
-  _Dbg_msg ''
+    _Dbg_printf_nocr "$@"
+    _Dbg_msg ''
 }
 
 # print message to output device without a carriage return at the end
 function _Dbg_printf_nocr {
-  typeset format=$1
-  shift 
-  if (( _Dbg_logging )) ; then
-    builtin printf "$format" "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty ]] ; then 
-      builtin printf "$format" "$@" >>$_Dbg_tty
-    else
-      builtin printf "$format" "$@"
+    typeset format=$1
+    shift 
+    if (( _Dbg_logging )) ; then
+	builtin printf "$format" "$@" >>$_Dbg_logfid
     fi
-  fi
+    if (( ! _Dbg_logging_redirect )) ; then
+	if [[ -n $_Dbg_tty ]] ; then 
+	    builtin printf "$format" "$@" >>$_Dbg_tty
+	else
+	    builtin printf "$format" "$@"
+	fi
+    fi
 }
 
 # Common funnel for "Undefined command" message
