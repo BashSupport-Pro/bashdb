@@ -27,12 +27,16 @@ NECESSARY TO DO:
       update sample session ?
       Info for calling from inside script. Developer's handbook?
 
+  - Split out command zshdb, kshdb, bashdb code.
+
 FEATURES TO ADD:
 
   0. bash should maintain a list of line numbers that one can
      set breaks on.
 
-  1. perl5db actions
+  1. Remove case statement to figure out command names; put 
+     names inside an associative array. This makes command
+     handling more general.
 
  *2. Debugger should handle errors better. (Does this need bash?)
      Might be able to somehow cascade onto existing Error routine.
@@ -59,5 +63,3 @@ FUTURE:
 
 
 *=Things that bash might help out with.
--------------------------------------
-$Id: TODO,v 1.3 2007/05/07 02:42:52 rockyb Exp $
