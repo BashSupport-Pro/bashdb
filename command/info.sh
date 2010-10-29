@@ -41,12 +41,12 @@ _Dbg_do_info() {
 	      ;;
 	  b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
 	      w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
-	      _Dbg_do_info_brkpts $*
+	      _Dbg_do_info_brkpts $@
 	      return $?
 	      ;;
 
 	  d | di | dis| disp | displ | displa | display )
-	      _Dbg_do_info_display $*
+	      _Dbg_do_info_display $@
 	      return
 	      ;;
 
@@ -56,7 +56,7 @@ _Dbg_do_info() {
 	      ;;
 
 	  fu | fun| func | funct | functi | functio | function | functions )
-              _Dbg_do_info_functions $*
+              _Dbg_do_info_functions $@
               return $?
 	      ;;
 
@@ -91,7 +91,7 @@ _Dbg_do_info() {
 	      ;;
 	  
 	  st | sta | stac | stack )
-	      _Dbg_do_backtrace 1 $*
+	      _Dbg_do_backtrace 1 $@
 	      return $?
 	      ;;
 	  v | va | var | vari | varia | variab | variabl | variable | variables )
