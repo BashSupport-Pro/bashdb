@@ -37,48 +37,48 @@ If no location specification is given, use the current line.'
 # for whether to stop.
 _Dbg_do_break() {
 
-  typeset -i is_temp=$1
-  shift
-
-  typeset linespec
-  if (( $# > 0 )) ; then 
-      linespec="$1"
-  else
-      linespec="$_Dbg_frame_last_lineno"
-  fi
-  shift
-
-  typeset condition=${1:-''}
-  if [[ "$linespec" == 'if' ]]; then
-    linespec=$_Dbg_frame_last_lineno
-  elif [[ -z $condition ]] ; then
-    condition=1
-  elif [[ $condition == 'if' ]] ; then
+    typeset -i is_temp=$1
     shift
-  fi
-  if [[ -z $condition ]] ; then
-    condition=1
-  else 
-    condition="$*"
-  fi
 
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  _Dbg_linespec_setup "$linespec"
-
-  if [[ -n "$full_filename" ]]  ; then 
-    if (( line_number ==  0 )) ; then 
-      _Dbg_errmsg 'There is no line 0 to break at.'
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      (( $? == 0 )) && \
-	_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
+    typeset linespec
+    if (( $# > 0 )) ; then 
+	linespec="$1"
+    else
+	linespec="$_Dbg_frame_last_lineno"
     fi
-  else
-    _Dbg_file_not_read_in "$filename"
-  fi
+    shift
+    
+    typeset condition=${1:-''}
+    if [[ "$linespec" == 'if' ]]; then
+	linespec=$_Dbg_frame_last_lineno
+    elif [[ -z $condition ]] ; then
+	condition=1
+    elif [[ $condition == 'if' ]] ; then
+	shift
+    fi
+    if [[ -z $condition ]] ; then
+	condition=1
+    else 
+	condition="$*"
+    fi
+    
+    typeset filename
+    typeset -i line_number
+    typeset full_filename
+    
+    _Dbg_linespec_setup "$linespec"
+    
+    if [[ -n "$full_filename" ]]  ; then 
+	if (( line_number ==  0 )) ; then 
+	    _Dbg_errmsg 'There is no line 0 to break at.'
+	else 
+	    _Dbg_check_line $line_number "$full_filename"
+	    (( $? == 0 )) && \
+		_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
+	fi
+    else
+	_Dbg_file_not_read_in "$filename"
+    fi
 }
 
 # delete brkpt(s) at given file:line numbers. If no file is given
