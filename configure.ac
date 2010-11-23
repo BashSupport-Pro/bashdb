@@ -26,7 +26,7 @@ dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
-define(OK_BASH_VERS, 4.1)
+define(OK_BASH_VERS, 4.2)
 define(relstatus, 0.6.git)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
@@ -113,7 +113,7 @@ case "${bash_major}.${bash_minor}" in
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash 4.1.])
+    AC_MSG_ERROR([This package is only known to work with Bash 4.1 or 4.2.])
     ;; 
 esac
 
