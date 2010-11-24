@@ -14,6 +14,7 @@ check_DATA =            \
 	parm.sh         \
 	restartbug.sh   \
 	settrace.sh     \
+	sig.sh          \
 	skip.sh         \
 	stepping.sh     \
 	subshell.sh

@@ -4,7 +4,7 @@ dnl
 dnl
 dnl Process this file with autoconf to produce a configure script.
 
-# Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009
+# Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010
 # Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,6 @@ AC_SUBST(BASHDB_MAIN)
 AC_SUBST(DIFF)
 AC_SUBST(DIFF_OPTS)
 
-AM_PATH_LISPDIR
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 AC_REVISION([$Id: configure.ac,v 1.77 2009/06/16 00:09:07 rockyb Exp $])dnl
@@ -73,19 +72,6 @@ fi
 AM_MISSING_PROG(CVS2CL, cvs2cl, $missing_dir)
 AC_PROG_LN_S
 AC_PATH_PROG(RM, rm, true)
-
-AC_PATH_PROG(EMACS, emacs, no)
-if test x$EMACS != xno ; then
-  $EMACS -batch -q -no-site-file -eval \
-  '(if (<= emacs-major-version 21)
-     (progn
-       (error "You need GNU Emacs 22 or better for GNU Emacs support.")
-       (kill-emacs 1)
-     ))'
-  if test $? -ne 0 ; then
-    EMACS=no
-  fi
-fi
 
 ## --with-bash can be used to tell the bashdb script and the regression
 ## test which bash to run. It can be omitted too in which case we'll
@@ -197,10 +183,6 @@ else
   done
 fi
 
-AM_CONDITIONAL(INSTALL_EMACS_LISP, 
-	       [test "x$lispdir" != "x" -a "x$EMACS" != "xno"])
-
-
 #Makefiles
 AC_CONFIG_FILES([Makefile \
 	builtin/Makefile \
@@ -256,24 +238,23 @@ AC_CONFIG_FILES([test/unit/test-sort.sh],
 AC_CONFIG_FILES([test/unit/test-validate.sh], 
 		[chmod +x test/unit/test-validate.sh])
 
+AC_CONFIG_FILES([test/integration/test-debug],
+	        [chmod +x test/integration/test-debug])
 AC_CONFIG_FILES([test/integration/test-delete],
 	        [chmod +x test/integration/test-delete])
 AC_CONFIG_FILES([test/integration/test-misc],
 	        [chmod +x test/integration/test-misc])
 AC_CONFIG_FILES([test/integration/test-setshow],
 	        [chmod +x test/integration/test-setshow])
+AC_CONFIG_FILES([test/integration/test-sig],
+	        [chmod +x test/integration/test-sig])
 
 AC_CONFIG_FILES([ \
 	bashdb-main.inc \
 	bashdb-trace \
 	doc/macros.texi \
-	emacs/Makefile \
 	test/integration/check-common.sh \
 	])
-
-if test x$EMACS != xno ; then
-   AC_CONFIG_FILES([ emacs/dbg-test.el ])
-fi
 
 AC_CONFIG_COMMANDS([default],[[
 # Keep old dates on these files to prevent rebuilding.
@@ -297,10 +278,5 @@ if test x"$build_set0" != x; then
    echo "using source located at ${BASH_SRC}."
 elif test "$bash_4_or_greater" = no ; then
    echo 'We will not try to build the set $0 builtin.'
-fi
-if test "$EMACS" = no ; then
-   echo "We will not install GNU Emacs files."
-else
-   echo "Will install GNU Emacs files."
 fi
 

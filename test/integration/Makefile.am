@@ -9,8 +9,6 @@ check_DATA = \
 	multi.sh           \
 	setshow.tests 	   \
 	settrace.tests 	   \
-	sig.sh             \
-	sig.tests          \
 	sopts.tests        \
 	subshell1.tests    \
 	subshell2.tests    \
@@ -19,6 +17,7 @@ check_DATA = \
 	test-delete.in     \
 	test-misc.in       \
 	test-setshow.in    \
+	test-sig.in        \
 	trace.tests	   \
 	trace2.tests
 

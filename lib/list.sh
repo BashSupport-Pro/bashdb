@@ -1,5 +1,6 @@
 # -*- shell-script -*-
-# list.sh - Bourne Again Shell Debugger list/search commands
+# debugger source-code listing routines
+#
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 
 #   Rocky Bernstein <rocky@gnu.org>
 #
@@ -23,7 +24,8 @@
 # Last search pattern used.
 typeset _Dbg_last_search_pat
 
-# current line to be listed
+# The current line to be listed. A 0 value indicates we should set
+# from _Dbg_frame_last_lineno
 typeset -i _Dbg_listline=0
 
 # Print source line in standard format for line $1 of filename $2.  If

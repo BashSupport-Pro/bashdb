@@ -1,6 +1,6 @@
-#!/bin/bash
+#!@SH_PROG@
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
-SH=/bin/bash
+SH=@SH_PROG@
 
 [ -z "$builddir" ] && export builddir=$PWD
 

@@ -18,17 +18,7 @@
 
 AUTOMAKE_OPTIONS = dist-bzip2
 
-subdirs = command lib doc test
-if INSTALL_EMACS_LISP
-emacs = emacs
-else
-emacs =
-endif
-if BUILD_BUILTINS
-SUBDIRS = builtin $(subdirs) $(emacs)
-else
-SUBDIRS = $(subdirs) $(emacs)
-endif
+SUBDIRS = command lib doc test
 
 man:
 	@( cd $(top_builddir)/doc ; $(MAKE) $(MFLAGS) man )

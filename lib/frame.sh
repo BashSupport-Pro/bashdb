@@ -46,10 +46,10 @@ typeset -i _Dbg_frame_last_lineno=0
 function _Dbg_frame_adjust {
   (($# != 2)) && return 255
 
-  typeset -li count=$1
-  typeset -li signum=$2
+  typeset -i count=$1
+  typeset -i signum=$2
 
-  typeset -li retval
+  typeset -i retval
   _Dbg_frame_int_setup $count || return 2
   
   typeset -i pos
@@ -72,7 +72,7 @@ function _Dbg_frame_adjust {
     return 1
   fi
 
-  typeset -li adjusted_pos
+  typeset -i adjusted_pos
   adjusted_pos=$(_Dbg_frame_adjusted_pos $pos)
   _Dbg_stack_pos=$pos
 
@@ -111,7 +111,7 @@ function _Dbg_frame_adjusted_pos
 	echo -n '-1'
 	return 1
     fi
-    typeset -li pos
+    typeset -i pos
     ((pos=${#FUNCNAME[@]} - _Dbg_stack_size + $1))
     echo -n $pos
     return 0
@@ -149,14 +149,14 @@ _Dbg_frame_fn_param_str() {
 
 _Dbg_frame_set_fn_param() { 
     (($# == 1)) || return 1
-    typeset -li skip_count=$1
+    typeset -i skip_count=$1
     # Set to ignore this call in computation
     _Dbg_next_argc=1
     _Dbg_next_argv=1
 
-    typeset -li i
+    typeset -i i
     for (( i=1; i <= $skip_count; i++ )) ; do
-	typeset -li arg_count=${BASH_ARGC[$i]}
+	typeset -i arg_count=${BASH_ARGC[$i]}
 	((_Dbg_next_argv+=arg_count))
     done
     # After this function returns argv will be one greater. So adjust
@@ -178,9 +178,9 @@ _Dbg_frame_set_fn_param() {
 # 0 is returnd on success, nonzero on failure.
 function _Dbg_frame_prefix {
     typeset -l prefix='??'
-    typeset -li rc=0
+    typeset -i rc=0
     if (($# == 1)) ; then
-	typeset -li pos=$1
+	typeset -i pos=$1
 	if ((pos < 0)) ; then
 	    rc=2
 	elif ((pos >= _Dbg_stack_size)) ; then
