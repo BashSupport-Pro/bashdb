@@ -9,4 +9,4 @@
 cmdfile="$srcdir/../data/sig.cmd"
 debugged_script=sig.sh
 
-$SH ${top_builddir}/bashdb -B -q -L $top_builddir -x $cmdfile $debugged_script
+$SH ${top_builddir}/bashdb --nx -B -q -L $top_builddir -x $cmdfile $debugged_script

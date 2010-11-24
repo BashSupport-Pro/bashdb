@@ -3,13 +3,13 @@
 +# Debugger test of 'command' command
 +# 
 +# Try to set command when there is none.
-+command 1
++commands 1
 ** No breakpoint number 1.
 +# 
 +# Now a command for a real breakpoint
 +break 23
 Breakpoint 1 set in file dbg-test1.sh, line 23.
-+command 1
++commands 1
 Type commands for when breakpoint 1 hit, one per line.
 +# 
 +############################## 
@@ -29,7 +29,7 @@ declare -- x="22"
 +# command statement. First
 +# The setup.
 +############################## 
-+command 2
++commands 2
 Type commands for when breakpoint 1 hit, one per line.
 +continue 
 Breakpoint 2 hit (1 times).
@@ -40,7 +40,7 @@ x is now 22
 +#################################### 
 +# Now we'll change the it
 +#################################### 
-+command 2
++commands 2
 Type commands for when breakpoint 1 hit, one per line.
 +continue 
 Breakpoint 2 hit (2 times).
@@ -56,7 +56,7 @@ testing overwriting commands
 +# Now let's remove the command
 +# altogether
 +#################################### 
-+command 2
++commands 2
 Type commands for when breakpoint 1 hit, one per line.
 +continue 
 Breakpoint 2 hit (3 times).

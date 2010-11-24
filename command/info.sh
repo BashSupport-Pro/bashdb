@@ -1,22 +1,23 @@
 # -*- shell-script -*-
-# info.sh - gdb-like "info" debugger commands
+# gdb-like "info" debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009 Rocky Bernstein
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009,
+#   2010 Rocky Bernstein <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 _Dbg_help_add info ''
 
@@ -47,7 +48,7 @@ _Dbg_do_info() {
 
 	  d | di | dis| disp | displ | displa | display )
 	      _Dbg_do_info_display $@
-	      return
+	      return 0
 	      ;;
 
 	  file | files )
@@ -73,12 +74,12 @@ _Dbg_do_info() {
 	      fi
 
               _Dbg_msg "Line $_Dbg_listline of \"$_Dbg_frame_last_filename\""
-	      return
+	      return 0
 	      ;;
 	  
 	  p | pr | pro | prog | progr | progra | program )
 	      _Dbg_do_info_program
-	      return $?
+	      return 0
 	      ;;
 	  
 	  so | sou | sourc | source )
@@ -92,11 +93,11 @@ _Dbg_do_info() {
 	  
 	  st | sta | stac | stack )
 	      _Dbg_do_backtrace 1 $@
-	      return $?
+	      return 0
 	      ;;
 	  v | va | var | vari | varia | variab | variabl | variable | variables )
 	      _Dbg_do_info_variables "$1"
-	      return
+	      return 0
               ;;
 	  w | wa | war | warr | warra | warran | warrant | warranty )
 	      _Dbg_do_info_warranty
@@ -121,4 +122,5 @@ _Dbg_do_info() {
   done
   return 1
 }
-_Dbg_alias_add 'i' info
+
+_Dbg_alias_add i info

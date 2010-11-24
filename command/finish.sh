@@ -24,10 +24,12 @@ Continue execution until leaving the current function.
 Sometimes this is called 'step out'."
 
 _Dbg_do_finish() {
-    _Dbg_not_running && return 1
+    _Dbg_not_running && return 3
 
     (( _Dbg_return_level=${#FUNCNAME[@]}-5 ))
     _Dbg_last_cmd='finish'
+    _Dbg_inside_skip=0
+    _Dbg_continue_rc=0
     return 0
 }
 

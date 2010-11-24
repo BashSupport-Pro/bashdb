@@ -177,8 +177,6 @@ _Dbg_sig_handler() {
     (( !_Dbg_debug_debugger )) && set +x +v +u
     shopt -s extdebug
 
-    typeset -i _Dbg_rc=0
-
     # This is the signal number. E.g. 15 is SIGTERM
     typeset -r -i _Dbg_signum=$1   
 
@@ -208,7 +206,7 @@ _Dbg_sig_handler() {
 
         _Dbg_set_debugger_entry
         _Dbg_hook_enter_debugger 'on receiving a signal' 'noprint'
-        return $_Dbg_rc
+        return $_Dbg_continue_rc
 
     elif (( _Dbg_sig_old_handler[_Dbg_signum] )) ; then
         eval ${_Dbg_sig_old_handler[$_Dbg_signum]}

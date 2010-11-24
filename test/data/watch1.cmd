@@ -12,9 +12,9 @@ info break
 # Now try enable and disable
 #
 ###  Try testing enable/disable...
-en  0w
+enable  0w
 L
-dis 0W
+disable 0W
 L
 ###  Try deleting nonexistent watchpoint...
 delete 10w
@@ -28,5 +28,5 @@ delete 1w
 info break
 step
 watch x
-restart -B -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
+restart -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
 quit

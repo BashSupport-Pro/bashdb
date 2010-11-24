@@ -33,7 +33,7 @@ _Dbg_do_signal() {
   typeset sig=$1
   typeset -i signum
   if [[ -z $sig ]] ; then
-    _Dbg_msg "Missing signal name or signal number."
+    _Dbg_errmsg "Missing signal name or signal number."
     return 1
   fi
 
@@ -56,4 +56,5 @@ _Dbg_do_signal() {
     fi
   fi
   kill -$signum $$
+  return 0
 }

@@ -26,20 +26,22 @@ back that many items from the end rather specifying an absolute history number."
 
 _Dbg_do_history() {
   typeset -i history_num
-  _Dbg_history_parse $*
+  _Dbg_history_parse $@
   _Dbg_history_remove_item
   if (( history_num >= 0 )) ; then 
       if (( history_num < ${#_Dbg_history[@]} )) ; then 
 	  set ${_Dbg_history[$history_num]}
 	  _Dbg_cmd=$1
 	  shift
-	  args="$@"
+	  _Dbg_args="$@"
 	  _Dbg_redo=1;
       else
 	  _Dbg_errmsg \
 	      "Number $1 ($history_num) should be less than ${#_Dbg_history[@]}"
+	  return 1
       fi
   fi
+  return 0
 }
 
 # Print debugger history $1 is where to start or highest number if not given.
@@ -71,6 +73,7 @@ _Dbg_do_history_list() {
   for (( i=n ; i >= stop && i >= 0; i-- )) ; do
     _Dbg_msg "${i}: ${_Dbg_history[$i]}"
   done
+  return 0
 }
 
 _Dbg_alias_add '!' 'history'

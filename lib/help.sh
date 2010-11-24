@@ -32,10 +32,10 @@ typeset -A _Dbg_debugger_commands
 
 # Add help text $2 for command $1
 function _Dbg_help_add {
-    add_help=${3:-1}
+    add_command=${3:-1}
     (($# != 2)) && (($# != 3))  && return 1
     _Dbg_command_help[$1]="$2"
-    (( $add_help )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
+    (( $add_command )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
     return 0
 }
 
@@ -53,127 +53,127 @@ editing linetrace listsize prompt showcommand trace-commands"
 
 _Dbg_help_set() {
 
-  if (( $# == 0 )) ; then 
-      typeset thing
-      for thing in $_Dbg_set_cmds ; do 
-	_Dbg_help_set $thing 1
-      done
-      return 0
-  fi
-
-  typeset set_cmd="$1"
-  typeset label="$2"
-
-  if [[ -z $set_cmd ]] ; then 
-      local thing
-      for thing in $_Dbg_set_cmds ; do 
-	_Dbg_help_set $thing 1
-      done
-      return
-  fi
-
-  case $set_cmd in 
-      ar | arg | args )
-	  [[ -n $label ]] && label='set args -- '
-	  _Dbg_msg \
-	      "${label}Set argument list to give program being debugged when it is started.
+    if (( $# == 0 )) ; then 
+	typeset thing
+	for thing in $_Dbg_set_cmds ; do 
+	    _Dbg_help_set $thing 1
+	done
+	return 0
+    fi
+    
+    typeset set_cmd="$1"
+    typeset label="$2"
+    
+    if [[ -z $set_cmd ]] ; then 
+	local thing
+	for thing in $_Dbg_set_cmds ; do 
+	    _Dbg_help_set $thing 1
+	done
+	return
+    fi
+    
+    case $set_cmd in 
+	ar | arg | args )
+	    [[ -n $label ]] && label='set args -- '
+	    _Dbg_msg \
+		"${label}Set argument list to give program being debugged when it is started.
 Follow this command with any number of args, to be passed to the program."
-	  return 0
-	  ;;
-      an | ann | anno | annot | annota | annotat | annotate )
-	  if [[ -n $label ]] ; then 
-	      label='set annotate  -- '
-	  else
-	      typeset post_label='
+	    return 0
+	    ;;
+	an | ann | anno | annot | annota | annotat | annotate )
+	    if [[ -n $label ]] ; then 
+		label='set annotate  -- '
+	    else
+		typeset post_label='
 0 == normal;     1 == fullname (for use when running under emacs).'
-	  fi
-	  _Dbg_msg \
-	      "${label}Set annotation level.$post_label"
-	  return 0
-	  ;;
-      autoe | autoev | autoeva | autoeval )
-	  [[ -n $label ]] && label='set autoeval  -- '
-	  local onoff="off."
-	  (( $_Dbg_set_autoeval != 0 )) && onoff='on.'
-	  _Dbg_msg \
-	      "${label}Evaluate unrecognized commands is" $onoff
-	  return 0
-	  ;;
-      autol | autoli | autolis | autolist )
-	  [[ -n $label ]] && label='set autolist  -- '
-	  typeset -l onoff="on."
-	  [[ -z ${_Dbg_cmdloop_hooks['list']} ]] && onoff='off.'
-	  _Dbg_msg \
-	      "${label}Run list command is ${onoff}"
-	  return 0
-	  ;;
-    b | ba | bas | base | basen | basena | basenam | basename )
-	  [[ -n $label ]] && label='set basename  -- '
-	  local onoff="off."
-	  (( $_Dbg_set_basename != 0 )) && onoff='on.'
-	  _Dbg_msg \
-	      "${label}Set short filenames (the basename) in debug output is" $onoff
-	  return 0
-	  ;;
-      d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-	  local onoff=${1:-'on'}
-	  [[ -n $label ]] && label='set debugger  -- '
-	  (( $_Dbg_debug_debugger )) && onoff='on.'
-	  _Dbg_msg \
-	      "${label}Set debugging the debugger is" $onoff
-	  return 0
-	  ;;
-      e | ed | edi | edit | editi | editin | editing )
-	  [[ -n $label ]] && label='set editing   -- '
-	  _Dbg_msg_nocr \
-	      "${label}Set editing of command lines as they are typed is "
-	  if [[ -z $_Dbg_edit ]] ; then 
-	      _Dbg_msg 'off.'
-	  else
-	      _Dbg_msg 'on.'
-	  fi
-	  return 0
-	  ;;
-      lin | line | linet | linetr | linetra | linetrac | linetrace )
-	  [[ -n $label ]] && label='set linetrace -- '
-	  typeset onoff='off.'
-	  (( $_Dbg_linetrace )) && onoff='on.'
-	  _Dbg_msg \
-	      "${label}Set tracing execution of lines before executed is" $onoff
-	  if (( $_Dbg_linetrace )) ; then
-	      _Dbg_msg \
-		  "set linetrace delay -- delay before executing a line is" $_Dbg_linetrace_delay
-	  fi
-	  return 0
-	  ;;
-      lis | list | lists | listsi | listsiz | listsize )
-	  [[ -n $label ]] && label='set listsize  -- '
-	  _Dbg_msg \
-	      "${label}Set number of source lines $_Dbg_debugger_name will list by default."
-	  ;;
-      p | pr | pro | prom | promp | prompt )
-	  [[ -n $label ]] && label='set prompt    -- '
-	  _Dbg_msg \
-	      "${label}${_Dbg_debugger_name}'s prompt is:\n" \
-	      "      \"$_Dbg_prompt_str\"."
-	  return 0
-	  ;;
-      sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
-	  [[ -n $label ]] && label='set showcommand -- '
-	  _Dbg_msg \
-	      "${label}Set showing the command to execute is $_Dbg_set_show_command."
-	  return 0
-	  ;;
-      t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
-	  [[ -n $label ]] && label='set trace-commands -- '
-	  _Dbg_msg \
-	      "${label}Set showing debugger commands is $_Dbg_set_trace_commands."
-	  return 0
-	  ;;
-      * )
-	  _Dbg_msg \
-	      "There is no \"set $set_cmd\" command."
-  esac
+	    fi
+	    _Dbg_msg \
+		"${label}Set annotation level.$post_label"
+	    return 0
+	    ;;
+	autoe | autoev | autoeva | autoeval )
+	    [[ -n $label ]] && label='set autoeval  -- '
+	    local onoff="off."
+	    (( $_Dbg_set_autoeval != 0 )) && onoff='on.'
+	    _Dbg_msg \
+		"${label}Evaluate unrecognized commands is" $onoff
+	    return 0
+	    ;;
+	autol | autoli | autolis | autolist )
+	    [[ -n $label ]] && label='set autolist  -- '
+	    typeset -l onoff="on."
+	    [[ -z ${_Dbg_cmdloop_hooks['list']} ]] && onoff='off.'
+	    _Dbg_msg \
+		"${label}Run list command is ${onoff}"
+	    return 0
+	    ;;
+	b | ba | bas | base | basen | basena | basenam | basename )
+	    [[ -n $label ]] && label='set basename  -- '
+	    local onoff="off."
+	    (( $_Dbg_set_basename != 0 )) && onoff='on.'
+	    _Dbg_msg \
+		"${label}Set short filenames (the basename) in debug output is" $onoff
+	    return 0
+	    ;;
+	d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+	    local onoff=${1:-'on'}
+	    [[ -n $label ]] && label='set debugger  -- '
+	    (( $_Dbg_debug_debugger )) && onoff='on.'
+	    _Dbg_msg \
+		"${label}Set debugging the debugger is" $onoff
+	    return 0
+	    ;;
+	e | ed | edi | edit | editi | editin | editing )
+	    [[ -n $label ]] && label='set editing   -- '
+	    _Dbg_msg_nocr \
+		"${label}Set editing of command lines as they are typed is "
+	    if [[ -z $_Dbg_edit ]] ; then 
+		_Dbg_msg 'off.'
+	    else
+		_Dbg_msg 'on.'
+	    fi
+	    return 0
+	    ;;
+	lin | line | linet | linetr | linetra | linetrac | linetrace )
+	    [[ -n $label ]] && label='set linetrace -- '
+	    typeset onoff='off.'
+	    (( $_Dbg_linetrace )) && onoff='on.'
+	    _Dbg_msg \
+		"${label}Set tracing execution of lines before executed is" $onoff
+	    if (( $_Dbg_linetrace )) ; then
+		_Dbg_msg \
+		    "set linetrace delay -- delay before executing a line is" $_Dbg_linetrace_delay
+	    fi
+	    return 0
+	    ;;
+	lis | list | lists | listsi | listsiz | listsize )
+	    [[ -n $label ]] && label='set listsize  -- '
+	    _Dbg_msg \
+		"${label}Set number of source lines $_Dbg_debugger_name will list by default."
+	    ;;
+	p | pr | pro | prom | promp | prompt )
+	    [[ -n $label ]] && label='set prompt    -- '
+	    _Dbg_msg \
+		"${label}${_Dbg_debugger_name}'s prompt is:\n" \
+		"      \"$_Dbg_prompt_str\"."
+	    return 0
+	    ;;
+	sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
+	    [[ -n $label ]] && label='set showcommand -- '
+	    _Dbg_msg \
+		"${label}Set showing the command to execute is $_Dbg_set_show_command."
+	    return 0
+	    ;;
+	t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+	    [[ -n $label ]] && label='set trace-commands -- '
+	    _Dbg_msg \
+		"${label}Set showing debugger commands is $_Dbg_set_trace_commands."
+	    return 0
+	    ;;
+	* )
+	    _Dbg_msg \
+		"There is no \"set $set_cmd\" command."
+    esac
 }
 
 typeset _Dbg_show_cmds="aliases annotate args autoeval autolist basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
@@ -267,5 +267,6 @@ number of lines to list."
     * )
       _Dbg_msg \
     "Undefined show command: \"$show_cmd\".  Try \"help show\"."
+      
   esac
 }

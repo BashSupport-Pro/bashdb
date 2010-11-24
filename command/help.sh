@@ -2,29 +2,36 @@
 # help.sh - gdb-like "help" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 Rocky Bernstein
-#   rocky@gnu.org
+#   <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 _Dbg_help_add help \
-'help	- Print list of commands.'
+'help	-- Print list of commands.'
 
 # print help command 
 function _Dbg_do_help {
 
-    if ((0 == $#)) ; then
+    # We have to use be careful to make sure globbing, e.g. * isn't
+    # done.
+
+    # Treat "help *" the same as help
+    [[ "$_Dbg_args" == '*' ]] && _Dbg_args=''
+
+    if [[ '' == $_Dbg_args ]] ; then
       _Dbg_help_sort_command_names
       _Dbg_msg 'Available commands:'
       typeset -a list=("${_Dbg_sorted_command_names[@]}")
@@ -39,7 +46,7 @@ function _Dbg_do_help {
  	    _Dbg_msg "${_Dbg_command_help[$dbg_cmd]}"
 	else
 	    _Dbg_alias_expand $dbg_cmd
-	    typeset _Dbg_cmd="$expanded_alias"
+	    dbg_cmd="$expanded_alias"
 	    if [[ -n ${_Dbg_command_help[$dbg_cmd]} ]] ; then
  		_Dbg_msg "${_Dbg_command_help[$dbg_cmd]}"
 	    else
@@ -65,7 +72,7 @@ function _Dbg_do_help {
 	    _Dbg_msg ''
 	    _Dbg_msg "Aliases for $dbg_cmd: $aliases_found"
 	fi
-	return 0
+	return 2
     fi
 }
 

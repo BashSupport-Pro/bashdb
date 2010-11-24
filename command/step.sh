@@ -55,10 +55,10 @@ See also \"step\" and \"set force\"."
 # $2 is an optional additional count.
 _Dbg_do_step() {
 
-  _Dbg_not_running && return 1
+  _Dbg_not_running && return 3
 
-  _Dbg_last_cmd="$1"
-  _Dbg_last_next_step_cmd="$1"; shift
+  _Dbg_last_cmd="$_Dbg_cmd"
+  _Dbg_last_next_step_cmd="$_Dbg_cmd"
   _Dbg_last_next_step_args="$@"
 
   typeset count=${1:-1}
@@ -71,18 +71,20 @@ _Dbg_do_step() {
   esac
 
   if [[ $count == [0-9]* ]] ; then
-    _Dbg_step_ignore=${count:-1}
+      _Dbg_step_ignore=${count:-1}
   else
-    _Dbg_errmsg "Argument ($count) should be a number or nothing."
-    _Dbg_step_ignore=-1
-    return 0
+      _Dbg_errmsg "Argument ($count) should be a number or nothing."
+      _Dbg_step_ignore=-1
+      return 2
   fi
   _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
-
+  
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
   _Dbg_write_journal "_Dbg_step_force=$_Dbg_step_force"
   _Dbg_write_journal "_Dbg_old_set_opts='$_Dbg_old_set_opts'"
-  return 1
+  _Dbg_inside_skip=0
+  _Dbg_continue_rc=0
+  return 0
 }
 _Dbg_alias_add 's'  'step'
 _Dbg_alias_add 's+' 'step+'

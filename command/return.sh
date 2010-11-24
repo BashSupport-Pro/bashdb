@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# Debugger pwd command.
+# gdb-like "return" (return from fn immediately) debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2010 Rocky Bernstein 
+#   Copyright (C) 2010 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,11 +19,21 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add pwd \
-'pwd -- Show working directory.'
+# Move default values down $1 or one in the stack. 
 
-_Dbg_do_pwd() {
-    local _Dbg_cwd=$(pwd)
-    (( _Dbg_set_basename )) && _Dbg_cwd=${_Dbg_cwd##*/}
-    _Dbg_msg "Working directory ${_Dbg_cwd}."
+# Move default values up $1 or one in the stack. 
+_Dbg_help_add return \
+'return
+
+See also "finish", "kill", and "quit".'
+
+function _Dbg_do_return {
+    _Dbg_step_ignore=1
+    _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
+    IFS="$_Dbg_old_IFS";
+    _Dbg_last_cmd='return'
+    _Dbg_inside_skip=0
+    _Dbg_continue_rc=2
+    return 0
 }
+

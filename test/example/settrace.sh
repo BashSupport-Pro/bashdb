@@ -37,7 +37,7 @@ else
   cmdfile=${top_srcdir}/test/data/settrace.cmd
 fi
 
-source ${top_builddir}/bashdb-trace -q -L $top_builddir -B  -x $cmdfile
+source ${top_builddir}/bashdb-trace -q --no-init -L $top_builddir -B  -x $cmdfile
 typeset -i max=1
 init
 hanoi $max 'a' 'b' 'c'

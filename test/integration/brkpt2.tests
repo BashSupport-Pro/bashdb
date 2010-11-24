@@ -12,4 +12,4 @@ fi
 cmdfile="$srcdir/../data/brkpt2.cmd"
 debugged_script="$srcdir/../example/dbg-test1.sh"
 
-$SH ${top_builddir}/bashdb -B -q -L $top_builddir -x $cmdfile $debugged_script
+$SH ${top_builddir}/bashdb --nx -B -q -L $top_builddir -x $cmdfile $debugged_script

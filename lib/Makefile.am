@@ -25,6 +25,7 @@ pkgdata_DATA =      	\
 	save-restore.sh \
 	setshow.sh      \
 	sig.sh	        \
+	stepping.sh     \
 	validate.sh
 
 EXTRA_DIST = $(pkgdata_DATA)

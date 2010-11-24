@@ -14,7 +14,7 @@ for SUBTEST in multi1 multi2 multi3 multi4 ; do
   TEST_FILE="${top_builddir}/test/${SUBTEST}.check"
   RIGHT_FILE="${top_srcdir}/test/data/${SUBTEST}.right"
   (cd $srcdir && \
-      run_debugger $debugged_script "-B -q -L ${top_builddir}" $cmdfile 2>&1 >$TEST_FILE </dev/null)
+      run_debugger $debugged_script "-B --no-init -q -L ${top_builddir}" $cmdfile 2>&1 >$TEST_FILE </dev/null)
 
   check_output $TEST_FILE $RIGHT_FILE
   rc=$?

@@ -30,7 +30,7 @@ _Dbg_do_action() {
   
   if (( $# == 0 )) ; then 
       _Dbg_list_action
-      return 0
+      return 1
   fi
   if (( $# == 1 )) ; then 
       typeset n=$_Dbg_frame_last_lineno

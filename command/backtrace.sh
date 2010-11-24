@@ -1,22 +1,23 @@
 # -*- shell-script -*-
-# where.sh - gdb-like "bt", "where", or "bt" backtrace debugger command
+# gdb-like "backtrace" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 Rocky
-#   Bernstein rocky@gnu.org
+#   Bernstein <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 # Print a stack backtrace.  
 # $1 is an additional offset correction - this routine is called from two
@@ -28,8 +29,8 @@
 # This code assumes the version of bash where FUNCNAME is an array,
 # not a variable.
 
-_Dbg_help_add where \
-"where [COUNT [FRAME-INDEX]] 
+_Dbg_help_add backtrace \
+"backtrace [COUNT [FRAME-INDEX]] 
 
 Print a backtrace of calling functions and sourced files.
 
@@ -41,7 +42,7 @@ given that many frame entries are ignored"
 # $3 is FRAME-INDEX.
 function _Dbg_do_backtrace {
 
-    _Dbg_not_running && return 1
+    _Dbg_not_running && return 3
     
     typeset -il count=${1:-$_Dbg_stack_size}
     $(_Dbg_is_int $count) || {
@@ -122,6 +123,6 @@ function _Dbg_do_backtrace {
     return 0
 }
 
-_Dbg_alias_add 'T' 'where'
-_Dbg_alias_add 'backtrace' 'where'
-_Dbg_alias_add 'bt' 'where'
+_Dbg_alias_add bt backtrace
+_Dbg_alias_add T backtrace
+_Dbg_alias_add where backtrace

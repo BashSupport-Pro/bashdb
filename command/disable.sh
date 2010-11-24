@@ -24,4 +24,5 @@ _Dbg_help_add disable \
 # Disable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_disable() {
   _Dbg_enable_disable 0 'disabled' $@
+  return $?
 }

@@ -9,4 +9,4 @@
 cmdfile=${top_srcdir}/test/data/subshell1.cmd
 debugged_script="${top_srcdir}/test/example/subshell.sh"
 
-$SH ${top_builddir}/bashdb -B -q -L ${top_builddir} -x $cmdfile $debugged_script
+$SH ${top_builddir}/bashdb --no-init -B -q -L ${top_builddir} -x $cmdfile $debugged_script

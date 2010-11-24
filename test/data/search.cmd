@@ -25,7 +25,7 @@ search fn3
 ?
 /
 ###  Try alternate search form: rev fn3
-rev fn3
+reverse fn3
 ###  Search for something not there...
 search foobar1111
 quit

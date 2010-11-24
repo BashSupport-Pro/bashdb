@@ -14,9 +14,10 @@
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with this program; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 # Sets whether or not to display command to be executed in debugger prompt.
 # If yes, always show. If auto, show only if the same line is to be run
@@ -35,8 +36,8 @@ _Dbg_do_set() {
   typeset set_cmd=$1
   typeset rc
   if [[ $set_cmd == '' ]] ; then
-    _Dbg_msg "Argument required (expression to compute)."
-    return;
+    _Dbg_errmsg "Argument required (expression to compute)."
+    return 1;
   fi
   shift
   case $set_cmd in 

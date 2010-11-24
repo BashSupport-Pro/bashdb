@@ -1,8 +1,8 @@
 # -*- shell-script -*-
-# down.sh - gdb-like "down" debugger command
+# gdb-like "down" debugger command
 #
 #   Copyright (C) 2010 Rocky Bernstein
-#   rocky@gnu.org
+#   <rocky@gnu.org>
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -32,8 +32,10 @@ If COUNT is omitted, use 1. COUNT can be any arithmetic expression.
 See also "up" and "frame".'
 
 function _Dbg_do_down {
-  _Dbg_not_running && return 1
-  typeset -il count=${1:-1}
+  _Dbg_not_running && return 3
+  typeset -i count=${1:-1}
   _Dbg_frame_adjust $count -1
-  return 0
+  typeset -i rc=$?
+  ((0 == $rc)) && _Dbg_last_cmd='down'
+  return $rc
 }

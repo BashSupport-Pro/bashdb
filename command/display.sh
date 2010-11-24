@@ -42,4 +42,5 @@ _Dbg_do_display() {
     _Dbg_disp_enable[$n]=1
     _Dbg_printf '%2d: %s' $n "${_Dbg_disp_exp[$n]}"
   fi
+  return 0
 }

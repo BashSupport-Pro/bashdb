@@ -9,8 +9,8 @@ One-time breakpoint 1 set in file debug.sh, line 8.
 ->0 in file `debug.sh' at line 8
 +print running debug -n ./debug.sh $_Dbg_DEBUGGER_LEVEL ...
 running debug -n ./debug.sh 1 ...
-+debug -B -q -x ../data/debug2.cmd ../example/debug.sh $_Dbg_DEBUGGER_LEVEL
-Debugging new script with -B -q -x ../data/debug2.cmd ../example/debug.sh $_Dbg_DEBUGGER_LEVEL
++debug -B -q --no-init -x ../data/debug2.cmd ../example/debug.sh $_Dbg_DEBUGGER_LEVEL
+Debugging new script with -B -q --no-init -x ../data/debug2.cmd ../example/debug.sh $_Dbg_DEBUGGER_LEVEL
 (debug.sh:2):
 2:	if [[ "$1"x != x ]] ; then 
 +### Second part of testing 'debug' command.
@@ -22,6 +22,4 @@ _Dbg_DEBUGGER_LEVEL is 2
 passed 1
 Debugged program terminated with code 1. Use q to quit or R to restart.
 
-(debug.sh:10):
-10:	$cmd $_Dbg_DEBUGGER_LEVEL
 +quit 

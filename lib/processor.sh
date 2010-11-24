@@ -1,22 +1,23 @@
 # -*- shell-script -*-
-# dbg-processor.sh - Bourne Again Shell Debugger Top-level debugger commands
+# dbg-processor.sh - Top-level debugger commands
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
-#   Rocky Bernstein rocky@gnu.org
+#   Rocky Bernstein <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 # Debugger command loop: Come here at to read debugger commands to
 # run.
@@ -24,8 +25,7 @@
 # Main-line debugger read/execute command loop
 
 # ==================== VARIABLES =======================================
-# Are we inside the middle of a "skip" command?
-typeset -i  _Dbg_inside_skip=0
+
 
 # Hooks that get run on each command loop
 typeset -A _Dbg_cmdloop_hooks
@@ -71,6 +71,8 @@ typeset -a _Dbg_cmdfile=('')
 # A list of debugger command input-file descriptors.
 typeset -a _Dbg_fd=($_Dbg_fdi)
 
+typeset _Dbg_prompt_output
+
 # ===================== FUNCTIONS =======================================
 
 # Note: We have to be careful here in naming "local" variables. In contrast
@@ -83,11 +85,12 @@ function _Dbg_process_commands {
   # trying to change "trap RETURN" inside a "trap RETURN" handler....
   # Turn off return trapping. Not strictly necessary, since it *should* be 
   # covered by the _Dbg_ test below if we've named functions correctly.
-  # However turning off the RETURN trap should reduce unnecessary calls.
-  # trap RETURN  
+  # However turning off the RETURN trap should reduce unnecessary
+  # trap RETURN calls.
 
   _Dbg_inside_skip=0
   _Dbg_step_ignore=-1  # Nuke any prior step ignore counts
+  _Dbg_continue_rc=-1  # Don't continue exectuion unless told to do so.
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 
   typeset -l key
@@ -128,7 +131,7 @@ function _Dbg_process_commands {
     # in in stderr by adding our debugger prompt.
 
     # if no tty, no prompt
-    local _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
+    _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
 
     eval "local _Dbg_prompt=$_Dbg_prompt_str"
     _Dbg_preloop
@@ -175,12 +178,10 @@ function _Dbg_process_commands {
 	 rc=$?
      else
 	_Dbg_onecmd "$_Dbg_cmd" "$args"
-	rc=$?
 	_Dbg_postcmd
     fi
-    if (( $rc != 10 )) ; then 
-       return $rc
-    fi
+    ((_Dbg_continue_rc >= 0)) && return $_Dbg_continue_rc
+
     if (( _Dbg_brkpt_commands_defining )) ; then
        _Dbg_prompt='>'
     else
@@ -215,13 +216,13 @@ _Dbg_onecmd() {
     typeset expanded_alias; _Dbg_alias_expand "$1"
     typeset _Dbg_cmd="$expanded_alias"
     shift
-    typeset args=$@
+    typeset _Dbg_args="$@"
 
      # Set default next, step or skip command
      if [[ -z $_Dbg_cmd ]]; then
 	_Dbg_cmd=$_Dbg_last_next_step_cmd
-	args=$_Dbg_last_next_step_args
-	full_cmd="$_Dbg_cmd $args"
+	_Dbg_args=$_Dbg_last_next_step_args
+	full_cmd="$_Dbg_cmd $_Dbg_args"
       fi
 
      # If "set trace-commands" is "on", echo the the command
@@ -230,14 +231,14 @@ _Dbg_onecmd() {
      fi
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
-     local dq_args=$(_Dbg_esc_dq "$args")
+     local dq_args=$(_Dbg_esc_dq "$_Dbg_args")
 
      # _Dbg_write_journal_eval doesn't work here. Don't really understand
      # how to get it to work. So we do this in two steps.
      _Dbg_write_journal \
         "_Dbg_history[${#_Dbg_history[@]}]=\"$dq_cmd $dq_args\""
 
-     _Dbg_history[${#_Dbg_history[@]}]="$_Dbg_cmd $args"
+     _Dbg_history[${#_Dbg_history[@]}]="$_Dbg_cmd $_Dbg_args"
 
      _Dbg_hi=${#_Dbg_history[@]}
      history -s -- "$full_cmd"
@@ -247,6 +248,14 @@ _Dbg_onecmd() {
 	 
 	 _Dbg_redo=0
 	 
+	 if [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
+	     ${_Dbg_debugger_commands[$_Dbg_cmd]} $_Dbg_args
+	     IFS=$_Dbg_space_IFS;
+	     eval "_Dbg_prompt=$_Dbg_prompt_str"
+	     ((_Dbg_continue_rc >= 0)) && return $_Dbg_continue_rc
+	     continue
+	 fi
+
 	 case $_Dbg_cmd in
 	     
 	     # Comment line
@@ -281,410 +290,137 @@ _Dbg_onecmd() {
 	     
 	     # Search backwards for pattern
 	     [?]* )
-		 _Dbg_do_search_back $_Dbg_cmd
-		 _Dbg_last_cmd="search"
-		 ;;
-	     
-	     # Set action to be silently run when a line is hit
-	     action )
-		 _Dbg_do_action $args 
-		 ;;
-	     
-	     # Add a debugger command alias
-	     alias )
-		 _Dbg_do_alias $args 
-		 _Dbg_last_cmd='alias'
-		 ;;
-	     
-	     # Set breakpoint on a line
-	     break )
-		 _Dbg_do_break 0 $args 
-		 _Dbg_last_cmd='break'
-		 ;;
-	     
-	     # Continue
-	     continue )
-		 
-		 _Dbg_last_cmd='continue'
-		 if _Dbg_do_continue $args ; then
-		     _Dbg_write_journal_eval \
-			 "_Dbg_old_set_opts='$_Dbg_old_set_opts -o functrace'"
-		     return 0
-		 fi
+		 _Dbg_do_reverse $_Dbg_cmd
+		 _Dbg_last_cmd="reverse"
 		 ;;
 	     
 	     # Change Directory
 	     cd )
 		 # Allow for tilde expansion. We also allow expansion of
 		 # variables like $HOME which gdb doesn't allow. That's life.
-		 local cd_command="cd $args"
+		 local cd_command="cd $_Dbg_args"
 		 eval $cd_command
 		 _Dbg_do_pwd
 		 _Dbg_last_cmd='cd'
 		 ;;
 	     
-	     # commands
-	     comm | comma | comman | command | commands )
-		 _Dbg_do_commands $args
-		 _Dbg_last_cmd='commands'
+	     # complete
+	     comp | compl | comple | complet | complete )
+		 _Dbg_do_complete $_Dbg_args
+	     	 _Dbg_last_cmd='complete'
+	     	 ;;
+
+	     # Delete all breakpoints by line number.
+	     # Note we use "d" as an alias for "clear" to be compatible
+	     # with the Perl5 debugger.
+	     d | cl | cle | clea | clea | clear )
+		 _Dbg_do_clear_brkpt $_Dbg_args
+		 _Dbg_last_cmd='clear'
 		 ;;
 	     
-	     # complete
-	     com | comp | compl | comple |complet | complete )
-	         _Dbg_do_complete $args
-		 _Dbg_last_cmd='complete'
+	     # Set up a script for debugging into.
+	     debug )
+		 _Dbg_do_debug $_Dbg_args
+		 # Skip over the execute statement which presumably we ran above.
+		 _Dbg_do_next_skip 'skip' 1
+		 IFS="$_Dbg_old_IFS";
+		 return 1
+		 _Dbg_last_cmd='debug'
 		 ;;
-
-	    # Breakpoint/Watchpoint Conditions
-	    cond | condi |condit |conditi | conditio | condition )
-		 _Dbg_do_condition $args
-		 _Dbg_last_cmd='condition'
-	  ;;
-
-	  # Delete all breakpoints by line number.
-	  # Note we use "d" as an alias for "clear" to be compatible
-	  # with the Perl5 debugger.
-	  d | cl | cle | clea | clea | clear )
-	  _Dbg_do_clear_brkpt $args
-	  _Dbg_last_cmd='clear'
-	  ;;
-	  
-	# Delete breakpoints by entry numbers. Note "d" is an alias for
-	  # clear.
-	  de | del | dele | delet | delete )
-	  _Dbg_do_delete $args
-	  _Dbg_last_cmd='delete'
-	  ;;
-	  
-	  # Set up a script for debugging into.
-	  debug )
-	  _Dbg_do_debug $args
-	  # Skip over the execute statement which presumably we ran above.
-	  _Dbg_do_next_skip 'skip' 1
-	  IFS="$_Dbg_old_IFS";
-	  return 1
-	  _Dbg_last_cmd='debug'
-	  ;;
-	  
-	  # Disable breakpoints
-	  di | dis | disa | disab | disabl | disable )
-	  _Dbg_do_disable $args
-	  _Dbg_last_cmd='disable'
-	  ;;
-	  
-	  # Display expression
-	  disp | displ | displa| display )
-	  _Dbg_do_display $args
-	  ;;
-	  
-	  # Delete all breakpoints.
-	  D | deletea | deleteal | deleteall )
-	  _Dbg_clear_all_brkpt
-	  _Dbg_last_cmd='deleteall'
-	  ;;
-	  
-	  # Move call stack down
-	  down )
-	  _Dbg_do_down $args
-	  _Dbg_last_cmd='down'
-	  ;;
-	  
-	  # edit file currently positioned at
-	  edit )
-	  _Dbg_do_edit $args
-	  _Dbg_last_cmd='edit'
-	  ;;
-	  
-	  # enable a breakpoint or watchpoint
-	  en | ena | enab | enabl | enable )
-	  _Dbg_do_enable $args
-	  _Dbg_last_cmd='enable'
-	  ;;
-	  
-	  # evaluate a shell command
-	  eval )
-	  _Dbg_do_eval $args
-	  _Dbg_last_cmd='eval'
-	  
-	  ;;
-	  
-	  # intelligent print of variable, function or expression
-	  examine )
-	  _Dbg_do_examine "$args"
-	  ;;
-	  
-	  # 
-	  file )
-	  _Dbg_do_file $args
-	  _Dbg_last_cmd='file'
-	  ;;
-	  
-	  # 
-	  fin | fini | finis | finish )
-	  _Dbg_do_finish && return 0
-	  ;;
-	  
-	  #  Set stack frame
-	  frame )
-	  _Dbg_do_frame $args
-	  _Dbg_last_cmd='frame'
-	  ;;
-	  
-	  # print help command menu
-	  help )
-	  _Dbg_do_help $args ;;
-	  
-	  #  Set signal handle parameters
-	  ha | han | hand | handl | handle )
-	  _Dbg_do_handle $args
-	  ;;
-	  
-	  #  Info subcommands
-	  in | inf | info )
-	  _Dbg_do_info $args
-	  ;;
-	  
-	  # List line.
-	  # print lines in file
-	  list )
-	  _Dbg_do_list $args
-	  _Dbg_last_cmd='list'
-	  ;;
-	  
-	  # Load (read in) lines of a file
-	  lo | loa | load )
-	  _Dbg_do_load $args
-	  ;;
-	  
-	  # kill program
-	  k | ki | kil | kill )
-	  _Dbg_do_kill $args
-	  ;;
-	  
-	  # next/single-step N times (default 1)
-	  next | sk | ski | skip )
-	  _Dbg_last_next_step_cmd="$_Dbg_cmd"
-	  _Dbg_last_next_step_args=$args
-	  _Dbg_do_next_skip $_Dbg_cmd $args
-	  if [[ $_Dbg_cmd == sk* ]] ; then
-	      _Dbg_inside_skip=1
-	      _Dbg_last_cmd='skip'
-	  else
-	      _Dbg_last_cmd='next'
-	  fi
-	  return $_Dbg_inside_skip
-	  ;;
-	  
-	  # print globbed or substituted variables
-	  print )
-	  _Dbg_do_print "$args"
-	  _Dbg_last_cmd='print'
-	  ;;
-	  
-	  # print working directory
-	  pwd )
-	  _Dbg_do_pwd
-	  ;;
-	  
-	  # exit the debugger and debugged program
-	  quit )
-	  _Dbg_last_cmd='quit'
-	  _Dbg_do_quit $args
-	  ;;
-	  
-	  # restart debug session.
-	  restart )
-	  _Dbg_last_cmd='restart'
-	  _Dbg_do_restart $args
-	  ;;
-	  
-	  # return from function/source without finishing executions
-	  return )
-	  _Dbg_step_ignore=1
-	  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
-	  IFS="$_Dbg_old_IFS";
-	  _Dbg_last_cmd='return'
-	  return 2
-	  ;;
-	  
-	  # Search backwards for pattern
-	  rev | reve | rever | revers | reverse )
-	  _Dbg_do_search_back $args
-	  _Dbg_last_cmd='reverse'
-	  ;;
-	  
-	  # Search forwards for pattern
-	  sea | sear | searc | search | \
-              for | forw | forwa | forwar | forward )
-	  _Dbg_do_search $args
-	  _Dbg_last_cmd='search'
-	  ;;
-	  
-	  # Command to set debugger options
-	  set )
-	  _Dbg_do_set $args
-	  _Dbg_last_cmd='set'
-	  ;;
-	  
-	  # Command to show debugger settings
-	  show )
-	  _Dbg_do_show $args
-	  _Dbg_last_cmd='show'
-	  ;;
-
-	  # run shell command. Has to come before ! below.
-	  shell | '!!' )
-	  eval $args ;;
-	  
-	  # Send signal to process
-	  si | sig | sign | signa | signal )
-	  _Dbg_do_signal $args
-	  _Dbg_last_cmd='signal'
-	  ;;
-	  
-	  # Run a debugger comamnd file
-	  so | sou | sour | sourc | source )
-	  _Dbg_do_source $args
-	  ;;
-	  
-	  # single-step 
-	  step | 'step+' | 'step-' )
-	  _Dbg_do_step "$_Dbg_cmd" $args
-	  return 0
-	  ;;
-	  
-	  # toggle execution trace
-	  t | to | tog | togg | toggl | toggle )
-	  _Dbg_do_trace
-	  ;;
-	  
-	  # Set a one-time breakpoint
-	  tb | tbr | tbre | tbrea | tbreak )
-	  _Dbg_do_break 1 $args 
-	  _Dbg_last_cmd='tbreak'
-	  ;;
-	  
-	  # Trace a function
-	  tr | tra | tra | trac | trace )
-	  _Dbg_do_trace_fn $args 
-	  ;;
-	  
-	  # Set the output tty
-	  tty )
-	  _Dbg_do_tty $args 
-	  _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
-	  ;;
-	  
-	  # Move call stack up
-	  up )
-	  _Dbg_do_up $args
-	  _Dbg_last_cmd='up'
-	  ;;
-	  
-	  # Add a debugger command alias
-	  unalias )
-	  _Dbg_do_unalias $args 
-	  _Dbg_last_cmd="unalias"
-          ;;
-	  
-	  # Undisplay display-number
-	  und | undi | undis | undisp | undispl | undispla | undisplay )
-	  _Dbg_do_undisplay $args
-	  ;;
-	  
-	  # Remove a function trace
-	  unt | untr | untra | untrac | untrace )
-	  _Dbg_do_untrace_fn $args 
-	  ;;
-	  
-	  # Show version information
-	  ve | ver | vers | versi | versio | version | M )
-	  _Dbg_do_show_versions
-	  ;;
-	  
-	  # watch variable
-	  wa | wat | watch | W )
-	  local -a a
-	  a=($args)
-	  local first=${a[0]}
-	  if [[ $first == '' ]] ; then
-	      _Dbg_do_watch 0
-	  elif ! _Dbg_defined "$first" ; then
-	      _Dbg_msg "Can't set watch: no such variable $first."
-	  else
-	      unset a first
-	      _Dbg_do_watch 0 "\$$args"
-	  fi
-	  ;;
-
-	  # Watch expression
-	  watche | We )
-	  _Dbg_do_watch 1 "$args"
-	  ;;
-	  
-	  # Frame Stack listing
-	  where )
-	  _Dbg_do_backtrace $args
-	  ;;
-	  
-	  # List all breakpoints and actions.
-	  L )
-	  _Dbg_do_list_brkpt
-	  _Dbg_list_watch
-	  _Dbg_list_action
-	  ;;
-	  
-	  # Remove all actions
-	  A )
-	  _Dbg_do_clear_all_actions $args
-	  ;;
-	  
-	  # List debugger command history
-	  H )
-	  _Dbg_history_remove_item
-	  _Dbg_do_history_list $args
-	  ;;
-	  
-	  #  S List subroutine names
-	  S )
-	  _Dbg_do_list_functions $args
-	  ;;
-	  
-	  # Dump variables
-	  V )
-	  _Dbg_do_info_variables "$args"
-	  ;;
-	  
-	  # Has to come after !! of "shell" listed above
-          # Run an item from the command history
-	  \!* | history )
-	  _Dbg_do_history $args
-	  ;;
-	  
-	  '' )
-	  # Redo last_cmd
-	  if [[ -n $_Dbg_last_cmd ]] ; then 
-	      _Dbg_cmd=$_Dbg_last_cmd 
-	      _Dbg_redo=1
-	  fi
-	  ;;
-	  * ) 
-	  
-	  if (( _Dbg_set_autoeval )) ; then
-	      _Dbg_do_eval $_Dbg_cmd $args
-	  else
-              _Dbg_undefined_cmd "$_Dbg_cmd"
-	      _Dbg_history_remove_item
-	      # local -a last_history=(`history 1`)
-	      # history -d ${last_history[0]}
-	  fi
-	  ;;
-	  esac
+	     
+	     # Delete all breakpoints.
+	     D | deletea | deleteal | deleteall )
+		 _Dbg_clear_all_brkpt
+		 _Dbg_last_cmd='deleteall'
+		 ;;
+	     
+	     # return from function/source without finishing executions
+	     return )
+		 ;;
+	     
+	     # run shell command. Has to come before ! below.
+	     shell | '!!' )
+		 eval $_Dbg_args ;;
+	     
+	     # Send signal to process
+	     si | sig | sign | signa | signal )
+		 _Dbg_do_signal $_Dbg_args
+		 _Dbg_last_cmd='signal'
+		 ;;
+	     
+	     # single-step 
+	     'step+' | 'step-' )
+		 _Dbg_do_step "$_Dbg_cmd" $_Dbg_args
+		 return 0
+		 ;;
+	     
+	     # # toggle execution trace
+	     # to | tog | togg | toggl | toggle )
+	     # 	 _Dbg_do_trace
+	     # 	 ;;
+	     
+	     # Show version information
+	     ve | ver | vers | versi | versio | version | M )
+		 _Dbg_do_show_versions
+		 ;;
+	     
+	     # List all breakpoints and actions.
+	     L )
+		 _Dbg_do_list_brkpt
+		 _Dbg_list_watch
+		 _Dbg_list_action
+		 ;;
+	     
+	     # Remove all actions
+	     A )
+		 _Dbg_do_clear_all_actions $_Dbg_args
+		 ;;
+	     
+	     # List debugger command history
+	     H )
+		 _Dbg_history_remove_item
+		 _Dbg_do_history_list $_Dbg_args
+		 ;;
+	     
+	     #  S List subroutine names
+	     S )
+		 _Dbg_do_list_functions $_Dbg_args
+		 ;;
+	     
+	     # Dump variables
+	     V )
+		 _Dbg_do_info_variables "$_Dbg_args"
+		 ;;
+	     
+	     # Has to come after !! of "shell" listed above
+             # Run an item from the command history
+	     \!* | history )
+		 _Dbg_do_history $_Dbg_args
+		 ;;
+	     
+	     '' )
+		 # Redo last_cmd
+		 if [[ -n $_Dbg_last_cmd ]] ; then 
+		     _Dbg_cmd=$_Dbg_last_cmd 
+		     _Dbg_redo=1
+		 fi
+		 ;;
+	     * ) 
+		 
+		 if (( _Dbg_set_autoeval )) ; then
+		     _Dbg_do_eval $_Dbg_cmd $_Dbg_args
+		 else
+		     _Dbg_undefined_cmd "$_Dbg_cmd"
+		     _Dbg_history_remove_item
+		     # local -a last_history=(`history 1`)
+		     # history -d ${last_history[0]}
+		 fi
+		 ;;
+	 esac
      done # while (( $_Dbg_redo ))
 	  
      IFS=$_Dbg_space_IFS;
      eval "_Dbg_prompt=$_Dbg_prompt_str"
-     return 10
 }
 
 _Dbg_preloop() {

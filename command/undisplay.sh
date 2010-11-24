@@ -1,8 +1,8 @@
 # -*- shell-script -*-
-# undisplay.sh - gdb-like "undisplay"
+# gdb-like "undisplay"
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2010
-#   Rocky Bernstein rocky@gnu.org
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -36,7 +36,7 @@ _Dbg_do_undisplay() {
     
     if (( 0 == $# )) ; then
 	_Dbg_errmsg 'You need to pass in some display numbers.'
-	return 1
+	return 0
     fi
     
     for del in $@ ; do 

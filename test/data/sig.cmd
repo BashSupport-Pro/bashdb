@@ -17,9 +17,7 @@ eval kill -TERM $$
 info signals
 continue
 ###  Should have printed a stack trace above...
-continue
 where 1
-continue
 kill
 y
 

@@ -1,8 +1,7 @@
 # -*- shell-script -*-
-# Debugger pwd command.
+# gdb-like "skip" (step over) commmand.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2010 Rocky Bernstein 
-#   <rocky@gnu.org>
+#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,11 +18,20 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add pwd \
-'pwd -- Show working directory.'
+# Sets whether or not to display command to be executed in debugger prompt.
+# If yes, always show. If auto, show only if the same line is to be run
+# but the command is different.
 
-_Dbg_do_pwd() {
-    local _Dbg_cwd=$(pwd)
-    (( _Dbg_set_basename )) && _Dbg_cwd=${_Dbg_cwd##*/}
-    _Dbg_msg "Working directory ${_Dbg_cwd}."
+_Dbg_help_add skip \
+"skip [COUNT]	-- Skip (don't run) the next COUNT command(s).
+
+If COUNT is given, stepping occurs that many times before
+stopping. Otherwise COUNT is one. COUNT an be an arithmetic
+expression. See also \"next\" and \"step\"."
+
+_Dbg_do_skip() {
+    _Dbg_last_cmd='skip'
+    _Dbg_next_skip_common 1 $*
+    return $?
 }
+

@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Set up to Debug into another script...
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein 
-#   <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -31,11 +31,11 @@ about to be executed."
 _Dbg_do_debug() {
 
   # set -xv
-  local script_cmd=${@:-$_Dbg_bash_command}
+  typeset script_cmd=${@:-$_Dbg_bash_command}
 
   # We need to expand variables that might be in $script_cmd.
   # set_Dbg_nested_debug_cmd is set up to to be eval'd below.
-  local set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$script_cmd\"";
+  typeset set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$script_cmd\"";
 
   [ -z "$BASH" ] && BASH='bash'
 
@@ -56,7 +56,7 @@ _Dbg_do_debug() {
   else
     _Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
   fi
-  local -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
+  typeset -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
   export _Dbg_QUIT_ON_QUIT=1
   export BASHDB_BASENAME_ONLY="$_Dbg_set_basename"
   ((_Dbg_DEBUGGER_LEVEL++))

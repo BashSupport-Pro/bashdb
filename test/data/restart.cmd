@@ -4,7 +4,7 @@ list
 step
 step
 break 7
-restart -B -q -L ../.. -x ../../test/data/restart2.cmd ../../test/example/restartbug.sh
+restart -B --no-init -q -L ../.. -x ../../test/data/restart2.cmd ../../test/example/restartbug.sh
 # We never get here
 print You should not see this.
 quit 

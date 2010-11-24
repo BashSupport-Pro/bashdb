@@ -41,13 +41,13 @@ function _Dbg_do_condition {
   if [[ $n != $int_pat ]]; then
     eval "$_resteglob"
     _Dbg_errmsg "condition: Bad breakpoint number: $n"
-    return 1
+    return 2
   fi
   eval "$_resteglob"
 
   if [[ -z ${_Dbg_brkpt_file[$n]} ]] ; then
     _Dbg_msg "condition: Breakpoint entry $n is not set. Condition not changed."
-    return 1
+    return 3
   fi
   
   if [[ -z $condition ]] ; then

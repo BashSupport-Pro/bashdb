@@ -1,20 +1,21 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2008 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2010 Rocky Bernstein <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 _Dbg_help_add trace \
 'trace FN -- Wrap FN in set -x .. set -x tracing.'
@@ -25,7 +26,7 @@ _Dbg_help_add trace \
 # The wrapped function becomes the new function and the original
 # function is called old_$1.
 # $? is 0 if successful.
-function _Dbg_do_trace_fn {
+function _Dbg_do_trace {
     typeset -r fn=$1
     typeset -ri clear_debug_trap=${2:-1}
     if [[ -z $fn ]] ; then
@@ -68,7 +69,7 @@ _Dbg_help_add untrace \
 
 # Undo wrapping fn
 # $? is 0 if successful.
-function _Dbg_do_untrace_fn {
+function _Dbg_do_untrace {
     typeset -r fn=$1
     if [[ -z $fn ]] ; then
 	_Dbg_errmsg "untrace_fn: missing or invalid function name."

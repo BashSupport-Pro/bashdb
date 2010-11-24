@@ -1,23 +1,23 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 
-#   2009, 2010 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 
+#   Rocky Bernstein  <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 typeset _Dbg_RESTART_COMMAND=''
 
@@ -30,6 +30,23 @@ typeset _Dbg_stop_reason=''    # The reason we are in the debugger.
 
 # Set to 0 to clear "trap DEBUG" after entry
 typeset -i _Dbg_restore_debug_trap=1
+
+# Are we inside the middle of a "skip" command? If so this gets copied
+# to _Dbg_continue_rc which controls the return code from the trap.
+typeset -i _Dbg_inside_skip=0
+
+# If _Dbg_continue_rc is not less than 0, continue execution of the
+# program. As specified by the shopt extdebug option. See extdebug of
+# "The Shopt Builtin" in the bash info guide. The information
+# summarized is:
+#
+# - A return code 2 is special and means return from a function or
+#   "source" command immediately
+#
+# - A nonzero return indicate the next statement should not be run. 
+#   Typically we use 1 for that value.
+# - A set return code 0 continues execution.
+typeset -i _Dbg_continue_rc=-1
 
 # ===================== FUNCTIONS =======================================
 
@@ -67,7 +84,7 @@ _Dbg_debug_trap_handler() {
     # other things.
     _Dbg_set_debugger_entry
     
-    typeset -i _Dbg_rc=0
+    _Dbg_continue_rc=_Dbg_inside_skip
     
     # Shift off "RETURN";  we do not need that any more.
     shift 
@@ -90,7 +107,7 @@ _Dbg_debug_trap_handler() {
     for (( _Dbg_i=0; _Dbg_i < _Dbg_watch_max ; _Dbg_i++ )) ; do
 	if [ -n "${_Dbg_watch_exp[$_Dbg_i]}" ] \
 	    && [[ ${_Dbg_watch_enable[_Dbg_i]} != 0 ]] ; then
-	    typeset new_val=`_Dbg_get_watch_exp_eval $_Dbg_i`
+	    typeset new_val=$(_Dbg_get_watch_exp_eval $_Dbg_i)
 	    typeset old_val=${_Dbg_watch_val[$_Dbg_i]}
 	    if [[ $old_val != $new_val ]] ; then
 		((_Dbg_watch_count[_Dbg_i]++))
@@ -99,7 +116,7 @@ _Dbg_debug_trap_handler() {
 		_Dbg_msg "  new value: '$new_val'"
 		_Dbg_watch_val[$_Dbg_i]=$new_val
 		_Dbg_hook_enter_debugger 'on a watch trigger'
-		return $_Dbg_rc
+		return $_Dbg_continue_rc
 	    fi
 	fi
     done
@@ -144,7 +161,7 @@ _Dbg_debug_trap_handler() {
 	    fi
 	    _Dbg_hook_enter_debugger "$_Dbg_stop_reason"
 	    _Dbg_set_to_return_from_debugger 1
-	    return $_Dbg_rc
+	    return $_Dbg_continue_rc
 	fi
     fi
     
@@ -155,21 +172,21 @@ _Dbg_debug_trap_handler() {
 	    if (( $_Dbg_last_lineno == $_Dbg_frame_last_lineno )) \
 		&& [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then 
 		_Dbg_set_to_return_from_debugger 1
-		return $_Dbg_rc
+		return $_Dbg_continue_rc
 	    fi
 	fi
 	
 	_Dbg_hook_enter_debugger 'after being stepped'
-	return $_Dbg_rc
+	return $_Dbg_continue_rc
     elif (( ${#FUNCNAME[@]} == _Dbg_return_level )) ; then
 	# here because a trap RETURN
 	_Dbg_return_level=0
 	_Dbg_hook_enter_debugger 'on a return'
-	return $_Dbg_rc
+	return $_Dbg_continue_rc
     elif (( -1 == _Dbg_return_level )) ; then
 	# here because we are fielding a signal.
 	_Dbg_hook_enter_debugger 'on fielding signal'
-	return $_Dbg_rc
+	return $_Dbg_continue_rc
     elif ((_Dbg_linetrace==1)) ; then 
 	if ((_Dbg_linetrace_delay)) ; then
 	    sleep $_Dbg_linetrace_delay
@@ -178,10 +195,10 @@ _Dbg_debug_trap_handler() {
 	# FIXME: DRY code.
 	_Dbg_set_to_return_from_debugger 1
 	_Dbg_last_lineno=${BASH_LINENO[0]}
-	return $_Dbg_inside_skip
+	return $_Dbg_continue_rc
     fi
     _Dbg_set_to_return_from_debugger 1
-    return $_Dbg_inside_skip
+    return $_Dbg_continue_rc
 }
 
 _Dbg_hook_action_hit() {
@@ -245,7 +262,7 @@ _Dbg_hook_enter_debugger() {
     [[ 'noprint' != $2 ]] && _Dbg_print_location_and_command
     _Dbg_process_commands
     _Dbg_set_to_return_from_debugger 1
-    return $_Dbg_rc # _Dbg_rc set to $? by above
+    return $_Dbg_continue_rc
 }
 
 # Cleanup routine: erase temp files before exiting.

@@ -4,19 +4,20 @@
 #   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010
 #   Rocky Bernstein rocky@gnu.org
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 # Does things to after on entry of after an eval to set some debugger
 # internal settings  
@@ -97,9 +98,9 @@ function _Dbg_set_debugger_entry {
 }
 
 function _Dbg_set_to_return_from_debugger {
-  _Dbg_rc=$?
 
   _Dbg_stop_reason=''
+  _Dbg_listline=0
   # FIXME: put in a frame setup routine and remove from set_entry
   _Dbg_last_lineno=${_Dbg_frame_last_lineno}
   if (( $1 != 0 )) ; then

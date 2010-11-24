@@ -23,18 +23,20 @@ _Dbg_help_add tty \
 
 # Set output tty
 _Dbg_do_tty() {
-  if [[ -z "$1" ]] ; then
-    _Dbg_msg "Argument required (terminal name for running target process)."
-    return 1
-  fi
-  if ! $(touch $1 >/dev/null 2>/dev/null); then 
-    _Dbg_msg "Can't access $1 for writing."
-    return 1
-  fi
-  if [[ ! -w $1 ]] ; then
-    _Dbg_msg "tty $1 needs to be writable"
-    return 1
-  fi
-  _Dbg_tty=$1
+    typeset -i rc=0
+    if (( $# < 1 )) ; then
+	_Dbg_errmsg "Argument required (terminal name for running target process)."
+	return 1
+    fi
+    if ! $(touch $1 >/dev/null 2>/dev/null); then 
+	_Dbg_msg "Can't access $1 for writing."
+	return 1
+    fi
+    if [[ ! -w $1 ]] ; then
+	_Dbg_errmsg "tty $1 needs to be writable"
+	return 1
+    fi
+    _Dbg_tty=$1
+    _Dbg_prompt_output=$_Dbg_tty
   return 0
 }

@@ -37,7 +37,7 @@ $2:
 +## info args
 +######################################### 
 +tty 
-Argument required (terminal name for running target process).
+** Argument required (terminal name for running target process).
 +#### *** GNU things...
 +info warranty
 
@@ -66,12 +66,13 @@ POSSIBILITY OF SUCH DAMAGES.
 +#### help commands...
 +help 
 Available commands:
-  /          continue  edit     frame    list   restart  step    unalias  
-  action     debug     enable   handle   load   set      step+   undisplay
-  alias      delete    eval     help     next   show     step+   untrace  
-  break      disable   examine  history  print  signal   tbreak  up       
-  commands   display   file     info     pwd    skip     trace   watch    
-  condition  down      finish   kill     quit   source   tty     where    
+  action     debug    eval     history  pwd      show    tbreak     watch 
+  alias      delete   examine  info     quit     signal  trace      watche
+  backtrace  disable  file     kill     restart  skip    tty      
+  break      display  finish   list     return   source  unalias  
+  commands   down     frame    load     reverse  step    undisplay
+  condition  edit     handle   next     search   step+   untrace  
+  continue   enable   help     print    set      step+   up       
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.

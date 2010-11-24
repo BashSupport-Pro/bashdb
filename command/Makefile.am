@@ -3,6 +3,7 @@ pkgdatadir        = ${datadir}/@PACKAGE@/command
 pkgdata_DATA =        \
 	action.sh     \
 	alias.sh      \
+	backtrace.sh  \
 	break.sh      \
 	commands.sh   \
 	condition.sh  \
@@ -31,17 +32,18 @@ pkgdata_DATA =        \
 	pwd.sh        \
 	quit.sh       \
 	restart.sh    \
+	return.sh     \
 	search.sh     \
 	set.sh        \
 	show.sh       \
 	signal.sh     \
+	skip.sh       \
 	source.sh     \
 	step.sh       \
-	tracefn.sh    \
+	trace.sh      \
 	tty.sh	      \
 	up.sh	      \
 	undisplay.sh  \
-	watch.sh      \
-	where.sh
+	watch.sh
 
 EXTRA_DIST = $(pkgdata_DATA)
