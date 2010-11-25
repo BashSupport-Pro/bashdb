@@ -1,9 +1,24 @@
+Version 4.2-0.6
+
+- Debuger "list" command carries on where we last left off. 
+- Fixed --no-init (--nx, -n) option
+- Fixed to work on bash version 4.2
+- Reorganized command-processing code to simplify it, make it more dynamic,
+  and allow for better expansion increasing DRYness. As a result
+  some short abbreviations of commands have been dropped. Use "alias" 
+  to add back any that you want.
+- Make "display" command more like gdb. Note this is an incompatible change.
+  Left to do is to start indexing from 1.
+- Emacs lisp code has been removed. Please multi-debugger code from
+  http://github.com/rocky/emacs-dbgr instead.
+- Numerous little bugs fixed. 
+
 Version 4.1-0.5
 2010-10-27
 
 - Add set/show autolist.
 - Fix bugs when file contained spaces in a directory portion of the path
-- "Set force" depricated. Use "set different".
+- "Set force" deprecated. Use "set different".
 - Code reorganization to support subcommands (set/show/info) and allow
   for growth
 

@@ -1,3 +1,117 @@
+2010-11-24  rocky <rocky@gnu.org>
+
+	* test/integration/test-action, test/integration/test-debug,
+	test/integration/test-interrupt, test/integration/test-parm,
+	test/integration/test-restart, test/integration/test-setshow.in,
+	test/integration/test-settrace, test/integration/test-watch2: 
+	Integration tests are less convoluted in logic.
+
+2010-11-24  rocky <rocky@gnu.org>
+
+	* test/integration/test-sig: Is now derived from test-sig.in
+
+2010-11-24  rocky <rocky@gnu.org>
+
+	* command/break.sh, command/debug.sh, lib/filecache.sh,
+	test/data/Makefile.am, test/data/brkpt2.cmd,
+	test/data/brkpt2.right, test/data/sig-42.right,
+	test/integration/test-debug, test/integration/test-sig,
+	test/integration/test-sig.in: Fix up for bash 4.2 alpha. Command
+	"debug" has been disabled for now. Fix bug in not
+	simplifying/canonicalizing absolute file names. Some bash 4.2
+	weirdnesses still need to be investigated.
+
+2010-11-24  rocky <rocky@gnu.org>
+
+	* Makefile.am, configure.ac, emacs/.cvsignore, emacs/.gitignore,
+	emacs/Makefile.am, emacs/bashdb.el, emacs/dbg-test.el.in,
+	emacs/elk-test.el, emacs/gud.el, emacs/gud.el.diff, lib/frame.sh,
+	lib/list.sh, test/data/Makefile.am, test/data/sig-42.right,
+	test/example/Makefile.am, test/example/sig.sh,
+	test/integration/Makefile.am, test/integration/sig.sh,
+	test/integration/sig.tests, test/integration/test-debug,
+	test/integration/test-debug.in, test/integration/test-misc.in,
+	test/integration/test-sig, test/integration/test-sig.in: Closer to
+	bash 4.2 running tests. Remove emacs - please use emacs-dbg instead.
+
+
+2010-11-23  rocky <rocky@gnu.org>
+
+	* command/Makefile.am, command/action.sh, command/alias.sh,
+	command/backtrace.sh, command/break.sh, command/commands.sh,
+	command/condition.sh, command/continue.sh, command/debug.sh,
+	command/disable.sh, command/display.sh, command/down.sh,
+	command/edit.sh, command/enable.sh, command/eval.sh,
+	command/examine.sh, command/file.sh, command/finish.sh,
+	command/frame.sh, command/handle.sh, command/help.sh,
+	command/history.sh, command/info.sh, command/kill.sh,
+	command/list.sh, command/load.sh, command/log.sh, command/next.sh,
+	command/pwd.sh, command/quit.sh, command/restart.sh,
+	command/return.sh, command/search.sh, command/set.sh,
+	command/show.sh, command/signal.sh, command/skip.sh,
+	command/source.sh, command/step.sh, command/trace.sh,
+	command/tracefn.sh, command/tty.sh, command/undisplay.sh,
+	command/up.sh, command/watch.sh, command/where.sh, dbg-main.sh,
+	lib/Makefile.am, lib/commands.sh, lib/frame.sh, lib/help.sh,
+	lib/hook.sh, lib/list.sh, lib/processor.sh, lib/save-restore.sh,
+	lib/sig.sh, lib/stepping.sh, test/data/brkpt2.right,
+	test/data/command.cmd, test/data/command.right,
+	test/data/debug.cmd, test/data/debug.right, test/data/list.right,
+	test/data/misc-output-41.right, test/data/restart.cmd,
+	test/data/restart.right, test/data/search.cmd,
+	test/data/search.right, test/data/sig.cmd, test/data/sig.right,
+	test/data/skip.cmd, test/data/skip.right, test/data/watch1.cmd,
+	test/data/watch1.right, test/example/settrace.sh,
+	test/integration/brkpt1.tests, test/integration/brkpt2.tests,
+	test/integration/brkpt3.tests, test/integration/lopts.tests,
+	test/integration/sig.tests, test/integration/sopts.tests,
+	test/integration/subshell1.tests, test/integration/subshell2.tests,
+	test/integration/subshell3.tests, test/integration/subshell4.tests,
+	test/integration/test-multi, test/integration/test-restart,
+	test/unit/test-bashdb-trace.sh.in: A big cleanup and simplification.
+	Replace fixed case-statement command dispatch with an associative
+	array. Bug in the "list" command not the last postion fixed. Bug in
+	handling --nx or --no-init (no user profile) fixed. Code is not more
+	regular and somewhat simpler.
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* command/break.sh, lib/help.sh, lib/processor.sh,
+	test/data/sig.right: Preparation for using an associative array for
+	command dispatch like zshdb currently has.
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* command/debug.sh: Remove Shmutz in variable name.
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2010-11-22  rocky <rocky@gnu.org>
+
+	* bashdb-trace.in, configure.ac, dbg-main.sh: Fix bug in handling
+	-nx --no-init. Start accomdating bash version 4.2.
+
+2010-10-29  rocky <rocky@gnu.org>
+
+	* TODO, lib/action.sh: Update TODO. Remove zshdb from header
+	comment.
+
+2010-10-29  rocky <rocky@gnu.org>
+
+	* command/info.sh, command/info_sub/display.sh: $* -> $@ mostly.
+
+2010-10-29  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/display.sh, command/undisplay.sh,
+	configure.ac, lib/display.sh, lib/msg.sh, test/data/display.cmd,
+	test/data/display.right, test/data/watch2.right: Make display much
+	more like gdb (and trepanning and pydbgr). Note this is an
+	incompatible change. Only thing left is to start indexing from 1.
+
 2010-10-27  rocky <rocky@gnu.org>
 
 	* configure.ac: Update for release.
