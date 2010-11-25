@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
-# -*- shell-script -*-
-#$Id: test-settrace,v 1.2 2008/08/23 16:56:21 rockyb Exp $
+t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
-[ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
-[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
-
-TEST_NAME='settrace'
-
-. ${top_builddir}/test/integration/check-common.sh
+. ${builddir}/check-common.sh
 
 debugged_script="$top_builddir/test/example/settrace.sh"
 (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)

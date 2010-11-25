@@ -1,14 +1,8 @@
 #!@SH_PROG@ -f
-# -*- shell-script -*-
-#$Id: test-setshow,v 1.3 2008/08/23 17:09:36 rockyb Exp $
+t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
-[ -z "$srcdir" ] && export srcdir=$PWD
 [ -z "$builddir" ] && export builddir=$PWD
-[ -z "$top_builddir" ] && export top_builddir=$builddir/../..
-
-TEST_NAME='setshow'
-
-. ${top_builddir}/test/integration/check-common.sh
+. ${builddir}/check-common.sh
 
 (cd $srcdir && $SH ${srcdir}/${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
