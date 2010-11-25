@@ -30,13 +30,6 @@ about to be executed."
 # single statement.
 _Dbg_do_debug() {
 
-    if (( BASH_VERSINFO[0] > 4 || \
-	(BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2) )) ; then 
-	_Dbg_msg "debug not implemented on Bash 4.2 or greater yet."
-	return 1
-    fi
-
-    # set -xv
     typeset script_cmd=${@:-$_Dbg_bash_command}
     
     # We need to expand variables that might be in $script_cmd.

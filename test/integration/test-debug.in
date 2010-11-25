@@ -1,12 +1,6 @@
 #!@SH_PROG@
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
-if (( BASH_VERSINFO[0] > 4 || \
-    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2) )) ; then 
-   echo "Skipping $TEST_NAME on Bash 4.2"
-   exit 77
-fi
-
 [ -z "$builddir" ] && export builddir=$PWD
 
 . ${builddir}/check-common.sh

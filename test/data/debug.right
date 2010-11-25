@@ -1,5 +1,5 @@
 (debug.sh:2):
-2:	if [[ "$1"x != x ]] ; then 
+2:	if (( $# > 0 )) ; then 
 +#### Test 'debug' command
 +continue 8
 One-time breakpoint 1 set in file debug.sh, line 8.
@@ -12,7 +12,7 @@ running debug -n ./debug.sh 1 ...
 +debug -B -q --no-init -x ../data/debug2.cmd ../example/debug.sh $_Dbg_DEBUGGER_LEVEL
 Debugging new script with -B -q --no-init -x ../data/debug2.cmd ../example/debug.sh $_Dbg_DEBUGGER_LEVEL
 (debug.sh:2):
-2:	if [[ "$1"x != x ]] ; then 
+2:	if (( $# > 0 )) ; then 
 +### Second part of testing 'debug' command.
 +where 1
 ->0 in file `debug.sh' at line 2

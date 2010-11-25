@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ "$1"x != x ]] ; then 
+if (( $# > 0 )) ; then 
   echo "passed $1"
   exit 1
 fi
