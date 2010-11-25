@@ -7,21 +7,16 @@ SH=@SH_PROG@
 . ${builddir}/check-common.sh
 debugged_script="$top_srcdir/test/example/sig.sh"
 
-if (( BASH_VERSINFO[0] > 4 || \
-    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2) )) ; then 
-    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-42.right"
-fi
-
 FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
 FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
 
 (cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
 
-grep -v '^sig.tests: line 12' $RIGHT_FILE>${FILTERED_RIGHT_FILE}
-grep -v '^sig.tests: line 12' $TEST_FILE \
-  | sed -e "s:in file \`sig.sh' at line [0-9][0-9]*:in file \`sig.sh' at line 55:" \
-  | sed -e "s:in file \`eval.sh' at line [0-9][0-9]*:in file \`eval.sh' at line 55:" \
-  | sed -e "s|sig.tests: line 10:[ \t]*[0-9][0-9]* Killed.*|sig.tests: line 10: 666 Killed|" >${FILTERED_TEST_FILE}
+@GREP@ -v '^sig.tests: line 12' $RIGHT_FILE>${FILTERED_RIGHT_FILE}
+@GREP@ -v '^sig.tests: line 12' $TEST_FILE \
+  | @SED@ -e "s:in file \`sig.sh' at line [0-9][0-9]*:in file \`sig.sh' at line 55:" \
+  | @SED@ -e "s:in file \`eval.sh' at line [0-9][0-9]*:in file \`eval.sh' at line 55:" \
+  | @GREP@ -v '^sig.tests: line 10:' | @GREP@ -v '^SIGPIPE' >${FILTERED_TEST_FILE}
 check_output $FILTERED_TEST_FILE $FILTERED_RIGHT_FILE
 rc=$?
 

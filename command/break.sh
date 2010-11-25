@@ -89,7 +89,7 @@ _Dbg_do_break_common() {
 		_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
 	fi
     else
-	_Dbg_file_not_read_in "$filename"
+	_Dbg_file_not_read_in "$full_filename"
 	return 2
     fi
     return 0
@@ -122,7 +122,7 @@ _Dbg_do_clear_brkpt() {
       fi
     fi
   else
-    _Dbg_file_not_read_in "$filename"
+    _Dbg_file_not_read_in "$full_filename"
     return 0
   fi
 }

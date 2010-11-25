@@ -114,6 +114,7 @@ function _Dbg_is_file {
     return 1
   fi
   typeset find_file="$1"
+  typeset try_find_file
 
   if [[ -z $find_file ]] ; then
     _Dbg_errmsg "Internal debug error _Dbg_is_file(): file argument null"
@@ -123,8 +124,9 @@ function _Dbg_is_file {
 
   if [[ ${find_file:0:1} == '/' ]] ; then 
       # Absolute file name
-      if [[ -n ${_Dbg_filenames[$find_file]} ]] ; then
-	  echo "$find_file"
+      try_find_file=$(_Dbg_expand_filename "$find_file")
+      if [[ -n ${_Dbg_filenames[$try_find_file]} ]] ; then
+	  echo "$try_find_file"
 	  return 0
       fi
   elif [[ ${find_file:0:1} == '.' ]] ; then

@@ -260,10 +260,5 @@ Next statement to be run is:
 +cont 
 FUNCNAME[3]: main called from bashdb at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
-+info files
-Source files which we have recorded info about:
-  dbg-test1.sh: dbg-test1.sh, 35 lines
-  dbg-test1.sh: dbg-test1.sh, 35 lines
-  dbg-test1.sub: dbg-test1.sub, 35 lines
 +### quitting...
 +quit 

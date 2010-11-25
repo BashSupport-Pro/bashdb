@@ -82,6 +82,5 @@ cont 13
 info program
 ###  Should hit end of script but stay in debugger...
 cont
-info files
 ###  quitting...
 quit

@@ -30,37 +30,43 @@ about to be executed."
 # single statement.
 _Dbg_do_debug() {
 
-  # set -xv
-  typeset script_cmd=${@:-$_Dbg_bash_command}
+    if (( BASH_VERSINFO[0] > 4 || \
+	(BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2) )) ; then 
+	_Dbg_msg "debug not implemented on Bash 4.2 or greater yet."
+	return 1
+    fi
 
-  # We need to expand variables that might be in $script_cmd.
-  # set_Dbg_nested_debug_cmd is set up to to be eval'd below.
-  typeset set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$script_cmd\"";
-
-  [ -z "$BASH" ] && BASH='bash'
-
-  eval "$_seteglob"
-  # Add appropriate bash debugging options
-  if [[ $_Dbg_script != 1 ]] ; then
-    # Running "bash --debugger", so prepend "bash --debugger"
-    set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH --debugger $script_cmd\"";
-  elif [[ $_Dbg_orig_0/// == *bashdb/// ]] ; then
-    # Running "bashdb", so prepend "bash bashdb .."
-    set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH $_Dbg_orig_0 -q -L $_Dbg_libdir $script_cmd\"";
-  fi
-  eval "$_resteglob"
-  eval $set_Dbg_debug_cmd
-
-  if (( _Dbg_set_basename )) ; then 
-    _Dbg_msg "Debugging new script with $script_cmd"
-  else
-    _Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
-  fi
-  typeset -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
-  export _Dbg_QUIT_ON_QUIT=1
-  export BASHDB_BASENAME_ONLY="$_Dbg_set_basename"
-  ((_Dbg_DEBUGGER_LEVEL++))
-  $_Dbg_debug_cmd
-  ((_Dbg_DEBUGGER_LEVEL--))
-  export _Dbg_QUIT_ON_QUIT=$old_quit_on_quit
+    # set -xv
+    typeset script_cmd=${@:-$_Dbg_bash_command}
+    
+    # We need to expand variables that might be in $script_cmd.
+    # set_Dbg_nested_debug_cmd is set up to to be eval'd below.
+    typeset set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$script_cmd\"";
+    
+    [ -z "$BASH" ] && BASH='bash'
+    
+    eval "$_seteglob"
+    # Add appropriate bash debugging options
+    if [[ $_Dbg_script != 1 ]] ; then
+	# Running "bash --debugger", so prepend "bash --debugger"
+	set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH --debugger $script_cmd\"";
+    elif [[ $_Dbg_orig_0/// == *bashdb/// ]] ; then
+	# Running "bashdb", so prepend "bash bashdb .."
+	set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH $_Dbg_orig_0 -q -L $_Dbg_libdir $script_cmd\"";
+    fi
+    eval "$_resteglob"
+    eval $set_Dbg_debug_cmd
+    
+    if (( _Dbg_set_basename )) ; then 
+	_Dbg_msg "Debugging new script with $script_cmd"
+    else
+	_Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
+    fi
+    typeset -r old_quit_on_quit=$_Dbg_QUIT_ON_QUIT
+    export _Dbg_QUIT_ON_QUIT=1
+    export BASHDB_BASENAME_ONLY="$_Dbg_set_basename"
+    ((_Dbg_DEBUGGER_LEVEL++))
+    $_Dbg_debug_cmd
+    ((_Dbg_DEBUGGER_LEVEL--))
+    export _Dbg_QUIT_ON_QUIT=$old_quit_on_quit
 }
