@@ -37,11 +37,7 @@ for _Dbg_file in $_Dbg_includes ; do
     source ${_Dbg_libdir}/dbg-${_Dbg_file}.sh
 done
 
-for _Dbg_file in ${_Dbg_libdir}/lib/*.sh ; do 
-    source $_Dbg_file
-done
-
-for _Dbg_file in ${_Dbg_libdir}/command/*.sh ; do 
+for _Dbg_file in ${_Dbg_libdir}/lib/*.sh ${_Dbg_libdir}/command/*.sh ; do 
     source $_Dbg_file
 done
 
