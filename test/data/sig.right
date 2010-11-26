@@ -44,7 +44,7 @@ Program received signal SIGTERM (15)...
 ##3 _Dbg_process_commands() called from file `hook.sh' at line 263
 ##4 _Dbg_hook_enter_debugger("after being stepped") called from file `hook.sh' at line 179
 ##5 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
-##6 source("sig.sh") called from file `bashdb' at line 157
+##6 source("sig.sh") called from file `bashdb' at line 143
 ##7 main() called from file `bashdb' at line 0
 +### Should have printed a stack trace above...
 +where 1
