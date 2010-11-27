@@ -1,6 +1,6 @@
 Version 4.2-0.6
 
-- Debuger "list" command carries on where we last left off. 
+- Debugger "list" command carries on where we last left off. 
 - Fixed --no-init (--nx, -n) option
 - Fixed to work on bash version 4.2
 - Reorganized command-processing code to simplify it, make it more dynamic,
