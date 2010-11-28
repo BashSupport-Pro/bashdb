@@ -40,7 +40,7 @@ AC_SUBST(RELSTATUS)
 AC_SUBST(BASH_SRC)
 AC_SUBST(PIC)
 AC_SUBST(WL)
-AC_SUBST(BASHDB_MAIN)
+AC_SUBST(DBGR_MAIN)
 AC_SUBST(DIFF)
 AC_SUBST(DIFF_OPTS)
 
@@ -104,7 +104,7 @@ case "${bash_major}.${bash_minor}" in
 esac
 
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
-		  [location of dbg-main.sh]), BASHDB_MAIN=$withval)
+		  [location of dbg-main.sh]), DBGR_MAIN=$withval)
 
 # See if we build set0.c
 AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
@@ -130,9 +130,9 @@ fi
 AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
 
-if test -z "$BASHDB_MAIN" ; then
-  BASHDB_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
-  if test -z "$BASHDB_MAIN" ; then
+if test -z "$DBGR_MAIN" ; then
+  DBGR_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
+  if test -z "$DBGR_MAIN" ; then
      AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the 
 right version of bash, set it with the --with-dbg-main option])
   fi

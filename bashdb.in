@@ -46,11 +46,6 @@ typeset _Dbg_orig_0=$0
 # Equivalent to basename $0; the short program name
 typeset _Dbg_pname=${0##*/}  
 
-# Show basename only in location listing? This is needed in regression tests
-typeset -i _Dbg_set_basename=${BASHDB_BASENAME_ONLY:-0}
-
-typeset    _Dbg_bindir=$(dirname $0)
-
 # We agonize a bit over _Dbg_libdir: the root directory for where
 # debugger code is stored. Below is just the first guess...
 typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)

@@ -55,7 +55,7 @@ typeset _Dbg_tmpdir=/tmp
 
 # What to set for location of helper routines? 
 if [[ ! -e $_Dbg_libdir/$_Dbg_main ]] ; then
-  # Use bindir/../share as fallback
+    # Use bindir/../share as fallback
     _Dbg_libdir=
     if [[ -d $_Dbg_bindir/../share/bashdb ]] ; then
       _Dbg_libdir=$_Dbg_bindir/../share/bashdb
