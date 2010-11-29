@@ -1,5 +1,7 @@
 #!@SH_PROG@
 # -*- shell-script -*-
+# Top-level debugger program. This program may be initially invoked.
+#
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 
 #   2009, 2010  Rocky Bernstein <rocky@gnu.org>
 #
@@ -46,10 +48,15 @@ typeset _Dbg_orig_0=$0
 # Equivalent to basename $0; the short program name
 typeset _Dbg_pname=${0##*/}  
 
+## Stuff set by autoconf/configure ###
+typeset  prefix=@prefix@  # @PKGDATADIR@ often uses $prefix
+typeset _Dbg_libdir=@PKGDATADIR@
+###
+
 # We agonize a bit over _Dbg_libdir: the root directory for where
-# debugger code is stored. Below is just the first guess...
-typeset -x _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
-[[ ! -d $_Dbg_libdir ]] && _Dbg_libdir='.'
+# debugger code is stored.
+[[ -d $_Dbg_libdir ]] || _Dbg_libdir=${_Dbg_bashdb_main%/*}  # dirname(_Dbg_bashdb_main)
+[[ -d $_Dbg_libdir ]] || _Dbg_libdir='.'
 
 # More _Dbg_libdir finding: respect any library option the user has
 # supplied over any of the above guesses. Go over options and parse
@@ -65,9 +72,8 @@ for ((_Dbg_i=0; _Dbg_i<${#_Dbg_script_args[@]}-1; _Dbg_i++)) ; do
     fi
 done
 
-
 # All _Dbg_libdir setting done above. Have we succeeded? 
-if [[ ! -d $_Dbg_libdir ]] && [[ ! -d $_Dbg_libdir ]] ; then 
+if [[ ! -d $_Dbg_libdir ]] ; then 
   echo "${_Dbg_pname}: Can't read debugger library directory '${_Dbg_libdir}'."
   echo "${_Dbg_pname}: Perhaps @PACKAGE@ is installed wrong (if its installed)." >&2
   echo "${_Dbg_pname}: Try running @PACKAGE@ using -L (with a different directory)." >&2
@@ -82,7 +88,6 @@ if [[ ! -r $_Dbg_main ]] ; then
   print "${_Dbg_pname}: Try running @PACKAGE@ using -L (with a different directory)." >&2
   print "${_Dbg_pname}: Run @PACKAGE@ --help for a list and explanation of options." >&2
   exit 1
-    
 fi
 
 # Pull in the rest of the debugger code.

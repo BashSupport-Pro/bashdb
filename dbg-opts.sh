@@ -140,8 +140,9 @@ _Dbg_parse_options() {
     if (( _Dbg_o_version )) ; then
 	_Dbg_do_show_version
 	exit 0
-    elif (( ! _Dbg_o_quiet )) && [[ -n "$_Dbg_shell_name" ]] ; then 
-	echo "$_Dbg_shell_name Shell Debugger, release $_Dbg_release"
+    elif (( ! _Dbg_o_quiet )) && [[ -n $_Dbg_shell_name ]] && \
+	[[ -n $_Dbg_release ]] ; then 
+	echo "$_Dbg_debugger_name debugger, release $_Dbg_release"
 	printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
