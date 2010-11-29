@@ -159,8 +159,16 @@ _Dbg_list() {
 _Dbg_list_columns() {
     typeset colsep='  '
     (($# > 0 )) && { colsep="$1"; shift; }
+    typeset -i linewidth
+    # 2 below is the initial prefix
+    if (($# > 0 )) ; then
+	((linewidth=$1-2)); 
+	shift
+    else
+	((linewidth=$_Dbg_set_linewidth-2))
+    fi
     (($# != 0)) && return 1
-    typeset -a columnized; columnize $_Dbg_set_linewidth "$colsep"
+    typeset -a columnized; columnize $linewidth "$colsep"
     typeset -i i
     for ((i=0; i<${#columnized[@]}; i++)) ; do 
 	_Dbg_msg "  ${columnized[i]}"
