@@ -27,7 +27,7 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.2)
-define(relstatus, 0.6.git)
+define(relstatus, 0.6.dev)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
@@ -106,28 +106,6 @@ esac
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
 		  [location of dbg-main.sh]), DBGR_MAIN=$withval)
 
-# See if we build set0.c
-AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
-		  [location of bash OK_BASH_VERS source code]), 
-		  BASH_SRC=$withval)
-AC_PROG_CC
-
-if test "$BASH_SRC" != x ; then
-   if test ! -d $BASH_SRC ; then
-     AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
-   else
-     AM_PROG_CC_C_O
-     dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
-     PIC=$lt_prog_compiler_pic_CXX
-     WL=$lt_prog_compiler_wl_CXX
-     build_set0=$BASH_SRC
-     AC_CHECK_HEADERS(unistd.h string.h,,
-         [AC_MSG_WARN([Missing some C headers. Disabling readarray])
-         build_set0=])
-     AC_CHECK_FUNCS(getline)
-   fi 
-fi
-AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
 
 if test -z "$DBGR_MAIN" ; then
@@ -185,7 +163,6 @@ fi
 
 #Makefiles
 AC_CONFIG_FILES([Makefile \
-	builtin/Makefile \
 	command/Makefile \
 	command/info_sub/Makefile \
 	command/set_sub/Makefile \

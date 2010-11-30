@@ -1,13 +1,6 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-#$Id: Makefile.am,v 1.17 2009/06/16 00:09:08 rockyb Exp $
 
-if BUILD_BUILTINS
-BUILTIN_TESTS=test-set0.sh
-else 
-BUILTIN_TESTS=
-endif
-
-TESTS = $(BUILTIN_TESTS)     \
+TESTS = \
         test-alias.sh        \
         test-break.sh        \
         test-bashdb-trace.sh \
