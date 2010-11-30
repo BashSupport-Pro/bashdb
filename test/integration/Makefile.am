@@ -6,7 +6,6 @@ check_DATA = \
 	interrupt.tests    \
 	interrupt-3.tests  \
 	lopts.tests        \
-	multi.sh           \
 	setshow.tests 	   \
 	settrace.tests 	   \
 	sopts.tests        \

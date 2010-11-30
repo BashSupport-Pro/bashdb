@@ -10,6 +10,7 @@ check_DATA =            \
 	debug.sh        \
 	hanoi.sh.in     \
 	interrupt.sh.in \
+	multi.sh        \
 	nexting.sh      \
 	parm.sh         \
 	restartbug.sh   \
