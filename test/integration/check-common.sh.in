@@ -58,5 +58,5 @@ run_test_check() {
     (cd $srcdir && run_debugger "$debugged_script" 2>&1 >"$TEST_FILE" </dev/null)
     check_output "$TEST_FILE" "$RIGHT_FILE"
     # Return code tells testing mechanism whether passed or not.
-    exit $?
+    return $?
 }
