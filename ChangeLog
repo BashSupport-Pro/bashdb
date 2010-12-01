@@ -1,3 +1,38 @@
+2010-12-01  rocky <rocky@gnu.org>
+
+	* test/data/setshow.right: Update output
+
+2010-11-30  rocky <rocky@gnu.org>
+
+	* test/integration/Makefile.am, test/integration/setshow.tests,
+	test/integration/subshell1.tests, test/integration/subshell2.tests,
+	test/integration/subshell3.tests, test/integration/subshell4.tests,
+	test/integration/test-interrupt, test/integration/test-lopts,
+	test/integration/test-setshow.in, test/integration/test-sig.in,
+	test/integration/test-subshell: A couple more tests work when
+	building outside source tree.
+
+2010-11-30  rocky <rocky@gnu.org>
+
+	* command/kill.sh, test/integration/Makefile.am,
+	test/integration/brkpt1.tests, test/integration/brkpt2.tests,
+	test/integration/brkpt3.tests, test/integration/test-brkpt,
+	test/integration/test-multi: Simplify breakpoint integration test
+	now runs not building from source tree. Adjust indentation in "kill"
+	command code.
+
+2010-11-30  rocky <rocky@gnu.org>
+
+	* test/integration/check-common.sh.in: run_test_check: Return the
+	error status, don't exit with it.
+
+2010-11-30  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac, test/integration/check-common.sh.in,
+	test/unit/Makefile.am: Administrivia. Work on building outside of
+	source tree. We don't have builtins anymore. xx.git.tar.{gz,bz2} ->
+	xx.dev.tar.{gz,bz2}
+
 2010-11-30  rocky <rocky@gnu.org>
 
 	* test/example/Makefile.am, test/example/multi.sh,

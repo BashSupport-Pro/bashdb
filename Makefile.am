@@ -58,8 +58,8 @@ EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 # the basename that bash wants to use is symlinked to the main name
 # that this distribution uses dbg-main.sh, unless those are the same.
 # 
-OLD_DIR    = $(dir @BASHDB_MAIN@)
-OLD_MAIN   = $(notdir @BASHDB_MAIN@)
+OLD_DIR    = $(dir @DBGR_MAIN@)
+OLD_MAIN   = $(notdir @DBGR_MAIN@)
 PARENT_DIR = $(dir $(OLD_DIR))
 install-data-hook: 
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
