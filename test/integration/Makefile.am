@@ -1,7 +1,4 @@
 check_DATA = \
-	brkpt1.tests       \
-	brkpt2.tests       \
-	brkpt3.tests       \
 	check-common.sh.in \
 	interrupt.tests    \
 	interrupt-3.tests  \
