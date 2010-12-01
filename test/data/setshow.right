@@ -301,7 +301,7 @@ Undefined command "another-bad-command". Try "help".
 +show 
 annotate: Annotation_level is 0.
 args:     Argument list to give script when debugged program starts is:
-       "-B --no-init -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
+       "-L data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
 autoeval: Evaluate unrecognized commands is off.
 autolist: Auto run of 'list' command is off.
 basename: Show short filenames (the basename) in debug output is on.
@@ -321,7 +321,7 @@ trace-commands: State of command tracing is on.
 width: Line width is 80.
 +show args
 Argument list to give script when debugged program starts is:
-       "-B --no-init -q -L .. -x data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
+       "-L data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
 +set args now is the time
 +show args
 Argument list to give script when debugged program starts is:
@@ -339,7 +339,7 @@ Edit style is emacs.
 Undefined set subcommand "misspelled". Try "help set".
 +set listsize 40
 +set listsize bad
-**Integer argument expected; got: bad
+** Integer argument expected; got: bad
 +set annotate bad
 Integer argument expected; got: bad
 +set annotate 6
