@@ -3,13 +3,8 @@ check_DATA = \
 	interrupt.tests    \
 	interrupt-3.tests  \
 	lopts.tests        \
-	setshow.tests 	   \
 	settrace.tests 	   \
 	sopts.tests        \
-	subshell1.tests    \
-	subshell2.tests    \
-	subshell3.tests    \
-	subshell4.tests    \
 	test-delete.in     \
 	test-misc.in       \
 	test-setshow.in    \

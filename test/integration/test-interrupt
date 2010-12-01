@@ -5,6 +5,10 @@ t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
 . ${builddir}/check-common.sh
 
+if [[ $srcdir != $builddir ]] ; then
+    echo "Skipping when building outside the source tree"
+    exit 77
+fi
 case $host_os in 
     cygwin | darwin* | solaris* )
 	exit ;;
