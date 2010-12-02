@@ -1,22 +1,23 @@
 # -*- shell-script -*-
-# sig.sh - Bourne Again Shell Debugger Signal handling routines
+#  Signal handling routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2010 
-#   Rocky Bernstein rocky@gnu.org
+#   Rocky Bernstein <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 # ==================== VARIABLES =======================================
 
@@ -37,42 +38,39 @@ typeset -i _Dbg_program_exit_code=0
 
 # Should we print that a signal was intercepted? 
 # Each entry is "print" or "noprint" or null.
-typeset -a _Dbg_sig_print=()
+typeset -a _Dbg_sig_print; _Dbg_sig_print=()
 
 # Should we reentry the debugger command loop on receiving the signal? 
 # Each entry is "stop" or "nostop" or null.
-typeset -a _Dbg_sig_stop=()
+typeset -a _Dbg_sig_stop; _Dbg_sig_stop=()
 
 # Should we show a traceback on receiving the signal? 
 # Each entry is "stack" or "nostack" or null.
-typeset -a _Dbg_sig_show_stack=()
+typeset -a _Dbg_sig_show_stack; _Dbg_sig_show_stack=()
 
 # Should pass the signal to the user program?? 
 # Each entry is the trap handler with some variables substituted.
-typeset -a _Dbg_sig_passthrough=()
+typeset -a _Dbg_sig_passthrough; _Dbg_sig_passthrough=()
 
 # Should pass the signal to the user program?? 
 # Each entry is the trap handler with some variables substituted.
 typeset -i _Dbg_return_level=0
 
 # Place to save values of $1, $2, etc.
-typeset -a _Dbg_arg=()
+typeset -a _Dbg_arg; _Dbg_arg=()
 
 # Save value of handler variable _Dbg_old_$sig
 _Dbg_save_handler() {
   typeset -r sig=$1
-  typeset old_handler='#unset#';
-  if [[ `trap -p $sig` ]] ; then 
-    old_handler=`trap -p $sig`
-  fi
-  if [[ $old_handler != '#unset#' ]] ; then
+  typeset old_handler=''
+  old_handler_test=$(trap -p $sig)
+  if [[ -n $old_handler ]] ; then
     typeset -a old_hand_a
     old_hand_a=($old_handler)
-    old_handler=`_Dbg_subst_handler_var ${old_hand_a[2]}`
+    old_handler=$(_Dbg_subst_handler_var ${old_hand_a[2]})
     typeset -r decl_cmd="typeset -r _Dbg_old_${sig}_handler='$old_handler'"
     eval $decl_cmd
   fi
-  
 }
 
 # Adjust handler variables to take into account the fact that when we
@@ -82,25 +80,25 @@ _Dbg_subst_handler_var() {
   typeset -i i
   typeset result=''
   for arg in $* ; do 
-    case $arg in 
-    '$LINENO' )
-        arg='${BASH_LINENO[0]}'
-        ;;
-    '${BASH_SOURCE[0]}' )
-        arg='${BASH_SOURCE[1]}'
-        ;;
-    '${FUNCNAME[0]}' )
-        arg='${FUNCNAME[1]}'
-        ;;
-    '${BASH_LINENO[0]}' )
-        arg='${BASH_LINENO[1]}'
-        ;;
-    esac
-    if [[ $result == '' ]] ; then
-      result=$arg 
-    else
-      result="$result $arg"
-    fi
+      case $arg in 
+	  '$LINENO' )
+              arg='${BASH_LINENO[0]}'
+              ;;
+	  '${BASH_SOURCE[0]}' )
+              arg='${BASH_SOURCE[1]}'
+              ;;
+	  '${FUNCNAME[0]}' )
+              arg='${FUNCNAME[1]}'
+              ;;
+	  '${BASH_LINENO[0]}' )
+              arg='${BASH_LINENO[1]}'
+              ;;
+      esac
+      if [[ $result == '' ]] ; then
+	  result=$arg 
+      else
+	  result="$result $arg"
+      fi
   done
   echo $result
 }
@@ -154,14 +152,14 @@ _Dbg_exit_handler() {
       "Debugged program terminated $term_msg. Use q to quit or R to restart."
 
     _Dbg_running=0
-    while [[ 1 ]] ; do
+    while (( 1 )) ; do
       _Dbg_process_commands
     done
   fi
 }
 
-# Generic signal handler for bashdb. We consult global array
-# _Dbg_sig_* for how to handle this signal.
+# Generic signal handler. We consult global array _Dbg_sig_* for how
+# to handle this signal.
 
 # Since the command loop may be called we need to be careful about
 # using variable names that would be exposed to the user. 
@@ -186,10 +184,6 @@ _Dbg_sig_handler() {
         # Note: use the same message that gdb does for this.
         _Dbg_msg "Program received signal $name ($_Dbg_signum)..."
         if [[ ${_Dbg_sig_show_stack[$_Dbg_signum]} == "showstack" ]] ; then 
-            ## DEBUG
-            ## typeset -p BASH_LINENO
-            ## typeset -p FUNCNAME
-            ## typeset -p BASH_SOURCE
             _Dbg_stack_pos=0
             ((_Dbg_stack_size = ${#FUNCNAME[@]}))
             _Dbg_do_backtrace 

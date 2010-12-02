@@ -36,72 +36,69 @@ stack is printed. Prefacing these actions with \"no\" indicates not to
 do the indicated action."
 
 _Dbg_do_handle() {
-  typeset sig=$1
-  typeset cmd=$2
-  typeset -i signum
-  if [[ -z $sig ]] ; then
-    _Dbg_errmsg "Missing signal name or signal number."
+    typeset sig=$1
+    typeset cmd=$2
+    typeset -i signum
+    if [[ -z $sig ]] ; then
+	_Dbg_errmsg "Missing signal name or signal number."
     return 1
-  fi
-
-  eval "$_seteglob"
-  if [[ $sig == $int_pat ]]; then
-    eval "$_resteglob"
-    signame=$(_Dbg_signum2name $sig)
-    if (( $? != 0 )) ; then
-      _Dbg_errmsg "Bad signal number: $sig"
-      return 2
     fi
-    signum=sig
-  else
-    eval "$_resteglob"
-    typeset signum;
-    signum=$(_Dbg_name2signum $sig)
-    if (( $? != 0 )) ; then
-      _Dbg_errmsg "Bad signal name: $sig"
-      return 3
+
+    if [[ $sig == $int_pat ]]; then
+	signame=$(_Dbg_signum2name $sig)
+	if (( $? != 0 )) ; then
+	    _Dbg_errmsg "Bad signal number: $sig"
+	    return 2
+	fi
+	signum=sig
+    else
+	typeset signum;
+	signum=$(_Dbg_name2signum $sig)
+	if (( $? != 0 )) ; then
+	    _Dbg_errmsg "Bad signal name: $sig"
+	    return 3
+	fi
     fi
-  fi
-
-  case $cmd in
-    nop | nopr | nopri | noprin | noprint )
-      _Dbg_sig_print[signum]='noprint'
-      # noprint implies nostop
-      _Dbg_sig_stop[signum]='stop'
-      ;;
-
-    nosta | nostac | nostack )
-      _Dbg_sig_show_stack[signum]='nostack'
-      ;;
-
-    nosto | nostop  )
-      _Dbg_sig_stop[signum]='nostop'
-      ;;
-
-    p | pr | pri | prin | print )
-      _Dbg_sig_print[signum]='print'
-      ;;
-
-    sta | stac | stack )
-      _Dbg_sig_show_stack[signum]='showstack'
-      ;;
-
-    sto | stop )
-      _Dbg_sig_stop[signum]='stop'
-      # stop keyword implies print
-      _Dbg_sig_print[signum]='print'
-      ;;
-    * )
-      if (( !cmd )) ; then 
-	_Dbg_errmsg \
-         "Need to give a command: stop, nostop, stack, nostack, print, noprint"
-	return 4
-      else
-	_Dbg_errmsg "Invalid handler command $cmd"
-	return 5
-      fi
-      ;;
-  esac
-  return 0
+    
+    case $cmd in
+	nop | nopr | nopri | noprin | noprint )
+	    _Dbg_sig_print[signum]='noprint'
+	    # noprint implies nostop
+	    _Dbg_sig_stop[signum]='stop'
+	    ;;
+	
+	nosta | nostac | nostack )
+	    _Dbg_sig_show_stack[signum]='nostack'
+	    ;;
+	
+	nosto | nostop  )
+	    _Dbg_sig_stop[signum]='nostop'
+	    ;;
+	
+	p | pr | pri | prin | print )
+	    _Dbg_sig_print[signum]='print'
+	    ;;
+	
+	sta | stac | stack )
+	    _Dbg_sig_show_stack[signum]='showstack'
+	    ;;
+	
+	sto | stop )
+	    _Dbg_sig_stop[signum]='stop'
+	    # stop keyword implies print
+	    _Dbg_sig_print[signum]='print'
+	    ;;
+	* )
+	    if (( !cmd )) ; then 
+		_Dbg_errmsg \
+		    "Need to give a command: stop, nostop, stack, nostack, print, noprint"
+		return 4
+	    else
+		_Dbg_errmsg "Invalid handler command $cmd"
+		return 5
+	    fi
+	    ;;
+    esac
+    return 0
 }
 
