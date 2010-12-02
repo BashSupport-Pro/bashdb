@@ -1,5 +1,10 @@
 2010-12-01  rocky <rocky@gnu.org>
 
+	* ChangeLog, Makefile.am: One more @BASHDB_MAIN@ -> @DBGR_MAIN@
+	which had messed up install hook.
+
+2010-12-01  rocky <rocky@gnu.org>
+
 	* test/data/setshow.right: Update output
 
 2010-11-30  rocky <rocky@gnu.org>

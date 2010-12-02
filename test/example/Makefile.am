@@ -13,7 +13,7 @@ check_DATA =            \
 	multi.sh        \
 	nexting.sh      \
 	parm.sh         \
-	restartbug.sh   \
+	restart.sh      \
 	settrace.sh     \
 	sig.sh          \
 	skip.sh         \

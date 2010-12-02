@@ -1,4 +1,4 @@
-(restartbug.sh:4):
+(restart.sh:4):
 4:	x=1
 +# Test Restart command
 +list 
@@ -7,16 +7,16 @@
   6:    y=2
   7:    z=0
 +step 
-(restartbug.sh:5):
+(restart.sh:5):
 5:	cd /
 +step 
-(restartbug.sh:6):
+(restart.sh:6):
 6:	y=2
 +break 7
-Breakpoint 1 set in file restartbug.sh, line 7.
-+restart -B --no-init -q -L ... restartbug.sh
-Restarting with ... restartbug.sh
-(restartbug.sh:4):
+Breakpoint 1 set in file restart.sh, line 7.
++restart -B --no-init -q -L ... restart.sh
+Restarting with ... restart.sh
+(restart.sh:4):
 4:	x=1
 +# 2nd part of Restart test
 +l 
@@ -26,10 +26,10 @@ Restarting with ... restartbug.sh
   7:    z=0
 +info break
 Num Type       Disp Enb What
-1   breakpoint keep y   restartbug.sh:7
+1   breakpoint keep y   restart.sh:7
 No watch expressions have been set.
 +cont 
 Breakpoint 1 hit (1 times).
-(restartbug.sh:7):
+(restart.sh:7):
 7:	z=0
 +quit 
