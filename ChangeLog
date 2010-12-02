@@ -1,3 +1,13 @@
+2010-12-02  rocky <rocky@gnu.org>
+
+	* ChangeLog, test/data/restart.cmd, test/data/restart.right,
+	test/example/Makefile.am, test/example/restart.sh,
+	test/example/restartbug.sh, test/integration/settrace.tests,
+	test/integration/sopts.tests, test/integration/test-restart,
+	test/integration/test-tbreak, test/integration/test-trace,
+	test/integration/trace.tests, test/integration/trace2.tests: More
+	integration tests work when built outside of source tree.
+
 2010-12-01  rocky <rocky@gnu.org>
 
 	* ChangeLog, Makefile.am: One more @BASHDB_MAIN@ -> @DBGR_MAIN@

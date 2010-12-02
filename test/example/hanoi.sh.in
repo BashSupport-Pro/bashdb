@@ -37,7 +37,7 @@ if [[ "$1" = 'trace' ]] ; then
       abs_top_builddir=@abs_top_builddir@
   fi
   tracing=1
-  source ${abs_top_builddir}/bashdb-trace -B -q -L ${abs_top_builddir} -x ${abs_top_srcdir}/test/data/settrace.cmd
+  source ${abs_top_builddir}/bashdb-trace -B -q -L ${abs_top_srcdir} -x ${abs_top_srcdir}/test/data/settrace.cmd
 fi
 init
 hanoi $max "a" "b" "c"

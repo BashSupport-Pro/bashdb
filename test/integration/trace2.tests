@@ -1,6 +1,5 @@
 #!/bin/bash -f
 # -*- shell-script -*-
-#$Id: trace2.tests,v 1.2 2008/10/02 09:48:50 rockyb Exp $
 
 [ -z "$top_srcdir" ] && export srcdir=$PWD/../..
 [ -z "$top_builddir" ] && export top_builddir=$builddir/../..
