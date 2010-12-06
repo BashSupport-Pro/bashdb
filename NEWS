@@ -1,4 +1,5 @@
 Version 4.2-0.6
+2010-12-10
 
 - Debugger "list" command carries on where we last left off. 
 - Fixed --no-init (--nx, -n) option

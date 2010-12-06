@@ -3,6 +3,8 @@
 /Makefile
 /Makefile.in
 /check-common.sh
+/test-debug
 /test-delete
 /test-misc
 /test-setshow
+/test-sig
