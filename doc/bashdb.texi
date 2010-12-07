@@ -1389,12 +1389,13 @@ display a short list of named classes of commands:
 @smallexample
 bashdb<0> @b{help}
 Available commands:
-  /          debug    enable   help     next     show    step-      untrace
-  alias      delete   eval     history  print    signal  tbreak     up     
-  break      disable  examine  info     pwd      skip    trace      watch  
-  commands   display  file     kill     quit     source  tty        where  
-  condition  down     frame    list     restart  step    unalias  
-  continue   edit     handle   load     set      step+   undisplay
+  action     debug    eval     history  pwd      show    tbreak     watch 
+  alias      delete   examine  info     quit     signal  trace      watche
+  backtrace  disable  file     kill     restart  skip    tty      
+  break      display  finish   list     return   source  unalias  
+  commands   down     frame    load     reverse  step    undisplay
+  condition  edit     handle   next     search   step-   untrace  
+  continue   enable   help     print    set      step+   up       
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -1409,11 +1410,16 @@ debugger displays short information on how to use that command.
 
 @example
 bashdb<0> @b{help list}
-l linespec      List window lines starting at linespec.
-l min incr      List incr lines starting at 'min' linespec.
-l               List next window of lines.
-l .             Same as above.
-                Long command name: list.
+list [START|.|FN] [COUNT] -- List lines of a script.
+
+START is the starting line or dot (.) for current line. Subsequent
+list commands continue from the last line listed. If a function name
+is given list the text of the function.
+
+If COUNT is omitted, use the setting LISTSIZE. Use "set listsize" to 
+change this setting.
+
+Aliases for list: l
 @end example
 
 In addition to @code{help}, you can use the debugger command
@@ -1437,7 +1443,7 @@ with @code{info breakpoints}.  You can get a complete list of the
 bashdb<0> @b{help info}
 List of info subcommands:
 
-info args -- Argument variables (e.g.@: $1, $2, ...) of the current stack frame.
+info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
 info breakpoints -- Status of user-settable breakpoints
 info display -- Show all display expressions
 info files -- Source files in the program
@@ -1450,6 +1456,8 @@ info stack -- Backtrace of the stack
 info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
+
+Aliases for info: i
 bashdb<1> @b{info source}
 Current script file is parm.sh
 Contains 34 lines.
@@ -3116,6 +3124,7 @@ interacts with you in various ways given below.
 * Alias::                Debugger Command aliases
 * Annotate::             Annotation Level (set annotate)
 * Autoeval::             Evaluate unrecognized commands
+* Autolist::             Run a list command on every stop
 * Basename::             Show basenames of file names only (set basename)
 * Debugger::             Allow debugging the debugger (set debugger)
 * File::                 Specifying a Script-File Associaton (set file)
@@ -3186,6 +3195,15 @@ NameError Exception: undefined local variable or method `stepp' for ...
 @kindex show autoeval 
 @item show args
 Shows whether Ruby evaluation of debugger input should occur or not.
+@end table
+
+@node Autolist
+@subsection Set/Show listing on stop (@samp{set autolist})
+
+@table @code
+@kindex set autolist @r{[} on | 1 | off | 0 @r{]}
+@item set autolist @r{[} on | 1 | off | 0 @r{]}
+When set runs a ``list'' command on each stop in the debugger.
 @end table
 
 @node Basename
@@ -3652,16 +3670,25 @@ debugger.
 @cindex @value{Emacs}
 A special interface allows you to use @value{Emacs} to view (and
 edit) the source files for the program you are debugging with
-@value{DBG}. However you must be using @value{Emacs} version 21 or
+@value{DBG}. However you must be using @value{Emacs} version 23 or
 greater. (@code{M-x show-emacs-version} inside @value{Emacs} will
 tell you what version you are running.)
 
-To use this interface, use the command @kbd{M-x bashdb} in @sc{gnu}
-Emacs.  Give the executable file you want to debug as an
-argument. Make sure to use the version that comes with this package as
-this is newer than that supplied with @value{Emacs}. 
+The project emacs-dbgr at @url{https://github.com/rocky/emacs-dbgr} has
+the code. This project handles other debuggers, not just
+@code{bashdb}. Alas, steps need to be taken to make it easier to
+install.
 
-The @kbd{bashdb} command starts @value{DBG} as a subprocess of Emacs,
+The load the code @kbd{M-x load-libarary dbgr}.  To use this interface,
+use the command @kbd{M-x dbgr-bashdb} in @sc{gnu} Emacs.  There is also
+am Emacs lisp command alias called @kbd{bashdb}. However it is possible
+ther will be a conflict with older code that we used to provide in this
+package.
+
+When you run @kbd{dbgr-bashdb} you are prompted for the executable file
+you want to debug as an argument.
+
+The @kbd{dbgr-bashdb} command starts @value{DBG} as a subprocess of Emacs,
 with input and output through a newly created Emacs buffer.
 
 Using @value{DBG} under Emacs is just like using @value{DBG}

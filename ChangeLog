@@ -1,3 +1,7 @@
+2010-12-06  rocky <rocky@gnu.org>
+
+	* ChangeLog, NEWS, test/integration/.gitignore: Administrivia
+
 2010-12-02  rocky <rocky@gnu.org>
 
 	* command/handle.sh, lib/sig.sh: signal handling: Make it easier to
