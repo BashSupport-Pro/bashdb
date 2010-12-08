@@ -5,6 +5,7 @@
 Source files which we have recorded info about:
   file with spaces.sh: file with spaces.sh, 3 lines
 +list 
+  1:    #!/bin/sh
   2: => x=1
   3:    echo "file with spaces here"
 +step 

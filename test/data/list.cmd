@@ -27,20 +27,14 @@ l .
 # 
 # Should see lines up to current execution line.
 ###  Trying '-'...
--
+l -
 ###  Testing set/show listsize
 show listsize
 ###  Setting listsize to 3...
 set listsize 3
 l 10
-p "- command..."
--
 ###  Setting listsize to 4...
 set listsize 4
 show listsize
 l 10
-###  '-' command...
--
-#<-This comment doesn't have a space after 
-#the initial `#'
 quit

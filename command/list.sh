@@ -20,30 +20,57 @@
 #   MA 02111 USA.
 
 _Dbg_help_add list \
-'list [START|.|FN] [COUNT] -- List lines of a script.
+'list[>] [LOC|.] [NUMBER] 
 
-START is the starting line or dot (.) for current line. Subsequent
-list commands continue from the last line listed. If a function name
-is given list the text of the function.
+LOC is the starting location or dot (.) for current file and
+line. Subsequent list commands continue from the last line
+listed. Frame switching however resets the line to dot.
 
-If COUNT is omitted, use the setting LISTSIZE. Use "set listsize" to 
-change this setting.'
+If NUMBER is omitted, use the LISTSIZE setting as a count. Use "set
+listsize" to change this setting. If NUMBER is given and is less than
+the starting line, then it is treated as a count. Otherwise it is
+treated as an ending line number.
+
+By default aliases "l>" and "list>" are set to list. In this case and
+more generally when the alias ends in ">", rather than center lines
+around LOC that will be used as the starting point.
+
+Examples:
+
+list .      # List centered around the curent frame line
+list        # Same as above if the first time. Else start from where
+            # we last left off.
+list> .     # list starting from the current frame line.
+list  10 3  # list 3 lines centered around 10, lines 9-11
+list> 10 3  # list lines 10-12
+list  10 13 # list lines 10-13
+list  10 -5 # list from lines to 5 lines before teh end of the file
+list  /etc/profile:5  # List centered around line 5 of /etc/profile.
+list  /etc/profile 5  # Same as above.
+'
 
 # l [start|.] [cnt] List cnt lines from line start.
 # l sub       List source code fn
 
 _Dbg_do_list() {
+    typeset -i center_line
+    if [[ ${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1} == '>' ]] ; then
+	center_line=0
+    else
+	center_line=1
+    fi
+
     typeset first_arg
     if (( $# > 0 )) ; then
 	first_arg="$1"
 	shift
     else
-	first_arg='.'
+	first_arg="$_Dbg_listline"
     fi
 
-    if [[ $first_arg == '.' ]] ; then
-	_Dbg_list "$_Dbg_frame_last_filename" $*
-	_Dbg_last_cmd='list'
+    if [[ $first_arg == '.' ]] || [[ $first_arg == '-' ]] ; then
+	_Dbg_list $center_line "$_Dbg_frame_last_filename" $first_arg "$*"
+	_Dbg_last_cmd="$_Dbg_cmd"
 	return 0
     fi
 
@@ -57,8 +84,8 @@ _Dbg_do_list() {
 	(( $line_number ==  0 )) && line_number=1
 	_Dbg_check_line $line_number "$full_filename"
 	(( $? == 0 )) && \
-	    _Dbg_list "$full_filename" "$line_number" $*
-	_Dbg_last_cmd='list'
+	    _Dbg_list $center_line "$full_filename" "$line_number" $*
+	_Dbg_last_cmd="$_Dbg_cmd"
 	return 0
     else
 	_Dbg_file_not_read_in "$filename"
@@ -67,3 +94,5 @@ _Dbg_do_list() {
 }
 
 _Dbg_alias_add l list
+_Dbg_alias_add "l>" list
+_Dbg_alias_add "list>" list

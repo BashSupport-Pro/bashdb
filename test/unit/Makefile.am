@@ -33,6 +33,7 @@ EXTRA_DIST = $(TESTS) shunit2 \
      test-frame.sh.in         \
      test-get-sourceline.sh.in \
      test-io.sh.in            \
+     test-lib-list.sh.in      \
      test-msg.sh.in           \
      test-pre.sh              \
      test-run.sh.in           \

@@ -97,40 +97,73 @@ level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_lin
   fi
 }
 
-# list $3 lines starting at line $2 of file $1. If $1 is '', use
-# $_Dbg_frame_last_filename value.  If $3 is ommited, print $_Dbg_set_listsize
-# lines. if $2 is omitted, use global variable $_Dbg_frame_last_lineno.
+# Parse $1 $2, $3, and optional $4 setting $filename, $_Dbg_start_line and
+# $end_line.  $2 is the maximimum number of lines. If $3 or $4 are
+# less than 0, they are interpreted as line numbers counting from the
+# end. If $3 is '.' use _Dbg_frame_last_lineno. If $4 is given and is
+# greater than $3 then use that as an ending line. If $4 is less than
+# $3, then it is a line count. And if $4 omitted, use the line count
+# $_Dbg_set_listsize.  if $2 is omitted, use global variable
+# $_Dbg_frame_last_lineno.
+_Dbg_parse_list_args() {
+    typeset -i max_line
+    (($# < 3 || $# > 5)) && return 1
 
-_Dbg_list() {
-    typeset filename
-    if (( $# > 0 )) ; then
-	filename=$1
-    else
-	filename=$_Dbg_frame_last_filename
-    fi
+    typeset -i center_line
+    center_line=$2
 
-    if [[ $2 == '.' ]]; then
-	_Dbg_listline=$_Dbg_frame_last_lineno
-    elif [[ -n $2 ]] ; then
-	_Dbg_listline=$2
+    max_line=$2
+    filename="$3"
+
+    # Parse start line $3 yielding _Dbg_listline
+    if [[ $4 == '.' ]]; then
+	((_Dbg_listline=_Dbg_frame_last_lineno))
+    elif [[ $4 == '-' ]]; then
+	((_Dbg_listline=_Dbg_listline-2*_Dbg_set_listsize))
+    elif [[ -n $4 ]] ; then
+	if (($4 < 0)) ; then 
+	    ((_Dbg_listline=$2+$4+1))
+	else
+	    ((_Dbg_listline=$4))
+	fi
     elif (( 0 == _Dbg_listline )) ; then
 	_Dbg_listline=$_Dbg_frame_last_lineno
     fi
     (( _Dbg_listline==0 && _Dbg_listline++ ))
 
-    typeset -i cnt
-    cnt=${3:-$_Dbg_set_listsize}
-    typeset -i n
-    n=$((_Dbg_listline+cnt-1))
+    typeset -i count
+    ((count=${5:-$_Dbg_set_listsize}))
+    ((count < 0)) && ((count=$2+$5+1))
+    if [[ -z $5 ]] || ((count < _Dbg_listline)) ; then
+	((center_line)) && ((_Dbg_listline-=count/2))
+	((_Dbg_listline<=0)) && ((_Dbg_listline=1))
+	((end_line=_Dbg_listline+count-1))
+    else
+	((end_line=count))
+    fi
+    return 0
+}
+
+# list lines starting. See _Dbg_parse_list_args for how $2, $3, and $4
+# are interpreted. Note though that they are called as $1, $2, $3 there.
+_Dbg_list() {
+    (($# < 3 || $# > 5)) && return 1
+
+    typeset filename
+    filename=$2
+    typeset end_line
 
     _Dbg_readin_if_new "$filename"
 
     typeset -i max_line
     max_line=$(_Dbg_get_maxline "$filename")
+
     if (( $? != 0 )) ; then
 	_Dbg_errmsg "internal error getting number of lines in $filename"
 	return 1
     fi
+
+    _Dbg_parse_list_args "$max_line" "$@"
 
     if (( _Dbg_listline > max_line )) ; then
       _Dbg_errmsg \
@@ -139,12 +172,13 @@ _Dbg_list() {
       return 1
     fi
 
+    (( end_line >  max_line )) && ((end_line=max_line))
+
     typeset source_line
     typeset frame_fullfile
     frame_fullfile=${_Dbg_file2canonic[$_Dbg_frame_last_filename]}
     
-    for ((  ; _Dbg_listline <= n && _Dbg_listline <= max_line \
-            ; _Dbg_listline++ )) ; do
+    for ((  ; _Dbg_listline <= end_line ; _Dbg_listline++ )) ; do
      typeset prefix='    '
      _Dbg_get_source_line $_Dbg_listline "$filename"
 
@@ -152,7 +186,6 @@ _Dbg_list() {
          && [[ $fullname == $frame_fullfile ]] &&  prefix=' => '
       _Dbg_printf "%3d:%s%s" $_Dbg_listline "$prefix" "$source_line"
     done
-    (( _Dbg_listline > max_line && _Dbg_listline-- ))
     return 0
 }
 

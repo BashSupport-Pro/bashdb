@@ -1,7 +1,7 @@
 (restart.sh:4):
 4:	x=1
 +# Test Restart command
-+list 
++list> 
   4: => x=1
   5:    cd /
   6:    y=2
@@ -19,7 +19,7 @@ Restarting with ... restart.sh
 (restart.sh:4):
 4:	x=1
 +# 2nd part of Restart test
-+l 
++l> 
   4: => x=1
   5:    cd /
   6:    y=2

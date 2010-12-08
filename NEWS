@@ -1,7 +1,8 @@
 Version 4.2-0.6
 2010-12-10
 
-- Debugger "list" command carries on where we last left off. 
+- Debugger "list" command carries on where we last left off and 
+  centers around a line unless given a start and end line number. l> added.
 - Fixed --no-init (--nx, -n) option
 - Fixed to work on bash version 4.2
 - Reorganized command-processing code to simplify it, make it more dynamic,

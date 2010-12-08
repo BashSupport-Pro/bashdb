@@ -12,6 +12,7 @@
 /test-frame.sh
 /test-get-sourceline.sh
 /test-io.sh
+/test-lib-list.sh
 /test-msg.sh
 /test-pre.sh
 /test-run.sh

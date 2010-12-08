@@ -120,7 +120,7 @@ No actions have been set.
 +up 
 (dbg-test1.sh:32):
 32:	fn1;
-+list 
++list> 
  32:    fn1;
  33:    fn3 33
  34:    source ../example/dbg-test1.sub
@@ -129,7 +129,7 @@ No actions have been set.
 +down 1
 (dbg-test1.sh:5):
 5:	fn1() {
-+list 
++list> 
   5: => fn1() {
   6:        echo "fn1 here"
   7:        x=5

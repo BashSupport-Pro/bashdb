@@ -13,7 +13,7 @@
   5:    fn1() {
 +### Above search should reset list line below list start.
 +### Should get same line as line above...
-+list 
++list> 
   5:    fn1() {
   6:        echo "fn1 here"
   7:        x=5

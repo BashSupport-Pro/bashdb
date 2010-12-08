@@ -203,6 +203,8 @@ AC_CONFIG_FILES([test/unit/test-get-sourceline.sh],
 		[chmod +x test/unit/test-get-sourceline.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
+AC_CONFIG_FILES([test/unit/test-lib-list.sh], 
+		 [chmod +x test/unit/test-lib-list.sh])
 AC_CONFIG_FILES([test/unit/test-msg.sh], [chmod +x test/unit/test-msg.sh])
 AC_CONFIG_FILES([test/unit/test-io.sh],  [chmod +x test/unit/test-io.sh])
 AC_CONFIG_FILES([test/unit/test-pre.sh], [chmod +x test/unit/test-pre.sh])

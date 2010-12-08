@@ -68,7 +68,7 @@ Watchpoint 2: $x changed:
 (bashdb:139):
 139:	set -o functrace
 +# 2nd part of Restart test
-+l 
++l> 
 139: => set -o functrace
 140:    . "$_Dbg_script_file"
 +info break

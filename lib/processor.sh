@@ -213,6 +213,7 @@ _Dbg_annotation() {
 _Dbg_onecmd() {
 
     typeset full_cmd=$@
+    typeset _Dbg_orig_cmd="$1"
     typeset expanded_alias; _Dbg_alias_expand "$1"
     typeset _Dbg_cmd="$expanded_alias"
     shift
@@ -247,7 +248,8 @@ _Dbg_onecmd() {
      while (( $_Dbg_redo )) ; do
 	 
 	 _Dbg_redo=0
-	 
+
+	 [[ -z $_Dbg_cmd ]] && _Dbg_cmd=$_Dbg_last_cmd
 	 if [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
 	     ${_Dbg_debugger_commands[$_Dbg_cmd]} $_Dbg_args
 	     IFS=$_Dbg_space_IFS;
@@ -262,18 +264,6 @@ _Dbg_onecmd() {
 	     [#]* ) 
 		 _Dbg_history_remove_item
 		 _Dbg_last_cmd='#'
-		 ;;
-	     
-	     # List window up to _Dbg_frame_last_lineno
-	     - )
-		 typeset -i start_line=(_Dbg_frame_last_lineno+1-$_Dbg_set_listsize)
-		 typeset -i count=($_Dbg_set_listsize)
-		 if (( start_line <= 0 )) ; then
-		     ((count=count+start_line-1))
-		     start_line=1
-		 fi
-		 _Dbg_list $_Dbg_frame_last_filename $start_line $count
-		 _Dbg_last_cmd='list'
 		 ;;
 	     
 	     # list current line
