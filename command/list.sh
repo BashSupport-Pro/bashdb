@@ -20,11 +20,13 @@
 #   MA 02111 USA.
 
 _Dbg_help_add list \
-'list[>] [LOC|.] [NUMBER] 
+'list[>] [LOC|.|-] [NUMBER] 
 
 LOC is the starting location or dot (.) for current file and
 line. Subsequent list commands continue from the last line
-listed. Frame switching however resets the line to dot.
+listed. Frame switching however resets the line to dot. LOC can be a
+read-in function name or a filename and line number separated by a
+colon, e.g /etc/profile:5
 
 If NUMBER is omitted, use the LISTSIZE setting as a count. Use "set
 listsize" to change this setting. If NUMBER is given and is less than
@@ -40,6 +42,7 @@ Examples:
 list .      # List centered around the curent frame line
 list        # Same as above if the first time. Else start from where
             # we last left off.
+list -      # list backwards from where we left off.
 list> .     # list starting from the current frame line.
 list  10 3  # list 3 lines centered around 10, lines 9-11
 list> 10 3  # list lines 10-12
@@ -47,6 +50,9 @@ list  10 13 # list lines 10-13
 list  10 -5 # list from lines to 5 lines before teh end of the file
 list  /etc/profile:5  # List centered around line 5 of /etc/profile.
 list  /etc/profile 5  # Same as above.
+list usage  # list centered around function usage().
+
+See also "set autolist".
 '
 
 # l [start|.] [cnt] List cnt lines from line start.

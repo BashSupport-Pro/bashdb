@@ -62,12 +62,13 @@ _Dbg_do_step() {
   _Dbg_last_next_step_args="$@"
 
   typeset count=${1:-1}
+  typeset suffix
+  suffix=${_Dbg_last_next_step_cmd:${#_Dbg_last_step_next_cmd}-1:1}
 
-  case "$_Dbg_last_next_step_cmd" in
-      'step+' ) _Dbg_step_force=1 ;;
-      'step-' ) _Dbg_step_force=0 ;;
-      'step'  ) _Dbg_step_force=$_Dbg_set_different ;;
-      * ) ;;
+  case "suffix" in
+      '+' ) _Dbg_step_force=1 ;;
+      '-' ) _Dbg_step_force=0 ;;
+      *   ) _Dbg_step_force=$_Dbg_set_different ;;
   esac
 
   if [[ $count == [0-9]* ]] ; then

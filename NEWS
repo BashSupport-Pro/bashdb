@@ -696,5 +696,3 @@ reporting you generally see that an unhelpful message that error
 occurred on line 1.) Also support for call stacks with source files
 and line numbers can be helpful for stand-alone debugging and error
 reporting
-
-$Id: NEWS,v 1.39 2009/04/10 10:24:30 rockyb Exp $

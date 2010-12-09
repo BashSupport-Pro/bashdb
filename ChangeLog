@@ -1,5 +1,10 @@
 2010-12-08  rocky <rocky@gnu.org>
 
+	* ChangeLog, bashdb.in: A couple of messages were not going to
+	stderr. Observation noticed by Christopher Barry.
+
+2010-12-08  rocky <rocky@gnu.org>
+
 	* ChangeLog, NEWS, command/list.sh, configure.ac, lib/list.sh,
 	lib/processor.sh, test/data/brkpt2.cmd, test/data/brkpt2.right,
 	test/data/file with spaces.right, test/data/list.cmd,
