@@ -1,3 +1,15 @@
+2010-12-08  rocky <rocky@gnu.org>
+
+	* ChangeLog, NEWS, command/list.sh, configure.ac, lib/list.sh,
+	lib/processor.sh, test/data/brkpt2.cmd, test/data/brkpt2.right,
+	test/data/file with spaces.right, test/data/list.cmd,
+	test/data/list.right, test/data/restart.cmd,
+	test/data/restart.right, test/data/restart2.cmd,
+	test/data/search.cmd, test/data/search.right,
+	test/data/settrace.cmd, test/data/settrace.right,
+	test/data/sig.right, test/data/watch1.right, test/unit/.gitignore,
+	test/unit/Makefile.am: Add list>, l>.
+
 2010-12-07  rocky <rocky@gnu.org>
 
 	* ChangeLog, doc/bashdb.texi: Add autolist and update help lists.
