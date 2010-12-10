@@ -1,3 +1,13 @@
+2010-12-09  rocky <rocky@gnu.org>
+
+	* test/unit/test-lib-list.sh.in: A new test for recent "list"
+	additions
+
+2010-12-08  rocky <rocky@gnu.org>
+
+	* ChangeLog, NEWS, command/list.sh, command/set_sub/autolist.sh,
+	command/step.sh: "list" command help fixes. "show autolist" fix.
+
 2010-12-08  rocky <rocky@gnu.org>
 
 	* ChangeLog, bashdb.in: A couple of messages were not going to
