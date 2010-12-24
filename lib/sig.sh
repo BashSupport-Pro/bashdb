@@ -152,7 +152,7 @@ _Dbg_exit_handler() {
       "Debugged program terminated $term_msg. Use q to quit or R to restart."
 
     _Dbg_running=0
-    while (( 1 )) ; do
+    while : ; do
       _Dbg_process_commands
     done
   fi

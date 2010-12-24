@@ -39,8 +39,8 @@ function _Dbg_do_examine {
 	_Dbg_result=$(typeset -f $_Dbg_expr)
 	_Dbg_msg "$_Dbg_result"
     else 
-	typeset -i _Dbg_continue_rc
-	eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_continue_rc=$?
+	typeset -i _Dbg_rc
+	eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
 	if (( $_Dbg_continue_rc != 0 )) ; then
 	    _Dbg_do_print "$_Dbg_expr"
 	else
