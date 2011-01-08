@@ -24,7 +24,7 @@
 typeset -a _Dbg_keep
 _Dbg_keep=('keep' 'del')  
 
-typeset -ar _Dbg_yn=("n" "y")         
+typeset -ra _Dbg_yn=("n" "y")         
 
 # Note: we loop over possibly sparse arrays with _Dbg_brkpt_max by adding one
 # and testing for an entry. Could add yet another array to list only 
@@ -201,8 +201,8 @@ _Dbg_set_brkpt() {
     (( $# < 3 || $# > 4 )) && return 1
     typeset source_file
     source_file=$(_Dbg_expand_filename "$1")
-    typeset -ir lineno=$2
-    typeset -ir is_temp=$3
+    typeset -ri lineno=$2
+    typeset -ri is_temp=$3
     typeset -r  condition=${4:-1}
     
     # Increment brkpt_max here because we are 1-origin
@@ -233,7 +233,7 @@ _Dbg_set_brkpt() {
     _Dbg_write_journal_eval "_Dbg_brkpt_file2brkpt[$source_file]+=\" $_Dbg_brkpt_max \""
     
     source_file=$(_Dbg_adjust_filename "$source_file")
-    if (( $is_temp == 0 )) ; then 
+    if (( is_temp == 0 )) ; then 
 	_Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $lineno."
     else 
 	_Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $lineno."
@@ -296,7 +296,7 @@ function _Dbg_unset_brkpt {
 
 # Routine to a delete breakpoint by entry number: $1.
 # Returns whether or not anything was deleted.
-function _Dbg_delete_brkpt_entry() {
+function _Dbg_delete_brkpt_entry {
     (( $# == 0 )) && return 0
     typeset -r  del="$1"
     typeset -i  i

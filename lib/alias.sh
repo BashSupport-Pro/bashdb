@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#   Copyright (C) 2008, 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -47,7 +47,7 @@ _Dbg_alias_expand() {
 _Dbg_alias_find_index() {
     typeset find_name=$1
     typeset -i i
-    for ((i=0; i <= $_Dbg_alias_max_index; i++)) ; do
+    for ((i=0; i <= _Dbg_alias_max_index; i++)) ; do
 	[[ ${_Dbg_alias_names[i]} == "$find_name" ]] && echo $i && return 0
     done
     return 1

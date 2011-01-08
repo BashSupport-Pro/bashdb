@@ -1,7 +1,8 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2008, 2009, 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -45,7 +46,7 @@ _Dbg_check_line() {
 	return 1
     fi
 
-    if (( $line_number >  max_line )) ; then 
+    if (( line_number >  max_line )) ; then 
 	filename=$(_Dbg_file_canonic "$filename")
 	_Dbg_errmsg "Line $line_number is too large." \
 	    "File $filename has only $max_line lines."
@@ -192,10 +193,10 @@ function _Dbg_readin {
 	    _Dbg_file2canonic[$filename]="$fullname"
 	    _Dbg_file2canonic[$fullname]="$fullname"
 	    # Use readarray which speeds up reading greatly.
-	    typeset -ir BIGFILE=30000
+	    typeset -ri BIGFILE=30000
 	    if wc -l < /dev/null >/dev/null 2>&1 ; then 
-		line_count=`wc -l < "${fullname}"`
-		if (( $line_count >= $NOT_SMALLFILE )) ; then 
+		line_count=$(wc -l < "${fullname}")
+		if (( line_count >= NOT_SMALLFILE )) ; then 
 		    _Dbg_msg_nocr "${progress_prefix} "
 		fi
 	    fi
@@ -208,7 +209,7 @@ function _Dbg_readin {
 	fi
     fi
     
-    typeset -r line_count_cmd="line_count=\${#$_Dbg_source_array_var[@]}"
+    typeset -r line_count_cmd="line_count=\${#${_Dbg_source_array_var[@]}}"
     eval $line_count_cmd
     
     (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
