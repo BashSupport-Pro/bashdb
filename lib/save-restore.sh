@@ -1,8 +1,8 @@
 # -*- shell-script -*-
-# save-restore.sh - Bourne Again Shell Debugger Utility Functions
+# save-restore.sh - saves, sets and restores debugger vars on hook entry
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010
-#   Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010,
+#   2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -92,7 +92,7 @@ function _Dbg_set_debugger_entry {
   # been left from a subshell.
   _Dbg_source_journal
 
-  if (( $_Dbg_QUIT_LEVELS > 0 )) ; then
+  if (( _Dbg_QUIT_LEVELS > 0 )) ; then
     _Dbg_do_quit $_Dbg_debugged_exit_code
   fi
 }

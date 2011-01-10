@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 #  Signal handling routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2010 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -240,7 +240,7 @@ _Dbg_subexit_handler() {
 	return 0
     fi
     _Dbg_source_journal
-    if (( $_Dbg_QUIT_LEVELS > 0 )) ; then
+    if (( _Dbg_QUIT_LEVELS > 0 )) ; then
 	_Dbg_do_quit $_Dbg_debugged_exit_code
     fi
 }
@@ -249,7 +249,7 @@ _Dbg_subexit_handler() {
 # NAME print showstack stop passthrough
 _Dbg_init_trap() {
     typeset -r name=$1
-    typeset -i -r signum=`_Dbg_name2signum $name`
+    typeset -i -r signum=$(_Dbg_name2signum $name)
     
     _Dbg_sig_print[$signum]=$2;
     _Dbg_sig_show_stack[$signum]=$3;

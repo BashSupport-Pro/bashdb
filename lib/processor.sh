@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # dbg-processor.sh - Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
-#   Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+#   2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -101,7 +101,7 @@ function _Dbg_process_commands {
   done
 
   # Loop over all pending open input file descriptors
-  while (( $_Dbg_fd_last > 0)) ; do
+  while (( _Dbg_fd_last > 0)) ; do
 
     # Set up prompt to show shell and subshell levels.
     typeset _Dbg_greater=''

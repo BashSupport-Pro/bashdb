@@ -103,14 +103,14 @@ _Dbg_history_read() {
     history -r $_Dbg_histfile
     local -a last_history=(`history 1`)
     local -i max_history=${last_history[0]}
-    if (( $max_history > $_Dbg_history_length )) ; then
+    if (( max_history > _Dbg_history_length )) ; then
       max_history=$_Dbg_history_length
     fi
     local OLD_HISTTIMEFORMAT=${HISTTIMEFORMAT}
     local hist
     HISTTIMEFORMAT=''
     local -i i
-    for (( i=1; (( i <= $max_history )) ; i++ )) ; do
+    for (( i=1; (( i <= max_history )) ; i++ )) ; do
       last_history=($(history $i))
       hist=${last_history}[1]
       # _Dbg_history[$i]=$hist

@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 
-#   Rocky Bernstein  <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -145,7 +145,7 @@ _Dbg_debug_trap_handler() {
 	    ((_Dbg_brkpt_counts[_Dbg_brkpt_num]++))
 	    _Dbg_write_journal \
 		"_Dbg_brkpt_counts[$_Dbg_brkpt_num]=${_Dbg_brkpt_counts[_Dbg_brkpt_num]}"
-	    if (( ${_Dbg_brkpt_onetime[_Dbg_brkpt_num]} == 1 )) ; then
+	    if (( _Dbg_brkpt_onetime[_Dbg_brkpt_num] == 1 )) ; then
 		_Dbg_stop_reason='at a breakpoint that has since been deleted'
 		_Dbg_delete_brkpt_entry $_Dbg_brkpt_num
 	    else
@@ -155,7 +155,7 @@ _Dbg_debug_trap_handler() {
 	    fi
 	    # We're sneaky and check commands_end because start could 
 	    # legitimately be 0.
-	    if (( ${_Dbg_brkpt_commands_end[$_Dbg_brkpt_num]} )) ; then
+	    if (( _Dbg_brkpt_commands_end[$_Dbg_brkpt_num] )) ; then
 		# Run any commands associated with this breakpoint
 		_Dbg_bp_commands $_Dbg_brkpt_num
 	    fi
@@ -169,7 +169,7 @@ _Dbg_debug_trap_handler() {
     # Check if step mode and number steps to ignore.
     if ((_Dbg_step_ignore == 0)); then
 	if ((_Dbg_step_force)) ; then
-	    if (( $_Dbg_last_lineno == $_Dbg_frame_last_lineno )) \
+	    if (( _Dbg_last_lineno == _Dbg_frame_last_lineno )) \
 		&& [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then 
 		_Dbg_set_to_return_from_debugger 1
 		return $_Dbg_continue_rc

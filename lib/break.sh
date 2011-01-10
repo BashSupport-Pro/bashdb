@@ -373,7 +373,7 @@ _Dbg_get_watch_exp_eval() {
 
   if [[ $(eval echo \"${_Dbg_watch_exp[$i]}\") == "" ]]; then
     new_val=''
-  elif (( ${_Dbg_watch_arith[$i]} == 1 )) ; then
+  elif (( _Dbg_watch_arith[$i] == 1 )) ; then
     . ${_Dbg_libdir}/dbg-set-d-vars.inc
     eval let new_val=\"${_Dbg_watch_exp[$i]}\"
   else
@@ -436,7 +436,7 @@ _Dbg_clear_watch() {
     read $_Dbg_edit -p "Delete all watchpoints? (y/n): " \
       <&$_Dbg_input_desc 2>>$_Dbg_prompt_output
 
-    if [[ $REPLY = [Yy]* ]] ; then 
+    if [[ $REPLY == [Yy]* ]] ; then 
       _Dbg_write_journal_eval unset _Dbg_watch_exp[@]
       _Dbg_write_journal_eval unset _Dbg_watch_val[@]
       _Dbg_write_journal_eval unset _Dbg_watch_enable[@]

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # debugger source-code listing routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -132,7 +132,7 @@ _Dbg_parse_list_args() {
     (( _Dbg_listline==0 && _Dbg_listline++ ))
 
     typeset -i count
-    ((count=${5:-$_Dbg_set_listsize}))
+    ((count=${5:-_Dbg_set_listsize}))
     ((count < 0)) && ((count=$2+$5+1))
     if [[ -z $5 ]] || ((count < _Dbg_listline)) ; then
 	((center_line)) && ((_Dbg_listline-=count/2))
@@ -198,7 +198,7 @@ _Dbg_list_columns() {
 	((linewidth=$1-2)); 
 	shift
     else
-	((linewidth=$_Dbg_set_linewidth-2))
+	((linewidth=_Dbg_set_linewidth-2))
     fi
     (($# != 0)) && return 1
     typeset -a columnized; columnize $linewidth "$colsep"

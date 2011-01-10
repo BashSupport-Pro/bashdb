@@ -134,7 +134,7 @@ _Dbg_frame_fn_param_str() {
     # 
     ((_Dbg_next_argc++))
     typeset -i arg_count=BASH_ARGC[$_Dbg_next_argc]
-    if (($arg_count == 0)) ; then
+    if ((arg_count == 0)) ; then
 	_Dbg_parm_str=''
     else
 	typeset -i i
