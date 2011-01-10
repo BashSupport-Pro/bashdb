@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-opts.sh - debugger command options processing. The bane of programming.
 #
-#   Copyright (C) 2008, 2009, 2010 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -51,7 +51,7 @@ _Dbg_show_version() {
 }
 
 # Script arguments before adulteration by _Dbg_parse_opts
-typeset -ax _Dbg_orig_script_args
+typeset -xa _Dbg_orig_script_args
 # The 'eval' is used below to preserve embedded spaces which might
 # occur for example in $@. Short of using a loop I'm not sure of an
 # easier way to copy an array in bash.

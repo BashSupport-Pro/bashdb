@@ -1,14 +1,13 @@
 #!/bin/sh
-# $Id: autogen.sh,v 1.2 2006/08/15 11:09:31 myamato Exp $ 
 # Run this to generate all the initial Makefiles, etc.
 
 # Check how echo works in this /bin/sh
-case `echo -n` in
+case $(echo -n) in
 -n)     _echo_n=   _echo_c='\c';;
 *)      _echo_n=-n _echo_c=;;
 esac
 
-srcdir=`dirname $0`
+srcdir=$(dirname $0)
 test -z "$srcdir" && srcdir=.
 
 (test -f $srcdir/configure.ac) || {
