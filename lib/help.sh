@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - Debugger Help Routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ function _Dbg_help_add {
     add_command=${3:-1}
     (($# != 2)) && (($# != 3))  && return 1
     _Dbg_command_help[$1]="$2"
-    (( $add_command )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
+    (( add_command )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
     return 0
 }
 
@@ -94,7 +94,7 @@ Follow this command with any number of args, to be passed to the program."
 	autoe | autoev | autoeva | autoeval )
 	    [[ -n $label ]] && label='set autoeval  -- '
 	    local onoff="off."
-	    (( $_Dbg_set_autoeval != 0 )) && onoff='on.'
+	    (( _Dbg_set_autoeval != 0 )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Evaluate unrecognized commands is" $onoff
 	    return 0
@@ -110,7 +110,7 @@ Follow this command with any number of args, to be passed to the program."
 	b | ba | bas | base | basen | basena | basenam | basename )
 	    [[ -n $label ]] && label='set basename  -- '
 	    local onoff="off."
-	    (( $_Dbg_set_basename != 0 )) && onoff='on.'
+	    (( _Dbg_set_basename != 0 )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set short filenames (the basename) in debug output is" $onoff
 	    return 0
@@ -118,7 +118,7 @@ Follow this command with any number of args, to be passed to the program."
 	d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
 	    local onoff=${1:-'on'}
 	    [[ -n $label ]] && label='set debugger  -- '
-	    (( $_Dbg_debug_debugger )) && onoff='on.'
+	    (( _Dbg_debug_debugger )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set debugging the debugger is" $onoff
 	    return 0
@@ -137,7 +137,7 @@ Follow this command with any number of args, to be passed to the program."
 	lin | line | linet | linetr | linetra | linetrac | linetrace )
 	    [[ -n $label ]] && label='set linetrace -- '
 	    typeset onoff='off.'
-	    (( $_Dbg_linetrace )) && onoff='on.'
+	    (( _Dbg_linetrace )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set tracing execution of lines before executed is" $onoff
 	    if (( $_Dbg_linetrace )) ; then

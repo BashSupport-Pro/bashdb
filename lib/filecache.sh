@@ -182,7 +182,7 @@ function _Dbg_readin {
 
     typeset filevar
     typeset source_array
-    typeset -ir NOT_SMALLFILE=1000
+    typeset -ri NOT_SMALLFILE=1000
 
     if [[ -z $filename ]] || [[ $filename == "$_Dbg_bogus_file" ]] ; then 
 	eval "${_Dbg_source_array_var}[0]=\"$Dbg_EXECUTION_STRING\""

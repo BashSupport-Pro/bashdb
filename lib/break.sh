@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # break.sh - Debugger Break and Watch routines
 #
-#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2010 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2010, 2011 Rocky Bernstein 
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -317,7 +317,7 @@ function _Dbg_delete_brkpt_entry {
     for try in ${_Dbg_brkpt_file2linenos[$source_file]} ; do 
 	((i++))
 	if (( brkpt_nos[i] == del )) ; then
-	    if (( try != $lineno )) ; then
+	    if (( try != lineno )) ; then
 		_Dbg_errmsg 'internal brkpt structure inconsistency'
 		return 0
 	    fi
@@ -345,7 +345,7 @@ function _Dbg_delete_brkpt_entry {
 }
 
 # Enable/disable breakpoint(s) by entry numbers.
-function _Dbg_enable_disable_brkpt() {
+function _Dbg_enable_disable_brkpt {
     (($# != 3)) && return 1
     typeset -i on=$1
     typeset en_dis=$2

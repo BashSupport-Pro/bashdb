@@ -133,11 +133,11 @@ _Dbg_frame_fn_param_str() {
     # next call.
     # 
     ((_Dbg_next_argc++))
-    typeset -il arg_count=BASH_ARGC[$_Dbg_next_argc]
+    typeset -i arg_count=BASH_ARGC[$_Dbg_next_argc]
     if (($arg_count == 0)) ; then
 	_Dbg_parm_str=''
     else
-	typeset -il i
+	typeset -i i
 	_Dbg_parm_str="\"${BASH_ARGV[$_Dbg_next_argv+arg_count-1]}\""
 	for (( i=1; i <= arg_count-1; i++ )) ; do
 	    _Dbg_parm_str+=", \"${BASH_ARGV[$_Dbg_next_argv+arg_count-i-1]}\""
@@ -155,7 +155,7 @@ _Dbg_frame_set_fn_param() {
     _Dbg_next_argv=1
 
     typeset -i i
-    for (( i=1; i <= $skip_count; i++ )) ; do
+    for (( i=1; i <= skip_count; i++ )) ; do
 	typeset -i arg_count=${BASH_ARGC[$i]}
 	((_Dbg_next_argv+=arg_count))
     done
@@ -185,7 +185,7 @@ function _Dbg_frame_prefix {
 	    rc=2
 	elif ((pos >= _Dbg_stack_size)) ; then
 	    rc=3
-	elif (( $pos == $_Dbg_stack_pos )) ; then
+	elif (( pos == _Dbg_stack_pos )) ; then
 	    prefix='->'
 	else
 	    prefix='##'

@@ -34,7 +34,7 @@ function _Dbg_copies {
 
 # _Dbg_defined returns 0 if $1 is a defined variable or 1 otherwise. 
 _Dbg_defined() {
-  typeset -p $1 &>/dev/null
+  typeset -p $1 &> /dev/null
   if [[ $? != 0 ]] ; then 
     return 1
   else
