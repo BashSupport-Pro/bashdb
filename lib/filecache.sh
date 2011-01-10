@@ -85,7 +85,7 @@ function _Dbg_get_maxline {
 # $source_line. The hope is that this has been declared "typeset" in the 
 # caller.
 
-# If $2 is omitted, # use _Dbg_frame_filename, if $1 is omitted use 
+# If $2 is omitted, use _Dbg_frame_filename, if $1 is omitted use 
 # _Dbg_frame_last_lineno. The return value is put in source_line.
 function _Dbg_get_source_line {
     typeset -i lineno

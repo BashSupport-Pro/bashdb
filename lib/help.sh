@@ -267,6 +267,5 @@ number of lines to list."
     * )
       _Dbg_msg \
     "Undefined show command: \"$show_cmd\".  Try \"help show\"."
-      
   esac
 }

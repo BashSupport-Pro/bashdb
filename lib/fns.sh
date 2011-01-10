@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# fns.sh - Bourne Again Shell Debugger Utility Functions
+# fns.sh - Debugger Utility Functions
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
@@ -24,8 +24,8 @@
 function _Dbg_copies { 
     result=''
     (( $# < 2 )) && return 1
-    typeset -r string=$1
-    typeset -i count=$2 || return 2;
+    typeset -r string="$1"
+    typeset -i count=$2 || return 2
     (( count > 0 )) || return 3
     builtin printf -v result "%${count}s" ' ' || return 3
     result=${result// /$string}

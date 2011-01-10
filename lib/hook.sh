@@ -131,10 +131,11 @@ _Dbg_debug_trap_handler() {
     if ((_Dbg_action_count > 0)) ; then 
 	_Dbg_hook_action_hit "$full_filename"
     fi
-    
-    # check if breakpoint reached
+
+    # Determine if we stop or not. 
+
+    # Check breakpoints.
     if ((_Dbg_brkpt_count > 0)) ; then 
-	
 	if _Dbg_hook_breakpoint_hit "$full_filename"; then 
 	    if ((_Dbg_step_force)) ; then
 		typeset _Dbg_frame_previous_file="$_Dbg_frame_last_filename"
