@@ -101,7 +101,7 @@ _Dbg_history_parse() {
 _Dbg_history_read() {
   if [[ -r $_Dbg_histfile ]] ; then 
     history -r $_Dbg_histfile
-    local -a last_history=(`history 1`)
+    local -a last_history=($(history 1))
     local -i max_history=${last_history[0]}
     if (( max_history > _Dbg_history_length )) ; then
       max_history=$_Dbg_history_length

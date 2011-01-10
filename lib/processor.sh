@@ -66,10 +66,10 @@ typeset -i _Dbg_fd_last=0
 
 # keep a list of source'd command files. If the entry is "" then we are 
 # interactive.
-typeset -a _Dbg_cmdfile=('')
+typeset -a _Dbg_cmdfile; _Dbg_cmdfile=('')
 
 # A list of debugger command input-file descriptors.
-typeset -a _Dbg_fd=($_Dbg_fdi)
+typeset -a _Dbg_fd; _Dbg_fd=($_Dbg_fdi)
 
 typeset _Dbg_prompt_output
 
