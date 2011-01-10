@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # list.sh - Some listing commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010 
-#   Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010,
+#   2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -87,7 +87,7 @@ _Dbg_do_list() {
     _Dbg_linespec_setup "$first_arg"
     
     if [[ -n $full_filename ]] ; then 
-	(( $line_number ==  0 )) && line_number=1
+	(( line_number ==  0 )) && line_number=1
 	_Dbg_check_line $line_number "$full_filename"
 	(( $? == 0 )) && \
 	    _Dbg_list $center_line "$full_filename" "$line_number" $*

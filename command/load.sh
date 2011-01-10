@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Debugger load SCRIPT command.
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 
-#   Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010,
+#   2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -34,7 +34,7 @@ _Dbg_do_load() {
   if [ -n $full_filename ] && [ -r $full_filename ] ; then 
     # Have we already loaded in this file?
     for file in ${_Dbg_filenames[@]} ; do  
-       if [[ $file = $full_filename ]] ; then
+       if [[ $file == $full_filename ]] ; then
          _Dbg_msg "File $full_filename already loaded."
 	 return 2
        fi

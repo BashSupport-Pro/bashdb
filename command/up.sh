@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "up" debugger command
 #
-#   Copyright (C) 2010 Rocky Bernstein
+#   Copyright (C) 2010, 2011 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ function _Dbg_do_up {
   typeset -i count=${1:-1}
   _Dbg_frame_adjust $count +1
   typeset -i rc=$?
-  ((0 == $rc)) && _Dbg_last_cmd='up'
+  ((0 == rc)) && _Dbg_last_cmd='up'
   return $rc
 }
 

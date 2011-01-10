@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # gdb-like "backtrace" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 Rocky
-#   Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010, 2011
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -44,13 +44,13 @@ function _Dbg_do_backtrace {
 
     _Dbg_not_running && return 3
     
-    typeset -il count=${1:-$_Dbg_stack_size}
+    typeset -i count=${1:-$_Dbg_stack_size}
     $(_Dbg_is_int $count) || {
 	_Dbg_errmsg "Bad integer COUNT parameter: $count"
 	return 1
     }
     
-    typeset -il frame_start=${2:-0}
+    typeset -i frame_start=${2:-0}
 
     $(_Dbg_is_int $frame_start) || {
 	_Dbg_errmsg "Bad integer parameter: $ignore_count"
@@ -58,7 +58,7 @@ function _Dbg_do_backtrace {
     }
     
     # i is the logical frame value - 0 most recent frame.
-    typeset -il i=frame_start
+    typeset -i i=frame_start
     typeset -li adjusted_pos
     
     ## DEBUG
@@ -94,7 +94,7 @@ function _Dbg_do_backtrace {
     for ((  i=frame_start+1 ; 
 	    i <= _Dbg_stack_size && count > 0 ;
 	    i++ )) ; do 
-	typeset -il arg_count=${BASH_ARGC[$_Dbg_next_argc]}
+	typeset -i arg_count=${BASH_ARGC[$_Dbg_next_argc]}
 	adjusted_pos=$(_Dbg_frame_adjusted_pos $i)
 	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$adjusted_pos-1]}
 	

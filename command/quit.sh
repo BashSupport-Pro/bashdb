@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # quit.sh - The real way to leave this program.
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010
-#   Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010,
+#   2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -59,9 +59,7 @@ _Dbg_do_quit() {
     _Dbg_cleanup
 
     # Save history file
-    if (( $_Dbg_set_history )) ; then
-	history -w $_Dbg_histfile
-    fi
+    (( _Dbg_set_history )) && history -w $_Dbg_histfile
 
     trap - DEBUG
     # This is a hack we need. I am not sure why.

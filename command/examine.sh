@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # "Examine" debugger command.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2011 Rocky Bernstein 
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -41,7 +41,7 @@ function _Dbg_do_examine {
     else 
 	typeset -i _Dbg_rc
 	eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
-	if (( $_Dbg_rc != 0 )) ; then
+	if (( _Dbg_rc != 0 )) ; then
 	    _Dbg_do_print "$_Dbg_expr"
 	else
 	    _Dbg_msg "$_Dbg_result"

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# log.sh - Bourne Again Shell Debugger set/show logging
+# log.sh - Debugger set/show logging
 #
-#   Copyright (C) 2006, 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2006, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -40,15 +40,15 @@ _Dbg_do_set_logging()
     if (( ${#args[@]} > 0 )) ; then
 	case ${args[0]} in 
 	    off )
-		if (( $_Dbg_logging != 0 )) ; then
+		if (( _Dbg_logging != 0 )) ; then
 		    # Lose logfile
 		    _Dbg_logging=0
 		fi
 		;;
 	    on )
-		if (( $_Dbg_logging == 0 )) ; then
+		if (( _Dbg_logging == 0 )) ; then
 		    _Dbg_logging=1
-		    if (( $_Dbg_logging_overwrite )) ; then
+		    if (( _Dbg_logging_overwrite )) ; then
 			cat /dev/null >$_Dbg_logging_file
 		    fi
 		fi
@@ -103,11 +103,11 @@ _Dbg_do_show_logging()
     typeset -a args=($*)
     if (( ${#args[@]} == 0 )) ; then
 	_Dbg_msg "Future logs will be written to $_Dbg_logging_file"
-	if (( $_Dbg_logging_overwrite )) ; then
+	if (( _Dbg_logging_overwrite )) ; then
 	    _Dbg_msg 'Logs will overwrite the log file.'
 	else
 	    _Dbg_msg 'Logs will be appended to the log file.'
-	    if (( $_Dbg_logging_redirect )) ; then
+	    if (( _Dbg_logging_redirect )) ; then
 		_Dbg_msg "Output will be sent only to the log file."
 	    else
 		_Dbg_msg "Output will be logged and displayed."
@@ -117,13 +117,13 @@ _Dbg_do_show_logging()
 	case ${args[0]} in 
 	    overwrite )
 		local onoff="off."
-		(( $_Dbg_logging_overwrite != 0 )) && onoff='on.'
+		(( _Dbg_logging_overwrite != 0 )) && onoff='on.'
 		_Dbg_msg \
 		    "Whether logging overwrites or appends to the log file is ${onoff}"
 		;;
 	    redirect )
 		local onoff="off."
-		(( $_Dbg_logging_redirect != 0 )) && onoff='on.'
+		(( _Dbg_logging_redirect != 0 )) && onoff='on.'
 		_Dbg_msg "The logging output mode is ${onoff}."
 		;;
 	    file )

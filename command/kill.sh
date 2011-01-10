@@ -46,7 +46,7 @@ _Dbg_do_kill() {
     
     _Dbg_confirm "Send kill signal ${signal} which may terminate the debugger? (y/N): " 'N'
     
-    if [[ $_Dbg_response = 'y' ]] ; then 
+    if [[ $_Dbg_response == [yY] ]] ; then 
 	kill $signal $$
     else
 	_Dbg_msg "Kill not done - not confirmed."
