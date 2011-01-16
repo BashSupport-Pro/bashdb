@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # dbg-processor.sh - Top-level debugger commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-#   2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008, 2009, 2010, 2011
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -13,19 +13,14 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#
+#   
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Debugger command loop: Come here at to read debugger commands to
-# run.
-
-# Main-line debugger read/execute command loop
-
-# ==================== VARIABLES =======================================
-
+# Are we inside the middle of a "skip" command?
+typeset -i  _Dbg_inside_skip=0
 
 # Hooks that get run on each command loop
 typeset -A _Dbg_cmdloop_hooks
@@ -75,6 +70,8 @@ typeset _Dbg_prompt_output
 
 # ===================== FUNCTIONS =======================================
 
+# The main debugger command reading loop.
+# 
 # Note: We have to be careful here in naming "local" variables. In contrast
 # to other places in the debugger, because of the read/eval loop, they are
 # in fact seen by those using the debugger. So in contrast to other "local"s
@@ -200,7 +197,7 @@ function _Dbg_process_commands {
 
 # Run a debugger command "annotating" the output
 _Dbg_annotation() {
-  local label=$1
+  typeset label="$1"
   shift
   _Dbg_do_print "$label"
   $*
@@ -414,23 +411,23 @@ _Dbg_onecmd() {
 }
 
 _Dbg_preloop() {
-  if (($_Dbg_set_annotate)) ; then
-      _Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
-      # _Dbg_annotation 'locals'      _Dbg_do_backtrace 3 
-      _Dbg_annotation 'stack'       _Dbg_do_backtrace 3 
-  fi
+    if ((_Dbg_set_annotate)) ; then
+	_Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
+	# _Dbg_annotation 'locals'      _Dbg_do_backtrace 3 
+	_Dbg_annotation 'stack'       _Dbg_do_backtrace 3 
+    fi
 }
 
 _Dbg_postcmd() {
-  if (($_Dbg_set_annotate)) ; then
-      case $_Dbg_last_cmd in
-        break | tbreak | disable | enable | condition | clear | delete ) 
-	  _Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
-        ;;
-	up | down | frame ) 
-	  _Dbg_annotation 'stack' _Dbg_do_backtrace 3
-	;;
-      * )
-      esac
-  fi
+    if ((_Dbg_set_annotate)) ; then
+	case $_Dbg_last_cmd in
+            break | tbreak | disable | enable | condition | clear | delete ) 
+		_Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
+		;;
+	    up | down | frame ) 
+		_Dbg_annotation 'stack' _Dbg_do_backtrace 3
+		;;
+	    * )
+	esac
+    fi
 }
