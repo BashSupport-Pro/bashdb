@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "set linetrace" debugger command
+# "set showcommand" debugger command
 #
-#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -17,6 +17,9 @@
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
+
+_Dbg_help_add_sub set showcommand \
+'showing the command to execute' 1 
 
 # Sets whether or not to display command to be executed in debugger prompt.
 # If yes, always show. If auto, show only if the same line is to be run
