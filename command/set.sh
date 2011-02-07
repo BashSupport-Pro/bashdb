@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # set.sh - debugger settings
 #
-#   Copyright (C) 2002,2003,2006,2007,2008,2010 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002,2003,2006,2007,2008,2010,2011 Rocky Bernstein 
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -23,6 +23,9 @@
 # If yes, always show. If auto, show only if the same line is to be run
 # but the command is different.
 
+typeset -A _Dbg_debugger_set_commands
+typeset -A _Dbg_command_help_set
+
 typeset -i _Dbg_set_autoeval=0     # Evaluate unrecognized commands?
 
 _Dbg_help_add set ''  # Help routine is elsewhere
@@ -40,18 +43,15 @@ _Dbg_do_set() {
     return 1;
   fi
   shift
+
+  if [[ -n ${_Dbg_debugger_set_commands[$set_cmd]} ]] ; then
+      ${_Dbg_debugger_set_commands[$set_cmd]} $label "$@"
+      return $?
+  fi
+
   case $set_cmd in 
-      ar | arg | args )
-	  _Dbg_do_set_args $@
-	  ;;
-      an | ann | anno | annot | annota | annotat | annotate )
-	  _Dbg_do_set_annotate $@
-	  ;;
       autoe | autoev | autoeva | autoeval )
 	  _Dbg_set_onoff "$1" 'autoeval'
-	  ;;
-      autol | autoli | autolis | autolist )
-	  _Dbg_do_set_autolist $@
 	  ;;
       b | ba | bas | base | basen | basena | basenam | basename )
 	  _Dbg_set_onoff "$1" 'basename'
@@ -61,23 +61,9 @@ _Dbg_do_set() {
 	  _Dbg_set_onoff "$1" 'debugging'
 	  return $?
 	  ;;
-      e | ed | edi | edit | editi | editin | editing )
-	  _Dbg_do_set_editing "$1"
-	  return $?
-	  ;;
       force | dif | diff | differ | different )
 	  _Dbg_set_onoff "$1" 'different'
 	  return $?
-	  ;;
-      hi|his|hist|histo|histor|history)
-	  _Dbg_do_set_history "$@"
-	  return $?
-	  ;;
-      lin | line | linet | linetr | linetra | linetrac | linetrace )
-	  _Dbg_do_set_linetrace $@
-	  ;;
-      li | lis | list | lists | listsi | listsiz | listsize )
-	  _Dbg_do_set_listsize $@
 	  ;;
       lo | log | logg | loggi | loggin | logging )
 	  _Dbg_cmd_set_logging $@
@@ -85,14 +71,8 @@ _Dbg_do_set() {
       p | pr | pro | prom | promp | prompt )
 	  _Dbg_prompt_str="$1"
 	  ;;
-      sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
-	  _Dbg_do_set_showcommand $@
-	  ;;
       t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
 	  _Dbg_do_set_trace_commands $@
-	  ;;
-      w | wi | wid | width )
-	  _Dbg_do_set_linewidth $@
 	  ;;
       *)
 	  _Dbg_undefined_cmd "set" "$set_cmd"
