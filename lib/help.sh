@@ -39,6 +39,17 @@ function _Dbg_help_add {
     return 0
 }
 
+# Add help text $3 for in subcommand $1 under key $2
+function _Dbg_help_add_sub {
+    add_command=${4:-1}
+    (($# != 3)) && (($# != 4))  && return 1
+    eval "_Dbg_command_help_$1[$2]=\"$3\""
+    if (( add_command )) ; then
+	eval "_Dbg_debugger_$1_commands[$2]=\"_Dbg_do_${1}_${2}\""
+    fi
+    return 0
+}
+
 _Dbg_help_sort_command_names() {
     ((${#_Dbg_command_names_sorted} > 0 )) && return 0
 
@@ -48,7 +59,7 @@ _Dbg_help_sort_command_names() {
     _Dbg_sorted_command_names=("${list[@]}")
 }    
 
-typeset _Dbg_set_cmds="args annotate autoeval autolist basename debugger 
+typeset _Dbg_set_cmds="args annotate autoeval autolist basename debugging
 editing linetrace listsize prompt showcommand trace-commands"
 
 _Dbg_help_set() {
@@ -117,7 +128,7 @@ Follow this command with any number of args, to be passed to the program."
 	    ;;
 	d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
 	    local onoff=${1:-'on'}
-	    [[ -n $label ]] && label='set debugger  -- '
+	    [[ -n $label ]] && label='set debugging -- '
 	    (( _Dbg_debug_debugger )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set debugging the debugger is" $onoff
@@ -176,7 +187,7 @@ Follow this command with any number of args, to be passed to the program."
     esac
 }
 
-typeset _Dbg_show_cmds="aliases annotate args autoeval autolist basename commands copying debugger directories linetrace listsize prompt trace-commands warranty"
+typeset _Dbg_show_cmds="aliases annotate args autoeval autolist basename commands copying debugging directories linetrace listsize prompt trace-commands warranty"
 
 _Dbg_help_show() {
   typeset show_cmd=$1
@@ -234,7 +245,7 @@ number of lines to list."
      ;;
     d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
      _Dbg_msg \
-'show debugger    -- Show if we are set to debug the debugger.'
+'show debugging    -- Show if we are set to debug the debugger.'
       return 0
       ;;
     dir|dire|direc|direct|directo|director|directori|directorie|directories)

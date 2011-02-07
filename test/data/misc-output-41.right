@@ -83,7 +83,7 @@ set annotate  -- Set annotation level.
 set autoeval  -- Evaluate unrecognized commands is off.
 set autolist  -- Run list command is off.
 set basename  -- Set short filenames (the basename) in debug output is on.
-set debugger  -- Set debugging the debugger is debugger
+set debugging -- Set debugging the debugger is debugging
 set editing   -- Set editing of command lines as they are typed is on.
 set linetrace -- Set tracing execution of lines before executed is off.
 set listsize  -- Set number of source lines bashdb will list by default.

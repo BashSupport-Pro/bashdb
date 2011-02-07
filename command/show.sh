@@ -19,6 +19,9 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
+typeset -A _Dbg_debugger_show_commands
+typeset -A _Dbg_debugger_help_show
+
 _Dbg_help_add show ''  # Help routine is elsewhere
 
 # Load in "show" subcommands
@@ -28,10 +31,12 @@ done
 
 _Dbg_do_show() {
     typeset show_cmd=$1
-    typeset label=$2
+    shift
+    typeset label=$1
+    shift
 
     # Warranty, copying, directories, aliases, and warranty are omitted below.
-    typeset -r subcmds="annotate args autoeval autolist basename debugger different editing history linetrace listsize prompt trace-commands width"
+    typeset -r subcmds="annotate args autoeval autolist basename debugging different editing history linetrace listsize prompt trace-commands width"
 
     if [[ -z $show_cmd ]] ; then 
 	typeset thing
@@ -39,12 +44,12 @@ _Dbg_do_show() {
 	    _Dbg_do_show $thing 1
 	done
 	return 0
+    elif [[ -n ${_Dbg_debugger_show_commands[$show_cmd]} ]] ; then
+	${_Dbg_debugger_show_commands[$show_cmd]} $label "$@"
+	return 0
     fi
 
     case $show_cmd in 
-	al | ali | alia | alias | aliase | aliases )
-	    _Dbg_do_show_alias
-	    ;;
 	ar | arg | args )
 	    [[ -n $label ]] && label='args:     '
 	    _Dbg_msg \
@@ -94,13 +99,6 @@ _Dbg_do_show() {
 	    _Dbg_do_history_list $hi_start $hi_stop
 	    _Dbg_hi_last_stop=$hi_stop
 	    ;;
-	cop | copy| copyi | copyin | copying )
-	    _Dbg_do_show_copying
-	    ;;
-	de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-	    [[ -n $label ]] && label='debugging: '
-	    _Dbg_do_show_debugging $label
-	    ;;
 	dir|dire|direc|direct|directo|director|directori|directorie|directories)
 	    typeset list=${_Dbg_dir[0]}
 	    typeset -i n=${#_Dbg_dir[@]}
@@ -110,9 +108,6 @@ _Dbg_do_show() {
 	    done
 
 	    _Dbg_msg "Source directories searched: $list"
-	    ;;
-	e | ed | edi | edit | editi | editin | editing )
-	    _Dbg_do_show_editing "$label"
 	    ;;
 	force | diff | differ | different )
 	    [[ -n $label ]] && label='different: '
