@@ -20,7 +20,7 @@
 #   MA 02111 USA.
 
 typeset -A _Dbg_debugger_show_commands
-typeset -A _Dbg_debugger_help_show
+typeset -A _Dbg_command_help_show
 
 _Dbg_help_add show ''  # Help routine is elsewhere
 
