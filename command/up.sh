@@ -34,9 +34,15 @@ See also "down" and "frame".'
 
 function _Dbg_do_up {
   _Dbg_not_running && return 3
-  typeset -i count=${1:-1}
-  _Dbg_frame_adjust $count +1
-  typeset -i rc=$?
+  typeset count=${1:-1}
+  _Dbg_is_int $count 
+  if (( 0 == $? )) ; then
+      _Dbg_frame_adjust $count +1
+      typeset -i rc=$?
+  else
+      _Dbg_errmsg "Expecting an integer; got $count"
+      rc=2
+  fi
   ((0 == rc)) && _Dbg_last_cmd='up'
   return $rc
 }

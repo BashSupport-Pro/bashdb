@@ -202,6 +202,7 @@ function _Dbg_readin {
 	if [[ -r $fullname ]] ; then
 	    typeset -r progress_prefix="Reading $filename"
 	    _Dbg_file2canonic[$filename]="$fullname"
+	    _Dbg_file2canonic[$fullname]="$fullname"
 	    # Use readarray which speeds up reading greatly.
 	    typeset -ri BIGFILE=30000
 	    if wc -l < /dev/null >/dev/null 2>&1 ; then 
@@ -248,6 +249,7 @@ _Dbg_readin_if_new() {
     if [[ -z "$fullname" ]] ; then 
 	_Dbg_readin "$filename"
 	typeset rc=$?
+	set +xv
 	(( $? != 0 )) && return $rc
 	[[ -z $fullname ]] && return 1
 	_Dbg_set_source_array_var "$filename" || return $?

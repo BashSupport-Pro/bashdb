@@ -297,7 +297,7 @@ of promoting the sharing and reuse of software generally.
 **   args      basename   editing    listsize   width         
 **   autoeval  debugging  history    prompt   
 +another-bad-command 
-Undefined command "another-bad-command". Try "help".
+** Undefined command "another-bad-command". Try "help".
 +show 
 annotate: Annotation_level is 0.
 args:     Argument list to give script when debugged program starts is:
@@ -336,7 +336,7 @@ Editing of command lines as they are typed is off.
 Editing of command lines as they are typed is on.
 Edit style is emacs.
 +set misspelled 40
-Undefined set subcommand "misspelled". Try "help set".
+** Undefined set subcommand "misspelled". Try "help set".
 +set listsize 40
 +set listsize bad
 ** Integer argument expected; got: bad
@@ -434,5 +434,5 @@ declare -- xx="1"
 +set autoeval off
 Evaluate unrecognized commands is off.
 +xx=1 ; declare -p xx
-Undefined command "xx=1". Try "help".
+** Undefined command "xx=1". Try "help".
 +quit 
