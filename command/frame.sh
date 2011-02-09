@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # gdb-like "frame" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 Rocky Bernstein
-#   <rocky@gnu.org>
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010, 2011 
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -32,17 +32,17 @@ least-recently-entered end.  So "frame -1" moves to the oldest frame.
 '
 
 _Dbg_do_frame() {
-  _Dbg_not_running && return 3
-  typeset count=${1:-1}
-  _Dbg_is_signed_int $count 
-  if (( 0 == $? )) ; then
-      _Dbg_frame_adjust $count 0
-      typeset -i rc=$?
-  else
-      _Dbg_errmsg "Expecting an integer; got $count"
-      typeset -i rc=2
-  fi
-  ((0 == rc)) && _Dbg_last_cmd='down'
-  return $rc
+    _Dbg_not_running && return 3
+    typeset count=${1:-1}
+    _Dbg_is_signed_int $count 
+    if (( 0 == $? )) ; then
+	_Dbg_frame_adjust $count 0
+	typeset -i rc=$?
+    else
+	_Dbg_errmsg "Expecting an integer; got $count"
+	typeset -i rc=2
+    fi
+    ((0 == rc)) && _Dbg_last_cmd='frame'
+    return $rc
 }
 

@@ -32,16 +32,16 @@ If COUNT is omitted, use 1. COUNT can be any arithmetic expression.
 See also "up" and "frame".'
 
 function _Dbg_do_down {
-  _Dbg_not_running && return 3
-  typeset count=${1:-1}
-  _Dbg_is_signed_int $count 
-  if (( 0 == $? )) ; then
-      _Dbg_frame_adjust $count -1
-      typeset -i rc=$?
-  else
-      _Dbg_errmsg "Expecting an integer; got $count"
-      typeset -i rc=2
-  fi
-  ((0 == rc)) && _Dbg_last_cmd='down'
-  return $rc
+    _Dbg_not_running && return 3
+    typeset count=${1:-1}
+    _Dbg_is_signed_int $count 
+    if (( 0 == $? )) ; then
+	_Dbg_frame_adjust $count -1
+	typeset -i rc=$?
+    else
+	_Dbg_errmsg "Expecting an integer; got $count"
+	typeset -i rc=2
+    fi
+    ((0 == rc)) && _Dbg_last_cmd='down'
+    return $rc
 }
