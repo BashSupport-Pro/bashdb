@@ -210,15 +210,19 @@ function _Dbg_readin {
 		    _Dbg_msg_nocr "${progress_prefix} "
 		fi
 	    fi
-	    if (( _Dbg_set_highlight )) ; then
-		readfile="/tmp/pygment-$$.txt"
-		pygmentize -l bash "$fullname" > $readfile 2>/dev/null
-	    else
-		readfile="$fullname"
-	    fi
 	    builtin readarray -t -O 1 -c $BIGFILE \
 		-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
-		$_Dbg_source_array_var < "$readfile"
+		$_Dbg_source_array_var < "$fullname"
+	    if (( _Dbg_set_highlight )) ; then
+		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py $fullname"
+		tempfile=$($highlight_cmd 2>/dev/null)
+		if (( 0  == $? )) ; then 
+		    builtin readarray -t -O 1 -c $BIGFILE \
+			-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
+			$_Dbg_highlight_array_var < "$tempfile"
+		fi
+		[[ -r $tempfile ]] && rm $tempfile 
+	    fi
 	    (( line_count > BIGFILE)) && _Dbg_progess_done
 	else
 	    return 1
