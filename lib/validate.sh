@@ -41,3 +41,14 @@ _Dbg_is_int() {
     eval "$_resteglob"
     return $rc
 }
+
+# _Dbg_is_signed_int returns 0 if $1 is an integer or nonzero otherwise. 
+_Dbg_is_signed_int() {
+    (( 1 == $# )) || return 1
+    typeset rc=1
+    eval "$_seteglob"
+    [[ $1 == $signed_int_pat ]] && rc=0
+    eval "$_resteglob"
+    return $rc
+}
+
