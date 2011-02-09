@@ -26,6 +26,7 @@ pkgdata_DATA =      	\
 	setshow.sh      \
 	sig.sh	        \
 	stepping.sh     \
+	term-highlight.py \
 	validate.sh
 
 EXTRA_DIST = $(pkgdata_DATA)
