@@ -18,20 +18,24 @@
 #   with this program; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
+typeset _Dbg_bogus_file=' A really bogus file'
+
 # Keys are the canonic expanded filename. _Dbg_filenames[filename] is
 # name of variable which contains text.
 typeset -A _Dbg_filenames
-_Dbg_filenames=()
 
 # Maps a name into its canonic form which can then be looked up in filenames
 typeset -A _Dbg_file2canonic
-_Dbg_file2canonic=()
 
 # Information about a file.
 typeset -A _Dbg_fileinfo
-_Dbg_fileinfo=()
 
-typeset _Dbg_bogus_file=' A really bogus file'
+_Dbg_filecache_reset() {
+    _Dbg_filenames=()
+    _Dbg_fileinfo=()
+    _Dbg_file2canonic=()
+}
+_Dbg_filecache_reset
 
 # Check that line $2 is not greater than the number of lines in 
 # file $1
@@ -103,7 +107,11 @@ function _Dbg_get_source_line {
 	filename="$1"
     fi
     _Dbg_readin_if_new "$filename"
-    eval "source_line=\${$_Dbg_source_array_var[lineno]}"
+    if (( _Dbg_set_highlight )) ; then
+	eval "source_line=\${$_Dbg_highlight_array_var[lineno]}"
+    else
+	eval "source_line=\${$_Dbg_source_array_var[$lineno]}"
+    fi
 }
 
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
@@ -179,6 +187,9 @@ function _Dbg_readin {
     typeset -i next;
     next=${#_Dbg_filenames[@]}
     _Dbg_source_array_var="_Dbg_source_${next}"
+    if (( _Dbg_set_highlight )) ; then
+	_Dbg_highlight_array_var="_Dbg_highlight_${next}"
+    fi
 
     typeset filevar
     typeset source_array
@@ -191,7 +202,6 @@ function _Dbg_readin {
 	if [[ -r $fullname ]] ; then
 	    typeset -r progress_prefix="Reading $filename"
 	    _Dbg_file2canonic[$filename]="$fullname"
-	    _Dbg_file2canonic[$fullname]="$fullname"
 	    # Use readarray which speeds up reading greatly.
 	    typeset -ri BIGFILE=30000
 	    if wc -l < /dev/null >/dev/null 2>&1 ; then 
@@ -200,9 +210,15 @@ function _Dbg_readin {
 		    _Dbg_msg_nocr "${progress_prefix} "
 		fi
 	    fi
+	    if (( _Dbg_set_highlight )) ; then
+		readfile="/tmp/pygment-$$.txt"
+		pygmentize -l bash "$fullname" > $readfile 2>/dev/null
+	    else
+		readfile="$fullname"
+	    fi
 	    builtin readarray -t -O 1 -c $BIGFILE \
 		-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
-		$_Dbg_source_array_var < "$fullname"
+		$_Dbg_source_array_var < "$readfile"
 	    (( line_count > BIGFILE)) && _Dbg_progess_done
 	else
 	    return 1

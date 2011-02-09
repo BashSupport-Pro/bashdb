@@ -59,7 +59,11 @@ _Dbg_confirm() {
 # Print an error message
 function _Dbg_errmsg {
     typeset -r prefix='**'
-    _Dbg_msg "$prefix $@"
+    if (( _Dbg_set_highlight )) ; then
+	_Dbg_msg "$prefix ${_Dbg_ansi_term_italic}$@${_Dbg_ansi_term_normal}"
+    else
+	_Dbg_msg "$prefix $@"
+    fi
 }
 
 # Print an error message without the ending carriage return

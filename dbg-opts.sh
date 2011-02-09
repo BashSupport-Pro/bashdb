@@ -30,6 +30,9 @@ options:
     -A | --annotate  LEVEL  Set the annotation level.
     -B | --basename         Show basename only on source file listings. 
                             (Needed in regression tests)
+    --highlight | --no-highlight 
+                            Use or don't use ANSI terminal sequences for syntax
+                            highlight
     -L | --library DIRECTORY
                             Set the directory location of library helper file: $_Dbg_main
     -c | --command STRING   Run STRING instead of a script file
@@ -67,6 +70,7 @@ typeset -i _Dbg_set_annotate=0
 # Simulate set -x?
 typeset -i _Dbg_linetrace=0
 typeset -i _Dbg_set_basename=0
+typeset -i _Dbg_set_highlight=0
 typeset -i _Dbg_o_nx=0
 
 
@@ -84,7 +88,9 @@ _Dbg_parse_options() {
 	debugger 0                           \
 	eval-command required_argument       \
     	help     0                           \
-	library  required_argument           \
+    	highlight    no_argument             \
+	library      required_argument       \
+	no-highlight no_argument             \
 	no-init  0                           \
 	nx       0                           \
 	quiet    0                           \
@@ -106,6 +112,10 @@ _Dbg_parse_options() {
 		;;  
 	    h | help )
 		_Dbg_usage		;;
+	    highlight )
+		_Dbg_set_highlight=1  	;;
+	    no-highlight )
+		_Dbg_set_highlight=0  	;;
 	    L | library ) 		;;
 	    V | version )
 		_Dbg_o_version=1	;;
