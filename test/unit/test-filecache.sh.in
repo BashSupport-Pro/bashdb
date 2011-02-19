@@ -8,9 +8,8 @@ this_script=$0
 # Test _Dbg_get_source_line
 test_get_source_line()
 {
-    typeset source_line
     _Dbg_get_source_line 2 $this_script
-    assertEquals '# -*- shell-script -*-' "$source_line"
+    assertEquals '# -*- shell-script -*-' "$_Dbg_source_line"
 }
 
 # Test readin and maxline

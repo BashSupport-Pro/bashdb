@@ -28,17 +28,18 @@ typeset _Dbg_last_search_pat
 # from _Dbg_frame_last_lineno
 typeset -i _Dbg_listline=0
 
+typeset _Dbg_source_line
+
 # Print source line in standard format for line $1 of filename $2.  If
 # $2 is omitted, use _Dbg_frame_last_filename, if $1 is omitted use
 # _Dbg_frame_last_lineno.
 function _Dbg_print_location_and_command {
   typeset line_number=${1:-$_Dbg_frame_last_lineno}
   typeset filename=${2:-$_Dbg_frame_last_filename}
-  typeset source_line
   _Dbg_get_source_line $line_number "$filename"
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
-${line_number}:\t${source_line}"
+${line_number}:\t${_Dbg_source_line}"
 
   # If we are at the same place in the file but the command has changed,
   # then we have multiple commands on the line. So print which one we are
@@ -70,19 +71,18 @@ _Dbg_print_linetrace() {
 
   (( depth < 0 )) && return
 
-  typeset source_line
   _Dbg_get_source_line $line_number "$filename"
   filename=$(_Dbg_adjust_filename "$filename")
   _Dbg_msg "(${filename}:${line_number}):
-level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${source_line}"
-  if (( _Dbg_linetrace_expand )) ; then
-#    typeset expanded_source_line
-#    # Replace all double quotes (") with and an escape (\")
-#    typeset esc_source_line="${source_line//\"/\\\"}" 
-#    _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
-     _Dbg_do_eval "expanded_source_line=\"$_Dbg_bash_command\"" 2>/dev/null
-     _Dbg_msg "+ ${expanded_source_line}"
-  fi
+level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${_Dbg_source_line}"
+#   if (( _Dbg_linetrace_expand )) ; then
+# #    typeset expanded_source_line
+# #    # Replace all double quotes (") with and an escape (\")
+# #    typeset esc_source_line="${_Dbg_source_line//\"/\\\"}" 
+#       _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
+#      _Dbg_do_eval "expanded_source_line=\"$_Dbg_bash_command\"" 2>/dev/null
+#      _Dbg_msg "+ ${expanded_source_line}"
+#   fi
 
   # If we are at the same place in the file but the command has changed,
   # then we have multiple commands on the line. So print which one we are
@@ -174,7 +174,6 @@ _Dbg_list() {
 
     (( end_line >  max_line )) && ((end_line=max_line))
 
-    typeset source_line
     typeset frame_fullfile
     frame_fullfile=${_Dbg_file2canonic[$_Dbg_frame_last_filename]}
     
@@ -184,7 +183,7 @@ _Dbg_list() {
 
        (( _Dbg_listline == _Dbg_frame_last_lineno )) \
          && [[ $fullname == $frame_fullfile ]] &&  prefix=' => '
-      _Dbg_printf "%3d:%s%s" $_Dbg_listline "$prefix" "$source_line"
+      _Dbg_printf "%3d:%s%s" $_Dbg_listline "$prefix" "$_Dbg_source_line"
     done
     return 0
 }

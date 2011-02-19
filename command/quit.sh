@@ -71,4 +71,5 @@ _Dbg_do_quit() {
 }
 
 _Dbg_alias_add q quit
+_Dbg_alias_add q! quit
 _Dbg_alias_add exit quit

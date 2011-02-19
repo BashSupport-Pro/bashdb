@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Eval and Print commands.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008 Rocky Bernstein 
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2011 Rocky Bernstein 
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -23,14 +23,31 @@
 typeset _Dbg_evalfile=$(_Dbg_tempname eval)
 
 _Dbg_help_add eval \
-'eval CMD -- Run eval on CMD.
+'eval CMD 
+eval 
 
-CMD is a string sent to special shell builtin eval. See also print.'
+In the first form CMD is a string CMD is a string sent to special
+shell builtin eval. 
+
+In the second form, use evaluate the current source line text
+
+See also "print" and "set autoeval".'
 
 _Dbg_do_eval() {
 
   echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
-  echo "$@" >> $_Dbg_evalfile
+   if (( $# == 0 )) ; then
+       typeset source_line_save="$_Dbg_source_line"
+       typeset highlight_save=$_Dbg_set_highlight
+       _Dbg_set_highlight=0
+       _Dbg_get_source_line
+       echo "$_Dbg_source_line" >> $_Dbg_evalfile
+       _Dbg_msg "eval: ${_Dbg_source_line}"
+       _Dbg_source_line="$source_line_save"
+       _Dbg_set_highlight=$_Dbg_highlight_save
+   else
+       print "$@" >> $_Dbg_evalfile
+   fi
   if [[ -n $_Dbg_tty  ]] ; then
     . $_Dbg_evalfile >>$_Dbg_tty
   else
@@ -41,7 +58,7 @@ _Dbg_do_eval() {
   _Dbg_set_debugger_internal
 }
 
-_Dbg_alias_add 'e' 'eval'
+_Dbg_alias_add 'ev' 'eval'
 
 # The arguments in the last "print" command.
 typeset _Dbg_last_print_args=''

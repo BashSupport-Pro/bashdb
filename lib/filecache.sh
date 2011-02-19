@@ -86,15 +86,13 @@ function _Dbg_get_maxline {
 }
 
 # Return text for source line for line $1 of filename $2 in variable
-# $source_line. The hope is that this has been declared "typeset" in the 
-# caller.
+# $_Dbg_source_line. 
 
 # If $2 is omitted, use _Dbg_frame_filename, if $1 is omitted use 
-# _Dbg_frame_last_lineno. The return value is put in source_line.
+# _Dbg_frame_last_lineno. The return value is put in _Dbg_source_line.
 function _Dbg_get_source_line {
     typeset -i lineno
     if (( $# == 0 )); then
-	Dbg_frame_lineno
 	lineno=$_Dbg_frame_last_lineno
     else
 	lineno=$1
@@ -102,15 +100,15 @@ function _Dbg_get_source_line {
     fi
     typeset filename
     if (( $# == 0 )) ; then
-	filename="$_Dbg_frame_filename"
+	filename="$_Dbg_frame_last_filename"
     else
 	filename="$1"
     fi
     _Dbg_readin_if_new "$filename"
     if (( _Dbg_set_highlight )) ; then
-	eval "source_line=\${$_Dbg_highlight_array_var[lineno]}"
+	eval "_Dbg_source_line=\${$_Dbg_highlight_array_var[lineno]}"
     else
-	eval "source_line=\${$_Dbg_source_array_var[$lineno]}"
+	eval "_Dbg_source_line=\${$_Dbg_source_array_var[$lineno]}"
     fi
 }
 
@@ -263,6 +261,7 @@ _Dbg_readin_if_new() {
 _Dbg_set_source_array_var() {
     (( $# != 1 )) && return 1
     typeset filename="$1"
+    [[ -z $filename ]] && return 2
     fullname=${_Dbg_file2canonic[$filename]}
     [[ -z $fullname ]] && return 2
     _Dbg_source_array_var=${_Dbg_filenames[$fullname]}

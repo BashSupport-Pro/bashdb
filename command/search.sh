@@ -43,10 +43,9 @@ _Dbg_do_reverse() {
   esac
   typeset -i i
   for (( i=_Dbg_listline-1; i > 0 ; i-- )) ; do
-    typeset source_line
     _Dbg_get_source_line $i "$_Dbg_frame_last_filename"
     eval "$_seteglob"
-    if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
+    if [[ $_Dbg_source_line == *$_Dbg_last_search_pat* ]] ; then
       eval "$_resteglob"
       _Dbg_do_list $i 1
       _Dbg_listline=$i
@@ -89,10 +88,9 @@ _Dbg_do_search() {
 
   typeset -i i
   for (( i=_Dbg_listline+1; i < max_line ; i++ )) ; do
-    typeset source_line
     _Dbg_get_source_line $i "$_Dbg_frame_last_filename"
     eval "$_seteglob"
-    if [[ $source_line == *$_Dbg_last_search_pat* ]] ; then
+    if [[ $_Dbg_source_line == *$_Dbg_last_search_pat* ]] ; then
       eval "$_resteglob"
       _Dbg_do_list $i 1
       _Dbg_listline=$i
