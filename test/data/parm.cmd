@@ -10,7 +10,7 @@ where 1
 step 2
 where 2
 ###  Try printing a dollar variable...
-p $1
+pr $1
 ###  Same thing using eval...
 eval echo $1
 ###  Setting an action to print $1
@@ -19,18 +19,18 @@ c fn2
 # cont
 ###  First parameter should have embedded blanks...
 where 8
-p "dollar 1: $1"
+pr "dollar 1: $1"
 ###  Same thing using eval...
-e echo "\\$1 is $1"
+ev echo "\\$1 is $1"
 ###  Should have embedded blanks...
-p $2
-e echo "\\$2 is $2"
+pr $2
+ev echo "\\$2 is $2"
 continue fn3
 ###  Test return. Should go back to fn2 and then fn1...
 return
 return
 ###  Should not have done above-listed x=\"fn2\" assignment
-p $x
+pr $x
 where 7
 return
 where 6
@@ -41,8 +41,8 @@ return
 where 3
 ### * Testing that exit status preserved on eval and print...
 c 29
-e echo "eval says exit was $?"
-p "print says exit was $?"
+ev echo "eval says exit was $?"
+pr "print says exit was $?"
 info files
 ### * quitting...
 quit

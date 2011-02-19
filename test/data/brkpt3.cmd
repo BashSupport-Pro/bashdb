@@ -5,7 +5,7 @@ set trace-commands on
 break 15
 step 4
 ###  Try a setting and removing break inside a subshell...
-p "BASH_SUBSHELL: $BASH_SUBSHELL"
+pr "BASH_SUBSHELL: $BASH_SUBSHELL"
 delete 1
 break 17
 cont

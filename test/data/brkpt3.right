@@ -10,7 +10,7 @@ Breakpoint 1 set in file subshell.sh, line 15.
 7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
 +### Try a setting and removing break inside a subshell...
-+p "BASH_SUBSHELL: $BASH_SUBSHELL"
++pr "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
 +delete 1
 Removed 1 breakpoint(s).

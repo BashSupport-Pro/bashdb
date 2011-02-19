@@ -17,6 +17,6 @@ x=`builtin echo *`
 (multi.sh:15):
 15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 builtin echo "ho"
-+p "BASH_SUBSHELL $BASH_SUBSHELL"
++pr "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 2
 +quit 0 56

@@ -35,18 +35,18 @@ See also "print" and "set autoeval".'
 
 _Dbg_do_eval() {
 
-  echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
+  builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
    if (( $# == 0 )) ; then
        typeset source_line_save="$_Dbg_source_line"
        typeset highlight_save=$_Dbg_set_highlight
        _Dbg_set_highlight=0
        _Dbg_get_source_line
-       echo "$_Dbg_source_line" >> $_Dbg_evalfile
+       builtin echo "$_Dbg_source_line" >> $_Dbg_evalfile
        _Dbg_msg "eval: ${source_line_save}"
        _Dbg_source_line="$source_line_save"
        _Dbg_set_highlight=$_Dbg_highlight_save
    else
-       print "$@" >> $_Dbg_evalfile
+       builtin echo "$@" >> $_Dbg_evalfile
    fi
   if [[ -n $_Dbg_tty  ]] ; then
     . $_Dbg_evalfile >>$_Dbg_tty
@@ -79,4 +79,4 @@ _Dbg_do_print() {
   return $rc
 }
 
-_Dbg_alias_add 'p' 'print'
+_Dbg_alias_add 'pr' 'print'

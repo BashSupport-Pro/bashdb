@@ -5,7 +5,7 @@ step
 step
 step 2
 ### Should now be inside a subshell. Test from here...
-p "BASH_SUBSHELL: $BASH_SUBSHELL"
+pr "BASH_SUBSHELL: $BASH_SUBSHELL"
 ### Test quit 0 2...
 quit 0 2
 ### You shouldn't get here. Another just in case.
