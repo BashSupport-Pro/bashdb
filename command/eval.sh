@@ -42,7 +42,7 @@ _Dbg_do_eval() {
        _Dbg_set_highlight=0
        _Dbg_get_source_line
        echo "$_Dbg_source_line" >> $_Dbg_evalfile
-       _Dbg_msg "eval: ${_Dbg_source_line}"
+       _Dbg_msg "eval: ${source_line_save}"
        _Dbg_source_line="$source_line_save"
        _Dbg_set_highlight=$_Dbg_highlight_save
    else
