@@ -6,6 +6,7 @@
 /test-bashdb-trace.sh
 /test-break.sh
 /test-columns.sh
+/test-eval.sh
 /test-file.sh
 /test-filecache.sh
 /test-fns.sh

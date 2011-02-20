@@ -37,10 +37,23 @@ _Dbg_do_eval() {
 
   builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
    if (( $# == 0 )) ; then
+       # FIXME: add parameter to get unhighlighted line, or 
+       # always save a copy of that in _Dbg_sget_source_line
        typeset source_line_save="$_Dbg_source_line"
        typeset highlight_save=$_Dbg_set_highlight
        _Dbg_set_highlight=0
        _Dbg_get_source_line
+
+       # Were we called via ? as the suffix? 
+       typeset suffix
+       suffix=${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1}
+       if [[ '?' == "$suffix" ]] ; then
+	   typeset extracted
+	   _Dbg_eval_extract_condition "$_Dbg_source_line"
+	   _Dbg_source_line="$extracted"
+	   source_line_save="$extracted"
+       fi
+
        builtin echo "$_Dbg_source_line" >> $_Dbg_evalfile
        _Dbg_msg "eval: ${source_line_save}"
        _Dbg_source_line="$source_line_save"
@@ -53,12 +66,16 @@ _Dbg_do_eval() {
   else
     . $_Dbg_evalfile
   fi
+  rc=$?
+  _Dbg_msg "\$? is $rc"
   # We've reset some variables like IFS and PS4 to make eval look
   # like they were before debugger entry - so reset them now.
   _Dbg_set_debugger_internal
 }
 
 _Dbg_alias_add 'ev' 'eval'
+_Dbg_alias_add 'ev?' 'eval'
+_Dbg_alias_add 'eval?' 'eval'
 
 # The arguments in the last "print" command.
 typeset _Dbg_last_print_args=''

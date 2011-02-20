@@ -431,6 +431,7 @@ size: Debugger history size is 10
 Evaluate unrecognized commands is on.
 +xx=1 ; declare -p xx
 declare -- xx="1"
+$? is 0
 +set autoeval off
 Evaluate unrecognized commands is off.
 +xx=1 ; declare -p xx

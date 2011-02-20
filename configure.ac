@@ -195,6 +195,8 @@ AC_CONFIG_FILES([test/unit/test-break.sh],
                 [chmod +x test/unit/test-break.sh])
 AC_CONFIG_FILES([test/unit/test-columns.sh], 
                 [chmod +x test/unit/test-columns.sh])
+AC_CONFIG_FILES([test/unit/test-eval.sh], 
+		[chmod +x test/unit/test-eval.sh])
 AC_CONFIG_FILES([test/unit/test-file.sh], 
 		[chmod +x test/unit/test-file.sh])
 AC_CONFIG_FILES([test/unit/test-filecache.sh], 

@@ -48,6 +48,23 @@ function _Dbg_esc_dq {
   builtin printf "%q\n" "$1"
 }
 
+# Removes "[el]if" .. "; then" or "while" .. "; do" leaving ..
+# This is used in eval? where we want to evaluate the expression part
+# in a source line of code
+_Dbg_eval_extract_condition()
+{
+    orig="$1"
+    extracted=$(echo "$orig" | sed -e's/^\(\s*if\|elif\)\s\s*//')
+    if [[ "$extracted" != "$orig" ]] ; then
+	extracted=$(echo "$extracted" | sed -e's/;\s*then\(\s\s*$\|$\)//')
+    else
+	extracted=$(echo "$orig" | sed -e's/^\s*while\s*//')
+	if [[ "$extracted" != "$orig" ]] ; then
+	    extracted=$(echo "$extracted" | sed -e's/;\s*do\(\s\s*$\|$\)//')
+	fi
+    fi
+}
+
 # Print "on" or "off" depending on whether $1 is true (0) or false
 # (nonzero).
 function _Dbg_onoff {

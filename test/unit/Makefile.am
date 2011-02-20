@@ -5,6 +5,7 @@ TESTS = \
         test-break.sh        \
         test-bashdb-trace.sh \
 	test-columns.sh      \
+        test-eval.sh         \
         test-file.sh         \
         test-filecache.sh    \
         test-fns.sh          \
@@ -27,6 +28,7 @@ EXTRA_DIST = $(TESTS) shunit2 \
      test-bashdb-trace.sh.in  \
      test-break.sh.in         \
      test-columns.sh.in       \
+     test-eval.sh.in          \
      test-file.sh.in          \
      test-filecache.sh.in     \
      test-fns.sh.in           \

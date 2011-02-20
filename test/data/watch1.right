@@ -10,6 +10,7 @@ No breakpoints have been set.
 No watch expressions have been set.
 +### Test a simple breakpoint...
 +eval xx=1
+$? is 0
 +watch xx
  0: ($xx)==1 arith: 0
 +info break

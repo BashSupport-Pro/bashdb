@@ -21,6 +21,7 @@
 +### Same thing using eval...
 +eval echo $1
 5
+$? is 0
 +### Setting an action to print $1
 +a 4 echo "\$1 at line 4 has value $1"
 Action 1 set in file parm.sh, line 4.
@@ -50,11 +51,13 @@ dollar 1: testing\ 1
 +### Same thing using eval...
 +ev echo "\$1 is $1"
 $1 is testing\ 1
+$? is 0
 +### Should have embedded blanks...
 +pr $2
 2\ 3
 +ev echo "\$2 is $2"
 $2 is 2\ 3
+$? is 0
 +continue fn3
 One-time breakpoint 2 set in file parm.sh, line 21.
 fn2: testing 1 2 3
@@ -114,6 +117,7 @@ One-time breakpoint 3 set in file parm.sh, line 29.
 29:	exit 0
 +ev echo "eval says exit was $?"
 eval says exit was 5
+$? is 0
 +pr "print says exit was $?"
 print says exit was 5
 +info files

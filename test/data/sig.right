@@ -27,6 +27,7 @@ Program received signal SIGTERM (15)...
 +handle TERM stack
 +handle INT nostop
 +eval kill -TERM $$
+$? is 0
 +info signals
 Signal       Stop   Print   Stack     Value
 EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
