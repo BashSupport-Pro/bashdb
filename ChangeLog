@@ -1,3 +1,117 @@
+2011-02-19  rocky <rocky@gnu.org>
+
+	* command/eval.sh, configure.ac, lib/fns.sh,
+	test/data/display.right, test/data/parm.right,
+	test/data/setshow.right, test/data/sig.right,
+	test/data/watch1.right, test/data/watch2.right,
+	test/unit/.gitignore, test/unit/Makefile.am,
+	test/unit/test-eval.sh.in: Add eval? to remove leading
+	"if/while/elif" and trailing ";do" or ";then"
+
+2011-02-19  rocky <rocky@gnu.org>
+
+	* command/eval.sh, test/data/brkpt3.cmd, test/data/brkpt3.right,
+	test/data/bug-args.cmd, test/data/bug-args.right,
+	test/data/bugIFS.cmd, test/data/bugIFS.right, test/data/multi1.cmd,
+	test/data/multi1.right, test/data/multi2.cmd,
+	test/data/multi2.right, test/data/multi3.cmd,
+	test/data/multi3.right, test/data/multi4.cmd,
+	test/data/multi4.right, test/data/parm.cmd, test/data/parm.right,
+	test/data/skip.cmd, test/data/skip.right, test/data/subshell1.cmd,
+	test/data/subshell1.right, test/data/subshell2.cmd,
+	test/data/subshell2.right, test/data/subshell4.cmd: remove "print"
+	that sneaked into recent change and replace with "builtin echo" "p"
+	is no longer alias for "print". Use pr. "e" is no longer alias for
+	"eval", use "ev". This matches the Ruby trepanning debuggers.
+
+2011-02-19  rocky <rocky@gnu.org>
+
+	* command/eval.sh: eval msg display should be syntax highlighted (if
+	on)
+
+2011-02-19  rocky <rocky@gnu.org>
+
+	* command/eval.sh, command/quit.sh, command/search.sh,
+	lib/filecache.sh, lib/list.sh, test/unit/test-filecache.sh.in,
+	test/unit/test-get-sourceline.sh.in: Add q! alias for quit. Show
+	eval source text and note set autoeval in help
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* command/down.sh, command/frame.sh, command/up.sh,
+	test/unit/test-validate.sh.in: Sync with zshdb
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* command/down.sh, command/frame.sh, command/up.sh, lib/validate.sh: 
+	Better parameter checking on up/down/frame
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* command/up.sh, lib/filecache.sh, lib/msg.sh,
+	test/data/setshow.right, test/unit/test-msg.sh.in: Fix
+	just-Introduced bug. Errmsg rather than msg on undefined command.
+	Check up parameters for integer-ness.
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* command/set_sub/highlight.sh, command/show_sub/highlight.sh,
+	lib/Makefile.am, lib/term-highlight.py: Make highlight wrapper
+	executable
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* lib/Makefile.am: Add highlight wrapper to install/distribution
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* lib/filecache.sh: More custom highlight colors
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2011-02-09  rocky <rocky@gnu.org>
+
+	* dbg-opts.sh, getopts_long.sh, lib/filecache.sh, lib/msg.sh: Syntax
+	highlighting now works
+
+2011-02-07  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2011-02-06  rocky <rocky@gnu.org>
+
+	* command/set.sh, command/set_sub/Makefile.am,
+	command/set_sub/annotate.sh, command/set_sub/args.sh,
+	command/set_sub/autolist.sh, command/set_sub/editing.sh,
+	command/set_sub/history.sh, command/set_sub/linetrace.sh,
+	command/set_sub/linewidth.sh, command/set_sub/listsize.sh,
+	command/set_sub/showcommand.sh, command/set_sub/width.sh: Move
+	subcommand dispatch into hash in set commands. Add help although not
+	used yet.
+
+2011-02-06  rocky <rocky@gnu.org>
+
+	* command/show.sh: Correct variable name.
+
+2011-02-06  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/show.sh, command/show_sub/alias.sh,
+	command/show_sub/copying.sh, command/show_sub/debugging.sh,
+	command/show_sub/editing.sh, lib/help.sh,
+	test/data/misc-output-41.right, test/data/misc.right,
+	test/data/setshow.right: Start dynamic subcommands handling via
+	associative arrays like we did for commands.
+
+2011-01-16  rocky <rocky@gnu.org>
+
+	* lib/processor.sh, test/data/sig.right: Sync with zshdb
+
 2011-01-10  rocky <rocky@gnu.org>
 
 	* ChangeLog, lib/fns.sh, lib/help.sh, lib/hist.sh, lib/processor.sh: 
