@@ -34,7 +34,7 @@ function _Dbg_copies {
 
 # _Dbg_defined returns 0 if $1 is a defined variable or 1 otherwise. 
 _Dbg_defined() {
-  typeset -p $1 >/dev/null
+  typeset -p $1 &>/dev/null
   if [[ $? != 0 ]] ; then 
     return 1
   else
@@ -59,7 +59,7 @@ _Dbg_eval_extract_condition()
     if [[ "$extracted" != "$orig" ]] ; then
 	extracted=$(echo "$extracted" | sed -e's/;\s*then\(\s\s*$\|$\)//')
     else
-	extracted=$(echo "$orig" | sed -e's/^\s*return\s\s*//')
+	extracted=$(echo "$orig" | sed -e's/^\s*return\s\s*/echo /')
 	if [[ "$extracted" == "$orig" ]] ; then
 	    extracted=$(echo "$orig" | sed -e's/^\s*while\s*//')
 	    if [[ "$extracted" != "$orig" ]] ; then
