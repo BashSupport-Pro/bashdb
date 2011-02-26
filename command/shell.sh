@@ -26,10 +26,11 @@ _Dbg_help_add shell \
 options: 
    --no-fns  | -F  : don't copy in function definitions from parent shell
    --no-vars | -V  : don't copy in variable definitions
-   --posix         : corresponding bash option
-   --login | l     : corresponding bash option
-   --noprofile     : corresponding bash option
-   --norc          : corresponding bash option 
+   --shell SHELL_NAME
+   --posix         : corresponding shell option
+   --login | l     : corresponding shell option
+   --noprofile     : corresponding shell option
+   --norc          : corresponding shell option 
 
 Enter a nested shell, not a subshell. Before entering the shell
 current variable definitions and function definitions are stored in
@@ -38,11 +39,11 @@ profile $_Dbg_shell_temp_profile. which is is read in via the
 
 If you don't want variable definitions to be set, use option -V or
 --no-vars. If you don't want function definitions to be set, use option
--F or --no-fns. There are several corresponding bash options. Many of 
+-F or --no-fns. There are several corresponding shell options. Many of 
 these by nature defeate reading on saved functions and variables.
 
-The shell that used is taken from the \$SHELL environment variable, 
-currently: $SHELL. 
+The shell that used is taken from the shell used to build the debugger 
+which is: $_Dbg_shell_name. Use --shell to a different compatible shell.
 
 Variables set or changed in the shell do not persist after the shell
 is left to to back to the debugger or debugged program.
@@ -64,12 +65,13 @@ is left to to back to the debugger or debugged program.
         # noprofile no_argument \
 _Dbg_parse_shell_cmd_options() {
     OPTLIND='' 
-    while getopts_long lFV opt \
-	no-fns  0    \
-        posix   no_argument \
-        login no_argument \
-	norc    no_argument \
-	no-vars 0    \
+    while getopts_long lFV opt  \
+	no-fns  0               \
+        posix   no_argument     \
+        login no_argument       \
+	shell required_argument \
+	norc    no_argument     \
+	no-vars 0               \
 	'' $@
     do
 	case "$opt" in 
@@ -77,8 +79,10 @@ _Dbg_parse_shell_cmd_options() {
 		o_fns=0;;
 	    V | no-vars )
 		o_vars=0;;
+	    shell )
+		shell=$OPTARG;;
 	    norc | posix | restricted | login | l | noediting | noprofile )
-		bash_opts+="--$opt"
+		shell_opts+="--$opt"
 		;;
 	    * ) 
 		return 1
@@ -92,7 +96,8 @@ _Dbg_parse_shell_cmd_options() {
 _Dbg_do_shell() {
     typeset -i o_fns;  o_fns=1
     typeset -i o_vars; o_vars=1
-    typeset bash_opts=''
+    typeset shell_opts=''
+    typeset  shell=$_Dbg_shell
 		
     if (($# != 0)); then
 	_Dbg_parse_shell_cmd_options $@
@@ -123,10 +128,10 @@ _Dbg_do_shell() {
 	typeset -pf >> $_Dbg_shell_temp_profile
     fi
 
-    echo 'PS1="bashdb $ "' >>$_Dbg_shell_temp_profile
+    echo 'PS1="${_Dbg_debugger_name} $ "' >>$_Dbg_shell_temp_profile
 
 
-    $SHELL --init-file $_Dbg_shell_temp_profile $bash_opts
+    $shell --init-file $_Dbg_shell_temp_profile $shell_opts
     rc=$?
     rm -f $_Dbg_shell_temp_profile 2>&1 >/dev/null
     # . $_Dbg_journal
