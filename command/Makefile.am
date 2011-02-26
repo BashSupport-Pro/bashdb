@@ -35,6 +35,7 @@ pkgdata_DATA =        \
 	return.sh     \
 	search.sh     \
 	set.sh        \
+	shell.sh      \
 	show.sh       \
 	signal.sh     \
 	skip.sh       \

@@ -6,7 +6,7 @@
 22:	x=22
 +# Just a simple quit command.
 +quit 
-(bashdbcmd123:1):
+(bashdb_cmd_123:1):
 1:	builtin echo test1a
 +# Just a simple quit command.
 +quit 
