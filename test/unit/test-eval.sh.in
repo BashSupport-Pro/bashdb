@@ -8,20 +8,22 @@ test_eval_subst()
     typeset -a texts
     texts=(
 	'if (( x == 0 )); then'
-	'if (( x == 0 )) ; then'
-	'if (( x == 1 ))'
-	'elif [[ $x = test ]] && [ $? -eq 0 ] ; then'
-	'while [[ $x = test ]] && [ $? -eq 0 ] ; do'
-	'while [[ $x = test ]] && [ $? -eq 0 ]'
+	'if (( y == 0 )) ; then'
+	'if (( z == 1 ))'
+	'return something'
+	'elif [[ $x = test1 ]] && [ $? -eq 0 ] ; then'
+	'while [[ $x = test2 ]] && [ $? -eq 0 ] ; do'
+	'while [[ $x = test3 ]] && [ $? -eq 0 ]'
     )
     
     expected=(
 	'(( x == 0 ))'
-	'(( x == 0 )) '
-	'(( x == 1 ))'
-	'[[ $x = test ]] && [ $? -eq 0 ] '
-	'[[ $x = test ]] && [ $? -eq 0 ] '
-	'[[ $x = test ]] && [ $? -eq 0 ]'
+	'(( y == 0 )) '
+	'(( z == 1 ))'
+	'something'
+	'[[ $x = test1 ]] && [ $? -eq 0 ] '
+	'[[ $x = test2 ]] && [ $? -eq 0 ] '
+	'[[ $x = test3 ]] && [ $? -eq 0 ]'
     )
     typeset -i i
     for (( i=0 ; i<${#expected}; i++ )) ; do
