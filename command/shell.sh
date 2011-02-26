@@ -21,17 +21,31 @@
 _Dbg_shell_temp_profile=$(_Dbg_tempname profile)
 
 _Dbg_help_add shell \
-"shell 
+"shell [options]
+
+options: 
+   --no-fns  | -F  : don't copy in function definitions from parent shell
+   --no-vars | -V  : don't copy in variable definitions
+   --posix         : corresponding bash option
+   --login | l     : corresponding bash option
+   --noprofile     : corresponding bash option
+   --norc          : corresponding bash option 
 
 Enter a nested shell, not a subshell. Before entering the shell
-current variable definitions stored in profile $_Dbg_shell_temp_profile
-that profile file is read in via the --init-file option.
+current variable definitions and function definitions are stored in
+profile $_Dbg_shell_temp_profile. which is is read in via the
+--init-file option.
+
+If you don't want variable definitions to be set, use option -V or
+--no-vars. If you don't want function definitions to be set, use option
+-F or --no-fns. There are several corresponding bash options. Many of 
+these by nature defeate reading on saved functions and variables.
 
 The shell that used is taken from the \$SHELL environment variable, 
 currently: $SHELL. 
 
 Variables set or changed in the shell do not persist after the shell
-is left to to back to the debugger or debugged program
+is left to to back to the debugger or debugged program.
 "
 
 # FIXME: add this behavior
@@ -44,22 +58,77 @@ is left to to back to the debugger or debugged program
 # my_var='abc'
 # save_var my_var
 
-_Dbg_do_shell() {
-    typeset -i _Dbg_rc
-    typeset _Dbg_var
-    typeset _Dbg_var_exclude=BASHOPTS
-    for _Dbg_var in BASH_VERSINFO BASHPID EUID PASPID PPID SHELLOPT UID ; do
-	_Dbg_var_exclude+="\\|${_Dbg_var}"
+        # posix   no_argument \
+        # restricted no_argument \  
+        # noediting no_argument \
+        # noprofile no_argument \
+_Dbg_parse_shell_cmd_options() {
+    OPTLIND='' 
+    while getopts_long lFV opt \
+	no-fns  0    \
+        posix   no_argument \
+        login no_argument \
+	norc    no_argument \
+	no-vars 0    \
+	'' $@
+    do
+	case "$opt" in 
+	    F | no-fns ) 
+		o_fns=0;;
+	    V | no-vars )
+		o_vars=0;;
+	    norc | posix | restricted | login | l | noediting | noprofile )
+		bash_opts+="--$opt"
+		;;
+	    * ) 
+		return 1
+		;;
+	esac
     done
-    typeset _Dbg_grep_cmd
-    # FIXME: this isn't quite right. We really should filter on 
-    # grep -e '^declare -r BASHOPTS\|BSH_VERSINFO ..."
-    _Dbg_grep_cmd="grep -v -e $_Dbg_var_exclude"
-    typeset -p | $_Dbg_grep_cmd > $_Dbg_shell_temp_profile
+    return 0
+}
+
+
+_Dbg_do_shell() {
+    typeset -i o_fns;  o_fns=1
+    typeset -i o_vars; o_vars=1
+    typeset bash_opts=''
+		
+    if (($# != 0)); then
+	_Dbg_parse_shell_cmd_options $@
+	(( $? != 0 )) && return
+	typeset -p o_fns o_vars
+    fi
+
+    typeset -i _Dbg_rc
+
+    echo '# debugger shell profile' > $_Dbg_shell_temp_profile
+
+    if ((o_vars)) ; then 
+	# Save existing variables
+	typeset _Dbg_var
+	typeset _Dbg_var_exclude=BASHOPTS
+	for _Dbg_var in BASH_VERSINFO BASHPID EUID PASPID PPID SHELLOPT UID ; do
+	    _Dbg_var_exclude+="\\|${_Dbg_var}"
+	done
+	typeset _Dbg_grep_cmd
+	# FIXME: this isn't quite right. We really should filter on 
+	# grep -e '^declare -r BASHOPTS\|BSH_VERSINFO ..."
+	_Dbg_grep_cmd="grep -v -e $_Dbg_var_exclude"
+	typeset -p | $_Dbg_grep_cmd >> $_Dbg_shell_temp_profile
+	## echo 'save_var() { typeset -p $1 >>${_Dbg_journal} 2>/dev/null; }' >> $_Dbg_shell_temp_profile
+    fi
+
+    if ((o_fns)) ; then 
+	typeset -pf >> $_Dbg_shell_temp_profile
+    fi
+
     echo 'PS1="bashdb $ "' >>$_Dbg_shell_temp_profile
-    ## echo 'save_var() { typeset -p $1 >>${_Dbg_journal} 2>/dev/null; }' >> $_Dbg_shell_temp_profile
-    $SHELL --init-file $_Dbg_shell_temp_profile
+
+
+    $SHELL --init-file $_Dbg_shell_temp_profile $bash_opts
     rc=$?
+    rm -f $_Dbg_shell_temp_profile 2>&1 >/dev/null
     # . $_Dbg_journal
     _Dbg_print_location_and_command
 }
