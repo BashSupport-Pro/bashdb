@@ -24,8 +24,6 @@
 typeset -a _Dbg_keep
 _Dbg_keep=('keep' 'del')  
 
-typeset -a _Dbg_yn; _Dbg_yn=("n" "y")         
-
 # Note: we loop over possibly sparse arrays with _Dbg_brkpt_max by adding one
 # and testing for an entry. Could add yet another array to list only 
 # used indices. Bash is kind of primitive.
