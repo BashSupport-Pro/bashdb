@@ -79,6 +79,8 @@ check-unit: test-unit
 test-unit:
 	cd test/unit && make check
 
+MOSTLYCLEANFILES = *.orig *.rej
+
 # cvs2cl
 MAINTAINERCLEANFILES = ChangeLog
 

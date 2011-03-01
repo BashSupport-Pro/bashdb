@@ -42,3 +42,8 @@ EXTRA_DIST = $(TESTS) shunit2 \
      test-sort.sh.in          \
      test-save-restore.sh.in  \
      test-validate.sh.in
+
+test: check
+test-unit: check
+
+MOSTLYCLEANFILES = *.orig *.rej

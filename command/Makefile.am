@@ -48,3 +48,5 @@ pkgdata_DATA =        \
 	watch.sh
 
 EXTRA_DIST = $(pkgdata_DATA)
+
+MOSTLYCLEANFILES = *.orig *.rej
