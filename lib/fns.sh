@@ -19,6 +19,8 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
+typeset -a _Dbg_yn; _Dbg_yn=("n" "y")         
+
 # Return $2 copies of $1. If successful, $? is 0 and the return value
 # is in result.  Otherwise $? is 1 and result ''
 function _Dbg_copies { 
@@ -34,12 +36,13 @@ function _Dbg_copies {
 
 # _Dbg_defined returns 0 if $1 is a defined variable or 1 otherwise. 
 _Dbg_defined() {
-  typeset -p $1 &>/dev/null
-  if [[ $? != 0 ]] ; then 
-    return 1
-  else
-    return 0
-  fi
+    (( 0 == $# )) && return 1
+    typeset -p "$1" &>/dev/null
+    if [[ $? != 0 ]] ; then 
+	return 1
+    else
+	return 0
+    fi
 }
 
 # Add escapes to a string $1 so that when it is read back via "$1"
@@ -61,6 +64,11 @@ _Dbg_eval_extract_condition()
     else
 	extracted=$(echo "$orig" | sed -e's/^\s*return\s\s*/echo /')
 	if [[ "$extracted" == "$orig" ]] ; then
+	    extracted=$(echo "$orig" | sed -e's/^\s*case\s*/echo /')
+	    if [[ "$extracted" != "$orig" ]] ; then
+		extracted=$(echo "$extracted" | sed -e's/\s\s*in\s*$//')
+	    fi
+	else
 	    extracted=$(echo "$orig" | sed -e's/^\s*while\s*//')
 	    if [[ "$extracted" != "$orig" ]] ; then
 		extracted=$(echo "$extracted" | sed -e's/;\s*do\(\s\s*$\|$\)//')
