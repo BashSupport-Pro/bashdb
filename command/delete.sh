@@ -31,7 +31,7 @@ _Dbg_do_delete() {
   eval "$_seteglob"
   for del in $to_go ; do 
     case $del in
-      $_watch_pat )
+      $_Dbg_watch_pat )
         _Dbg_delete_watch_entry ${del:0:${#del}-1}
         ;;
       $int_pat )

@@ -47,7 +47,7 @@ _Dbg_is_signed_int() {
     (( 1 == $# )) || return 1
     typeset rc=1
     eval "$_seteglob"
-    [[ $1 == $signed_int_pat ]] && rc=0
+    [[ $1 == $_Dbg_signed_int_pat ]] && rc=0
     eval "$_resteglob"
     return $rc
 }

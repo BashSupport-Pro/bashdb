@@ -25,7 +25,6 @@
 [[ -z $_Dbg_init_ver ]] || return
 
 typeset _Dbg_cur_fn          # current function of debugged program
-typeset -i _cur_line        # current line number of debugged program
 
 # If called from bashdb script rather than via "bash --debugger", skip
 # over some initial setup commands, like the initial "source" function
@@ -62,8 +61,7 @@ typeset -r _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s
 typeset -r _resteglob='shopt $__eopt extglob'
 
 typeset -r int_pat='[0-9]*([0-9])'
-typeset -r signed_int_pat='?([-+])+([0-9])'
-typeset -r real_pat='[0-9]*([0-9]).?([0-9])*'
+typeset -r _Dbg_signed_int_pat='?([-+])+([0-9])'
 
 # Set tty to use for output. 
 if [[ -z $_Dbg_tty ]] ; then 

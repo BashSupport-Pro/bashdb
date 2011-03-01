@@ -109,26 +109,10 @@ _Dbg_do_shell() {
 
     echo '# debugger shell profile' > $_Dbg_shell_temp_profile
 
-    if ((o_vars)) ; then 
-	# Save existing variables
-	typeset _Dbg_var
-	typeset _Dbg_var_exclude=BASHOPTS
-	for _Dbg_var in BASH_VERSINFO BASHPID EUID PASPID PPID SHELLOPT UID ; do
-	    _Dbg_var_exclude+="\\|${_Dbg_var}"
-	done
-	typeset _Dbg_grep_cmd
-	# FIXME: this isn't quite right. We really should filter on 
-	# grep -e '^declare -r BASHOPTS\|BSH_VERSINFO ..."
-	_Dbg_grep_cmd="grep -v -e $_Dbg_var_exclude"
-	typeset -p | $_Dbg_grep_cmd >> $_Dbg_shell_temp_profile
-	## echo 'save_var() { typeset -p $1 >>${_Dbg_journal} 2>/dev/null; }' >> $_Dbg_shell_temp_profile
-    fi
+    ((o_vars)) && _Dbg_shell_write_vars
+    ((o_fns)) && typeset -pf >> $_Dbg_shell_temp_profile
 
-    if ((o_fns)) ; then 
-	typeset -pf >> $_Dbg_shell_temp_profile
-    fi
-
-    echo 'PS1="${_Dbg_debugger_name} $ "' >>$_Dbg_shell_temp_profile
+    echo "PS1='${_Dbg_debugger_name} $ '" >>$_Dbg_shell_temp_profile
 
 
     $shell --init-file $_Dbg_shell_temp_profile $shell_opts
