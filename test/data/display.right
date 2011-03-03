@@ -14,13 +14,11 @@ Breakpoint 1 hit (1 times).
 (dbg-test1.sh:23):
 23:	y=23
  0: $x = 22
-$? is 0
 +cont 
 Breakpoint 2 hit (1 times).
 (dbg-test1.sh:25):
 25:	  ((x += i))
  0: $x = 22
-$? is 0
 +### Try disabling display ...
 +disable display 0
 Display entry 0 disabled.
@@ -45,14 +43,12 @@ Num Enb Expression
 +### Try display to show again status ...
 +display 
  0: $x = 22
-$? is 0
 +cont 28
 One-time breakpoint 3 set in file dbg-test1.sh, line 28.
 Breakpoint 2 hit (3 times).
 (dbg-test1.sh:25):
 25:	  ((x += i))
  0: $x = 23
-$? is 0
 +info display
 Auto-display statements now in effect:
 Num Enb Expression          
@@ -61,7 +57,6 @@ Num Enb Expression
 (dbg-test1.sh:28):
 28:	y=b
  0: $x = 27
-$? is 0
 +### Try undisplay to delete ...
 +undisplay 
 ** You need to pass in some display numbers.

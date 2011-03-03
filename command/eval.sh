@@ -15,7 +15,7 @@
 #   General Public License for more details.
 #   
 #   You should have received a copy of the GNU General Public License
-#   along with this programa; see the file COPYING.  If not, write to
+#   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
@@ -39,6 +39,8 @@ any alias that ends in ? which is aliased to eval will do thie same
 thing.
 
 See also "print" and "set autoeval".'
+
+typeset -i _Dbg_show_eval_rc; _Dbg_show_eval_rc=1
 
 _Dbg_do_eval() {
 
@@ -73,11 +75,13 @@ _Dbg_do_eval() {
   else
     . $_Dbg_evalfile
   fi
-  rc=$?
-  _Dbg_msg "\$? is $rc"
+  _Dbg_rc=$?
+  (( _Dbg_show_eval_rc )) && _Dbg_msg "\$? is $_Dbg_rc"
   # We've reset some variables like IFS and PS4 to make eval look
   # like they were before debugger entry - so reset them now.
   _Dbg_set_debugger_internal
+  _Dbg_last_cmd='eval'
+  return 0
 }
 
 _Dbg_alias_add 'ev' 'eval'
