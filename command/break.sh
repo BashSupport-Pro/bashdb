@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#   Copyright (C) 2008, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -98,87 +98,87 @@ _Dbg_do_break_common() {
 # delete brkpt(s) at given file:line numbers. If no file is given
 # use the current file.
 _Dbg_do_clear_brkpt() {
-  typeset -r n=${1:-$_Dbg_frame_lineno}
-
-  typeset filename
-  typeset -i line_number
-  typeset full_filename
-
-  _Dbg_linespec_setup $n
-
-  if [[ -n $full_filename ]] ; then 
-    if (( line_number ==  0 )) ; then 
-      _Dbg_msg "There is no line 0 to clear."
-      return 0
-    else 
-      _Dbg_check_line $line_number "$full_filename"
-      if (( $? == 0 )) ; then
-	_Dbg_unset_brkpt "$full_filename" "$line_number"
-	typeset -r found=$?
-	if [[ $found != 0 ]] ; then 
-	  _Dbg_msg "Removed $found breakpoint(s)."
-	  return $found
+    typeset -r n=${1:-$_Dbg_frame_lineno}
+    
+    typeset filename
+    typeset -i line_number
+    typeset full_filename
+    
+    _Dbg_linespec_setup $n
+    
+    if [[ -n $full_filename ]] ; then 
+	if (( line_number ==  0 )) ; then 
+	    _Dbg_msg "There is no line 0 to clear."
+	    return 0
+	else 
+	    _Dbg_check_line $line_number "$full_filename"
+	    if (( $? == 0 )) ; then
+		_Dbg_unset_brkpt "$full_filename" "$line_number"
+		typeset -r found=$?
+		if [[ $found != 0 ]] ; then 
+		    _Dbg_msg "Removed $found breakpoint(s)."
+		    return $found
+		fi
+	    fi
 	fi
-      fi
-    fi
-  else
-    _Dbg_file_not_read_in "$full_filename"
-    return 0
+    else
+	_Dbg_file_not_read_in "$full_filename"
+	return 0
   fi
 }
 
 # list breakpoints and break condition.
 # If $1 is given just list those associated for that line.
 _Dbg_do_list_brkpt() {
-
-  eval "$_seteglob"
-  if (( $# != 0  )) ; then 
-    typeset brkpt_num="$1"
-    if [[ $brkpt_num != $int_pat ]]; then
-      _Dbg_errmsg "Bad breakpoint number $brkpt_num."
-    elif [[ -z ${_Dbg_brkpt_file[$brkpt_num]} ]] ; then
-      _Dbg_errmsg "Breakpoint entry $brkpt_num is not set."
+    
+    eval "$_seteglob"
+    if (( $# != 0  )) ; then 
+	typeset brkpt_num="$1"
+	if [[ $brkpt_num != $int_pat ]]; then
+	    _Dbg_errmsg "Bad breakpoint number $brkpt_num."
+	elif [[ -z ${_Dbg_brkpt_file[$brkpt_num]} ]] ; then
+	    _Dbg_errmsg "Breakpoint entry $brkpt_num is not set."
+	else
+	    typeset -r -i i=$brkpt_num
+	    typeset source_file=${_Dbg_brkpt_file[$i]}
+	    source_file=$(_Dbg_adjust_filename "$source_file")
+	    _Dbg_msg "Num Type       Disp Enb What"
+	    _Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
+		${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
+		${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
+		"$source_file" ${_Dbg_brkpt_line[$i]}
+	    if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
+		_Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
+	    fi
+	    _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
+	fi
+	eval "$_resteglob"
+	return 0
+    elif (( ${#_Dbg_brkpt_line[@]} != 0 )); then
+	typeset -i i
+	
+	_Dbg_msg "Num Type       Disp Enb What"
+	for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
+	    typeset source_file=${_Dbg_brkpt_file[$i]}
+	    if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
+		source_file=$(_Dbg_adjust_filename "$source_file")
+		_Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
+		    ${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
+		    ${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
+		    "$source_file" ${_Dbg_brkpt_line[$i]}
+		if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
+		    _Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
+		fi
+		if (( _Dbg_brkpt_counts[$i] != 0 )) ; then
+		    _Dbg_print_brkpt_count ${_Dbg_brkpt_counts[$i]}
+		fi
+	    fi
+	done
+	return 0
     else
-      typeset -r -i i=$brkpt_num
-      typeset source_file=${_Dbg_brkpt_file[$i]}
-      source_file=$(_Dbg_adjust_filename "$source_file")
-      _Dbg_msg "Num Type       Disp Enb What"
-      _Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
-	${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
-	${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
-	"$source_file" ${_Dbg_brkpt_line[$i]}
-      if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
-	_Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
-      fi
-      _Dbg_print_brkpt_count ${_Dbg_brkpt_count[$i]}
+	_Dbg_msg 'No breakpoints have been set.'
+	return 1
     fi
-    eval "$_resteglob"
-    return 0
-  elif (( ${#_Dbg_brkpt_line[@]} != 0 )); then
-    typeset -i i
-
-    _Dbg_msg "Num Type       Disp Enb What"
-    for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
-      typeset source_file=${_Dbg_brkpt_file[$i]}
-      if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
-	source_file=$(_Dbg_adjust_filename "$source_file")
-	_Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
-	  ${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
-	  ${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
-	  "$source_file" ${_Dbg_brkpt_line[$i]}
-	if [[ ${_Dbg_brkpt_cond[$i]} != '1' ]] ; then
-	  _Dbg_printf "\tstop only if %s" "${_Dbg_brkpt_cond[$i]}"
-	fi
-	if (( _Dbg_brkpt_counts[$i] != 0 )) ; then
-	  _Dbg_print_brkpt_count ${_Dbg_brkpt_counts[$i]}
-	fi
-      fi
-    done
-    return 0
-  else
-    _Dbg_msg 'No breakpoints have been set.'
-    return 1
-  fi
 }
 
 _Dbg_alias_add b break
