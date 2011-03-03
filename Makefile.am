@@ -1,49 +1,52 @@
-#   Copyright (C) 2002, 2004, 2005, 2006, 2007, 2008 Rocky Bernstein
-#   rocky@gnu.org
+#   Copyright (C) 2002, 2004, 2005, 2006, 2007, 2008, 2011 Rocky Bernstein
+#   <rocky@gnu.org>
 #
-#   bashdb is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
-#   bashdb is distributed in the hope that it will be useful, but WITHOUT ANY
-#   WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-#   for more details.
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
 #   
-#   You should have received a copy of the GNU General Public License along
-#   with bashdb; see the file COPYING.  If not, write to the Free Software
-#   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
-#$Id: Makefile.am,v 1.43 2008/10/25 13:58:51 rockyb Exp $
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
 
 AUTOMAKE_OPTIONS = dist-bzip2
 
-SUBDIRS = command lib doc test
+SUBDIRS = command lib data doc test
+
+pkgdata_DATA =       \
+       dbg-init.sh   \
+       dbg-io.sh     \
+       dbg-main.sh   \
+       dbg-opts.sh   \
+       dbg-pre.sh    \
+       dbg-set-d-vars.inc  \
+       bashdb-main.inc     \
+       bashdb-trace        \
+       getopts_long.sh
 
 man:
 	@( cd $(top_builddir)/doc ; $(MAKE) $(MFLAGS) man )
 html:
 	@( cd $(top_builddir)/doc ; $(MAKE) $(MFLAGS) html )
 
-# Set up the install target 
+# Set up the install target. Can't figure out how to use @PACKAGE@
 bin_SCRIPTS = bashdb
 
-pkgdatadir=$(datadir)/bashdb
-
-data_DATA =
-pkgdata_DATA = dbg-init.sh         \
-               dbg-io.sh           \
-               dbg-main.sh         \
-               dbg-opts.sh         \
-               dbg-pre.sh          \
-	       dbg-set-d-vars.inc  \
-	       bashdb-main.inc     \
-	       bashdb-trace        \
-	       getopts_long.sh
+MOSTLYCLEANFILES = *.orig *.rej
 
 EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     ChangeLog ChangeLog.0 
+pkgdatadir=$(datadir)/bashdb
+
+data_DATA =
 
 # 
 # This is ugly. Bash 3.0 requires things to be different than where 
@@ -71,29 +74,22 @@ install-data-hook:
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
 
-test: check
-
 # Unit testing
 check-unit: test-unit
 
 test-unit:
 	cd test/unit && make check
 
-MOSTLYCLEANFILES = *.orig *.rej
+test-integration:
+	cd test/integration && make check
 
-# cvs2cl
 MAINTAINERCLEANFILES = ChangeLog
 
 if MAINTAINER_MODE
 
-.PHONY: ChangeLog
 ChangeLog:
-	git log --pretty --numstat --summary | git2cl > ChangeLog
+	git log --pretty --numstat --summary | $(GIT2CL) > $@
 
 ACLOCAL_AMFLAGS=-I .
 
 endif
-
-#;;; Local Variables: ***
-#;;; mode:makefile ***
-#;;; End: ***

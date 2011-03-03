@@ -18,14 +18,14 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_shell_write_vars() {
-    typeset -a _Dbg_variable_parameters=()
+_Dbg_alias_add 'sh' 'shell'
+
+_Dbg_shell_append_typesets() {
     typeset -a words 
     typeset -p | while read -a words ; do 
 	[[ declare != ${words[0]} ]] && continue
 	var_name=${words[2]%%=*}
-	# ((_Dbg_set_debugging)) && 
-	[[ $var_name =~ ^_Dbg_ ]] && continue	
+	((0 == _Dbg_set_debugging)) && [[ $var_name =~ ^_Dbg_ ]] && continue	
 	flags=${words[1]}
 	if [[ $flags =~ ^-.*x ]]; then 
 	    # Skip exported varables
@@ -34,7 +34,18 @@ _Dbg_shell_write_vars() {
 	    # handle read-only variables
 	    echo "typeset -p ${var_name} &>/dev/null || $(typeset -p ${var_name})"
 	elif [[ ${flags:0:1} == '-' ]] ; then
-	    echo $(typeset -p ${var_name})
+	    echo $(typeset -p ${var_name} 2>/dev/null) 
 	fi
+    done >>$_Dbg_shell_temp_profile 
+}
+
+_Dbg_shell_append_fn_typesets() {
+    typeset -a words 
+    typeset -pf | while read -a words ; do 
+	[[ declare != ${words[0]} ]] && continue
+	fn_name=${words[2]%%=*}
+	((0 == _Dbg_set_debugging)) && [[ $fn_name =~ ^_Dbg_ ]] && continue	
+	flags=${words[1]}
+	echo $(typeset -pf ${fn_name} 2>/dev/null)
     done >>$_Dbg_shell_temp_profile
 }

@@ -162,18 +162,21 @@ else
 fi
 
 #Makefiles
-AC_CONFIG_FILES([Makefile \
-	command/Makefile \
+AC_CONFIG_FILES([ \
+	Makefile		  \
+	command/Makefile	  \
 	command/info_sub/Makefile \
-	command/set_sub/Makefile \
+	command/set_sub/Makefile  \
 	command/show_sub/Makefile \
-	doc/Makefile \
-	lib/Makefile \
-	test/Makefile \
-	test/data/Makefile \
-	test/example/Makefile \
+	data/Makefile             \
+	doc/Makefile 		  \
+	lib/Makefile 		  \
+	test/Makefile 		  \
+	test/data/Makefile 	  \
+	test/example/Makefile 	  \
 	test/integration/Makefile \
-	test/unit/Makefile])
+	test/unit/Makefile 	  \
+	])
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x DEBUGGER])

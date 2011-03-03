@@ -26,7 +26,8 @@ typeset _Dbg_RESTART_COMMAND=''
 # if you do this or else you may get into a recursive loop.
 typeset -i _Dbg_debug_debugger=0
 
-typeset _Dbg_stop_reason=''    # The reason we are in the debugger.
+typeset -i _Dbg_set_debugging=0  # 1 if we are debugging the debugger
+typeset    _Dbg_stop_reason=''    # The reason we are in the debugger.
 
 # Set to 0 to clear "trap DEBUG" after entry
 typeset -i _Dbg_restore_debug_trap=1
