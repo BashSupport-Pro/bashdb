@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# gdb-like "info" debugger commands
+# info.sh - gdb-like "info" debugger commands
 #
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009,
 #   2010, 2011 Rocky Bernstein <rocky@gnu.org>
@@ -44,7 +44,7 @@ _Dbg_do_info() {
 	  b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
 	      w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
 	      _Dbg_do_info_brkpts $@
-	      return $?
+	      return 0
 	      ;;
 
 	  d | di | dis| disp | displ | displa | display )
@@ -54,12 +54,12 @@ _Dbg_do_info() {
 
 	  file | files )
 	      _Dbg_do_info_files
-	      return $?
+	      return 0
 	      ;;
 
 	  fu | fun| func | funct | functi | functio | function | functions )
               _Dbg_do_info_functions $@
-              return $?
+              return 0
 	      ;;
 
 	  h | ha | han | hand | handl | handle | \
