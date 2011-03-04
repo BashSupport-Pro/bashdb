@@ -6,6 +6,7 @@ check_DATA = \
 	settrace.tests 	   \
 	sopts.tests        \
 	test-delete.in     \
+	test-export.in     \
 	test-misc.in       \
 	test-setshow.in    \
 	test-sig.in        \
@@ -25,6 +26,7 @@ TESTS = \
 	test-delete     \
 	test-display    \
 	test-enable     \
+	test-export     \
 	test-file-with-spaces  \
 	test-finish     \
 	test-frame      \

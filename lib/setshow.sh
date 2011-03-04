@@ -20,7 +20,7 @@
 # Sets variable _Dbg_$2 to value $1 and then runs _Dbg_do_show $2.
 _Dbg_set_onoff() {
     typeset -l onoff=${1:-'off'}
-    typeset -l cmdname=$2
+    typeset cmdname=$2
     case $onoff in 
 	on | 1 ) 
 	    _Dbg_write_journal_eval "_Dbg_set_${cmdname}=1"
@@ -41,7 +41,7 @@ _Dbg_show_onoff() {
     typeset msg="$2"
     typeset label="$3"
     [[ -n $label ]] && label="${cmd}: "
-    typeset -l onoff='off'
+    typeset onoff='off'
     typeset -l value
     eval "value=\$_Dbg_set_${cmd}"
     (( value )) && onoff='on.'
@@ -52,14 +52,14 @@ _Dbg_show_onoff() {
 }
 
 _Dbg_help_set_onoff() {
-    typeset -l cmd="$1"
-    typeset -l label="$2"
-    typeset -l msg="$3"
+    typeset cmd="$1"
+    typeset label="$2"
+    typeset msg="$3"
     typeset -l variable_value
     eval_cmd="variable_value=\${_Dbg_set_$cmd}"
     eval $eval_cmd
     [[ -n $label ]] && label="set $cmd  -- "
-    typeset -l onoff="off."
+    typeset onoff="off."
     (( variable_value != 0 )) && onoff='on.'
     _Dbg_msg \
 	"${label}${msg} is" $onoff

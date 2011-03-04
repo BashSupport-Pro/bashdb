@@ -17,6 +17,7 @@ pkgdata_DATA =        \
 	enable.sh     \
 	eval.sh       \
 	examine.sh    \
+	export.sh     \
 	file.sh       \
 	finish.sh     \
 	frame.sh      \

@@ -33,6 +33,8 @@ check_DATA = \
 	display.right \
 	enable.cmd \
 	enable.right \
+	export.cmd \
+	export.right \
 	finish.cmd \
 	finish.right \
 	frame.cmd \

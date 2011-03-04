@@ -226,6 +226,8 @@ AC_CONFIG_FILES([test/integration/test-debug],
 	        [chmod +x test/integration/test-debug])
 AC_CONFIG_FILES([test/integration/test-delete],
 	        [chmod +x test/integration/test-delete])
+AC_CONFIG_FILES([test/integration/test-export],
+	        [chmod +x test/integration/test-export])
 AC_CONFIG_FILES([test/integration/test-misc],
 	        [chmod +x test/integration/test-misc])
 AC_CONFIG_FILES([test/integration/test-setshow],
