@@ -1,0 +1,36 @@
+(subshell.sh:6):
+6:	x=1; y=2; z=3
++set showcommand 1
++export 
+** Expecting at least one variable name; got none.
++step 
+(subshell.sh:6):
+6:	x=1; y=2; z=3
+y=2
++export foo
+** You are not in a subshell, so no value(s) need saving.
++export x
+** You are not in a subshell, so no value(s) need saving.
++c 7
+One-time breakpoint 1 set in file subshell.sh, line 7.
+(subshell.sh:7):
+7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+builtin cd .
++set autoeval on
+Evaluate unrecognized commands is on.
++y=10 
+$? is 0
++z=20 
+$? is 0
++export y z
++c 8
+One-time breakpoint 2 set in file subshell.sh, line 8.
+ho
+(subshell.sh:8):
+8:	case `builtin echo "testing"; builtin echo 1,2,3`,`builtin echo 1,2,3` in
+case `builtin echo "testing"; builtin echo 1,2,3`,`builtin echo 1,2,3` in 
++x y
+declare -- y="10"
++x z
+declare -- z="20"
++quit 
