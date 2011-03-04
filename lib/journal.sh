@@ -43,7 +43,7 @@ _Dbg_write_journal_var() {
 }
 
 _Dbg_write_journal_avar() {
-    typeset decl_str=$(declare -p $1)
+    typeset decl_str; decl_str=$(declare -p $1)
     typeset -a decl_a
     decl_a=($decl_str)
     typeset -a decl_a2
