@@ -57,13 +57,8 @@ function tryget(url) { // returns the url content if OK or false if not
 
 function About()  {    // Shows alert when 'about' is clicked
  alert("jQuery loaded from:"+libfile+
-   "\n\n Outline spawned from defininition lists that "+
-   "\n\n may be written with NoteCase treasured legacy outliner (free version)"+
-   "\n\n or generated from HTML headings."+
-   "\n\n Download NoteCase (Windows): \nhttp://prdownloads.sourceforge.net/notecase/notecase-1.9.8_setup.exe?download "+
-   "\n\n Download page (select Linux package): http://notecase.sourceforge.net/download.html "+
-   "\n\n (Copy the url to your browser address window to download)"+
-   "\n\nThe outline .ncd file is called "+url);
+   "\n\nOutline created via NoteCase htp://notecase.sf.net "+
+   "\nby Rod Smith http://www.rodericksmith.plus.com.");
 }
 
 { // Inline script : if this file is ncdToHTML.js, make placeholder for tree
@@ -80,7 +75,7 @@ placeholder='<!--  Where the active tree will go -->'
 placeholder+='<span id="includeone"><br>includeone</span> '
 placeholder+='<!-- Where the credits line will go -->'
 placeholder+='<span id="includetwo">[Click text above to activate outline]'
-placeholder+=' <a onclick="About()">file</a><br></span>'
+placeholder+='<br><a onclick="About()">Info on format processor</a><br></span>'
 }
 placeholder+='<script type="text/javascript" defer="defer">  '
 placeholder+='clientSideInclude("includeone")  '+slashscript
@@ -271,7 +266,7 @@ var element = document.getElementById(id);
 
       
 document.getElementById("includetwo").innerHTML=
-  '[Click text above to activate outline <a onclick="About()">file</a>]<br>'
+  '[Click text above to activate outline]<br> [<a onclick="About()">Info on processor used in formatting</a>]<br>'
 
 // end of function: clientSideInclude(id) 
 }

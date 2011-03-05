@@ -1342,7 +1342,7 @@ just @key{RET}. Some commands which require a parameter, such as
 * Search::               Searching source files (/pat/ ?pat?)
 * Data::                 Examining data (print, examine, info variables)
 * Auto Display::         Executing expressions on stop (display, undisplay)
-* Evaluation/Execution:: Arbitrary execution (eval, shell)
+* Evaluation/Execution:: Arbitrary execution (eval, eval? shell)
 * Interfacing to the OS:: Interfacing to the OS (cd, pwd)
 * Information and Settings::  Status and Debugger settings (info, show)
 * Controlling bashdb::   Controlling bashdb (annotate, file, prompt, history...)
@@ -1389,13 +1389,13 @@ display a short list of named classes of commands:
 @smallexample
 bashdb<0> @b{help}
 Available commands:
-  action     debug    eval     history  pwd      show    tbreak     watch 
-  alias      delete   examine  info     quit     signal  trace      watche
-  backtrace  disable  file     kill     restart  skip    tty      
-  break      display  finish   list     return   source  unalias  
-  commands   down     frame    load     reverse  step    undisplay
-  condition  edit     handle   next     search   step-   untrace  
-  continue   enable   help     print    set      step+   up       
+  action     debug    eval     help     print    set     step-      untrace
+  alias      delete   examine  history  pwd      shell   step+      up     
+  backtrace  disable  export   info     quit     show    tbreak     watch  
+  break      display  file     kill     restart  signal  trace      watche 
+  commands   down     finish   list     return   skip    tty      
+  condition  edit     frame    load     reverse  source  unalias  
+  continue   enable   handle   next     search   step    undisplay
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -1460,6 +1460,7 @@ info warranty -- Various kinds of warranty you do not have
 Aliases for info: i
 bashdb<1> @b{info source}
 Current script file is parm.sh
+Located in /tmp/parm.sh
 Contains 34 lines.
 @end example
 @end table
@@ -3005,8 +3006,7 @@ If you alias eval with a name that ends in ? it will strip off any leading @code
 
 @kindex !! @r{(@code{shell})}
 @cindex shell escape
-@item shell @var{command string}
-@itemx !!
+@item !! @var{command string}
 
 If you need to execute occasional shell commands during your
 debugging session, there is no need to leave or suspend @value{DBG}; you can
@@ -3014,6 +3014,60 @@ just use the @code{shell} command or its alias @code{!!}.
 
 Invoke a shell to execute @var{command string}.
 
+@kindex shell @r{(@code{shell})}
+@cindex nested shell
+@item shell
+
+Although the debugger allows one to evaluate arbitrary @acronym{BASH}
+code using @code{eval}, or via the @code{set autoeval} mode, sometimes
+you might prefer to work inside a @acronym{BASH} shell to see variables,
+experiment, issue commands (using the currently-set up environment), and
+even change variables and functions.
+
+For this we, the debugger @code{shell} command, enters a nested shell
+session. But before it does this, it saves out variable and function
+definitions in the current context of the running program. That way, you
+have access to those.
+
+This however creates a new problem: getting changes you make reflected
+back into the running program. Right now any variable you change can be
+flagged to have its value re-read when the shell exits. This is done
+using the @code{save_var} function inside the nested shell. @code{save_var}
+takes a list of variable names.
+
+Here is an example session
+
+@smallexample 
+bashdb /etc/init.d/apparmor status
+bashdb debugger, release 4.2-0.6
+
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 Rocky Bernstein
+This is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+...
+(/etc/init.d/apparmor:35):
+. /etc/apparmor/functions
+bashdb<1> s
+(/etc/apparmor/functions:24):
+PROFILES="/etc/apparmor.d"
+bashdb<2> s
+(/etc/apparmor/functions:25):
+PARSER="/sbin/apparmor_parser"
+bashdb<3> shell
+bashdb $ typeset -p PROFILES
+typeset -p PROFILES
+typeset PROFILES=/etc/apparmor.d
+bashdb $ PROFILES='Hi, Mom!'
+bashdb $ save_vars PROFILES
+bashdb $  <EOF>
+(/etc/apparmor/functions:25):
+PARSER="/sbin/apparmor_parser"
+bashdb<4> x PROFILES
+typeset PROFILES='Hi, Mom!'
+@end smallexample
+
+Note that inside the nested shell the we have set the prompt has been
+set to @code{bashdb $ }.
 @end table
 
 @node Interfacing to the OS

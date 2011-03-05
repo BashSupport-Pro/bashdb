@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Set up to Debug into another script...
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -30,22 +30,24 @@ about to be executed."
 # single statement.
 _Dbg_do_debug() {
 
+    _Dbg_shell_new_shell_profile
+
     typeset script_cmd=${@:-$_Dbg_bash_command}
     
     # We need to expand variables that might be in $script_cmd.
     # set_Dbg_nested_debug_cmd is set up to to be eval'd below.
-    typeset set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$script_cmd\"";
+    typeset set_Dbg_debug_cmd="typeset _Dbg_debug_cmd=\"$script_cmd\"";
     
-    [ -z "$BASH" ] && BASH='bash'
+    [[ -z $BASH ]] && BASH='bash'
     
     eval "$_seteglob"
     # Add appropriate bash debugging options
-    if [[ $_Dbg_script != 1 ]] ; then
+    if (( ! _Dbg_script )) ; then
 	# Running "bash --debugger", so prepend "bash --debugger"
-	set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH --debugger $script_cmd\"";
+	set_Dbg_debug_cmd="typeset _Dbg_debug_cmd=\"$BASH --init-file ${_Dbg_shell_temp_profile} --debugger $script_cmd\"";
     elif [[ $_Dbg_orig_0/// == *bashdb/// ]] ; then
 	# Running "bashdb", so prepend "bash bashdb .."
-	set_Dbg_debug_cmd="local _Dbg_debug_cmd=\"$BASH $_Dbg_orig_0 -q -L $_Dbg_libdir $script_cmd\"";
+	set_Dbg_debug_cmd="typeset _Dbg_debug_cmd=\"$BASH $_Dbg_orig_0 -q -L $_Dbg_libdir $script_cmd\"";
     fi
     eval "$_resteglob"
     eval $set_Dbg_debug_cmd
@@ -61,5 +63,6 @@ _Dbg_do_debug() {
     ((_Dbg_DEBUGGER_LEVEL++))
     $_Dbg_debug_cmd
     ((_Dbg_DEBUGGER_LEVEL--))
+    _Dbg_restore_from_nested_shell    
     export _Dbg_QUIT_ON_QUIT=$old_quit_on_quit
 }
