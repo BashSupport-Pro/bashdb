@@ -80,5 +80,12 @@ if [[ ${_Dbg_libdir:0:1} == '.' ]] ; then
     _Dbg_libdir=$(_Dbg_expand_filename ${_Dbg_init_cwd}/${_Dbg_libdir})
 fi
 
-[ -n "$DBG_RESTART_FILE" ] \
-    && [ -r "$DBG_RESTART_FILE" ] &&  source $DBG_RESTART_FILE
+for source_file in ${_Dbg_o_init_files[@]} "$DBG_RESTART_FILE";  do
+    if [[ -n "$source_file" ]] ; then
+	if [[ -r "$source_file" ]] && [[ -f "$source_file" ]] ; then
+	    source $source_file
+	else
+	    _Dbg_errmsg "Unable to read bash file: ${source_file}"
+	fi
+    fi
+done

@@ -12,6 +12,8 @@ Version 4.2-1.0 - Ides of March
   inside the interactive shell)
 - ability to save values from inside a subshell to the outer shell
   (debugger command "export")
+- add --init-file (akin to same option in bash) to have bash code
+  sourced
 
 Version 4.2-0.6 - giant madagascar day gecko
 2010-12-10
