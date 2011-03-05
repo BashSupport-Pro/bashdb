@@ -85,7 +85,7 @@ for source_file in ${_Dbg_o_init_files[@]} "$DBG_RESTART_FILE";  do
 	if [[ -r "$source_file" ]] && [[ -f "$source_file" ]] ; then
 	    source $source_file
 	else
-	    _Dbg_errmsg "Unable to read bash file: ${source_file}"
+	    _Dbg_errmsg "Unable to read shell script: ${source_file}"
 	fi
     fi
 done

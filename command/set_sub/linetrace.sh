@@ -28,10 +28,10 @@ _Dbg_do_set_linetrace() {
     typeset onoff=${1:-'off'}
     case $onoff in 
 	on | 1 ) 
-	    _Dbg_write_journal_eval "_Dbg_linetrace=1"
+	    _Dbg_write_journal_eval "_Dbg_set_linetrace=1"
 	    ;;
 	off | 0 )
-	    _Dbg_write_journal_eval "_Dbg_linetrace=0"
+	    _Dbg_write_journal_eval "_Dbg_set_linetrace=0"
 	    ;;
 	d | de | del | dela | delay )
 	    eval "$_seteglob"

@@ -33,9 +33,9 @@ options:
     --highlight | --no-highlight 
                             Use or don't use ANSI terminal sequences for syntax
                             highlight
-    --init-file FILE        Source bash FILE. Similar to bash's corresponding
-                            option. This option can be given several times
-                            with different files.
+    --init-file FILE        Source script file FILE. Similar to bash's 
+                            corresponding option. This option can be given 
+                            several times with different files.
     -L | --library DIRECTORY
                             Set the directory location of library helper file: $_Dbg_main
     -c | --command STRING   Run STRING instead of a script file
@@ -71,11 +71,11 @@ typeset    _Dbg_tmpdir=/tmp
 typeset -i _Dbg_set_annotate=0
 
 # Simulate set -x?
-typeset -i _Dbg_linetrace=0
+typeset -i _Dbg_set_linetrace=0
 typeset -i _Dbg_set_basename=0
 typeset -i _Dbg_set_highlight=0
-typeset -i _Dbg_o_nx=0
 typeset -a _Dbg_o_init_files; _Dbg_o_init_files=()
+typeset -i _Dbg_o_nx=0
 
 _Dbg_parse_options() {
 
@@ -146,7 +146,7 @@ _Dbg_parse_options() {
 	    x | eval-command )
 		DBG_INPUT=$OPTLARG	;;
 	    X | trace ) 
-		_Dbg_linetrace=1        ;;
+		_Dbg_set_linetrace=1        ;;
 	    '?' )  # Path taken on a bad option
 		echo  >&2 'Use -h or --help to see options.'
 		exit 2                  ;;
@@ -197,6 +197,6 @@ if [[ -n "$_Dbg_dbg_opts_test" ]] ; then
     [[ -n $_Dbg_input ]] && typeset -p _Dbg_input
     _Dbg_parse_options "$@"
     typeset -p _Dbg_set_annotate
-    typeset -p _Dbg_linetrace
+    typeset -p _Dbg_set_linetrace
     typeset -p _Dbg_set_basename
 fi

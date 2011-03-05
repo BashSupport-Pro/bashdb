@@ -189,8 +189,8 @@ _Dbg_debug_trap_handler() {
 	# here because we are fielding a signal.
 	_Dbg_hook_enter_debugger 'on fielding signal'
 	return $_Dbg_continue_rc
-    elif ((_Dbg_linetrace==1)) ; then 
-	if ((_Dbg_linetrace_delay)) ; then
+    elif ((_Dbg_set_linetrace==1)) ; then 
+	if ((_Dbg_set_linetrace_delay)) ; then
 	    sleep $_Dbg_linetrace_delay
 	fi
 	_Dbg_print_linetrace
