@@ -2933,7 +2933,7 @@ The two most general commands and most ``low-level'' are @code{eval}
 and @code{shell}.
 
 @table @code
-@item eval
+@item eval @r{[} bash-code @r{]}
 @itemx e
 @kindex e @r{(@code{eval})}
 @kindex eval
@@ -2951,7 +2951,58 @@ wanted to find out how the builtin test operator @samp{[} works with
 the @samp{-z} test condition. You could use @code{eval} to do this
 such as @samp{e [ -z "$foo"] && echo "yes"}.
 
-@kindex shell
+
+@item eval
+
+I find I sometimes want to run the line that's about to be executed to see if I want to step into methods that are called.
+
+For example:
+
+@smallexample
+(/etc/apparmor/functions:24):
+PROFILES="/etc/apparmor.d"
+bashdb<2> 
+@end smallexample
+
+I had been cutting and pasting the command as shown, but realized I could do better if I made a command for this. So that's what I've done.
+
+If you run the @samp{eval} command without any arguments, it will run
+the command that is about to be run.
+
+@smallexample
+(/etc/apparmor/functions:24):
+PROFILES="/etc/apparmor.d"
+bashdb<2> eval
+eval: PROFILES="/etc/apparmor.d"
+$? is 0
+bashdb<3> 
+@end smallexample
+
+This was working fine, until I started coming across tests inside @code{if}, @code{elsif},  @code{case}, @code{return} or @code{while} blocks. For example: 
+
+@smallexample
+(/etc/init.d/apparmor:70):
+if [ "$1" = "recache" ]
+@end smallexample
+
+Suppose I want to know which branch I'm going to take before taking the branch. That way I might even be able to change which way to go by changing the test before it runs in the debugged program. (In the above example, I could print $1
+
+@smallexample
+bashdb<2> pr $1
+status
+@end smallexample
+
+But I'm lazy. I'd rather let the debugger do the work for me: 
+
+@smallexample
+bashdb<1> eval?
+eval: [ "$1" = "recache" ]
+$? is 1
+@end smallexample
+
+If you alias eval with a name that ends in ? it will strip off any leading @code{if}, @code{case}, @code{while}, @code{elsif}, or @code{return}.
+
+
 @kindex !! @r{(@code{shell})}
 @cindex shell escape
 @item shell @var{command string}
