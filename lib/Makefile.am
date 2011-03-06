@@ -24,6 +24,7 @@ pkgdata_DATA =      	\
 	run.sh  	\
 	save-restore.sh \
 	setshow.sh      \
+	shell.sh	\
 	sig.sh	        \
 	stepping.sh     \
 	term-highlight.py \

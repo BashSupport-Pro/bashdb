@@ -145,6 +145,16 @@ _Dbg_save_Dbg_set() {
 }
 
 _Dbg_restore_state() {
-  local statefile=$1
+  typeset statefile=$1
   . $1
+}
+
+# Things we do when coming back from a nested shell.
+# "shell", and "debug" create nested shells.
+_Dbg_restore_from_nested_shell() {
+    rm -f $_Dbg_shell_temp_profile 2>&1 >/dev/null
+    if [[ -r $_Dbg_restore_info ]] ; then
+	. $_Dbg_restore_info
+	rm $_Dbg_restore_info
+    fi
 }
