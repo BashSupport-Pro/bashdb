@@ -40,7 +40,7 @@ SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAN
 +continue 
 Program received signal SIGTERM (15)...
 ->0 in file `eval.sh' at line 55
-##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 251
+##1 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 250
 ##2 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.sh' at line 177
 ##3 _Dbg_process_commands() called from file `hook.sh' at line 265
 ##4 _Dbg_hook_enter_debugger("after being stepped") called from file `hook.sh' at line 181

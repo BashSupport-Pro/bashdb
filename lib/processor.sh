@@ -197,21 +197,20 @@ function _Dbg_process_commands {
 
 # Run a debugger command "annotating" the output
 _Dbg_annotation() {
-  typeset label="$1"
-  shift
-  _Dbg_do_print "$label"
-  $*
-  _Dbg_do_print  ''
+    typeset label="$1"
+    shift
+    _Dbg_do_print "$label"
+    $*
+    _Dbg_do_print  ''
 }
 
 # Run a single command
 # Parameters: _Dbg_cmd and args
 # 
 _Dbg_onecmd() {
-
-    typeset full_cmd=$@
+    typeset full_cmd; full_cmd=$@
     typeset _Dbg_orig_cmd="$1"
-    typeset expanded_alias; _Dbg_alias_expand "$1"
+    typeset expanded_alias; _Dbg_alias_expand "$_Dbg_orig_cmd"
     typeset _Dbg_cmd="$expanded_alias"
     shift
     typeset _Dbg_args="$@"
@@ -225,7 +224,7 @@ _Dbg_onecmd() {
 
      # If "set trace-commands" is "on", echo the the command
      if [[  $_Dbg_set_trace_commands == 'on' ]]  ; then
-       _Dbg_msg "+$full_cmd"
+	 _Dbg_msg "+$full_cmd"
      fi
 
      local dq_cmd=$(_Dbg_esc_dq "$_Dbg_cmd")
