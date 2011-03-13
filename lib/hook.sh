@@ -283,5 +283,5 @@ _Dbg_cleanup() {
 _Dbg_cleanup2() {
     [[ -f $_Dbg_evalfile ]] && rm -f $_Dbg_evalfile 2>/dev/null
     _Dbg_erase_journals
-  trap - EXIT
+    trap - EXIT
 }
