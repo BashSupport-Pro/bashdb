@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Debugger Edit command
 
-#   Copyright (C) 2008, 2010 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -30,7 +30,7 @@ Assumes the editor positions at a file using options +linenumber filename."
 _Dbg_do_edit() {
   if (($# > 2)) ; then 
       _Dbg_errmsg "got $# parameters, but need 0 or 1."
-      return 1
+      return 2
   fi
   typeset editor=${EDITOR:-ex}
   typeset -i line_number

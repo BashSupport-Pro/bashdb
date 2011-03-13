@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# display.sh - gdb-like "(un)display" and list display debugger commands
+# display.sh - gdb-like "display" debugger command
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2010
 #   2011 Rocky Bernstein <rocky@gnu.org>
