@@ -69,9 +69,9 @@ Available commands:
   action     debug    eval     help     print    set     step+      untrace
   alias      delete   examine  history  pwd      shell   step+      up     
   backtrace  disable  export   info     quit     show    tbreak     watch  
-  break      display  file     kill     restart  signal  trace      watche 
-  commands   down     finish   list     return   skip    tty      
-  condition  edit     frame    load     reverse  source  unalias  
+  break      display  file     kill     return   signal  trace      watche 
+  commands   down     finish   list     reverse  skip    tty      
+  condition  edit     frame    load     run      source  unalias  
   continue   enable   handle   next     search   step    undisplay
 
 Readline command line editing (emacs/vi mode) is available.

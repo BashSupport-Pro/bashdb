@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# gdb-like "restart" debugger command
+# gdb-like "run" debugger command
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein 
 #   <rocky@gnu.org>
@@ -22,10 +22,10 @@
 # Restart script in same way with saved arguments (probably the same
 # ones as we were given before).
 
-_Dbg_help_add restart \
-'restart [args] -- Attempt to restart the program.'
+_Dbg_help_add run \
+'run [args] -- Attempt to restart the program.'
 
-_Dbg_do_restart() {
+_Dbg_do_run() {
     typeset script_args
     # We need to escape any embedded blanks in script_args and such.
     if (( $# == 0 )) ; then 
@@ -70,5 +70,5 @@ _Dbg_do_restart() {
     eval "exec $exec_cmd_prefix $script_args"
 }
 
-_Dbg_alias_add R restart
-_Dbg_alias_add run restart
+_Dbg_alias_add R run
+_Dbg_alias_add restart run

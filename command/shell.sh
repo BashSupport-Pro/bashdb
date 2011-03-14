@@ -100,7 +100,7 @@ _Dbg_do_shell() {
     fi
 
     typeset -i _Dbg_rc
-    _Dbg_shell_new_shell_profile $_Dbg_o_vars _$Dbg_o_fns
+    _Dbg_shell_new_shell_profile $_Dbg_o_vars $_Dbg_o_fns
 
     # Set prompt in new shell
     echo "PS1='${_Dbg_debugger_name} $ '" >>$_Dbg_shell_temp_profile
