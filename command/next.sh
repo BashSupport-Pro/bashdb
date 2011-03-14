@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "next" (step over) commmand.
 #
-#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2010 Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -32,6 +32,9 @@ expression.
 Functions and source'd files are not traced. This is in contrast to 
 \"step\". See also \"skip\"."
 
+# Next command
+# $1 is command next+, next-, or next
+# $2 is an optional additional count.
 _Dbg_do_next() {
     _Dbg_last_cmd='next'
     _Dbg_inside_skip=0

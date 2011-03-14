@@ -129,7 +129,7 @@ Follow this command with any number of args, to be passed to the program."
 	d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
 	    local onoff=${1:-'on'}
 	    [[ -n $label ]] && label='set debugging -- '
-	    (( _Dbg_debug_debugger )) && onoff='on.'
+	    (( _Dbg_set_debugging )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set debugging the debugger is" $onoff
 	    return 0

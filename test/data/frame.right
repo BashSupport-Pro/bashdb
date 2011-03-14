@@ -1,88 +1,88 @@
-(hanoi.sh:31):
-31:	typeset -i max=3
+(hanoi.sh:30):
+30:	typeset -i max=3
 +# Test of frame commands
 +# We also try all of the various where/backtrace variants
 +# Do we give a valid stack listing initially?
 +# Let's start with a couple of stack entries
 +continue hanoi
-One-time breakpoint 1 set in file hanoi.sh, line 13.
-(hanoi.sh:13):
-13:	hanoi() { 
+One-time breakpoint 1 set in file hanoi.sh, line 12.
+(hanoi.sh:12):
+12:	hanoi() { 
 +where 2
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# How about after a frame command?
 +frame 0
-(hanoi.sh:13):
-13:	hanoi() { 
+(hanoi.sh:12):
+12:	hanoi() { 
 +bt 2
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# How about after moving?
-+u
-(hanoi.sh:43):
-43:	hanoi $max "a" "b" "c"
++u 
+(hanoi.sh:42):
+42:	hanoi $max "a" "b" "c"
 +where 2
-##0 in file `hanoi.sh' at line 13
-->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
-+down
-(hanoi.sh:13):
-13:	hanoi() { 
+##0 in file `hanoi.sh' at line 12
+->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
++down 
+(hanoi.sh:12):
+12:	hanoi() { 
 +where 2
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# Try moving past the end
-+down
++down 
 ** Would be beyond bottom-most (most recent) entry.
 +where 2
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +up 3
 ** Would be beyond top-most (least recent) entry.
 +bt 2
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# Try some negative numbers
 +# should be the same as up
 +down -1
-(hanoi.sh:43):
-43:	hanoi $max "a" "b" "c"
+(hanoi.sh:42):
+42:	hanoi $max "a" "b" "c"
 +T 2
-##0 in file `hanoi.sh' at line 13
-->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+##0 in file `hanoi.sh' at line 12
+->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# Should go to next-to-least-recent frame
 +frame -2
-(hanoi.sh:43):
-43:	hanoi $max "a" "b" "c"
+(hanoi.sh:42):
+42:	hanoi $max "a" "b" "c"
 +where 2
-##0 in file `hanoi.sh' at line 13
-->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+##0 in file `hanoi.sh' at line 12
+->1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# Let's add another stack entry
 +continue hanoi
-One-time breakpoint 2 set in file hanoi.sh, line 13.
-(hanoi.sh:13):
-13:	hanoi() { 
+One-time breakpoint 2 set in file hanoi.sh, line 12.
+(hanoi.sh:12):
+12:	hanoi() { 
 +where 3
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 22
-##2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 21
+##2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# Again, next-to-least recent stack entry
 +frame -2
-(hanoi.sh:43):
-43:	hanoi $max "a" "b" "c"
+(hanoi.sh:42):
+42:	hanoi $max "a" "b" "c"
 +where 3
-##0 in file `hanoi.sh' at line 13
-##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 22
-->2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+##0 in file `hanoi.sh' at line 12
+##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 21
+->2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# Most recent stack entry
 +frame +0
-(hanoi.sh:13):
-13:	hanoi() { 
+(hanoi.sh:12):
+12:	hanoi() { 
 +backtrace 3
-->0 in file `hanoi.sh' at line 13
-##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 22
-##2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 43
+->0 in file `hanoi.sh' at line 12
+##1 hanoi("2", "a", "c", "b") called from file `hanoi.sh' at line 21
+##2 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +up 2
-(hanoi.sh:43):
-43:	hanoi $max "a" "b" "c"
-+quit
+(hanoi.sh:42):
+42:	hanoi $max "a" "b" "c"
++quit 

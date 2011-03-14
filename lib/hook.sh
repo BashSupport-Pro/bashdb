@@ -24,8 +24,6 @@ typeset _Dbg_RESTART_COMMAND=''
 # This is set to 1 if you want to debug debugger routines, i.e. routines
 # which start _Dbg_. But you better should know what you are doing
 # if you do this or else you may get into a recursive loop.
-typeset -i _Dbg_debug_debugger=0
-
 typeset -i _Dbg_set_debugging=0  # 1 if we are debugging the debugger
 typeset    _Dbg_stop_reason=''    # The reason we are in the debugger.
 
@@ -72,11 +70,11 @@ _Dbg_debug_trap_handler() {
     
     # Turn off line and variable trace listing if were not in our own debug
     # mode, and set our own PS4 for debugging inside the debugger
-    (( !_Dbg_debug_debugger )) && set +x +v +u
+    (( !_Dbg_set_debugging )) && set +x +v +u
     
     # If we are in our own routines -- these start with _bashdb -- then
     # return.
-    if [[ ${FUNCNAME[1]} == _Dbg_* ]] && ((  !_Dbg_debug_debugger )); then
+    if [[ ${FUNCNAME[1]} == _Dbg_* ]] && ((  !_Dbg_set_debugging )); then
 	_Dbg_set_to_return_from_debugger 0
 	return 0
     fi

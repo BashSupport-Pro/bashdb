@@ -28,7 +28,7 @@ test_eval_subst()
     typeset -i i
     for (( i=0 ; i<${#expected}; i++ )) ; do
 	_Dbg_eval_extract_condition "${texts[i]}"
-	assertEquals "${expected[i]}" "$extracted"
+	assertEquals "${expected[i]}" "$extracted" 
     done
 }
 
