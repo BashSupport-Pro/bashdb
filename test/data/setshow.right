@@ -343,7 +343,7 @@ Edit style is emacs.
 +set annotate bad
 Integer argument expected; got: bad
 +set annotate 6
-annotation level must be 0..3
+Annotation level must be between 0 and 3. Got: 6.
 +show annotate
 Annotation_level is 0.
 +set annotate 1

@@ -28,7 +28,7 @@ _Dbg_do_set_annotate() {
 	_Dbg_msg "A single argument is required (got $# arguments)."
     elif [[ $1 == $int_pat ]] ; then 
 	if (( $1 > 3 )) ; then
-	    _Dbg_msg "annotation level must be 0..3"
+	    _Dbg_msg "Annotation level must be between 0 and 3. Got: ${1}."
 	else
 	    _Dbg_write_journal_eval "_Dbg_set_annotate=$1"
 	fi

@@ -36,47 +36,47 @@ for _Dbg_file in ${_Dbg_libdir}/command/set_sub/*.sh ; do
 done
 
 _Dbg_do_set() {
-  typeset set_cmd=$1
-  typeset rc
-  if [[ $set_cmd == '' ]] ; then
-    _Dbg_errmsg "Argument required (expression to compute)."
-    return 1;
-  fi
-  shift
-
-  if [[ -n ${_Dbg_debugger_set_commands[$set_cmd]} ]] ; then
-      ${_Dbg_debugger_set_commands[$set_cmd]} $label "$@"
-      return $?
-  fi
-
-  case $set_cmd in 
-      autoe | autoev | autoeva | autoeval )
-	  _Dbg_set_onoff "$1" 'autoeval'
-	  ;;
-      b | ba | bas | base | basen | basena | basenam | basename )
-	  _Dbg_set_onoff "$1" 'basename'
-	  return $?
-	  ;;
-      de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-	  _Dbg_set_onoff "$1" 'debugging'
-	  return $?
-	  ;;
-      force | dif | diff | differ | different )
-	  _Dbg_set_onoff "$1" 'different'
-	  return $?
-	  ;;
-      lo | log | logg | loggi | loggin | logging )
-	  _Dbg_cmd_set_logging $@
-	  ;;
-      p | pr | pro | prom | promp | prompt )
-	  _Dbg_prompt_str="$1"
-	  ;;
-      t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
-	  _Dbg_do_set_trace_commands $@
-	  ;;
-      *)
-	  _Dbg_undefined_cmd "set" "$set_cmd"
-	  return 1
-  esac
-  return $?
+    typeset set_cmd=$1
+    typeset rc
+    if [[ $set_cmd == '' ]] ; then
+	_Dbg_errmsg "Argument required (expression to compute)."
+	return 1;
+    fi
+    shift
+    
+    if [[ -n ${_Dbg_debugger_set_commands[$set_cmd]} ]] ; then
+	${_Dbg_debugger_set_commands[$set_cmd]} $label "$@"
+	return $?
+    fi
+  
+    case $set_cmd in 
+	autoe | autoev | autoeva | autoeval )
+	    _Dbg_set_onoff "$1" 'autoeval'
+	    ;;
+	b | ba | bas | base | basen | basena | basenam | basename )
+	    _Dbg_set_onoff "$1" 'basename'
+	    return $?
+	    ;;
+	de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+	    _Dbg_set_onoff "$1" 'debugging'
+	    return $?
+	    ;;
+	force | dif | diff | differ | different )
+	    _Dbg_set_onoff "$1" 'different'
+	    return $?
+	    ;;
+	lo | log | logg | loggi | loggin | logging )
+	    _Dbg_cmd_set_logging $@
+	    ;;
+	p | pr | pro | prom | promp | prompt )
+	    _Dbg_prompt_str="$1"
+	    ;;
+	t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+	    _Dbg_do_set_trace_commands $@
+	    ;;
+	*)
+	    _Dbg_undefined_cmd "set" "$set_cmd"
+	    return 1
+    esac
+    return $?
 }
