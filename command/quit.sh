@@ -20,54 +20,57 @@
 #   MA 02111 USA.
 
 _Dbg_help_add quit \
-'quit [EXPR] [N] -- Quit the debugger with return code EXPR.  
+'quit [EXIT-CODE [SHELL-LEVELS]] -- Quit the debugger.
 
-If EXPR is omitted, use 0. If N is given, then we terminate only 
-that many subshells or nested shells.'
+The program being debugged is aborted.  If EXIT-CODE is given that
+will be the exit return code. If SHELL-LEVELS then up to that many
+nested shells are quit. However to be effective, the last of those
+shells should have been run under the debugger.
+
+See also "run".'
 
 _Dbg_do_quit() {
-  typeset -i return_code=${1:-$_Dbg_program_exit_code}
+    typeset -i return_code=${1:-$_Dbg_program_exit_code}
 
-  typeset -i desired_quit_levels=${2:-0}
-
-  if (( desired_quit_levels == 0 \
-    || desired_quit_levels > BASH_SUBSHELL+1)) ; then
-    ((desired_quit_levels=BASH_SUBSHELL+1))
-  fi
-
-  ((_Dbg_QUIT_LEVELS+=desired_quit_levels))
-
-  # Reduce the number of recorded levels that we need to leave by
-  # if _Dbg_QUIT_LEVELS is greater than 0.
-  ((_Dbg_QUIT_LEVELS--))
-
-  ## write this to the next level up can read it.
-  _Dbg_write_journal "_Dbg_QUIT_LEVELS=$_Dbg_QUIT_LEVELS"
-  _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
-
-  # Reset signal handlers to their default but only if 
-  # we are not in a subshell.
-  if (( BASH_SUBSHELL == 0 )) ; then
-
-    # If we were told to restart from deep down, restart instead of quit.
-    if [ -n "$_Dbg_RESTART_COMMAND" ] ; then 
-      _Dbg_erase_journals
-      _Dbg_save_state
-      exec $_Dbg_RESTART_COMMAND
+    typeset -i desired_quit_levels=${2:-0}
+    
+    if (( desired_quit_levels == 0 \
+	|| desired_quit_levels > BASH_SUBSHELL+1)) ; then
+	((desired_quit_levels=BASH_SUBSHELL+1))
     fi
 
-    _Dbg_cleanup
+    ((_Dbg_QUIT_LEVELS+=desired_quit_levels))
 
-    # Save history file
-    (( _Dbg_set_history )) && history -w $_Dbg_histfile
+    # Reduce the number of recorded levels that we need to leave by
+    # if _Dbg_QUIT_LEVELS is greater than 0.
+    ((_Dbg_QUIT_LEVELS--))
 
+    ## write this to the next level up can read it.
+    _Dbg_write_journal "_Dbg_QUIT_LEVELS=$_Dbg_QUIT_LEVELS"
+    _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
+
+    # Reset signal handlers to their default but only if 
+    # we are not in a subshell.
+    if (( BASH_SUBSHELL == 0 )) ; then
+	
+	# If we were told to restart from deep down, restart instead of quit.
+	if [ -n "$_Dbg_RESTART_COMMAND" ] ; then 
+	    _Dbg_erase_journals
+	    _Dbg_save_state
+	    exec $_Dbg_RESTART_COMMAND
+	fi
+	_Dbg_cleanup
+	
+	# Save history file
+	(( _Dbg_set_history )) && history -w $_Dbg_histfile
+	
     trap - DEBUG
     # This is a hack we need. I am not sure why.
     trap "_Dbg_cleanup2" EXIT
-  fi
+    fi
 
-  # And just when you thought we'd never get around to it...
-  exit $return_code
+    # And just when you thought we'd never get around to it...
+    exit $return_code
 }
 
 _Dbg_alias_add q quit

@@ -27,22 +27,22 @@ _Dbg_help_add source \
 'source FILE -- Run debugger commands in FILE.'
 
 _Dbg_do_source() {
-  if (( $# == 0 )) ; then
-    _Dbg_errmsg 'Need to give a filename for the "source" command'
-    return 1
-  fi
-
-  typeset filename
-  _Dbg_glob_filename "$1"
-  if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
-      # Open new input file descriptor and save number in _Dbg_fd.
-      exec {_Dbg_fdi}<"$filename"
-      _Dbg_fd[++_Dbg_fd_last]=$_Dbg_fdi
-      # We'll store the filename for good measure too.
-      _Dbg_cmdfile+=("$filename")
-  else
-    _Dbg_errmsg "Source file \"$filename\" is not readable."
-    return 3
-  fi
-  return 0
+    if (( $# == 0 )) ; then
+	_Dbg_errmsg 'Need to give a filename for the "source" command.'
+	return 1
+    fi
+    
+    typeset filename
+    _Dbg_glob_filename "$1"
+    if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
+	# Open new input file descriptor and save number in _Dbg_fd.
+	exec {_Dbg_fdi}<"$filename"
+	_Dbg_fd[++_Dbg_fd_last]=$_Dbg_fdi
+	# We'll store the filename for good measure too.
+	_Dbg_cmdfile+=("$filename")
+    else
+	_Dbg_errmsg "Source file \"$filename\" is not readable."
+	return 3
+    fi
+    return 0
 }

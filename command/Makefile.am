@@ -32,8 +32,8 @@ pkgdata_DATA =        \
 	next.sh       \
 	pwd.sh        \
 	quit.sh       \
-	restart.sh    \
 	return.sh     \
+	run.sh        \
 	search.sh     \
 	set.sh        \
 	shell.sh      \
