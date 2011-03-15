@@ -51,7 +51,7 @@ function _Dbg_esc_dq {
 typeset -a _Dbg_eval_re;
 _Dbg_eval_re=(
     '^[ \t]*(if|elif)[ \t]+([^;]*)((;[ \t]*then?)?|$)'
-    '^\s*return\s(.*)$'
+    '^[ \t]*return[ \t]+(.*)$'
     '^[ \t]*while[ \t]+([^;]*)((;[ \t]*do?)?|$)'
 )
 
