@@ -41,7 +41,7 @@ options:
     -c | --command STRING   Run STRING instead of a script file
     -n | --nx | --no-init   Don't run initialization files.
     -V | --version          Print the debugger version number.
-    -x | --eval-command CMDFILE
+    -X | --eval-command CMDFILE
                             Execute debugger commands from CMDFILE.
     --tty | --terminal      Set terminal to output to
     --tempdir DIRECTORY     Set diretory to use for writing temporary files.
