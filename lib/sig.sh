@@ -172,7 +172,7 @@ _Dbg_sig_handler() {
   
     # Turn off line and variable trace listing if were not in our own debug
     # mode, and set our own PS4 for debugging inside the debugger
-    (( !_Dbg_debug_debugger )) && set +x +v +u
+    (( !_Dbg_set_debugging )) && set +x +v +u
     shopt -s extdebug
 
     # This is the signal number. E.g. 15 is SIGTERM
@@ -236,7 +236,7 @@ _Dbg_name2signum() {
 _Dbg_subexit_handler() {
     # Read in the journal to pick up variable settings that might have
     # been left from a subshell.
-    if [[ ${FUNCNAME[1]} == _Dbg_* ]] && (( !_Dbg_debug_debugger )); then
+    if [[ ${FUNCNAME[1]} == _Dbg_* ]] && (( !_Dbg_set_debugging )); then
 	return 0
     fi
     _Dbg_source_journal

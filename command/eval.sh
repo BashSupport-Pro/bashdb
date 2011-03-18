@@ -13,7 +13,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -23,14 +23,14 @@
 typeset _Dbg_evalfile=$(_Dbg_tempname eval)
 
 _Dbg_help_add eval \
-'eval CMD 
-eval 
+'eval CMD
+eval
 eval?
 
 In the first form CMD is a string CMD is a string sent to special
-shell builtin eval. 
+shell builtin eval.
 
-In the second form, use evaluate the current source line text. 
+In the second form, use evaluate the current source line text.
 
 Often one is stopped at the line of the first part of an "if", "elif",
 "case", "return" or "while" compound statement and what you want to
@@ -47,7 +47,7 @@ _Dbg_do_eval() {
   builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
    if (( $# == 0 )) ; then
        # FIXME: add parameter to get unhighlighted line, or 
-       # always save a copy of that in _Dbg_sget_source_line
+       # always save a copy of that in _Dbg_get_source_line
        typeset source_line_save="$_Dbg_source_line"
        typeset highlight_save=$_Dbg_set_highlight
        _Dbg_set_highlight=0
@@ -56,15 +56,18 @@ _Dbg_do_eval() {
        # Were we called via ? as the suffix? 
        typeset suffix
        suffix=${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1}
+       typeset source_line
        if [[ '?' == "$suffix" ]] ; then
 	   typeset extracted
 	   _Dbg_eval_extract_condition "$_Dbg_source_line"
-	   _Dbg_source_line="$extracted"
+	   source_line="$extracted"
 	   source_line_save="$extracted"
+       else
+	   source_line="$_Dbg_bash_command"
        fi
 
-       builtin echo "$_Dbg_source_line" >> $_Dbg_evalfile
-       _Dbg_msg "eval: ${source_line_save}"
+       builtin echo "$source_line" >> $_Dbg_evalfile
+       _Dbg_msg "eval: ${source_line}"
        _Dbg_source_line="$source_line_save"
        _Dbg_set_highlight=$_Dbg_highlight_save
    else
@@ -105,7 +108,7 @@ eval $cmd  # runs an ls command
 
 _Dbg_do_print() {
   typeset _Dbg_expr=${@:-"$_Dbg_last_print_args"}
-  typeset dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
+  typeset dq_expr; dq_expr=$(_Dbg_esc_dq "$_Dbg_expr")
   . ${_Dbg_libdir}/dbg-set-d-vars.inc
   eval "_Dbg_msg $_Dbg_expr"
   typeset -i rc=$?

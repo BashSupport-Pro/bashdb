@@ -32,8 +32,8 @@ typeset -A _Dbg_debugger_commands
 
 # Add help text $2 for command $1
 function _Dbg_help_add {
-    add_command=${3:-1}
     (($# != 2)) && (($# != 3))  && return 1
+    typeset -i add_command; add_command=${3:-1}
     _Dbg_command_help[$1]="$2"
     (( add_command )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
     return 0
@@ -129,7 +129,7 @@ Follow this command with any number of args, to be passed to the program."
 	d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
 	    local onoff=${1:-'on'}
 	    [[ -n $label ]] && label='set debugging -- '
-	    (( _Dbg_debug_debugger )) && onoff='on.'
+	    (( _Dbg_set_debugging )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set debugging the debugger is" $onoff
 	    return 0

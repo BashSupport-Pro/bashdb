@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# display.sh - gdb-like "(un)display" and list display debugger commands
+# display.sh - gdb-like "display" debugger command
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2010
 #   2011 Rocky Bernstein <rocky@gnu.org>
@@ -13,14 +13,14 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this Program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
 _Dbg_help_add display \
-"display [STMT] 
+"display [STMT]
 
 Evalute STMT each time the debugger is stopped. If STMT is omitted, evaluate
 all of the display statements that are active. In contrast, 'info display'
@@ -36,7 +36,7 @@ See also 'undisplay' and 'info display'."
 _Dbg_do_display() {
   if (( 0 == $# )); then
     _Dbg_eval_all_display
-  else 
+  else
     typeset -i n=_Dbg_disp_max++
     _Dbg_disp_exp[$n]="$@"
     _Dbg_disp_enable[$n]=1

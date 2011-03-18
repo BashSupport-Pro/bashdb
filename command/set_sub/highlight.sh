@@ -12,7 +12,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -22,9 +22,10 @@ _Dbg_help_add_sub set highlight \
 'Syntax highlighting of source listings' 1
 
 _Dbg_do_set_highlight() {
-    pygmentize --version  2>/dev/null 1>/dev/null
-    if (( $? != 0 )) ; then
-	errmsg "Can't run pygmentize. Setting forced off"
+    if ( pygmentize --version || pygmentize -V ) 2>/dev/null 1>/dev/null ; then
+	:
+    else
+	_Dbg_errmsg "Can't run pygmentize. Setting forced off"
 	return 1
     fi
     typeset onoff=${1:-'on'}

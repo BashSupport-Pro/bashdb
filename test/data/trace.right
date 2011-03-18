@@ -1,231 +1,231 @@
-(hanoi.sh:31):
+(hanoi.sh:30):
 level 1, subshell 0, depth 0:	typeset -i max=3
-(hanoi.sh:32):
+(hanoi.sh:31):
 level 1, subshell 0, depth 0:	typeset -i tracing=0
-(hanoi.sh:33):
+(hanoi.sh:32):
 level 1, subshell 0, depth 0:	if [[ "$1" = 'trace' ]] ; then
-(hanoi.sh:42):
+(hanoi.sh:41):
 level 1, subshell 0, depth 0:	init
-(hanoi.sh:6):
+(hanoi.sh:5):
 level 1, subshell 0, depth 1:	init() {
-(hanoi.sh:8):
-level 1, subshell 0, depth 1:	  if (( $tracing )) ; then
-(hanoi.sh:43):
+(hanoi.sh:7):
+level 1, subshell 0, depth 1:	    if (( $tracing )) ; then
+(hanoi.sh:42):
 level 1, subshell 0, depth 0:	hanoi $max "a" "b" "c"
-(hanoi.sh:13):
+(hanoi.sh:12):
 level 1, subshell 0, depth 1:	hanoi() { 
-(hanoi.sh:14):
+(hanoi.sh:13):
 level 1, subshell 0, depth 1:	  typeset -i n=$1
-(hanoi.sh:17):
+(hanoi.sh:16):
 level 1, subshell 0, depth 1:	  typeset -r a=$2
-(hanoi.sh:18):
+(hanoi.sh:17):
 level 1, subshell 0, depth 1:	  typeset -r b=$3
-(hanoi.sh:19):
+(hanoi.sh:18):
 level 1, subshell 0, depth 1:	  typeset -r c=$4
-(hanoi.sh:20):
+(hanoi.sh:19):
 level 1, subshell 0, depth 1:	  if (( n > 0 )) ; then
-(hanoi.sh:21):
+(hanoi.sh:20):
 level 1, subshell 0, depth 1:	    (( n-- ))
-(hanoi.sh:22):
+(hanoi.sh:21):
 level 1, subshell 0, depth 1:	    hanoi $n $a $c $b
-(hanoi.sh:13):
+(hanoi.sh:12):
 level 1, subshell 0, depth 2:	hanoi() { 
-(hanoi.sh:14):
+(hanoi.sh:13):
 level 1, subshell 0, depth 2:	  typeset -i n=$1
-(hanoi.sh:17):
+(hanoi.sh:16):
 level 1, subshell 0, depth 2:	  typeset -r a=$2
-(hanoi.sh:18):
+(hanoi.sh:17):
 level 1, subshell 0, depth 2:	  typeset -r b=$3
-(hanoi.sh:19):
+(hanoi.sh:18):
 level 1, subshell 0, depth 2:	  typeset -r c=$4
-(hanoi.sh:20):
+(hanoi.sh:19):
 level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
-(hanoi.sh:21):
+(hanoi.sh:20):
 level 1, subshell 0, depth 2:	    (( n-- ))
-(hanoi.sh:22):
-level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
-(hanoi.sh:13):
-level 1, subshell 0, depth 3:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 3:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 3:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 3:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 3:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
 (hanoi.sh:21):
-level 1, subshell 0, depth 3:	    (( n-- ))
-(hanoi.sh:22):
-level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
+level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
+(hanoi.sh:12):
+level 1, subshell 0, depth 3:	hanoi() { 
 (hanoi.sh:13):
-level 1, subshell 0, depth 4:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 4:	  typeset -i n=$1
+level 1, subshell 0, depth 3:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 3:	  typeset -r a=$2
 (hanoi.sh:17):
-level 1, subshell 0, depth 4:	  typeset -r a=$2
+level 1, subshell 0, depth 3:	  typeset -r b=$3
 (hanoi.sh:18):
-level 1, subshell 0, depth 4:	  typeset -r b=$3
+level 1, subshell 0, depth 3:	  typeset -r c=$4
 (hanoi.sh:19):
-level 1, subshell 0, depth 4:	  typeset -r c=$4
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
 (hanoi.sh:20):
+level 1, subshell 0, depth 3:	    (( n-- ))
+(hanoi.sh:21):
+level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
+(hanoi.sh:12):
+level 1, subshell 0, depth 4:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 4:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 4:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 4:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 4:	  typeset -r c=$4
+(hanoi.sh:19):
 level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
-(hanoi.sh:23):
+(hanoi.sh:22):
 level 1, subshell 0, depth 3:	    ((disc_num=max-n))
-(hanoi.sh:24):
+(hanoi.sh:23):
 level 1, subshell 0, depth 3:	    echo "Move disk $n on $a to $b"
 Move disk 0 on a to b
-(hanoi.sh:25):
-level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
-(hanoi.sh:23):
-level 1, subshell 0, depth 2:	    ((disc_num=max-n))
 (hanoi.sh:24):
+level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
+(hanoi.sh:22):
+level 1, subshell 0, depth 2:	    ((disc_num=max-n))
+(hanoi.sh:23):
 level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
 Move disk 1 on a to c
-(hanoi.sh:25):
-level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
-(hanoi.sh:26):
-level 1, subshell 0, depth 2:	       hanoi $n $c $b $a
-(hanoi.sh:13):
-level 1, subshell 0, depth 3:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 3:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 3:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 3:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 3:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
-(hanoi.sh:21):
-level 1, subshell 0, depth 3:	    (( n-- ))
-(hanoi.sh:22):
-level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
-(hanoi.sh:13):
-level 1, subshell 0, depth 4:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 4:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 4:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 4:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 4:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
-(hanoi.sh:23):
-level 1, subshell 0, depth 3:	    ((disc_num=max-n))
 (hanoi.sh:24):
+level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+(hanoi.sh:25):
+level 1, subshell 0, depth 2:	       hanoi $n $c $b $a
+(hanoi.sh:12):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 3:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	    (( n-- ))
+(hanoi.sh:21):
+level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
+(hanoi.sh:12):
+level 1, subshell 0, depth 4:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 4:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 4:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 4:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 4:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
+(hanoi.sh:22):
+level 1, subshell 0, depth 3:	    ((disc_num=max-n))
+(hanoi.sh:23):
 level 1, subshell 0, depth 3:	    echo "Move disk $n on $a to $b"
 Move disk 0 on b to c
-(hanoi.sh:25):
-level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
-(hanoi.sh:23):
-level 1, subshell 0, depth 1:	    ((disc_num=max-n))
 (hanoi.sh:24):
+level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
+(hanoi.sh:22):
+level 1, subshell 0, depth 1:	    ((disc_num=max-n))
+(hanoi.sh:23):
 level 1, subshell 0, depth 1:	    echo "Move disk $n on $a to $b"
 Move disk 2 on a to b
-(hanoi.sh:25):
-level 1, subshell 0, depth 1:	    if (( n > 0 )) ; then
-(hanoi.sh:26):
-level 1, subshell 0, depth 1:	       hanoi $n $c $b $a
-(hanoi.sh:13):
-level 1, subshell 0, depth 2:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 2:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 2:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 2:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 2:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
-(hanoi.sh:21):
-level 1, subshell 0, depth 2:	    (( n-- ))
-(hanoi.sh:22):
-level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
-(hanoi.sh:13):
-level 1, subshell 0, depth 3:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 3:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 3:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 3:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 3:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
-(hanoi.sh:21):
-level 1, subshell 0, depth 3:	    (( n-- ))
-(hanoi.sh:22):
-level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
-(hanoi.sh:13):
-level 1, subshell 0, depth 4:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 4:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 4:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 4:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 4:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
-(hanoi.sh:23):
-level 1, subshell 0, depth 3:	    ((disc_num=max-n))
 (hanoi.sh:24):
+level 1, subshell 0, depth 1:	    if (( n > 0 )) ; then
+(hanoi.sh:25):
+level 1, subshell 0, depth 1:	       hanoi $n $c $b $a
+(hanoi.sh:12):
+level 1, subshell 0, depth 2:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 2:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 2:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 2:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 2:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 2:	  if (( n > 0 )) ; then
+(hanoi.sh:20):
+level 1, subshell 0, depth 2:	    (( n-- ))
+(hanoi.sh:21):
+level 1, subshell 0, depth 2:	    hanoi $n $a $c $b
+(hanoi.sh:12):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 3:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	    (( n-- ))
+(hanoi.sh:21):
+level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
+(hanoi.sh:12):
+level 1, subshell 0, depth 4:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 4:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 4:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 4:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 4:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
+(hanoi.sh:22):
+level 1, subshell 0, depth 3:	    ((disc_num=max-n))
+(hanoi.sh:23):
 level 1, subshell 0, depth 3:	    echo "Move disk $n on $a to $b"
 Move disk 0 on c to a
-(hanoi.sh:25):
-level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
-(hanoi.sh:23):
-level 1, subshell 0, depth 2:	    ((disc_num=max-n))
 (hanoi.sh:24):
+level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
+(hanoi.sh:22):
+level 1, subshell 0, depth 2:	    ((disc_num=max-n))
+(hanoi.sh:23):
 level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
 Move disk 1 on c to b
-(hanoi.sh:25):
-level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
-(hanoi.sh:26):
-level 1, subshell 0, depth 2:	       hanoi $n $c $b $a
-(hanoi.sh:13):
-level 1, subshell 0, depth 3:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 3:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 3:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 3:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 3:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
-(hanoi.sh:21):
-level 1, subshell 0, depth 3:	    (( n-- ))
-(hanoi.sh:22):
-level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
-(hanoi.sh:13):
-level 1, subshell 0, depth 4:	hanoi() { 
-(hanoi.sh:14):
-level 1, subshell 0, depth 4:	  typeset -i n=$1
-(hanoi.sh:17):
-level 1, subshell 0, depth 4:	  typeset -r a=$2
-(hanoi.sh:18):
-level 1, subshell 0, depth 4:	  typeset -r b=$3
-(hanoi.sh:19):
-level 1, subshell 0, depth 4:	  typeset -r c=$4
-(hanoi.sh:20):
-level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
-(hanoi.sh:23):
-level 1, subshell 0, depth 3:	    ((disc_num=max-n))
 (hanoi.sh:24):
+level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+(hanoi.sh:25):
+level 1, subshell 0, depth 2:	       hanoi $n $c $b $a
+(hanoi.sh:12):
+level 1, subshell 0, depth 3:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 3:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 3:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 3:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 3:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 3:	  if (( n > 0 )) ; then
+(hanoi.sh:20):
+level 1, subshell 0, depth 3:	    (( n-- ))
+(hanoi.sh:21):
+level 1, subshell 0, depth 3:	    hanoi $n $a $c $b
+(hanoi.sh:12):
+level 1, subshell 0, depth 4:	hanoi() { 
+(hanoi.sh:13):
+level 1, subshell 0, depth 4:	  typeset -i n=$1
+(hanoi.sh:16):
+level 1, subshell 0, depth 4:	  typeset -r a=$2
+(hanoi.sh:17):
+level 1, subshell 0, depth 4:	  typeset -r b=$3
+(hanoi.sh:18):
+level 1, subshell 0, depth 4:	  typeset -r c=$4
+(hanoi.sh:19):
+level 1, subshell 0, depth 4:	  if (( n > 0 )) ; then
+(hanoi.sh:22):
+level 1, subshell 0, depth 3:	    ((disc_num=max-n))
+(hanoi.sh:23):
 level 1, subshell 0, depth 3:	    echo "Move disk $n on $a to $b"
 Move disk 0 on a to b
-(hanoi.sh:25):
+(hanoi.sh:24):
 level 1, subshell 0, depth 3:	    if (( n > 0 )) ; then
-(hanoi.sh:44):
+(hanoi.sh:43):
 level 1, subshell 0, depth 0:	if (( $tracing )) ; then

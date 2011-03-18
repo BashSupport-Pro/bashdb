@@ -1,3 +1,197 @@
+2011-03-13  rocky <rocky@gnu.org>
+
+	Merge branch 'master' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb
+
+2011-03-13  rocky <rocky@gnu.org>
+
+	* command/shell.sh, lib/shell.sh: Declare local var more near use
+
+2011-03-13  rocky <rocky@gnu.org>
+
+	* command/delete.sh, command/disable.sh, command/display.sh,
+	command/edit.sh, command/eval.sh, lib/help.sh, lib/processor.sh,
+	test/data/frame.right: Sync with kshdb
+
+2011-03-12  rocky <rocky@gnu.org>
+
+	Merge branch 'master' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb
+
+2011-03-12  rocky <rocky@gnu.org>
+
+	* command/condition.sh, command/up.sh, lib/processor.sh,
+	test/data/sig.right: Sync with kshdb
+
+2011-03-08  rocky <rocky@gnu.org>
+
+	* bashdb-trace.in, lib/hook.sh, test/data/frame.right,
+	test/example/hanoi.sh.in: _Dbg_linetrace -> _Dbg_set_linetrace
+
+2011-03-07  rocky <rocky@gnu.org>
+
+	* test/integration/test-trace: Merge in associate array code from
+	branch (from 2 years ago). Need to skip trace tests for now.
+	Probably messed up a _Dbg_linetrace/_Dbg_set_linetrace var.
+
+2011-03-06  rocky <rocky@gnu.org>
+
+	* test/integration/test-trace: _Dbg_linetrace -> _Dbg_set_linetrace;
+	comment out a trace test for now
+
+2011-03-05  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2011-03-05  rocky <rocky@gnu.org>
+
+	* lib/hook.sh: More agressive rm of evalfile
+
+2011-03-05  rocky <rocky@gnu.org>
+
+	* command/set_sub/linetrace.sh, command/show.sh, dbg-main.sh,
+	dbg-opts.sh, lib/help.sh, lib/hook.sh: _Dbg_linetrace ->
+	_Dbg_set_linetrace. sync with zshdb.
+
+2011-03-05  rocky <rocky@gnu.org>
+
+	* NEWS, dbg-main.sh, dbg-opts.sh, lib/Makefile.am: Add --init-file
+	option.
+
+2011-03-05  rocky <rocky@gnu.org>
+
+	* NEWS, command/debug.sh, command/shell.sh, doc/.gitignore,
+	doc/bashdb.texi, htdocs/bashdbOutline.html, lib/save-restore.sh,
+	lib/shell.sh: Save and restore variables in debug command. Wasn't
+	saving fns. bashdb.texi: add info on shell, eval, and eval? Update
+	NEWS
+
+2011-03-05  rocky <rocky@gnu.org>
+
+	* doc/.gitignore, doc/bashdb.texi: Document eval (no args) and eval?
+
+
+2011-03-04  rocky <rocky@gnu.org>
+
+	* lib/journal.sh, lib/setshow.sh: sync with zshdb
+
+2011-03-04  rocky <rocky@gnu.org>
+
+	* command/export.sh, test/data/export.cmd, test/data/export.right,
+	test/integration/.gitignore, test/integration/test-export.in: Forgot
+	to add new files
+
+2011-03-04  rocky <rocky@gnu.org>
+
+	* command/Makefile.am, configure.ac, lib/fns.sh, lib/setshow.sh,
+	lib/validate.sh, test/data/Makefile.am,
+	test/data/misc-output-41.right, test/integration/Makefile.am: Add
+	"export" command to save a variable's value outside of a subshell
+
+2011-03-03  rocky <rocky@gnu.org>
+
+	* command/break.sh, command/info_sub/brkpts.sh: Sync with kshdb: use
+	standard indentation.
+
+2011-03-03  rocky <rocky@gnu.org>
+
+	* command/display.sh, command/info.sh, command/info_sub/display.sh: 
+	Sync with kshdb.
+
+2011-03-02  rocky <rocky@gnu.org>
+
+	* lib/display.sh: Sync with kshdb
+
+2011-03-02  rocky <rocky@gnu.org>
+
+	* AUTHORS, command/eval.sh, lib/display.sh,
+	test/data/display.right, test/data/watch2.right: Don't show $? in
+	display. Sync with zshdb.
+
+2011-03-02  rocky <rocky@gnu.org>
+
+	* Makefile.am, command/shell.sh, configure.ac, data/.gitignore,
+	data/Makefile.am, data/shell.sh, lib/hook.sh, lib/shell.sh,
+	test/data/sig.right: Work on 'shell' command more. Sync with zshdb.
+
+
+2011-03-01  rocky <rocky@gnu.org>
+
+	* command/delete.sh, command/shell.sh, dbg-init.sh, lib/break.sh,
+	lib/frame.sh, lib/shell.sh, lib/validate.sh: Do a better job at
+	saving variables based on zshdb code
+
+2011-02-28  rocky <rocky@gnu.org>
+
+	* lib/fns.sh: ev? logic was wrong.
+
+2011-02-28  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2011-02-28  rocky <rocky@gnu.org>
+
+	* Makefile.am, command/Makefile.am, lib/Makefile.am,
+	test/Makefile.am, test/unit/Makefile.am: 'clean'target should remove
+	patch' *.{orig,rej}
+
+2011-02-28  rocky <rocky@gnu.org>
+
+	* command/eval.sh, lib/break.sh, lib/fns.sh: in "eval?" extract
+	expression in "case", and echo that.
+
+2011-02-26  rocky <rocky@gnu.org>
+
+	* command/shell.sh: Changes to "shell" command to make it share more
+	code zshdb
+
+2011-02-26  rocky <rocky@gnu.org>
+
+	* command/shell.sh, dbg-opts.sh: Add options and bash options to
+	debugger "shell" commmand.
+
+2011-02-26  rocky <rocky@gnu.org>
+
+	* command/shell.sh: Add shell debugger command
+
+2011-02-26  rocky <rocky@gnu.org>
+
+	* command/Makefile.am, dbg-pre.sh, test/data/lopts.right,
+	test/data/misc-output-41.right, test/integration/test-lopts,
+	test/integration/test-sopts: Add debugger command shell for going
+	into a full-fledged nested shell with variables set on entry.
+
+2011-02-26  rocky <rocky@gnu.org>
+
+	* test/unit/test-eval.sh.in: Output changed in eval? test
+
+2011-02-26  rocky <rocky@gnu.org>
+
+	Merge branch 'bash-4.1' of
+	ssh://bashdb.git.sourceforge.net/gitroot/bashdb/bashdb into bash-4.1
+
+
+2011-02-25  rocky <rocky@gnu.org>
+
+	* command/eval.sh: Update eval help text.
+
+2011-02-25  rocky <rocky@gnu.org>
+
+	* lib/fns.sh: eval? of return should turn add an echo
+
+2011-02-25  rocky <rocky@gnu.org>
+
+	* lib/fns.sh, test/unit/test-eval.sh.in: In eval? we now also strip
+	a leading 'return'
+
+2011-02-23  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac: We're in version 4.2-0.7dev now
+
 2011-02-19  rocky <rocky@gnu.org>
 
 	* command/eval.sh, configure.ac, lib/fns.sh,

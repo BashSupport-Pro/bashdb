@@ -170,7 +170,7 @@ _Dbg_handler() {
   for attr in ${rest[@]}; do 
       _Dbg_do_handle $signame $attr
   done
-  _Dbg_linetrace=0
+  _Dbg_set_linetrace=0
   _Dbg_step_ignore=-1
 }
 

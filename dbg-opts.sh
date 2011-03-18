@@ -41,7 +41,7 @@ options:
     -c | --command STRING   Run STRING instead of a script file
     -n | --nx | --no-init   Don't run initialization files.
     -V | --version          Print the debugger version number.
-    -x | --eval-command CMDFILE
+    -X | --eval-command CMDFILE
                             Execute debugger commands from CMDFILE.
     --tty | --terminal      Set terminal to output to
     --tempdir DIRECTORY     Set diretory to use for writing temporary files.
@@ -162,7 +162,7 @@ _Dbg_parse_options() {
 	exit 0
     elif (( ! _Dbg_o_quiet )) && [[ -n $_Dbg_shell_name ]] && \
 	[[ -n $_Dbg_release ]] ; then 
-	echo "$_Dbg_debugger_name debugger, release $_Dbg_release"
+	echo "$_Dbg_shell_name debugger, $_Dbg_debugger_name, release $_Dbg_release"
 	printf '
 Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
