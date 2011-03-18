@@ -22,7 +22,7 @@
 _Dbg_help_add condition \
 "condition N COND	-- Break only if COND is true in breakpoint number N.
 
-N is an integer and COND is an expression to be evaluated whenever 
+N is an integer and COND is an expression to be evaluated whenever
 breakpoint N is reached."
 
 # Set a condition for a given breakpoint $1 is a breakpoint number
@@ -50,7 +50,7 @@ function _Dbg_do_condition {
     _Dbg_msg "condition: Breakpoint entry $n is not set. Condition not changed."
     return 3
   fi
-  
+
   if [[ -z $condition ]] ; then
     condition=1
     _Dbg_msg "Breakpoint $n now unconditional."

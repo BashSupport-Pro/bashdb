@@ -12,7 +12,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -41,20 +41,20 @@ _Dbg_do_action() {
   fi
 
   typeset stmt="$*"
-  
+
   typeset filename
   typeset -i line_number
   typeset full_filename
-  
+
   _Dbg_linespec_setup $n
-  
-  if [[ -n $full_filename ]] ; then 
-      if (( line_number ==  0 )) ; then 
-	  _Dbg_msg "There is no line 0 to set action at."
-      else 
-	  _Dbg_check_line $line_number "$full_filename"
-	  (( $? == 0 )) && \
-	      _Dbg_set_action "$full_filename" "$line_number" "$stmt" 
+
+  if [[ -n $full_filename ]] ; then
+      if (( line_number ==  0 )) ; then
+          _Dbg_msg "There is no line 0 to set action at."
+      else
+          _Dbg_check_line $line_number "$full_filename"
+          (( $? == 0 )) && \
+              _Dbg_set_action "$full_filename" "$line_number" "$stmt"
       fi
   else
       _Dbg_file_not_read_in $filename
@@ -69,29 +69,29 @@ _Dbg_alias_add 'a' 'action'
 _Dbg_do_clear_action() {
     (( $# > 1 )) && return 1
     typeset -r n=${1:-$_Dbg_frame_last_lineno}
-    
+
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup $n
-    
-    if [[ -n $full_filename ]] ; then 
-	if (( line_number ==  0 )) ; then 
-	    _Dbg_msg "There is no line 0 to clear action at."
-	else 
-	    _Dbg_check_line $line_number "$full_filename"
-	    (( $? == 0 )) && \
-		_Dbg_unset_action "$full_filename" "$line_number"
-	    if [[ $? == 0 ]] ; then 
-		_Dbg_msg "Removed action."
-		return 0
-	    else 
-		_Dbg_errmsg "Didn't find any actions to remove at $n."
-	    fi
-	fi
+
+    if [[ -n $full_filename ]] ; then
+        if (( line_number ==  0 )) ; then
+            _Dbg_msg "There is no line 0 to clear action at."
+        else
+            _Dbg_check_line $line_number "$full_filename"
+            (( $? == 0 )) && \
+                _Dbg_unset_action "$full_filename" "$line_number"
+            if [[ $? == 0 ]] ; then
+                _Dbg_msg "Removed action."
+                return 0
+            else
+                _Dbg_errmsg "Didn't find any actions to remove at $n."
+            fi
+        fi
     else
-	_Dbg_file_not_read_in $filename
+        _Dbg_file_not_read_in $filename
     fi
     return 1
 }
@@ -101,15 +101,15 @@ _Dbg_do_action_delete() {
   typeset -r  to_go=$@
   typeset -i  i
   typeset -i  found=0
-  
-  for del in $to_go ; do 
+
+  for del in $to_go ; do
     case $del in
-	[0-9]* )	
-	    _Dbg_delete_action_entry $del
+        [0-9]* )
+            _Dbg_delete_action_entry $del
             ((found += $?))
-	    ;;
-	* )
-	    _Dbg_msg "Invalid entry number skipped: $del"
+            ;;
+        * )
+            _Dbg_msg "Invalid entry number skipped: $del"
     esac
   done
   [[ $found != 0 ]] && _Dbg_msg "Removed $found action(s)."
@@ -121,29 +121,29 @@ _Dbg_do_action_delete() {
 _Dbg_do_clear_action() {
     (( $# > 1 )) && return 1
     typeset -r n=${1:-$_Dbg_frame_last_lineno}
-    
+
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup $n
-    
-    if [[ -n $full_filename ]] ; then 
-	if (( line_number ==  0 )) ; then 
-	    _Dbg_msg "There is no line 0 to clear action at."
-	else 
-	    _Dbg_check_line $line_number "$full_filename"
-	    (( $? == 0 )) && \
-		_Dbg_unset_action "$full_filename" "$line_number"
-	    if [[ $? == 0 ]] ; then 
-		_Dbg_msg "Removed action."
-		return 0
-	    else 
-		_Dbg_errmsg "Didn't find any actions to remove at $n."
-	    fi
-	fi
+
+    if [[ -n $full_filename ]] ; then
+        if (( line_number ==  0 )) ; then
+            _Dbg_msg "There is no line 0 to clear action at."
+        else
+            _Dbg_check_line $line_number "$full_filename"
+            (( $? == 0 )) && \
+                _Dbg_unset_action "$full_filename" "$line_number"
+            if [[ $? == 0 ]] ; then
+                _Dbg_msg "Removed action."
+                return 0
+            else
+                _Dbg_errmsg "Didn't find any actions to remove at $n."
+            fi
+        fi
     else
-	_Dbg_file_not_read_in $filename
+        _Dbg_file_not_read_in $filename
     fi
     return 1
 }

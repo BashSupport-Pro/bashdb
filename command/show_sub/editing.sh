@@ -24,13 +24,13 @@ _Dbg_do_show_editing() {
     typeset label="$1"
     [[ -n $label ]] && label='editing:  '
     _Dbg_msg_nocr \
-	"${label}Editing of command lines as they are typed is "
-    if [[ -z $_Dbg_edit ]] ; then 
-	_Dbg_msg 'off.'
+        "${label}Editing of command lines as they are typed is "
+    if [[ -z $_Dbg_edit ]] ; then
+        _Dbg_msg 'off.'
     else
-	_Dbg_msg 'on.'
-	_Dbg_msg \
-	    "${label}Edit style is $_Dbg_edit_style."
+        _Dbg_msg 'on.'
+        _Dbg_msg \
+            "${label}Edit style is $_Dbg_edit_style."
     fi
     return 0
 }
