@@ -246,7 +246,8 @@ _Dbg_onecmd() {
 	 _Dbg_redo=0
 
 	 [[ -z $_Dbg_cmd ]] && _Dbg_cmd=$_Dbg_last_cmd
-	 if [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
+	 if [[ -n $_Dbg_cmd ]] && \
+	     [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
 	     ${_Dbg_debugger_commands[$_Dbg_cmd]} $_Dbg_args
 	     IFS=$_Dbg_space_IFS;
 	     eval "_Dbg_prompt=$_Dbg_prompt_str"

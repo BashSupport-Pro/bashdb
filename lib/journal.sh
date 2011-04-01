@@ -29,8 +29,8 @@ typeset _Dbg_journal=$(_Dbg_tempname journal)
 
 # append a command into journal file and then run the command.
 _Dbg_write_journal_eval() {
-    _Dbg_write_journal "$*" 
-    eval "$*"
+    _Dbg_write_journal "$@" 
+    eval "$@"
 }
 
 # append a command into journal file and then run the command.
@@ -55,14 +55,15 @@ _Dbg_write_journal_avar() {
 # if we are in a subshell.
 _Dbg_write_journal() {
     if (( BASH_SUBSHELL != 0 )) ; then
-	echo "$@" >> ${_Dbg_journal} 2>/dev/null
+        echo "$@" >> ${_Dbg_journal} 2>/dev/null
     fi
     # return $?
 }
 
 # Remove all journal files.
 _Dbg_erase_journals() {
-    rm ${_Dbg_journal} 2>/dev/null
+    [[ -f $_Dbg_journal ]] && rm ${_Dbg_journal} 2>/dev/null
+    return $?
 }
 
 # read in or "source" in journal file which will set variables.

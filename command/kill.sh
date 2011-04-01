@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "kill" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -32,25 +32,30 @@ Also similar is the \"signal\" command."
 
 _Dbg_do_kill() {
     if (($# > 1)); then
-	_Dbg_errmsg "Got $# parameters, but need 0 or 1."
-	return 1
+        _Dbg_errmsg "Got $# parameters, but need 0 or 1."
+        return 1
     fi
     typeset _Dbg_prompt_output=${_Dbg_tty:-/dev/null}
     typeset signal='-9'
     (($# == 1)) && signal="$1"
     
     if [[ ${signal:0:1} != '-' ]] ; then
-	_Dbg_errmsg "Kill signal ($signal) should start with a '-'"
-	return 2
+        _Dbg_errmsg "Kill signal ($signal) should start with a '-'"
+        return 2
     fi
     
     _Dbg_confirm "Send kill signal ${signal} which may terminate the debugger? (y/N): " 'N'
     
     if [[ $_Dbg_response == [yY] ]] ; then 
-	kill $signal $$
+        case $signal in
+            -9 | -SEGV )
+                _Dbg_cleanup2
+                ;;
+        esac
+        kill $signal $$
     else
-	_Dbg_msg "Kill not done - not confirmed."
-	return 3
+        _Dbg_msg "Kill not done - not confirmed."
+        return 3
     fi
     return 0
 }
