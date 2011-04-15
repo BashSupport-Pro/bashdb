@@ -84,6 +84,8 @@ function _Dbg_frame_adjust {
 
   _Dbg_listline="${BASH_LINENO[adjusted_pos-1]}"
   _Dbg_frame_last_filename="${BASH_SOURCE[adjusted_pos]}"
+  typeset filename; filename="$(_Dbg_file_canonic "$_Dbg_frame_last_filename")"
+  _Dbg_frame_print '->' $_Dbg_stack_pos '' "$filename" $_Dbg_listline ''
   _Dbg_print_location_and_command "$_Dbg_listline"
   return 0
 }

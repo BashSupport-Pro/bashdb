@@ -118,6 +118,7 @@ No actions have been set.
 ##1 fn1() called from file `dbg-test1.sh' at line 32
 +### Try up...
 +up 
+->1 in file `dbg-test1.sh' at line 32
 (dbg-test1.sh:32):
 32:	fn1;
 +list> 
@@ -127,6 +128,7 @@ No actions have been set.
  35:    exit 0;
 +### Try down 1...
 +down 1
+->0 in file `dbg-test1.sh' at line 5
 (dbg-test1.sh:5):
 5:	fn1() {
 +list> 
@@ -142,6 +144,7 @@ No actions have been set.
  14:        x=6
 +### frame 0...
 +frame 0
+->0 in file `dbg-test1.sh' at line 5
 (dbg-test1.sh:5):
 5:	fn1() {
 +### Try step (twice)...
