@@ -1,6 +1,7 @@
 1:	echo test1
 +# Just a simple quit command.
 +quit 
+bashdb: That's all, folks...
 bad option: `-e'
 Use -h or --help to see options.
 Annotation level must be less between 0 and 3. Got: 9.
@@ -8,3 +9,4 @@ Setting Annotation level to 0.
 1:	echo not run
 +# Just a simple quit command.
 +quit 
+bashdb: That's all, folks...

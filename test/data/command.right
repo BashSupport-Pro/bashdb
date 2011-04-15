@@ -63,3 +63,4 @@ Breakpoint 2 hit (3 times).
 (dbg-test1.sh:25):
 25:	  ((x += i))
 +quit 
+bashdb: That's all, folks...

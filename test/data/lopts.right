@@ -2,13 +2,16 @@
 22:	x=22
 +# Just a simple quit command.
 +quit 
+bashdb: That's all, folks...
 (dbg-test1.sh:22):
 22:	x=22
 +# Just a simple quit command.
 +quit 
+bashdb: That's all, folks...
 (bashdb_cmd_123:1):
 1:	builtin echo test1a
 +# Just a simple quit command.
 +quit 
+bashdb: That's all, folks...
 bad option: `--badopt'
 Use -h or --help to see options.

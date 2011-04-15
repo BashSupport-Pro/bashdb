@@ -86,3 +86,4 @@ One-time breakpoint 2 set in file hanoi.sh, line 12.
 (hanoi.sh:42):
 42:	hanoi $max "a" "b" "c"
 +quit 
+bashdb: That's all, folks...

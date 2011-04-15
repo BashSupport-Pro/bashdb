@@ -13,3 +13,4 @@ Start
 (bug-step.sh:4):
 4:	   echo $@
 +quit 
+bashdb: That's all, folks...

@@ -137,3 +137,4 @@ Number of source lines bashdb will list by default is 4.
  10:    
  11:    fn2() {
 +quit 
+bashdb: That's all, folks...

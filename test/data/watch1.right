@@ -83,3 +83,4 @@ Watchpoint 2: $x changed:
 (dbg-test1.sh:23):
 23:	y=23
 +quit 
+bashdb: That's all, folks...

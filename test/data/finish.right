@@ -30,3 +30,4 @@ fn3:
 +print $x
 fn2 returning
 +quit 
+bashdb: That's all, folks...

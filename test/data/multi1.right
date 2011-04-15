@@ -18,3 +18,10 @@ z=3
 +pr "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
 +quit 
+(multi.sh:8):
+8:	case `builtin echo "testing"; builtin echo 1,2,3`,`builtin echo 1,2,3` in
++step 
+(multi.sh:11):
+11:	  *c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
+
+bashdb: That's all, folks...

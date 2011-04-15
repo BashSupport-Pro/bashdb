@@ -121,3 +121,4 @@ builtin echo "ho"
 +print "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 2
 +quit 
+bashdb: That's all, folks...

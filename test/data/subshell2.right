@@ -19,3 +19,12 @@ x=`builtin echo *`
 BASH_SUBSHELL: 1
 +### Test quit 0 2...
 +quit 0 2
+(subshell.sh:15):
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+builtin cd .
+
+(subshell.sh:17):
+17:	x=5; y=6;
+x=5
+
+bashdb: That's all, folks...

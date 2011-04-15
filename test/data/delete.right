@@ -74,3 +74,4 @@ Breakpoint 4 hit (1 times).
 +where 1
 ->0 in file `stepping.sh' at line 7
 +quit 
+bashdb: That's all, folks...

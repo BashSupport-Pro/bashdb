@@ -30,3 +30,4 @@ One-time breakpoint 1 set in file dbg-test1.sh, line 24.
 +print "value of x is now $x"
 value of x is now 60
 +quit 
+bashdb: That's all, folks...

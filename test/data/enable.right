@@ -75,3 +75,4 @@ It stopped at breakpoint 3.
 Next statement to be run is:
 	x=6
 +quit 
+bashdb: That's all, folks...

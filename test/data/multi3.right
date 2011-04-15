@@ -20,3 +20,6 @@ builtin echo "ho"
 +pr "BASH_SUBSHELL $BASH_SUBSHELL"
 BASH_SUBSHELL 2
 +quit 0 56
+Debugged program terminated normally. Use q to quit or R to restart.
++quit 
+bashdb: That's all, folks...

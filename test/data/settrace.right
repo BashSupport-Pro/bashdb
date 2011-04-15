@@ -35,3 +35,4 @@ Source files which we have recorded info about:
 ##2 main() called from file `settrace.sh' at line 0
 +continue 
 Move disk 0 on a to b
+bashdb: That's all, folks...

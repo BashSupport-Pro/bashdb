@@ -18,3 +18,4 @@ Breakpoint 1 hit (2 times).
 17:	fn3() {
  0: echo "x is $x, ? is $?" = echo x is 29, ? is 0
 +quit 
+bashdb: That's all, folks...

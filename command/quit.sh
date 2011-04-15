@@ -59,15 +59,16 @@ _Dbg_do_quit() {
 	    _Dbg_save_state
 	    exec $_Dbg_RESTART_COMMAND
 	fi
-	_Dbg_cleanup
 	
+	_Dbg_msg "${_Dbg_debugger_name}: That's all, folks..."
+	_Dbg_cleanup
 	# Save history file
 	(( _Dbg_set_history )) && history -w $_Dbg_histfile
+    fi
 	
     trap - DEBUG
     # This is a hack we need. I am not sure why.
     trap "_Dbg_cleanup2" EXIT
-    fi
 
     # And just when you thought we'd never get around to it...
     exit $return_code

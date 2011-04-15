@@ -20,3 +20,10 @@ BASH_SUBSHELL: 1
 +print "Test unconditional quit..."
 Test unconditional quit...
 +quit 
+(subshell.sh:8):
+8:	case `builtin echo "testing"; builtin echo 1,2,3`,`builtin echo 1,2,3` in
++step 
+(subshell.sh:11):
+11:	  *c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
+
+bashdb: That's all, folks...

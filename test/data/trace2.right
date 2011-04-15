@@ -213,3 +213,4 @@ level 1, subshell 0, depth 2:	    echo "Move disk $n on $a to $b"
 Move disk 0 on a to b
 (hanoi.sh:24):
 level 1, subshell 0, depth 2:	    if (( n > 0 )) ; then
+bashdb: That's all, folks...

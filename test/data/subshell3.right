@@ -16,6 +16,8 @@ z=3
 7:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
 x=`builtin echo *`
 +quit 0 1
-ho
-Debugged program terminated normally. Use q to quit or R to restart.
-+quit 
+(subshell.sh:11):
+11:	  *c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
+ECHO_N=-n ECHO_C= ECHO_T=
+
+bashdb: That's all, folks...

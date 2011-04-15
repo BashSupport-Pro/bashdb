@@ -18,3 +18,12 @@ x=`builtin echo *`
 +pr "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
 +quit 0 2
+(multi.sh:15):
+15:	(builtin cd  . ; x=`builtin echo *`; (builtin echo "ho") )
+builtin cd .
+
+(multi.sh:17):
+17:	x=5; y=6;
+x=5
+
+bashdb: That's all, folks...

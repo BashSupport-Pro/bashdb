@@ -33,3 +33,4 @@ Breakpoint 1 hit (1 times).
 (restart.sh:7):
 7:	z=0
 +quit 
+bashdb: That's all, folks...
