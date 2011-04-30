@@ -7,6 +7,6 @@
 +# Thanks to Nicolai Lissner
 +step 
 (bashdb:1):
-1:	#!/usr/local/bin/bash
+1:	#!/bin/bash
 
 bashdb: That's all, folks...

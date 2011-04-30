@@ -119,6 +119,12 @@ _Dbg_history_read() {
   fi
 }
 
+# Save history file
+_Dbg_history_write() {
+    (( _Dbg_history_length > 0 && _Dbg_set_history)) \
+	&& history -w $_Dbg_histfile
+}
+
 # Remove the last command from the history list.
 _Dbg_history_remove_item() {
   _Dbg_hi=${#_Dbg_history[@]}-1

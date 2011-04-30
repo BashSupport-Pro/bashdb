@@ -1,8 +1,8 @@
 #!@SH_PROG@
+# -*- shell-script -*-
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
 [ -z "$builddir" ] && export builddir=$PWD
-
 . ${builddir}/check-common.sh
 RIGHT_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.right"
 debugged_script="$top_srcdir/test/example/debug.sh"

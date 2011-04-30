@@ -1,19 +1,20 @@
+test_in_files := $(wildcard test-*.in)
+tests_from_in_files := $(notdir $(test_in_files:.in=))
+
 check_DATA = \
+	$(data_in_files)   \
 	check-common.sh.in \
 	interrupt.tests    \
 	interrupt-3.tests  \
 	lopts.tests        \
 	settrace.tests 	   \
 	sopts.tests        \
-	test-delete.in     \
-	test-export.in     \
-	test-misc.in       \
-	test-setshow.in    \
 	test-sig.in        \
 	trace.tests	   \
 	trace2.tests
 
 TESTS = \
+	$(tests_from_in_files) \
 	test-action     \
 	test-brkpt      \
 	test-bug-args   \
@@ -22,29 +23,22 @@ TESTS = \
 	test-bug-source \
 	test-command    \
 	test-complete   \
-	test-debug      \
-	test-delete     \
 	test-display    \
 	test-enable     \
-	test-export     \
 	test-file-with-spaces  \
 	test-finish     \
 	test-frame      \
 	test-interrupt  \
 	test-list       \
 	test-lopts 	\
-	test-misc       \
 	test-multi	\
 	test-parm	\
 	test-restart	\
 	test-search	\
-	test-setshow    \
 	test-settrace 	\
-	test-sig 	\
 	test-skip 	\
 	test-sopts 	\
 	test-bug-step 	\
-	test-bug-step-subshell \
 	test-subshell 	\
 	test-tbreak	\
 	test-trace	\
