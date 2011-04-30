@@ -77,7 +77,7 @@ AC_PATH_PROG(RM, rm, true)
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
 AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL], 
-		  [location of POSIXSHELL program]), SH_PROG=$withval)
+                  [location of POSIXSHELL program]), SH_PROG=$withval)
 
 if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
 then
@@ -104,7 +104,7 @@ case "${bash_major}.${bash_minor}" in
 esac
 
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
-		  [location of dbg-main.sh]), DBGR_MAIN=$withval)
+                  [location of dbg-main.sh]), DBGR_MAIN=$withval)
 
 AM_PROG_LIBTOOL
 
@@ -163,20 +163,20 @@ fi
 
 #Makefiles
 AC_CONFIG_FILES([ \
-	Makefile		  \
-	command/Makefile	  \
-	command/info_sub/Makefile \
-	command/set_sub/Makefile  \
-	command/show_sub/Makefile \
-	data/Makefile             \
-	doc/Makefile 		  \
-	lib/Makefile 		  \
-	test/Makefile 		  \
-	test/data/Makefile 	  \
-	test/example/Makefile 	  \
-	test/integration/Makefile \
-	test/unit/Makefile 	  \
-	])
+        Makefile                  \
+        command/Makefile          \
+        command/info_sub/Makefile \
+        command/set_sub/Makefile  \
+        command/show_sub/Makefile \
+        data/Makefile             \
+        doc/Makefile              \
+        lib/Makefile              \
+        test/Makefile             \
+        test/data/Makefile        \
+        test/example/Makefile     \
+        test/integration/Makefile \
+        test/unit/Makefile        \
+        ])
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x DEBUGGER])
@@ -185,7 +185,7 @@ AC_CONFIG_FILES([test/example/bugIFS.sh],
 AC_CONFIG_FILES([test/example/hanoi.sh], 
                 [chmod +x test/example/hanoi.sh])
 AC_CONFIG_FILES([test/example/interrupt.sh], 
-		[chmod +x test/example/interrupt.sh])
+                [chmod +x test/example/interrupt.sh])
 AC_CONFIG_FILES([test/example/bug-args.sh], 
                 [chmod +x test/example/bug-args.sh])
 AC_CONFIG_FILES([test/unit/test-action.sh], 
@@ -199,58 +199,61 @@ AC_CONFIG_FILES([test/unit/test-break.sh],
 AC_CONFIG_FILES([test/unit/test-columns.sh], 
                 [chmod +x test/unit/test-columns.sh])
 AC_CONFIG_FILES([test/unit/test-eval.sh], 
-		[chmod +x test/unit/test-eval.sh])
+                [chmod +x test/unit/test-eval.sh])
 AC_CONFIG_FILES([test/unit/test-file.sh], 
-		[chmod +x test/unit/test-file.sh])
+                [chmod +x test/unit/test-file.sh])
 AC_CONFIG_FILES([test/unit/test-filecache.sh], 
-		[chmod +x test/unit/test-filecache.sh])
+                [chmod +x test/unit/test-filecache.sh])
 AC_CONFIG_FILES([test/unit/test-get-sourceline.sh], 
-		[chmod +x test/unit/test-get-sourceline.sh])
+                [chmod +x test/unit/test-get-sourceline.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
 AC_CONFIG_FILES([test/unit/test-lib-list.sh], 
-		 [chmod +x test/unit/test-lib-list.sh])
+                 [chmod +x test/unit/test-lib-list.sh])
 AC_CONFIG_FILES([test/unit/test-msg.sh], [chmod +x test/unit/test-msg.sh])
 AC_CONFIG_FILES([test/unit/test-io.sh],  [chmod +x test/unit/test-io.sh])
 AC_CONFIG_FILES([test/unit/test-pre.sh], [chmod +x test/unit/test-pre.sh])
+AC_CONFIG_FILES([test/unit/test-require.sh], 
+                [chmod +x test/unit/test-require.sh])
 AC_CONFIG_FILES([test/unit/test-run.sh], [chmod +x test/unit/test-run.sh])
 AC_CONFIG_FILES([test/unit/test-save-restore.sh], 
-		[chmod +x test/unit/test-save-restore.sh])
-AC_CONFIG_FILES([test/unit/test-set0.sh], [chmod +x test/unit/test-set0.sh])
+                [chmod +x test/unit/test-save-restore.sh])
 AC_CONFIG_FILES([test/unit/test-sort.sh], 
-		[chmod +x test/unit/test-sort.sh])
+                [chmod +x test/unit/test-sort.sh])
 AC_CONFIG_FILES([test/unit/test-validate.sh], 
-		[chmod +x test/unit/test-validate.sh])
+                [chmod +x test/unit/test-validate.sh])
 
+AC_CONFIG_FILES([test/integration/test-bug-step-subshell],
+                [chmod +x test/integration/test-bug-step-subshell])
 AC_CONFIG_FILES([test/integration/test-debug],
-	        [chmod +x test/integration/test-debug])
+                [chmod +x test/integration/test-debug])
 AC_CONFIG_FILES([test/integration/test-delete],
-	        [chmod +x test/integration/test-delete])
+                [chmod +x test/integration/test-delete])
 AC_CONFIG_FILES([test/integration/test-export],
-	        [chmod +x test/integration/test-export])
+                [chmod +x test/integration/test-export])
 AC_CONFIG_FILES([test/integration/test-misc],
-	        [chmod +x test/integration/test-misc])
+                [chmod +x test/integration/test-misc])
 AC_CONFIG_FILES([test/integration/test-setshow],
-	        [chmod +x test/integration/test-setshow])
+                [chmod +x test/integration/test-setshow])
 AC_CONFIG_FILES([test/integration/test-sig],
-	        [chmod +x test/integration/test-sig])
+                [chmod +x test/integration/test-sig])
 
 AC_CONFIG_FILES([ \
-	bashdb-main.inc \
-	bashdb-trace \
-	doc/macros.texi \
-	test/integration/check-common.sh \
-	])
+        bashdb-main.inc \
+        bashdb-trace \
+        doc/macros.texi \
+        test/integration/check-common.sh \
+        ])
 
 AC_CONFIG_COMMANDS([default],[[
 # Keep old dates on these files to prevent rebuilding.
 touch -cr $ac_srcdir/configure.ac doc/bashdb.1
 touch -cr $ac_srcdir/configure.ac doc/bashdb-man.html
 if test -e $ac_srcdir/doc/version-bashdb.texi ; then
-	echo timestamp > $ac_srcdir/doc/stamp-vti
-	touch -cr $ac_srcdir/configure.ac $ac_srcdir/doc/version-bashdb.texi \
-	$ac_srcdir/doc/stamp-vti \
-	$ac_srcdir/doc/bashdb.info*
+        echo timestamp > $ac_srcdir/doc/stamp-vti
+        touch -cr $ac_srcdir/configure.ac $ac_srcdir/doc/version-bashdb.texi \
+        $ac_srcdir/doc/stamp-vti \
+        $ac_srcdir/doc/bashdb.info*
 fi
 ]],[[]])
 
@@ -265,4 +268,3 @@ if test x"$build_set0" != x; then
 elif test "$bash_4_or_greater" = no ; then
    echo 'We will not try to build the set $0 builtin.'
 fi
-

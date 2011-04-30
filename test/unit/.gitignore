@@ -16,6 +16,7 @@
 /test-lib-list.sh
 /test-msg.sh
 /test-pre.sh
+/test-require.sh
 /test-run.sh
 /test-save-restore.sh
 /test-set0.sh

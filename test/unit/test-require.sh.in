@@ -1,0 +1,28 @@
+#!@SH_PROG@
+# -*- shell-script -*-
+
+test_require()
+{
+    typeset -i require_me
+    require_me=0
+    require ./require_me.sh
+    assertEquals  "Should have been required" 1 $require_me 
+    typeset -i requires_size
+    requires_size=${#_Dbg_requires[@]}
+    require ./require_me.sh
+    assertEquals  "Should not have required a second time" 1 $require_me
+    assertEquals $requires_size ${#_Dbg_requires[@]}
+    require require_me.sh
+    assertEquals  "Should not have required under another name" 1 $require_me
+    assertEquals $requires_size ${#_Dbg_requires[@]}
+}
+
+abs_top_srcdir=@abs_top_srcdir@
+abs_top_srcdir=${abs_top_srcdir%%/}/
+. ${abs_top_srcdir}lib/require.sh
+
+# load shunit2
+shunit_file=${abs_top_srcdir}test/unit/shunit2
+. ${shunit_file}
+
+
