@@ -23,7 +23,10 @@ if [ '@abs_top_builddir@' = '' ] ; then
 fi
 abs_top_builddir=@abs_top_builddir@
 abs_top_builddir=${abs_top_builddir%%/}/
+abs_top_srcdir=@abs_top_srcdir@
+abs_top_srcdir=${abs_top_srcdir%%/}/
 
 # load shunit2
-. ./shunit2
+shunit_file=${abs_top_srcdir}test/unit/shunit2
+. ${shunit_file}
 

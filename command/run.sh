@@ -38,10 +38,10 @@ _Dbg_do_run() {
     if (( _Dbg_script )) ; then
 	[ -z "$BASH" ] && BASH='bash'
         typeset bash_opt=''
-        case  $orig_0 in
-        bashdb | */bashdb )
-            bash_opt='--debugger ' ;;
-        esac
+        # case  $_Dbg_orig_0 in
+        # bashdb | */bashdb )
+        #     bash_opt='--debugger ' ;;
+        # esac
 	if [[ $_Dbg_frame_last_filename == $_Dbg_bogus_file ]] ; then
 	    script_args="${bash_opt}-c \"$_Dbg_EXECUTION_STRING\""
 	else

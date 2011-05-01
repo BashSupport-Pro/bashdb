@@ -135,11 +135,11 @@ else
     _Dbg_write_journal_eval "_Dbg_step_ignore=3" 
 fi
 
-# Set $0 if possible
-_Dbg_orig_dollar0=$0
+# Set $0 if possible.
 if [[ -f $_Dbg_libdir/builtin/set0 ]] ; then
     enable -f $_Dbg_libdir/builtin/set0 set0
 fi
+
 # It may be that set0 comes from somewhere else
 if enable -a set0 2>/dev/null ; then
     set0 "$_Dbg_script_file"

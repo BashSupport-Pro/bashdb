@@ -1,3 +1,12 @@
+Version 4.2-0.8 
+
+- Reinstate code to set $0 can makes running via bashdb more like
+  running without debugger. Add "set dollar0" command.
+- Some code reorganization to improve modularity and testing
+- Show frame number and backtrace line when switching frames. For front-ends
+- Better temp file cleanup before debugger "kill -9". 
+- Better test for pygmentize and replace tabs with blanks in source code.
+
 Version 4.2-0.7 - Ides of March 
 2011-3-15
 
