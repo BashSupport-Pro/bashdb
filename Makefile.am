@@ -18,7 +18,7 @@
 
 AUTOMAKE_OPTIONS = dist-bzip2
 
-SUBDIRS = command init lib data doc test
+SUBDIRS = command builtin init lib data doc test
 
 pkgdata_DATA =       \
        dbg-main.sh   \

@@ -60,7 +60,7 @@ _Dbg_help_sort_command_names() {
 }    
 
 typeset _Dbg_set_cmds="args annotate autoeval autolist basename debugging
-editing linetrace listsize prompt showcommand trace-commands"
+dollar0 editing linetrace listsize prompt showcommand trace-commands"
 
 _Dbg_help_set() {
 
@@ -126,12 +126,17 @@ Follow this command with any number of args, to be passed to the program."
 		"${label}Set short filenames (the basename) in debug output is" $onoff
 	    return 0
 	    ;;
-	d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+	de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
 	    local onoff=${1:-'on'}
 	    [[ -n $label ]] && label='set debugging -- '
 	    (( _Dbg_set_debugging )) && onoff='on.'
 	    _Dbg_msg \
 		"${label}Set debugging the debugger is" $onoff
+	    return 0
+	    ;;
+	do|doll|dolla|dollar|dollar0 )
+	    [[ -n $label ]] && label='set dollar0   -- '
+	    _Dbg_msg "${label}Set \$0"
 	    return 0
 	    ;;
 	e | ed | edi | edit | editi | editin | editing )

@@ -1,7 +1,4 @@
-dnl
-dnl Configure script for bash-3.x debugger
-dnl
-dnl
+# Configure script for bash-3.x debugger
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011
@@ -37,16 +34,41 @@ AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 #
 AC_SUBST(BASHVERS)
 AC_SUBST(RELSTATUS)
+
+AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main], 
+		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
+
+# See if we build set0.c
+AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
+		  [location of bash OK_BASH_VERS source code]), 
+		  BASH_SRC=$withval)
 AC_SUBST(BASH_SRC)
+AC_PROG_CC
+if test x"$BASH_SRC" != x ; then
+   if test ! -d $BASH_SRC ; then
+     AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
+   else 
+     AM_PROG_CC_C_O
+     dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
+     PIC=$lt_prog_compiler_pic_CXX
+     WL=$lt_prog_compiler_wl_CXX
+     build_set0=$BASH_SRC
+     AC_CHECK_HEADERS(unistd.h string.h,,
+         [AC_MSG_WARN([Missing some C headers. Disabling set0])
+         build_set0=])
+   fi 
+fi
+AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
+AM_PROG_LIBTOOL
+PIC=$lt_prog_compiler_pic_CXX
+WL=$lt_prog_compiler_wl_CXX
 AC_SUBST(PIC)
 AC_SUBST(WL)
-AC_SUBST(DBGR_MAIN)
 AC_SUBST(DIFF)
 AC_SUBST(DIFF_OPTS)
 
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
-AC_REVISION([$Id: configure.ac,v 1.77 2009/06/16 00:09:07 rockyb Exp $])dnl
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
@@ -105,8 +127,7 @@ esac
 
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
                   [location of dbg-main.sh]), DBGR_MAIN=$withval)
-
-AM_PROG_LIBTOOL
+AC_SUBST(DBGR_MAIN)
 
 if test -z "$DBGR_MAIN" ; then
   DBGR_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
@@ -164,6 +185,7 @@ fi
 #Makefiles
 AC_CONFIG_FILES([ \
         Makefile                  \
+        builtin/Makefile          \
         command/Makefile          \
         command/info_sub/Makefile \
         command/set_sub/Makefile  \
@@ -220,6 +242,8 @@ AC_CONFIG_FILES([test/unit/test-require.sh],
 AC_CONFIG_FILES([test/unit/test-run.sh], [chmod +x test/unit/test-run.sh])
 AC_CONFIG_FILES([test/unit/test-save-restore.sh], 
                 [chmod +x test/unit/test-save-restore.sh])
+AC_CONFIG_FILES([test/unit/test-set0.sh], 
+                [chmod +x test/unit/test-set0.sh])
 AC_CONFIG_FILES([test/unit/test-sort.sh], 
                 [chmod +x test/unit/test-sort.sh])
 AC_CONFIG_FILES([test/unit/test-validate.sh], 

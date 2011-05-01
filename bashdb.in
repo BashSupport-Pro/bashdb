@@ -128,12 +128,23 @@ typeset -r _Dbg_Dbg_script_file=$(_Dbg_expand_filename $_Dbg_script_file)
 
 if ((_Dbg_set_linetrace)) ; then 
   # No stepping.
-  _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
-  _Dbg_QUIT_ON_QUIT=1
+    _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
+    _Dbg_QUIT_ON_QUIT=1
 else 
   # Set to skip over statements up to ". $_Dbg_script_file"
-  _Dbg_write_journal_eval "_Dbg_step_ignore=3" 
+    _Dbg_write_journal_eval "_Dbg_step_ignore=3" 
 fi
+
+# Set $0 if possible
+_Dbg_orig_dollar0=$0
+if [[ -f $_Dbg_libdir/builtin/set0 ]] ; then
+    enable -f $_Dbg_libdir/builtin/set0 set0
+fi
+# It may be that set0 comes from somewhere else
+if enable -a set0 2>/dev/null ; then
+    set0 "$_Dbg_script_file"
+fi
+
 _Dbg_init_default_traps
 trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
 set -o functrace
