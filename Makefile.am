@@ -18,14 +18,10 @@
 
 AUTOMAKE_OPTIONS = dist-bzip2
 
-SUBDIRS = command lib data doc test
+SUBDIRS = command init lib data doc test
 
 pkgdata_DATA =       \
-       dbg-init.sh   \
-       dbg-io.sh     \
        dbg-main.sh   \
-       dbg-opts.sh   \
-       dbg-pre.sh    \
        dbg-set-d-vars.inc  \
        bashdb-main.inc     \
        bashdb-trace        \

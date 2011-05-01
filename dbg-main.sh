@@ -25,16 +25,10 @@ if [[ -z "${BASH_SOURCE[0]}" ]] ; then
     exit 2
 fi
 
-# Stuff common to bashdb and bashdb-trace. Include the rest of options
-# processing. Also includes things which have to come before other includes
-. ${_Dbg_libdir}/dbg-pre.sh
-
-# Note: "init" comes first and "cmds" has to come after "io". Otherwise 
-# these are sorted alphabetically.
-typeset -r _Dbg_includes='init io'
-
-for _Dbg_file in $_Dbg_includes ; do 
-    source ${_Dbg_libdir}/dbg-${_Dbg_file}.sh
+# Code that specifically has to come first.
+# Note: "init" comes first and "cmds" has to come after "io".
+for _Dbg_file in require pre vars io ; do 
+    source ${_Dbg_libdir}/init/${_Dbg_file}.sh
 done
 
 for _Dbg_file in ${_Dbg_libdir}/lib/*.sh ${_Dbg_libdir}/command/*.sh ; do 

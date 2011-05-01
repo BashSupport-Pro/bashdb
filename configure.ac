@@ -170,6 +170,7 @@ AC_CONFIG_FILES([ \
         command/show_sub/Makefile \
         data/Makefile             \
         doc/Makefile              \
+        init/Makefile             \
         lib/Makefile              \
         test/Makefile             \
         test/data/Makefile        \

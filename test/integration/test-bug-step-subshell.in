@@ -8,11 +8,11 @@ RIGHT_FILTERED_FILE="/tmp/${TEST_NAME}-filtered.right"
 
 short_script_name=${1:-$TEST_NAME}
 debugged_script="${top_srcdir}/test/example/${short_script_name}.sh"
-(cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
-@GREP@ -v '1:	#@SH_PROG@' $TEST_FILE >${TEST_FILTERED_FILE}
-@GREP@ -v '1:	#@SH_PROG'  $RIGHT_FILE >${RIGHT_FILTERED_FILE}
+(cd $srcdir && run_debugger "$debugged_script" 2>&1 >"$TEST_FILE" </dev/null)
+@GREP@ -v '1:	#!@SH_PROG@' "$TEST_FILE" >"${TEST_FILTERED_FILE}"
+@GREP@ -v '1:	#!/bin/bash' "$RIGHT_FILE" >"${RIGHT_FILTERED_FILE}"
 
-check_output $TEST_FILE ${RIGHT_FILTERED_FILE}
+check_output "$TEST_FILTERED_FILE" "$RIGHT_FILTERED_FILE"
 rc=$? 
 if ((0 == rc)) ; then
   rm -f $TEST_FILE

@@ -8,12 +8,12 @@ test_preserve_set_opts()
     # If running make distcheck we can't use top_builddir
     # because some files aren't there but are in the install
     # directory. 
-    if [[ -f $top_builddir/dbg-opts.sh ]] ; then
+    if [[ -f $top_builddir/init/opts.sh ]] ; then
 	libdir=${top_builddir}
     else
 	libdir=@PKGDATADIR@
     fi
-    if [[ -f $libdir/dbg-opts.sh ]] ; then
+    if [[ -f $libdir/init/opts.sh ]] ; then
 	# Name we refer to ourselves by
 	typeset _Dbg_debugger_name='@PACKAGE@'
 	# The release name we are configured to run under.
@@ -24,7 +24,7 @@ test_preserve_set_opts()
 	echo 'Skipping test - building outside of source complications'
     fi
 
-    (. ${top_builddir}/bashdb-trace -L $libdir/dbg-opts.sh)
+    (. ${top_builddir}/bashdb-trace -L $libdir/init/opts.sh)
     assertEquals $? 1
 
 }

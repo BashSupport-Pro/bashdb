@@ -19,12 +19,7 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-dirname=${BASH_SOURCE[0]%/*}
-[[ $dirname == ${BASH_SOURCE[0]} ]] && dirname=$(pwd)
-! typeset -p require 1>/dev/null 2>/dev/null && \
-    source ${dirname}/../lib/require.sh
-require ${dirname}/../lib/frame.sh \
-        ${dirname}/../lib/help.sh ${dirname}/../lib/alias.sh
+require ../lib/frame.sh ../lib/help.sh ../lib/alias.sh
 
 # Move default values up $1 or one in the stack. 
 _Dbg_help_add up \

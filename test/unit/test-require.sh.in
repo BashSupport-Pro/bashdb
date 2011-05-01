@@ -19,7 +19,7 @@ test_require()
 
 abs_top_srcdir=@abs_top_srcdir@
 abs_top_srcdir=${abs_top_srcdir%%/}/
-. ${abs_top_srcdir}lib/require.sh
+. ${abs_top_srcdir}init/require.sh
 
 # load shunit2
 shunit_file=${abs_top_srcdir}test/unit/shunit2
