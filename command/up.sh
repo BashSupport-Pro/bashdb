@@ -19,7 +19,10 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-require ../lib/frame.sh ../lib/help.sh ../lib/alias.sh
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    source ../init/require.sh
+    require ../lib/frame.sh ../lib/help.sh ../lib/alias.sh
+fi
 
 # Move default values up $1 or one in the stack. 
 _Dbg_help_add up \
