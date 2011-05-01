@@ -20,9 +20,7 @@
 #   MA 02111 USA.
 
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    source ../init/require.sh
-    source ../lib/help.sh
-    require ../lib/alias.sh
+    for file in help alias ; do source ../lib/${file}.sh; done
 fi
 
 _Dbg_help_add help \
@@ -86,7 +84,9 @@ _Dbg_alias_add 'h' help
 
 # Demo it.
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    require ../lib/sort.sh ../lib/columnize.sh ../lib/list.sh ../lib/msg.sh
+    for file in sort columnize list msg ; do source ../lib/${file}.sh; done
+    # source /usr/local/share/bashdb/bashdb-trace
+    # _Dbg_debugger
     _Dbg_do_help
 fi
 
