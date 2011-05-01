@@ -177,6 +177,7 @@ AC_CONFIG_FILES([ \
         test/example/Makefile     \
         test/integration/Makefile \
         test/unit/Makefile        \
+        test/unit/require_me.sh   \
         ])
 
 # Additional files needing substitution of values (not Makefiles).
