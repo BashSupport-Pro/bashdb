@@ -20,8 +20,10 @@
 #   MA 02111 USA.
 
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    source ../init/require.sh
-    require ../lib/frame.sh ../lib/help.sh ../lib/alias.sh
+    source ../init/require.sh 
+    # FIXME: require loses scope for typeset -A...
+    source ../lib/help.sh
+    require ../lib/frame.sh ../lib/alias.sh
 fi
 
 # Move default values up $1 or one in the stack. 
@@ -51,3 +53,10 @@ function _Dbg_do_up {
 }
 
 _Dbg_alias_add 'u' up
+
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    require ./help.sh ../lib/msg.sh ../lib/sort.sh ../lib/columnize.sh \
+	    ../lib/list.sh
+    _Dbg_args='up'
+    _Dbg_do_help up
+fi

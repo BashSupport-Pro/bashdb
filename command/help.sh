@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - gdb-like "help" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010 
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010, 2011
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -18,6 +18,12 @@
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
+
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    source ../init/require.sh
+    source ../lib/help.sh
+    require ../lib/alias.sh
+fi
 
 _Dbg_help_add help \
 'help	-- Print list of commands.'
@@ -77,3 +83,10 @@ function _Dbg_do_help {
 }
 
 _Dbg_alias_add 'h' help
+
+# Demo it.
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    require ../lib/sort.sh ../lib/columnize.sh ../lib/list.sh ../lib/msg.sh
+    _Dbg_do_help
+fi
+
