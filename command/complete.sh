@@ -24,7 +24,7 @@ Show command completion strings for PREFIX-STR
 '
 
 _Dbg_do_complete() {
-  declare -a commands=( - 
+  typeset -a _Dbg_commands; _Dbg_commands=( - 
 	. / a break
 	cd commands complete continue condition clear
 	d debug delete disable display
@@ -42,7 +42,7 @@ _Dbg_do_complete() {
     if (( ${#args[@]} == 2 )) ; then
       _Dbg_subcmd_complete ${args[0]} ${args[1]}
     elif (( ${#args[@]} == 1 )) ; then 
-      eval "builtin compgen -W \"${commands[@]}\" ${args[0]}"
+      eval "builtin compgen -W \"${_Dbg_commands[@]}\" ${args[0]}"
     fi  
     local -i i
     for (( i=0;  i < ${#_Dbg_matches[@]}  ; i++ )) ; do 

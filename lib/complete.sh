@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # complete.sh - gdb-like command completion handling
 #
-#   Copyright (C) 2006, 2011 Rocky Bernstein rockyb@users.sourceforge.net
+#   Copyright (C) 2006, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,7 +18,7 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-typeset -a _Dbg_matches=()
+typeset -a _Dbg_matches; _Dbg_matches=()
 
 # Print a list of completions in global variable _Dbg_matches 
 # for 'subcmd' that start with 'text'.
