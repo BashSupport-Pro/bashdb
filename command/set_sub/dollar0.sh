@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "set width" debugger command
+# set dollar0 sets $0
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,17 +18,17 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub set width \
-'Set maximum width of lines' 1
+_Dbg_help_add_sub set dollar0 \
+'Set $0.
+Follow this command with any number of args, to be passed to the program.' 1
 
-typeset -i _Dbg_set_linewidth; _Dbg_set_linewidth=${COLUMNS:-80} 
-
-_Dbg_do_set_width() {
-    if [[ $1 == $int_pat ]] ; then 
-	_Dbg_write_journal_eval "_Dbg_set_linewidth=$1"
+_Dbg_do_set_dollar0() {
+    # We use the loop below rather than _Dbg_set_args="(@)" because
+    # we want to preserve embedded blanks in the arguments.
+    if enable -a set0 2>/dev/null ; then
+	set0 "$1"
     else
-	_Dbg_errmsg "Integer argument expected; got: $1"
-	return 1
+	_Dbg_errmsg "Can't do becasue set0 module is not loaded."
     fi
     return 0
 }

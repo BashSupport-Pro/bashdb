@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "set tracecommands" debugger command
+# "set trace-commands" debugger command
 #
-#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2010, 2011 Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -21,6 +21,10 @@
 # Sets whether or not to display command before executing it.
 typeset _Dbg_set_trace_commands='off'
 
+# Handled special because of the dash in the command name.
+# _Dbg_help_add_sub set trace-commands \
+# 'Set showing debugger commands' 1
+
 _Dbg_do_set_trace_commands() {
     case "$1" in 
 	1 )
@@ -35,5 +39,5 @@ _Dbg_do_set_trace_commands() {
 	* )
 	    _Dbg_msg "\"on\", \"off\" expected."
     esac
-    return 0
+    return $?
 }

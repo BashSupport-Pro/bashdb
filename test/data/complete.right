@@ -13,9 +13,9 @@ down
 file
 finish
 +complete set a
-set args
 set annotate
 set autoeval
+set args
 set autolist
 +complete show a
 show aliases

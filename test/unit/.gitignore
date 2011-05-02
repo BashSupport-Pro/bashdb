@@ -1,6 +1,7 @@
 /*~
 /Makefile
 /Makefile.in
+/require_me.sh
 /test-action.sh
 /test-alias.sh
 /test-bashdb-trace.sh

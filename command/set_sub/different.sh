@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "set width" debugger command
+# "set different" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,17 +18,10 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub set width \
-'Set maximum width of lines' 1
+_Dbg_help_add_sub set different \
+'Set to stop at a different line' 1
 
-typeset -i _Dbg_set_linewidth; _Dbg_set_linewidth=${COLUMNS:-80} 
-
-_Dbg_do_set_width() {
-    if [[ $1 == $int_pat ]] ; then 
-	_Dbg_write_journal_eval "_Dbg_set_linewidth=$1"
-    else
-	_Dbg_errmsg "Integer argument expected; got: $1"
-	return 1
-    fi
-    return 0
+_Dbg_do_set_different() {
+    _Dbg_set_onoff "$1" 'different'
+    return $?
 }

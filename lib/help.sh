@@ -59,15 +59,14 @@ _Dbg_help_sort_command_names() {
     _Dbg_sorted_command_names=("${list[@]}")
 }    
 
-typeset _Dbg_set_cmds="args annotate autoeval autolist basename debugging
-dollar0 editing linetrace listsize prompt showcommand trace-commands"
-
 _Dbg_help_set() {
 
     if (( $# == 0 )) ; then 
-	typeset thing
-	for thing in $_Dbg_set_cmds ; do 
-	    _Dbg_help_set $thing 1
+	typeset -a list
+	list=("${!_Dbg_command_help_set[@]}")
+	sort_list 0 ${#list[@]}-1
+	for subcmd in ${list[@]}; do
+	    _Dbg_help_set $subcmd 1
 	done
 	return 0
     fi
@@ -75,19 +74,11 @@ _Dbg_help_set() {
     typeset set_cmd="$1"
     typeset label="$2"
     
-    if [[ -z $set_cmd ]] ; then 
-	local thing
-	for thing in $_Dbg_set_cmds ; do 
-	    _Dbg_help_set $thing 1
-	done
-	return
-    fi
-    
     case $set_cmd in 
 	ar | arg | args )
-	    [[ -n $label ]] && label='set args -- '
+	    [[ -n $label ]] && label='set args      -- '
 	    _Dbg_msg \
-		"${label}Set argument list to give program being debugged when it is started.
+		"${label}Set argument list to give program when it is restarted.
 Follow this command with any number of args, to be passed to the program."
 	    return 0
 	    ;;
@@ -134,6 +125,14 @@ Follow this command with any number of args, to be passed to the program."
 		"${label}Set debugging the debugger is" $onoff
 	    return 0
 	    ;;
+	di|dif|diff|diffe|differe|differen|different )
+	    local onoff=${1:-'on'}
+	    [[ -n $label ]] && label='set different -- '
+	    (( _Dbg_set_different )) && onoff='on.'
+	    _Dbg_msg \
+		"${label}Set to stop at a different line is" $onoff
+	    return 0
+	    ;;
 	do|doll|dolla|dollar|dollar0 )
 	    [[ -n $label ]] && label='set dollar0   -- '
 	    _Dbg_msg "${label}Set \$0"
@@ -148,6 +147,40 @@ Follow this command with any number of args, to be passed to the program."
 	    else
 		_Dbg_msg 'on.'
 	    fi
+	    return 0
+	    ;;
+	high | highl | highlight )
+	    [[ -n $label ]] && label='set highlight -- '
+	    _Dbg_msg_nocr \
+		"${label}Set syntax highlighting of source listings is "
+	    if [[ -z $_Dbg_edit ]] ; then 
+		_Dbg_msg 'off.'
+	    else
+		_Dbg_msg 'on.'
+	    fi
+	    return 0
+	    ;;
+	his | hist | history )
+	    [[ -n $label ]] && label='set history   -- '
+	    _Dbg_msg_nocr \
+		"${label}Set record command history is "
+	    if [[ -z $_Dbg_set_edit ]] ; then 
+		_Dbg_msg 'off.'
+	    else
+		_Dbg_msg 'on.'
+	    fi
+            ;;
+        si | siz | size )
+            eval "$_seteglob"
+            if [[ -z $2 ]] ; then
+                _Dbg_errmsg "Argument required (integer to set it to.)."
+            elif [[ $2 != $int_pat ]] ; then 
+                _Dbg_errmsg "Integer argument expected; got: $2"
+                eval "$_resteglob"
+                return 1
+            fi
+            eval "$_resteglob"
+            _Dbg_write_journal_eval "_Dbg_history_length=$2"
 	    return 0
 	    ;;
 	lin | line | linet | linetr | linetra | linetrac | linetrace )
@@ -184,6 +217,12 @@ Follow this command with any number of args, to be passed to the program."
 	    [[ -n $label ]] && label='set trace-commands -- '
 	    _Dbg_msg \
 		"${label}Set showing debugger commands is $_Dbg_set_trace_commands."
+	    return 0
+	    ;;
+	w|wi|wid|widt|width )
+	    [[ -n $label ]] && label='set width          -- '
+	    _Dbg_msg \
+		"${label}Set maximum width of lines is $_Dbg_set_linewidth."
 	    return 0
 	    ;;
 	* )
