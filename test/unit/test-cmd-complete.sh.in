@@ -21,12 +21,12 @@ abs_top_srcdir=@abs_top_srcdir@
 # Make sure @abs_top_srcr@ has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 
-. $abs_top_srcdir/init/require.sh
-. $abs_top_srcdir/lib/help.sh
-. $abs_top_srcdir/lib/alias.sh
-. $abs_top_srcdir/lib/complete.sh
+. ${abs_top_srcdir}init/require.sh
+. ${abs_top_srcdir}lib/help.sh
+. ${abs_top_srcdir}lib/alias.sh
+. ${abs_top_srcdir}lib/complete.sh
 
-for _Dbg_file in ${abs_top_srcdir}/command/c*.sh ; do 
+for _Dbg_file in ${abs_top_srcdir}command/c*.sh ; do 
     source $_Dbg_file
 done
 

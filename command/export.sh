@@ -33,7 +33,7 @@ _Dbg_do_export() {
       return 1
   fi
 
-  if (( 0 == $BASH_SUBSHELL )) ; then
+  if (( 0 == BASH_SUBSHELL )) ; then
       _Dbg_errmsg "You are not in a subshell, so no value(s) need saving."
       return 2
   fi
