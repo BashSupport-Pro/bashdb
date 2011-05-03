@@ -47,13 +47,13 @@ _Dbg_do_complete() {
 
 # Demo it.
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-   require ./help.sh ../lib/msg.sh 
-   _Dbg_libdir='..'
-   for _Dbg_file in ${_Dbg_libdir}/command/c*.sh ; do 
-       source $_Dbg_file
-   done
-
-   _Dbg_args='complete'
-   _Dbg_do_help complete
-   _Dbg_do_complete c
+    require ./help.sh ../lib/msg.sh 
+    _Dbg_libdir='..'
+    for _Dbg_file in ${_Dbg_libdir}/command/c*.sh ; do 
+	source $_Dbg_file
+    done
+    
+    _Dbg_args='complete'
+    _Dbg_do_help complete
+    _Dbg_do_complete c
 fi
