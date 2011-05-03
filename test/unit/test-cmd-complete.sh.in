@@ -1,0 +1,34 @@
+#!@SH_PROG@
+# -*- shell-script -*-
+PS4='-(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]} - [${SHLVL},${BASH_SUBSHELL}, $?]
+'
+
+# Test command completion
+test_cmd_complete()
+{
+    output=$(_Dbg_do_complete c)
+    assertEquals 'condition
+continue
+complete
+commands' "$output"
+}
+
+if [ '/src/external-vcs/bashdb' = '' ] ; then
+  echo "Something is wrong abs_top_srcdir is not set."
+ exit 1
+fi
+abs_top_srcdir=@abs_top_srcdir@
+# Make sure @abs_top_srcr@ has a trailing slash
+abs_top_srcdir=${abs_top_srcdir%%/}/
+
+. $abs_top_srcdir/init/require.sh
+. $abs_top_srcdir/lib/help.sh
+. $abs_top_srcdir/lib/alias.sh
+. $abs_top_srcdir/lib/complete.sh
+
+for _Dbg_file in ${abs_top_srcdir}/command/c*.sh ; do 
+    source $_Dbg_file
+done
+
+# load shunit2
+. ${abs_top_srcdir}/test/unit/shunit2

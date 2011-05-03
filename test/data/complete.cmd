@@ -1,6 +1,6 @@
 set trace-commands on
 ### Testing debugger 'complete' command...
-complete d
+complete e
 complete fi
 complete set a
 complete  show a

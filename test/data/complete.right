@@ -1,14 +1,12 @@
 (dbg-test1.sh:22):
 22:	x=22
 +### Testing debugger 'complete' command...
-+complete d
-d
-debug
-delete
-disable
-display
-deleteall
-down
++complete e
+export
+examine
+edit
+eval
+enable
 +complete fi
 file
 finish

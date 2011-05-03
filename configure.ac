@@ -220,6 +220,8 @@ AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh],
                 [chmod +x test/unit/test-bashdb-trace.sh])
 AC_CONFIG_FILES([test/unit/test-break.sh], 
                 [chmod +x test/unit/test-break.sh])
+AC_CONFIG_FILES([test/unit/test-cmd-complete.sh], 
+                [chmod +x test/unit/test-cmd-complete.sh])
 AC_CONFIG_FILES([test/unit/test-columns.sh], 
                 [chmod +x test/unit/test-columns.sh])
 AC_CONFIG_FILES([test/unit/test-eval.sh], 
