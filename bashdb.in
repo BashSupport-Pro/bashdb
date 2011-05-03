@@ -135,12 +135,9 @@ else
     _Dbg_write_journal_eval "_Dbg_step_ignore=3" 
 fi
 
-# Set $0 if possible.
-if [[ -f $_Dbg_libdir/builtin/set0 ]] ; then
-    enable -f $_Dbg_libdir/builtin/set0 set0
-fi
-
-# It may be that set0 comes from somewhere else
+# The set0 can be loaded via commadn/set_sub/dollar0 or perhaps
+# it as done prior to running bashdb. But if we have set0, use it
+# to change $0 to the debugged script name rather than "@PACKAGE@".
 if enable -a set0 2>/dev/null ; then
     set0 "$_Dbg_script_file"
 fi
