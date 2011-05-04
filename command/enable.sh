@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "enable" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2011 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,11 +19,30 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add enable \
-'enable {N}... -- Enable breakpoint entry/entries.'
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    source ../init/require.sh 
+    # FIXME: require loses scope for typeset -A...
+    source ../lib/help.sh
+    require ../lib/alias.sh
+fi
 
+_Dbg_help_add enable \
+'enable BPNUM1 [BPNUM2 ...]
+
+Enables breakpoints BPNUM1. Breakpoints numbers are given as a space-
+separated list numbers. 
+
+See also "info break" to get a list of breakpoints.
+'
 # Enable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_enable() {
   _Dbg_enable_disable 1 'enabled' $@
   return $?
 }
+
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    require ./help.sh ../lib/msg.sh ../lib/sort.sh ../lib/columnize.sh \
+	    ../lib/list.sh
+    _Dbg_args='enable'
+    _Dbg_do_help enable
+fi

@@ -29,7 +29,14 @@ most-recent frame, 0, if no frame number specified.
 
 A negative number indicates the position from the other or 
 least-recently-entered end.  So "frame -1" moves to the oldest frame.
-'
+' 1 _Dbg_complete_frame
+
+# Command completion for a frame command
+_Dbg_complete_frame() {
+    typeset -i start; ((start=-_Dbg_stack_size+1))
+    typeset -i end;   ((end=_Dbg_stack_size-1))
+    _Dbg_complete_num_range $start $end
+}
 
 _Dbg_do_frame() {
     _Dbg_not_running && return 3

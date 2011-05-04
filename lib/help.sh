@@ -32,10 +32,13 @@ typeset -A _Dbg_debugger_commands
 
 # Add help text $2 for command $1
 function _Dbg_help_add {
-    (($# != 2)) && (($# != 3))  && return 1
+    (($# < 2)) || (($# > 4))  && return 1
     typeset -i add_command; add_command=${3:-1}
     _Dbg_command_help[$1]="$2"
     (( add_command )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
+    if (($# == 4)); then
+	complete -F "$4" "$1"
+    fi
     return 0
 }
 

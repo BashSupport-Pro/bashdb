@@ -25,6 +25,7 @@ pkgdata_DATA =       \
        dbg-set-d-vars.inc  \
        bashdb-main.inc     \
        bashdb-trace        \
+       bashdb-part2.sh     \
        getopts_long.sh
 
 man:

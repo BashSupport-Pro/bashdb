@@ -26,6 +26,10 @@ typeset -i  _Dbg_inside_skip=0
 typeset -A _Dbg_cmdloop_hooks
 _Dbg_cmdloop_hooks['display']='_Dbg_eval_all_display'
 
+# Can be bash's "read" builtin or a command-completing "read" builtin
+# provided by this debugger.
+typeset _Dbg_read_fn; _Dbg_read_fn='read'
+
 
 # A variable holding a space is set so it can be used in a "set prompt" command
 # ("read" in the main command loop will remove a trailing space so we need
@@ -140,7 +144,12 @@ function _Dbg_process_commands {
     while : ; do 
 	set -o history
 	_Dbg_input_desc=${_Dbg_fd[_Dbg_fd_last]}
-	if ! read $_Dbg_edit -p "$_Dbg_prompt" _Dbg_cmd args \
+	if ((_Dbg_set_read_completion)) ; then
+	    _Dbg_read_fn='readc'
+	else
+	    _Dbg_read_fn='read'
+	fi
+	if ! $_Dbg_read_fn $_Dbg_edit -p "$_Dbg_prompt" _Dbg_cmd args \
 	    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
 	    set +o history
 	    break

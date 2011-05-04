@@ -6,5 +6,7 @@
 /Makefile.in
 /readarray
 /readarray-readarray.o
+/readc-readc.o
+/readc.c
 /set0
 /set0-set0.o

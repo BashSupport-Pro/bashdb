@@ -49,6 +49,40 @@ _Dbg_subcmd_complete() {
     # return _Dbg_matches
 }
 
+if enable -f ${_Dbg_libdir}/builtin/readc readc ; then
+    _Dbg_set_read_completion=1
+    # Turn on programmable completion
+    shopt -s progcomp
+    set -o emacs
+    bind 'set show-all-if-ambiguous on'
+    # bind 'set completion-ignore-case on'
+    # COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
+    #bind 'TAB:dynamic-complete-history'
+    bind 'TAB:menu-complete'
+    _Dbg_set_read_completion=1
+fi
+
+_Dbg_complete_num_range() {
+    COMPREPLY=()
+    typeset -i i
+    typeset -i j=0
+    # We want the list to go 0...n then -1...(-n+1)
+    for ((i=$1; i<=$2; i++)) ; do
+	((COMPREPLY[j]+=i))
+	((j++))
+    done
+}
+
+_Dbg_complete_level0() {
+    # echo "level 0 called with comp_line: $COMP_LINE , comp_point: $COMP_POINT"
+    COMPREPLY=( ${!_Dbg_command_help[@]} )
+}
+
+_Dbg_complete_level_0_init() {
+    typeset command_list="${!_Dbg_command_help[@]}"
+    complete -D -F _Dbg_complete_level0
+}
+
 #;;; Local Variables: ***
 #;;; mode:shell-script ***
 #;;; eval: (sh-set-shell "bash") ***

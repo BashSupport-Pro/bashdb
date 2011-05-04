@@ -29,7 +29,14 @@ the most recent frame.
 
 If COUNT is omitted, use 1. COUNT can be any arithmetic expression.
 
-See also "up" and "frame".'
+See also "up" and "frame".' 1 _Dbg_complete_down
+
+# Command completion for a frame command
+_Dbg_complete_down() {
+    typeset -i start; ((start=-_Dbg_stack_size+2+_Dbg_stack_pos))
+    typeset -i end;   ((end=_Dbg_stack_size-3-_Dbg_stack_pos))
+    _Dbg_complete_num_range $start $end
+}
 
 function _Dbg_do_down {
     _Dbg_not_running && return 3

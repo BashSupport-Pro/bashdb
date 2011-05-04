@@ -164,7 +164,7 @@ _Dbg_enable_disable() {
   return 0
 }
 
-# Print a message regarding how many times we've encounterd
+# Print a message regarding how many times we've encountered
 # breakpoint number $1 if the number of times is greater than 0.
 # Uses global array _Dbg_brkpt_counts.
 function _Dbg_print_brkpt_count {
@@ -340,6 +340,27 @@ function _Dbg_delete_brkpt_entry {
     fi
     
     return $found
+}
+
+# Enable/disable aciton(s) by entry numbers.
+function _Dbg_enable_disable_action {
+    (($# != 3)) && return 1
+    typeset -i on=$1
+    typeset en_dis=$2
+    typeset -i i=$3
+    if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
+	if [[ ${_Dbg_action_enable[$i]} == $on ]] ; then
+	    _Dbg_errmsg "Breakpoint entry $i already ${en_dis}, so nothing done."
+	    return 1
+	else
+	    _Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
+	    _Dbg_msg "Action entry $i $en_dis."
+	    return 0
+	fi
+    else
+	_Dbg_errmsg "Action entry $i doesn't exist, so nothing done."
+	return 1
+    fi
 }
 
 # Enable/disable breakpoint(s) by entry numbers.
