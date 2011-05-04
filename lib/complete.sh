@@ -81,6 +81,7 @@ _Dbg_complete_level0() {
 _Dbg_complete_level_0_init() {
     typeset command_list="${!_Dbg_command_help[@]}"
     complete -D -F _Dbg_complete_level0
+    complete -D -F _Dbg_complete_level0 'tbr'
 }
 
 #;;; Local Variables: ***
