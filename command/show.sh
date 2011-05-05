@@ -22,12 +22,18 @@
 typeset -A _Dbg_debugger_show_commands
 typeset -A _Dbg_command_help_show
 
-_Dbg_help_add show ''  # Help routine is elsewhere
+# Help routine is elsewhere which is why we have '' below.
+_Dbg_help_add show '' 1 _Dbg_complete_show
 
 # Load in "show" subcommands
 for _Dbg_file in ${_Dbg_libdir}/command/show_sub/*.sh ; do
     source $_Dbg_file
 done
+
+# Command completion for a condition command
+_Dbg_complete_show() {
+    _Dbg_complete_subcmd show
+}
 
 _Dbg_do_show() {
     typeset show_cmd=$1

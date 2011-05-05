@@ -28,9 +28,15 @@ typeset -A _Dbg_command_help_set
 
 typeset -i _Dbg_set_autoeval=0     # Evaluate unrecognized commands?
 
-_Dbg_help_add set ''  # Help routine is elsewhere
+# Help routine is elsewhere which is why we have '' below.
+_Dbg_help_add set '' 1 _Dbg_complete_set 
 
-# Load in "show" subcommands
+# Command completion for a condition command
+_Dbg_complete_set() {
+    _Dbg_complete_subcmd set
+}
+
+# Load in "set" subcommands
 for _Dbg_file in ${_Dbg_libdir}/command/set_sub/*.sh ; do 
     source $_Dbg_file
 done
