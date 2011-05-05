@@ -75,13 +75,16 @@ _Dbg_complete_num_range() {
 
 _Dbg_complete_level0() {
     # echo "level 0 called with comp_line: $COMP_LINE , comp_point: $COMP_POINT"
-    COMPREPLY=( ${!_Dbg_command_help[@]} )
+    if (( COMP_POINT >  0)) ; then 
+	typeset commands="${!_Dbg_command_help[@]}"
+	COMPREPLY=( $(compgen -W  "$commands" "$COMP_LINE") )
+    else
+	COMPREPLY=( ${!_Dbg_command_help[@]} )
+    fi
 }
 
 _Dbg_complete_level_0_init() {
-    typeset command_list="${!_Dbg_command_help[@]}"
     complete -D -F _Dbg_complete_level0
-    complete -D -F _Dbg_complete_level0 'tbr'
 }
 
 #;;; Local Variables: ***
