@@ -66,7 +66,6 @@ _Dbg_complete_num_range() {
     COMPREPLY=()
     typeset -i i
     typeset -i j=0
-    # We want the list to go 0...n then -1...(-n+1)
     for ((i=$1; i<=$2; i++)) ; do
 	((COMPREPLY[j]+=i))
 	((j++))

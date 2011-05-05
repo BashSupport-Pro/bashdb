@@ -87,10 +87,14 @@ extern char **programmable_completions(const char *, const char *,
 extern void pcomp_set_readline_variables(int, int);
 extern int progcomp_size(void);
 
+#define COMMAND_SEPARATORS ";|&{(`"
 #define COPT_DEFAULT	(1<<1)
 #define COPT_BASHDEFAULT (1<<5)
 
-static char *prog_complete_return(const char *, int);
+static int find_cmd_start __P((int));
+static int find_cmd_end __P((int));
+static char *find_cmd_name __P((int));
+static char *prog_complete_return __P((const char *, int));
 
 static char **prog_complete_matches;
 
@@ -132,6 +136,52 @@ reset_alarm ()
 {
   set_signal_handler (SIGALRM, old_alrm);
   falarm (0, 0);
+}
+
+/*
+ * XXX - because of the <= start test, and setting os = s+1, this can
+ * potentially return os > start.  This is probably not what we want to
+ * happen, but fix later after 2.05a-release.
+ */
+static int
+find_cmd_start (start)
+     int start;
+{
+  register int s, os;
+
+  os = 0;
+  while (((s = skip_to_delim (rl_line_buffer, os, COMMAND_SEPARATORS, SD_NOJMP|SD_NOSKIPCMD)) <= start) &&
+	 rl_line_buffer[s])
+    os = s+1;
+  return os;
+}
+
+static int
+find_cmd_end (end)
+     int end;
+{
+  register int e;
+
+  e = skip_to_delim (rl_line_buffer, end, COMMAND_SEPARATORS, SD_NOJMP);
+  return e;
+}
+
+static char *
+find_cmd_name (start)
+     int start;
+{
+  char *name;
+  register int s, e;
+
+  for (s = start; whitespace (rl_line_buffer[s]); s++)
+    ;
+
+  /* skip until a shell break character */
+  e = skip_to_delim (rl_line_buffer, s, "()<>;&| \t\n", SD_NOJMP);
+
+  name = substring (rl_line_buffer, s, e);
+
+  return (name);
 }
 
 static char *
@@ -196,20 +246,29 @@ attempt_bashdb_completion (text, start, end)
       (progcomp_size () > 0) &&
       current_prompt_string == ps1_prompt)
     {
-      int foundcs;
+      int s, e, foundcs;
+      char *n;
 
       /* XXX - don't free the members */
       if (prog_complete_matches)
 	free (prog_complete_matches);
       prog_complete_matches = (char **)NULL;
 
-      if (end == 0 && end == start && text[0] == '\0')
-        prog_complete_matches = 
-	    programmable_completions ("_EmptycmD_", text, start, end, 
-				      &foundcs);
-      else 
-	prog_complete_matches = programmable_completions (text, text, start, 
-							  end, &foundcs);
+      s = find_cmd_start (start);
+      e = find_cmd_end (end);
+      n = find_cmd_name (s);
+      if (e == 0 && e == s && text[0] == '\0')
+        prog_complete_matches = programmable_completions ("_EmptycmD_", text, s, e, &foundcs);
+      else if (e > s && assignment (n, 0) == 0)
+	prog_complete_matches = programmable_completions (n, text, s, e, &foundcs);
+      else
+	foundcs = 0;
+      FREE (n);
+      /* XXX - if we found a COMPSPEC for the command, just return whatever
+	 the programmable completion code returns, and disable the default
+	 filename completion that readline will do unless the COPT_DEFAULT
+	 option has been set with the `-o default' option to complete or
+	 compopt. */
       if (foundcs)
 	{
 	  pcomp_set_readline_variables (foundcs, 1);

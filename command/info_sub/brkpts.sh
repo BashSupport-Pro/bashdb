@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# gdb-like "info program" debugger command
+# gdb-like "info break" debugger command
 #
 #   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
