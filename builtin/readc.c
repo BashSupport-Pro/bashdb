@@ -1,16 +1,7 @@
 /*This file is readc.c
-It implements the builtin "read" with command completion in Bash.
-Basically we are removing a couple of lines from Bash's read routine.
-
-To install after compiling:
-   cd *this directory*  # or adjust filename below
-   enable -f ./readc readc
-
-
-See
-http://stackoverflow.com/questions/4726695/bash-and-readline-tab-completion-in-a-user-input-loop
 
 Copyright (C) 1987-2010 Free Software Foundation, Inc.
+Copyright (C) 2011 R. Bernstein <rocky@gnu.org>
 
 This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -26,50 +17,25 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Bash.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-$PRODUCES read.c
+/*
+  Here we implement the builtin "read" command in Bash, but add
+  back in readline command completion.
 
-$BUILTIN readc
-$FUNCTION readc_builtin
-$SHORT_DOC readc [-ers] [-a array] [-d delim] [-i text] [-n nchars] [-N nchars] [-p prompt] [-t timeout] [-u fd] [name ...]
-Read a line from the standard input and split it into fields.
+  The code is a modification of bash's "read" builtin (builtins/read.def)
+  and bash attempt_shell_completion() in bashline.c
+  
+To install after compiling:
+   cd *this directory*  # or adjust filename below
+   enable -f ./readc readc
 
-Reads a single line from the standard input, or from file descriptor FD
-if the -u option is supplied.  The line is split into fields as with word
-splitting, and the first word is assigned to the first NAME, the second
-word to the second NAME, and so on, with any leftover words assigned to
-the last NAME.  Only the characters found in $IFS are recognized as word
-delimiters.
+See
+http://stackoverflow.com/questions/4726695/bash-and-readline-tab-completion-in-a-user-input-loop
 
-If no NAMEs are supplied, the line read is stored in the REPLY variable.
-
-Options:
-  -a array	assign the words read to sequential indices of the array
-		variable ARRAY, starting at zero
-  -d delim	continue until the first character of DELIM is read, rather
-		than newline
-  -e		use Readline to obtain the line in an interactive shell
-  -i text	Use TEXT as the initial text for Readline
-  -n nchars	return after reading NCHARS characters rather than waiting
-		for a newline, but honor a delimiter if fewer than NCHARS
-		characters are read before the delimiter
-  -N nchars	return only after reading exactly NCHARS characters, unless
-		EOF is encountered or read times out, ignoring any delimiter
-  -p prompt	output the string PROMPT without a trailing newline before
-		attempting to read
-  -r		do not allow backslashes to escape any characters
-  -s		do not echo input coming from a terminal
-  -t timeout	time out and return failure if a complete line of input is
-		not read withint TIMEOUT seconds.  The value of the TMOUT
-		variable is the default timeout.  TIMEOUT may be a
-		fractional number.  If TIMEOUT is 0, read returns success only
-		if input is available on the specified file descriptor.  The
-		exit status is greater than 128 if the timeout is exceeded
-  -u fd		read from file descriptor FD instead of the standard input
-
-Exit Status:
-The return code is zero, unless end-of-file is encountered, read times out,
-or an invalid file descriptor is supplied as the argument to -u.
+See the help for bash's builtin read for a full description of 
+the read command, a list of options, what they do, and what return 
+values.
 */
 
 #include <config.h>
@@ -118,15 +84,13 @@ extern char *current_prompt_string, *ps1_prompt;
 
 extern char **programmable_completions(const char *, const char *, 
 				       int, int, int *);
+extern void pcomp_set_readline_variables(int, int);
+extern int progcomp_size(void);
 
-#define COMMAND_SEPARATORS ";|&{(`"
 #define COPT_DEFAULT	(1<<1)
 #define COPT_BASHDEFAULT (1<<5)
 
-static int find_cmd_start __P((int));
-static int find_cmd_end __P((int));
-static char *find_cmd_name __P((int));
-static char *prog_complete_return __P((const char *, int));
+static char *prog_complete_return(const char *, int);
 
 static char **prog_complete_matches;
 
@@ -170,52 +134,6 @@ reset_alarm ()
   falarm (0, 0);
 }
 
-/*
- * XXX - because of the <= start test, and setting os = s+1, this can
- * potentially return os > start.  This is probably not what we want to
- * happen, but fix later after 2.05a-release.
- */
-static int
-find_cmd_start (start)
-     int start;
-{
-  register int s, os;
-
-  os = 0;
-  while (((s = skip_to_delim (rl_line_buffer, os, COMMAND_SEPARATORS, SD_NOJMP|SD_NOSKIPCMD)) <= start) &&
-	 rl_line_buffer[s])
-    os = s+1;
-  return os;
-}
-
-static int
-find_cmd_end (end)
-     int end;
-{
-  register int e;
-
-  e = skip_to_delim (rl_line_buffer, end, COMMAND_SEPARATORS, SD_NOJMP);
-  return e;
-}
-
-static char *
-find_cmd_name (start)
-     int start;
-{
-  char *name;
-  register int s, e;
-
-  for (s = start; whitespace (rl_line_buffer[s]); s++)
-    ;
-
-  /* skip until a shell break character */
-  e = skip_to_delim (rl_line_buffer, s, "()<>;&| \t\n", SD_NOJMP);
-
-  name = substring (rl_line_buffer, s, e);
-
-  return (name);
-}
-
 static char *
 prog_complete_return (text, matchnum)
      const char *text;
@@ -232,17 +150,18 @@ prog_complete_return (text, matchnum)
 }
 
 /* Do some completion on TEXT.  The indices of TEXT in RL_LINE_BUFFER are
-   at START and END.  Return an array of matches, or NULL if none. */
+   at START and END.  Return an array of matches, or NULL if none. 
+   Adapted from bash's attempt_shell_completion.
+*/
 static char **
 attempt_bashdb_completion (text, start, end)
      const char *text;
      int start, end;
 {
-  int in_command_position, ti, saveti, qc, dflags;
-  char **matches, *command_separator_chars;
+  int in_command_position, ti, saveti, qc;
+  char **matches;
 
   matches = (char **)NULL;
-  // rl_ignore_some_completions_function = filename_completion_ignore;
 
   /* Determine if this could be a command word.  It is if it appears at
      the start of the line (ignoring preceding whitespace), or if it
@@ -277,29 +196,20 @@ attempt_bashdb_completion (text, start, end)
       (progcomp_size () > 0) &&
       current_prompt_string == ps1_prompt)
     {
-      int s, e, foundcs;
-      char *n;
+      int foundcs;
 
       /* XXX - don't free the members */
       if (prog_complete_matches)
 	free (prog_complete_matches);
       prog_complete_matches = (char **)NULL;
 
-      s = find_cmd_start (start);
-      e = find_cmd_end (end);
-      n = find_cmd_name (s);
-      if (e == 0 && e == s && text[0] == '\0')
-        prog_complete_matches = programmable_completions ("_EmptycmD_", text, s, e, &foundcs);
-      else if (e > s && assignment (n, 0) == 0)
-	prog_complete_matches = programmable_completions (n, text, s, e, &foundcs);
-      else
-	foundcs = 0;
-      FREE (n);
-      /* XXX - if we found a COMPSPEC for the command, just return whatever
-	 the programmable completion code returns, and disable the default
-	 filename completion that readline will do unless the COPT_DEFAULT
-	 option has been set with the `-o default' option to complete or
-	 compopt. */
+      if (end == 0 && end == start && text[0] == '\0')
+        prog_complete_matches = 
+	    programmable_completions ("_EmptycmD_", text, start, end, 
+				      &foundcs);
+      else 
+	prog_complete_matches = programmable_completions (text, text, start, 
+							  end, &foundcs);
       if (foundcs)
 	{
 	  pcomp_set_readline_variables (foundcs, 1);
@@ -566,12 +476,10 @@ readc_builtin (list)
 	}
       old_alrm = set_signal_handler (SIGALRM, sigalrm);
       add_unwind_protect (reset_alarm, (char *)NULL);
-/*
 #if defined (READLINE)
       if (edit)
 	add_unwind_protect (reset_attempted_completion_function, (char *)NULL);
 #endif
-*/
       falarm (tmsec, tmusec);
     }
 
