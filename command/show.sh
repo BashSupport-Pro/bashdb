@@ -56,34 +56,6 @@ _Dbg_do_show() {
     fi
 
     case $show_cmd in 
-	ar | arg | args )
-	    [[ -n $label ]] && label='args:     '
-	    _Dbg_msg \
-		"${label}Argument list to give script when debugged program starts is:\n" \
-		"      \"${_Dbg_orig_script_args[@]}\"."
-	    ;;
-	an | ann | anno | annot | annota | annotat | annotate )
-	    [[ -n $label ]] && label='annotate: '
-	    _Dbg_msg \
-		"${label}Annotation_level is $_Dbg_set_annotate."
-	    ;;
-	autoe | autoev | autoeva | autoeval )
-	    [[ -n $label ]] && label='autoeval: '
-	    _Dbg_msg \
-		"${label}Evaluate unrecognized commands is" $(_Dbg_onoff $_Dbg_set_autoeval)
-	    ;;
-	autol | autoli | autolis | autolist )
-	    [[ -n $label ]] && label='autolist: '
-	    typeset onoff="on."
-	    [[ -z ${_Dbg_cmdloop_hooks["list"]} ]] && onoff='off.'
-	    _Dbg_msg \
-		"${label}Auto run of 'list' command is ${onoff}"
-	    ;;
-	b | ba | bas | base | basen | basena | basenam | basename )
-	    [[ -n $label ]] && label='basename: '
-	    _Dbg_msg \
-		"${label}Show short filenames (the basename) in debug output is" $(_Dbg_onoff $_Dbg_set_basename)
-	    ;;
 	com | comm | comma | comman | command | commands )
 	    typeset -i default_hi_start=_Dbg_hi-1
 	    if ((default_hi_start < 0)) ; then default_hi_start=0 ; fi
@@ -115,11 +87,6 @@ _Dbg_do_show() {
 
 	    _Dbg_msg "Source directories searched: $list"
 	    ;;
-	force | diff | differ | different )
-	    [[ -n $label ]] && label='different: '
-	    _Dbg_msg \
-		"${label}Show stepping forces a new line is" $(_Dbg_onoff $_Dbg_set_different)
-	    ;;
 	hi|his|hist|histo|histor|history)
 	    _Dbg_msg \
 		"filename: The filename in which to record the command history is $_Dbg_histfile"
@@ -137,13 +104,6 @@ _Dbg_do_show() {
 		"${label}Show line tracing is" $onoff
 	    _Dbg_msg \
 		"${label}Show line trace delay is ${_Dbg_linetrace_delay}."
-	    ;;
-
-	lis | list | lists | listsi | listsiz | listsize )
-	    [[ -n $label ]] && label='listsize: '
-	    _Dbg_msg \
-		"${label}Number of source lines ${_Dbg_debugger_name} will list by default is" \
-		"$_Dbg_set_listsize."
 	    ;;
 
 	lo | log | logg | loggi | loggin | logging )
@@ -173,11 +133,6 @@ _Dbg_do_show() {
 	    ;;
 	w | wa | war | warr | warra | warran | warrant | warranty )
 	    _Dbg_do_info warranty
-	    ;;
-	wi | wid | width )
-	    [[ -n $label ]] && label='width: '
-	    _Dbg_msg \
-		"${label}Line width is $_Dbg_set_linewidth."
 	    ;;
 	*)
 	    _Dbg_errmsg "Unknown show subcommand: $show_cmd"

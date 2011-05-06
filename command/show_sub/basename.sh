@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# set dollar0 sets $0
+# "show basename" debugger command
 #
-#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,26 +18,18 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Load set0 if possible.
-if [[ -f $_Dbg_libdir/builtin/set0 ]] ; then
-    enable -f $_Dbg_libdir/builtin/set0 set0
-fi
+_Dbg_help_add_sub show basename \
+'show basename
 
-# If it was set0 loaded, then we can add a debugger command "set dollar0"
-if enable -a set0 2>/dev/null ; then
-    _Dbg_help_add_sub set dollar0 \
-	'set dollar0 PROGRAM_NAME
+Show whether use short filenames
 
-Set $0 to PROGRAM_NAME.' 1
-    
-    _Dbg_do_set_dollar0() {
-	# We use the loop below rather than _Dbg_set_args="(@)" because
-	# we want to preserve embedded blanks in the arguments.
-	if enable -a set0 2>/dev/null ; then
-	    set0 "$1"
-	else
-	    _Dbg_errmsg "Can't do becasue set0 module is not loaded."
-	fi
-	return 0
-    }
-fi
+See also \"set basename\".' 1
+
+_Dbg_do_show_basename() {
+    [[ -n $1 ]] && label='basename: '
+    _Dbg_msg \
+	"${label}Show short filenames (the basename) in debug output is" $(_Dbg_onoff $_Dbg_set_basename)
+    typeset onoff="on."
+    [[ -z ${_Dbg_cmdloop_hooks["list"]} ]] && onoff='off.'
+    return 0
+}

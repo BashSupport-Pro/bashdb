@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# set dollar0 sets $0
+# "show args" debugger command
 #
 #   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 #
@@ -18,26 +18,15 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Load set0 if possible.
-if [[ -f $_Dbg_libdir/builtin/set0 ]] ; then
-    enable -f $_Dbg_libdir/builtin/set0 set0
-fi
+_Dbg_help_add_sub show args \
+'show args
 
-# If it was set0 loaded, then we can add a debugger command "set dollar0"
-if enable -a set0 2>/dev/null ; then
-    _Dbg_help_add_sub set dollar0 \
-	'set dollar0 PROGRAM_NAME
+Print the argument list to given when debugged program restarts.
+' 1
 
-Set $0 to PROGRAM_NAME.' 1
-    
-    _Dbg_do_set_dollar0() {
-	# We use the loop below rather than _Dbg_set_args="(@)" because
-	# we want to preserve embedded blanks in the arguments.
-	if enable -a set0 2>/dev/null ; then
-	    set0 "$1"
-	else
-	    _Dbg_errmsg "Can't do becasue set0 module is not loaded."
-	fi
-	return 0
-    }
-fi
+_Dbg_do_show_args() {
+    [[ -n $1 ]] && label='args:     '
+    _Dbg_msg \
+	"${label}Argument list to give script when debugged program starts is:\n" \
+	"      \"${_Dbg_orig_script_args[@]}\"."
+}

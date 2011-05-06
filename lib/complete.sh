@@ -32,6 +32,9 @@ _Dbg_subcmd_complete() {
     if [[ $subcmd == 'set' ]] ; then 
 	# Newer style
 	list=${!_Dbg_command_help_set[@]}
+    elif [[ $subcmd == 'show' ]] ; then 
+	# Newer style
+	list=${!_Dbg_command_help_show[@]}
     else
 	# FIXME: Older style - eventually update these.
 	cmd="list=\$_Dbg_${subcmd}_cmds"
@@ -49,7 +52,7 @@ _Dbg_subcmd_complete() {
     # return _Dbg_matches
 }
 
-if enable -f ${_Dbg_libdir}/builtin/readc readc ; then
+if enable -f ${_Dbg_libdir}/builtin/readc readc 2>/dev/null ; then
     _Dbg_set_read_completion=1
     # Turn on programmable completion
     shopt -s progcomp

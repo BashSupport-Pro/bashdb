@@ -16,10 +16,10 @@ set autoeval
 set args
 set autolist
 +complete show a
-show aliases
+show alias
 show annotate
-show args
 show autoeval
+show args
 show autolist
 +complete set an
 set annotate

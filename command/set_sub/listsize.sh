@@ -19,7 +19,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set listsize \
-'number of source lines debugger will list by default' 1
+'set listsize N
+
+Set the number of source lines debugger will list by default' 1
 
 # How many lines in a "list" command?
 typeset -i _Dbg_set_listsize=10    
