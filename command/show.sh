@@ -37,9 +37,7 @@ _Dbg_complete_show() {
 
 _Dbg_do_show() {
     typeset show_cmd=$1
-    shift
-    typeset label=$1
-    shift
+    typeset label=$2
 
     # Warranty, copying, directories, aliases, and warranty are omitted below.
     typeset -r subcmds="annotate args autoeval autolist basename debugging different editing history linetrace listsize prompt trace-commands width"
@@ -51,7 +49,7 @@ _Dbg_do_show() {
 	done
 	return 0
     elif [[ -n ${_Dbg_debugger_show_commands[$show_cmd]} ]] ; then
-	${_Dbg_debugger_show_commands[$show_cmd]} $label "$@"
+	${_Dbg_debugger_show_commands[$show_cmd]} "$label" "$@"
 	return 0
     fi
 

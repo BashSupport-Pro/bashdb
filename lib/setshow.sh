@@ -2,10 +2,10 @@
 #
 #   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
-#   This is free software; you can redistribute it and/or modify it under
-#   the terms of the GNU General Public License as published by the Free
-#   Software Foundation; either version 2, or (at your option) any later
-#   version.
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
 #
 #   This program is distributed in the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -55,23 +55,27 @@ _Dbg_help_set_onoff() {
     typeset cmd="$1"
     typeset label="$2"
     typeset msg="$3"
-    typeset -l variable_value
+    typeset -i variable_value
     eval_cmd="variable_value=\${_Dbg_set_$cmd}"
     eval $eval_cmd
     [[ -n $label ]] && label="set $cmd  -- "
-    typeset -l onoff="off."
+    typeset onoff="off."
     (( variable_value != 0 )) && onoff='on.'
     _Dbg_msg \
 	"${label}${msg} is" $onoff
     return 0
 }
 
-# _Dbg_msg() {
-#     print $*
-# }
-
-# for i in 0 1 ; do 
-#     _Dbg_foo=$i
-#     _Dbg_help_set_onoff "foo" "foo" "Set short xx"
-#     typeset -l _Dbg_foo
-# done
+# Demo it
+if [[ ${BASH_SOURCE[0]} == $0 ]] ; then
+    _Dbg_msg() {
+	echo $*
+    }
+    
+    typeset -i _Dbg_foo
+    for i in 0 1 ; do 
+	_Dbg_foo=$i
+	_Dbg_help_set_onoff "foo" "foo" "Set short xx"
+	typeset -p _Dbg_foo
+    done
+fi

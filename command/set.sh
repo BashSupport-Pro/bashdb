@@ -56,7 +56,7 @@ _Dbg_do_set() {
     fi
   
     case $set_cmd in 
-	force | dif | diff | differ | different )
+	force )
 	    _Dbg_set_onoff "$1" 'different'
 	    return $?
 	    ;;
