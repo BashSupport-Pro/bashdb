@@ -390,35 +390,41 @@ size: Debugger history size is 10
 25: show width
 24: set width 40
 +show commands +
-23: show annotate
-22: show listsize
-21: set annotate 1
-20: show annotate
-19: set annotate 6
-18: set annotate bad
-17: set listsize bad
-16: set listsize 40
-15: set misspelled 40
-14: show editing
-13: set editing
+35: show commands +
+34: show commands
+33: show history
+32: set history save on
+31: show history
+30: set history save off
+29: show history save
+28: show history
+27: set history size 10
+26: set history size
+25: show width
 +show commands -5
 36: show commands -5
 35: show commands +
 34: show commands
 33: show history
 32: set history save on
+31: show history
+30: set history save off
+29: show history save
+28: show history
+27: set history size 10
+26: set history size
 +show commands 12
-12: show editing
-11: set editing fooo
-10: set editing off
-9: show args
-8: set args now is the time
-7: show args
-6: show 
-5: show badcommand
-4: set history size 256
-3: set width 80
-2: show copying
+37: show commands 12
+36: show commands -5
+35: show commands +
+34: show commands
+33: show history
+32: set history save on
+31: show history
+30: set history save off
+29: show history save
+28: show history
+27: set history size 10
 +######################### 
 +#### Test 'autoeval'...
 +set autoeval on

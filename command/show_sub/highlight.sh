@@ -26,7 +26,7 @@ _Dbg_do_show_highlight() {
     [[ -n $label ]] && label='highlight: '
     _Dbg_msg_nocr \
         "${label}Syntax highlight in source listings is "
-    if [[ -z $_Dbg_set_highlight ]] ; then
+    if (( $_Dbg_set_highlight == 0)) ; then
         _Dbg_msg 'off.'
     else
         _Dbg_msg 'on.'

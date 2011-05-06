@@ -37,7 +37,9 @@ _Dbg_complete_show() {
 
 _Dbg_do_show() {
     typeset show_cmd=$1
-    typeset label=$2
+    (($# >= 1)) && shift
+    typeset label=$1
+    (($# >= 1)) && shift
 
     # Warranty, copying, directories, aliases, and warranty are omitted below.
     typeset -r subcmds="annotate args autoeval autolist basename debugging different editing history linetrace listsize prompt trace-commands width"
