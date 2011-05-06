@@ -19,7 +19,7 @@
 
 # Sets variable _Dbg_$2 to value $1 and then runs _Dbg_do_show $2.
 _Dbg_set_onoff() {
-    typeset -l onoff=${1:-'off'}
+    typeset onoff=${1:-'off'}
     typeset cmdname=$2
     case $onoff in 
 	on | 1 ) 
@@ -41,8 +41,8 @@ _Dbg_show_onoff() {
     typeset msg="$2"
     typeset label="$3"
     [[ -n $label ]] && label="${cmd}: "
-    typeset -l onoff='off'
-    typeset -l value
+    typeset onoff='off'
+    typeset value
     eval "value=\$_Dbg_set_${cmd}"
     (( value )) && onoff='on.'
     _Dbg_msg \
@@ -76,6 +76,6 @@ if [[ ${BASH_SOURCE[0]} == $0 ]] ; then
     for i in 0 1 ; do 
 	_Dbg_foo=$i
 	_Dbg_help_set_onoff "foo" "foo" "Set short xx"
-	typeset -p _Dbg_foo
+	typeset -p _Dbg_set_foo
     done
 fi
