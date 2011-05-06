@@ -48,7 +48,7 @@ function _Dbg_help_add_sub {
     (($# != 3)) && (($# != 4))  && return 1
     eval "_Dbg_command_help_$1[$2]=\"$3\""
     if (( add_command )) ; then
-        eval "_Dbg_debugger_$1_commands[$2]=\"_Dbg_do_${1}_${2}\""
+    	eval "_Dbg_debugger_${1}_commands[$2]=\"_Dbg_do_${1}_${2}\""
     fi
     return 0
 }
@@ -64,6 +64,7 @@ _Dbg_help_sort_command_names() {
 
 _Dbg_help_set() {
 
+    typeset subcmd
     if (( $# == 0 )) ; then 
         typeset -a list
         list=("${!_Dbg_command_help_set[@]}")
@@ -74,7 +75,7 @@ _Dbg_help_set() {
         return 0
     fi
 
-    typeset subcmd="$1"
+    subcmd="$1"
     typeset label="$2"
 
     if [[ -n "${_Dbg_command_help_set[$subcmd]}" ]] ; then 
@@ -102,10 +103,8 @@ _Dbg_help_set() {
             return 0
             ;;
         autoe | autoev | autoeva | autoeval )
-            local onoff="off."
-            (( _Dbg_set_autoeval != 0 )) && onoff='on.'
-            _Dbg_msg \
-                "${label}Evaluate unrecognized commands is" $onoff
+	    _Dbg_help_set_onoff 'autoeval' 'autoeval' \
+		"Evaluate unrecognized commands"
             return 0
             ;;
         autol | autoli | autolis | autolist )
@@ -116,17 +115,13 @@ _Dbg_help_set() {
             return 0
             ;;
         b | ba | bas | base | basen | basena | basenam | basename )
-            local onoff="off."
-            (( _Dbg_set_basename != 0 )) && onoff='on.'
-            _Dbg_msg \
-                "${label}Set short filenames (the basename) in debug output is" $onoff
+	    _Dbg_help_set_onoff 'basename' 'basename' \
+		"Set short filenames (the basename) in debug output"
             return 0
             ;;
         de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-            local onoff=${1:-'on'}
-            (( _Dbg_set_debugging )) && onoff='on.'
-            _Dbg_msg \
-                "${label}Set debugging the debugger is" $onoff
+	    _Dbg_help_set_onoff 'debugging' 'debugging' \
+	      "Set debugging the debugger"
             return 0
             ;;
         di|dif|diff|diffe|differe|differen|different )
@@ -204,7 +199,7 @@ _Dbg_help_set() {
             return 0
             ;;
         sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
-            [[ -n $label ]] && label='set showcommand -- '
+            [[ -n $label ]] && label='set showcommand  -- '
             _Dbg_msg \
                 "${label}Set showing the command to execute is $_Dbg_set_show_command."
             return 0
@@ -214,7 +209,7 @@ _Dbg_help_set() {
                 "${label}Set showing debugger commands is $_Dbg_set_trace_commands."
             return 0
             ;;
-        w|wi|wid|widt|width )
+        wi|wid|widt|width )
             _Dbg_msg \
                 "${label}Set maximum width of lines is $_Dbg_set_linewidth."
             return 0
@@ -292,15 +287,23 @@ number of lines to list."
             _Dbg_msg \
                 "$label Conditions for redistributing copies of debugger."
             ;;
+        d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+            _Dbg_msg \
+                "$label Show if we are set to debug the debugger."
+            return 0
+            ;;
         different )
             _Dbg_msg \
                 "$label Show if debugger stops at a different line."
             return 0
             ;;
-        d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+        dir|dire|direc|direct|directo|director|directori|directorie|directories)
             _Dbg_msg \
-                "$label Show if we are set to debug the debugger."
-            return 0
+                "$label Show file directories searched for listing source."
+            ;;
+        editing )
+            _Dbg_msg \
+                "$label Show editing of command lines and edit style."
             ;;
         highlight )
             _Dbg_msg \
@@ -311,14 +314,6 @@ number of lines to list."
             _Dbg_msg \
                 "$label Show if we are recording command history."
             return 0
-            ;;
-        dir|dire|direc|direct|directo|director|directori|directorie|directories)
-            _Dbg_msg \
-                "$label Show file directories searched for listing source."
-            ;;
-        editing )
-            _Dbg_msg \
-                "$label Show editing of command lines and edit style."
             ;;
         lin | line | linet | linetr | linetra | linetrac | linetrace )
             _Dbg_msg \
