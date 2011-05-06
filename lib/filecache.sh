@@ -51,7 +51,7 @@ _Dbg_check_line() {
     fi
 
     if (( line_number >  max_line )) ; then 
-	filename=$(_Dbg_file_canonic "$filename")
+	(( _Dbg_set_basename )) && filename=${filename##*/}
 	_Dbg_errmsg "Line $line_number is too large." \
 	    "File $filename has only $max_line lines."
 	return 1
@@ -67,7 +67,7 @@ function _Dbg_file_not_read_in {
     _Dbg_errmsg "'load' to read in a file."
 }
 
-# Return the maximum line of filename $1. $1 is expected to be
+# Print the maximum line of filename $1. $1 is expected to be
 # read in already and therefore stored in _Dbg_file2canonic.
 function _Dbg_get_maxline {
     (( $# != 1 )) && return -1
@@ -113,7 +113,7 @@ function _Dbg_get_source_line {
 }
 
 # _Dbg_is_file echoes the full filename if $1 is a filename found in files
-# '' is echo'd if no file found. Return 0 if found, 1 if not.
+# '' is echo'd if no file found. Return 0 (in $?) if found, 1 if not.
 function _Dbg_is_file {
   if (( $# == 0 )) ; then
     _Dbg_errmsg "Internal debug error _Dbg_is_file(): null file to find"

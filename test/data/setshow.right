@@ -305,7 +305,7 @@ args:     Argument list to give script when debugged program starts is:
 autoeval: Evaluate unrecognized commands is off.
 autolist: Auto run of 'list' command is off.
 basename: Show short filenames (the basename) in debug output is on.
-debugging: Allow debugging the debugger is off
+debugging: Allow debugging the debugger is off.
 different: Show stepping forces a new line is off.
 editing:  Editing of command lines as they are typed is on.
 editing:  Edit style is emacs.

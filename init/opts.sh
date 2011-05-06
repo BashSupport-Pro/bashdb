@@ -58,6 +58,7 @@ _Dbg_show_version() {
 
 # Script arguments before adulteration by _Dbg_parse_opts
 typeset -xa _Dbg_orig_script_args
+
 # The 'eval' is used below to preserve embedded spaces which might
 # occur for example in $@. Short of using a loop I'm not sure of an
 # easier way to copy an array in bash.
@@ -65,7 +66,7 @@ eval "_Dbg_orig_script_args=(\"\$@\")"
 
 # The following globals are set by _Dbg_parse_opts. Any values set are 
 # the default values.
-typeset    _Dbg_tmpdir=/tmp
+typeset -xa _Dbg_script_args
 
 # Use gdb-style annotate?
 typeset -i _Dbg_set_annotate=0
@@ -78,6 +79,9 @@ typeset -a _Dbg_o_init_files; _Dbg_o_init_files=()
 typeset -i _Dbg_o_nx=0
 typeset -i _Dbg_set_read_completion=0
 
+# $_Dbg_tmpdir could have been set by the top-level debugger script.
+[[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
+
 _Dbg_parse_options() {
 
     . ${_Dbg_libdir}/getopts_long.sh
@@ -86,23 +90,23 @@ _Dbg_parse_options() {
     typeset -i _Dbg_o_version=0
 
     while getopts_long A:Bc:x:hL:nqTt:VX opt \
-	annotate required_argument           \
-	basename 0                           \
-	command  required_argument           \
-	debugger 0                           \
+	annotate     required_argument       \
+	basename     no_argument             \
+	command      required_argument       \
+	debugger     no_argument             \
 	eval-command required_argument       \
-    	help     0                           \
+    	help         no_argument             \
     	highlight    no_argument             \
 	init-file    required_argument       \
 	library      required_argument       \
 	no-highlight no_argument             \
-	no-init  0                           \
-	nx       0                           \
-	quiet    0                           \
-        tempdir  required_argument           \
-        tty      required_argument           \
-        terminal required_argument           \
-	version  0                           \
+	no-init      no_argument             \
+	nx           no_argument             \
+	quiet        no_argument             \
+        tempdir      required_argument       \
+        tty          required_argument       \
+        terminal     required_argument       \
+	version      no_argument             \
 	'' "$@"
     do
 	case "$opt" in 
