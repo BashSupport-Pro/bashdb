@@ -19,7 +19,7 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set autoeval \
-'Evaluate unrecognized commands' 1
+'Evaluate unrecognized commands' 1 
 
 _Dbg_do_set_autoeval() {
     _Dbg_set_onoff "$1" 'autoeval'
