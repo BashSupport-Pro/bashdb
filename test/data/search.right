@@ -10,11 +10,20 @@
   6:        echo "fn1 here"
 +### Try another backward search ? Should not be the same line ...
 +? 
-  5:    fn1() {
+Available commands:
+  action     continue  enable   handle   next     search  step     undisplay
+  alias      debug     eval     help     print    set     step-    untrace  
+  backtrace  delete    examine  history  pwd      shell   step+    up       
+  break      disable   export   info     quit     show    tbreak   watch    
+  commands   display   file     kill     return   signal  trace    watche   
+  complete   down      finish   list     reverse  skip    tty    
+  condition  edit      frame    load     run      source  unalias
+
+Readline command line editing (emacs/vi mode) is available.
+Type "help" followed by command name for full documentation.
 +### Above search should reset list line below list start.
 +### Should get same line as line above...
 +list> 
-  5:    fn1() {
   6:        echo "fn1 here"
   7:        x=5
   8:        fn3
@@ -24,6 +33,7 @@
  12:        name="fn2"
  13:        echo "$name here"
  14:        x=6
+ 15:    }    
 +### Try forward search /fn1/. Should be line we got command before last ...
 +/fn1/ 
  32:    fn1;
@@ -61,12 +71,22 @@
  17:    fn3() {
 +### Try backward and forward last search...
 +? 
-  8:        fn3
+Available commands:
+  action     continue  enable   handle   next     search  step     undisplay
+  alias      debug     eval     help     print    set     step-    untrace  
+  backtrace  delete    examine  history  pwd      shell   step+    up       
+  break      disable   export   info     quit     show    tbreak   watch    
+  commands   display   file     kill     return   signal  trace    watche   
+  complete   down      finish   list     reverse  skip    tty    
+  condition  edit      frame    load     run      source  unalias
+
+Readline command line editing (emacs/vi mode) is available.
+Type "help" followed by command name for full documentation.
 +/ 
- 17:    fn3() {
+ 18:        name="fn3"
 +### Try alternate search form: rev fn3
 +reverse fn3
-  8:        fn3
+ 17:    fn3() {
 +### Search for something not there...
 +search foobar1111
 ** search pattern: foobar1111 not found.
