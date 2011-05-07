@@ -24,7 +24,34 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
 fi
 
 _Dbg_help_add help \
-'help	-- Print list of commands.'
+'help [COMMAND [SUBCOMMAND ..]]
+
+If no arguments are given, print a list of command names.
+With a command name give help for that command. For many commands
+you can get further detailed help by listing the subcommand name.
+
+Examples:
+
+help  
+help up
+help set
+help set args
+' 1 _Dbg_complete_help
+
+_Dbg_complete_help() {
+    typeset -a words; 
+    IFS=' ' words=( $COMP_LINE )
+    typeset subcmds
+    subcmds="${!_Dbg_command_help[@]}"
+    if (( ${#words[@]} == 1 )); then 
+	COMPREPLY=( $subcmds )
+    elif (( ${#words[@]} == 2 )) ; then 
+	typeset commands="${!_Dbg_command_help[@]}"
+	COMPREPLY=( $(compgen -W  "$subcmds" "${words[1]}") )
+    else
+	COMPREPLY=()
+    fi
+}
 
 # print help command 
 function _Dbg_do_help {
@@ -81,6 +108,7 @@ function _Dbg_do_help {
 }
 
 _Dbg_alias_add 'h' help
+_Dbg_alias_add '?' help
 
 # Demo it.
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 

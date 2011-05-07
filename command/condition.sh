@@ -23,21 +23,7 @@ _Dbg_help_add condition \
 "condition N COND	-- Break only if COND is true in breakpoint number N.
 
 N is an integer and COND is an expression to be evaluated whenever
-breakpoint N is reached." 1 _Dbg_complete_condition
-
-# Command completion for a condition command
-_Dbg_complete_condition() {
-    COMPREPLY=()
-    typeset -i i
-    typeset -i j=0
-    for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
-	if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
-	    ((COMPREPLY[j]+=i))
-	    ((j++))
-	fi
-    done
-    ## ((j==0)) && _Dbg_errmsg 'No breakpoints have been set'
-}
+breakpoint N is reached." 1 _Dbg_complete_brkpt_range
 
 # Set a condition for a given breakpoint $1 is a breakpoint number
 # $2 is a condition. If not given, set "unconditional" or 1.

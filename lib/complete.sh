@@ -65,6 +65,18 @@ if enable -f ${_Dbg_libdir}/builtin/readc readc 2>/dev/null ; then
     _Dbg_set_read_completion=1
 fi
 
+_Dbg_complete_brkpt_range() {
+    COMPREPLY=()
+    typeset -i i
+    typeset -i j=0
+    for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
+	if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
+	    ((COMPREPLY[j]+=i))
+	    ((j++))
+	fi
+    done
+}
+
 _Dbg_complete_num_range() {
     COMPREPLY=()
     typeset -i i

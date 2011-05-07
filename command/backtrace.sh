@@ -36,7 +36,14 @@ Print a backtrace of calling functions and sourced files.
 
 The backtrace contains function names, arguments, line numbers, and
 files. If COUNT is given, list only COUNT calls. If IGNORE-TOP is
-given that many frame entries are ignored"
+given that many frame entries are ignored" 1 _Dbg_complete_backtrace
+
+# Command completion for a frame command
+_Dbg_complete_backtrace() {
+    typeset -i start=0
+    typeset -i end;   ((end=_Dbg_stack_size-1))
+    _Dbg_complete_num_range $start $end
+}
 
 # FIXME: $1 is a hidden parameter not shown in help. $2 is COUNT.
 # $3 is FRAME-INDEX.

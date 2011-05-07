@@ -32,8 +32,9 @@ _Dbg_help_add enable \
 Enables breakpoints BPNUM1. Breakpoints numbers are given as a space-
 separated list numbers. 
 
-See also "info break" to get a list of breakpoints.
-'
+See also "disable" and "info break".
+' 1 _Dbg_complete_brkpt_range
+
 # Enable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_enable() {
   _Dbg_enable_disable 1 'enabled' $@

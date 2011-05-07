@@ -20,10 +20,22 @@
 #   MA 02111 USA.
 
 _Dbg_help_add disable \
-'disable {n}...	-- Disable breakpoint entry/entries.'
+'disable BPNUM1 [BPNUM2 ...]
+
+Disable breakpoint BPNUM.
+
+See also "enable" and "info break".
+' 1 _Dbg_complete_brkpt_range
 
 # Disable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_disable() {
   _Dbg_enable_disable 0 'disabled' $@
   return $?
 }
+
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    require ./help.sh ../lib/msg.sh ../lib/sort.sh ../lib/columnize.sh \
+	    ../lib/list.sh
+    _Dbg_args='enable'
+    _Dbg_do_help enable
+fi
