@@ -259,7 +259,7 @@ _Dbg_onecmd() {
      history -s -- "$full_cmd"
 
      typeset -i _Dbg_redo=1
-     while (( $_Dbg_redo )) ; do
+     while (( _Dbg_redo )) ; do
 	 
 	 _Dbg_redo=0
 
