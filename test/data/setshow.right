@@ -332,6 +332,8 @@ Argument list to give script when debugged program starts is:
 +show editing
 Editing of command lines as they are typed is off.
 +set editing
+Editing of command lines as they are typed is on.
+Edit style is emacs.
 +show editing
 Editing of command lines as they are typed is on.
 Edit style is emacs.

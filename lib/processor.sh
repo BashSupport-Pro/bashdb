@@ -154,6 +154,15 @@ function _Dbg_process_commands {
 	    set +o history
 	    break
 	fi
+
+	# FIXME: until I figure out to fix builtin readc, this happens
+	# on command completion:
+	if [[ $_Dbg_cmd =~ ' ' && -z $args ]] ; then
+	    typeset -a ary; IFS=' ' ary=( $_Dbg_cmd )
+	    _Dbg_cmd=${ary[0]}
+	    unset ary[0]
+	    args="${ary[@]}"
+	fi
 	set +o history
         if (( _Dbg_brkpt_commands_defining )) ; then
 	  case $_Dbg_cmd in

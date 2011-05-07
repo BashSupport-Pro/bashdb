@@ -24,6 +24,12 @@ _Dbg_help_add_sub set editing \
 Readline editing of command lines and edit style.
 ' 1
 
+_Dbg_next_complete[set editing]='_Dbg_complete_edit'
+
+_Dbg_complete_edit() {
+    COMPREPLY=(on off vi emacs)
+}
+
 _Dbg_do_set_editing() {
     typeset onoff=${1:-'on'}
     case $onoff in 
@@ -48,5 +54,6 @@ _Dbg_do_set_editing() {
 	    return 1
     esac
     set -o $_Dbg_edit_style
+    _Dbg_do_show_editing
     return 0
 }

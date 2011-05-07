@@ -28,6 +28,8 @@ Set showing the command to execute.' 1
 # but the command is different.
 typeset _Dbg_set_show_command="auto"
 
+_Dbg_next_complete[set showcommand]='_Dbg_complete_onoff'
+
 _Dbg_do_set_showcommand() {
     case $1 in 
 	1 )

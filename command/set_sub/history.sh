@@ -19,9 +19,15 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set history \
-'set history [on|off]
+'set history {save [on off] | size N}
 
 When set, record command history.' 1
+
+_Dbg_next_complete[set history]='_Dbg_complete_history'
+
+_Dbg_complete_history() {
+    COMPREPLY=(save size)
+}
 
 _Dbg_do_set_history() {
     case "$1" in

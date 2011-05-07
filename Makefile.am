@@ -41,7 +41,6 @@ MOSTLYCLEANFILES = *.orig *.rej
 EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
 	     ChangeLog ChangeLog.0 
-pkgdatadir=$(datadir)/bashdb
 
 data_DATA =
 

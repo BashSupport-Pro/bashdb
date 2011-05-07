@@ -23,6 +23,12 @@ _Dbg_help_add_sub set highlight \
 
 Set syntax highlighting of source listings.' 1
 
+_Dbg_next_complete[set highlight]='_Dbg_complete_edit'
+
+_Dbg_complete_highlight() {
+    COMPREPLY=(on off reset)
+}
+
 _Dbg_do_set_highlight() {
     if ( pygmentize --version || pygmentize -V ) 2>/dev/null 1>/dev/null ; then
 	:

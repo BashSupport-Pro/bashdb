@@ -23,6 +23,8 @@ _Dbg_help_add_sub set autoeval \
 
 When set on, unrecognized commands are evaluated' 1 
 
+_Dbg_next_complete[set autoeval]='_Dbg_complete_onoff'
+
 _Dbg_do_set_autoeval() {
     _Dbg_set_onoff "$1" 'autoeval'
     return $?

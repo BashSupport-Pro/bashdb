@@ -23,6 +23,8 @@ _Dbg_help_add_sub set different \
 
 When set, stop at a different line from the last one stopped.' 1
 
+_Dbg_next_complete[set different]='_Dbg_complete_onoff'
+
 _Dbg_do_set_different() {
     _Dbg_set_onoff "$1" 'different'
     return $?
