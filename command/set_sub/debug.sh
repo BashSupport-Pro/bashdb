@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "show debugging" debugger command
+# "set debug" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,11 +18,14 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub show debugging \
-"Show if we are set to debug the debugger." 1
+_Dbg_help_add_sub set debug \
+'set debug [on|off]
 
-_Dbg_do_show_debugging() {
-    [[ -n $label ]] && label='debugging: '
-    _Dbg_show_onoff 'debugging' 'Allow debugging the debugger' "$label"
-    return 0
+When set, we allow debugging the debugger.' 1
+
+_Dbg_next_complete[set debug]='_Dbg_complete_onoff'
+
+_Dbg_do_set_debug() {
+    _Dbg_set_onoff "$1" 'debug'
+    return $?
 }
