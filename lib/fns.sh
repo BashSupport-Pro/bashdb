@@ -222,7 +222,7 @@ function _Dbg_parse_linespec {
 
     # Function name or error
     * )
-      if _Dbg_is_function $linespec $_Dbg_set_debugging ; then 
+      if _Dbg_is_function $linespec $_Dbg_set_debug ; then 
 	local -a word=( $(declare -F $linespec) )
 	if [[ 0 == $? && ${#word[@]} > 2 ]]; then 
 	  builtin echo "${word[1]} 1 ${word[2]}"

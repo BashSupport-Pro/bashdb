@@ -25,7 +25,7 @@ _Dbg_shell_append_typesets() {
     typeset -p | while read -a words ; do 
 	[[ declare != ${words[0]} ]] && continue
 	var_name=${words[2]%%=*}
-	((0 == _Dbg_set_debugging)) && [[ $var_name =~ ^_Dbg_ ]] && continue	
+	((0 == _Dbg_set_debug)) && [[ $var_name =~ ^_Dbg_ ]] && continue	
 	flags=${words[1]}
 	if [[ $flags =~ ^-.*x ]]; then 
 	    # Skip exported varables
@@ -44,7 +44,7 @@ _Dbg_shell_append_fn_typesets() {
     typeset -pf | while read -a words ; do 
 	[[ declare != ${words[0]} ]] && continue
 	fn_name=${words[2]%%=*}
-	((0 == _Dbg_set_debugging)) && [[ $fn_name =~ ^_Dbg_ ]] && continue	
+	((0 == _Dbg_set_debug)) && [[ $fn_name =~ ^_Dbg_ ]] && continue	
 	flags=${words[1]}
 	echo $(typeset -pf ${fn_name} 2>/dev/null)
     done >>$_Dbg_shell_temp_profile

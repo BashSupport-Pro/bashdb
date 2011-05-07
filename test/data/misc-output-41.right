@@ -83,7 +83,7 @@ set args        -- Set argument list to give program when restarted.
 set autoeval    -- Evaluate unrecognized commands is off.
 set autolist    -- Run list command is off.
 set basename    -- Set short filenames (the basename) in debug output is on.
-set debugging   -- Set debugging the debugger is off.
+set debug       -- Set debugging the debugger is off.
 set different   -- Set to stop at a different line is different
 set dollar0     -- Set $0
 set editing     -- Set editing of command lines as they are typed is on.

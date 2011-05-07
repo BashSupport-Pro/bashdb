@@ -119,8 +119,8 @@ _Dbg_help_set() {
 		"Set short filenames (the basename) in debug output"
             return 0
             ;;
-        de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
-	    _Dbg_help_set_onoff 'debugging' 'debugging' \
+        de|deb|debu|debug )
+	    _Dbg_help_set_onoff 'debug' 'debug' \
 	      "Set debugging the debugger"
             return 0
             ;;
@@ -287,7 +287,7 @@ number of lines to list."
             _Dbg_msg \
                 "$label Conditions for redistributing copies of debugger."
             ;;
-        d|de|deb|debu|debug|debugg|debugger|debuggi|debuggin|debugging )
+        d|de|deb|debu|debug)
             _Dbg_msg \
                 "$label Show if we are set to debug the debugger."
             return 0
