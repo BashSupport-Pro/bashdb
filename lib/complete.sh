@@ -20,6 +20,21 @@
 
 typeset -a _Dbg_matches; _Dbg_matches=()
 
+compgen_opt_words() {
+    typeset -a result=()
+    typeset -a words
+    words=( $1 )
+    typeset find
+    find=$2
+    typeset try
+    for try in ${words[@]} ; do 
+	if [[ $try =~ "^$find" ]] ; then 
+	    result+=( $try )
+	fi
+    done
+    COMPREPLY=( "${result[@]}" )
+}
+
 # Print a list of completions in global variable _Dbg_matches 
 # for 'subcmd' that start with 'text'.
 # We get the list of completions from _Dbg._*subcmd*_cmds.

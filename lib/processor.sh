@@ -264,13 +264,29 @@ _Dbg_onecmd() {
 	 _Dbg_redo=0
 
 	 [[ -z $_Dbg_cmd ]] && _Dbg_cmd=$_Dbg_last_cmd
-	 if [[ -n $_Dbg_cmd ]] && \
-	     [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
-	     ${_Dbg_debugger_commands[$_Dbg_cmd]} $_Dbg_args
-	     IFS=$_Dbg_space_IFS;
-	     eval "_Dbg_prompt=$_Dbg_prompt_str"
-	     ((_Dbg_continue_rc >= 0)) && return $_Dbg_continue_rc
-	     continue
+	 if [[ -n $_Dbg_cmd ]] ; then 
+	     typeset -i found=0
+	     if [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
+		 found=1
+	     else
+		 # Look for a unique abbreviation
+		 typeset -i count=0
+		 typeset list; list="${!_Dbg_debugger_commands[@]}"
+		 for try in $list ; do 
+		     if [[ $try =~ ^$_Dbg_cmd ]] ; then
+			 _Dbg_cmd=$try
+			 ((count++))
+		     fi
+		 done
+		 ((found=(count==1)))
+	     fi
+	     if ((found)); then
+		 ${_Dbg_debugger_commands[$_Dbg_cmd]} $_Dbg_args
+		 IFS=$_Dbg_space_IFS;
+		 eval "_Dbg_prompt=$_Dbg_prompt_str"
+		 ((_Dbg_continue_rc >= 0)) && return $_Dbg_continue_rc
+		 continue
+	     fi
 	 fi
 
 	 case $_Dbg_cmd in
@@ -315,14 +331,6 @@ _Dbg_onecmd() {
 	     	 _Dbg_last_cmd='complete'
 	     	 ;;
 
-	     # Delete all breakpoints by line number.
-	     # Note we use "d" as an alias for "clear" to be compatible
-	     # with the Perl5 debugger.
-	     d | cl | cle | clea | clea | clear )
-		 _Dbg_do_clear_brkpt $_Dbg_args
-		 _Dbg_last_cmd='clear'
-		 ;;
-	     
 	     # Set up a script for debugging into.
 	     debug )
 		 _Dbg_do_debug $_Dbg_args

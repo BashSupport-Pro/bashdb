@@ -66,14 +66,14 @@ POSSIBILITY OF SUCH DAMAGES.
 +#### help commands...
 +help 
 Available commands:
-  action     debug    examine  info   return   skip    unalias  
-  alias      delete   export   kill   reverse  source  undisplay
-  backtrace  disable  file     list   run      step    untrace  
-  break      display  finish   load   search   step+   up       
-  commands   down     frame    next   set      step+   watch    
-  complete   edit     handle   print  shell    tbreak  watche   
-  condition  enable   help     pwd    show     trace 
-  continue   eval     history  quit   signal   tty   
+  action     continue  eval     history  quit     signal  tty      
+  alias      debug     examine  info     return   skip    unalias  
+  backtrace  delete    export   kill     reverse  source  undisplay
+  break      disable   file     list     run      step    untrace  
+  clear      display   finish   load     search   step+   up       
+  commands   down      frame    next     set      step+   watch    
+  complete   edit      handle   print    shell    tbreak  watche   
+  condition  enable    help     pwd      show     trace 
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -93,7 +93,7 @@ set linetrace   -- Set tracing execution of lines before executed is off.
 set listsize    -- Set number of source lines bashdb will list by default.
 set prompt      -- bashdb's prompt is:
        "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-set showcommand -- Set showing the command to execute is auto.
+set showcommand  -- Set showing the command to execute is auto.
 set width       -- Set maximum width of lines is 75.
 +help set foo
 ** There is no "set foo" command.

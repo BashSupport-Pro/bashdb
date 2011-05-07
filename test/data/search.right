@@ -11,13 +11,13 @@
 +### Try another backward search ? Should not be the same line ...
 +? 
 Available commands:
-  action     continue  enable   handle   next     search  step     undisplay
-  alias      debug     eval     help     print    set     step-    untrace  
-  backtrace  delete    examine  history  pwd      shell   step+    up       
-  break      disable   export   info     quit     show    tbreak   watch    
-  commands   display   file     kill     return   signal  trace    watche   
-  complete   down      finish   list     reverse  skip    tty    
-  condition  edit      frame    load     run      source  unalias
+  action     condition  edit     frame    load     run     source  unalias  
+  alias      continue   enable   handle   next     search  step    undisplay
+  backtrace  debug      eval     help     print    set     step-   untrace  
+  break      delete     examine  history  pwd      shell   step+   up       
+  clear      disable    export   info     quit     show    tbreak  watch    
+  commands   display    file     kill     return   signal  trace   watche   
+  complete   down       finish   list     reverse  skip    tty   
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -72,13 +72,13 @@ Type "help" followed by command name for full documentation.
 +### Try backward and forward last search...
 +? 
 Available commands:
-  action     continue  enable   handle   next     search  step     undisplay
-  alias      debug     eval     help     print    set     step-    untrace  
-  backtrace  delete    examine  history  pwd      shell   step+    up       
-  break      disable   export   info     quit     show    tbreak   watch    
-  commands   display   file     kill     return   signal  trace    watche   
-  complete   down      finish   list     reverse  skip    tty    
-  condition  edit      frame    load     run      source  unalias
+  action     condition  edit     frame    load     run     source  unalias  
+  alias      continue   enable   handle   next     search  step    undisplay
+  backtrace  debug      eval     help     print    set     step-   untrace  
+  break      delete     examine  history  pwd      shell   step+   up       
+  clear      disable    export   info     quit     show    tbreak  watch    
+  commands   display    file     kill     return   signal  trace   watche   
+  complete   down       finish   list     reverse  skip    tty   
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
