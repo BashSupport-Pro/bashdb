@@ -372,11 +372,7 @@ _Dbg_onecmd() {
 	     # 	 _Dbg_do_trace
 	     # 	 ;;
 	     
-	     # Show version information
-	     ve | ver | vers | versi | versio | version | M )
-		 _Dbg_do_show_versions
-		 ;;
-	     
+
 	     # List all breakpoints and actions.
 	     L )
 		 _Dbg_do_list_brkpt

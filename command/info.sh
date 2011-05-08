@@ -34,9 +34,15 @@ done
 _Dbg_do_info() {
       
   if (($# > 0)) ; then
-      typeset info_cmd=$1
+      typeset subcmd=$1
       shift
-      case $info_cmd in 
+
+    if [[ -n ${_Dbg_debugger_info_commands[$set_cmd]} ]] ; then
+	${_Dbg_debugger_set_commands[$set_cmd]} $label "$@"
+	return $?
+    fi
+  
+      case $subcmd in 
 	  a | ar | arg | args )
               _Dbg_do_info_args 3  # located in dbg-stack.sh
 	      return 0
@@ -105,7 +111,7 @@ _Dbg_do_info() {
 	      return 0
 	      ;;
 	  *)
-	      _Dbg_errmsg "Unknown info subcommand: $info_cmd"
+	      _Dbg_errmsg "Unknown info subcommand: $subcmd"
 	      msg=_Dbg_errmsg
       esac
   else

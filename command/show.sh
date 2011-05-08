@@ -36,26 +36,26 @@ _Dbg_complete_show() {
 }
 
 _Dbg_do_show() {
-    typeset show_cmd=$1
+    typeset subcmd=$1
     (($# >= 1)) && shift
     typeset label=$1
     (($# >= 1)) && shift
 
     # Warranty, copying, directories, aliases, and warranty are omitted below.
-    typeset -r subcmds="annotate args autoeval autolist basename debugging different editing history linetrace listsize prompt trace-commands width"
+    typeset -r subcmds="annotate args autoeval autolist basename debug different editing history linetrace listsize prompt trace-commands width"
 
-    if [[ -z $show_cmd ]] ; then 
+    if [[ -z $subcmd ]] ; then 
 	typeset thing
 	for thing in $subcmds ; do 
 	    _Dbg_do_show $thing 1
 	done
 	return 0
-    elif [[ -n ${_Dbg_debugger_show_commands[$show_cmd]} ]] ; then
-	${_Dbg_debugger_show_commands[$show_cmd]} "$label" "$@"
+    elif [[ -n ${_Dbg_debugger_show_commands[$subcmd]} ]] ; then
+	${_Dbg_debugger_show_commands[$subcmd]} "$label" "$@"
 	return 0
     fi
 
-    case $show_cmd in 
+    case $subcmd in 
 	com | comm | comma | comman | command | commands )
 	    typeset -i default_hi_start=_Dbg_hi-1
 	    if ((default_hi_start < 0)) ; then default_hi_start=0 ; fi
@@ -77,26 +77,18 @@ _Dbg_do_show() {
 	    _Dbg_do_history_list $hi_start $hi_stop
 	    _Dbg_hi_last_stop=$hi_stop
 	    ;;
-	dir|dire|direc|direct|directo|director|directori|directorie|directories)
-	    typeset list=${_Dbg_dir[0]}
-	    typeset -i n=${#_Dbg_dir[@]}
-	    typeset -i i
-	    for (( i=1 ; i < n; i++ )) ; do
-		list="${list}:${_Dbg_dir[i]}"
-	    done
-
-	    _Dbg_msg "Source directories searched: $list"
-	    ;;
 	hi|his|hist|histo|histor|history)
+	    _Dbg_printf "%-12s-- " history
 	    _Dbg_msg \
-		"filename: The filename in which to record the command history is $_Dbg_histfile"
+		"  filename: The filename in which to record the command history is $_Dbg_histfile"
 	    _Dbg_msg \
-		"save: Saving of history save is" $(_Dbg_onoff $_Dbg_set_history)
+		"  save: Saving of history save is" $(_Dbg_onoff $_Dbg_set_history)
 	    _Dbg_msg \
-		"size: Debugger history size is $_Dbg_history_length"
+		"  size: Debugger history size is $_Dbg_history_length"
 	    ;;
 
 	lin | line | linet | linetr | linetra | linetrac | linetrace )
+	    [[ -n $label ]] && label=$(_Dbg_printf_nocr "%-12s: " 'line tracing')
 	    [[ -n $label ]] && label='line tracing: '
 	    typeset onoff="off."
 	    (( _Dbg_set_linetrace != 0 )) && onoff='on.'
@@ -110,14 +102,8 @@ _Dbg_do_show() {
 	    shift
 	    _Dbg_do_show_logging $*
 	    ;;
-	p | pr | pro | prom | promp | prompt )
-	    [[ -n $label ]] && label='prompt:   '
-	    _Dbg_msg \
-		"${label}${_Dbg_debugger_name}'s prompt is:\n" \
-		"      \"$_Dbg_prompt_str\"."
-	    ;;
 	sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
-	    [[ -n $label ]] && label='showcommand: '
+	    [[ -n $label ]] && label=$(_Dbg_printf_nocr "%-12s: " 'showcommmand')
 	    _Dbg_msg \
 		"${label}Show commands in debugger prompt is" \
 		"$_Dbg_set_show_command."
@@ -135,7 +121,7 @@ _Dbg_do_show() {
 	    _Dbg_do_info warranty
 	    ;;
 	*)
-	    _Dbg_errmsg "Unknown show subcommand: $show_cmd"
+	    _Dbg_errmsg "Unknown show subcommand: $subcmd"
 	    typeset -a list; list=(${subcmds[@]})
 	    typeset columnized=''
 	    typeset -i width; ((width=_Dbg_set_linewidth-5))

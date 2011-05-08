@@ -18,10 +18,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add clear \
-'clear [LINE]
+'clear LINE
 
-clear all breakpoints at a line LINE. If no line given all breakpoints
-are cleared.'
+clear all breakpoints at a line LINE.' 1
 
 
 _Dbg_do_clear() {
