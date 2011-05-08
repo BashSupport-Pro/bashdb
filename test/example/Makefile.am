@@ -29,3 +29,4 @@ abs_builddir=@abs_builddir@
 
 EXTRA_DIST = $(check_DATA) README
 
+MOSTLYCLEANFILES = *.orig *.rej

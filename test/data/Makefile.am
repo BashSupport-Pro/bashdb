@@ -93,3 +93,4 @@ check_DATA = \
 	watch2.right
 
 EXTRA_DIST = $(check_DATA) README
+MOSTLYCLEANFILES = *.orig *.rej
