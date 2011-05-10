@@ -241,19 +241,19 @@ _Dbg_help_show() {
  	    _Dbg_msg "${_Dbg_command_help_show[$subcmd]}"
 	    return 0
 	else
-	    label=$(builtin printf "show %-12s--" $subcmd)
+	    label=$(builtin printf "show %-12s-- " $subcmd)
 	fi
     fi
     
     case $subcmd in 
         al | ali | alia | alias | aliase | aliases )
             _Dbg_msg \
-                "$label Show list of aliases currently in effect."
+                "${label}Show list of aliases currently in effect."
             return 0
             ;;
         ar | arg | args )
             _Dbg_msg \
-                "$label Show argument list to give program on restart."
+                "${label}Show argument list to give program on restart."
             return 0
             ;;
         an | ann | anno | annot | annota | annotat | annotate )
@@ -263,69 +263,69 @@ _Dbg_help_show() {
             ;;
         autoe | autoev | autoeva | autoeval )
             _Dbg_msg \
-                "$label Show if we evaluate unrecognized commands."
+                "${label}Show if we evaluate unrecognized commands."
             return 0
             ;;
         autol | autoli | autolis | autolist )
             _Dbg_msg \
-                "$label Run list before command loop?"
+                "${label}Run list before command loop?"
             return 0
             ;;
         b | ba | bas | base | basen | basena | basenam | basename )
             _Dbg_msg \
-                "$label Show if we are are to show short or long filenames."
+                "${label}Show if we are are to show short or long filenames."
             return 0
             ;;
         com | comm | comma | comman | command | commands )
             _Dbg_msg \
-                "$label commands [+|n] -- Show the history of commands you typed.
+                "${label}commands [+|n] -- Show the history of commands you typed.
 You can supply a command number to start with, or a + to start after
 the previous command number shown. A negative number indicates the 
 number of lines to list."
             ;;
         cop | copy| copyi | copyin | copying )
             _Dbg_msg \
-                "$label Conditions for redistributing copies of debugger."
+                "${label}Conditions for redistributing copies of debugger."
             ;;
         d|de|deb|debu|debug)
             _Dbg_msg \
-                "$label Show if we are set to debug the debugger."
+                "${label}Show if we are set to debug the debugger."
             return 0
             ;;
         different )
             _Dbg_msg \
-                "$label Show if debugger stops at a different line."
+                "${label}Show if debugger stops at a different line."
             return 0
             ;;
         dir|dire|direc|direct|directo|director|directori|directorie|directories)
             _Dbg_msg \
-                "$label Show file directories searched for listing source."
+                "${label}Show file directories searched for listing source."
             ;;
         editing )
             _Dbg_msg \
-                "$label Show editing of command lines and edit style."
+                "${label}Show editing of command lines and edit style."
             ;;
         highlight )
             _Dbg_msg \
-                "$label Show if we syntax highlight source listings."
+                "${label}Show if we syntax highlight source listings."
             return 0
             ;;
         history )
             _Dbg_msg \
-                "$label Show if we are recording command history."
+                "${label}Show if we are recording command history."
             return 0
             ;;
         lin | line | linet | linetr | linetra | linetrac | linetrace )
             _Dbg_msg \
-                "$label Show whether to trace lines before execution."
+                "${label}Show whether to trace lines before execution."
             ;;
         lis | list | lists | listsi | listsiz | listsize )
             _Dbg_msg \
-                "$label Show number of source lines debugger will list by default."
+                "${label}Show number of source lines debugger will list by default."
             ;;
         p | pr | pro | prom | promp | prompt )
             _Dbg_msg \
-                "$label Show debugger prompt."
+                "${label}Show debugger prompt."
             return 0
             ;;
         t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
@@ -335,12 +335,12 @@ number of lines to list."
             ;;
         wa | war | warr | warra | warran | warrant | warranty )
             _Dbg_msg \
-                "$label Various kinds of warranty you do not have."
+                "${label}Various kinds of warranty you do not have."
             return 0
             ;;
         width )
             _Dbg_msg \
-                "$label maximum width of a line."
+                "${label}maximum width of a line."
             return 0
             ;;
         * )

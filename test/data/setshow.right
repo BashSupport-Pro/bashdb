@@ -308,7 +308,7 @@ basename    : Show short filenames (the basename) in debug output is on.
 debug: Allow debugging the debugger is off.
 different   : Show stepping forces a new line is off.
 editing     : Editing of command lines as they are typed is on.
-editing     : Edit style is emacs.
+  Edit style is emacs.
 history     -- 
   filename: The filename in which to record the command history is
   save: Saving of history save is on.
@@ -334,10 +334,10 @@ Argument list to give script when debugged program starts is:
 Editing of command lines as they are typed is off.
 +set editing
 Editing of command lines as they are typed is on.
-Edit style is emacs.
+  Edit style is emacs.
 +show editing
 Editing of command lines as they are typed is on.
-Edit style is emacs.
+  Edit style is emacs.
 +set misspelled 40
 ** Undefined set subcommand "misspelled". Try "help set".
 +set listsize 40
