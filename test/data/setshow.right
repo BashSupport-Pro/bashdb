@@ -293,9 +293,9 @@ of promoting the sharing and reuse of software generally.
 +show badcommand
 ** Unknown show subcommand: badcommand
 ** Show subcommands are:
-**   annotate  autolist  different  linetrace  trace-commands
-**   args      basename  editing    listsize   width         
-**   autoeval  debug     history    prompt   
+**   alias     autoeval  commands  different    highlight  prompt    width
+**   annotate  autolist  copying   directories  history    version 
+**   args      basename  debug     editing      listsize   warranty
 +another-bad-command 
 ** Undefined command "another-bad-command". Try "help".
 +show 
@@ -309,16 +309,15 @@ debug: Allow debugging the debugger is off.
 different   : Show stepping forces a new line is off.
 editing     : Editing of command lines as they are typed is on.
   Edit style is emacs.
+highlight   : Syntax highlight in source listings is off.
 history     -- 
   filename: The filename in which to record the command history is
   save: Saving of history save is on.
   size: Debugger history size is 256
-line tracing: Show line tracing is off.
-line tracing: Show line trace delay is 0.
 listsize    : Number of source lines bashdb will list by default is 10.
 prompt      : bashdb's prompt is:
        "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-trace-commands: State of command tracing is on.
+bashdb, release 4.2-0.8dev
 width       : Line width is 80.
 +show args
 Argument list to give script when debugged program starts is:

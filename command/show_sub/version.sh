@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "show alias" debugger command
+# "show version" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -9,7 +9,7 @@
 #   (at your option) any later version.
 #
 #   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   but WITHOUT ANY VERSION; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
 #
@@ -18,21 +18,7 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub show alias \
-'show alias [NAME1 NAME2 ...]
+_Dbg_help_add_sub show version \
+'Show debugger version.' 1
 
-If aliases names are given, show their definition. If left blank, show
-all alias names' 1
-
-_Dbg_show_nolist[alias]=1
-
-_Dbg_do_show_alias() {
-    typeset -a list
-    list=()
-    for alias in "${!_Dbg_aliases[@]}"; do 
-	[[ -z ${_Dbg_aliases[$alias]} ]] && continue
-	list+=("${alias}: ${_Dbg_aliases[$alias]}")
-    done
-    _Dbg_list_columns '  |  '
-    return 0
-}
+# _Dbg_do_show_version() is defined elsewhere

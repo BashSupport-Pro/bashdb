@@ -1,7 +1,7 @@
 # -*- shell-script -*-
-# "show alias" debugger command
+# "show warranty" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,21 +18,12 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub show alias \
-'show alias [NAME1 NAME2 ...]
+_Dbg_help_add_sub show warranty \
+'Lack of warranty of this debugger.' 1
 
-If aliases names are given, show their definition. If left blank, show
-all alias names' 1
+_Dbg_show_nolist[warranty]=1
 
-_Dbg_show_nolist[alias]=1
-
-_Dbg_do_show_alias() {
-    typeset -a list
-    list=()
-    for alias in "${!_Dbg_aliases[@]}"; do 
-	[[ -z ${_Dbg_aliases[$alias]} ]] && continue
-	list+=("${alias}: ${_Dbg_aliases[$alias]}")
-    done
-    _Dbg_list_columns '  |  '
+_Dbg_do_show_warranty() {
+    _Dbg_do_info_warranty
     return 0
 }

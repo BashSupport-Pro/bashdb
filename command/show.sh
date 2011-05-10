@@ -20,7 +20,13 @@
 #   MA 02111 USA.
 
 typeset -A _Dbg_debugger_show_commands
+
 typeset -A _Dbg_command_help_show
+
+# subcommands whose current values are not shown in a "show" list . 
+# These are things like alias, warranty, or copying.
+# They are available if asked for explicitly, e.g. "show copying"
+typeset -A _Dbg_show_nolist
 
 # Help routine is elsewhere which is why we have '' below.
 _Dbg_help_add show '' 1 _Dbg_complete_show
@@ -41,13 +47,12 @@ _Dbg_do_show() {
     typeset label=$1
     (($# >= 1)) && shift
 
-    # Warranty, copying, directories, aliases, and warranty are omitted below.
-    typeset -r subcmds="annotate args autoeval autolist basename debug different editing history linetrace listsize prompt trace-commands width"
-
     if [[ -z $subcmd ]] ; then 
 	typeset thing
-	for thing in $subcmds ; do 
-	    _Dbg_do_show $thing 1
+	typeset list; list=("${!_Dbg_debugger_show_commands[@]}")
+	sort_list 0 ${#list[@]}-1
+	for thing in ${list[@]} ; do
+	    [[ -n ${_Dbg_show_nolist[$thing]} ]] || _Dbg_do_show $thing 1
 	done
 	return 0
     elif [[ -n ${_Dbg_debugger_show_commands[$subcmd]} ]] ; then
@@ -56,37 +61,6 @@ _Dbg_do_show() {
     fi
 
     case $subcmd in 
-	com | comm | comma | comman | command | commands )
-	    typeset -i default_hi_start=_Dbg_hi-1
-	    if ((default_hi_start < 0)) ; then default_hi_start=0 ; fi
-	    typeset hi_start=${2:-$default_hi_start}
-	    
-	    eval "$_seteglob"
-	     case $hi_start in
-	    	"+" )
-	    	    ((hi_start=_Dbg_hi_last_stop-1))
-	    	    ;;
-	    	$int_pat | -$int_pat)
-                     ;;
-	    	* )
-	    	    _Dbg_msg "Invalid parameter $hi_start. Need an integer or '+'"
-	    esac
-	    eval "$_resteglob"
-	    
-	    typeset -i hi_stop=hi_start-10
-	    _Dbg_do_history_list $hi_start $hi_stop
-	    _Dbg_hi_last_stop=$hi_stop
-	    ;;
-	hi|his|hist|histo|histor|history)
-	    _Dbg_printf "%-12s-- " history
-	    _Dbg_msg \
-		"  filename: The filename in which to record the command history is $_Dbg_histfile"
-	    _Dbg_msg \
-		"  save: Saving of history save is" $(_Dbg_onoff $_Dbg_set_history)
-	    _Dbg_msg \
-		"  size: Debugger history size is $_Dbg_history_length"
-	    ;;
-
 	lin | line | linet | linetr | linetra | linetrac | linetrace )
 	    [[ -n $label ]] && label=$(_Dbg_printf_nocr "%-12s: " 'line tracing')
 	    [[ -n $label ]] && label='line tracing: '
@@ -114,15 +88,10 @@ _Dbg_do_show() {
 		"${label}State of command tracing is" \
 		"$_Dbg_set_trace_commands."
 	    ;;
-	v | ve | ver | vers | versi | versio | version )
-	    _Dbg_do_show_version
-	    ;;
-	w | wa | war | warr | warra | warran | warrant | warranty )
-	    _Dbg_do_info warranty
-	    ;;
 	*)
 	    _Dbg_errmsg "Unknown show subcommand: $subcmd"
-	    typeset -a list; list=(${subcmds[@]})
+	    typeset -a list; list=("${!_Dbg_debugger_show_commands[@]}")
+	    sort_list 0 ${#list[@]}-1
 	    typeset columnized=''
 	    typeset -i width; ((width=_Dbg_set_linewidth-5))
 	    typeset -a columnized; columnize $width
