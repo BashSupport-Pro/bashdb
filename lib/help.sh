@@ -37,7 +37,7 @@ function _Dbg_help_add {
     _Dbg_command_help[$1]="$2"
     (( add_command )) && _Dbg_debugger_commands[$1]="_Dbg_do_$1"
     if (($# == 4)); then
-	complete -F "$4" "$1"
+        complete -F "$4" "$1"
     fi
     return 0
 }
@@ -48,7 +48,7 @@ function _Dbg_help_add_sub {
     (($# != 3)) && (($# != 4))  && return 1
     eval "_Dbg_command_help_$1[$2]=\"$3\""
     if (( add_command )) ; then
-    	eval "_Dbg_debugger_${1}_commands[$2]=\"_Dbg_do_${1}_${2}\""
+        eval "_Dbg_debugger_${1}_commands[$2]=\"_Dbg_do_${1}_${2}\""
     fi
     return 0
 }
@@ -79,12 +79,12 @@ _Dbg_help_set() {
     typeset label="$2"
 
     if [[ -n "${_Dbg_command_help_set[$subcmd]}" ]] ; then 
-	if [[ -z $label ]] ; then 
- 	    _Dbg_msg "${_Dbg_command_help_set[$subcmd]}"
-	    return 0
-	else
-	    label=$(builtin printf "set %-12s-- " $subcmd)
-	fi
+        if [[ -z $label ]] ; then 
+            _Dbg_msg "${_Dbg_command_help_set[$subcmd]}"
+            return 0
+        else
+            label=$(builtin printf "set %-12s-- " $subcmd)
+        fi
     fi
     
     case $subcmd in 
@@ -103,8 +103,8 @@ _Dbg_help_set() {
             return 0
             ;;
         autoe | autoev | autoeva | autoeval )
-	    _Dbg_help_set_onoff 'autoeval' 'autoeval' \
-		"Evaluate unrecognized commands"
+            _Dbg_help_set_onoff 'autoeval' 'autoeval' \
+                "Evaluate unrecognized commands"
             return 0
             ;;
         autol | autoli | autolis | autolist )
@@ -115,17 +115,17 @@ _Dbg_help_set() {
             return 0
             ;;
         b | ba | bas | base | basen | basena | basenam | basename )
-	    _Dbg_help_set_onoff 'basename' 'basename' \
-		"Set short filenames (the basename) in debug output"
+            _Dbg_help_set_onoff 'basename' 'basename' \
+                "Set short filenames (the basename) in debug output"
             return 0
             ;;
-        de|deb|debu|debug )
-	    _Dbg_help_set_onoff 'debug' 'debug' \
-	      "Set debugging the debugger"
+        deb|debu|debug )
+            _Dbg_help_set_onoff 'debug' 'debug' \
+              "Set debugging the debugger"
             return 0
             ;;
         di|dif|diff|diffe|differe|differen|different )
-            local onoff=${1:-'on'}
+            typeset onoff=${1:-'on'}
             (( _Dbg_set_different )) && onoff='on.'
             _Dbg_msg \
                 "${label}Set to stop at a different line is" $onoff
@@ -221,12 +221,11 @@ _Dbg_help_set() {
 }
 
 _Dbg_help_show() {
-    typeset show_cmd=$1
-  
     if (( $# == 0 )) ; then 
         typeset -a list
         list=("${!_Dbg_command_help_show[@]}")
         sort_list 0 ${#list[@]}-1
+        typeset subcmd
         for subcmd in ${list[@]}; do
             _Dbg_help_show $subcmd 1
         done
@@ -237,12 +236,12 @@ _Dbg_help_show() {
     typeset label="$2"
 
     if [[ -n "${_Dbg_command_help_show[$subcmd]}" ]] ; then 
-	if [[ -z $label ]] ; then 
- 	    _Dbg_msg "${_Dbg_command_help_show[$subcmd]}"
-	    return 0
-	else
-	    label=$(builtin printf "show %-12s-- " $subcmd)
-	fi
+        if [[ -z $label ]] ; then 
+            _Dbg_msg "${_Dbg_command_help_show[$subcmd]}"
+            return 0
+        else
+            label=$(builtin printf "show %-12s-- " $subcmd)
+        fi
     fi
     
     case $subcmd in 
@@ -258,7 +257,7 @@ _Dbg_help_show() {
             ;;
         an | ann | anno | annot | annota | annotat | annotate )
             _Dbg_msg \
-                "$label Show annotation_level."
+                "${label}Show annotation_level"
             return 0
             ;;
         autoe | autoev | autoeva | autoeval )
@@ -292,7 +291,7 @@ number of lines to list."
                 "${label}Show if we are set to debug the debugger."
             return 0
             ;;
-        different )
+        different | force)
             _Dbg_msg \
                 "${label}Show if debugger stops at a different line."
             return 0
