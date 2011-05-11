@@ -23,7 +23,9 @@
 # Process debugger "handle" command. 
 
 _Dbg_help_add handle \
-"handle SIGNAL ACTION -- Specify how to handle SIGNAL.
+"handle SIGNAL ACTION
+
+Specify how to handle SIGNAL.
 
 SIGNAL is a signal name like SIGSEGV, but numeric signals like 11
 (which is usually equivalent on \*nix systems) is okay too. 

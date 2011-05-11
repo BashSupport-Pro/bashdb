@@ -19,7 +19,9 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add signal \
-"signal SIGNAL -- Send a signal to the debugged program.
+"signal SIGNAL
+
+Send a signal to the debugged program.
 
 SIGNAL can be a name like \"TERM\" (for SIGTERM) or a positive number like 
 15 (which in \*nix systems is the equivalent number. On \*nix systems the

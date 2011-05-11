@@ -20,7 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add watch \
-'watch [ARITH?] EXP -- Set or clear a watch expression.'
+'watch [ARITH?] EXP
+
+Set or clear a watch expression.'
 
 _Dbg_alias_add W watch
 

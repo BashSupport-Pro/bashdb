@@ -20,7 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add pwd \
-'pwd -- Show working directory.'
+'pwd
+
+Show working directory.'
 
 _Dbg_do_pwd() {
     local _Dbg_cwd=$(pwd)

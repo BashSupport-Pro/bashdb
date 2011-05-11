@@ -19,11 +19,11 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Move default values down $1 or one in the stack. 
-
 # Move default values up $1 or one in the stack. 
 _Dbg_help_add return \
 'return
+
+Immediate return from a function.
 
 See also "finish", "kill", and "quit".'
 

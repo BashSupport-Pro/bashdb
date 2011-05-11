@@ -118,7 +118,9 @@ set editing {on|off|emacs|vi}
 Readline editing of command lines and edit style.
 
 +help tty
-tty -- Set the output device for debugger output.
+tty
+
+Set the output device for debugger output.
 +help info
 List of info subcommands:
 

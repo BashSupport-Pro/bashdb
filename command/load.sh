@@ -20,7 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add load \
-'load SCRIPT -- Read in lines of a SCRIPT for use in listing.'
+'load SCRIPT
+
+Read in lines of a SCRIPT for use in listing.'
 
 _Dbg_do_load() {
 

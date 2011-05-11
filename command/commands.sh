@@ -19,7 +19,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add commands \
-'commands [BKPT-NUM]	-- Set commands to be executed when a breakpoint is hit.
+'commands [BKPT-NUM]
+
+Set commands to be executed when a breakpoint is hit.
 
 Without BKPT-NUM, the targeted breakpoint is the last one set.  The
 commands themselves follow starting on the next line.  

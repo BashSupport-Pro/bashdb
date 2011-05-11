@@ -25,7 +25,9 @@
 typeset -i _Dbg_set_different=0  
 
 _Dbg_help_add step \
-"step [COUNT]	-- Single step an statement.
+"step [COUNT]
+
+Single step an statement.
 
 If COUNT is given, stepping occurs that many times before
 stopping. Otherwise COUNT is one. COUNT an be an arithmetic

@@ -20,7 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add file \
-"file FILENAME	-- Set FILENAME as the current source file."
+"file FILENAME
+
+Set FILENAME as the current source file."
 
 _Dbg_do_file() {
 

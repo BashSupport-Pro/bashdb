@@ -23,7 +23,9 @@
 # but the command is different.
 
 _Dbg_help_add skip \
-"skip [COUNT]	-- Skip (don't run) the next COUNT command(s).
+"skip [COUNT]
+
+Skip (don't run) the next COUNT command(s).
 
 If COUNT is given, stepping occurs that many times before
 stopping. Otherwise COUNT is one. COUNT an be an arithmetic

@@ -20,7 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add debug \
-"debug [SCRIPT]	-- Set up SCRIPT for debugging. 
+"debug [SCRIPT]
+
+Set up SCRIPT for debugging. 
 
 If SCRIPT is not given, take the script name from the command that is
 about to be executed."

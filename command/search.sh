@@ -19,7 +19,9 @@
 #   MA 02111 USA.  
 
 _Dbg_help_add 'reverse' \
-'?search -- Search backword and list line of a script.' 
+'?search
+
+Search backword and list line of a script.' 
 
 _Dbg_do_reverse() {
   typeset delim_search_pat=$1
