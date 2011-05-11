@@ -21,7 +21,7 @@
 
 typeset -i _Dbg_hi_last_stop=0
 typeset -i _Dbg_hi=0           # Current next history entry to store into.
-typeset -a _Dbg_history=()
+typeset -a _Dbg_history; _Dbg_history=()
 
 typeset -i _Dbg_set_history=1
 typeset -i _Dbg_history_length=${HISTSIZE:-256}  # gdb's default value
@@ -54,11 +54,11 @@ _Dbg_history_parse() {
     # Handle ! form. May need to parse number out number and modifier
     case $_Dbg_cmd in 
       \!\-${int_pat}:p )
-	local -a word1
+	typeset -a word1
 	word1=($(_Dbg_split '!' $_Dbg_cmd))
 	local -a word2
 	word2=($(_Dbg_split ':' ${word1[0]}))
-	local -i num=_Dbg_hi+${word2[0]}
+	typeset -i num=_Dbg_hi+${word2[0]}
 	_Dbg_do_history_list $num $num
 	history_num=-1
 	;;
@@ -101,8 +101,8 @@ _Dbg_history_parse() {
 _Dbg_history_read() {
   if [[ -r $_Dbg_histfile ]] ; then 
     history -r $_Dbg_histfile
-    local -a last_history=($(history 1))
-    local -i max_history=${last_history[0]}
+    typeset -a last_history; last_history=($(history 1))
+    typeset -i max_history=${last_history[0]}
     if (( max_history > _Dbg_history_length )) ; then
       max_history=$_Dbg_history_length
     fi
