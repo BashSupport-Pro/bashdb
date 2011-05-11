@@ -28,13 +28,14 @@ fi
 _Dbg_help_add 'examine' \
 "examine EXPR 
 
-Print value of an expression via typeset, let, and failing these, eval.
+Print value of an expression via \"typeset\", \"let\", and failing these, 
+\"eval\".
 
 Single variables and arithmetic expressions do not need leading $ for
 their value is to be substituted. However if neither these, variables
 need $ to have their value substituted.
 
-See also \"eval and pr\"."
+See also \"eval\" and \"pr\"."
 
 function _Dbg_do_examine {
     typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
