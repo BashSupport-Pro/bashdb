@@ -19,7 +19,9 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add info ''
+typeset -A _Dbg_debugger_info_commands
+
+_Dbg_help_add info '' 1 
 
 typeset -a _Dbg_info_subcmds
 _Dbg_info_subcmds=( args breakpoints display files functions program source \
@@ -41,33 +43,32 @@ _Dbg_do_info() {
   if (($# > 0)) ; then
       typeset subcmd=$1
       shift
-
-    if [[ -n ${_Dbg_debugger_info_commands[$set_cmd]} ]] ; then
-	${_Dbg_debugger_set_commands[$set_cmd]} $label "$@"
-	return $?
-    fi
+      
+      if [[ -n ${_Dbg_debugger_info_commands[$subcmd]} ]] ; then
+	  ${_Dbg_debugger_info_commands[$subcmd]} $label "$@"
+	  return $?
+      else
+	  # Look for a unique abbreviation
+	  typeset -i count=0
+	  typeset list; list="${!_Dbg_debugger_info_commands[@]}"
+	  for try in $list ; do 
+	      if [[ $try =~ ^$subcmd ]] ; then
+		  subcmd=$try
+		  ((count++))
+	      fi
+	  done
+	  ((found=(count==1)))
+      fi
+      if ((found)); then
+	  ${_Dbg_debugger_info_commands[$subcmd]} $label "$@"
+	  return $?
+      fi
   
       case $subcmd in 
 	  a | ar | arg | args )
               _Dbg_do_info_args 3  # located in dbg-stack.sh
 	      return 0
 	      ;;
-	  b | br | bre | brea | 'break' | breakp | breakpo | breakpoints | \
-	      w | wa | wat | watc | 'watch' | watchp | watchpo | watchpoints )
-	      _Dbg_do_info_brkpts $@
-	      return 0
-	      ;;
-
-	  d | di | dis| disp | displ | displa | display )
-	      _Dbg_do_info_display $@
-	      return 0
-	      ;;
-
-	  file | files )
-	      _Dbg_do_info_files
-	      return 0
-	      ;;
-
 	  fu | fun| func | funct | functi | functio | function | functions )
               _Dbg_do_info_functions $@
               return 0
@@ -79,21 +80,6 @@ _Dbg_do_info() {
               return
 	      ;;
 
-	  l | li | lin | line )
-              if (( ! _Dbg_running )) ; then
-		  _Dbg_errmsg "No line number information available."
-		  return $?
-	      fi
-
-              _Dbg_msg "Line $_Dbg_listline of \"$_Dbg_frame_last_filename\""
-	      return 0
-	      ;;
-	  
-	  p | pr | pro | prog | progr | progra | program )
-	      _Dbg_do_info_program
-	      return 0
-	      ;;
-	  
 	  so | sou | sourc | source )
               _Dbg_msg "Current script file is $_Dbg_frame_last_filename" 
               _Dbg_msg "Located in ${_Dbg_file2canonic[$_Dbg_frame_last_filename]}" 
@@ -105,14 +91,6 @@ _Dbg_do_info() {
 	  
 	  st | sta | stac | stack )
 	      _Dbg_do_backtrace 1 $@
-	      return 0
-	      ;;
-	  v | va | var | vari | varia | variab | variabl | variable | variables )
-	      _Dbg_do_info_variables "$1"
-	      return 0
-              ;;
-	  w | wa | war | warr | warra | warran | warrant | warranty )
-	      _Dbg_do_info_warranty
 	      return 0
 	      ;;
 	  *)

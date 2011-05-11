@@ -24,9 +24,7 @@ Restarting with ... restart.sh
   5:    cd /
   6:    y=2
   7:    z=0
-+info break
-Num Type       Disp Enb What
-1   breakpoint keep y   restart.sh:7
++info watch
 No watch expressions have been set.
 +cont 
 Breakpoint 1 hit (1 times).

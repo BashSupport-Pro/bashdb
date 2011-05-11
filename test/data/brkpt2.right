@@ -8,7 +8,6 @@ Breakpoint 1 set in file dbg-test1.sh, line 23.
 +info break
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
-No watch expressions have been set.
 +continue 
 Breakpoint 1 hit (1 times).
 (dbg-test1.sh:23):
@@ -23,9 +22,6 @@ Next statement to be run is:
 +watch x
  0: ($x)==22 arith: 0
 +info watchpoints
-Num Type       Disp Enb What
-1   breakpoint keep y   dbg-test1.sh:23
-	breakpoint already hit 1 time
 Num Type       Enb  Expression
 0   watchpoint y    $x
 +c 
@@ -48,10 +44,6 @@ Watchpoint entry 0 disabled.
 Num Type       Disp Enb What
 1   breakpoint keep y   dbg-test1.sh:23
 	breakpoint already hit 1 time
-Num Type       Enb  Expression
-0   watchpoint n    $x
-	breakpoint already hit 1 time
-1   watchpoint y    x > 26
 +### Continuing with a one-time line break (but will watch expression)...
 +cont 30
 One-time breakpoint 2 set in file dbg-test1.sh, line 30.

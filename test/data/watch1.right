@@ -5,16 +5,14 @@
 +### Should fail since xyxxy is not defined...
 +watch xyxxy
 ** Can't set watch: no such variable xyxxy.
-+info break
-No breakpoints have been set.
++info watch
 No watch expressions have been set.
 +### Test a simple breakpoint...
 +eval xx=1
 $? is 0
 +watch xx
  0: ($xx)==1 arith: 0
-+info break
-No breakpoints have been set.
++info watch
 Num Type       Enb  Expression
 0   watchpoint y    $xx
 +# 
@@ -42,19 +40,16 @@ Watchpoint entry 10 doesn't exist so nothing done.
 +### Test display of watchpoints...
 +watche y > 25
  1: (y > 25)==0 arith: 1
-+info break
-No breakpoints have been set.
++info watch
 Num Type       Enb  Expression
 0   watchpoint n    $xx
 1   watchpoint y    y > 25
 +delete 0w
-+info break
-No breakpoints have been set.
++info watch
 Num Type       Enb  Expression
 1   watchpoint y    y > 25
 +delete 1w
-+info break
-No breakpoints have been set.
++info watch
 No watch expressions have been set.
 +step 
 (dbg-test1.sh:23):
@@ -72,8 +67,7 @@ Watchpoint 2: $x changed:
 +l> 
 95: => set -o functrace
 96:    . "$_Dbg_script_file"
-+info break
-No breakpoints have been set.
++info watch
 Num Type       Enb  Expression
 2   watchpoint y    $x
 +cont 

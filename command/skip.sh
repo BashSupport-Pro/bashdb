@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "skip" (step over) commmand.
 #
-#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,10 +18,6 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Sets whether or not to display command to be executed in debugger prompt.
-# If yes, always show. If auto, show only if the same line is to be run
-# but the command is different.
-
 _Dbg_help_add skip \
 "skip [COUNT]
 
@@ -36,4 +32,3 @@ _Dbg_do_skip() {
     _Dbg_next_skip_common 1 $*
     return $?
 }
-

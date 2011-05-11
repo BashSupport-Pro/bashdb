@@ -25,7 +25,7 @@ typeset -a _Dbg_history; _Dbg_history=()
 
 typeset -i _Dbg_set_history=1
 typeset -i _Dbg_history_length=${HISTSIZE:-256}  # gdb's default value
-typeset _Dbg_histfile=${HOME:-.}/.bashdb_hist
+typeset _Dbg_histfile=${HOME:-.}/.kshdb_hist
 
 # Set to rerun history item, or print history if command is of the form
 #  !n:p. If command is "history" then $1 is number of history item. 
@@ -40,7 +40,6 @@ _Dbg_history_parse() {
   _Dbg_hi=${#_Dbg_history[@]}
   [[ -z $history_num ]] && let history_num=$_Dbg_hi-1
 
-  eval "$_seteglob"
   if [[ $_Dbg_cmd == h* ]] ; then
     if [[ $history_num != $int_pat ]] ; then 
       if [[ $history_num == -$int_pat ]] ; then 
@@ -52,50 +51,50 @@ _Dbg_history_parse() {
     fi
   else
     # Handle ! form. May need to parse number out number and modifier
-    case $_Dbg_cmd in 
-      \!\-${int_pat}:p )
-	typeset -a word1
-	word1=($(_Dbg_split '!' $_Dbg_cmd))
-	local -a word2
-	word2=($(_Dbg_split ':' ${word1[0]}))
-	typeset -i num=_Dbg_hi+${word2[0]}
-	_Dbg_do_history_list $num $num
-	history_num=-1
-	;;
-      [!]${int_pat}:p )
-	local -a word1
-	word1=($(_Dbg_split '!' $_Dbg_cmd))
-	local -a word2
-	word2=($(_Dbg_split ':' ${word1[0]}))
-	_Dbg_do_history_list ${word2[0]} ${word2[0]}
-	history_num=-1
-	;;
-      \!\-$int_pat ) 
-	local -a word
-	word=($(_Dbg_split '!' $_Dbg_cmd))
-	history_num=$_Dbg_hi+${word[0]}
-	;;
-      \!$int_pat ) 
-	local -a word
-	word=($(_Dbg_split '!' $_Dbg_cmd))
-	history_num=${word[0]}
-	;;
-      '!' ) 
-        if [[ $history_num != $int_pat ]] ; then 
-	  if [[ $history_num == -$int_pat ]] ; then 
-  	    history_num=$_Dbg_hi+$history_num
-	  else
-	    _Dbg_msg "Invalid history number skipped: $history_num"
-	    history_num=-1
-	  fi
-	fi
-        ;;
-      * )
-      _Dbg_msg "Invalid history number skipped: $_Dbg_cmd"
-      history_num=-1
-    esac
+    # case $_Dbg_cmd in 
+    #   \!\-${int_pat}:p )
+    # 	typeset -a word1
+    # 	word1=($(_Dbg_split '!' $_Dbg_cmd))
+    # 	local -a word2
+    # 	word2=($(_Dbg_split ':' ${word1[0]}))
+    # 	typeset -i num=_Dbg_hi+${word2[0]}
+    # 	_Dbg_do_history_list $num $num
+    # 	history_num=-1
+    # 	;;
+    #   [!]${int_pat}:p )
+    # 	local -a word1
+    # 	word1=($(_Dbg_split '!' $_Dbg_cmd))
+    # 	local -a word2
+    # 	word2=($(_Dbg_split ':' ${word1[0]}))
+    # 	_Dbg_do_history_list ${word2[0]} ${word2[0]}
+    # 	history_num=-1
+    # 	;;
+    #   \!\-$int_pat ) 
+    # 	local -a word
+    # 	word=($(_Dbg_split '!' $_Dbg_cmd))
+    # 	history_num=$_Dbg_hi+${word[0]}
+    # 	;;
+    #   \!$int_pat ) 
+    # 	local -a word
+    # 	word=($(_Dbg_split '!' $_Dbg_cmd))
+    # 	history_num=${word[0]}
+    # 	;;
+    #   '!' ) 
+    #     if [[ $history_num != $int_pat ]] ; then 
+    # 	  if [[ $history_num == -$int_pat ]] ; then 
+    # 	    history_num=$_Dbg_hi+$history_num
+    # 	  else
+    # 	    _Dbg_msg "Invalid history number skipped: $history_num"
+    # 	    history_num=-1
+    # 	  fi
+    # 	fi
+    #     ;;
+    #   * )
+    #   _Dbg_msg "Invalid history number skipped: $_Dbg_cmd"
+    #   history_num=-1
+    # esac
+      :
   fi
-  eval "$_resteglob"
 }
 
 _Dbg_history_read() {

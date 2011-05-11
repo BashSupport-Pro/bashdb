@@ -8,7 +8,6 @@ One-time breakpoint 1 set in file dbg-test1.sh, line 23.
 +info break
 Num Type       Disp Enb What
 1   breakpoint del  y   dbg-test1.sh:23
-No watch expressions have been set.
 +### continue to line 23...
 +cont 
 (dbg-test1.sh:23):

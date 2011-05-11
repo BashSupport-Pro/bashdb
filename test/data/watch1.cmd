@@ -3,11 +3,11 @@ set trace-commands on
 #
 ###  Should fail since xyxxy is not defined...
 watch xyxxy
-info break
+info watch
 ###  Test a simple breakpoint...
 eval xx=1
 watch xx
-info break
+info watch
 #
 # Now try enable and disable
 #
@@ -21,11 +21,11 @@ delete 10w
 # 
 ###  Test display of watchpoints...
 watche y > 25
-info break
+info watch
 delete 0w
-info break
+info watch
 delete 1w
-info break
+info watch
 step
 watch x
 restart -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh

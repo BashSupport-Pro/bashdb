@@ -9,7 +9,6 @@ Breakpoint 2 set in file nexting.sh, line 3.
 Num Type       Disp Enb What
 1   breakpoint keep y   nexting.sh:5
 2   breakpoint keep y   nexting.sh:3
-No watch expressions have been set.
 +disable 1
 Breakpoint entry 1 disabled.
 +# Already disabled.
@@ -26,7 +25,6 @@ Breakpoint 2 hit (1 times).
 Num Type       Disp Enb What
 1   breakpoint keep n   nexting.sh:5
 2   breakpoint keep y   nexting.sh:3
-No watch expressions have been set.
 +enable 1
 Breakpoint entry 1 enabled.
 +# enable an already enabled breakpoint
@@ -50,7 +48,6 @@ Num Type       Disp Enb What
 1   breakpoint keep y   nexting.sh:5
 2   breakpoint keep n   nexting.sh:3
 3   breakpoint keep y   nexting.sh:6
-No watch expressions have been set.
 +info program
 Program stopped.
 It stopped at breakpoint 3.
@@ -68,7 +65,6 @@ Num Type       Disp Enb What
 2   breakpoint keep n   nexting.sh:3
 3   breakpoint keep y   nexting.sh:6
 	breakpoint already hit 1 time
-No watch expressions have been set.
 +info program
 Program stopped.
 It stopped at breakpoint 3.

@@ -188,9 +188,7 @@ Info subcommands are:
 +history 11
 +!11 
 +!19:p 
-19: help set
 +!-3:p 
-27: help info
 +! -2
 List of info subcommands:
 

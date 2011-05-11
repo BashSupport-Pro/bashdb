@@ -14,14 +14,12 @@ Breakpoint 1 set in file stepping.sh, line 4.
 +info break
 Num Type       Disp Enb What
 1   breakpoint keep y   stepping.sh:4
-No watch expressions have been set.
 +############################### 
 +# Should work
 +delete 1
 Removed 1 breakpoint(s).
 +info break
 No breakpoints have been set.
-No watch expressions have been set.
 +############################### 
 +# Should fail - already deleted
 +delete 1
@@ -44,7 +42,6 @@ Breakpoint 2 hit (1 times).
 +info break
 Num Type       Disp Enb What
 2   breakpoint keep y   stepping.sh:5
-No watch expressions have been set.
 +break 6
 Breakpoint 3 set in file stepping.sh, line 6.
 +############################### 
@@ -53,7 +50,6 @@ Breakpoint 3 set in file stepping.sh, line 6.
 Removed 2 breakpoint(s).
 +info break
 No breakpoints have been set.
-No watch expressions have been set.
 +############################### 
 +# Should be able to set several brkpts on same line.
 +break 7
