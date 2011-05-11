@@ -21,12 +21,7 @@
 
 typeset -A _Dbg_debugger_info_commands
 
-_Dbg_help_add info '' 1 
-
-typeset -a _Dbg_info_subcmds
-_Dbg_info_subcmds=( args breakpoints display files functions program source \
-    sources stack terminal variables watchpoints )
-  
+_Dbg_help_add info '' 1 _Dbg_complete_info
 
 # Load in "info" subcommands
 for _Dbg_file in ${_Dbg_libdir}/command/info_sub/*.sh ; do 
@@ -101,7 +96,8 @@ _Dbg_do_info() {
       msg=_Dbg_msg
   fi
   typeset -a list
-  list=(${_Dbg_info_subcmds[@]})
+  list=(${!_Dbg_debugger_info_commands[@]})
+  sort_list 0 ${#list[@]}-1
   typeset columnized=''
   typeset -i width; ((width=_Dbg_set_linewidth-5))
   typeset -a columnized; columnize $width
