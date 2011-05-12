@@ -263,6 +263,8 @@ AC_CONFIG_FILES([test/integration/test-misc],
                 [chmod +x test/integration/test-misc])
 AC_CONFIG_FILES([test/integration/test-setshow],
                 [chmod +x test/integration/test-setshow])
+AC_CONFIG_FILES([test/integration/test-info-args],
+                [chmod +x test/integration/test-info-args])
 AC_CONFIG_FILES([test/integration/test-sig],
                 [chmod +x test/integration/test-sig])
 
