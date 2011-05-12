@@ -60,33 +60,13 @@ _Dbg_do_info() {
       fi
   
       case $subcmd in 
-	  a | ar | arg | args )
-              _Dbg_do_info_args 3  # located in dbg-stack.sh
-	      return 0
-	      ;;
 	  fu | fun| func | funct | functi | functio | function | functions )
               _Dbg_do_info_functions $@
               return 0
 	      ;;
 
-	  h | ha | han | hand | handl | handle | \
-              si | sig | sign | signa | signal | signals )
-              _Dbg_info_signals
-              return
-	      ;;
-
-	  so | sou | sourc | source )
-              _Dbg_msg "Current script file is $_Dbg_frame_last_filename" 
-              _Dbg_msg "Located in ${_Dbg_file2canonic[$_Dbg_frame_last_filename]}" 
-	      typeset -i max_line
-	      max_line=$(_Dbg_get_maxline $_Dbg_frame_last_filename)
-	      _Dbg_msg "Contains $max_line lines."
-              return 0
-	      ;;
-	  
 	  st | sta | stac | stack )
 	      _Dbg_do_backtrace 1 $@
-	      return 0
 	      ;;
 	  *)
 	      _Dbg_errmsg "Unknown info subcommand: $subcmd"
