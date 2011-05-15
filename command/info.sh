@@ -38,9 +38,9 @@ _Dbg_do_info() {
   if (($# > 0)) ; then
       typeset subcmd=$1
       shift
-      
+
       if [[ -n ${_Dbg_debugger_info_commands[$subcmd]} ]] ; then
-	  ${_Dbg_debugger_info_commands[$subcmd]} $label "$@"
+	  ${_Dbg_debugger_info_commands[$subcmd]} "$@"
 	  return $?
       else
 	  # Look for a unique abbreviation
@@ -55,23 +55,12 @@ _Dbg_do_info() {
 	  ((found=(count==1)))
       fi
       if ((found)); then
-	  ${_Dbg_debugger_info_commands[$subcmd]} $label "$@"
+	  ${_Dbg_debugger_info_commands[$subcmd]} "$@"
 	  return $?
       fi
   
-      case $subcmd in 
-	  fu | fun| func | funct | functi | functio | function | functions )
-              _Dbg_do_info_functions $@
-              return 0
-	      ;;
-
-	  st | sta | stac | stack )
-	      _Dbg_do_backtrace 1 $@
-	      ;;
-	  *)
-	      _Dbg_errmsg "Unknown info subcommand: $subcmd"
-	      msg=_Dbg_errmsg
-      esac
+      _Dbg_errmsg "Unknown info subcommand: $subcmd"
+      msg=_Dbg_errmsg
   else
       msg=_Dbg_msg
   fi

@@ -18,12 +18,12 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub info signals \
+_Dbg_help_add_sub info handle \
 'info handle
 
 Same as \"info signals\".' 1
 
 # List signal handlers in effect.
-function _Dbg_do_handle {
+function _Dbg_do_info_handle {
     _Dbg_do_info_signals $@
 }

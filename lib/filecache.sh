@@ -20,15 +20,16 @@
 
 typeset _Dbg_bogus_file=' A really bogus file'
 
-# Keys are the canonic expanded filename. _Dbg_filenames[filename] is
-# name of variable which contains text.
-typeset -A _Dbg_filenames
-
 # Maps a name into its canonic form which can then be looked up in filenames
 typeset -A _Dbg_file2canonic
+_Dbg_file2canonic=()
 
 # Information about a file.
 typeset -A _Dbg_fileinfo
+
+# Keys are the canonic expanded filename. _Dbg_filenames[filename] is
+# name of variable which contains text.
+typeset -A _Dbg_filenames
 
 _Dbg_filecache_reset() {
     _Dbg_filenames=()
@@ -90,7 +91,7 @@ function _Dbg_get_maxline {
 
 # If $2 is omitted, use _Dbg_frame_filename, if $1 is omitted use 
 # _Dbg_frame_last_lineno. The return value is put in _Dbg_source_line.
-function _Dbg_get_source_line {
+_Dbg_get_source_line() {
     typeset -i lineno
     if (( $# == 0 )); then
 	lineno=$_Dbg_frame_last_lineno

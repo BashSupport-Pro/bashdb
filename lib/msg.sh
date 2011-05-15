@@ -1,8 +1,7 @@
 # -*- shell-script -*-
-# msg.sh - Bourne Again Shell Debugger Input/Output routines
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
-#   rocky@gnu.org
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -24,10 +23,15 @@ _Dbg_ansi_term_italic="[3m"
 _Dbg_ansi_term_underline="[4m"
 _Dbg_ansi_term_normal="[0m"
 
+# Called when a dangerous action is about to be done to make sure it's
+# okay. `prompt' is printed, and "yes", or "no" is solicited.  The
+# user response is returned in variable $_Dbg_response and $? is set
+# to 0.  _Dbg_response is set to 'error' and $? set to 1 on an error.
+# 
 _Dbg_confirm() {
     if (( $# < 1 || $# > 2 )) ; then
-	_Dbg_response='error'
-	return 0
+        _Dbg_response='error'
+        return 0
     fi
     _Dbg_confirm_prompt=$1
     typeset _Dbg_confirm_default=${2:-'no'}
@@ -65,9 +69,9 @@ _Dbg_confirm() {
 function _Dbg_errmsg {
     typeset -r prefix='**'
     if (( _Dbg_set_highlight )) ; then
-	_Dbg_msg "$prefix ${_Dbg_ansi_term_underline}$@${_Dbg_ansi_term_normal}"
+        _Dbg_msg "$prefix ${_Dbg_ansi_term_underline}$@${_Dbg_ansi_term_normal}"
     else
-	_Dbg_msg "$prefix $@"
+        _Dbg_msg "$prefix $@"
     fi
 }
 
@@ -79,30 +83,30 @@ function _Dbg_errmsg_no_cr {
 
 # print message to output device
 function _Dbg_msg {
-  if (( _Dbg_logging )) ; then
-    builtin echo -e "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty  ]] ; then
-      builtin echo -e "$@" >>$_Dbg_tty
-    else
-      builtin echo -e "$@"
+    if (( _Dbg_logging )) ; then
+        builtin echo -e "$@" >>$_Dbg_logfid
     fi
-  fi
+    if (( ! _Dbg_logging_redirect )) ; then
+        if [[ -n $_Dbg_tty  ]] ; then
+            builtin echo -e "$@" >>$_Dbg_tty
+        else
+            builtin echo -e "$@"
+        fi
+    fi
 }
 
 # print message to output device without a carriage return at the end
 function _Dbg_msg_nocr {
-  if (( _Dbg_logging )) ; then
-    builtin echo -n -e "$@" >>$_Dbg_logfid
-  fi
-  if (( ! _Dbg_logging_redirect )) ; then
-    if [[ -n $_Dbg_tty  ]] ; then
-      builtin echo -n -e "$@" >>$_Dbg_tty
-    else
-      builtin echo -n -e "$@"
+    if (( _Dbg_logging )) ; then
+        builtin echo -n -e "$@" >>$_Dbg_logfid
     fi
-  fi
+    if (( ! _Dbg_logging_redirect )) ; then
+        if [[ -n $_Dbg_tty  ]] ; then
+            builtin echo -n -e "$@" >>$_Dbg_tty
+        else
+            builtin echo -n -e "$@"
+        fi
+    fi
 }
 
 # print message to output device
@@ -114,33 +118,33 @@ function _Dbg_printf {
 # print message to output device without a carriage return at the end
 function _Dbg_printf_nocr {
     typeset format=$1
-    shift 
+    shift
     if (( _Dbg_logging )) ; then
-	builtin printf "$format" "$@" >>$_Dbg_logfid
+        builtin printf "$format" "$@" >>$_Dbg_logfid
     fi
     if (( ! _Dbg_logging_redirect )) ; then
-	if [[ -n $_Dbg_tty ]] ; then 
-	    builtin printf "$format" "$@" >>$_Dbg_tty
-	else
-	    builtin printf "$format" "$@"
-	fi
+        if [[ -n $_Dbg_tty ]] ; then 
+            builtin printf "$format" "$@" >>$_Dbg_tty
+        else
+            builtin printf "$format" "$@"
+        fi
     fi
 }
 
 # print message to output device
 function _Dbg_section {
     if (( _Dbg_set_highlight )) ; then
-	_Dbg_msg "$prefix ${_Dbg_ansi_term_bold}$@${_Dbg_ansi_term_normal}"
+        _Dbg_msg "$prefix ${_Dbg_ansi_term_bold}$@${_Dbg_ansi_term_normal}"
     else
-	_Dbg_msg "$prefix $@"
+        _Dbg_msg "$prefix $@"
     fi
 }
 
 # Common funnel for "Undefined command" message
 _Dbg_undefined_cmd() {
     if (( $# == 2 )) ; then
-	_Dbg_errmsg "Undefined $1 subcommand \"$2\". Try \"help $1\"."
+        _Dbg_errmsg "Undefined $1 subcommand \"$2\". Try \"help $1\"."
     else
-	_Dbg_errmsg "Undefined command \"$1\". Try \"help\"."
+        _Dbg_errmsg "Undefined command \"$1\". Try \"help\"."
     fi
 }

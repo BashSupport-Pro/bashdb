@@ -17,5 +17,7 @@ $1 = 3
 $2 = a
 $3 = b
 $4 = c
++info functions ^ha
+hanoi
 +quit 
 bashdb: That's all, folks...
