@@ -74,7 +74,7 @@ function _Dbg_do_backtrace {
     ## typeset -p BASH_SOURCE
     ## typeset -p FUNCNAME
 
-    typeset  filename
+    typeset    filename
     typeset -i adjusted_pos
     # Position 0 is special in that get the line number not from the
     # stack but ultimately from LINENO which was saved in the hook call.

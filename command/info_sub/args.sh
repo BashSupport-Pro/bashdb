@@ -45,7 +45,7 @@ _Dbg_do_info_args() {
 
     eval "$_seteglob"
     if [[ $frame_start != $int_pat ]] ; then 
-	_Dbg_msg "Bad integer parameter: $frame_start"
+	_Dbg_errmsg "Bad integer parameter: $frame_start"
 	eval "$_resteglob"
 	return 1
     fi
