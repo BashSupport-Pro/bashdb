@@ -141,8 +141,9 @@ info warranty -- Various kinds of warranty you do not have
 Aliases for info: i
 +info 
 Info subcommands are:
-  args         display  line     signals  warranty   
-  breakpoints  files    program  source   watchpoints
+  args         files      line     source    watchpoints
+  breakpoints  functions  program  stack   
+  display      handle     signals  warranty
 +#### history...
 +H 
 28: info 

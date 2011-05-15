@@ -4,4 +4,5 @@ c 7
 info args
 c hanoi
 info args
+info functions ^ha
 quit

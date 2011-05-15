@@ -114,7 +114,7 @@ function _Dbg_split {
 # FIXME add parameter search pattern.
 _Dbg_get_functions() {
     typeset -i include_system=${1:-0}
-    typeset    pat=${2:-*}
+    typeset    pat=${2:-.*}
     typeset -a fns_a
     fns_a=( $(declare -F) )
     typeset -a ret_fns=()
@@ -131,7 +131,7 @@ _Dbg_get_functions() {
     for (( i=2; (( i < ${#fns_a[@]} )) ; i += 3 )) ; do
 	typeset fn="${fns_a[$i]}"
 	[[ $fn == _* ]] && (( ! include_system )) && continue
-	if [[ $fn == $pat ]] ; then 
+	if [[ $fn =~ $pat ]] ; then 
 	     [[ $invert == 0 ]] && ret_fns[${#ret_fns[@]}]=$fn
 	else
 	     [[ $invert != 0 ]] && ret_fns[${#ret_fns[@]}]=$fn
