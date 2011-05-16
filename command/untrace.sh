@@ -20,27 +20,36 @@
 _Dbg_help_add untrace \
 'untrace FUNCTION
 
-Undo prior trace of FUNCTION. See also "trace".'
+Untrace previously-traced function FUNCTION. See also "trace".'
 
 # Undo wrapping fn
 # $? is 0 if successful.
 function _Dbg_do_untrace {
-    typeset -r fn=$1
+    typeset fn=$1
     if [[ -z $fn ]] ; then
-	_Dbg_errmsg "untrace_fn: missing or invalid function name."
+	_Dbg_errmsg "untrace: missing or invalid function name."
 	return 2
     fi
     _Dbg_is_function "$fn" || {
-	_Dbg_errmsg "untrace_fn: function \"$fn\" is not a function."
+	_Dbg_errmsg "untrace: function \"$fn\" is not a function."
 	return 3
     }
     _Dbg_is_function "old_$fn" || {
-	_Dbg_errmsg "untrace_fn: old function old_$fn not seen - nothing done."
+	_Dbg_errmsg "untrace: old function old_$fn not seen - nothing done."
 	return 4
     }
-    cmd=$(declare -f -- "old_$fn") || return 5
-    cmd=${cmd#old_}
-    ((_Dbg_set_debug)) && echo $cmd 
-    eval "$cmd" || return 6
-    return 0
+    if cmd=$(declare -f -- "old_$fn") ; then 
+	if [[ $cmd =~ '^function old_' ]] ; then
+	    cmd="function ${cmd:13}"
+	else
+	    cmd=${cmd#old_}
+	fi
+	((_Dbg_debug_debugger)) && echo $cmd 
+	eval "$cmd" || return 6
+	_Dbg_msg "\"$fn\" restored from \"old_${fn}\"."
+	return 0
+    else
+	_Dbg_msg "Can't find function definition for \"$fn\"."
+	return 5
+    fi
 }

@@ -31,19 +31,25 @@ See also "untrace" and "debug".'
 # function is called old_$1.
 # $? is 0 if successful.
 function _Dbg_do_trace {
-    typeset -r fn=$1
-    typeset -ri clear_debug_trap=${2:-1}
-    if [[ -z $fn ]] ; then
-	_Dbg_errmsg "trace_fn: missing or invalid function name"
+    if (($# == 0)) ; then
+	_Dbg_errmsg "trace: missing function name."
 	return 2
     fi
+    typeset -r fn=$1
+    typeset -ri clear_debug_trap=${2:-1}
     _Dbg_is_function "$fn" $_Dbg_set_debug || {
 	_Dbg_errmsg "trace_fn: function \"$fn\" is not a function."
 	return 3
     }
-    cmd=old_$(declare -f -- "$fn") || {
+    cmd=$(typeset -f -- "$fn") || {
+	_Dbg_errmsg "Can't find function definition for definition \"$fn\"."
 	return 4
     }
+    if [[ $cmd =~ '^function ' ]] ; then
+	cmd="function old_${cmd:9}"
+    else
+	cmd="old_${cmd}"
+    fi
     ((_Dbg_set_debug)) && echo "$cmd"
     typeset save_clear_debug_trap_cmd=''
     typeset restore_trap_cmd=''
@@ -51,7 +57,10 @@ function _Dbg_do_trace {
 	save_clear_trap_cmd='local old_handler=$(trap -p DEBUG); trap - DEBUG'
 	restore_trap_cmd='eval $old_handler'
     fi
-    eval "$cmd" || return 5
+    eval "$cmd" || {
+	_Dbg_errmsg "Error in renaming function \"$fn\" to \"old_${fn}\"."
+	return 5
+    }
     cmd="${fn}() { 
     $save_clear_trap_cmd
     typeset -ri old_set_x=is_traced
@@ -65,5 +74,6 @@ function _Dbg_do_trace {
 "
     ((_Dbg_set_debug)) && echo "$cmd"
     eval "$cmd" || return 6
+    _Dbg_msg "\"$fn\" renamed \"old_${fn}\" and traced by \"${fn}\"."
     return 0
 }
