@@ -69,7 +69,7 @@ test_file_adjust_filename()
 {
     typeset filename
     _Dbg_set_annotate=0
-    _Dbg_basename=0
+    _Dbg_set_basename=0
     filename=$(_Dbg_adjust_filename abc)
     assertEquals 'abc' $filename
     filename=$(_Dbg_adjust_filename /abc)
@@ -96,7 +96,7 @@ test_file_resolve_expand_filename()
 }
 
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure @abs_top_srcrdir@ has a trailing slash
+# Make sure $abs_top_srcrdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 
@@ -109,7 +109,4 @@ srcdir=${srcdir%%/}/
 
 set -- # reset $# so shunit2 doesn't get confused.
 
-# load shunit2
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    . ${shunit_file}
-fi
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

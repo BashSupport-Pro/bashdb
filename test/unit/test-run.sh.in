@@ -1,7 +1,7 @@
 #!@SH_PROG@
 # -*- shell-script -*-
 
-test_not_running()
+test_run_not_running()
 {
     typeset -a errs=()
     _Dbg_errmsg() { errs+=$1; }
@@ -16,13 +16,11 @@ test_not_running()
     assertEquals  1 ${#errs[@]}
 }
 
-top_srcdir=@top_srcdir@
-top_srcdir=${top_srcdir%%/}/
-. ${top_srcdir}/lib/run.sh
+abs_top_srcdir=@abs_top_srcdir@
+# Make sure $abs_top_srcdir has a trailing slash
+abs_top_srcdir=${abs_top_srcdir%%/}/
+. ${abs_top_srcdir}test/unit/helper.sh
+. ${abs_top_srcdir}/lib/run.sh
+set -- # reset $# so shunit2 doesn't get confused.
 
-# load shunit2
-srcdir=@srcdir@
-srcdir=${srcdir}/
-. ${srcdir}/shunit2
-
-
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

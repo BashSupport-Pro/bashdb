@@ -20,17 +20,14 @@ test_save_restore_IFS_PS4()
 }
 
 abs_top_srcdir=@abs_top_srcdir@
-srcdir=@srcdir@
-
-_Dbg_libdir=$abs_top_srcdir
-set -- -q  # Don't need to show banner
+# Make sure $abs_top_srcdir has a trailing slash
+abs_top_srcdir=${abs_top_srcdir%%/}/
+. ${abs_top_srcdir}test/unit/helper.sh
 . ${abs_top_srcdir}/init/pre.sh
 . ${abs_top_srcdir}/lib/journal.sh
 . ${abs_top_srcdir}/lib/filecache.sh
 . ${abs_top_srcdir}/lib/file.sh
 . ${abs_top_srcdir}/lib/save-restore.sh
+set -- # reset $# so shunit2 doesn't get confused.
 
-# load shunit2
-srcdir=@srcdir@
-srcdir=${srcdir}/
-. ${srcdir}/shunit2
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

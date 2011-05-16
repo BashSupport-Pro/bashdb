@@ -4,6 +4,7 @@ test_preserve_set_opts()
 {
     set -u
     old_opts=$-
+    _Dbg_dbg_opts_test=''
     # If running make distcheck we can't use top_builddir
     # because some files aren't there but are in the install
     # directory. 
@@ -25,13 +26,13 @@ test_preserve_set_opts()
 
     (. ${top_builddir}/bashdb-trace -L $libdir/init/opts.sh)
     assertEquals $? 1
-
+    set +u
 }
 
 prefix=@prefix@
 top_builddir=@abs_top_builddir@
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure @abs_top_srcrdir@ has a trailing slash
+# Make sure $abs_top_srcrdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 . ${abs_top_srcdir}/lib/filecache.sh
@@ -40,10 +41,4 @@ abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}/command/trace.sh
 set -- # reset $# so shunit2 doesn't get confused.
 
-srcdir=@srcdir@
-srcdir=${srcdir}/
-# load shunit2
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    . ${shunit_file}
-fi
-
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

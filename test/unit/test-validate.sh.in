@@ -1,7 +1,6 @@
 #!@SH_PROG@
 # -*- shell-script -*-
-
-test_is_function()
+test_validate_is_function()
 {
     _Dbg_is_function 
     assertFalse 'No function given; is_function should report false' $? 
@@ -31,7 +30,7 @@ test_is_function()
 }
 
 # Test _Dbg_is_int
-test_is_integer()
+test_validate_is_integer()
 {
     _Dbg_is_int
     assertFalse 'No integer given; is_int should report false' $? 
@@ -63,17 +62,14 @@ if [ '@abs_top_srcdir@' = '' ] ; then
  exit 1
 fi
 abs_top_srcdir=@abs_top_srcdir@
+# Make sure $abs_top_srcr has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
-
-_Dbg_libdir=$abs_top_srcdir
-set -- -q  # Don't need to show banner
+. ${abs_top_srcdir}test/unit/helper.sh
 . ${abs_top_srcdir}init/vars.sh
 . ${abs_top_srcdir}init/pre.sh
 . ${abs_top_srcdir}lib/journal.sh
 . ${abs_top_srcdir}lib/save-restore.sh
 . ${abs_top_srcdir}lib/validate.sh
+set -- # reset $# so shunit2 doesn't get confused.
 
-# load shunit2
-shunit_file=${abs_top_srcdir}test/unit/shunit2
-. ${shunit_file}
-
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

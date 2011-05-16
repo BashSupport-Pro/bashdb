@@ -1,16 +1,20 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-.
-
-TESTS = $(wildcard test-*.sh)
-TESTS_SOURCES = $(notdir $(TESTS:=.in))
-
+COMBINED_TESTS = $(wildcard test-*.sh)
+TESTS_SOURCES = $(notdir $(COMBINED_TESTS:=.in))
 
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
-EXTRA_DIST = $(TESTS) shunit2 helper.sh require_me.sh.in $(TEST_SOURCES)
+TESTS_ENVIRONMENT = \
+  srcdir="$(abs_srcdir)" \
+  builddir="$(abs_builddir)"
 
-check: $(TESTS)
+EXTRA_DIST = helper.sh require_me.sh.in $(COMBINED_TESTS) shunit2 $(TEST_SOURCES)
 
+test: check
 test-unit: check
+
+check: $(COMBINED_TESTS)
+	$(SH_PROG) $(abs_srcdir)/shunit2 $(COMBINED_TESTS)
 
 MOSTLYCLEANFILES = *.orig *.rej

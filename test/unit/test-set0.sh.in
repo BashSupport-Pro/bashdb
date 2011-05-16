@@ -5,6 +5,7 @@ test_set0() {
     if ! enable -f ${abs_top_builddir}/builtin/set0 set0  >/dev/null 2>&1 ; then
 	echo 'set0 tests skipped because you do not have the builtin'
 	startSkipping
+	return
     fi
     typeset oldname=$0
     set0 'newname' 'bar' 2>/dev/null
@@ -16,17 +17,16 @@ test_set0() {
     assertTrue "old $oldname should not equal new $0" "$?"
 }
 
-# Make sure @abs_top_srcdir@ has a trailing slash
-if [ '@abs_top_builddir@' = '' ] ; then
+if [ '@abs_top_srcdir@' = '' ] ; then
   echo "Something is wrong: abs_top_srcdir is not set."
- exit 1
+  exit 1
 fi
 abs_top_builddir=@abs_top_builddir@
 abs_top_builddir=${abs_top_builddir%%/}/
 abs_top_srcdir=@abs_top_srcdir@
+# Make sure $abs_top_srcdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
+. ${abs_top_srcdir}test/unit/helper.sh
+set -- # reset $# so shunit2 doesn't get confused.
 
-# load shunit2
-shunit_file=${abs_top_srcdir}test/unit/shunit2
-. ${shunit_file}
-
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

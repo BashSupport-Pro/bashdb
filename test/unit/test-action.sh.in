@@ -117,8 +117,4 @@ abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}command/action.sh
 set -- # reset $# so shunit2 doesn't get confused.
 
-# load shunit2
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    . ${shunit_file}
-fi
-
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}
