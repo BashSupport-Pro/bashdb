@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2008, 2010 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,7 +18,11 @@
 #   MA 02111 USA.
 
 _Dbg_help_add trace \
-'trace FN -- Wrap FN in set -x .. set -x tracing.'
+'trace FUNCTION
+
+Wrap FUNCTION in set -x .. set +x tracing.
+
+See also "untrace" and "debug".'
 
 # Wrap "set -x .. set +x" around a call to function $1.
 # Normally we also save and restrore any trap DEBUG functions. However
@@ -60,32 +64,6 @@ function _Dbg_do_trace {
     }
 "
     ((_Dbg_set_debug)) && echo "$cmd"
-    eval "$cmd" || return 6
-    return 0
-}
-
-_Dbg_help_add untrace \
-'untrace FN	-- Undo trace of FN.'
-
-# Undo wrapping fn
-# $? is 0 if successful.
-function _Dbg_do_untrace {
-    typeset -r fn=$1
-    if [[ -z $fn ]] ; then
-	_Dbg_errmsg "untrace_fn: missing or invalid function name."
-	return 2
-    fi
-    _Dbg_is_function "$fn" || {
-	_Dbg_errmsg "untrace_fn: function \"$fn\" is not a function."
-	return 3
-    }
-    _Dbg_is_function "old_$fn" || {
-	_Dbg_errmsg "untrace_fn: old function old_$fn not seen - nothing done."
-	return 4
-    }
-    cmd=$(declare -f -- "old_$fn") || return 5
-    cmd=${cmd#old_}
-    ((_Dbg_set_debug)) && echo $cmd 
     eval "$cmd" || return 6
     return 0
 }
