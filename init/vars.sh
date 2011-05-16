@@ -58,11 +58,11 @@ typeset _Dbg_last_printe=''    # expression on last print expression command
 
 # strings to save and restore the setting of `extglob' in debugger functions
 # that need it
-typeset -r _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s extglob'
-typeset -r _resteglob='shopt $__eopt extglob'
+typeset _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s extglob'
+typeset _resteglob='shopt $__eopt extglob'
 
-typeset -r int_pat='[0-9]*([0-9])'
-typeset -r _Dbg_signed_int_pat='?([-+])+([0-9])'
+typeset int_pat='[0-9]*([0-9])'
+typeset _Dbg_signed_int_pat='?([-+])+([0-9])'
 
 # Set tty to use for output. 
 if [[ -z $_Dbg_tty ]] ; then 
