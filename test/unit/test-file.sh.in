@@ -2,7 +2,7 @@
 # -*- shell-script -*-
 
 # Test _Dbg_file_canonic
-test_file_canonic()
+test_file_file_canonic()
 {
     _Dbg_set_basename=0
     for file in /tmp/foo.bar /a/b/foo.bar foo.bar ; do 
@@ -26,7 +26,7 @@ test_file_canonic()
 }
 
 # Test _Dbg_glob_filename
-test_glob_filename()
+test_file_glob_filename()
 {
     typeset filename
 
@@ -65,7 +65,7 @@ test_glob_filename()
 }
 
 # Test _Dbg_adjust_filename
-test_adjust_filename()
+test_file_adjust_filename()
 {
     typeset filename
     _Dbg_set_annotate=0
@@ -80,7 +80,7 @@ test_adjust_filename()
 }
 
 # Test _Dbg_glob_filename
-test_resolve_expand_filename()
+test_file_resolve_expand_filename()
 {
     filename=$(_Dbg_resolve_expand_filename /)
     assertEquals '0' $?
@@ -96,17 +96,20 @@ test_resolve_expand_filename()
 }
 
 abs_top_srcdir=@abs_top_srcdir@
+# Make sure @abs_top_srcrdir@ has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
+. ${abs_top_srcdir}test/unit/helper.sh
 
 srcdir=@srcdir@
 srcdir=${srcdir%%/}/
 
-_Dbg_libdir=$abs_top_srcdir
-set -- -q  # Don't need to show banner
 . $abs_top_srcdir/init/pre.sh
 . $abs_top_srcdir/lib/filecache.sh
 . $abs_top_srcdir/lib/file.sh
 
+set -- # reset $# so shunit2 doesn't get confused.
+
 # load shunit2
-shunit_file=${abs_top_srcdir}test/unit/shunit2
-. ${shunit_file}
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+    . ${shunit_file}
+fi

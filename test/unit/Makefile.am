@@ -7,7 +7,7 @@ TESTS_SOURCES = $(notdir $(TESTS:=.in))
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
-EXTRA_DIST = $(TESTS) shunit2 require_me.sh.in $(TEST_SOURCES)
+EXTRA_DIST = $(TESTS) shunit2 helper.sh require_me.sh.in $(TEST_SOURCES)
 
 check: $(TESTS)
 
