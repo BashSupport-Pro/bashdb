@@ -85,7 +85,6 @@ set autolist    -- Run list command is off.
 set basename    -- Set short filenames (the basename) in debug output is on.
 set debug       -- Set debugging the debugger is off.
 set different   -- Set to stop at a different line is different
-set dollar0     -- Set $0
 set editing     -- Set editing of command lines as they are typed is on.
 set highlight   -- Set syntax highlighting of source listings is on.
 set history     -- Set record command history is off.
