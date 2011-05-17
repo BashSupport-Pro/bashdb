@@ -72,7 +72,7 @@ typeset -ai _Dbg_watch_enable=() # 1/0 if enabled or not
 typeset -i  _Dbg_watch_max=0     # Needed because we can't figure out what
                                     # the max index is and arrays can be sparse
 
-typeset -r  _Dbg_watch_pat="${int_pat}[wW]"
+typeset     _Dbg_watch_pat="${int_pat}[wW]"
 
 #========================= FUNCTIONS   ============================#
 

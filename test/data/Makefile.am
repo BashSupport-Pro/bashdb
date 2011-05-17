@@ -1,3 +1,5 @@
+# FIXME: we don't use a wildcard here because it messes up on 
+# file: file\ with\ spaces.cmd and file\ with\ spaces.right
 check_DATA = \
 	action.cmd \
 	action.right \
@@ -39,6 +41,8 @@ check_DATA = \
 	finish.right \
 	frame.cmd \
 	frame.right \
+	info-args.cmd      \
+	info-args.right    \
 	interrupt.right \
 	list.cmd \
 	list.right \

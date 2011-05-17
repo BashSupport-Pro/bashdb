@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# opts.sh - debugger command options processing. The bane of programming.
+# debugger command options processing. The bane of programming.
 #
 #   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
 #
@@ -40,8 +40,9 @@ options:
                             Set the directory location of library helper file: $_Dbg_main
     -c | --command STRING   Run STRING instead of a script file
     -n | --nx | --no-init   Don't run initialization files.
-    --tty | --terminal      Set terminal to output to
-    --tempdir DIRECTORY     Set diretory to use for writing temporary files.
+    --tty | --terminal DEV  Set to terminal in debugger output
+    -T | --tempdir DIRECTORY 
+                            Use DIRECTORY to store temporary files
     -V | --version          Print the debugger version number.
     -X | --trace            Set line tracing similar to set -x
     -x | --eval-command CMDFILE
