@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-# dbg-hist.sh - Bourne Again Shell Debugger history routines
+# hist.sh - history routines
 #
 #   Copyright (C) 2002, 2003, 2006, 2007, 2008, 2009, 2011 Rocky Bernstein
 #   <rocky@gnu.org>
@@ -19,9 +19,11 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add history \
-"History [n] -- Rerun a debugger command from the debugger history. 
+"history [N]
 
-See also H to list the history. If the n is negative you are you going
+Rerun a debugger command from the debugger history. 
+
+See also H to list the history. If N is negative you are you going
 back that many items from the end rather specifying an absolute history number."
 
 _Dbg_do_history() {

@@ -38,15 +38,14 @@ _Dbg_do_delete() {
         _Dbg_delete_watch_entry ${del:0:${#del}-1}
         ;;
       $int_pat )
-	_Dbg_delete_brkpt_entry $del
+        _Dbg_delete_brkpt_entry $del
         ((tot_found += $?))
-	;;
+        ;;
       * )
-	_Dbg_errmsg "Invalid entry number skipped: $del"
+        _Dbg_errmsg "Invalid entry number skipped: $del"
     esac
   done
   eval "$_resteglob"
   (( tot_found != 0 )) && _Dbg_msg "Removed $tot_found breakpoint(s)."
   return $tot_found
 }
-

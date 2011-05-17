@@ -24,7 +24,7 @@ typeset -A _Dbg_debugger_info_commands
 _Dbg_help_add info '' 1 _Dbg_complete_info
 
 # Load in "info" subcommands
-for _Dbg_file in ${_Dbg_libdir}/command/info_sub/*.sh ; do 
+for _Dbg_file in ${_Dbg_libdir}/command/info_sub/*.sh ; do
     source $_Dbg_file
 done
 
@@ -40,23 +40,23 @@ _Dbg_do_info() {
       shift
 
       if [[ -n ${_Dbg_debugger_info_commands[$subcmd]} ]] ; then
-	  ${_Dbg_debugger_info_commands[$subcmd]} "$@"
-	  return $?
+          ${_Dbg_debugger_info_commands[$subcmd]} "$@"
+          return $?
       else
-	  # Look for a unique abbreviation
-	  typeset -i count=0
-	  typeset list; list="${!_Dbg_debugger_info_commands[@]}"
-	  for try in $list ; do 
-	      if [[ $try =~ ^$subcmd ]] ; then
-		  subcmd=$try
-		  ((count++))
-	      fi
-	  done
-	  ((found=(count==1)))
+          # Look for a unique abbreviation
+          typeset -i count=0
+          typeset list; list="${!_Dbg_debugger_info_commands[@]}"
+          for try in $list ; do 
+              if [[ $try =~ ^$subcmd ]] ; then
+                  subcmd=$try
+                  ((count++))
+              fi
+          done
+          ((found=(count==1)))
       fi
       if ((found)); then
-	  ${_Dbg_debugger_info_commands[$subcmd]} "$@"
-	  return $?
+          ${_Dbg_debugger_info_commands[$subcmd]} "$@"
+          return $?
       fi
   
       _Dbg_errmsg "Unknown info subcommand: $subcmd"

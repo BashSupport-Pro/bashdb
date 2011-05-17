@@ -40,11 +40,12 @@ options:
                             Set the directory location of library helper file: $_Dbg_main
     -c | --command STRING   Run STRING instead of a script file
     -n | --nx | --no-init   Don't run initialization files.
-    -V | --version          Print the debugger version number.
-    -X | --eval-command CMDFILE
-                            Execute debugger commands from CMDFILE.
     --tty | --terminal      Set terminal to output to
     --tempdir DIRECTORY     Set diretory to use for writing temporary files.
+    -V | --version          Print the debugger version number.
+    -X | --trace            Set line tracing similar to set -x
+    -x | --eval-command CMDFILE
+                            Execute debugger commands from CMDFILE.
 "
   exit 100
 }
@@ -122,7 +123,12 @@ _Dbg_parse_options() {
 	    h | help )
 		_Dbg_usage		;;
 	    highlight )
-		_Dbg_set_highlight=1  	;;
+		if ( pygmentize --version || pygmentize -V ) 2>/dev/null 1>/dev/null ; then
+		    _Dbg_set_highlight=1
+		else
+		    print "Can't run pygmentize. --highight forced off" >&2
+		fi
+		;;
 	    no-highlight )
 		_Dbg_set_highlight=0  	;;
 	    init-file )

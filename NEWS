@@ -12,6 +12,7 @@ Version 4.2-0.9
 - Fix bugs in 'trace', 'untrace', and "info args" commands
 - "set debugging" is not "set debug" to match gdb
 - Unit tests are faster and have less white space but more useful information
+- eval? evaluates the RHS of an assignment statement
 
 Version 4.2-0.8 
 

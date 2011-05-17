@@ -94,7 +94,7 @@ if test x$ac_srcdir = x ; then
   ac_srcdir=.
 fi
 
-AM_MISSING_PROG(CVS2CL, cvs2cl, $missing_dir)
+AM_MISSING_PROG(GIT2CL, git2cl, $missing_dir)
 AC_PROG_LN_S
 AC_PATH_PROG(RM, rm, true)
 
