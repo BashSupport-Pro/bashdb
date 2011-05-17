@@ -16,10 +16,6 @@ test_eval_subst()
 	'elif [[ $x = test1 ]] && [ $? -eq 0 ] ; then'
 	'while [[ $x = test2 ]] && [ $? -eq 0 ] ; do'
 	'while [[ $x = test3 ]] && [ $? -eq 0 ]'
-	'x=10'
-	'array[1]=20'
-	'__fn__+=30'
-	'PROFILES="/etc/apparmor.d"'
     )
     
     expected=(
@@ -32,16 +28,31 @@ test_eval_subst()
 	'[[ $x = test1 ]] && [ $? -eq 0 ] '
 	'[[ $x = test2 ]] && [ $? -eq 0 ] '
 	'[[ $x = test3 ]] && [ $? -eq 0 ]'
-	'echo 10'
-	'echo 20'
-	'echo 30'
-	'echo "/etc/apparmor.d"'
     )
     typeset -i i
     for (( i=0 ; i<${#expected[@]}; i++ )) ; do
 	_Dbg_eval_extract_condition "${texts[i]}"
 	assertEquals "${expected[i]}" "$extracted"
     done
+    if (( BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2 )) ; then
+	texts=(
+	    'x=10'
+	    'array[1]=20'
+	    '__fn__+=30'
+	    'PROFILES="/etc/apparmor.d"'
+	)
+
+	expected=(
+	    'echo 10'
+	    'echo 20'
+	    'echo 30'
+	    'echo "/etc/apparmor.d"'
+	)
+	for (( i=0 ; i<${#expected[@]}; i++ )) ; do
+	    _Dbg_eval_extract_condition "${texts[i]}"
+	    assertEquals "${expected[i]}" "$extracted"
+	done
+    fi
 }
 
 abs_top_srcdir=@abs_top_srcdir@
