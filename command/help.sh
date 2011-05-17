@@ -94,8 +94,24 @@ function _Dbg_do_help {
 			_Dbg_help_set $2
 			;;
 		    * )
-  			_Dbg_errmsg "Undefined command: \"$dbg_cmd\".  Try \"help\"."
-  			return 1 ;;
+			# Look for a unique abbreviation
+			typeset -i count=0
+			typeset found_cmd
+			typeset list; list="${!_Dbg_command_help[@]}"
+			for try in $list ; do 
+			    if [[ $try =~ ^$dbg_cmd ]] ; then
+				found_cmd=$try
+				((count++))
+			    fi
+			done
+			((found=(count==1)))
+			if ((found)); then
+ 			    _Dbg_msg "${_Dbg_command_help[$found_cmd]}"
+			else
+  			    _Dbg_errmsg "Undefined command: \"$dbg_cmd\".  Try \"help\"."
+  			    return 1
+			fi
+			;;
 		esac
 	    fi
 	fi

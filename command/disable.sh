@@ -24,13 +24,16 @@ _Dbg_help_add disable \
 
 Disable breakpoint BPNUM.
 
-See also "enable" and "info break".
-' 1 _Dbg_complete_brkpt_range
+See also "enable" and "info break".' 1 _Dbg_complete_brkpt_range
 
 # Disable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_disable() {
-  _Dbg_enable_disable 0 'disabled' $@
-  return $?
+    if (($# == 0)) ; then
+	_Dbg_errmsg 'Expecting breakpoint/watchpoint numbers. Got none.'
+	return 1
+    fi
+    _Dbg_enable_disable 0 'disabled' $@
+    return $?
 }
 
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 

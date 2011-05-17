@@ -29,16 +29,19 @@ fi
 _Dbg_help_add enable \
 'enable BPNUM1 [BPNUM2 ...]
 
-Enables breakpoints BPNUM1. Breakpoints numbers are given as a space-
+Enables breakpoints BPNUM1, BPNUM2... Breakpoints numbers are given as a space-
 separated list numbers. 
 
-See also "disable" and "info break".
-' 1 _Dbg_complete_brkpt_range
+See also "disable" and "info break".' 1 _Dbg_complete_brkpt_range
 
 # Enable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_enable() {
-  _Dbg_enable_disable 1 'enabled' $@
-  return $?
+    if (($# == 0)) ; then
+	_Dbg_errmsg 'Expecting breakpoint/watchpoint numbers. Got none.'
+	return 1
+    fi
+    _Dbg_enable_disable 1 'enabled' $@
+    return $?
 }
 
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 

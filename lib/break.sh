@@ -103,13 +103,13 @@ _Dbg_save_watchpoints() {
 
 # Enable/disable breakpoint or watchpoint by entry numbers.
 _Dbg_enable_disable() {
-  if (($# == 0)) ; then
-    _Dbg_errmsg 'Expecting a list of breakpoint/watchpoint numbers. Got none.'
-    return 1
-  fi
-  typeset -i on=$1
-  typeset en_dis=$2
-  shift; shift
+    if (($# <= 2)) ; then
+	_Dbg_errmsg "_Dbg_enable_disable error - need at least 2 args, got $#"
+	return 1
+    fi
+    typeset -i on=$1
+    typeset en_dis=$2
+    shift; shift
 
   if [[ $1 == 'display' ]] ; then
     shift

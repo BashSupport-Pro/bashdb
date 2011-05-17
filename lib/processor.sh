@@ -266,22 +266,24 @@ _Dbg_onecmd() {
 	 [[ -z $_Dbg_cmd ]] && _Dbg_cmd=$_Dbg_last_cmd
 	 if [[ -n $_Dbg_cmd ]] ; then 
 	     typeset -i found=0
+	     typeset found_cmd
 	     if [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
 		 found=1
+		 found_cmd=$_Dbg_cmd
 	     else
 		 # Look for a unique abbreviation
 		 typeset -i count=0
 		 typeset list; list="${!_Dbg_debugger_commands[@]}"
 		 for try in $list ; do 
 		     if [[ $try =~ ^$_Dbg_cmd ]] ; then
-			 _Dbg_cmd=$try
+			 found_cmd=$try
 			 ((count++))
 		     fi
 		 done
 		 ((found=(count==1)))
 	     fi
 	     if ((found)); then
-		 ${_Dbg_debugger_commands[$_Dbg_cmd]} $_Dbg_args
+		 ${_Dbg_debugger_commands[$found_cmd]} $_Dbg_args
 		 IFS=$_Dbg_space_IFS;
 		 eval "_Dbg_prompt=$_Dbg_prompt_str"
 		 ((_Dbg_continue_rc >= 0)) && return $_Dbg_continue_rc

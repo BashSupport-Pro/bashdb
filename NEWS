@@ -1,3 +1,17 @@
+Version 4.2-0.9
+2011-3-18 
+
+- Add loadable module set0 to set $0. Used when bashdb is run initially
+- Add loadable module "readc" which is builtin read with command completion
+  To use Both of the above, you need to compile with bash source 
+  --with-bash-src=
+- Some tab command completion if "readc" is installed
+- Remove hard-wiring of "info", "set", and "show" commands.
+- Expand help text for various commands
+- Debugger commands can be the smallest unique prefix
+- Fix bugs in 'trace', 'untrace', and "info args" commands
+- Unit tests are faster and have less white space but more useful information
+
 Version 4.2-0.8 
 
 - Reinstate code to set $0 can makes running via bashdb more like
