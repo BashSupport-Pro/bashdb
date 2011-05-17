@@ -37,8 +37,7 @@ Examples:
 help  
 help up
 help set
-help set args
-' 1 _Dbg_complete_help
+help set args' 1 _Dbg_complete_help
 
 _Dbg_complete_help() {
     typeset -a words; 
