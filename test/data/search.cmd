@@ -6,14 +6,14 @@ set trace-commands on
 ###  Try a backward search ?fn1? ...
 ?fn1?
 ###  Try another backward search ? Should not be the same line ...
-?
+reverse ?fn1?
 ###  Above search should reset list line below list start.
 ###  Should get same line as line above...
 list>
 ###  Try forward search /fn1/. Should be line we got command before last ...
 /fn1/
 ###  Try a backward search ?fn3? ...
-?fn3?
+reverse ?fn3?
 ###  Reset line back to begining ...
 list 1
 ###  Try alternate search form: search /fn1/
@@ -22,7 +22,7 @@ list 1
 ###  Try alternate search form: search fn3
 search fn3
 ###  Try backward and forward last search...
-?
+reverse fn3
 /
 ###  Try alternate search form: rev fn3
 reverse fn3
