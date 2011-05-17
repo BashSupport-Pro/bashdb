@@ -34,7 +34,9 @@ test_eval_subst()
 	_Dbg_eval_extract_condition "${texts[i]}"
 	assertEquals "${expected[i]}" "$extracted"
     done
-    if (( BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2 )) ; then
+    assign='foo=bar'
+    pat='^[ \t]*[A-Za-z]'
+    if [[ $assign =~ $pat ]] ; then
 	texts=(
 	    'x=10'
 	    'array[1]=20'
