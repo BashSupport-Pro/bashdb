@@ -35,7 +35,7 @@ test_eval_subst()
 	assertEquals "${expected[i]}" "$extracted"
     done
     assign='foo=bar'
-    pat='^[ \t]*[A-Za-z]'
+    pat='^[ \t]*[A-Za-z_][A-Za-z_0-9[]*[]-+]?=(.*$)'
     if [[ $assign =~ $pat ]] ; then
 	texts=(
 	    'x=10'
