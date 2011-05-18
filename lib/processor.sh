@@ -94,7 +94,7 @@ function _Dbg_process_commands {
   _Dbg_continue_rc=-1  # Don't continue exectuion unless told to do so.
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 
-  typeset -l key
+  typeset key
 
   # Evaluate all hooks
   for key in ${!_Dbg_cmdloop_hooks[@]} ; do

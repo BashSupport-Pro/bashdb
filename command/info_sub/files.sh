@@ -28,6 +28,7 @@ _Dbg_do_info_files() {
     _Dbg_msg "Source files which we have recorded info about:"
     typeset -a list=()
     typeset -i i=0
+    typeset    key
     for key in "${!_Dbg_file2canonic[@]}"; do 
 	list[$i]="$key"
 	((i++))

@@ -179,7 +179,7 @@ _Dbg_frame_set_fn_param() {
 # (newest) entry. For _Dbg_stack_pos, 0 is the bottom-most entry.
 # 0 is returnd on success, nonzero on failure.
 function _Dbg_frame_prefix {
-    typeset -l prefix='??'
+    typeset    prefix='??'
     typeset -i rc=0
     if (($# == 1)) ; then
 	typeset -i pos=$1

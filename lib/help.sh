@@ -108,7 +108,7 @@ _Dbg_help_set() {
             return 0
             ;;
         autol | autoli | autolis | autolist )
-            typeset -l onoff="on."
+            typeset onoff="on."
             [[ -z ${_Dbg_cmdloop_hooks['list']} ]] && onoff='off.'
             _Dbg_msg \
                 "${label}Run list command is ${onoff}"

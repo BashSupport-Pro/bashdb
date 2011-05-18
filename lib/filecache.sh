@@ -264,6 +264,9 @@ _Dbg_set_source_array_var() {
     typeset filename="$1"
     [[ -z $filename ]] && return 2
     fullname=${_Dbg_file2canonic[$filename]}
+    [[ -z $fullname ]] && [[ -n ${_Dbg_filenames[$filename]} ]] && {
+	fullname="$filename"
+    }
     [[ -z $fullname ]] && return 2
     _Dbg_source_array_var=${_Dbg_filenames[$fullname]}
     [[ -z $_Dbg_source_array_var ]] && return 2
