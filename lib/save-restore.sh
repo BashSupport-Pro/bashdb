@@ -23,9 +23,7 @@
 # internal settings  
 function _Dbg_set_debugger_internal {
   IFS="$_Dbg_space_IFS";
-  PS4='+ hi (${BASH_SOURCE}:${LINENO})
-${FUNCNAME[0]}
-'
+  PS4='+ dbg (${BASH_SOURCE}:${LINENO}[$BASH_SUBSHELL]): ${FUNCNAME[0]}\n'
 }
 
 function _Dbg_restore_user_vars {

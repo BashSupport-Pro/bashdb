@@ -1,7 +1,7 @@
 #!@SH_PROG@
 # -*- shell-script -*-
 
-test_copies()
+test_fns_copies()
 {
     typeset result='bogus'
 
@@ -20,7 +20,7 @@ test_copies()
     assertEquals ' ab ab ab ab' "$result"
 }
 
-test_defined()
+test_fns_defined()
 {
     typeset p=5
     _Dbg_defined p
@@ -30,7 +30,7 @@ test_defined()
     assertFalse 'p should now not defined' "$?"
 }
 
-test_esc_dq()
+test_fns_esc_dq()
 {
     check_esc_dq () {
 	local orig="$1"
@@ -47,7 +47,7 @@ test_esc_dq()
     assertEquals '\\\"a\\bc\\\"' $(_Dbg_esc_dq '\"a\bc\"')
 }
 
-test_is_function()
+test_fns_is_function()
 {
     _Dbg_is_function 
     assertFalse 'No function given; is_function should report false' $? 
@@ -76,7 +76,7 @@ test_is_function()
 
 }
 
-test_traced()
+test_fns_traced()
 {
     set +x
     _Dbg_is_traced 
@@ -91,13 +91,13 @@ test_traced()
     assertTrue 'is_traced should be true' "$rc"
 }
 
-test_onoff()
+test_fns_onoff()
 {
     assertEquals 'on.' $(_Dbg_onoff 1)
     assertEquals 'off.' $(_Dbg_onoff 0)
 }
 
-test_parse_linespec()
+test_fns_parse_linespec()
 {
     # Necessary set up for function call.
     typeset _seteglob='local __eopt=-u ; shopt -q extglob && __eopt=-s ; shopt -s extglob'
@@ -110,7 +110,7 @@ test_parse_linespec()
     assertEquals  'a' '4' ${words[0]}
     assertEquals  'b' '0' ${words[1]}
 
-    typeset -a words=( $(_Dbg_parse_linespec 'test_defined') )
+    typeset -a words=( $(_Dbg_parse_linespec 'test_fns_defined') )
     assertEquals 'c' '23' ${words[0]}
     assertEquals  'd' '1' ${words[1]}
 
@@ -135,7 +135,7 @@ test_set_debugger_internal()
 }
 
 # Test _Dbg_set_dol_q
-test_set_q()
+test_fns_set_q()
 {
     _Dbg_set_dol_q 1 
     assertFalse '$? should have been set to 1==false' $? 
@@ -150,7 +150,7 @@ test_set_q()
     # assertFalse '$? should be set false via _Dbg_debugged_exit_code' $? 
 }
 
-test_split()
+test_fns_split()
 {
     typeset -a words
     words=($(_Dbg_split ':' 'foo:bar'))
