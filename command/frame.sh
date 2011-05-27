@@ -31,7 +31,7 @@ A negative number indicates the position from the other or
 least-recently-entered end.  So "frame -1" moves to the oldest frame.
 ' 1 _Dbg_complete_frame
 
-# Command completion for a frame command
+# Command completion for a debugger "frame" command.
 _Dbg_complete_frame() {
     typeset -i start; ((start=-_Dbg_stack_size+1))
     typeset -i end;   ((end=_Dbg_stack_size-1))

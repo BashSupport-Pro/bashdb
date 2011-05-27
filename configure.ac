@@ -225,10 +225,10 @@ AC_CONFIG_FILES([test/unit/test-break.sh],
                 [chmod +x test/unit/test-break.sh])
 AC_CONFIG_FILES([test/unit/test-cmd-complete.sh], 
                 [chmod +x test/unit/test-cmd-complete.sh])
+AC_CONFIG_FILES([test/unit/test-cmd-eval.sh], 
+                [chmod +x test/unit/test-cmd-eval.sh])
 AC_CONFIG_FILES([test/unit/test-columns.sh], 
                 [chmod +x test/unit/test-columns.sh])
-AC_CONFIG_FILES([test/unit/test-eval.sh], 
-                [chmod +x test/unit/test-eval.sh])
 AC_CONFIG_FILES([test/unit/test-file.sh], 
                 [chmod +x test/unit/test-file.sh])
 AC_CONFIG_FILES([test/unit/test-filecache.sh], 
@@ -237,6 +237,8 @@ AC_CONFIG_FILES([test/unit/test-get-sourceline.sh],
                 [chmod +x test/unit/test-get-sourceline.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
+AC_CONFIG_FILES([test/unit/test-lib-eval.sh], 
+                [chmod +x test/unit/test-lib-eval.sh])
 AC_CONFIG_FILES([test/unit/test-lib-list.sh], 
                  [chmod +x test/unit/test-lib-list.sh])
 AC_CONFIG_FILES([test/unit/test-msg.sh], [chmod +x test/unit/test-msg.sh])

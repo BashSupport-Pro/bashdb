@@ -38,9 +38,30 @@ statement, one wants to eval is just the expression portion.  For
 this, use eval?. Actually, any alias that ends in ? which is aliased
 to eval will do thie same thing.
 
-See also "print" and "set autoeval".'
+See also "print" and "set autoeval".' 1 _Dbg_complete_eval
 
 typeset -i _Dbg_show_eval_rc; _Dbg_show_eval_rc=1
+
+# Command completion for a debugger "eval" command.
+_Dbg_complete_eval() {
+    typeset -a words; 
+    typeset subcmds
+    IFS=' ' words=( $COMP_LINE )
+    # If no
+    if (( ${#words[@]} == 1 )); then 
+	if [[ ${words[0]} == 'eval?' ]] ; then
+	    typeset extracted
+	    _Dbg_eval_extract_condition "$_Dbg_source_line"
+	    COMPREPLY=("$extracted")
+	else
+            COMPREPLY=("$_Dbg_source_line")
+	fi
+    else
+	COMPREPLY=()
+    fi
+}
+
+complete -F _Dbg_complete_eval 'eval?' 
 
 _Dbg_do_eval() {
 
