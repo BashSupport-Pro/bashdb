@@ -45,7 +45,7 @@ _Dbg_history_parse() {
       if [[ $history_num == -$int_pat ]] ; then 
 	history_num=$_Dbg_hi+$history_num
       else
-	_Dbg_msg "Invalid history number skipped: $history_num"
+	_Dbg_errmsg "Invalid history number skipped: $history_num"
 	history_num=-1
       fi
     fi
@@ -88,10 +88,10 @@ _Dbg_history_parse() {
     # 	    history_num=-1
     # 	  fi
     # 	fi
-    #     ;;
-    #   * )
-    #   _Dbg_msg "Invalid history number skipped: $_Dbg_cmd"
-    #   history_num=-1
+    #   ;;
+    #  * )
+    #  _Dbg_errmsg "Invalid history number skipped: $_Dbg_cmd"
+    #  history_num=-1
     # esac
       :
   fi
