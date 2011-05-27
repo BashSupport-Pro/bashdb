@@ -23,10 +23,11 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
 fi
 
 _Dbg_help_add_sub show commands \
-'show commands
+'show commands [+NUM]
 
-Print the argument list to given when debugged program restarts.
-' 1
+Show the history of commands you typed.
+You can supply a command number to start with, or a "+" to start after
+the previous command number shown.' 1
 
 _Dbg_show_nolist[commands]=1
 
