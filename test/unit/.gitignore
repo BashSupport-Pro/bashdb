@@ -9,13 +9,13 @@
 /test-cmd-complete.sh
 /test-cmd-eval.sh
 /test-columns.sh
-/test-eval.sh
 /test-file.sh
 /test-filecache.sh
 /test-fns.sh
 /test-frame.sh
 /test-get-sourceline.sh
 /test-io.sh
+/test-lib-eval.sh
 /test-lib-list.sh
 /test-msg.sh
 /test-pre.sh
