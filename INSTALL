@@ -17,7 +17,7 @@ SHORT INSTRUCTIONS:
 
    configure, build, test, and install the debugger:
 
-       cd bashdb-3.x... # <-- put name of release for 3.x...
+       cd bashdb-4.x... # <-- put name of release for 4.x...
        ./configure      # use --with-bash-src to speed up bash debugging
        make && make check 
        su -c 'make install'
@@ -38,7 +38,7 @@ That's it!
 
 - - - - 
 
-This debugger needs a debugger-enabled version of Bash 3.2 or greater.
+This debugger needs a debugger-enabled version of Bash 4.1 or greater.
 
 It is possible to try out the debugger without installing it by using
 the bashdb script that is in this directory. To do so you would invoke
@@ -89,17 +89,18 @@ instructions.
 
    is your friend here.
 
-   On those OS's that support it, you will probably want the extension 
-   which enables reading large arrays fast and makes loading of large
-   scripts (e.g. configure) much quicker. For this you need the bash
-   source or at least the headers since we need to compile against
-   that. And you need to tell configure where to use it via --with-bash-src. 
+   On those OS's that support it, it is possible to create an
+   extension which allows bashdb to set $0 (from "bashdb") to the
+   program being debugged. For this you need the bash source or at
+   least the headers since we need to compile against that. And you
+   need to tell configure where to use it via --with-bash-src.
 
    It is important that the source match the bash that is going to be
    used when debugger. For example using bash release 3.1 source for
-   an installed bash 3.0 binary will not work as there are incompatiblities. 
-   Should you have several bash binaries around, you can tell configure 
-   which one you want to use for the debugger via the option --with-bash. 
+   an installed bash 3.0 binary will not work as there are
+   incompatiblities.  Should you have several bash binaries around,
+   you can tell configure which one you want to use for the debugger
+   via the option --with-bash.
 
    For --with-bash use absolute paths, not relative paths or the 
    regression tests will fail.
