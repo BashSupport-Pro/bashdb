@@ -1,3 +1,94 @@
+2011-10-04  rocky <rocky@gnu.org>
+
+	* INSTALL: --with-bash-src is no longer needed for readarray,
+	although it can be used for set0.
+
+2011-05-27  rocky <rocky@gnu.org>
+
+	* lib/hist.sh: Tag a couple of error messages as such
+
+2011-05-27  rocky <rocky@gnu.org>
+
+	* command/show_sub/commands.sh: Correct help text for "show command"
+
+
+2011-05-27  rocky <rocky@gnu.org>
+
+	* test/unit/.gitignore, test/unit/test-fns.sh.in: Administrivia:
+	update .gitnore. test-fns.sh.in: Remove extra slash in sourcing
+	files' .
+
+2011-05-27  rocky <rocky@gnu.org>
+
+	* command/eval.sh, command/frame.sh, configure.ac,
+	test/unit/.gitignore, test/unit/test-cmd-eval.sh.in,
+	test/unit/test-eval.sh.in, test/unit/test-lib-eval.sh.in: Completion
+	of empty eval or eval? will add source text line (for eval) or
+	extracted source text line (for eval?).
+
+2011-05-18  rocky <rocky@gnu.org>
+
+	* NEWS, lib/save-restore.sh, test/unit/test-fns.sh.in: Remove some
+	debug output and get ready for release.
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* command/info_sub/files.sh, lib/file.sh, lib/filecache.sh,
+	lib/frame.sh, lib/help.sh, lib/processor.sh, lib/save-restore.sh: 
+	typeset -l is lowercase, not local.  Remove typeset -l and define
+	key local to "info files" to fix an "info files" bug.
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* test/unit/test-eval.sh.in: This time, for sure!
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* test/unit/test-eval.sh.in: search test futzing
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* test/data/search.cmd, test/data/search.right: Revise search tests
+
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* test/data/misc-output-41.right: part of last commit
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* test/integration/test-misc.in: Had botched reverse search ? which
+	is now "help." Reinstate under name "reverse".
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* configure.ac, test/unit/test-eval.sh.in: Back off some ev? tests
+	if we don't have bash 4.2 or greater
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* init/opts.sh, lib/break.sh, test/data/Makefile.am: Add info-args
+	data to distribution
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* NEWS, command/continue.sh, command/delete.sh, command/down.sh,
+	command/history.sh, command/info.sh, command/next.sh,
+	command/up.sh, configure.ac, init/opts.sh: command/*.sh: untabify.
+	Reformat help (continue). opt.sh: Don't allow setting highlight if
+	pygmentize is not found. configure.ac: pick up git2cl program
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* NEWS, command/help.sh: Small changes
+
+2011-05-17  rocky <rocky@gnu.org>
+
+	* ChangeLog, NEWS, command/disable.sh, command/enable.sh,
+	command/help.sh, command/trace.sh, command/untrace.sh,
+	configure.ac, lib/break.sh, lib/processor.sh, test/data/sig.right: 
+	Allow unique abbreviations of commands in "help"
+
 2011-05-16  rocky <rocky@gnu.org>
 
 	* configure.ac, init/vars.sh: Part of previous commit.
