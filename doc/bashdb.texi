@@ -1,5 +1,5 @@
 \input texinfo      @c -*-texinfo-*-
-@c Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009
+@c Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011
 @c Rocky Bernstein for the Free Software Foundation
 @c
 @c TODO: 
@@ -117,7 +117,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @page
 @tex
 {\parskip=0pt
-\hfill (Send bugs and comments on bashdb to bug-bashdb\@sourceforge.net.)\par
+\hfill (Send bugs and comments on @emph{bashdb} to bug-bashdb\@sourceforge.net.)\par
 \hfill {\it Debugging with BASH}\par
 \hfill \TeX{}info \texinfoversion\par
 }
@@ -196,9 +196,7 @@ Appendices
 * GNU Free Documentation License::  The license for this documentation
 
 Indexes (nodes containing large menus)
-* Function Index::            An item for each function name.
 * Command Index::             An item for each command name.
-* Variable Index::            An item for each documented variable.
 * General Index::             An item for each concept.
 @end menu
 
@@ -286,21 +284,16 @@ bashdb<1> @b{list}
 The command invocation uses the option ``-L .'' Here we assume that
 the @command{bashdb} script and the debugger files are in the same
 location. If you are running from the source code, this will be the
-case. However if bashdb has been installed this probably won't be true
+case. However if @emph{bashdb} has been installed this probably won't be true
 and here you probably don't need to use ``-L .'' Instead you would
 type simply @code{bashdb /tmp/fact.sh}.
 
 Position information consists of a filename and line number,
 e.g. @code{(/tmp/fact.sh:9)} and is given parenthesis. This position
-format is similar to that used by the Perl debugger and is also in the
-same format used by my GNU make debugger
-(@url{http://bashdb.sourceforge.net/remake}) the Extended Python
-Debugger @url{http://remake.sourceforge.net/pydb}, and one for Ruby
-(@url{http://bashdb.sorceforge.net/ruby-debug.html}).  GNU Emacs and
-DDD can parse this and in fact the same regular expression is used on
-the 3 debuggers.
+format is similar to that used in a dozen or so other debuggers; GNU
+Emacs and DDD can parse this format.
 
-The first debugger command we gave @kbd{-}, we listed a window of
+In the first debugger command we gave @kbd{-}, we listed a window of
 lines @emph{before} where we were executing. Because the window, 10
 lines, is larger than the number of lines to the top of the file we
 printed only 9 lines here. The next command, @code{list}, starts from
@@ -348,7 +341,7 @@ The first @kbd{step} command steps the script one instruction; it
 didn't advance the line number, 9, at all. That is because we were
 stopping before the command substitution or backtick is to take
 place. The second command we entered was just hitting the return key;
-bashdb remembers that you entered @code{step} previously, so it runs
+@emph{bashdb} remembers that you entered @code{step} previously, so it runs
 the step rather than @kbd{next}, the other alternative when you hit
 @key{RET}. Step one more instruction and we are just before running
 the first statement of the function.
@@ -512,8 +505,8 @@ artifact of invoking bash from the bashdb script rather than running
 
 The last message in the output above @samp{Debugged program exited
 normally.} is from @value{DBG}; it indicates script has finished
-executing.  We can end our bashdb session with the bashdb
-@code{quit} command.
+executing.  We can end our @emph{bashdb} session with the @code{quit}
+command.
 
 Above we did our debugging session on the command line. If you are a
 GNU Emacs user, you can do your debugging inside that. Also there is
@@ -648,7 +641,7 @@ line. Such an example can be seen right at the beginning where
 If what you want to do is trace the @emph{entire} script as was done
 above (and not stop in the debugger when the script is over), you can
 get the same effect by using the @code{-X} or @code{--trace} option on
-the @code{bashdb} command:
+the @emph{bashdb} command:
 
 @smallexample
 @b{/usr/local/bin/bashdb -X /tmp/fact.sh}
@@ -703,7 +696,7 @@ type @kbd{quit} or @kbd{C-d} inside the debugger to exit.
 @end itemize
 
 There are also two front-ends available as well. One can also
-enter the debugger inside emacs via the command @code{M-x bashdb}
+enter the debugger inside GNU Emacs via the command @code{M-x bashdb}
 after loading Emacs' Grand Unified Debugger, @code{gud}. See
 @ref{Emacs,,Using the BASH debugger from @value{Emacs}}. And there is
 support in a @value{DDD} for bash.
@@ -756,7 +749,7 @@ In order for the @samp{--debugger} option to work however, you must
 have the debugger scripts installed in a place where @DBG can find
 them. For this reason, in developing @value{DBG}, I use a second
 method more often; it doesn't require the bash debugger to be
-installed. This method uses another script called @code{bashdb} which
+installed. This method uses another script called @emph{bashdb} which
 allows for giving its own options, the final option is signaled by
 adding @code{--}). After this, the name of the script to debugged and
 any the arguments to pass to that script are given. Using this method,
@@ -774,8 +767,8 @@ this was not shown in the example it is possible to add the @code{--}
 program option with a dash.}
 
 As with the first method, @code{bash} should be a debugger-enabled
-bash. If @code{bashdb} has the path to bash in it at the top (e.g.@: via
-@code{#!}), and @code{bashdb} can be found in your program-search
+bash. If @emph{bashdb} has the path to bash in it at the top (e.g.@: via
+@code{#!}), and @emph{bashdb} can be found in your program-search
 path, then this might be equivalent to the above:
 
 @example
@@ -783,11 +776,11 @@ bashdb @var{bashdb-options} -- @var{script} @var{script-arguments...}
 @end example
 
 There are two or three disadvantages however of running a debugger
-this way. First @code{$0} will have the value @code{bashdb} rather
+this way. First @code{$0} will have the value @emph{bashdb} rather
 than the script you are trying to run. For some scripts this may
 change the behavior of the debugged script. Second a traceback will
 contain additional lines showing the ``source''-ing of the debugged
-script from @code{bashdb}. And third, although this way works better
+script from @emph{bashdb}. And third, although this way works better
 than the first method, over time this way may come into disuse. 
 
 An option that you'll probably need to use if bashdb isn't installed
@@ -807,14 +800,14 @@ bashdb -h
 @noindent
 to display all available options and briefly describe their use.
 
-When the bash debugger is invoked either by the @code{bashdb}
+When the bash debugger is invoked either by the @emph{bashdb}
 front-end script or @code{bash --debugging}, the first argument that
-does not have an associated option flag for @code{bashdb} or
+does not have an associated option flag for @emph{bashdb} or
 @code{bash} (as the case may be) is used as the name a the script file
 to be debugged, and any following options get passed the debugged
 script.
 
-Options for the @code{bashdb} front-end are shown in the
+Options for the @emph{bashdb} front-end are shown in the
 following list.  
 
 @menu
@@ -822,7 +815,7 @@ following list.
 @end menu
 
 @node Options for the bashdb script
-@subsection Command-line options for @code{bashdb} script
+@subsection Command-line options for @emph{bashdb} script
 
 You can run @DBG in various alternative modes---for example, in batch
 mode or quiet mode. 
@@ -937,7 +930,7 @@ debugger (among other possibilities) changes behavior of the program
 so that the bug doesn't manifest itself anymore.
 
 There is another way to get into the debugger aside from calling
-@code{bashdb} from the outset, and this adds no overhead or slowdown
+@emph{bashdb} from the outset, and this adds no overhead or slowdown
 until you reach the point at which you want to start
 debugging. However for this method you must change the script. Because
 the debugger isn't involved before the first call, there is no
@@ -1137,7 +1130,7 @@ Use the @code{restart} command to restart your script under
 from the last invocation are used. @value{dBGP} tries to maintain the
 settings, watchpoints, breakpoints, actions and so on. Internally it
 uses line numbers and filenames to record he position of interesting
-places in your porgram; so if your program changes some or all of
+places in your program; so if your program changes some or all of
 these numbers may be off. Environment variable
 @code{DBG_RESTART_FILE} is and a temporary file are used to signal
 a restart, so you shouldn't uset @code{DBG_RESTART_FILE} (or any
@@ -1210,7 +1203,7 @@ proceeds to the next command in the file.
 @cindex arguments (to your script)
 The arguments to your script can be specified by the arguments of the
 @code{restart} command.
-They are passed to a shell, which expands wildcard characters and
+They are passed to a shell, which expands wild-card characters and
 performs redirection of I/O, and thence to your script.  
 
 @code{restart} with no arguments uses the same arguments used by the previous
@@ -1281,7 +1274,7 @@ for @DBG still comes from your terminal.
 
 @value{dBGP} and your program live in the same variable space so to
 speak. @acronym{BASH} does not have a notion of module scoping or
-lexical hiding (yet) as is found in modern programming langauges and
+lexical hiding (yet) as is found in modern programming languages and
 in modern versions of the Korn shell. This then imposes some
 additional care and awareness.
 
@@ -1308,7 +1301,7 @@ dynamic variables and these start with @env{BASH_}. For example
 Inside the debugger some variables may be redefined. In particular
 @code{IFS} and @code{PS4}, and various dollar variables @code{$?},
 @code{$1}, @code{$2}, etc. The values before entering the debugger are
-saved and those variables have their old values restroed when leaving
+saved and those variables have their old values restored when leaving
 the debugger. However you may notice these difference in various
 debugger commands. For example @code{examine PS4} might not return the
 same value as @code{eval declare -p PS4}. The former is picking the debugger
@@ -1389,13 +1382,13 @@ display a short list of named classes of commands:
 @smallexample
 bashdb<0> @b{help}
 Available commands:
-  action     debug    eval     help     print    set     step-      untrace
-  alias      delete   examine  history  pwd      shell   step+      up     
-  backtrace  disable  export   info     quit     show    tbreak     watch  
-  break      display  file     kill     restart  signal  trace      watche 
-  commands   down     finish   list     return   skip    tty      
-  condition  edit     frame    load     reverse  source  unalias  
-  continue   enable   handle   next     search   step    undisplay
+  action     condition  edit     frame    load     run     source  unalias  
+  alias      continue   enable   handle   next     search  step    undisplay
+  backtrace  debug      eval     help     print    set     step-   untrace  
+  break      delete     examine  history  pwd      shell   step+   up       
+  clear      disable    export   info     quit     show    tbreak  watch    
+  commands   display    file     kill     return   signal  trace   watche   
+  complete   down       finish   list     reverse  skip    tty   
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -1496,7 +1489,7 @@ the return-code expression. To leave just one level of subshell
 ,Returning}) There is a subtle difference between the two though:
 @code{return} will leave you at the beginning of the next statement
 while @code{quit} may leave you at the place the subshell was invoked
-which may be in the middle of another command such as an assingment
+which may be in the middle of another command such as an assignment
 statement or condition test.
 
 If the environment variable @code{_Dbg_QUIT_ON_QUIT} is set, when the
@@ -1518,7 +1511,7 @@ of temporary files is done by the program.
 
 One important use of a debugger is to stop your program @emph{before} it
 terminates so that if your script might run into trouble, you can
-investigate and find out why. However should your script accidently
+investigate and find out why. However should your script accidentally
 continue to termination, @DBG has arranged for it not to leave the
 debugger without your explicit instruction. That way, you can restart
 the program using the same command arguments.
@@ -1638,7 +1631,7 @@ current location; this may be useful inside loops.
 Set a breakpoint with condition @var{cond}; evaluate the expression
 @var{cond} each time the breakpoint is reached, and stop only if the
 value is nonzero---that is, if @var{cond} evaluates as true. The
-expression is evaluated via the @code{let} builtin funtion.
+expression is evaluated via the @code{let} built-in function.
 @samp{@dots{}} stands for one of the possible arguments described
 above (or no argument) specifying where to break. The word ``if'' is
 often optional and is necessary only @samp{@dots{}} is
@@ -1737,7 +1730,7 @@ the breakpoints are conditional, this is even useful
 You can use a watchpoint to stop execution whenever the value of an
 expression changes, without having to predict a particular place where
 this may happen. As with the @code{print} (@pxref{Data,,Examining
-Data}), the idiosyncracies of a @acronym{BASH} or any POSIX shell
+Data}), the idiosyncrasies of a @acronym{BASH} or any POSIX shell
 derivative suggest using two commands. The @code{watch} command is
 just for a single variables; the @code{watche} command uses the
 builtin ``let'' command to evaluate an expression. If the variable you
@@ -2191,7 +2184,7 @@ The @code{return} command does not resume execution; it leaves the
 program stopped in the state that would exist if the function had just
 returned.  See also the @code{quit} command (@ref{Quit, ,Quitting the
 BASH debugger}). In some situations @code{return} is similar to
-@code{quit}: in particular when the script is @emph{not} currenlty
+@code{quit}: in particular when the script is @emph{not} currently
 inside in a function and the number of subshells in effect is 0, or
 when a subshell count of 1 is given on the @code{quit} command.
 
@@ -2226,10 +2219,10 @@ Signal handlers that the debugged script might have installed are
 saved and called before the corresponding debugger handler. Thus, the
 debugged program should work roughly in the same fashion as when it is
 not debugged. However there are some call-stack variables which
-inevitably will differ. To try to hedge this a little so the behaviour
+inevitably will differ. To try to hedge this a little so the behavior
 is the same, @value{DBG} will modify arguments to the traps if it
 finds one of the call-stack that change as a result of the debugger
-being in place. In particluar @env{$LINENO} will get replaced with
+being in place. In particular @env{$LINENO} will get replaced with
 @env{$@{BASH_LINENO[0]@}}; also @env{$@{BASH_LINENO[0]@}} and
 @env{$@{BASH_SOURCE[0]@}} get replaced with
 @env{$@{BASH_LINENO[1]@}} and @env{$@{BASH_SOURCE[1]@}}
@@ -2412,7 +2405,7 @@ frames in @value{DBG} commands.
 @cindex stack traces
 A backtrace is essentially the same as the call stack: a summary of
 how your script got where it is.  It shows one line per frame, for
-many frames, starting with the place that you sare stopped at (frame
+many frames, starting with the place that you are stopped at (frame
 zero), followed by its caller (frame one), and on up the stack.
 
 @table @code
@@ -2502,10 +2495,10 @@ advances toward the outermost frame, to higher frame numbers, to
 frames that have existed longer.  Using a negative @var{n} is the same
 as issuing a @code{down} command of the absolute value of the @var{n}.
 Using zero for @var{n} does no frame adjustment, but since the current
-position is redisplayed, it may trigger a resyncronization if there is
+position is redisplayed, it may trigger a resynchronization if there is
 a front end also watching over things. 
 
-@var{n} defaults to one. You may appreviate @code{up} as @code{u}.
+@var{n} defaults to one. You may abbreviate @code{up} as @code{u}.
 
 @kindex down
 @kindex do @r{(@code{down})}
@@ -2515,7 +2508,7 @@ advances toward the innermost frame, to lower frame numbers, to frames
 that were created more recently.  Using a negative @var{n} is the same
 as issuing a @code{up} command of the absolute value of the @var{n}.
 Using zero for @var{n} does no frame adjustment, but since the current
-position is redisplayed, it may trigger a resyncronization if there is
+position is redisplayed, it may trigger a resynchronization if there is
 a front end also watching over things. 
 
 @var{n} defaults to one.  You may abbreviate @code{down} as @code{do}.
@@ -2562,7 +2555,7 @@ most ``main'' stack frame.
 
 Without an argument, @code{frame} prints the current stack
 frame. Since the current position is redisplayed, it may trigger a
-resyncronization if there is a front end also watching over
+resynchronization if there is a front end also watching over
 things. 
 @end table
 
@@ -3039,9 +3032,9 @@ Here is an example session
 
 @smallexample 
 bashdb /etc/init.d/apparmor status
-bashdb debugger, release 4.2-0.6
+bashdb debugger, release 4.2-0.8
 
-Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 ...
@@ -3084,7 +3077,7 @@ performed on @var{directory}. If no directory is given, we print out the
 current directory which is really the same things as running
 @code{pwd}.
 
-Note that @code{gdb} is a little different in that it peforms tilde expansion
+Note that @code{gdb} is a little different in that it performs tilde expansion
 but not filename or variable expansion and the directory argument is
 not optional as it is here.
 
@@ -3349,7 +3342,7 @@ the current working directory when the debugged script was started as
 well as the current working directory now (which might be different
 if a ``cd'' command was issued to change the working directory).
 
-However somethimes this doesn't work and there is a way to 
+However sometimes this doesn't work and there is a way to 
 override this.
 
 @table @code
@@ -3357,7 +3350,7 @@ override this.
 @item file @var{script-file}
 Directs @value{DBG} to use @var{script-file} whenever bash would have
 it refers to the filename given in @env{BASH_SOURCE}. The filename
-specified in @env{BASH_SOURCE} that gets overriden is shown when is
+specified in @env{BASH_SOURCE} that gets overridden is shown when is
 this command is issued.
 @end table
 
@@ -3526,7 +3519,7 @@ In the first line of the example above, we have three assignment
 statements on a single line. In the second line of the example above
 we have a statement which gets run only if a condition tests true. And
 in the third line of the example above, we have a command that gets
-run and then the output of that is substituted in an assignemnt
+run and then the output of that is substituted in an assignment
 statement.  If you were single stepping inside the debugger, each line
 might get listed more than once before each of the actions that might
 get performed. (In the case of the conditional statement, the 
@@ -3550,7 +3543,7 @@ determine whether or not to display the saved @env{BASH_COMMAND}. If
 the last time you stopped you were at the same place and the command
 string has changed, then show the command. When the value @code{on} is
 used, the debugger always shows @env{BASH_COMMAND} and when
-@code{off} is used, the debugger nevers shows
+@code{off} is used, the debugger never shows
 @env{BASH_COMMAND}. Note that listing the text of the source line is
 independent of whether or not the command is also listed.
 
@@ -3578,7 +3571,7 @@ are not saved on the history stack.
 @itemx !@r{[}-@r{]}@var{n}:p
 
 You can list what is in the history stack with @code{H}. Debugger
-commands in ths history stack are listed from most recent to least recent.
+commands in the history stack are listed from most recent to least recent.
 If no @var{start-number} is given we start with the most recently
 executed command and end with the first entry in the history stack.
 If @var{start-number} is given, that history number is listed first. If
@@ -3596,7 +3589,7 @@ Some examples:
 H      @b{List entire history}
 H -2   @b{List the last two history items}
 !-2:p  @b{List a single history item starting at the same place as above}
-H 5    @b{List history from history number 5 to the begining (number 0)}
+H 5    @b{List history from history number 5 to the beginning (number 0)}
 H 5 0  @b{Same as above}
 H 5 3  @b{List history from history number 5 down to history number 3}
 !5:p   @b{List a single history item 5}
@@ -3781,13 +3774,13 @@ tell you what version you are running.)
 
 The project emacs-dbgr at @url{https://github.com/rocky/emacs-dbgr} has
 the code. This project handles other debuggers, not just
-@code{bashdb}. Alas, steps need to be taken to make it easier to
+@emph{bashdb}. Alas, steps need to be taken to make it easier to
 install.
 
-The load the code @kbd{M-x load-libarary dbgr}.  To use this interface,
+The load the code @kbd{M-x load-library dbgr}.  To use this interface,
 use the command @kbd{M-x dbgr-bashdb} in @sc{gnu} Emacs.  There is also
 am Emacs lisp command alias called @kbd{bashdb}. However it is possible
-ther will be a conflict with older code that we used to provide in this
+there will be a conflict with older code that we used to provide in this
 package.
 
 When you run @kbd{dbgr-bashdb} you are prompted for the executable file
@@ -4124,7 +4117,7 @@ correctly.  These settings with their correct values are:
 
 @example
 set annotate 1
-set prompt set prompt bashdb$_Dbg_less$_Dbg_greater$_Dbg_space
+set prompt bashdb$_Dbg_less$_Dbg_greater$_Dbg_space
 @end example
 
 @value{DDD} sets these values automatically when invoking
@@ -4194,7 +4187,7 @@ for improvement of @value{DBG} are welcome in any case.
 @cindex bug reports
 @cindex BASH debugger bugs, reporting
 
-Bug reports can sent via the sourceforge bug tracking mechansim at
+Bug reports can sent via the sourceforge bug tracking mechanism at
 @url{http://sourceforge.net/tracker/?group_id=61395&atid=497159}. Of
 course patches are very much welcome too. Those can also be sent via
 the same mechanism.
@@ -4401,12 +4394,15 @@ friends (or enemies, to be evenhanded) have been unfairly omitted from
 this list, we would like to add your names!
 @end quotation
 
-The following have contributed directly or indrectly to bashdb:
+The following have contributed directly or indirectly to @emph{bashdb}:
 
 Rocky Bernstein (initial full-featured bashdb with stack tracing and
 multi-file support)
 
 Masatake YAMATO (help to merge Rocky's hack to the official bash source tree)
+
+Rod Smith (for creating and hosting a nicely formatted version of this
+manual that you are probably reading online)
 
 Bill Rosenblatt (kshdb),
 Michael Loukides (kshdb),
@@ -4453,17 +4449,9 @@ Eric S. Raymond.
 
 @include fdl.texi
 
-@node Function Index
-@unnumbered Function Index
-@printindex fn
-
 @node Command Index
 @unnumbered Command Index
 @printindex ky
-
-@node Variable Index
-@unnumbered Variable Index
-@printindex vr
 
 @node General Index
 @unnumbered General Index
