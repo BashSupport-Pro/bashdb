@@ -68,7 +68,8 @@ This is the @value{EDITION} Edition, @value{UPDATED},
 of @cite{Debugging with BASHDB: the @sc{gnu} Source-Level Debugger}
 for BASH
 
-Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein for the Free Software Foundation.
+Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011
+Rocky Bernstein for the Free Software Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -124,7 +125,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @end tex
 
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein for the Free Software
+Copyright @copyright{} 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011 Rocky Bernstein for the Free Software
 Foundation.
 
 Permission is granted to copy, distribute and/or modify this document
@@ -257,7 +258,7 @@ factorial of a number: fact(0) is 1 and fact(n) is n*fact(n-1).
 @smallexample
 $ @b{bashdb -L .  /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
@@ -644,7 +645,7 @@ the @emph{bashdb} command:
 @smallexample
 @b{/usr/local/bin/bashdb -X /tmp/fact.sh}
 Bourne-Again Shell Debugger, release bash-@value{VERSION}
-Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 
