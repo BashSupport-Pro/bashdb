@@ -70,6 +70,9 @@ install-data-hook:
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
 
+#: Same as "check" - integration tests. 
+test: check
+
 # Unit testing
 check-unit: test-unit
 
