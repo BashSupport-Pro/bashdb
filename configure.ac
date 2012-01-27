@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011
-# Rocky Bernstein <rocky@gnu.org>
+# 2012 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.2)
-define(relstatus, 0.8)
+define(relstatus, 0.9dev)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 
