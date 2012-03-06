@@ -11,6 +11,8 @@ check_DATA = \
 	brkpt3.right \
 	bug-args.cmd \
 	bug-args.right \
+	bug-break.cmd \
+	bug-break.right \
 	bug-source.cmd \
 	bug-source.right \
 	bug-step.cmd \

@@ -8,6 +8,8 @@ check_DATA =            \
 	dbg-test1.sub   \
 	dbg-test2.sh    \
 	debug.sh        \
+	fib.sh          \
+	gcd.sh          \
 	hanoi.sh.in     \
 	interrupt.sh.in \
 	multi.sh        \

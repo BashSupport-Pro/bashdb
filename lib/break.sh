@@ -218,6 +218,11 @@ _Dbg_set_brkpt() {
     typeset dq_source_file
     dq_source_file=$(_Dbg_esc_dq "$source_file")
     typeset dq_condition=$(_Dbg_esc_dq "$condition")
+
+    # Make sure we are not skipping over functions.
+    _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
+    _Dbg_write_journal_eval "_Dbg_old_set_opts='$_Dbg_old_set_opts'"
+
     _Dbg_write_journal_eval "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno"
     _Dbg_write_journal_eval "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
     _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
