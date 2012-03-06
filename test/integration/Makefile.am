@@ -38,6 +38,7 @@ TESTS = \
 	test-settrace 	\
 	test-skip 	\
 	test-sopts 	\
+	test-bug-break 	\
 	test-bug-step 	\
 	test-subshell 	\
 	test-tbreak	\

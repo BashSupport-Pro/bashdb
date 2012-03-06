@@ -13,7 +13,7 @@ fibonacci() {
     fi
 }
 
-for i in `seq 1 10`
+for i in `seq 1 2`
 do
   result=$(fibonacci $i)
   echo "i=$i result=$result"

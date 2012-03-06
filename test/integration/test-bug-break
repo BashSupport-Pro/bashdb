@@ -2,7 +2,7 @@
 # -*- shell-script -*-
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 [[ -z "$builddir" ]] && export builddir=$PWD
-[[ -z "$top_srcdir" ]] && export top_srcdir=${PWD}/..
+[[ -z "$top_srcdir" ]] && export top_srcdir=${PWD}/../..
 
 debugged_script="$top_srcdir/test/example/fib.sh"
 

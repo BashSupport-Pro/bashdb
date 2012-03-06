@@ -6,4 +6,11 @@ next
 break fibonacci
 continue
 bt
+delete 1
+c
 quit
+
+
+
+
+
