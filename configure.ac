@@ -43,8 +43,8 @@ AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src],
 		  [location of bash OK_BASH_VERS source code]), 
 		  BASH_SRC=$withval)
 AC_SUBST(BASH_SRC)
-AC_PROG_CC
 if test x"$BASH_SRC" != x ; then
+   AC_PROG_CC
    if test ! -d $BASH_SRC ; then
      AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
    else 
