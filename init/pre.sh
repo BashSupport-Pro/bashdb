@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # pre.sh - Code common to bashdb and bashdb-trace that has to run first
 #
-#   Copyright (C) 2002, 2003, 2004, 2008, 2009, 2010, 2011
+#   Copyright (C) 2002-2004, 2008-2012
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -30,7 +30,13 @@
 # This function is overwritten by when lib/fns.sh gets loaded
 _Dbg_msg()
 {
-  echo $*
+  echo >&2 $@
+}
+
+# This function is overwritten by when lib/fns.sh gets loaded
+_Dbg_errmsg()
+{
+  echo >&2 "${_Dbg_pname}: $@" 
 }
 
 # Used by "show version" as well as --version
@@ -109,7 +115,7 @@ typeset -i _Dbg_brkpt_num=0    # If nonzero, the breakpoint number that we
 typeset _Dbg_set_trace_commands='off'
 
 # Known normal IFS consisting of a space, tab and newline
-typeset -x _Dbg_space_IFS=' 	
+typeset -x _Dbg_space_IFS='     
 '
 
 # Number of statements to run before entering the debugger.  Is used

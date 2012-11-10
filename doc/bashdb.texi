@@ -865,9 +865,14 @@ messages are also suppressed in batch mode.
 @cindex @code{-t}
 @cindex @code{--terminal}
 @cindex @code{--tty}
-``Terminal output''.  Set the file or terminal that you want debugger command
-output to go to. Note that the debugger output is independent of the
-debugged script output.
+Debugger output usually goes to a terminal rather than @code{STDOUT}
+which the debugged program may use. Determination of the tty or
+pseudo-tty is normally done automatically. However if you want to
+control where the debugger output goes, use this option.
+
+If you want output to go to C<STDOUT>, use C<&1>. Note: the C<&> may
+have to be escaped or quoted to avoid shell interpretation with
+forking.
 
 @item -x | --eval-command
 @cindex @code{-x}

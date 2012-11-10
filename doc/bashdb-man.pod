@@ -148,10 +148,13 @@ Z<>
 
 =item -t | --tty I<tty-name>
 
-Debugger output usually goes to a terminal rather than stdout or stdin
+Debugger output usually goes to a terminal rather than STDOUT
 which the debugged program may use. Determination of the tty or
 pseudo-tty is normally done automatically. However if you want to
 control where the debugger output goes, use this option.
+
+If you want output to go to STDOUT use &1. Note: the '&' may have to be
+escaped or quoted to avoid shell interpretation with forking.
 
 Z<>
 

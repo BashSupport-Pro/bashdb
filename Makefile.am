@@ -1,4 +1,4 @@
-#   Copyright (C) 2002, 2004, 2005, 2006, 2007, 2008, 2011 Rocky Bernstein
+#   Copyright (C) 2002, 2004-2008, 2011-2012 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -40,6 +40,7 @@ MOSTLYCLEANFILES = *.orig *.rej
 
 EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
+	     make-check-filter.rb
 	     ChangeLog ChangeLog.0 
 
 data_DATA =
@@ -70,16 +71,20 @@ install-data-hook:
 	fi; fi
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
 
+#: Run all tests without bloated output
+check-short:
+	$(MAKE) check 2>&1  | ruby @abs_top_srcdir@/make-check-filter.rb
+
 #: Same as "check" - integration tests. 
 test: check
 
-# Unit testing
+#: Unit testing
 check-unit: test-unit
 
 test-unit:
 	cd test/unit && make check
 
-# Integration testing
+#: Integration testing
 test-integration:
 	cd test/integration && make check
 
@@ -87,6 +92,7 @@ MAINTAINERCLEANFILES = ChangeLog
 
 if MAINTAINER_MODE
 
+#: Create ChangeLog from version control
 ChangeLog:
 	git log --pretty --numstat --summary | $(GIT2CL) > $@
 

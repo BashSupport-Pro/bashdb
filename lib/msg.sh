@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2012 Rocky Bernstein 
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -36,31 +36,31 @@ _Dbg_confirm() {
     _Dbg_confirm_prompt=$1
     typeset _Dbg_confirm_default=${2:-'no'}
     while : ; do 
-	if ! read $_Dbg_edit -p "$_Dbg_confirm_prompt" _Dbg_response args \
-	    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
-	    break
-	fi
+        if ! read $_Dbg_edit -p "$_Dbg_confirm_prompt" _Dbg_response args \
+            <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
+            break
+        fi
 
-	case "$_Dbg_response" in
-	    'y' | 'yes' | 'yeah' | 'ya' | 'ja' | 'si' | 'oui' | 'ok' | 'okay' )
-		_Dbg_response='y'
-		return 0
-		;;
-	    'n' | 'no' | 'nope' | 'nyet' | 'nein' | 'non' )
-		_Dbg_response='n'
-		return 0
-		;;
-	    *)
-		if [[ $_Dbg_response =~ '^[ \t]*$' ]] ; then
-		    set +x
-		    return 0
-		else
-		    _Dbg_msg "I don't understand \"$_Dbg_response\"."
-		    _Dbg_msg "Please try again entering 'yes' or 'no'."
-		    _Dbg_response=''
-		fi
-		;;
-	esac
+        case "$_Dbg_response" in
+            'y' | 'yes' | 'yeah' | 'ya' | 'ja' | 'si' | 'oui' | 'ok' | 'okay' )
+                _Dbg_response='y'
+                return 0
+                ;;
+            'n' | 'no' | 'nope' | 'nyet' | 'nein' | 'non' )
+                _Dbg_response='n'
+                return 0
+                ;;
+            *)
+                if [[ $_Dbg_response =~ '^[ \t]*$' ]] ; then
+                    set +x
+                    return 0
+                else
+                    _Dbg_msg "I don't understand \"$_Dbg_response\"."
+                    _Dbg_msg "Please try again entering 'yes' or 'no'."
+                    _Dbg_response=''
+                fi
+                ;;
+        esac
 
     done
 }
@@ -87,7 +87,7 @@ function _Dbg_msg {
         builtin echo -e "$@" >>$_Dbg_logfid
     fi
     if (( ! _Dbg_logging_redirect )) ; then
-        if [[ -n $_Dbg_tty  ]] ; then
+        if [[ -n $_Dbg_tty  ]] && [[ $_Dbg_tty != '&1' ]] ; then
             builtin echo -e "$@" >>$_Dbg_tty
         else
             builtin echo -e "$@"
