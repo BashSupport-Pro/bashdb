@@ -20,7 +20,7 @@ One-time breakpoint 1 set in file hanoi.sh, line 12.
 ->0 in file `hanoi.sh' at line 12
 ##1 hanoi("3", "a", "b", "c") called from file `hanoi.sh' at line 42
 +# How about after moving?
-+u 
++up 
 ->1 in file `hanoi.sh' at line 42
 (hanoi.sh:42):
 42:	hanoi $max "a" "b" "c"

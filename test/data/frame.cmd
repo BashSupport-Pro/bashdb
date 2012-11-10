@@ -9,7 +9,7 @@ where 2
 frame 0
 bt 2
 # How about after moving?
-u
+up
 where 2
 down
 where 2

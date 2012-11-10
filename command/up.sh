@@ -58,8 +58,6 @@ function _Dbg_do_up {
     return $rc
 }
 
-_Dbg_alias_add 'u' up
-
 # Demo it
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
     for _Dbg_file in  help msg sort columnize ; do 
