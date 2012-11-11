@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - Debugger Help Routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2010, 2011
+#   Copyright (C) 2002-2008, 2010-2012
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -199,7 +199,6 @@ _Dbg_help_set() {
             return 0
             ;;
         sho|show|showc|showco|showcom|showcomm|showcomma|showcomman|showcommand )
-            [[ -n $label ]] && label='set showcommand  -- '
             _Dbg_msg \
                 "${label}Set showing the command to execute is $_Dbg_set_show_command."
             return 0
@@ -207,6 +206,13 @@ _Dbg_help_set() {
         t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
             _Dbg_msg \
                 "${label}Set showing debugger commands is $_Dbg_set_trace_commands."
+            return 0
+            ;;
+        tt|tty )
+            typeset dbg_tty=$_Dbg_tty
+            [[ -n $dbg_tty ]] && dbg_tty=$(tty)
+            _Dbg_msg \
+                "${label}Debugger output goes to $dbg_tty."
             return 0
             ;;
         wi|wid|widt|width )
@@ -227,7 +233,7 @@ _Dbg_help_show() {
         sort_list 0 ${#list[@]}-1
         typeset subcmd
         for subcmd in ${list[@]}; do
-            _Dbg_help_show $subcmd 1
+            [[ $subcmd != 'version' ]] && _Dbg_help_show $subcmd 1
         done
         return 0
     fi
@@ -329,7 +335,12 @@ number of lines to list."
             ;;
         t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
             _Dbg_msg \
-               'show trace-commands -- Show if we are echoing debugger commands'
+               'show trace-commands -- Show if we are echoing debugger commands.'
+            return 0
+            ;;
+        tt | tty )
+            _Dbg_msg \
+                "${label}Where debugger output goes to."
             return 0
             ;;
         wa | war | warr | warra | warran | warrant | warranty )

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "info breakpoints" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2012 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -38,5 +38,6 @@ See also \"break\", \"enable\", and \"disable\"." 1
 # list breakpoints and break condition.
 # If $1 is given just list those associated for that line.
 _Dbg_do_info_breakpoints() {
-    _Dbg_do_list_brkpt $*
+    _Dbg_do_list_brkpt $@
+    return $?
 }
