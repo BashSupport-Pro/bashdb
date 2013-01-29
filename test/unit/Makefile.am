@@ -9,12 +9,19 @@ TESTS_ENVIRONMENT = \
   srcdir="$(abs_srcdir)" \
   builddir="$(abs_builddir)"
 
-EXTRA_DIST = helper.sh require_me.sh.in $(COMBINED_TESTS) shunit2 $(TEST_SOURCES)
+EXTRA_DIST = \
+	helper.sh \
+	mock-cmd.sh \
+	require_me.sh \
+	require_me.sh.in $(COMBINED_TESTS) shunit2 $(tests_sources)
 
 test: check
 test-unit: check
 
 check: $(COMBINED_TESTS)
-	$(SH_PROG) $(abs_srcdir)/shunit2 $(COMBINED_TESTS)
+	$(SH_PROG) $(abs_srcdir)/shunit2 \
+	$(abs_srcdir)/helper.sh $(abs_srcdir)/mock-cmd.sh \
+	$(abs_srcdir)/require_me.sh \
+	$(COMBINED_TESTS)
 
 MOSTLYCLEANFILES = *.orig *.rej

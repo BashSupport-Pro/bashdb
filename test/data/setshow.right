@@ -293,9 +293,9 @@ of promoting the sharing and reuse of software generally.
 +show badcommand
 ** Unknown show subcommand: badcommand
 ** Show subcommands are:
-**   alias     autoeval  commands  different    highlight  prompt   warranty
-**   annotate  autolist  copying   directories  history    tty      width   
-**   args      basename  debug     editing      listsize   version
+**   alias     autoeval  commands  different    highlight  prompt    width
+**   annotate  autolist  copying   directories  history    version 
+**   args      basename  debug     editing      listsize   warranty
 +another-bad-command 
 ** Undefined command "another-bad-command". Try "help".
 +show 
@@ -317,7 +317,6 @@ history     --
 listsize    : Number of source lines bashdb will list by default is 10.
 prompt      : bashdb's prompt is:
        "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
-show tty    : Debugger output goes to 
 version     : bashdb, release 1.0
 width       : Line width is 80.
 +show args

@@ -93,7 +93,6 @@ set listsize    -- Set number of source lines bashdb will list by default.
 set prompt      -- bashdb's prompt is:
        "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
 set showcommand -- Set showing the command to execute is auto.
-set tty         -- Debugger output goes to .
 set width       -- Set maximum width of lines is 75.
 +help set foo
 ** There is no "set foo" command.
