@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein
+#   Copyright (C) 2008-2011, 2013 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ _Dbg_get_source_line() {
 	filename="$1"
     fi
     _Dbg_readin_if_new "$filename"
-    if (( _Dbg_set_highlight )) ; then
+    if (( _Dbg_set_highlight )) && [[ -n $_Dbg_highlight_array_var ]]; then
 	eval "_Dbg_source_line=\${$_Dbg_highlight_array_var[lineno]}"
     else
 	eval "_Dbg_source_line=\${$_Dbg_source_array_var[$lineno]}"
