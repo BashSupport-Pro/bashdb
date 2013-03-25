@@ -22,22 +22,20 @@ test -z "$srcdir" && srcdir=.
 rc=$?
 (test -n $rc ) || exit $rc
 
-(echo $_echo_n " + Running autoconf: $_echo_c"; \
-    autoconf; \
+(echo $_echo_n " + Running libtoolize: $_echo_c"; \
+    libtoolize --copy; \
  echo "done.")
 rc=$?
 (test -n $rc ) || exit $rc
 
-(echo $_echo_n " + Running aclocal -I . $aclocalinclude ..."; \
-  aclocal -I . $aclocalinclude; \
-  if grep "^AM_CONFIG_HEADER" configure.ac >/dev/null; then \
-    echo $_echo_n "Running autoheader..."; \
-    autoheader; \
-  fi; \
-  echo "done.")
-
 (echo $_echo_n " + Running automake: $_echo_c"; \
     automake --add-missing; \
+ echo "done.")
+rc=$?
+(test -n $rc ) || exit $rc
+
+(echo $_echo_n " + Running autoconf: $_echo_c"; \
+    autoconf; \
  echo "done.")
 rc=$?
 (test -n $rc ) || exit $rc

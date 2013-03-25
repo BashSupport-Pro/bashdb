@@ -27,6 +27,34 @@ define(OK_BASH_VERS, 4.2)
 define(relstatus, 0.9dev)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
+AC_CONFIG_MACRO_DIR([m4])
+
+##################################################################
+# See if --prefix was set. If not, set it to a reasonable default
+# based on where bash thinks bashdb is supposed to be installed.
+##################################################################
+prefix='no'
+for ac_option
+do
+  # If the previous option needs an argument, assign it.
+  if test -n "$ac_prev"; then
+    eval $ac_prev=\$ac_option
+    ac_prev=
+    continue
+  fi
+
+  case $ac_option in
+  -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+    ac_prev=prefix ;;
+  -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+    prefix="$ac_optarg" ;;
+  esac			   
+done
+mydir=$(dirname $0)
+if test "$prefix" == 'no' ; then 
+   prefix=$($SH_PROG $mydir/compute-prefix.sh)
+fi
+
 
 # From fish's configure.ac
 #
@@ -46,7 +74,7 @@ AC_SUBST(BASH_SRC)
 if test x"$BASH_SRC" != x ; then
    AC_PROG_CC
    if test ! -d $BASH_SRC ; then
-     AC_MSG_ERROR([bash source directory ($BASH_SRC) doesn't seem to be a directory])
+     AC_MSG_ERROR([bash source directory ($BASH_SRC) does not seem to be a directory])
    else 
      AM_PROG_CC_C_O
      dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
@@ -58,7 +86,7 @@ if test x"$BASH_SRC" != x ; then
          build_set0=])
    fi 
 fi
-AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
+# AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
 PIC=$lt_prog_compiler_pic_CXX
 WL=$lt_prog_compiler_wl_CXX
@@ -114,7 +142,7 @@ fi
 
 if test "$SH_PROG" = no; then
   AC_MSG_ERROR([I didn't find the DEBUGGER executable.\
-  You might want to use the --with-DEBUGGER option.])
+  You might want to use the --with-POSIXSHELL option.])
 fi
 
 bash_version=`$SH_PROG --version`
@@ -299,7 +327,14 @@ AC_OUTPUT
 echo
 echo "========================================================="
 echo "Bash version: $bash_version"
-echo "Location: $SH_PROG"
+echo "Location    : $SH_PROG"
+echo "Prefix      : $prefix"
+if $($SH_PROG $mydir/check-prefix.sh $SH_PROG $prefix); then
+    echo "prefix checks out"
+else
+    echo "Warning: prefix doesn't match what is in bash"
+fi
+
 if test x"$build_set0" != x; then
    echo "We will try to build the set0 builtin to set variable \$0"
    echo "using source located at ${BASH_SRC}."
