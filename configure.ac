@@ -23,7 +23,7 @@ dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
-define(OK_BASH_VERS, 4.2)
+define(OK_BASH_VERS, 4.3)
 define(relstatus, 0.9dev)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
@@ -48,10 +48,10 @@ do
     ac_prev=prefix ;;
   -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
     prefix="$ac_optarg" ;;
-  esac			   
+  esac
 done
 mydir=$(dirname $0)
-if test "$prefix" == 'no' ; then 
+if test "$prefix" == 'no' ; then
    prefix=$($SH_PROG $mydir/compute-prefix.sh)
 fi
 
@@ -63,19 +63,19 @@ fi
 AC_SUBST(BASHVERS)
 AC_SUBST(RELSTATUS)
 
-AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main], 
+AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
 
 # See if we build set0.c
-AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src], 
-		  [location of bash OK_BASH_VERS source code]), 
+AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src],
+		  [location of bash OK_BASH_VERS source code]),
 		  BASH_SRC=$withval)
 AC_SUBST(BASH_SRC)
 if test x"$BASH_SRC" != x ; then
    AC_PROG_CC
    if test ! -d $BASH_SRC ; then
      AC_MSG_ERROR([bash source directory ($BASH_SRC) does not seem to be a directory])
-   else 
+   else
      AM_PROG_CC_C_O
      dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
      PIC=$lt_prog_compiler_pic_CXX
@@ -84,9 +84,9 @@ if test x"$BASH_SRC" != x ; then
      AC_CHECK_HEADERS(unistd.h string.h,,
          [AC_MSG_WARN([Missing some C headers. Disabling set0])
          build_set0=])
-   fi 
+   fi
 fi
-# AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
+AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
 PIC=$lt_prog_compiler_pic_CXX
 WL=$lt_prog_compiler_wl_CXX
@@ -132,7 +132,7 @@ AC_PATH_PROG(RM, rm, true)
 ## --with-bash can be used to tell the bashdb script and the regression
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
-AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL], 
+AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL],
                   [location of POSIXSHELL program]), SH_PROG=$withval)
 
 if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
@@ -150,23 +150,23 @@ bash_version=`$SH_PROG --version`
 [bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
 bash_4_or_greater=no
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS' | '4.1')
+  'OK_BASH_VERS' | '4.1' | '4.2')
     bash_4_or_greater=yes
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash 4.1 or 4.2.])
-    ;; 
+    AC_MSG_ERROR([This package is only known to work with Bash 4.1-4.3.])
+    ;;
 esac
 
-AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main], 
+AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main],
                   [location of dbg-main.sh]), DBGR_MAIN=$withval)
 AC_SUBST(DBGR_MAIN)
 
 if test -z "$DBGR_MAIN" ; then
   DBGR_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
   if test -z "$DBGR_MAIN" ; then
-     AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the 
+     AC_MSG_ERROR([I didn't find bashdb-main.inc in your bash. If you have the
 right version of bash, set it with the --with-dbg-main option])
   fi
 fi
@@ -183,7 +183,7 @@ ac_transform=`echo "$program_transform_name" | sed 's/\\$\\$/\\$/g'`
 AC_SUBST_DIR(INTERPRETER_NAME,"${bindir}/"`echo bash | sed "$ac_transform"`)
 
 # WARNING: The configure-correct name for architecture-independent
-# directory (the place for the bash source for the debugger) is 
+# directory (the place for the bash source for the debugger) is
 # datadir. The automake file seem to want to use pkgdatadir instead.
 
 # I'm not sure how to get these to agree.
@@ -205,10 +205,10 @@ DIFF_OPTS=
 
 if test "$DIFF" = no ; then
    AC_PATH_PROG(DIFF, cmp, no)
-else 
+else
    dnl Try for GNU diff options.
   # MSDOG output uses \r\n rather than \n in tests
-  for diff_opt in -w --unified -b ; do 
+  for diff_opt in -w --unified -b ; do
     if $DIFF $diff_opt $0 $0 > /dev/null 2>&1; then
       AC_MSG_RESULT([adding $diff_opt to diff in regression tests])
       DIFF_OPTS="$DIFF_OPTS $diff_opt"
@@ -238,53 +238,53 @@ AC_CONFIG_FILES([ \
 
 # Additional files needing substitution of values (not Makefiles).
 AC_CONFIG_FILES([bashdb], [chmod +x DEBUGGER])
-AC_CONFIG_FILES([test/example/bugIFS.sh], 
+AC_CONFIG_FILES([test/example/bugIFS.sh],
                 [chmod +x test/example/bugIFS.sh])
-AC_CONFIG_FILES([test/example/hanoi.sh], 
+AC_CONFIG_FILES([test/example/hanoi.sh],
                 [chmod +x test/example/hanoi.sh])
-AC_CONFIG_FILES([test/example/interrupt.sh], 
+AC_CONFIG_FILES([test/example/interrupt.sh],
                 [chmod +x test/example/interrupt.sh])
-AC_CONFIG_FILES([test/example/bug-args.sh], 
+AC_CONFIG_FILES([test/example/bug-args.sh],
                 [chmod +x test/example/bug-args.sh])
-AC_CONFIG_FILES([test/unit/test-action.sh], 
+AC_CONFIG_FILES([test/unit/test-action.sh],
                 [chmod +x test/unit/test-action.sh])
-AC_CONFIG_FILES([test/unit/test-alias.sh], 
+AC_CONFIG_FILES([test/unit/test-alias.sh],
                 [chmod +x test/unit/test-alias.sh])
-AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh], 
+AC_CONFIG_FILES([test/unit/test-bashdb-trace.sh],
                 [chmod +x test/unit/test-bashdb-trace.sh])
-AC_CONFIG_FILES([test/unit/test-break.sh], 
+AC_CONFIG_FILES([test/unit/test-break.sh],
                 [chmod +x test/unit/test-break.sh])
-AC_CONFIG_FILES([test/unit/test-cmd-complete.sh], 
+AC_CONFIG_FILES([test/unit/test-cmd-complete.sh],
                 [chmod +x test/unit/test-cmd-complete.sh])
-AC_CONFIG_FILES([test/unit/test-cmd-eval.sh], 
+AC_CONFIG_FILES([test/unit/test-cmd-eval.sh],
                 [chmod +x test/unit/test-cmd-eval.sh])
-AC_CONFIG_FILES([test/unit/test-columns.sh], 
+AC_CONFIG_FILES([test/unit/test-columns.sh],
                 [chmod +x test/unit/test-columns.sh])
-AC_CONFIG_FILES([test/unit/test-file.sh], 
+AC_CONFIG_FILES([test/unit/test-file.sh],
                 [chmod +x test/unit/test-file.sh])
-AC_CONFIG_FILES([test/unit/test-filecache.sh], 
+AC_CONFIG_FILES([test/unit/test-filecache.sh],
                 [chmod +x test/unit/test-filecache.sh])
-AC_CONFIG_FILES([test/unit/test-get-sourceline.sh], 
+AC_CONFIG_FILES([test/unit/test-get-sourceline.sh],
                 [chmod +x test/unit/test-get-sourceline.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])
 AC_CONFIG_FILES([test/unit/test-frame.sh], [chmod +x test/unit/test-frame.sh])
-AC_CONFIG_FILES([test/unit/test-lib-eval.sh], 
+AC_CONFIG_FILES([test/unit/test-lib-eval.sh],
                 [chmod +x test/unit/test-lib-eval.sh])
-AC_CONFIG_FILES([test/unit/test-lib-list.sh], 
+AC_CONFIG_FILES([test/unit/test-lib-list.sh],
                  [chmod +x test/unit/test-lib-list.sh])
 AC_CONFIG_FILES([test/unit/test-msg.sh], [chmod +x test/unit/test-msg.sh])
 AC_CONFIG_FILES([test/unit/test-io.sh],  [chmod +x test/unit/test-io.sh])
 AC_CONFIG_FILES([test/unit/test-pre.sh], [chmod +x test/unit/test-pre.sh])
-AC_CONFIG_FILES([test/unit/test-require.sh], 
+AC_CONFIG_FILES([test/unit/test-require.sh],
                 [chmod +x test/unit/test-require.sh])
 AC_CONFIG_FILES([test/unit/test-run.sh], [chmod +x test/unit/test-run.sh])
-AC_CONFIG_FILES([test/unit/test-save-restore.sh], 
+AC_CONFIG_FILES([test/unit/test-save-restore.sh],
                 [chmod +x test/unit/test-save-restore.sh])
-AC_CONFIG_FILES([test/unit/test-set0.sh], 
+AC_CONFIG_FILES([test/unit/test-set0.sh],
                 [chmod +x test/unit/test-set0.sh])
-AC_CONFIG_FILES([test/unit/test-sort.sh], 
+AC_CONFIG_FILES([test/unit/test-sort.sh],
                 [chmod +x test/unit/test-sort.sh])
-AC_CONFIG_FILES([test/unit/test-validate.sh], 
+AC_CONFIG_FILES([test/unit/test-validate.sh],
                 [chmod +x test/unit/test-validate.sh])
 
 AC_CONFIG_FILES([test/integration/test-bug-step-subshell],
@@ -295,6 +295,8 @@ AC_CONFIG_FILES([test/integration/test-delete],
                 [chmod +x test/integration/test-delete])
 AC_CONFIG_FILES([test/integration/test-export],
                 [chmod +x test/integration/test-export])
+AC_CONFIG_FILES([test/integration/test-interrupt],
+                [chmod +x test/integration/test-interrupt])
 AC_CONFIG_FILES([test/integration/test-misc],
                 [chmod +x test/integration/test-misc])
 AC_CONFIG_FILES([test/integration/test-setshow],

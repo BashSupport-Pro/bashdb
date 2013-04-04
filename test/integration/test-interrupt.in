@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!@SH_PROG@
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 
 [ -z "$builddir" ] && export builddir=$PWD
@@ -9,7 +9,7 @@ if [[ $srcdir != $builddir ]] ; then
     echo "Skipping when building outside the source tree"
     exit 77
 fi
-case $host_os in 
+case $host_os in
     cygwin | darwin* | solaris* )
 	exit ;;
     * )
@@ -25,9 +25,12 @@ elif (( 4 == ${BASH_VERSINFO[0]} )) ; then
 fi
 
 (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
-
+sleep 1
 check_output $TEST_FILE ${top_builddir}/test/data/${TEST_NAME}.right
+rc=$?
 
+((0 != rc)) && exit $rc
 rm -f $top_builddir/test/interrupt.tst
 
-exit $?
+# Return code tells testing mechanism whether passed or not.
+exit 0
