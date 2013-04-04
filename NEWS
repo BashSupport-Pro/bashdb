@@ -1,6 +1,8 @@
 - Incompatible change: make more like gdb. 'u' is no longer up and 'd'
   is 'delete' not 'down'
 
+- Changes to tolerate more foreign OS's like FreeBSD or old Solaris
+
 Version 4.2-0.9
 2011-4-18 
 

@@ -17,7 +17,9 @@ FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
 @GREP@ -v '^sig.tests: line 12' $TEST_FILE \
   | @SED@ -e "s:in file \`sig.sh' at line [0-9][0-9]*:in file \`sig.sh' at line 55:" \
   | @SED@ -e "s:in file \`eval.sh' at line [0-9][0-9]*:in file \`eval.sh' at line 55:" \
-  | @GREP@ -v '^sig.tests: line 10:' | @GREP@ -v '^SIGPIPE' >${FILTERED_TEST_FILE}
+  | @GREP@ -v '^sig.tests: line 10:' | \
+@GREP@ -v '^SIGPIPE' | \
+@GREP@ -v '^SIGPROF' >${FILTERED_TEST_FILE}
 check_output $FILTERED_TEST_FILE $FILTERED_RIGHT_FILE
 rc=$?
 

@@ -2,7 +2,7 @@ test_in_files := $(wildcard test-*.in)
 tests_from_in_files := $(notdir $(test_in_files:.in=))
 
 check_DATA = \
-	$(data_in_files)   \
+	$(test_in_files)   \
 	check-common.sh.in \
 	interrupt.tests    \
 	interrupt-3.tests  \
