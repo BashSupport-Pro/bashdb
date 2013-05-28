@@ -5,8 +5,20 @@ this_script=test-filecache.sh
 # Test _Dbg_get_source_line
 test_get_source_line()
 {
+    _Dbg_set_highlight=0
+    _Dbg_source_line='no good'
     _Dbg_get_source_line 2 $this_script
     assertEquals '# -*- shell-script -*-' "$_Dbg_source_line"
+
+    # Getting sourceline with highlight set but we don't have 
+    # the highlighted cached should fall back back to getting the line
+    # without highlight.
+    _Dbg_source_line='no good'
+    _Dbg_set_highlight=1
+    _Dbg_get_source_line 2 $this_script
+    assertEquals \
+	"Requested highlight, it's not cached - fallback no highlight"\
+	'# -*- shell-script -*-' "$_Dbg_source_line"
 }
 
 # Test readin and maxline

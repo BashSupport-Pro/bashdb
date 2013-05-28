@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "source" command.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2010
+#   Copyright (C) 2002-2008, 2010, 2013
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -33,9 +33,9 @@ _Dbg_do_source() {
 	_Dbg_errmsg 'Need to give a filename for the "source" command.'
 	return 1
     fi
-    
+
     typeset filename
-    _Dbg_glob_filename "$1"
+    _Dbg_tilde_expand_filename "$1"
     if [[ -r $filename ]] || [[ "$filename" == '/dev/stdin' ]] ; then
 	# Open new input file descriptor and save number in _Dbg_fd.
 	exec {_Dbg_fdi}<"$filename"
