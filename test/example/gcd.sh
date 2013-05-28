@@ -4,7 +4,7 @@
 # absolute value, since a negative number is -1 times its positive
 # value.  Negative numbers are set when there is an error; -1 is set
 # when the wrong number of parameters are given.
-gcd() { 
+gcd() {
     typeset -i a=$1
     typeset -i b=$2
     if (( a > b )) ; then
@@ -15,7 +15,8 @@ gcd() {
        gcd_value=$a
        return 0
    fi
-   gcd(b-a, a)
+   ((c=b-a))
+   gcd $c $a
 }
 
 gcd $1 $2
