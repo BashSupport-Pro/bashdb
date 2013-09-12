@@ -10,7 +10,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -40,28 +40,28 @@ MOSTLYCLEANFILES = *.orig *.rej
 
 EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 	     $(pkgdata_DATA) acinclude.m4 THANKS \
-	     make-check-filter.rb
-	     ChangeLog ChangeLog.0 
+	     make-check-filter.rb check-prefix.sh \
+	     ChangeLog ChangeLog.0
 
 data_DATA =
 
-# 
-# This is ugly. Bash 3.0 requires things to be different than where 
-# many OS's would want to put bash debugger scripts or where a user 
-# may have asked for this to be put. It's wrong in the directory 
-# names it uses and for the name of the main include. 
-# So... using the place that configure determined bash 
+#
+# This is ugly. Bash 3.0 requires things to be different than where
+# many OS's would want to put bash debugger scripts or where a user
+# may have asked for this to be put. It's wrong in the directory
+# names it uses and for the name of the main include.
+# So... using the place that configure determined bash
 # wants this to be put, (BASHDB_MAIN), we try to remove any existing files
-# before making a symbolic link to it. Also if was in a directory 
+# before making a symbolic link to it. Also if was in a directory
 # (containing perhaps old code), that gets removed and a symbolic link
-# is added or relocated if there was another symbolic link. Finally 
+# is added or relocated if there was another symbolic link. Finally
 # the basename that bash wants to use is symlinked to the main name
 # that this distribution uses dbg-main.sh, unless those are the same.
-# 
+#
 OLD_DIR    = $(dir @DBGR_MAIN@)
 OLD_MAIN   = $(notdir @DBGR_MAIN@)
 PARENT_DIR = $(dir $(OLD_DIR))
-install-data-hook: 
+install-data-hook:
 	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR)/* || true; \
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
@@ -75,7 +75,7 @@ install-data-hook:
 check-short:
 	$(MAKE) check 2>&1  | ruby @abs_top_srcdir@/make-check-filter.rb
 
-#: Same as "check" - integration tests. 
+#: Same as "check" - integration tests.
 test: check
 
 #: Unit testing

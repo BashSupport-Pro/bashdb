@@ -13,7 +13,7 @@ EXTRA_DIST = \
 	helper.sh \
 	mock-cmd.sh \
 	require_me.sh \
-	require_me.sh.in $(COMBINED_TESTS) shunit2 $(tests_sources)
+	require_me.sh.in $(COMBINED_TESTS) shunit2 $(TESTS_SOURCES)
 
 test: check
 test-unit: check

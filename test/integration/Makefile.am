@@ -53,7 +53,7 @@ TESTS_ENVIRONMENT = \
 abs_srcdir=@abs_srcdir@
 abs_builddir=@abs_builddir@
 
-EXTRA_DIST = $(TESTS) $(check_DATA) README
+EXTRA_DIST = $(TESTS) $(check_DATA) $(test_in_files) README
 
 CLEANFILES = *.check
 
