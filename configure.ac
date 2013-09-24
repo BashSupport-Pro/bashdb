@@ -33,28 +33,10 @@ AC_CONFIG_MACRO_DIR([m4])
 # See if --prefix was set. If not, set it to a reasonable default
 # based on where bash thinks bashdb is supposed to be installed.
 ##################################################################
-prefix='no'
-for ac_option
-do
-  # If the previous option needs an argument, assign it.
-  if test -n "$ac_prev"; then
-    eval $ac_prev=\$ac_option
-    ac_prev=
-    continue
-  fi
-
-  case $ac_option in
-  -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
-    ac_prev=prefix ;;
-  -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
-    prefix="$ac_optarg" ;;
-  esac
-done
 mydir=$(dirname $0)
-if test "$prefix" == 'no' ; then
+if [[ "$prefix" = NONE ]]; then
    prefix=$($SH_PROG $mydir/compute-prefix.sh)
 fi
-
 
 # From fish's configure.ac
 #
