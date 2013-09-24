@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Greatest Common Divisor in POSIX shell using Euclid's algorithm.  On
 # return, variable gcd_value is set and is the gcd of parameters $1
 # and $2. The GCD of a negative number is the same as the GCD of its
@@ -15,6 +16,7 @@ gcd() {
        gcd_value=$a
        return 0
    fi
+   typeset -i c
    ((c=b-a))
    gcd $c $a
 }
