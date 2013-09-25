@@ -33,6 +33,8 @@ man:
 html:
 	@( cd $(top_builddir)/doc ; $(MAKE) $(MFLAGS) html )
 
+dist: distdir
+
 # Set up the install target. Can't figure out how to use @PACKAGE@
 bin_SCRIPTS = bashdb
 
