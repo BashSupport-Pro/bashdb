@@ -1,4 +1,4 @@
-# FIXME: we don't use a wildcard here because it messes up on 
+# FIXME: we don't use a wildcard here because it messes up on
 # file: file\ with\ spaces.cmd and file\ with\ spaces.right
 check_DATA = \
 	action.cmd \
@@ -78,6 +78,7 @@ check_DATA = \
 	sig.cmd \
 	sig.right \
 	sig-Darwin.right \
+	sig-43.right \
 	skip.cmd \
 	skip.right \
 	sopts.right \

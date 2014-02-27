@@ -279,6 +279,8 @@ AC_CONFIG_FILES([test/integration/test-delete],
                 [chmod +x test/integration/test-delete])
 AC_CONFIG_FILES([test/integration/test-export],
                 [chmod +x test/integration/test-export])
+AC_CONFIG_FILES([test/integration/test-file-with-spaces],
+                [chmod +x test/integration/test-file-with-spaces])
 AC_CONFIG_FILES([test/integration/test-interrupt],
                 [chmod +x test/integration/test-interrupt])
 AC_CONFIG_FILES([test/integration/test-misc],

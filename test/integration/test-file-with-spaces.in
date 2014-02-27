@@ -1,4 +1,4 @@
-#!/home/rocky/src/build/bash-4.3/bash
+#!@SH_PROG@
 # -*- shell-script -*-
 TEST_NAME='file with spaces'
 

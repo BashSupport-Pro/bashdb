@@ -1,0 +1,59 @@
+(sig.sh:7):
+7:	if [[ "$1"x != x ]] ; then
++# Test that debugged program's signals are saved and restored across
++# debug calls.
++### Testing that we have our signal set up...
++info signals
+Signal       Stop   Print   Stack     Value
+EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
+EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
+SIGINT       stop   print   showstack trap -- '_Dbg_sig_handler 2 "$BASH_COMMAND" "$@"' SIGINT
+SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND" "$@"' SIGQUIT
+SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
+SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
+SIGTERM      stop   print   showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
++### Testing handle command...
++handle TERM nostack
++handle foo
+** Bad signal name: foo
++handle 1000
+** Bad signal number: 1000
++handle TERM bogus
+** Need to give a command: stop, nostop, stack, nostack, print, noprint
++eval kill -TERM $$
+Program received signal SIGTERM (15)...
++### Should not have printed a stack trace above...
++handle TERM noprint
++handle TERM stack
++handle INT nostop
++eval kill -TERM $$
+Program received signal SIGTERM (15)...
+->0 in file `bashdb_eval_5040' at line 1
+##1 source("bashdb_eval_5040") called from file `eval.sh' at line 100
+##2 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 293
+##3 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.sh' at line 202
+##4 _Dbg_process_commands() called from file `hook.sh' at line 263
+##5 _Dbg_hook_enter_debugger("on receiving a signal", "noprint") called from file `sig.sh' at line 202
+##6 _Dbg_sig_handler("15", "[[ "$1"x != x ]]") called from file `bashdb_eval_5040' at line 1
+##7 source("bashdb_eval_5040") called from file `eval.sh' at line 100
+##8 _Dbg_do_eval("kill", "-TERM", "$$") called from file `processor.sh' at line 293
+##9 _Dbg_onecmd("eval", "kill -TERM $$") called from file `processor.sh' at line 202
+##10 _Dbg_process_commands() called from file `hook.sh' at line 263
+##11 _Dbg_hook_enter_debugger("after being stepped") called from file `hook.sh' at line 179
+##12 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
+##13 source("sig.sh") called from file `bashdb' at line 96
+##14 main() called from file `bashdb' at line 0
++info signals
+Signal       Stop   Print   Stack     Value
+EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
+EXIT         stop   noprint nostack   trap -- '_Dbg_exit_handler "$BASH_COMMAND"' EXIT
+SIGINT       nostop print   showstack trap -- '_Dbg_sig_handler 2 "$BASH_COMMAND" "$@"' SIGINT
+SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND" "$@"' SIGQUIT
+SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
+SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
+SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
++continue
+$? is 0
+$? is 0
+Debugged program terminated normally. Use q to quit or R to restart.
++### Should have printed a stack trace above...
