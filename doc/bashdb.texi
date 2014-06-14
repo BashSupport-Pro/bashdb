@@ -2,11 +2,11 @@
 @c Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011
 @c Rocky Bernstein for the Free Software Foundation
 @c
-@c TODO: 
+@c TODO:
 @c   - add examples for commands
 @c   - clean up/improve sample session
 @c   - help text is inaccurate and formatted too much to right.
-@c 
+@c
 
 @c Sets version and release names and dates. Frees us from changing
 @c this file when a new release comes along.
@@ -15,7 +15,7 @@
 @c makeinfo ignores cmds prev to setfilename, so its arg cannot make use
 @c of @set vars.  However, you can override filename with makeinfo -o.
 @setfilename bashdb.info
-@c 
+@c
 @c Name of Bash program.  Used in running text.
 
 @c
@@ -33,7 +33,7 @@
 @include version.texi
 @include macros.texi
 
-@c Karl Berry informs me that this will add straight quotes in 
+@c Karl Berry informs me that this will add straight quotes in
 @c typewriter text.
 @c See the "Inserting Quote Characters" node in the Texinfo manual
 @set txicodequoteundirected
@@ -116,13 +116,13 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @subtitle @value{UPDATED-MONTH}
 @author Rocky Bernstein
 @page
-@tex
-{\parskip=0pt
-\hfill (Send bugs and comments on @emph{bashdb} to bug-bashdb\@sourceforge.net.)\par
-\hfill {\it Debugging with BASH}\par
-\hfill \TeX{}info \texinfoversion\par
-}
-@end tex
+@c @tex
+@c {\parskip=0pt
+@c \hfill (Send bugs and comments on @emph{bashdb} to bug-bashdb\@sourceforge.net.)\par
+@c \hfill {\it Debugging with BASH}\par
+@c \hfill \TeX{}info \texinfoversion\par
+@c }
+@c @end tex
 
 @vskip 0pt plus 1filll
 Copyright @copyright{} 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011 Rocky Bernstein for the Free Software
@@ -272,11 +272,11 @@ bashdb<0> @b{-}
   5:    ((result=n*`fact $nm1`))
   6:    echo $result
   7:    @}
-  8:    
+  8:
   9:==> echo fact 0 is: `fact 0`
 bashdb<1> @b{list}
  10:   echo fact 3 is: $(fact 3)
-@end smallexample 
+@end smallexample
 
 @noindent
 
@@ -348,7 +348,7 @@ the first statement of the function.
 Next, we print the value of the variable @kbd{n}. Notice we need to add
 a preceding dollar simple to get the substitution or value of n. As we
 will see later, if the @kbd{pe} command were used this would not be
-necessary. 
+necessary.
 
 We now modify the file to add an assignment to local variable @kbd{n} and
 restart.
@@ -368,7 +368,7 @@ bashdb<0> @b{list 1}
   6:    ((result=n*`fact $nm1`))
   7:    echo $result
   8:    @}
-  9:    
+  9:
  10:==> echo fact 0 is: `fact 0`
 bashdb<1> @b{s 3}
 (/tmp/fact.sh:3):
@@ -380,7 +380,7 @@ bashdb<(3)> @b{print $n}
 print $n
 0
 @end cartouche
-@end smallexample 
+@end smallexample
 
 @noindent
 This time we use the @code{list} debugger command to list the lines in
@@ -396,11 +396,11 @@ bashdb<(4)> @b{@key{RET}}
 4:	((n==0)) && echo 1 && return
 echo 1
 bashdb<(5)> @b{@key{RET}}
-(/tmp/fact.sh:4): 
+(/tmp/fact.sh:4):
 4:	((n==0)) && echo 1 && return
 return
 @end cartouche
-@end smallexample 
+@end smallexample
 
 @noindent
 Again we just use @key{RET} to repeat the last @code{step}
@@ -415,13 +415,13 @@ value echo'ed on return will be 1.
 @cartouche
 bashdb<(6)> @b{@key{RET}}
 fact 0 is: 1
-(/tmp/fact.sh:12): 
+(/tmp/fact.sh:12):
 12:	echo fact 3 is: $(fact 3)
 bashdb<(7)> @b{break 5}
 Breakpoint 1 set in file fact.sh, line 5.
 bashdb<(8)> @b{continue}
 @end cartouche
-@end smallexample 
+@end smallexample
 
 @noindent
 We saw that we could step with a count into the function
@@ -444,11 +444,11 @@ bashdb<(9)> @b{s}
 bashdb<(10)> @b{c}
 fact.sh: line 6: ((: result=n*: syntax error: operand expected (error token is "*")
 bashdb<(7)> @b{R}
-Restarting with: bash --debugger fact.sh 
+Restarting with: bash --debugger fact.sh
 11:	echo fact 0 is: `fact 0`
 bashdb<0> @b{l fact}
- 2:    fact () 
- 3:    @{ 
+ 2:    fact ()
+ 3:    @{
  4:       local -i n=$@{1:0@};
  5:       (( "n==0" )) && echo 1 && return;
  6:       (( nm1=n-1 ));
@@ -520,7 +520,7 @@ One of the things I had found disappointing about the
 default @code{set -x} tracing behavior is that no position information
 is given in the trace output, in particular the line number and the file
 name.  However with the introduction in Bash 3.0 of the introspection
-variables, also needed to support the debugger, one can set 
+variables, also needed to support the debugger, one can set
 @code{$PS4} to rectify this. (I became of this in a defunct blog
 @url{http://raz.cx/blog/2005/08/handy-bash-debugging-trick.html}.)
 
@@ -614,9 +614,9 @@ level 1, subshell 1, depth 1:	    ((result=n*fact_nm1))
 level 1, subshell 1, depth 1:	    echo $result
 fact 3 is: 6
 (/usr/local/bin/bashdb:260):
-level 1, subshell 0, depth -1:	
+level 1, subshell 0, depth -1:
 Debugged program terminated normally. Use q to quit or R to restart.
-bashdb<2> 
+bashdb<2>
 @end smallexample
 
 An explanation of the output. The @emph{level} is how many invocations
@@ -668,7 +668,7 @@ level 1, subshell 1, depth 1:	    ((result=n*fact_nm1))
 level 1, subshell 1, depth 1:	    echo $result
 fact 3 is: 6
 (/usr/local/bin/bashdb:285):
-level 1, subshell 0, depth -1:	
+level 1, subshell 0, depth -1:
 @end smallexample
 
 If you issue a break (e.g.@: send a @code{SIGINT} signal) while the
@@ -684,10 +684,10 @@ The essentials are:
 @item
 type @samp{bash --debugger @emph{script-name}} or @samp{bashdb
 @emph{script-name}} to start @value{DBG}. Or...
-@item 
-type @samp{bashdb -c @emph{command string}} to give a string to run 
+@item
+type @samp{bashdb -c @emph{command string}} to give a string to run
 under the debugger. Or ..
-@item 
+@item
 modify your program to enter the debugger at a particular point:
 @code{source ../bashdb-trace} and @code{_Dbg_debugger}.
 @item
@@ -775,7 +775,7 @@ than the script you are trying to run. For some scripts this may
 change the behavior of the debugged script. Second a traceback will
 contain additional lines showing the ``source''-ing of the debugged
 script from @emph{bashdb}. And third, although this way works better
-than the first method, over time this way may come into disuse. 
+than the first method, over time this way may come into disuse.
 
 An option that you'll probably need to use if bashdb isn't installed
 but run out of the source code directory is @samp{-L} which specifies
@@ -802,7 +802,7 @@ to be debugged, and any following options get passed the debugged
 script.
 
 Options for the @emph{bashdb} front-end are shown in the
-following list.  
+following list.
 
 @menu
 * Options for the bashdb script::   Options you can pass in starting bashdb
@@ -812,7 +812,7 @@ following list.
 @subsection Command-line options for @emph{bashdb} script
 
 You can run @DBG in various alternative modes---for example, in batch
-mode or quiet mode. 
+mode or quiet mode.
 
 @table @code
 @item -h | --help
@@ -954,7 +954,7 @@ script the line:
 
 @smallexample
     source /usr/local/share/bashdb/bashdb-trace
-@end smallexample 
+@end smallexample
 
 Although I said that running under the debugger adds overhead which
 slows down you program, the above command in of itself will @emph{not}
@@ -975,8 +975,8 @@ Here's a complete example. In file @file{debugit.sh}
         date=$(date)
         echo "$date"
         sleep 2
-  done 
-@end smallexample 
+  done
+@end smallexample
 Now run:
 @smallexample
   $ @b{bash ./debugit.sh}
@@ -988,12 +988,12 @@ Now run:
   9435
   Thu Jun 19 02:43:06 EDT 2008
   Thu Jun 19 02:43:08 EDT 2008
-@end smallexample 
+@end smallexample
 
 Sent it an "interrupt" signal
 @smallexample
   @b{kill -INT 9435}
-@end smallexample 
+@end smallexample
 
 And back to the running program:
 
@@ -1007,7 +1007,7 @@ And back to the running program:
   bashdb<1> @b{list 1}
     1:   # Set up some interrupt handlers to go into the debugger
     2:   source /usr/share/bashdb/bashdb-trace
-    3:  
+    3:
     4:   echo $$
     5:   while : ; do
     6:   date=$(date)
@@ -1021,7 +1021,7 @@ And back to the running program:
   (./debugit.sh:6):
   6:      date=$(date)
   bashdb<4> @b{continue -}
-@end smallexample 
+@end smallexample
 The command @code{continue -} not only continues execution but it
 removes the debug trap allowing the program to run at full speed. It
 is suitable only if there are no breakpoints that you care to stop at.
@@ -1032,30 +1032,30 @@ different signal to be use, @code{_Dbg_handler}. With this function
 you can specify whether to show a call stack, stop (enter the
 debugger) and/or print an indication that the a signal was seen.
 
-Here are some examples: 
+Here are some examples:
 @smallexample
     _Dbg_handler INT print showstack nostop  # this is the default
     _Dbg_handler INT                         # same thing
     _Dbg_hander                              # same thing
     _Dbg_handler HUP print stop              # stop in debugger when getting
-@end smallexample 
+@end smallexample
 
 @subsubsection Explicit Debugging Calls.
 As we saw in the last section @code{bashdb-trace} installs some signal
 handlers. However you can make an explicit call to the debugger
 @smallexample
      _Dbg_debugger
-@end smallexample 
+@end smallexample
 
 Let's show an example of that. We'll even do it under a condition:
 @smallexample
-  for ((i=1; i<=10; i++)) ; 
+  for ((i=1; i<=10; i++)) ;
         (( 5 == i )) && @{ _Dbg_debugger @}
         date=$(date)
         echo "$date"
         sleep 2
-  done 
-@end smallexample 
+  done
+@end smallexample
 
 The debugger will be called on the 5th iteration of this loop, when
 @code{i} has the value 5.
@@ -1067,7 +1067,7 @@ with the exception of @code{-c} (run a command) and of course you
 don't supply the name of a @value{BASH} script.
 
 For example to stop at the next line and suppress the banner you could
-use @code{_Dbg_debugger 1 -q} in the above example. 
+use @code{_Dbg_debugger 1 -q} in the above example.
 
 @node Program-Controlled Line Tracing
 @subsection Program-Controlled Line Tracing
@@ -1082,8 +1082,8 @@ You can also turn on and off line tracing. Here's an example
      echo $i
   done
   _Dbg_linetrace_off
-   _Dbg_QUIT_ON_QUIT=1  
-@end smallexample 
+   _Dbg_QUIT_ON_QUIT=1
+@end smallexample
 
 The @code{_Dbg_QUIT_ON_QUIT}  variable make sure the program doesn't
 stay inside the debugger after it quits. It can also be set earlier in
@@ -1203,10 +1203,10 @@ proceeds to the next command in the file.
 The arguments to your script can be specified by the arguments of the
 @code{restart} command.
 They are passed to a shell, which expands wild-card characters and
-performs redirection of I/O, and thence to your script.  
+performs redirection of I/O, and thence to your script.
 
 @code{restart} with no arguments uses the same arguments used by the previous
-@code{restart}, or those set by the @code{set args} command.. 
+@code{restart}, or those set by the @code{set args} command..
 
 @table @code
 @kindex set args
@@ -1279,7 +1279,7 @@ additional care and awareness.
 
 Most of the variables and functions used inside @DBG start
 @code{_Dbg_}, so please don't use variables or functions with these
-names in your program. 
+names in your program.
 
 @emph{Note: there are some other variables that begin with just an
 underscore (@code{_}); over time these will be phased out. But until
@@ -1312,7 +1312,7 @@ trap. Consequently a script shouldn't reset this or the debugger will
 lose control. @value{dBGP} also sets up an @code{EXIT} handler so that
 it can gain control after the script finishes. Another signal
 intercepted is the an interrupt or @code{INT} signal. For more
-information about signal handling, @pxref{Signals, ,Signals} 
+information about signal handling, @pxref{Signals, ,Signals}
 
 @node Debugger Command Reference
 @chapter BASH Debugger Command Reference
@@ -1320,8 +1320,8 @@ information about signal handling, @pxref{Signals, ,Signals}
 You can abbreviate the long name of @DBG command to the first
 few letters of the command name, if that abbreviation is unambiguous;
 and you can repeat the @code{next} or @code{step} commands by typing
-just @key{RET}. Some commands which require a parameter, such as 
-@code{print} remember the argument that was given to them. 
+just @key{RET}. Some commands which require a parameter, such as
+@code{print} remember the argument that was given to them.
 
 @menu
 * Command Syntax::       How to give commands to the BASH debugger
@@ -1354,7 +1354,7 @@ arguments.
 @cindex repeating next/step commands
 @kindex RET @r{(repeat last command)}
 A blank line as input to @DBG (typing just @key{RET}) means to
-repeat the previous next or step command.  
+repeat the previous next or step command.
 
 @kindex # @r{(a comment)}
 @cindex comment
@@ -1375,19 +1375,19 @@ information on its commands, using the command @code{help}.
 @itemx h
 You can use @code{help} (abbreviated @code{h}) with no arguments to
 display a short list of named classes of commands:
-@end table 
+@end table
 
 @flushleft
 @smallexample
 bashdb<0> @b{help}
 Available commands:
-  action     condition  edit     frame    load     run     source  unalias  
+  action     condition  edit     frame    load     run     source  unalias
   alias      continue   enable   handle   next     search  step    undisplay
-  backtrace  debug      eval     help     print    set     step-   untrace  
-  break      delete     examine  history  pwd      shell   step+   up       
-  clear      disable    export   info     quit     show    tbreak  watch    
-  commands   display    file     kill     return   signal  trace   watche   
-  complete   down       finish   list     reverse  skip    tty   
+  backtrace  debug      eval     help     print    set     step-   untrace
+  break      delete     examine  history  pwd      shell   step+   up
+  clear      disable    export   info     quit     show    tbreak  watch
+  commands   display    file     kill     return   signal  trace   watche
+  complete   down       finish   list     reverse  skip    tty
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -1408,7 +1408,7 @@ START is the starting line or dot (.) for current line. Subsequent
 list commands continue from the last line listed. If a function name
 is given list the text of the function.
 
-If COUNT is omitted, use the setting LISTSIZE. Use "set listsize" to 
+If COUNT is omitted, use the setting LISTSIZE. Use "set listsize" to
 change this setting.
 
 Aliases for list: l
@@ -1472,14 +1472,14 @@ To exit @value{DBG}, use the @code{quit} command (abbreviated
 @code{q}), or type an end-of-file character (usually @kbd{C-d}).  If
 you do not supply @var{expression}, @DBG will try to terminate
 normally or with exit code 0. Otherwise it will terminate using the
-result of @var{expression} as the exit code. 
+result of @var{expression} as the exit code.
 
 A simple @code{quit} tries to terminate all nested subshells that may
 be in effect.  If you are nested a subshell, this is normally
 indicated in a debugger prompt by the number of parentheses that the
 history number is inside --- no parenthesis means there is no subshell
 in effect. The dynamic variable @env{BASH_SUBSHELL} also contains the
-number of subshells in effect. 
+number of subshells in effect.
 
 If you want only to terminate some number of subshells but not all of
 them, you can give a count of the number of subshells to leave after
@@ -1519,7 +1519,7 @@ Inside @value{DBG}, your script may stop for any of several reasons,
 such as a signal, a breakpoint, or reaching a new line after a
 debugger command such as @code{step}.  You may then examine and
 change variables, set new breakpoints or remove old ones, and then
-continue execution.  
+continue execution.
 
 @menu
 * Breakpoints::          Breakpoints, watchpoints (break, tbreak, watch, watche, clear)
@@ -1533,7 +1533,7 @@ continue execution.
 @cindex breakpoints
 A @dfn{breakpoint} makes your script stop whenever a certain point in
 the program is reached.  For each breakpoint, you can add conditions to
-control in finer detail whether your script stops.  
+control in finer detail whether your script stops.
 
 You specify the place where your script should stop with the @code{break}
 command and its variants (@pxref{Set Breaks, ,Setting
@@ -1544,7 +1544,7 @@ line number and file name or function name.
 @cindex breakpoint on variable modification
 A @dfn{watchpoint} is a special breakpoint that stops your script when
 the value of an expression changes.  There is a different command to
-set watchpoints (@pxref{Set Watchpoints, ,Setting watchpoints}). 
+set watchpoints (@pxref{Set Watchpoints, ,Setting watchpoints}).
 
 But aside from that, you can manage a watchpoint like any other
 breakpoint: you delete enable, and disable both breakpoints and
@@ -1597,7 +1597,7 @@ all breakpoint in that range are operated on.
 @kindex b @r{(@code{break})}
 @cindex latest breakpoint
 Breakpoints are set with the @code{break} command (abbreviated
-@code{b}).  
+@code{b}).
 
 @table @code
 @item break @var{function}
@@ -1686,7 +1686,7 @@ are listed after that.
 
 @noindent
 @code{info break} displays a count of the number of times the breakpoint
-has been hit.  
+has been hit.
 
 @code{info break} with a breakpoint number @var{n} as argument lists
 only that breakpoint.
@@ -1862,7 +1862,7 @@ happens that Perl's debugger use ``d'' for its delete command and the
 delete concept in Perl's debugger corresponds to ``clear'' in
 GDB. (Perl doesn't have a notion of breakpoint entry numbers). So in
 order to be compatible with both debugger interfaces, ``d'' is used as
-an alias for ``clear.'' Clear? 
+an alias for ``clear.'' Clear?
 
 @item clear @var{function}
 @itemx clear @var{filename}:@var{function}
@@ -1879,7 +1879,7 @@ Delete any breakpoints set at or within the code of the specified line.
 @kindex delete
 @kindex de @r{(@code{delete})}
 @item delete @ovar{breakpoints}
-Delete the breakpoints, watchpoints specified as arguments. 
+Delete the breakpoints, watchpoints specified as arguments.
 
 If no argument is specified, delete all breakpoints (@DBG asks
 confirmation, unless you have @code{set confirm off}).  You can
@@ -1960,7 +1960,7 @@ breakpoints; see @ref{Resuming Execution, ,Resuming Execution}.)
 
 The simplest sort of breakpoint breaks every time your script reaches
 a specified place.  You can also specify a @dfn{condition} for a
-breakpoint.  A condition is just a @acronym{BASH} expression.  
+breakpoint.  A condition is just a @acronym{BASH} expression.
 
 Break conditions can be specified when a breakpoint is set, by using
 @samp{if} in the arguments to the @code{break} command.  @xref{Set
@@ -1971,7 +1971,7 @@ changed at any time with the @code{condition} command.
 
 @cindex one-time breakpoints
 There is also a notion of a ``one-time'' breakpoint which gets deleted
-as soon as it is hit, so that that breakpoint is executed once only. 
+as soon as it is hit, so that that breakpoint is executed once only.
 
 Conditions are also accepted for watchpoints; you may not need them,
 since a watchpoint is inspecting the value of an expression anyhow---but
@@ -2119,7 +2119,7 @@ BASH debugger, ,Quitting the BASH debugger}).
 @table @code
 @kindex skip
 @item skip @ovar{count}
-Skip execution of the next source line. 
+Skip execution of the next source line.
 This may be useful if you have an action that ``fixes'' existing code in
 the script. The @code{debug} command internally uses the @code{skip} command
 to skip over existing non-debugged invocation that was presumably just
@@ -2134,7 +2134,7 @@ run.
 @item continue @ovar{- | line-specification}
 @itemx c @ovar{line-specification}
 Resume program execution, at the address where your script last
-stopped; any breakpoints set at that address are bypassed.  
+stopped; any breakpoints set at that address are bypassed.
 
 The optional argument @var{line-specification} allows you to specify a
 location (a line number, function, or filename linenumber combination)
@@ -2286,13 +2286,13 @@ still print a message telling you that the signal has come in.
 @acronym{BASH} should print a message when this signal happens.
 
 @item noprint
-@acronym{BASH} should not mention the occurrence of the signal at all.  
+@acronym{BASH} should not mention the occurrence of the signal at all.
 
 @item stack
 @acronym{BASH} should print a stack trace when this signal happens.
 
 @item nostack
-@acronym{BASH} should not print a stack trace when this signal occurs.  
+@acronym{BASH} should not print a stack trace when this signal occurs.
 
 @ifset FINISHED
 @item pass
@@ -2495,7 +2495,7 @@ frames that have existed longer.  Using a negative @var{n} is the same
 as issuing a @code{down} command of the absolute value of the @var{n}.
 Using zero for @var{n} does no frame adjustment, but since the current
 position is redisplayed, it may trigger a resynchronization if there is
-a front end also watching over things. 
+a front end also watching over things.
 
 @var{n} defaults to one. You may abbreviate @code{up} as @code{u}.
 
@@ -2508,7 +2508,7 @@ that were created more recently.  Using a negative @var{n} is the same
 as issuing a @code{up} command of the absolute value of the @var{n}.
 Using zero for @var{n} does no frame adjustment, but since the current
 position is redisplayed, it may trigger a resynchronization if there is
-a front end also watching over things. 
+a front end also watching over things.
 
 @var{n} defaults to one.  You may abbreviate @code{down} as @code{do}.
 @end table
@@ -2555,7 +2555,7 @@ most ``main'' stack frame.
 Without an argument, @code{frame} prints the current stack
 frame. Since the current position is redisplayed, it may trigger a
 resynchronization if there is a front end also watching over
-things. 
+things.
 @end table
 
 @node List
@@ -2603,7 +2603,7 @@ Print lines just before the lines last printed.
 @end table
 
 By default, @value{DBG} prints ten source lines with any of these forms of
-the @code{list} command.  
+the @code{list} command.
 You can change this using @code{set listsize}:
 
 @table @code
@@ -2789,7 +2789,7 @@ If you omit @var{expr}, @value{DBG} displays the last expression again.
 
 This is a smarter, more versatile ``print'' command, and although sometimes
 it might not be what you want, and you may want to resort to either
-@code{print} or @code{eval echo...}. 
+@code{print} or @code{eval echo...}.
 
 As with @code{print}, if you omit @var{expr}, @value{DBG} displays
 the last expression again.
@@ -2829,8 +2829,8 @@ declare -- y="23"
 bashdb<1> @b{examine x+y}
 45
 bashdb<2> @b{x fn1}
-fn1 () 
-@{ 
+fn1 ()
+@{
     echo "fn1 here";
     x=5;
     fn3
@@ -2877,7 +2877,7 @@ this:
 @end example
 
 @noindent
-This display shows item numbers, expressions and their current values.  
+This display shows item numbers, expressions and their current values.
 
 @table @code
 @kindex display
@@ -2933,7 +2933,7 @@ and @code{shell}.
 In contrast to the commands of the last section the most general way
 to examine data is through @code{eval}. But you do much more with
 this; you can change the values of variables, since, you are just
-evaluating @acronym{BASH} code. 
+evaluating @acronym{BASH} code.
 
 If you expect output, you should arrange that in the command, such as
 via @code{echo} or @code{printf}. For example, to print the value of
@@ -2953,7 +2953,7 @@ For example:
 @smallexample
 (/etc/apparmor/functions:24):
 PROFILES="/etc/apparmor.d"
-bashdb<2> 
+bashdb<2>
 @end smallexample
 
 I had been cutting and pasting the command as shown, but realized I could do better if I made a command for this. So that's what I've done.
@@ -2967,10 +2967,10 @@ PROFILES="/etc/apparmor.d"
 bashdb<2> eval
 eval: PROFILES="/etc/apparmor.d"
 $? is 0
-bashdb<3> 
+bashdb<3>
 @end smallexample
 
-This was working fine, until I started coming across tests inside @code{if}, @code{elsif},  @code{case}, @code{return} or @code{while} blocks. For example: 
+This was working fine, until I started coming across tests inside @code{if}, @code{elsif},  @code{case}, @code{return} or @code{while} blocks. For example:
 
 @smallexample
 (/etc/init.d/apparmor:70):
@@ -2984,7 +2984,7 @@ bashdb<2> pr $1
 status
 @end smallexample
 
-But I'm lazy. I'd rather let the debugger do the work for me: 
+But I'm lazy. I'd rather let the debugger do the work for me:
 
 @smallexample
 bashdb<1> eval?
@@ -3028,7 +3028,7 @@ takes a list of variable names.
 
 Here is an example session
 
-@smallexample 
+@smallexample
 bashdb /etc/init.d/apparmor status
 bashdb debugger, release 4.2-0.8
 
@@ -3213,8 +3213,8 @@ if your version of @DBG comes with one.
 @node Controlling bashdb
 @section Controlling bashdb (@samp{set}, @samp{file}, @samp{prompt}, @samp{history}...)
 
-You can alter the way @acronym{BASH} 
-interacts with you in various ways given below. 
+You can alter the way @acronym{BASH}
+interacts with you in various ways given below.
 
 @menu
 * Alias::                Debugger Command aliases
@@ -3288,7 +3288,7 @@ bashdb<3> @b{stepp}
 NameError Exception: undefined local variable or method `stepp' for ...
 @end smallexample
 
-@kindex show autoeval 
+@kindex show autoeval
 @item show args
 Shows whether Ruby evaluation of debugger input should occur or not.
 @end table
@@ -3340,7 +3340,7 @@ the current working directory when the debugged script was started as
 well as the current working directory now (which might be different
 if a ``cd'' command was issued to change the working directory).
 
-However sometimes this doesn't work and there is a way to 
+However sometimes this doesn't work and there is a way to
 override this.
 
 @table @code
@@ -3352,7 +3352,7 @@ specified in @env{BASH_SOURCE} that gets overridden is shown when is
 this command is issued.
 @end table
 
-@node Line Tracing 
+@node Line Tracing
 @subsection Show position information as statements are executed (@samp{set linetrace})
 
 @value{BASH} has ``@code{set -x}'' tracing to show commands as they are
@@ -3386,7 +3386,7 @@ Prints @code{set logging} usage.
 @item set logging @r{[} on | 1 @r{]}
 Enable or Disable logging.
 @item set logging file @var{filename}
-Change the name of the current logfile.  The default logfile is 
+Change the name of the current logfile.  The default logfile is
 @file{bashdb.txt}.
 @item set logging overwrite @r{[} on | 1 @r{]}
 By default, the debugger will append to the logfile.  Set
@@ -3415,7 +3415,7 @@ When variables inside the the prompt string are evaluated, the above
 becomes something like @samp{bashdb<5>} if this is the fifth command
 executed or perhaps @samp{bashdb<<2>>} if you have called the debugger
 from inside a debugger session and this is the second command inside
-the debugger session or perhaps @samp{bashdb<(6)>} if you 
+the debugger session or perhaps @samp{bashdb<(6)>} if you
 entered a subshell after the fifth command.
 
 You can change the prompt string with the @code{set prompt} command,
@@ -3430,7 +3430,7 @@ prompt you set.  This allows you to set a prompt which ends in a space
 or a prompt that does not. Furthermore due to a implementation
 limitation (resulting from a limitation of the bash built-in function
 ``read''), to put a space at the end of the prompt use the
-@samp{$_Dbg_space} variable. 
+@samp{$_Dbg_space} variable.
 
 @table @code
 @kindex set prompt
@@ -3520,14 +3520,14 @@ in the third line of the example above, we have a command that gets
 run and then the output of that is substituted in an assignment
 statement.  If you were single stepping inside the debugger, each line
 might get listed more than once before each of the actions that might
-get performed. (In the case of the conditional statement, the 
+get performed. (In the case of the conditional statement, the
 line gets listed only once when the condition is false.)
 
 In order to assist understanding where you are, the enhanced version
 of @acronym{BASH} maintains a dynamic variable @env{BASH_COMMAND} that
 contains piece of code next to be run (or is currently being run). The
 debugger has arranged to save this and can display this information
-or not. This is controlled by @code{set showcommand}. 
+or not. This is controlled by @code{set showcommand}.
 
 @table @code
 @kindex set showcommand
@@ -3602,7 +3602,7 @@ Use this command to reexecute a given history number. If no number is
 given, the last debugger command in the history is executed.
 
 An alternate form is @code{!@emph{n}} or @code{!-@emph{n}} where
-@emph{n} is an integer. 
+@emph{n} is an integer.
 
 If a minus sign is used in in either form, @emph{n} is taken as the
 count to go back from the end rather than as a absolute history
@@ -3661,7 +3661,7 @@ history facilities do not attempt substitution on the strings
 @kbd{!=} and @kbd{!(}, even when history expansion is enabled.
 
 The commands to control history expansion are:
-@end ifset 
+@end ifset
 
 @table @code
 @ifset FINISHED
@@ -4025,22 +4025,22 @@ manual that you are probably reading online)
 
 Bill Rosenblatt (kshdb),
 Michael Loukides (kshdb),
-Cigy Cyriac (proto bashdb), 
-Chet Ramey (proto bashdb), 
+Cigy Cyriac (proto bashdb),
+Chet Ramey (proto bashdb),
 and
 Gary V. Vaughan (proto bashdb).
 
 Authors of per5ldb:
 
-Ray Lischner, 
-Johan Vromans, 
+Ray Lischner,
+Johan Vromans,
 and
 Ilya Zakharevich.
 
 Authors of GDB:
 
-Richard Stallman, 
-Andrew Cagney, 
+Richard Stallman,
+Andrew Cagney,
 Jim Blandy,
 Jason Molenda,
 Stan Shebs,
@@ -4076,20 +4076,20 @@ Eric S. Raymond.
 @unnumbered General Index
 @printindex cp
 
-@tex
-% I think something like @colophon should be in texinfo.  In the
-% meantime:
-\long\def\colophon{\hbox to0pt{}\vfill
-\centerline{The body of this manual is set in}
-\centerline{\fontname\tenrm,}
-\centerline{with headings in {\bf\fontname\tenbf}}
-\centerline{and examples in {\tt\fontname\tentt}.}
-\centerline{{\it\fontname\tenit\/},}
-\centerline{{\bf\fontname\tenbf}, and}
-\centerline{{\sl\fontname\tensl\/}}
-\centerline{are used for emphasis.}\vfill}
-\page\colophon
-% Blame: doc@cygnus.com, 1991.
-@end tex
+@c @tex
+@c % I think something like @colophon should be in texinfo.  In the
+@c % meantime:
+@c \long\def\colophon{\hbox to0pt{}\vfill
+@c \centerline{The body of this manual is set in}
+@c \centerline{\fontname\tenrm,}
+@c \centerline{with headings in {\bf\fontname\tenbf}}
+@c \centerline{and examples in {\tt\fontname\tentt}.}
+@c \centerline{{\it\fontname\tenit\/},}
+@c \centerline{{\bf\fontname\tenbf}, and}
+@c \centerline{{\sl\fontname\tensl\/}}
+@c \centerline{are used for emphasis.}\vfill}
+@c \page\colophon
+@c % Blame: doc@cygnus.com, 1991.
+@c @end tex
 
 @bye
