@@ -4,7 +4,7 @@ version="0.01";
 
 fibonacci() {
     n=${1:?If you want the nth fibonacci number, you must supply n as the first parameter.}
-    if [ $n -le 1 ]; then 
+    if [ $n -le 1 ]; then
     echo $n
     else
     l=`fibonacci $((n-1))`
@@ -13,9 +13,8 @@ fibonacci() {
     fi
 }
 
-for i in `seq 1 2`
+for i in 1 2
 do
   result=$(fibonacci $i)
   echo "i=$i result=$result"
 done
-
