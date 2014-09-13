@@ -13,17 +13,17 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-typeset -a _Dbg_yn; _Dbg_yn=("n" "y")         
+typeset -a _Dbg_yn; _Dbg_yn=("n" "y")
 
 # Return $2 copies of $1. If successful, $? is 0 and the return value
 # is in result.  Otherwise $? is 1 and result ''
-function _Dbg_copies { 
+function _Dbg_copies {
     result=''
     (( $# < 2 )) && return 1
     typeset -r string="$1"
@@ -34,7 +34,7 @@ function _Dbg_copies {
     return 0
 }
 
-# _Dbg_defined returns 0 if $1 is a defined variable or nonzero otherwise. 
+# _Dbg_defined returns 0 if $1 is a defined variable or nonzero otherwise.
 _Dbg_defined() {
     (( 0 == $# )) && return 1
     typeset -p "$1" &> /dev/null
@@ -53,7 +53,8 @@ _Dbg_eval_re=(
     '^[ \t]*(if|elif)[ \t]+([^;]*)((;[ \t]*then?)?|$)'
     '^[ \t]*return[ \t]+(.*)$'
     '^[ \t]*while[ \t]+([^;]*)((;[ \t]*do?)?|$)'
-    '^[ \t]*[A-Za-z_][A-Za-z_0-9[]*[]-+]?=(.*$)'
+    '^[ \t]*[A-Za-z_][A-Za-z_0-9_]*[+-]?=(.*$)'
+    "^[ \t]*[A-Za-z_][A-Za-z_0-9_]*\[[0-9]+\][+-]?=(.*\$)"
 )
 
 # Removes "[el]if" .. "; then" or "while" .. "; do" or "return .."
@@ -71,6 +72,8 @@ _Dbg_eval_extract_condition()
 	extracted=${BASH_REMATCH[1]}
     elif [[ $orig =~ ${_Dbg_eval_re[3]} ]] ; then
 	extracted="echo ${BASH_REMATCH[1]}"
+    elif [[ $orig =~ ${_Dbg_eval_re[4]} ]] ; then
+	extracted="echo ${BASH_REMATCH[1]}"
     else
 	extracted=$orig
     fi
@@ -84,7 +87,7 @@ function _Dbg_onoff {
   builtin echo $onoff
 }
 
-# Set $? to $1 if supplied or the saved entry value of $?. 
+# Set $? to $1 if supplied or the saved entry value of $?.
 function _Dbg_set_dol_q {
   return ${1:-$_Dbg_debugged_exit_code}
 }
@@ -121,17 +124,17 @@ _Dbg_get_functions() {
     typeset -i i
     typeset -i invert=0;
 
-    if [[ $pat == !* ]] ; then 
+    if [[ $pat == !* ]] ; then
 	# Remove leading !
 	pat=#{$pat#!}
 	invert=1
-    fi	
+    fi
 
     # Iterate skipping over consecutive single tokens "declare" and "-F"
     for (( i=2; (( i < ${#fns_a[@]} )) ; i += 3 )) ; do
 	typeset fn="${fns_a[$i]}"
 	[[ $fn == _* ]] && (( ! include_system )) && continue
-	if [[ $fn =~ $pat ]] ; then 
+	if [[ $fn =~ $pat ]] ; then
 	     [[ $invert == 0 ]] && ret_fns[${#ret_fns[@]}]=$fn
 	else
 	     [[ $invert != 0 ]] && ret_fns[${#ret_fns[@]}]=$fn
@@ -141,7 +144,7 @@ _Dbg_get_functions() {
     echo ${ret_fns[@]}
 }
 
-# _Dbg_is_function returns 0 if $1 is a defined function or nonzero otherwise. 
+# _Dbg_is_function returns 0 if $1 is a defined function or nonzero otherwise.
 # if $2 is nonzero, system functions, i.e. those whose name starts with
 # an underscore (_), are included in the search.
 _Dbg_is_function() {
@@ -157,7 +160,7 @@ _Dbg_is_function() {
 
 # Return 0 if set -x tracing is on
 _Dbg_is_traced() {
-    # Is "x" in set options? 
+    # Is "x" in set options?
     if [[ $- == *x* ]] ; then
 	return 0
     else
@@ -166,7 +169,7 @@ _Dbg_is_traced() {
 }
 
 # Common routine for setup of commands that take a single
-# linespec argument. We assume the following variables 
+# linespec argument. We assume the following variables
 # which we store into:
 #  filename, line_number, full_filename
 
@@ -181,14 +184,14 @@ function _Dbg_linespec_setup {
     _Dbg_errmsg "Invalid line specification: $linespec"
     return
   fi
-  
+
   filename="${word[2]}"
   typeset -ri is_function=${word[1]}
   line_number=${word[0]}
   full_filename=$(_Dbg_is_file "$filename")
 
   if (( is_function )) ; then
-      if [[ -z $full_filename ]] ; then 
+      if [[ -z $full_filename ]] ; then
 	  _Dbg_readin "$filename"
 	  full_filename=$(_Dbg_is_file "$filename")
       fi
@@ -207,10 +210,10 @@ function _Dbg_parse_linespec {
   case "$linespec" in
 
     # line number only - use _Dbg_frame_last_filename for filename
-    $int_pat )	
+    $int_pat )
       echo "$linespec 0 \"$_Dbg_frame_last_filename\""
       ;;
-    
+
     # file:line
     [^:][^:]*[:]$int_pat )
       # Split the POSIX way
@@ -222,14 +225,14 @@ function _Dbg_parse_linespec {
 
     # Function name or error
     * )
-      if _Dbg_is_function $linespec $_Dbg_set_debug ; then 
+      if _Dbg_is_function $linespec $_Dbg_set_debug ; then
 	local -a word=( $(declare -F $linespec) )
-	if [[ 0 == $? && ${#word[@]} > 2 ]]; then 
+	if [[ 0 == $? && ${#word[@]} > 2 ]]; then
 	  builtin echo "${word[1]} 1 ${word[2]}"
 	else
 	  builtin echo ''
 	fi
-      else  
+      else
 	builtin echo ''
       fi
       ;;
@@ -237,11 +240,11 @@ function _Dbg_parse_linespec {
 }
 
 # usage _Dbg_set_ftrace [-u] funcname [funcname...]
-# Sets or unsets a function for stopping by setting 
+# Sets or unsets a function for stopping by setting
 # the -t or +t property to the function declaration.
 #
 function _Dbg_set_ftrace {
-  typeset opt=-t tmsg="enabled" func 
+  typeset opt=-t tmsg="enabled" func
   if [[ $1 == -u ]]; then
 	opt=+t
 	tmsg="disabled"
