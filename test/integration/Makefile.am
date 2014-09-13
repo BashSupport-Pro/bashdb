@@ -1,5 +1,26 @@
-test_in_files := $(wildcard test-*.in)
-tests_from_in_files := $(notdir $(test_in_files:.in=))
+test_in_files = \
+	test-bug-step-subshell.in \
+	test-debug.in 		\
+	test-delete.in 		\
+	test-export.in 		\
+	test-file-with-spaces.in \
+	test-info-args.in	\
+	test-interrupt.in	\
+	test-misc.in		\
+	test-setshow.in		\
+	test-sig.in
+
+test_sources = \
+	test-bug-step-subshell 	\
+	test-debug 		\
+	test-delete 		\
+	test-export 		\
+	test-file-with-spaces 	\
+	test-info-args		\
+	test-interrupt		\
+	test-misc		\
+	test-setshow		\
+	test-sig
 
 check_DATA = \
 	$(test_in_files)   \
@@ -14,7 +35,7 @@ check_DATA = \
 	trace2.tests
 
 TESTS = \
-	$(tests_from_in_files) \
+	$(test_sources) \
 	test-action     \
 	test-brkpt      \
 	test-bug-args   \

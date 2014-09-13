@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Things related to file handling.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2014 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -58,7 +58,7 @@ function _Dbg_file_canonic {
 # The result will be in variable $filename which is assumed to be
 # local'd by the caller
 _Dbg_tilde_expand_filename() {
-  typeset cmd="filename=$(expr $1)"
+  typeset cmd="filename=\$(builtin echo $1)"
   eval $cmd
   [[ -r $filename ]]
 }

@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011
-# 2012 Rocky Bernstein <rocky@gnu.org>
+# 2012, 2014 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,10 +24,10 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.3)
-define(relstatus, 0.9dev)
+define(relstatus, 0.9)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
-AC_CONFIG_MACRO_DIR([m4])
+# AC_CONFIG_MACRO_DIR([m4])
 
 ##################################################################
 # See if --prefix was set. If not, set it to a reasonable default
@@ -60,8 +60,6 @@ if test x"$BASH_SRC" != x ; then
    else
      AM_PROG_CC_C_O
      dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
-     PIC=$lt_prog_compiler_pic_CXX
-     WL=$lt_prog_compiler_wl_CXX
      build_set0=$BASH_SRC
      AC_CHECK_HEADERS(unistd.h string.h,,
          [AC_MSG_WARN([Missing some C headers. Disabling set0])
@@ -70,8 +68,8 @@ if test x"$BASH_SRC" != x ; then
 fi
 AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
-PIC=$lt_prog_compiler_pic_CXX
-WL=$lt_prog_compiler_wl_CXX
+PIC=$lt_prog_compiler_pic
+WL=$lt_prog_compiler_wl
 AC_SUBST(PIC)
 AC_SUBST(WL)
 AC_SUBST(DIFF)

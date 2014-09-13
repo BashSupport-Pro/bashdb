@@ -9,30 +9,30 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
-if [[ -z $_Dbg_requires ]] ; then 
+if [[ -z $_Dbg_requires ]] ; then
     function _Dbg_expand_filename {
 	typeset -r filename="$1"
-	
+
 	# Break out basename and dirname
 	typeset basename="${filename##*/}"
 	typeset -x dirname="${filename%/*}"
-	
+
 	# No slash given in filename? Then use . for dirname
 	[[ $dirname == $basename ]] && [[ $filename != '/' ]] && dirname='.'
-	
+
 	# Dirname is ''? Then use / for dirname
 	dirname=${dirname:-/}
-	
+
 	# Handle tilde expansion in dirname
 	dirname=$(echo $dirname)
-	
+
 	typeset long_path
-	
+
 	if long_path=$( (cd "$dirname" ; pwd) 2>/dev/null ) ; then
 	    if [[ "$long_path" == '/' ]] ; then
 		echo "/$basename"
@@ -48,7 +48,7 @@ if [[ -z $_Dbg_requires ]] ; then
 
     typeset -A _Dbg_requires
     require() {
-	typeset file 
+	typeset file
 	typeset expanded_file
 	typeset source_dir
 	typeset orig_dir
@@ -69,4 +69,3 @@ if [[ -z $_Dbg_requires ]] ; then
 	[[ -n $orig_dir ]] && builtin cd $orig_dir
     }
 fi
-
