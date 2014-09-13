@@ -11,7 +11,7 @@ if [[ $srcdir != $builddir ]] ; then
 fi
 case $host_os in
     cygwin | darwin* | solaris* )
-	exit ;;
+	exit 77;;
     * )
 	: ;;
 esac
