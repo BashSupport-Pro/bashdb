@@ -1,8 +1,39 @@
+2014-09-15  rocky <rocky@gnu.org>
+
+	* configure.ac: Release 4.3-0.9 - this time, for sure!
+
 2014-09-13  rocky <rocky@gnu.org>
 
-	* .gitignore, command/info_sub/Makefile.am, configure.ac,
-	doc/notecase-HTML.sh, init/require.sh, lib/file.sh, lib/frame.sh,
-	test/integration/.gitignore, test/integration/Makefile.am,
+	* test/data/bug-break.right, test/example/fib.sh: Some OS's don't
+	have seq installed
+
+2014-09-13  rocky <rocky@gnu.org>
+
+	* test/integration/test-interrupt.in, test/integration/test-sig.in: 
+	More OS's where we skip tests.
+
+2014-09-13  rocky <rocky@gnu.org>
+
+	* Makefile.am: Add "compute-prefix.sh" program
+
+2014-09-13  rocky <rocky@gnu.org>
+
+	* lib/fns.sh, test/integration/test-file-with-spaces: More portable
+	handling of assignment statement for eval?
+
+2014-09-13  rocky <rocky@gnu.org>
+
+	* configure.ac, init/opts.sh,
+	test/integration/test-file-with-spaces,
+	test/integration/test-sig.in: Update copyright. Skip sig test on
+	freebsd
+
+2014-09-13  rocky <rocky@gnu.org>
+
+	* .gitignore, ChangeLog, NEWS, command/info_sub/Makefile.am,
+	configure.ac, doc/notecase-HTML.sh, init/require.sh, lib/file.sh,
+	lib/frame.sh, test/integration/.gitignore,
+	test/integration/Makefile.am,
 	test/integration/test-file-with-spaces,
 	test/integration/test-file-with-spaces.in, test/unit/Makefile.am,
 	test/unit/test-get-sourceline.sh.in: tilde expansion reinstated,
