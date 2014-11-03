@@ -15,6 +15,9 @@ fi
 case $host_os in
     freebsd* | netbsd* )
 	exit 77 ;;
+    darwin* )
+	RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-Darwin.right"
+	;;
     * )
 esac
 
