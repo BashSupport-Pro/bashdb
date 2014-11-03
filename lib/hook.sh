@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011
+#   Copyright (C) 2002-2011, 2014
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ typeset -i _Dbg_inside_skip=0
 # - A return code 2 is special and means return from a function or
 #   "source" command immediately
 #
-# - A nonzero return indicate the next statement should not be run. 
+# - A nonzero return indicate the next statement should not be run.
 #   Typically we use 1 for that value.
 # - A set return code 0 continues execution.
 typeset -i _Dbg_continue_rc=-1
@@ -61,17 +61,20 @@ _Dbg_debug_trap_handler() {
 
     ### The below is also copied below in _Dbg_sig_handler...
     ### Should put common stuff into a function.
-    
+
     # Consider putting the following line(s) in a routine.
     # Ditto for the restore environment
     typeset -i _Dbg_debugged_exit_code=$?
     _Dbg_old_set_opts=$-
+    shopt nullglob > /dev/null
+    typeset -i _Dbg_old_set_nullglob=$?
+    shopt -u nullglob
     shopt -s extdebug
-    
+
     # Turn off line and variable trace listing if were not in our own debug
     # mode, and set our own PS4 for debugging inside the debugger
     (( !_Dbg_set_debug )) && set +x +v +u
-    
+
     # If we are in our own routines -- these start with _bashdb -- then
     # return.
     if [[ ${FUNCNAME[1]} == _Dbg_* ]] && ((  !_Dbg_set_debug )); then
@@ -82,11 +85,11 @@ _Dbg_debug_trap_handler() {
     # Sets _Dbg_frame_last_lineno and _Dbg_frame_last_filename among
     # other things.
     _Dbg_set_debugger_entry
-    
+
     _Dbg_continue_rc=_Dbg_inside_skip
-    
+
     # Shift off "RETURN";  we do not need that any more.
-    shift 
+    shift
 
     _Dbg_bash_command=$1
     shift
@@ -94,13 +97,13 @@ _Dbg_debug_trap_handler() {
     _Dbg_save_args "$@"
 
     # if in step mode, decrement counter
-    if ((_Dbg_step_ignore > 0)) ; then 
+    if ((_Dbg_step_ignore > 0)) ; then
 	((_Dbg_step_ignore--))
 	_Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
 	# Can't return here because we may want to stop for another
 	# reason.
     fi
-    
+
     # look for watchpoints.
     typeset -i _Dbg_i
     for (( _Dbg_i=0; _Dbg_i < _Dbg_watch_max ; _Dbg_i++ )) ; do
@@ -122,20 +125,20 @@ _Dbg_debug_trap_handler() {
 
     typeset full_filename
     full_filename=$(_Dbg_is_file "$_Dbg_frame_last_filename")
-    if [[ -r $full_filename ]] ; then 
+    if [[ -r $full_filename ]] ; then
 	_Dbg_file2canonic[$_Dbg_frame_last_filename]="$full_filename"
     fi
 
     # Run applicable action statement
-    if ((_Dbg_action_count > 0)) ; then 
+    if ((_Dbg_action_count > 0)) ; then
 	_Dbg_hook_action_hit "$full_filename"
     fi
 
-    # Determine if we stop or not. 
+    # Determine if we stop or not.
 
     # Check breakpoints.
-    if ((_Dbg_brkpt_count > 0)) ; then 
-	if _Dbg_hook_breakpoint_hit "$full_filename"; then 
+    if ((_Dbg_brkpt_count > 0)) ; then
+	if _Dbg_hook_breakpoint_hit "$full_filename"; then
 	    if ((_Dbg_step_force)) ; then
 		typeset _Dbg_frame_previous_file="$_Dbg_frame_last_filename"
 		typeset -i _Dbg_frame_previous_lineno="$_Dbg_frame_last_lineno"
@@ -153,7 +156,7 @@ _Dbg_debug_trap_handler() {
               "Breakpoint $_Dbg_brkpt_num hit (${_Dbg_brkpt_counts[_Dbg_brkpt_num]} times)."
 		_Dbg_stop_reason="at breakpoint $_Dbg_brkpt_num"
 	    fi
-	    # We're sneaky and check commands_end because start could 
+	    # We're sneaky and check commands_end because start could
 	    # legitimately be 0.
 	    if (( _Dbg_brkpt_commands_end[$_Dbg_brkpt_num] )) ; then
 		# Run any commands associated with this breakpoint
@@ -164,18 +167,18 @@ _Dbg_debug_trap_handler() {
 	    return $_Dbg_continue_rc
 	fi
     fi
-    
+
 
     # Check if step mode and number steps to ignore.
     if ((_Dbg_step_ignore == 0)); then
 	if ((_Dbg_step_force)) ; then
 	    if (( _Dbg_last_lineno == _Dbg_frame_last_lineno )) \
-		&& [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then 
+		&& [[ $_Dbg_last_source_file == $_Dbg_frame_last_filename ]] ; then
 		_Dbg_set_to_return_from_debugger 1
 		return $_Dbg_continue_rc
 	    fi
 	fi
-	
+
 	_Dbg_hook_enter_debugger 'after being stepped'
 	return $_Dbg_continue_rc
     elif (( ${#FUNCNAME[@]} == _Dbg_return_level )) ; then
@@ -187,7 +190,7 @@ _Dbg_debug_trap_handler() {
 	# here because we are fielding a signal.
 	_Dbg_hook_enter_debugger 'on fielding signal'
 	return $_Dbg_continue_rc
-    elif ((_Dbg_set_linetrace==1)) ; then 
+    elif ((_Dbg_set_linetrace==1)) ; then
 	if ((_Dbg_set_linetrace_delay)) ; then
 	    sleep $_Dbg_linetrace_delay
 	fi
@@ -214,7 +217,7 @@ _Dbg_hook_action_hit() {
 
     typeset -i _Dbg_i
     # Check action within full_filename
-    for ((_Dbg_i=0; _Dbg_i < ${#linenos[@]}; _Dbg_i++)); do 
+    for ((_Dbg_i=0; _Dbg_i < ${#linenos[@]}; _Dbg_i++)); do
 	if (( linenos[_Dbg_i] == lineno )) ; then
 	    (( _Dbg_action_num = action_nos[_Dbg_i] ))
 	    stmt="${_Dbg_action_stmt[$_Dbg_action_num]}"
@@ -244,9 +247,9 @@ _Dbg_hook_breakpoint_hit() {
     eval "brkpt_nos=(${_Dbg_brkpt_file2brkpt[$full_filename]})"
     typeset -i i
     # Check breakpoints within full_filename
-    for ((i=0; i < ${#linenos[@]}; i++)); do 
+    for ((i=0; i < ${#linenos[@]}; i++)); do
 	if (( linenos[i] == lineno )) ; then
-	    # Got a match, but is the breakpoint enabled? 
+	    # Got a match, but is the breakpoint enabled?
 	    (( _Dbg_brkpt_num = brkpt_nos[i] ))
 	    if ((_Dbg_brkpt_enable[_Dbg_brkpt_num] )) ; then
 		return 0

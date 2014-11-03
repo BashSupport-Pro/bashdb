@@ -13,14 +13,14 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
 # Does things to after on entry of after an eval to set some debugger
-# internal settings  
+# internal settings
 function _Dbg_set_debugger_internal {
   IFS="$_Dbg_space_IFS";
   PS4='+ dbg (${BASH_SOURCE}:${LINENO}[$BASH_SUBSHELL]): ${FUNCNAME[0]}\n'
@@ -31,24 +31,25 @@ function _Dbg_restore_user_vars {
   set -$_Dbg_old_set_opts
   IFS="$_Dbg_old_IFS";
   PS4="$_Dbg_old_PS4"
+  (( _Dbg_old_set_nullglob == 0 )) && shopt -u nullglob
 }
 
 _Dbg_save_args() {
-    
+
     # Save values of $1 $2 $3 when debugged program was stopped
     # We use the loop below rather than _Dbg_set_args="(@)" because
     # we want to preserve embedded blanks in the arguments.
     typeset -i _Dbg_n=${#@}
     typeset -i _Dbg_i
     typeset -i _Dbg_arg_max=${#_Dbg_arg[@]}
-    
+
     # If there has been a shift since the last time we entered,
     # it is possible that _Dbg_arg will contain too many values.
     # So remove those that have disappeared.
     for (( _Dbg_i=_Dbg_arg_max; _Dbg_i > _Dbg_n ; _Dbg_i-- )) ; do
 	unset _Dbg_arg[$_Dbg_i]
     done
-    
+
     # Populate _Dbg_arg with $1, $2, etc.
     for (( _Dbg_i=1 ; _Dbg_n > 0; _Dbg_n-- )) ; do
 	_Dbg_arg[$_Dbg_i]="$1"
@@ -61,7 +62,7 @@ _Dbg_save_args() {
 }
 
 # Do things for debugger entry. Set some global debugger variables
-# Remove trapping ourselves. 
+# Remove trapping ourselves.
 # We assume that we are nested two calls deep from the point of debug
 # or signal fault. If this isn't the constant 2, then consider adding
 # a parameter to this routine.
@@ -70,7 +71,7 @@ function _Dbg_set_debugger_entry {
   # Nuke DEBUG trap
   trap '' DEBUG
 
-  # How many function are on the stack that are part of the debugger? 
+  # How many function are on the stack that are part of the debugger?
   # Normally this gets called from the trace hook. so this routine plus
   # the trace hook should are on the FUNCNAME stack and should be ignored
   typeset -li discard_top_fn_count=${1:-2}
@@ -116,7 +117,7 @@ function _Dbg_set_to_return_from_debugger {
     trap '_Dbg_debug_trap_handler 0 "$BASH_COMMAND" "$@"' DEBUG
   else
     trap - DEBUG
-  fi  
+  fi
 
   _Dbg_restore_user_vars
 }
