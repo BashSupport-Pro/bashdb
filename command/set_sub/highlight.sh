@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set highlight" debugger command
 #
-#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011, 2014 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,9 +19,15 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set highlight \
-'set highlight [on|off]
+'set highlight [on|off|reset]
 
-Set syntax highlighting of source listings.' 1
+Set syntax highlighting of source listings.
+
+Use "reset" to set highlighting on and force a redo of syntax
+highlighting of already cached files. This may be needed if the
+debugger was started without syntax highlighting initially.
+
+See also: show highlight.' 1
 
 _Dbg_next_complete[set highlight]='_Dbg_complete_edit'
 
@@ -37,14 +43,14 @@ _Dbg_do_set_highlight() {
 	return 1
     fi
     typeset onoff=${1:-'on'}
-    case $onoff in 
-	on | 1 ) 
+    case $onoff in
+	on | 1 )
 	    _Dbg_set_highlight=1
 	    ;;
 	off | 0 )
 	    _Dbg_set_highlight=0
 	    ;;
-	reset ) 
+	reset )
 	    _Dbg_set_highlight=1
 	    _Dbg_filecache_reset
 	    _Dbg_readin $_Dbg_frame_last_filename
