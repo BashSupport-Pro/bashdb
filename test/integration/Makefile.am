@@ -41,6 +41,7 @@ TESTS = \
 	test-bug-args   \
 	test-bugI       \
 	test-bugIFS     \
+	test-bug-loc    \
 	test-bug-source \
 	test-command    \
 	test-complete   \
