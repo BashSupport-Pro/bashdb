@@ -28,6 +28,8 @@ _Dbg_keep=('keep' 'del')
 # and testing for an entry. Could add yet another array to list only
 # used indices. Bash is kind of primitive.
 
+# Breakpoint data structures
+
 # Line number of breakpoint $i
 typeset -a _Dbg_brkpt_line; _Dbg_brkpt_line=()
 
@@ -145,7 +147,7 @@ _Dbg_enable_disable() {
     return 0
   fi
 
-  typeset to_go="$@"
+  typeset to_go; to_go="$@"
   typeset i
   eval "$_seteglob"
   for i in $to_go ; do
@@ -207,7 +209,6 @@ _Dbg_set_brkpt() {
     ((_Dbg_brkpt_max++))
     ((_Dbg_brkpt_count++))
 
-
     _Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno
     _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
     _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
@@ -245,7 +246,7 @@ _Dbg_set_brkpt() {
     return 0
 }
 
-# Internal routine to unset the actual breakpoint arrays
+# Internal routine to unset the actual breakpoint arrays.
 # 0 is returned if successful
 _Dbg_unset_brkpt_arrays() {
     (( $# != 1 )) && return 1
@@ -261,7 +262,7 @@ _Dbg_unset_brkpt_arrays() {
 }
 
 # Internal routine to delete a breakpoint by file/line.
-# We return the number of breakponts found or zer if we didn't find
+# We return the number of breakpoints found or zero if we didn't find
 # a breakpoint
 function _Dbg_unset_brkpt {
     (( $# != 2 )) && return 0
