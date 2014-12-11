@@ -61,6 +61,7 @@ TESTS = \
 	test-skip 	\
 	test-sopts 	\
 	test-bug-break 	\
+	test-bug-clear 	\
 	test-bug-step 	\
 	test-subshell 	\
 	test-tbreak	\

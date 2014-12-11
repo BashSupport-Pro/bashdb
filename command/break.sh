@@ -54,13 +54,13 @@ _Dbg_do_break_common() {
     shift
 
     typeset linespec
-    if (( $# > 0 )) ; then 
+    if (( $# > 0 )) ; then
 	linespec="$1"
     else
 	linespec="$_Dbg_frame_last_lineno"
     fi
     shift
-    
+
     typeset condition=${1:-''}
     if [[ "$linespec" == 'if' ]]; then
 	linespec=$_Dbg_frame_last_lineno
@@ -71,21 +71,21 @@ _Dbg_do_break_common() {
     fi
     if [[ -z $condition ]] ; then
 	condition=1
-    else 
+    else
 	condition="$*"
     fi
-    
+
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup "$linespec"
-    
-    if [[ -n "$full_filename" ]]  ; then 
-	if (( line_number ==  0 )) ; then 
+
+    if [[ -n "$full_filename" ]]  ; then
+	if (( line_number ==  0 )) ; then
 	    _Dbg_errmsg 'There is no line 0 to break at.'
 	    return 1
-	else 
+	else
 	    _Dbg_check_line $line_number "$full_filename"
 	    (( $? == 0 )) && \
 		_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
@@ -101,23 +101,23 @@ _Dbg_do_break_common() {
 # use the current file.
 _Dbg_do_clear_brkpt() {
     typeset -r n=${1:-$_Dbg_frame_lineno}
-    
+
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup $n
-    
-    if [[ -n $full_filename ]] ; then 
-	if (( line_number ==  0 )) ; then 
+
+    if [[ -n $full_filename ]] ; then
+	if (( line_number ==  0 )) ; then
 	    _Dbg_msg "There is no line 0 to clear."
 	    return 0
-	else 
+	else
 	    _Dbg_check_line $line_number "$full_filename"
 	    if (( $? == 0 )) ; then
 		_Dbg_unset_brkpt "$full_filename" "$line_number"
 		typeset -r found=$?
-		if [[ $found != 0 ]] ; then 
+		if [[ $found != 0 ]] ; then
 		    _Dbg_msg "Removed $found breakpoint(s)."
 		    return $found
 		fi
@@ -132,9 +132,9 @@ _Dbg_do_clear_brkpt() {
 # list breakpoints and break condition.
 # If $1 is given just list those associated for that line.
 _Dbg_do_list_brkpt() {
-    
+
     eval "$_seteglob"
-    if (( $# != 0  )) ; then 
+    if (( $# != 0  )) ; then
 	typeset brkpt_num="$1"
 	if [[ $brkpt_num != $int_pat ]]; then
 	    _Dbg_errmsg "Bad breakpoint number $brkpt_num."
@@ -158,7 +158,7 @@ _Dbg_do_list_brkpt() {
 	return 0
     elif (( ${#_Dbg_brkpt_line[@]} != 0 )); then
 	typeset -i i
-	
+
 	_Dbg_msg "Num Type       Disp Enb What"
 	for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
 	    typeset source_file=${_Dbg_brkpt_file[$i]}

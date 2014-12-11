@@ -1,10 +1,10 @@
 (bug-loc.sh:5):
-5:	[34mdirname[39;49;00m=[39;49;00m[01m[32m${[39;49;00m[34mBASH_SOURCE[39;49;00m%/*[39;49;00m[01m[32m}[39;49;00m   [39;49;00m[33m# equivalent to dirname($0)[39;49;00m
+5:	[34mdirname[39;49;00m=[39;49;00m[33m${[39;49;00m[34mBASH_SOURCE[39;49;00m%/*[39;49;00m[33m}[39;49;00m   [39;49;00m[33m# equivalent to dirname($0)[39;49;00m
 +# Test to see that we read in files that mentioned in breakpoints
 +# but we don't step into.
 +step 
 (bug-loc.sh:6):
-6:	[36msource[39;49;00m [39;49;00m[01m[32m${[39;49;00m[34mdirname[39;49;00m[01m[32m}[39;49;00m/library.sh[39;49;00m
+6:	[36msource[39;49;00m [39;49;00m[33m${[39;49;00m[34mdirname[39;49;00m[33m}[39;49;00m/library.sh[39;49;00m
 +step 
 (bug-loc.sh:7):
 7:	[36mecho[39;49;00m [39;49;00m[33m'script line 7'[39;49;00m

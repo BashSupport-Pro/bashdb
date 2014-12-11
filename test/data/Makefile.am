@@ -13,6 +13,8 @@ check_DATA = \
 	bug-args.right \
 	bug-break.cmd \
 	bug-break.right \
+	bug-clear.cmd \
+	bug-clear.right \
 	bug-loc.cmd \
 	bug-loc.right \
 	bug-source.cmd \
