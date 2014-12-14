@@ -24,7 +24,7 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.3)
-define(relstatus, 0.9)
+define(relstatus, 0.91)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 # AC_CONFIG_MACRO_DIR([m4])

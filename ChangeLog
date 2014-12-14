@@ -1,6 +1,53 @@
+2014-12-11  rocky <rocky@gnu.org>
+
+	* lib/break.sh: Sync with zshdb
+
+2014-12-11  rocky <rocky@gnu.org>
+
+	* command/break.sh, lib/break.sh, test/data/Makefile.am,
+	test/data/bug-clear.cmd, test/data/bug-clear.right,
+	test/data/bug-loc.right, test/example/clearbug.sh,
+	test/integration/Makefile.am, test/integration/test-bug-clear: Fix a
+	bug where a "clear" command effectively disabled other breakpoints
+	in the same file at other lines. Bug reported by Alex.
+	test/data/bug-loc.right: Highight markup seems to have changed a
+	little which is probably pygments changing. If this causes a problem
+	in other setups, we may have to revise this test more.
+
+2014-11-06  rocky <rocky@gnu.org>
+
+	* lib/filecache.sh, lib/list.sh, test/data/Makefile.am,
+	test/data/bug-loc.cmd, test/data/bug-loc.right,
+	test/example/Makefile.am, test/example/bug-loc.sh,
+	test/example/library.sh, test/integration/Makefile.am,
+	test/integration/test-bug-loc: Fix bug in source code filename not
+	updating when stepping changes filenames to a cached highlighted
+	file.
+
+2014-11-04  rocky <rocky@gnu.org>
+
+	* command/set_sub/highlight.sh: Document "set highlight".
+
+2014-11-03  rocky <rockyb@sourceforge.net>
+
+	* lib/save-restore.sh: _Dbg_restore_user_vars(): got restore of
+	nullglob backwards. Thanks to John Purnell.
+
+2014-11-03  rocky <rockyb@sourceforge.net>
+
+	* lib/hook.sh, lib/save-restore.sh, test/data/sig-43.right,
+	test/data/sig-Darwin.right, test/integration/.gitignore: 
+	Save/restore shell option nullglob.
+
+2014-11-03  rocky <rockyb@sourceforge.net>
+
+	* test/integration/test-sig.in: Hook custom darwin sig test in
+	integration tests.
+
 2014-09-15  rocky <rocky@gnu.org>
 
-	* configure.ac: Release 4.3-0.9 - this time, for sure!
+	* ChangeLog, NEWS, configure.ac: Release 4.3-0.9 - this time, for
+	sure!
 
 2014-09-13  rocky <rocky@gnu.org>
 

@@ -18,10 +18,16 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
+    dirname=${BASH_SOURCE[0]%/*}
+    [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
+    for file in help alias ; do source $top_dir/lib/${file}.sh; done
+fi
+
 _Dbg_help_add_sub set highlight \
 'set highlight [on|off|reset]
 
-Set syntax highlighting of source listings.
+Set using terminal highlight.
 
 Use "reset" to set highlighting on and force a redo of syntax
 highlighting of already cached files. This may be needed if the

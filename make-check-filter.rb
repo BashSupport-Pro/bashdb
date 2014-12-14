@@ -3,7 +3,7 @@
 # Use like this:
 #   make check 2>&1  | ruby ../make-check-filter.rb
 # See Makefile.am
-pats = '(' + 
+pats = '(' +
   [
    '^(re)?make\[',
    "^(re)?make ",
@@ -12,6 +12,7 @@ pats = '(' +
    '^configure.ac',     # doesn't work always
    '^ cd \.\.',         # doesn't work always
    '^config.status',    # doesn't work always
+   'config\.status:',    # doesn't work always
    '^shunit2: ',
    '^##<<+$',
    '^##>>+$',
@@ -22,6 +23,7 @@ pats = '(' +
 skip_re = /#{pats}/
 
 while gets()
-  next if $_ =~ skip_re
+  next if $_.encode!('UTF-8', 'binary',
+                     invalid: :replace, undef: :replace, replace: '') =~ skip_re
   puts $_
 end

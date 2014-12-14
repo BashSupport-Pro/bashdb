@@ -24,7 +24,7 @@ check_output() {
 # $TEST_NAME have been set previously
 run_debugger() {
   typeset debugged_script="$1"
-  typeset dbg_opts=${2:-"-L ${top_srcdir} -B -q --no-init"}
+  typeset dbg_opts=${2:-"-L ${top_srcdir} -B -q --no-init --no-highlight"}
   [[ -z $short_test_name ]] && short_test_name=$TEST_NAME
   typeset cmdfile=${3:-"${top_srcdir}/test/data/${short_test_name}.cmd"}
   $SH -- ${top_builddir}/@PACKAGE@ $dbg_opts -x "$cmdfile" "$debugged_script" $ARGS

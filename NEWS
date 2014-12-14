@@ -1,3 +1,11 @@
+Version 4.3-0.91
+Dec 14, 2014 Late Gecko
+
+- Fix bug in clear command
+- Fix bug in source code filename not updating
+- Fix bug in saving/restoring nullglob
+- Document set highlight better
+
 Version 4.3-0.9
 Sept 15, 2014
 
