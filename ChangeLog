@@ -1,5 +1,19 @@
 2014-12-14  rocky <rocky@gnu.org>
 
+	* ChangeLog, test/data/sig.right: Update sig right file for bash <
+	4.3
+
+2014-12-14  rocky <rocky@gnu.org>
+
+	* ChangeLog, Makefile.am, README, README.md, doc/Makefile.am,
+	make-check-filter.pl, test/data/bug-clear.right,
+	test/example/Makefile.am, test/example/bug-clear.sh,
+	test/example/clearbug.sh, test/integration/check-common.sh.in,
+	test/integration/test-bug-clear, test/integration/test-bug-loc: Make
+	"make distcheck" work
+
+2014-12-14  rocky <rocky@gnu.org>
+
 	* ChangeLog, Makefile.am, NEWS, command/info_sub/variables.sh,
 	command/set_sub/highlight.sh, configure.ac, init/opts.sh,
 	make-check-filter.rb, test/integration/check-common.sh.in,
