@@ -1,3 +1,15 @@
+2014-12-14  rocky <rocky@gnu.org>
+
+	* ChangeLog, Makefile.am, NEWS, command/info_sub/variables.sh,
+	command/set_sub/highlight.sh, configure.ac, init/opts.sh,
+	make-check-filter.rb, test/integration/check-common.sh.in,
+	test/unit/test-save-restore.sh.in: Get ready for 0.91 release.
+	test/unit: Correct save/restore test.  highlight.sh: doc is not just
+	source listsing make-check-filter.rb: handle weirdly encoded files
+	too variables: document "info variables" listings.  check-common:
+	Add explicit --no-highlight to be ready for when --highlight is the
+	default
+
 2014-12-11  rocky <rocky@gnu.org>
 
 	* lib/break.sh: Sync with zshdb

@@ -1,5 +1,6 @@
 check_DATA =            \
 	bug-args.sh.in  \
+	bug-clear.sh    \
 	bug-loc.sh      \
 	bug-step.sh     \
 	bug-step-subshell.sh \

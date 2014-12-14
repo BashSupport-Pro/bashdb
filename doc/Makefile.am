@@ -24,10 +24,10 @@ man1_MANS = @PACKAGE@.$(EXT)
 EXTRA_DIST = $(man1_MANS) macros.texi \
 	@PACKAGE@.info @PACKAGE@-man.pod @PACKAGE@-man.html
 
-info_TEXINFOS =  bashdb.texi 
+info_TEXINFOS =  bashdb.texi
 bashdb_TEXINFOS = fdl.texi gpl.texi copyright.texi
 
-all: $(INFO_DEPS) $(man1_MANS) html 
+all: $(INFO_DEPS) $(man1_MANS) html
 
 man: $(man1_MANS)
 
@@ -63,4 +63,25 @@ $(man1_MANS): @PACKAGE@-man.pod
 
 all-formats: pdf dvi txt ps html
 
-MOSTLYCLEANFILES = @PACKAGE@.tgs @PACKAGE@.ps.gz @PACKAGE@.pdf @PACKAGE@.html @PACKAGE@_toc.html @PACKAGE@_foot.html $(man1_MANS) @PACKAGE@-man.html pod2htm?.tmp @PACKAGE@.info
+MOSTLYCLEANFILES = \
+	@PACKAGE@.aux \
+	@PACKAGE@.cp \
+	@PACKAGE@.cps \
+	@PACKAGE@.fn \
+	@PACKAGE@.html \
+	@PACKAGE@.ky \
+	@PACKAGE@.kys \
+	@PACKAGE@.log \
+	@PACKAGE@.pdf \
+	@PACKAGE@.pg \
+	@PACKAGE@.ps.gz \
+	@PACKAGE@.tgs \
+	@PACKAGE@.toc \
+	@PACKAGE@.tp \
+	@PACKAGE@.vr \
+	@PACKAGE@_foot.html \
+	@PACKAGE@_toc.html \
+	$(man1_MANS) \
+	@PACKAGE@-man.html \
+	pod2htm?.tmp \
+	@PACKAGE@.info
