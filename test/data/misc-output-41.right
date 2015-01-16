@@ -23,20 +23,20 @@ calling prof1.cmd...
 +# Test a profile
 +print "prof1.cmd called"
 prof1.cmd called
-+######################################### 
++#########################################
 +#### Test that ARGs are correct...
 +print "_Dbg_arg#: ${#_Dbg_arg[@]}"
 _Dbg_arg#: 0
 +print "\$1: $1"
-$1: 
+$1:
 +print "\$2: $2"
-$2: 
-+######################################### 
+$2:
++#########################################
 +#### Testing script args...
 +## FIXME:
 +## info args
-+######################################### 
-+tty 
++#########################################
++tty
 ** Argument required (terminal name for running target process).
 +#### *** GNU things...
 +info warranty
@@ -64,16 +64,17 @@ PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
 +#### help commands...
-+help 
++help
 Available commands:
-  action     continue  eval     history  quit     signal  tty      
-  alias      debug     examine  info     return   skip    unalias  
+-------------------
+  action     continue  eval     history  quit     signal  tty
+  alias      debug     examine  info     return   skip    unalias
   backtrace  delete    export   kill     reverse  source  undisplay
-  break      disable   file     list     run      step    untrace  
-  clear      display   finish   load     search   step+   up       
-  commands   down      frame    next     set      step+   watch    
-  complete   edit      handle   print    shell    tbreak  watche   
-  condition  enable    help     pwd      show     trace 
+  break      disable   file     list     run      step    untrace
+  clear      display   finish   load     search   step+   up
+  commands   down      frame    next     set      step+   watch
+  complete   edit      handle   print    shell    tbreak  watche
+  condition  enable    help     pwd      show     trace
 
 Readline command line editing (emacs/vi mode) is available.
 Type "help" followed by command name for full documentation.
@@ -140,14 +141,14 @@ info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
 
 Aliases for info: i
-+info 
++info
 Info subcommands are:
   args         files      line     source    watchpoints
-  breakpoints  functions  program  stack   
+  breakpoints  functions  program  stack
   display      handle     signals  warranty
 +#### history...
-+H 
-28: info 
++H
+28: info
 27: help info
 26: help tty
 25: help set editing
@@ -157,9 +158,9 @@ Info subcommands are:
 21: help set ar
 20: help set foo
 19: help set
-18: help 
+18: help
 17: info warranty
-16: tty 
+16: tty
 15: print "\$2: $2"
 14: print "\$1: $1"
 13: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
@@ -188,9 +189,9 @@ Info subcommands are:
 4: set trace-commands on
 3: source ../data/prof1.cmd
 +history 11
-+!11 
-+!19:p 
-+!-3:p 
++!11
++!19:p
++!-3:p
 +! -2
 List of info subcommands:
 
@@ -211,12 +212,12 @@ info warranty -- Various kinds of warranty you do not have
 Aliases for info: i
 +! 2
 +H -2
-28: info 
+28: info
 27: help info
 +H foo
 Invalid history number: foo
 +H 100000
-28: info 
+28: info
 27: help info
 26: help tty
 25: help set editing
@@ -226,9 +227,9 @@ Invalid history number: foo
 21: help set ar
 20: help set foo
 19: help set
-18: help 
+18: help
 17: info warranty
-16: tty 
+16: tty
 15: print "\$2: $2"
 14: print "\$1: $1"
 13: print "_Dbg_arg#: ${#_Dbg_arg[@]}"
@@ -266,11 +267,11 @@ Aliases for info: i
 +history 10000
 ** Number 10000 (10000) should be less than 29
 +#### pwd/cd commands...
-+pwd 
++pwd
 Working directory integration.
 +cd .
 Working directory integration.
-+########################## 
++##########################
 +#### Test 'prompt' and 'tty' ...
 +set prompt bashdb${_Dbg_greater}$_Dbg_hi${_Dbg_less}$_Dbg_space
 +show prompt

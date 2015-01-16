@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - gdb-like "help" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010, 2011
+#   Copyright (C) 2002-2006, 2008, 2010-2011, 2015
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
     for file in help alias ; do source $top_dir/lib/${file}.sh; done
@@ -34,19 +34,19 @@ you can get further detailed help by listing the subcommand name.
 
 Examples:
 
-help  
+help
 help up
 help set
 help set args' 1 _Dbg_complete_help
 
 _Dbg_complete_help() {
-    typeset -a words; 
+    typeset -a words;
     IFS=' ' words=( $COMP_LINE )
     typeset subcmds
     subcmds="${!_Dbg_command_help[@]}"
-    if (( ${#words[@]} == 1 )); then 
+    if (( ${#words[@]} == 1 )); then
 	COMPREPLY=( $subcmds )
-    elif (( ${#words[@]} == 2 )) ; then 
+    elif (( ${#words[@]} == 2 )) ; then
 	typeset commands="${!_Dbg_command_help[@]}"
 	COMPREPLY=( $(compgen -W  "$subcmds" "${words[1]}") )
     else
@@ -54,7 +54,7 @@ _Dbg_complete_help() {
     fi
 }
 
-# print help command 
+# print help command
 function _Dbg_do_help {
 
     # We have to use be careful to make sure globbing, e.g. * isn't
@@ -65,7 +65,7 @@ function _Dbg_do_help {
 
     if [[ '' == $_Dbg_args ]] ; then
       _Dbg_help_sort_command_names
-      _Dbg_msg 'Available commands:'
+      _Dbg_section 'Available commands:'
       typeset -a list=("${_Dbg_sorted_command_names[@]}")
       _Dbg_list_columns
       _Dbg_msg ''
@@ -82,7 +82,7 @@ function _Dbg_do_help {
 	    if [[ -n ${_Dbg_command_help[$dbg_cmd]} ]] ; then
  		_Dbg_msg "${_Dbg_command_help[$dbg_cmd]}"
 	    else
-		case $dbg_cmd in 
+		case $dbg_cmd in
 		    i | in | inf | info )
 			_Dbg_info_help $2
 			;;
@@ -97,7 +97,7 @@ function _Dbg_do_help {
 			typeset -i count=0
 			typeset found_cmd
 			typeset list; list="${!_Dbg_command_help[@]}"
-			for try in $list ; do 
+			for try in $list ; do
 			    if [[ $try =~ ^$dbg_cmd ]] ; then
 				found_cmd=$try
 				((count++))
@@ -128,9 +128,9 @@ _Dbg_alias_add 'h' help
 _Dbg_alias_add '?' help
 
 # Demo it.
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    for file in sort columnize list msg ; do 
-	source $top_dir/lib/${file}.sh; 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
+    for file in sort columnize list msg ; do
+	source $top_dir/lib/${file}.sh;
     done
     # source /usr/local/share/bashdb/bashdb-trace
     # _Dbg_debugger
