@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2012 Rocky Bernstein 
+#   Copyright (C) 2002-2004, 2006, 2008-2009, 2012, 2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -27,7 +27,7 @@ _Dbg_ansi_term_normal="[0m"
 # okay. `prompt' is printed, and "yes", or "no" is solicited.  The
 # user response is returned in variable $_Dbg_response and $? is set
 # to 0.  _Dbg_response is set to 'error' and $? set to 1 on an error.
-# 
+#
 _Dbg_confirm() {
     if (( $# < 1 || $# > 2 )) ; then
         _Dbg_response='error'
@@ -35,7 +35,7 @@ _Dbg_confirm() {
     fi
     _Dbg_confirm_prompt=$1
     typeset _Dbg_confirm_default=${2:-'no'}
-    while : ; do 
+    while : ; do
         if ! read $_Dbg_edit -p "$_Dbg_confirm_prompt" _Dbg_response args \
             <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
             break
@@ -123,7 +123,7 @@ function _Dbg_printf_nocr {
         builtin printf "$format" "$@" >>$_Dbg_logfid
     fi
     if (( ! _Dbg_logging_redirect )) ; then
-        if [[ -n $_Dbg_tty ]] ; then 
+        if [[ -n $_Dbg_tty ]] ; then
             builtin printf "$format" "$@" >>$_Dbg_tty
         else
             builtin printf "$format" "$@"
@@ -131,12 +131,15 @@ function _Dbg_printf_nocr {
     fi
 }
 
+typeset _Dbg_dashes='---------------------------------------------------'
+
 # print message to output device
 function _Dbg_section {
     if (( _Dbg_set_highlight )) ; then
-        _Dbg_msg "$prefix ${_Dbg_ansi_term_bold}$@${_Dbg_ansi_term_normal}"
+        _Dbg_msg "${_Dbg_ansi_term_bold}$@${_Dbg_ansi_term_normal}"
     else
-        _Dbg_msg "$prefix $@"
+	local -r msg="$@"
+        _Dbg_msg "$msg\n${_Dbg_dashes:0:${#msg}}"
     fi
 }
 

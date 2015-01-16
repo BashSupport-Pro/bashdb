@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # break.sh - Debugger Break and Watch routines
 #
-#   Copyright (C) 2002-2003, 2006-2011, 2014 Rocky Bernstein
+#   Copyright (C) 2002-2003, 2006-2011, 2014-2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -433,7 +433,7 @@ _Dbg_enable_disable_watch() {
 _Dbg_list_watch() {
   if [ ${#_Dbg_watch_exp[@]} != 0 ]; then
     typeset i=0 j
-    _Dbg_msg "Num Type       Enb  Expression"
+    _Dbg_section "Num Type       Enb  Expression"
     for (( i=0; (( i < _Dbg_watch_max )); i++ )) ; do
       if [ -n "${_Dbg_watch_exp[$i]}" ] ;then
 	_Dbg_printf '%-3d watchpoint %-4s %s' $i \

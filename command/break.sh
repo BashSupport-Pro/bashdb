@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008-2011, 2015 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -144,7 +144,7 @@ _Dbg_do_list_brkpt() {
 	    typeset -r -i i=$brkpt_num
 	    typeset source_file=${_Dbg_brkpt_file[$i]}
 	    source_file=$(_Dbg_adjust_filename "$source_file")
-	    _Dbg_msg "Num Type       Disp Enb What"
+	    _Dbg_section "Num Type       Disp Enb What"
 	    _Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
 		${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
 		${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
@@ -159,7 +159,7 @@ _Dbg_do_list_brkpt() {
     elif (( ${#_Dbg_brkpt_line[@]} != 0 )); then
 	typeset -i i
 
-	_Dbg_msg "Num Type       Disp Enb What"
+	_Dbg_section "Num Type       Disp Enb What"
 	for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
 	    typeset source_file=${_Dbg_brkpt_file[$i]}
 	    if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then
