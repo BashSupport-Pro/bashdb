@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2008-2011, 2013-2014 Rocky Bernstein
+#   Copyright (C) 2008-2011, 2013-2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ _Dbg_get_source_line() {
 	filename="$1"
     fi
     _Dbg_readin_if_new "$filename"
-    if (( _Dbg_set_highlight )) && [[ -n $_Dbg_highlight_array_var ]]; then
+    if [[ -n $_Dbg_set_highlight ]] && [[ -n $_Dbg_highlight_array_var ]]; then
 	eval "typeset -i count=\${#$_Dbg_highlight_array_var[@]}"
 	if (( count  )) ; then
 	    eval "_Dbg_source_line=\${$_Dbg_highlight_array_var[lineno]}"
@@ -191,7 +191,7 @@ function _Dbg_readin {
     typeset -i next;
     next=${#_Dbg_filenames[@]}
     _Dbg_source_array_var="_Dbg_source_${next}"
-    if (( _Dbg_set_highlight )) ; then
+    if [[ -n $_Dbg_set_highlight ]] ; then
 	_Dbg_highlight_array_var="_Dbg_highlight_${next}"
     fi
 
@@ -218,8 +218,8 @@ function _Dbg_readin {
 	    builtin readarray -t -O 1 -c $BIGFILE \
 		-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 		$_Dbg_source_array_var < "$fullname"
-	    if (( _Dbg_set_highlight )) ; then
-		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py $fullname"
+	    if [[ -n $_Dbg_set_highlight ]] ; then
+		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py --bg=${_Dbg_set_highlight} $fullname"
 		tempfile=$($highlight_cmd 2>/dev/null)
 		if (( 0  == $? )) ; then
 		    builtin readarray -t -O 1 -c $BIGFILE \
@@ -274,7 +274,7 @@ _Dbg_set_source_array_var() {
     }
     [[ -z $fullname ]] && return 2
     _Dbg_source_array_var=${_Dbg_filenames[$fullname]}
-    if (( _Dbg_set_highlight )) ; then
+    if [[ -n $_Dbg_set_highlight ]] ; then
 	_Dbg_highlight_array_var="${_Dbg_source_array_var/_Dbg_source_/_Dbg_highlight_}"
     fi
     _Dbg_source_array_var=${_Dbg_filenames[$fullname]}

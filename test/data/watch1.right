@@ -71,7 +71,8 @@ Watchpoint 2: $x changed:
 +# 2nd part of Restart test
 +l>
 95: => set -o functrace
-96:    . "$_Dbg_script_file"
+96:
+97:    . "$_Dbg_script_file"
 +info watch
 Num Type       Enb  Expression
 ------------------------------

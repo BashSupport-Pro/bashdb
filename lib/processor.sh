@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # dbg-processor.sh - Top-level debugger commands
 #
-#   Copyright (C) 2008, 2009, 2010, 2011, 2012
+#   Copyright (C) 2008-2012, 2015
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -13,7 +13,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -37,7 +37,7 @@ typeset _Dbg_read_fn; _Dbg_read_fn='read'
 
 typeset _Dbg_space=' '
 
-# Should we allow editing of debugger commands? 
+# Should we allow editing of debugger commands?
 # The value should either be '-e' or ''. And if it is
 # on, the edit style indicates what style edit keystrokes.
 typeset _Dbg_edit='-e'
@@ -63,7 +63,7 @@ typeset -i _Dbg_fdi ; exec {_Dbg_fdi}<&0
 
 typeset -i _Dbg_fd_last=0
 
-# keep a list of source'd command files. If the entry is "" then we are 
+# keep a list of source'd command files. If the entry is "" then we are
 # interactive.
 typeset -a _Dbg_cmdfile; _Dbg_cmdfile=('')
 
@@ -75,16 +75,16 @@ typeset _Dbg_prompt_output
 # ===================== FUNCTIONS =======================================
 
 # The main debugger command reading loop.
-# 
+#
 # Note: We have to be careful here in naming "local" variables. In contrast
 # to other places in the debugger, because of the read/eval loop, they are
 # in fact seen by those using the debugger. So in contrast to other "local"s
 # in the debugger, we prefer to preface these with _Dbg_.
 function _Dbg_process_commands {
 
-  # THIS SHOULD BE DONE IN dbg-sig.sh, but there's a bug in BASH in 
+  # THIS SHOULD BE DONE IN dbg-sig.sh, but there's a bug in BASH in
   # trying to change "trap RETURN" inside a "trap RETURN" handler....
-  # Turn off return trapping. Not strictly necessary, since it *should* be 
+  # Turn off return trapping. Not strictly necessary, since it *should* be
   # covered by the _Dbg_ test below if we've named functions correctly.
   # However turning off the RETURN trap should reduce unnecessary
   # trap RETURN calls.
@@ -108,7 +108,7 @@ function _Dbg_process_commands {
     typeset _Dbg_greater=''
     typeset _Dbg_less=''
     typeset result  # Used by copies to return a value.
-    
+
     if _Dbg_copies '>' $_Dbg_DEBUGGER_LEVEL ; then
         _Dbg_greater=$result
         _Dbg_less=${result//>/<}
@@ -137,14 +137,14 @@ function _Dbg_process_commands {
     eval "local _Dbg_prompt=$_Dbg_prompt_str"
     _Dbg_preloop
 
-    typeset _Dbg_cmd 
+    typeset _Dbg_cmd
     typeset args
     typeset rc
 
-    while : ; do 
+    while : ; do
         set -o history
         _Dbg_input_desc=${_Dbg_fd[_Dbg_fd_last]}
-        if [[ $_Dbg_tty == '&1' ]] ; then 
+        if [[ $_Dbg_tty == '&1' ]] ; then
             echo -n "$_Dbg_prompt"
             if ! read _Dbg_cmd args <&$_Dbg_input_desc 2>&1; then
                 break
@@ -173,7 +173,7 @@ function _Dbg_process_commands {
         set +o history
         if (( _Dbg_brkpt_commands_defining )) ; then
           case $_Dbg_cmd in
-              silent ) 
+              silent )
                   _Dbg_brkpt_commands_silent[$_Dbg_brkpt_commands_current]=1
                   continue
                   ;;
@@ -191,7 +191,7 @@ function _Dbg_process_commands {
                   eval "_Dbg_prompt=$_Dbg_prompt_str"
                   continue
                   ;;
-              *) 
+              *)
                   _Dbg_brkpt_commands[${#_Dbg_brkpt_commands[@]}]="$_Dbg_cmd $args"
                   (( _Dbg_brkpt_commands_end[$_Dbg_brkpt_commands_current]++ ))
                   continue
@@ -231,7 +231,7 @@ _Dbg_annotation() {
 
 # Run a single command
 # Parameters: _Dbg_cmd and args
-# 
+#
 _Dbg_onecmd() {
     typeset full_cmd=$@
     typeset _Dbg_orig_cmd="$1"
@@ -267,11 +267,11 @@ _Dbg_onecmd() {
 
      typeset -i _Dbg_redo=1
      while (( _Dbg_redo )) ; do
-         
+
          _Dbg_redo=0
 
          [[ -z $_Dbg_cmd ]] && _Dbg_cmd=$_Dbg_last_cmd
-         if [[ -n $_Dbg_cmd ]] ; then 
+         if [[ -n $_Dbg_cmd ]] ; then
              typeset -i found=0
              typeset found_cmd
              if [[ -n ${_Dbg_debugger_commands[$_Dbg_cmd]} ]] ; then
@@ -281,7 +281,7 @@ _Dbg_onecmd() {
                  # Look for a unique abbreviation
                  typeset -i count=0
                  typeset list; list="${!_Dbg_debugger_commands[@]}"
-                 for try in $list ; do 
+                 for try in $list ; do
                      if [[ $try =~ ^$_Dbg_cmd ]] ; then
                          found_cmd=$try
                          ((count++))
@@ -299,31 +299,31 @@ _Dbg_onecmd() {
          fi
 
          case $_Dbg_cmd in
-             
+
              # Comment line
-             [#]* ) 
+             [#]* )
                  _Dbg_history_remove_item
                  _Dbg_last_cmd='#'
                  ;;
-             
+
              # list current line
              . )
                  _Dbg_list $_Dbg_frame_last_filename $_Dbg_frame_last_lineno 1
                  _Dbg_last_cmd='list'
                  ;;
-             
+
              # Search forwards for pattern
              /* )
                  _Dbg_do_search $_Dbg_cmd
                  _Dbg_last_cmd='search'
                  ;;
-             
+
              # Search backwards for pattern
              [?]* )
                  _Dbg_do_reverse $_Dbg_cmd
                  _Dbg_last_cmd="reverse"
                  ;;
-             
+
              # Change Directory
              cd )
                  # Allow for tilde expansion. We also allow expansion of
@@ -333,7 +333,7 @@ _Dbg_onecmd() {
                  _Dbg_do_pwd
                  _Dbg_last_cmd='cd'
                  ;;
-             
+
              # complete
              comp | compl | comple | complet | complete )
                  _Dbg_do_complete $_Dbg_args
@@ -349,38 +349,38 @@ _Dbg_onecmd() {
                  return 1
                  _Dbg_last_cmd='debug'
                  ;;
-             
+
              # Delete all breakpoints.
              D | deletea | deleteal | deleteall )
                  _Dbg_clear_all_brkpt
                  _Dbg_last_cmd='deleteall'
                  ;;
-             
+
              # return from function/source without finishing executions
              return )
                  ;;
-             
+
              # run shell command. Has to come before ! below.
              shell | '!!' )
                  eval $_Dbg_args ;;
-             
+
              # Send signal to process
              si | sig | sign | signa | signal )
                  _Dbg_do_signal $_Dbg_args
                  _Dbg_last_cmd='signal'
                  ;;
-             
-             # single-step 
+
+             # single-step
              'step+' | 'step-' )
                  _Dbg_do_step "$_Dbg_cmd" $_Dbg_args
                  return 0
                  ;;
-             
+
              # # toggle execution trace
              # to | tog | togg | toggl | toggle )
              #   _Dbg_do_trace
              #   ;;
-             
+
 
              # List all breakpoints and actions.
              L )
@@ -388,43 +388,43 @@ _Dbg_onecmd() {
                  _Dbg_list_watch
                  _Dbg_list_action
                  ;;
-             
+
              # Remove all actions
              A )
                  _Dbg_do_clear_all_actions $_Dbg_args
                  ;;
-             
+
              # List debugger command history
              H )
                  _Dbg_history_remove_item
                  _Dbg_do_history_list $_Dbg_args
                  ;;
-             
+
              #  S List subroutine names
              S )
                  _Dbg_do_list_functions $_Dbg_args
                  ;;
-             
+
              # Dump variables
              V )
                  _Dbg_do_info_variables "$_Dbg_args"
                  ;;
-             
+
              # Has to come after !! of "shell" listed above
              # Run an item from the command history
              \!* | history )
                  _Dbg_do_history $_Dbg_args
                  ;;
-             
+
              '' )
                  # Redo last_cmd
-                 if [[ -n $_Dbg_last_cmd ]] ; then 
-                     _Dbg_cmd=$_Dbg_last_cmd 
+                 if [[ -n $_Dbg_last_cmd ]] ; then
+                     _Dbg_cmd=$_Dbg_last_cmd
                      _Dbg_redo=1
                  fi
                  ;;
-             * ) 
-                 
+             * )
+
                  if (( _Dbg_set_autoeval )) ; then
                      _Dbg_do_eval $_Dbg_cmd $_Dbg_args
                  else
@@ -436,7 +436,7 @@ _Dbg_onecmd() {
                  ;;
          esac
      done # while (( $_Dbg_redo ))
-          
+
      IFS=$_Dbg_space_IFS;
      eval "_Dbg_prompt=$_Dbg_prompt_str"
 }
@@ -444,18 +444,18 @@ _Dbg_onecmd() {
 _Dbg_preloop() {
     if ((_Dbg_set_annotate)) ; then
         _Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
-        # _Dbg_annotation 'locals'      _Dbg_do_backtrace 3 
-        _Dbg_annotation 'stack'       _Dbg_do_backtrace 3 
+        # _Dbg_annotation 'locals'      _Dbg_do_backtrace 3
+        _Dbg_annotation 'stack'       _Dbg_do_backtrace 3
     fi
 }
 
 _Dbg_postcmd() {
     if ((_Dbg_set_annotate)) ; then
         case $_Dbg_last_cmd in
-            break | tbreak | disable | enable | condition | clear | delete ) 
+            break | tbreak | disable | enable | condition | clear | delete )
                 _Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
                 ;;
-            up | down | frame ) 
+            up | down | frame )
                 _Dbg_annotation 'stack' _Dbg_do_backtrace 3
                 ;;
             * )

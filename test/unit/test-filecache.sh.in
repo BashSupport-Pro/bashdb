@@ -5,16 +5,16 @@ this_script=test-filecache.sh
 # Test _Dbg_get_source_line
 test_get_source_line()
 {
-    _Dbg_set_highlight=0
+    _Dbg_set_highlight=''
     _Dbg_source_line='no good'
     _Dbg_get_source_line 2 $this_script
     assertEquals '# -*- shell-script -*-' "$_Dbg_source_line"
 
-    # Getting sourceline with highlight set but we don't have 
+    # Getting sourceline with highlight set but we don't have
     # the highlighted cached should fall back back to getting the line
     # without highlight.
     _Dbg_source_line='no good'
-    _Dbg_set_highlight=1
+    _Dbg_set_highlight='light'
     _Dbg_get_source_line 2 $this_script
     assertEquals \
 	"Requested highlight, it's not cached - fallback no highlight"\
@@ -41,7 +41,7 @@ test_readin_maxline()
 
 # Test check_line
 # test should appear after tests which read in source.
-test_check_line() 
+test_check_line()
 {
     _Dbg_errmsg() {
 	errmsg+=("$1")
@@ -49,7 +49,7 @@ test_check_line()
     typeset -a errmsg; errmsg=()
     _Dbg_check_line
     assertNotEquals "check_line with wrong number of args" '0' $?
-    _Dbg_check_line a 
+    _Dbg_check_line a
     assertNotEquals "check_line with wrong number of args" '0' $?
     _Dbg_check_line a b c
     assertNotEquals "check_line with wrong number of args" '0' $?

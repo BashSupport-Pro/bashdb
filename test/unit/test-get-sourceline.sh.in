@@ -43,6 +43,7 @@ fi
 . ${abs_top_srcdir}lib/file.sh
 . ${abs_top_srcdir}lib/frame.sh
 . ${abs_top_srcdir}lib/msg.sh
+_Dbg_set_highlight=''
 set -- # reset $# so shunit2 doesn't get confused.
 
 [[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Eval and Print commands.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2011 Rocky Bernstein 
+#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -44,11 +44,11 @@ typeset -i _Dbg_show_eval_rc; _Dbg_show_eval_rc=1
 
 # Command completion for a debugger "eval" command.
 _Dbg_complete_eval() {
-    typeset -a words; 
+    typeset -a words;
     typeset subcmds
     IFS=' ' words=( $COMP_LINE )
     # If no
-    if (( ${#words[@]} == 1 )); then 
+    if (( ${#words[@]} == 1 )); then
 	if [[ ${words[0]} == 'eval?' ]] ; then
 	    typeset extracted
 	    _Dbg_eval_extract_condition "$_Dbg_source_line"
@@ -61,20 +61,20 @@ _Dbg_complete_eval() {
     fi
 }
 
-complete -F _Dbg_complete_eval 'eval?' 
+complete -F _Dbg_complete_eval 'eval?'
 
 _Dbg_do_eval() {
 
   builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
    if (( $# == 0 )) ; then
-       # FIXME: add parameter to get unhighlighted line, or 
+       # FIXME: add parameter to get unhighlighted line, or
        # always save a copy of that in _Dbg_get_source_line
        typeset source_line_save="$_Dbg_source_line"
        typeset highlight_save=$_Dbg_set_highlight
-       _Dbg_set_highlight=0
+       _Dbg_set_highlight=''
        _Dbg_get_source_line
 
-       # Were we called via ? as the suffix? 
+       # Were we called via ? as the suffix?
        typeset suffix
        suffix=${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1}
        typeset source_line
