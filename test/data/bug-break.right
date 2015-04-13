@@ -1,29 +1,29 @@
 (fib.sh:3):
 3:	version="0.01";
 +# Test bug we had where "break" wasn't clearing out the "next-over-fn" flag.
-+#
-+next
++# 
++next 
 (fib.sh:16):
 16:	for i in 1 2
-+next
++next 
 (fib.sh:18):
 18:	  result=$(fibonacci $i)
 +break fibonacci
 Breakpoint 1 set in file fib.sh, line 5.
-+continue
++continue 
 i=1 result=Breakpoint 1 hit (1 times).
 (fib.sh:5):
 5:	fibonacci() {
-+bt
++bt 
 ->0 in file `fib.sh' at line 5
 ##1 fibonacci("1") called from file `fib.sh' at line 18
-##2 source("fib.sh") called from file `bashdb' at line 97
+##2 source("fib.sh") called from file `bashdb' at line 96
 ##3 main() called from file `bashdb' at line 0
 +delete 1
 Removed 1 breakpoint(s).
-+c
++c 
 1
 i=2 result=1
 Debugged program terminated normally. Use q to quit or R to restart.
-+quit
++quit 
 bashdb: That's all, folks...

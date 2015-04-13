@@ -64,14 +64,17 @@ data_DATA =
 OLD_DIR    = $(dir @DBGR_MAIN@)
 OLD_MAIN   = $(notdir @DBGR_MAIN@)
 PARENT_DIR = $(dir $(OLD_DIR))
+
 install-data-hook:
-	@if test -d $(DESTDIR)$(OLD_DIR) ; then \
+	if [ "$(DESTDIR)$(OLD_DIR)" = "/"  -o  "$(DESTDIR)$(OLD_DIR)" = "" ]; then \
+	     echo "Woah - the destination directory (DESTDIR) is not set right" && false; \
+	elif test -d $(DESTDIR)$(OLD_DIR) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR)/* || true; \
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
-	else if test -L $(DESTDIR)$(OLD_DIR:/=) ; then \
+	elif test -L $(DESTDIR)$(OLD_DIR:/=) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR:/=) || true; \
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
-	fi; fi
+	fi;
 	test -d $(DESTDIR)$(PKGDATADIR) || $(mkdir_p) $(DESTDIR)$(PKGDATADIR)
 
 #: Run all tests without bloated output

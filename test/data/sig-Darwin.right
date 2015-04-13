@@ -41,7 +41,7 @@ Program received signal SIGTERM (15)...
 ##10 _Dbg_process_commands() called from file `hook.sh' at line 266
 ##11 _Dbg_hook_enter_debugger("after being stepped") called from file `hook.sh' at line 182
 ##12 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
-##13 source("sig.sh") called from file `bashdb' at line 97
+##13 source("sig.sh") called from file `bashdb' at line 96
 ##14 main() called from file `bashdb' at line 0
 +info signals
 Signal       Stop   Print   Stack     Value

@@ -1,7 +1,7 @@
 (dbg-test1.sh:22):
 22:	x=22
 +# Test of watchpoint handling
-+#
++# 
 +### Should fail since xyxxy is not defined...
 +watch xyxxy
 ** Can't set watch: no such variable xyxxy.
@@ -16,13 +16,13 @@ $? is 0
 Num Type       Enb  Expression
 ------------------------------
 0   watchpoint y    $xx
-+#
++# 
 +# Now try enable and disable
-+#
++# 
 +### Try testing enable/disable...
 +enable 0w
 Watchpoint entry 0 already enabled so nothing done.
-+L
++L 
 No breakpoints have been set.
 Num Type       Enb  Expression
 ------------------------------
@@ -30,7 +30,7 @@ Num Type       Enb  Expression
 No actions have been set.
 +disable 0W
 Watchpoint entry 0 disabled.
-+L
++L 
 No breakpoints have been set.
 Num Type       Enb  Expression
 ------------------------------
@@ -39,7 +39,7 @@ No actions have been set.
 +### Try deleting nonexistent watchpoint...
 +delete 10w
 Watchpoint entry 10 doesn't exist so nothing done.
-+#
++# 
 +### Test display of watchpoints...
 +watche y > 25
  1: (y > 25)==0 arith: 1
@@ -56,32 +56,30 @@ Num Type       Enb  Expression
 +delete 1w
 +info watch
 No watch expressions have been set.
-+step
++step 
 (dbg-test1.sh:23):
 23:	y=23
 +watch x
  2: ($x)==22 arith: 0
 +restart -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
-Restarting with: /src/external-cvs/bashdb-3.1/bashdb -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
 Watchpoint 2: $x changed:
   old value: '22'
   new value: ''
 (bashdb:95):
 95:	set -o functrace
 +# 2nd part of Restart test
-+l>
-95: => set -o functrace
-96:
-97:    . "$_Dbg_script_file"
++l> 
+ 95: => set -o functrace
+ 96:    . "$_Dbg_script_file"
 +info watch
 Num Type       Enb  Expression
 ------------------------------
 2   watchpoint y    $x
-+cont
++cont 
 Watchpoint 2: $x changed:
   old value: ''
   new value: '22'
 (dbg-test1.sh:23):
 23:	y=23
-+quit
++quit 
 bashdb: That's all, folks...
