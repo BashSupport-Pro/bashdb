@@ -12,6 +12,7 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   print   showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
+SIGXFSZ      nostop noprint nostack   trap -- '' SIGXFSZ
 +### Testing handle command...
 +handle TERM nostack
 +handle foo
@@ -52,6 +53,7 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
+SIGXFSZ      nostop noprint nostack   trap -- '' SIGXFSZ
 +continue
 $? is 0
 $? is 0

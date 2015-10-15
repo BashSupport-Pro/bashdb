@@ -3,6 +3,10 @@
 t=${0##*/}; TEST_NAME=${t:5}   # basename $0 with 'test-' stripped off
 SH=@SH_PROG@
 
+# Put this trap into a known state to make the test more reproducible.
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=801372
+trap '' SIGXFSZ
+
 [ -z "$builddir" ] && export builddir=$PWD
 
 . ${builddir}/check-common.sh
@@ -33,6 +37,7 @@ FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
   | @SED@ -e "s:bashdb_eval_[0-9][0-9]*:bashdb_eval_5040:" \
   | @GREP@ -v '^sig.tests: line 10:' | \
 @GREP@ -v '^SIGPIPE' | \
+@GREP@ -v '^SIGSYS' | \
 @GREP@ -v '^SIGPROF' >${FILTERED_TEST_FILE}
 check_output $FILTERED_TEST_FILE $FILTERED_RIGHT_FILE
 rc=$?

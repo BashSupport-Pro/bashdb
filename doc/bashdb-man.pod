@@ -106,7 +106,7 @@ Instead of specifying the name of a script file, one can give an
 execution string that is to be debugged. Use this option to do that.
 
 If you invoke the debugger via C<bash --debugger>, the filename that will
-appear in source listing or in a call stack trace will be the artifical name
+appear in source listing or in a call stack trace will be the artificial name
 *BOGUS*.
 
 Z<>
