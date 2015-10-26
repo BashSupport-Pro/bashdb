@@ -19,6 +19,27 @@ check_output() {
   return $?
 }
 
+# http://stackoverflow.com/questions/5451297/exit-code-when-crashed
+check_exit_status ()
+{
+    local status="$?";
+    local msg="";
+    local signal="";
+    if [ ${status} -ne 0 ]; then
+        if [ $((${status} < 128)) -ne 0 ]; then
+            msg="exit (${status})";
+        else
+            signal="$(builtin kill -l $((${status} - 128)) 2>/dev/null)";
+            if [ "$signal" ]; then
+                msg="kill -$signal$msg";
+            fi;
+        fi;
+        # want this to go to stdout to be captured
+        echo "INVESTIGATE EXIT FAILURE: [${status} => ${msg}]";
+    fi;
+    return 0
+}
+
 run_debugger_opts="-B -q --no-init --no-highlight"
 # Run the debugger on test program $1 with (optional) debugger options $2
 # using commandfile $3. We assume $TOP_BUILDDIR, $TOP_SRCDIR and
@@ -29,6 +50,7 @@ run_debugger() {
   [[ -z $short_test_name ]] && short_test_name=$TEST_NAME
   typeset cmdfile=${3:-"${top_srcdir}/test/data/${short_test_name}.cmd"}
   $SH -- ${top_builddir}/@PACKAGE@ $dbg_opts -x "$cmdfile" "$debugged_script" $ARGS
+  check_exit_status
 }
 
 ARGS=''

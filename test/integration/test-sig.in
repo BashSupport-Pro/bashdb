@@ -12,8 +12,12 @@ trap '' SIGXFSZ
 . ${builddir}/check-common.sh
 debugged_script="$top_srcdir/test/example/sig.sh"
 
-if (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} >= 3 )) ; then
+typeset short_test_name='sig'
+if (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} == 3 )) ; then
+    short_test_name='sig-43'
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-43.right"
+elif (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} >= 4 )) ; then
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
 fi
 
 case $host_os in
@@ -28,7 +32,10 @@ esac
 FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
 FILTERED_RIGHT_FILE="/tmp/${TEST_NAME}-filtered.right"
 
-(cd $srcdir && run_debugger $debugged_script 2>&1 >$TEST_FILE </dev/null)
+typeset dbg_opts="-L ${top_srcdir} $run_debugger_opts"
+typeset cmdfile="${top_srcdir}/test/data/${short_test_name}.cmd"
+
+(cd $srcdir && run_debugger "$debugged_script" "$dbg_opts" "$cmdfile" 2>&1 >$TEST_FILE </dev/null)
 
 @GREP@ -v '^sig.tests: line 12' $RIGHT_FILE>${FILTERED_RIGHT_FILE}
 @GREP@ -v '^sig.tests: line 12' $TEST_FILE \
