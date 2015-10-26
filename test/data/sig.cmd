@@ -7,7 +7,7 @@ info signals
 handle TERM nostack
 handle foo
 handle 1000
-handle TERM bogus 
+handle TERM bogus
 eval kill -TERM $$
 ###  Should not have printed a stack trace above...
 handle TERM noprint
@@ -18,6 +18,5 @@ info signals
 continue
 ###  Should have printed a stack trace above...
 where 1
-kill
+quit
 y
-

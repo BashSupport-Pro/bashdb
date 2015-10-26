@@ -1,8 +1,8 @@
 # Configure script for bash debugger (bashdb)
 dnl Process this file with autoconf to produce a configure script.
 
-# Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011
-# 2012, 2014 Rocky Bernstein <rocky@gnu.org>
+# Copyright (C) 2002-2012
+# 2014-2015 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ dnl TENTATIVE:
 dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
-define(OK_BASH_VERS, 4.3)
+define(OK_BASH_VERS, 4.4)
 define(relstatus, 0.91)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
@@ -130,7 +130,7 @@ bash_version=`$SH_PROG --version`
 [bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
 bash_4_or_greater=no
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS' | '4.1' | '4.2')
+  'OK_BASH_VERS' | '4.1' | '4.2' | '4.3')
     bash_4_or_greater=yes
     ;;
   *)

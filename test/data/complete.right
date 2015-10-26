@@ -2,25 +2,25 @@
 22:	x=22
 +### Testing debugger 'complete' command...
 +complete e
+eval
 export
 examine
 edit
-eval
 enable
 +complete fi
-file
 finish
+file
 +complete set a
-set annotate
 set autoeval
 set args
 set autolist
+set annotate
 +complete show a
 show alias
-show annotate
 show autoeval
 show args
 show autolist
+show annotate
 +complete set an
 set annotate
 +complete set args

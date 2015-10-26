@@ -12,6 +12,7 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   print   showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
+SIGXFSZ      nostop noprint nostack   trap -- '' SIGXFSZ
 +### Testing handle command...
 +handle TERM nostack
 +handle foo
@@ -52,8 +53,21 @@ SIGQUIT      stop   print   showstack trap -- '_Dbg_sig_handler 3 "$BASH_COMMAND
 SIGILL       stop   print   showstack trap -- '_Dbg_sig_handler 4 "$BASH_COMMAND" "$@"' SIGILL
 SIGTRAP      stop   print   showstack trap -- '_Dbg_sig_handler 5 "$BASH_COMMAND" "$@"' SIGTRAP
 SIGTERM      stop   noprint showstack trap -- '_Dbg_sig_handler 15 "$BASH_COMMAND" "$@"' SIGTERM
+SIGXFSZ      nostop noprint nostack   trap -- '' SIGXFSZ
 +continue
 $? is 0
 $? is 0
+Program received signal SIGINT (2)...
+->0 in file `sig.sh' at line 55
+##1 source("sig.sh") called from file `bashdb' at line 96
+##2 main() called from file `bashdb' at line 0
+Program received signal SIGINT (2)...
+->0 in file `sig.sh' at line 55
+##1 source("sig.sh") called from file `bashdb' at line 96
+##2 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +### Should have printed a stack trace above...
++where 1
+** The program is not being run.
++quit
+bashdb: That's all, folks...
