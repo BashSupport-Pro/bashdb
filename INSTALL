@@ -1,9 +1,9 @@
 SHORT INSTRUCTIONS:
 
-0. download the latest bash debugger from: 
+0. download the latest bash debugger from:
    http://prdownloads.sourceforge.net/bashdb/?sort_by=date&sort=desc
 
-   The name should start out bashdb-3.x...
+   The name should start out bashdb-4.x...
 
    and ungzip/untar it. If you are reading this, you've
    probably done that already.
@@ -13,13 +13,13 @@ SHORT INSTRUCTIONS:
    large scripts than read step 3 of the long instructions especially
    down at the bottom. Basically to speed up the initialy debugger
    loading, you need the bash source headers and need to run
-   configure using --with-bash-src. 
+   configure using --with-bash-src.
 
    configure, build, test, and install the debugger:
 
        cd bashdb-4.x... # <-- put name of release for 4.x...
        ./configure      # use --with-bash-src to speed up bash debugging
-       make && make check 
+       make && make check
        su -c 'make install'
 
    On systems which don't install GNU Make by default you may have to use
@@ -34,9 +34,9 @@ SHORT INSTRUCTIONS:
    that umask, you may want to set the umask to something more
    permissive like 022, before running the "make install".
 
-That's it!   
+That's it!
 
-- - - - 
+- - - -
 
 This debugger needs a debugger-enabled version of Bash 4.1 or greater.
 
@@ -47,7 +47,7 @@ your script as follows, assuming you are currently in the directory
 
 $BASH -L . ./bashdb *script-to-be-debugged* *options-to-debugged-program*
 
-where $BASH above is bash 3.0 with debugging enabled.
+where $BASH above is bash 4 with debugging enabled.
 
 A downside to this approach is that $0 in will be ``bashdb'' (or more
 likely ``./bashdb'') rather than the name of the script to be
@@ -59,7 +59,7 @@ this directory (debugger) as well is your current working directory
 (as shown by ``pwd''), then having this at the beginning of your
 script:
 
-#!/some-location/bash --debugger 
+#!/some-location/bash --debugger
 
 might also work.
 
@@ -70,22 +70,22 @@ bashdb, see Chapter 2 (Getting In and Out) of the bashdb documentation
 Steps 0 and 1 you've probably already done if you are reading these
 instructions.
 
-0. download the latest bash debugger from: 
+0. download the latest bash debugger from:
    http://prdownloads.sourceforge.net/bashdb/?sort_by=date&sort=desc
 
-   The name should start out bashdb-3.x...
+   The name should start out bashdb-4.x...
 
 1. ungzip/untar the bashdb debugger package.
-      gzcat bashdb-3.x... | tar -xvpf -  # <-- put name of release for 3.x...
+     gzcat bashdb-4.x... | tar -xvpf -  # <-- put name of release for 4.x...
 
-   (There's a shorter way to do this GNU tar 1.15 or later)  
+   (There's a shorter way to do this GNU tar 1.15 or later)
 
 2. Make your current directory the debugger directory.
 
-   cd bashdb-3.x... 
+   cd bashdb-4.x...
 
 3. Look at configure help options and decide what you want:
-     ./configure --help 
+     ./configure --help
 
    is your friend here.
 
@@ -96,13 +96,13 @@ instructions.
    need to tell configure where to use it via --with-bash-src.
 
    It is important that the source match the bash that is going to be
-   used when debugger. For example using bash release 3.1 source for
-   an installed bash 3.0 binary will not work as there are
+   used when debugger. For example using bash release 4.1 source for
+   an installed bash 4.0 binary will not work as there are
    incompatiblities.  Should you have several bash binaries around,
    you can tell configure which one you want to use for the debugger
    via the option --with-bash.
 
-   For --with-bash use absolute paths, not relative paths or the 
+   For --with-bash use absolute paths, not relative paths or the
    regression tests will fail.
 
 4. configure the debugger to suit your needs:
@@ -116,19 +116,19 @@ instructions.
      make         # make options, but I think none are generally needed
 
    Any old "make" should work, but if it doesn't, use GNU make (sometimes
-   installed as "gmake". Again, even though there is verbiage pay attention 
+   installed as "gmake". Again, even though there is verbiage pay attention
    to errors. If you don't have texi2html you may see some errors in building
    HTML pages; these you can ignore.
 
 6. Run the regression tests:
-     make check   # or gmake check 
+     make check   # or gmake check
 
 7. Install the debugger:
      su -c 'make install'
 
    As above, pay attention to errors. In particular here if you don't have
-   permission to fully install or overwrite existing files you may get a 
+   permission to fully install or overwrite existing files you may get a
    message that you can't run "bash --debugger" but must use the "bashdb"
    script. See above for a larger discussion of the difference.
-   
+
 No, really. that's it!
