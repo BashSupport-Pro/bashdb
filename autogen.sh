@@ -16,33 +16,15 @@ test -z "$srcdir" && srcdir=.
     exit 1
 }
 
-(echo $_echo_n " + Running aclocal: $_echo_c"; \
-    aclocal -I .; \
- echo "done.")
-rc=$?
-(test -n $rc ) || exit $rc
-
-(echo $_echo_n " + Running libtoolize: $_echo_c"; \
-    libtoolize --copy; \
- echo "done.")
-rc=$?
-(test -n $rc ) || exit $rc
-
-(echo $_echo_n " + Running automake: $_echo_c"; \
-    automake --add-missing; \
- echo "done.")
-rc=$?
-(test -n $rc ) || exit $rc
-
-(echo $_echo_n " + Running autoconf: $_echo_c"; \
-    autoconf; \
+(echo $_echo_n " + Running autoreconf --install: $_echo_c"; \
+    autoreconf --install; \
  echo "done.")
 rc=$?
 (test -n $rc ) || exit $rc
 
 touch $srcdir/doc/version.texi
 test -f $srcdir/doc/stamp-vti && rm $srcdir/doc/stamp-vti
-  
+
 conf_flags="--enable-maintainer-mode" # --enable-compile-warnings #--enable-iso-c
 
 if test x$NOCONFIGURE = x; then
@@ -57,4 +39,3 @@ fi
 #;;; mode:shell-script ***
 #;;; eval: (sh-set-shell "bash") ***
 #;;; End: ***
-

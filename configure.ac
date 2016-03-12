@@ -38,6 +38,8 @@ if [[ "$prefix" = NONE ]]; then
    prefix=$($SH_PROG $mydir/compute-prefix.sh)
 fi
 
+AC_CONFIG_AUX_DIR(.)
+
 # From fish's configure.ac
 #
 # List of output variables produced by this configure script
