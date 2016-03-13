@@ -42,7 +42,8 @@ MOSTLYCLEANFILES = *.orig *.rej
 
 EXTRA_DIST = bashdb.in bashdb-trace.in bashdb-main.inc.in \
 	     compute-prefix.sh \
-	     $(pkgdata_DATA) acinclude.m4 README.md THANKS \
+	     $(pkgdata_DATA) acinclude.m4 THANKS \
+	     README-git.md README.md  \
 	     make-check-filter.rb check-prefix.sh \
 	     ChangeLog ChangeLog.0
 
