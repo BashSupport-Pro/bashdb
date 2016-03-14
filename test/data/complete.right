@@ -2,33 +2,32 @@
 22:	x=22
 +### Testing debugger 'complete' command...
 +complete e
-eval
 export
 examine
 edit
+eval
 enable
 +complete fi
-finish
 file
+finish
 +complete set a
-set autoeval
-set args
-set autolist
 set annotate
+set args
+set autoeval
+set autolist
 +complete show a
 show alias
-show autoeval
-show args
-show autolist
 show annotate
+show args
+show autoeval
+show autolist
 +complete set an
 set annotate
 +complete set args
 set args
 +complete show args1
 +complete bogus command
+bogus commands
 +complete info f
-info files
-info functions
 
 bashdb: That's all, folks...

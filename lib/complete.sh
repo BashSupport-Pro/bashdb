@@ -20,7 +20,7 @@
 
 typeset -a _Dbg_matches; _Dbg_matches=()
 
-# Print a list of completions in global variable _Dbg_matches 
+# Print a list of completions in global variable _Dbg_matches
 # for 'subcmd' that start with 'text'.
 # We get the list of completions from _Dbg._*subcmd*_cmds.
 # If no completion, we return the empty list.
@@ -29,22 +29,27 @@ _Dbg_subcmd_complete() {
     text=$2
     _Dbg_matches=()
     typeset list=''
-    if [[ $subcmd == 'set' ]] ; then 
+    if [[ $subcmd == 'set' ]] ; then
         # Newer style
-        list=${!_Dbg_command_help_set[@]}
-    elif [[ $subcmd == 'show' ]] ; then 
+        list_str=${!_Dbg_command_help_set[@]}
+    elif [[ $subcmd == 'show' ]] ; then
         # Newer style
-        list=${!_Dbg_command_help_show[@]}
+        list_str=${!_Dbg_command_help_show[@]}
     else
         # FIXME: Older style - eventually update these.
         cmd="list=\$_Dbg_${subcmd}_cmds"
         eval $cmd
     fi
+
+    typeset -a list
+    list=($list_str)
+    sort_list 0 ${#list[@]}-1
+    typeset sorted_list=${list[@]}
     local -i last=0
-    for word in $list ; do
+    for word in $sorted_list ; do
         # See if $word contains $text at the beginning. We use the string
-        # strip operatior '#' and check that some part of $word was stripped 
-        if [[ ${word#$text} != $word ]] ; then 
+        # strip operatior '#' and check that some part of $word was stripped
+        if [[ ${word#$text} != $word ]] ; then
             _Dbg_matches[$last]="$subcmd $word"
             ((last++))
         fi
@@ -88,7 +93,7 @@ _Dbg_complete_num_range() {
 
 _Dbg_complete_level0() {
     # echo "level 0 called with comp_line: $COMP_LINE , comp_point: $COMP_POINT"
-    if (( COMP_POINT >  0)) ; then 
+    if (( COMP_POINT >  0)) ; then
         typeset commands="${!_Dbg_command_help[@]}"
         COMPREPLY=( $(compgen -W  "$commands" "$COMP_LINE") )
     else

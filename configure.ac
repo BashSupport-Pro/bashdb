@@ -271,6 +271,8 @@ AC_CONFIG_FILES([test/unit/test-validate.sh],
 
 AC_CONFIG_FILES([test/integration/test-bug-step-subshell],
                 [chmod +x test/integration/test-bug-step-subshell])
+AC_CONFIG_FILES([test/integration/test-complete],
+                [chmod +x test/integration/test-complete])
 AC_CONFIG_FILES([test/integration/test-debug],
                 [chmod +x test/integration/test-debug])
 AC_CONFIG_FILES([test/integration/test-delete],

@@ -1,5 +1,6 @@
 test_in_files = \
 	test-bug-step-subshell.in \
+	test-complete.in 	\
 	test-debug.in 		\
 	test-delete.in 		\
 	test-export.in 		\
@@ -12,6 +13,7 @@ test_in_files = \
 
 test_sources = \
 	test-bug-step-subshell 	\
+	test-complete 		\
 	test-debug 		\
 	test-delete 		\
 	test-export 		\
@@ -44,7 +46,6 @@ TESTS = \
 	test-bug-loc    \
 	test-bug-source \
 	test-command    \
-	test-complete   \
 	test-display    \
 	test-enable     \
 	test-file-with-spaces  \
