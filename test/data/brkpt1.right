@@ -1,8 +1,8 @@
 (dbg-test1.sh:22):
 22:	x=22
-+#
++# 
 +# Test of breakpoint handling
-+#
++# 
 +# Test the simplest of breakpoints
 +break 22
 Breakpoint 1 set in file dbg-test1.sh, line 22.
@@ -10,21 +10,21 @@ Breakpoint 1 set in file dbg-test1.sh, line 22.
 Num Type       Disp Enb What
 ----------------------------
 1   breakpoint keep y   dbg-test1.sh:22
-+###############################################################
++############################################################### 
 +#### Test enable/disable...
 +enable 1
 ** Breakpoint entry 1 already enabled, so nothing done.
 +disable 1
 Breakpoint entry 1 disabled.
-+################################################################
++################################################################ 
 +#### Try setting breakpoints outside of the file range...
 +break 99
 ** Line 99 is too large. File dbg-test1.sh has only 35 lines.
 +break 0
 ** There is no line 0 to break at.
-+#
++# 
 +# list breakpoints
-+L
++L 
 Num Type       Disp Enb What
 ----------------------------
 1   breakpoint keep n   dbg-test1.sh:22
@@ -35,10 +35,10 @@ No actions have been set.
 ** No breakpoint found at dbg-test1.sh, line 10.
 +d 0
 There is no line 0 to clear.
-+###############################################################
++############################################################### 
 +#### Test display status...
 +delete 1
-Removed 1 breakpoint(s).
+Deleted breakpoint 1
 +info break
 No breakpoints have been set.
 +break 22
@@ -47,7 +47,7 @@ Breakpoint 2 set in file dbg-test1.sh, line 22.
 Num Type       Disp Enb What
 ----------------------------
 2   breakpoint keep y   dbg-test1.sh:22
-+###############################################################
++############################################################### 
 +#### *** Test using file:line format on break...
 +break ../example/dbg-test1.sh:23
 Breakpoint 3 set in file dbg-test1.sh, line 23.
@@ -64,8 +64,8 @@ Num Type       Disp Enb What
 3   breakpoint keep y   dbg-test1.sh:23
 4   breakpoint keep y   dbg-test1.sh:23
 +delete 3
-Removed 1 breakpoint(s).
-+###############################################################
+Deleted breakpoint 3
++############################################################### 
 +#### Test breakpoints with conditions...
 +break 23 if x==0
 Breakpoint 5 set in file dbg-test1.sh, line 23.
@@ -82,7 +82,7 @@ Num Type       Disp Enb What
 	stop only if y > 25
 +condition 23
 condition: Breakpoint entry 23 is not set. Condition not changed.
-+condition
++condition 
 ** condition: Argument required (breakpoint number).
 +info break
 Num Type       Disp Enb What
@@ -117,7 +117,8 @@ Num Type       Disp Enb What
 Breakpoint entry 2 enabled.
 ** Breakpoint entry 6 already enabled, so nothing done.
 +delete 2 6
-Removed 2 breakpoint(s).
+Deleted breakpoint 2
+Deleted breakpoint 6
 +#### Test info break...
 +info break 11
 ** Breakpoint entry 11 is not set.
@@ -130,9 +131,9 @@ Num Type       Disp Enb What
 	stop only if x==0
 +d 23
 Removed 2 breakpoint(s).
-+L
++L 
 No breakpoints have been set.
 No watch expressions have been set.
 No actions have been set.
-+quit
++quit 
 bashdb: That's all, folks...

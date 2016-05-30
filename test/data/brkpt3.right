@@ -13,7 +13,7 @@ x=`builtin echo *`
 +pr "BASH_SUBSHELL: $BASH_SUBSHELL"
 BASH_SUBSHELL: 1
 +delete 1
-Removed 1 breakpoint(s).
+Deleted breakpoint 1
 +break 17
 Breakpoint 2 set in file subshell.sh, line 17.
 +cont 

@@ -62,6 +62,7 @@ No watch expressions have been set.
 +watch x
  2: ($x)==22 arith: 0
 +restart -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
+Restarting with: /src/external-vcs/sourceforge/bashdb/bashdb -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh 
 Watchpoint 2: $x changed:
   old value: '22'
   new value: ''

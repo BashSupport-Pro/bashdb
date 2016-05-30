@@ -1,3 +1,104 @@
+2016-03-13  rocky <rocky@gnu.org>
+
+	* configure.ac, lib/commands.sh, lib/complete.sh,
+	test/data/complete.right, test/integration/Makefile.am,
+	test/integration/test-complete, test/integration/test-complete.in: 
+	Sort subcommand completions. Align test-complete Commmand completions still need to be sorted, but sorting
+	subcommands is at least a start.  test-complete.in, configure.ac, Makefile.in:   substitute configured bash shell
+
+2016-03-13  rocky <rocky@gnu.org>
+
+	* .gitignore, Makefile.am, README-git.md, README.CVS,
+	htdocs/index.html~: Add instructions to install from git * gitignore ignore *~ * no longer use VCS * remove ~ file erroneously checked in
+
+2015-10-26  rocky <rocky@gnu.org>
+
+	* configure.ac, test/data/complete.right, test/data/sig.cmd,
+	test/data/sig.right: Bash 4.4 compliance
+
+2015-10-26  rocky <rocky@gnu.org>
+
+	* test/data/Makefile.am, test/data/sig-43.cmd,
+	test/data/sig-43.right, test/integration/check-common.sh.in,
+	test/integration/test-sig.in: work aroud bash 4.3 signal handling
+	http://lists.gnu.org/archive/html/bug-bash/2015-08/msg00060.html See
+	bug #36 https://sourceforge.net/p/bashdb/bugs/36/ Work on bash 4.4
+	coming up...
+
+2015-10-15  rocky <rocky@gnu.org>
+
+	* doc/bashdb-man.pod, test/data/misc-output-41.right,
+	test/data/setshow.right, test/data/sig-43.right,
+	test/integration/test-sig.in: Nicholas Bamber's from issues #35 and
+	#36 bashdb-man.pod: spelling mistake SIGXFSZ in some envionments.
+	Here rather than just filtering out the signal handler from the test
+	results we set a handler to make it reproducible.  Debian got SIGSYS
+	signal on the kfreebsd platform so we just filtered it out.
+
+2015-07-11  rocky <rocky@gnu.org>
+
+	* : commit 54ed9443a4c83145185c2485d4e4a6f3704a8176 Author: rocky
+	<rocky@gnu.org> Date:   Sat Jul 11 09:31:53 2015 -0400
+
+2015-05-05  rocky <rocky@gnu.org>
+
+	* Makefile.am: Remove a trailing slash which might mess up rm path
+
+2015-04-27  rocky <rocky@gnu.org>
+
+	* htdocs/remake/index.html: make 3.81 -> make 4.1
+
+2015-04-27  rocky <rocky@gnu.org>
+
+	* command/set_sub/tty.sh, command/show_sub/tty.sh: Add tty set/show
+
+2015-04-27  rocky <rocky@gnu.org>
+
+	* htdocs/remake/download.html, htdocs/remake/features.html,
+	htdocs/remake/index.html, htdocs/remake/mdb-old.html,
+	htdocs/remake/mdb.html: Remake html (even though this isn't part of
+	bashdb per se)
+
+2015-04-13  rocky <rocky@gnu.org>
+
+	* Makefile.am, test/data/brkpt2.right, test/data/bug-break.right,
+	test/data/bug-source.right, test/data/sig-43.right,
+	test/data/sig-Darwin.right, test/data/sig.right,
+	test/data/tbreak.right, test/data/watch1.right: Guard against
+	install-data running rm /. Also, Line numbers in tracebacks have
+	changed.
+
+2015-01-23  rocky <rocky@gnu.org>
+
+	* command/eval.sh, command/set_sub/highlight.sh,
+	command/show_sub/highlight.sh, init/opts.sh, lib/filecache.sh,
+	lib/hist.sh, lib/msg.sh, lib/processor.sh, lib/term-highlight.py,
+	test/data/brkpt2.right, test/data/bug-break.right,
+	test/data/bug-source.right, test/data/sig-43.right,
+	test/data/sig-Darwin.right, test/data/sig.right,
+	test/data/tbreak.right, test/data/watch1.right,
+	test/integration/test-bug-loc, test/unit/test-filecache.sh.in,
+	test/unit/test-get-sourceline.sh.in, test/unit/test-msg.sh.in: 
+	--highlight changed from taking no parameters to
+	--highlight=dark|light. And we now accomdate dark terminals more
+	properly.
+
+2015-01-16  rocky <rocky@gnu.org>
+
+	* command/help.sh, test/data/misc-output-41.right,
+	test/data/misc.right: Add One more sectioning - to help: Available
+	commands
+
+2015-01-15  rocky <rocky@gnu.org>
+
+	* command/break.sh, lib/action.sh, lib/break.sh, lib/msg.sh,
+	test/data/action.right, test/data/brkpt1.right,
+	test/data/brkpt2.right, test/data/bug-loc.right,
+	test/data/delete.right, test/data/enable.right, test/data/file with
+	spaces.right, test/data/tbreak.right, test/data/watch1.right: Add
+	more sectioning commands and add lines under sectioning when syntax
+	highlight off.
+
 2014-12-14  rocky <rocky@gnu.org>
 
 	* ChangeLog, test/data/sig.right: Update sig right file for bash <
