@@ -24,16 +24,10 @@ dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.4)
-define(relstatus, 0.91)
+define(relstatus, 0.92)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
 # AC_CONFIG_MACRO_DIR([m4])
-
-AC_CONFIG_SRCDIR(DEBUGGER.in)
-if test x$ac_srcdir = x ; then
-  ac_srcdir=.
-fi
-AC_CONFIG_AUX_DIR($ac_srcdir)
 
 ##################################################################
 # See if --prefix was set. If not, set it to a reasonable default

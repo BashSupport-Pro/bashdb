@@ -1,15 +1,36 @@
+2016-05-30  rocky <rocky@gnu.org>
+
+	* ChangeLog, NEWS, configure.ac: Get ready for release 4.3-0.92
+
+2016-05-30  rocky <rocky@gnu.org>
+
+	* ChangeLog, command/delete.sh, lib/break.sh,
+	test/data/brkpt1.right, test/data/brkpt3.right,
+	test/data/bug-break.right, test/data/delete.right,
+	test/data/watch1.right: Better breakpoint deletion status This helps frontends like realgud
+
 2016-03-13  rocky <rocky@gnu.org>
 
-	* configure.ac, lib/commands.sh, lib/complete.sh,
-	test/data/complete.right, test/integration/Makefile.am,
-	test/integration/test-complete, test/integration/test-complete.in: 
-	Sort subcommand completions. Align test-complete Commmand completions still need to be sorted, but sorting
-	subcommands is at least a start.  test-complete.in, configure.ac, Makefile.in:   substitute configured bash shell
+	* : commit 3c3c938a4f84b68e5b22453cf4bfca3ee43ce953 Author: rocky
+	<rocky@gnu.org> Date:   Sun Mar 13 21:30:05 2016 -0400
 
 2016-03-13  rocky <rocky@gnu.org>
 
 	* .gitignore, Makefile.am, README-git.md, README.CVS,
 	htdocs/index.html~: Add instructions to install from git * gitignore ignore *~ * no longer use VCS * remove ~ file erroneously checked in
+
+2016-03-12  rocky <rocky@gnu.org>
+
+	* configure.ac: Use patch from Teej Tj to set AC_CONFIG_AUX_DIR
+
+2016-03-12  rocky <rocky@gnu.org>
+
+	* INSTALL: We don't do bash 3.0 anymore.
+
+2016-03-12  rocky <rocky@gnu.org>
+
+	* autogen.sh, configure.ac: Build adminstrivia fixed bug [#38] * autogen.sh - autoreconf does much of the heavy lifting now * configure.ac - adding AC_CONFIG_AUX_DIR allows configure to find
+	config.sub
 
 2015-10-26  rocky <rocky@gnu.org>
 

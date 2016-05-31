@@ -1,3 +1,18 @@
+Version 4.3-0.92
+May 30, 2016 Mom
+
+- Better breakpoint deletion status This helps frontends like realgud
+- Nicholas Bamber's from issues #35 and #36 bashdb-man.pod: s
+- Works on bash 4.4
+  pelling mistake SIGXFSZ in some envionments.
+- Guard againyst install-data running rm / !
+- --highlight changed from taking no parameters to
+  --highlight=dark|light. And we now accomdate dark terminals more
+    properly.
+
+- Add tty set/show
+- Add sectioning in online help
+
 Version 4.3-0.91
 Dec 14, 2014 Late Gecko
 
