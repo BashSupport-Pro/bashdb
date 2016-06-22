@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # debugger command options processing. The bane of programming.
 #
-#   Copyright (C) 2008-2012, 2014-2015 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008-2012, 2014-2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -45,6 +45,7 @@ options:
                              Set the directory location of library helper file: $_Dbg_main
     -c | --command STRING    Run STRING instead of a script file
     -n | --nx | --no-init    Don't run initialization files.
+    -S | --style STYLE       Run use pygments STYLE for formatting source code
     --tty | --terminal DEV   Set to terminal in debugger output to DEV
                              DEV can also be &1 for STDOUT
     -T | --tempdir DIRECTORY
@@ -86,6 +87,15 @@ typeset    _Dbg_set_highlight='' # Initialized below
 typeset -a _Dbg_o_init_files; _Dbg_o_init_files=()
 typeset -i _Dbg_o_nx=0
 
+typeset -ix _Dbg_working_term_highlight
+
+if ${_Dbg_libdir}/lib/term-highlight.py -V 2>/dev/null  1>/dev/null ; then
+    _Dbg_working_term_highlight=1
+else
+    _Dbg_working_term_highlight=0
+fi
+
+typeset -x _Dbg_set_style=''
 # $_Dbg_tmpdir could have been set by the top-level debugger script.
 [[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
 
@@ -206,7 +216,7 @@ _Dbg_parse_options() {
         [[ -n $_Dbg_release ]] ; then
         echo "$_Dbg_shell_name debugger, $_Dbg_debugger_name, release $_Dbg_release"
         printf '
-Copyright 2002, 2003, 2004, 2006-2012, 2014 Rocky Bernstein
+Copyright 2002, 2003, 2004, 2006-2012, 2014, 2016 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

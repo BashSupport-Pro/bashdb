@@ -13,7 +13,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -24,7 +24,7 @@ typeset -A _Dbg_command_help
 export _Dbg_command_help
 typeset -a _Dbg_command_names_sorted=()
 
-# List of debugger commands. 
+# List of debugger commands.
 # FIXME: for now we are attaching this to _Dbg_help_add which
 # is whe this is here. After moving somewhere more appropriate, relocate
 # the definition.
@@ -60,12 +60,12 @@ _Dbg_help_sort_command_names() {
     list=("${!_Dbg_command_help[@]}")
     sort_list 0 ${#list[@]}-1
     _Dbg_sorted_command_names=("${list[@]}")
-}    
+}
 
 _Dbg_help_set() {
 
     typeset subcmd
-    if (( $# == 0 )) ; then 
+    if (( $# == 0 )) ; then
         typeset -a list
         list=("${!_Dbg_command_help_set[@]}")
         sort_list 0 ${#list[@]}-1
@@ -78,23 +78,23 @@ _Dbg_help_set() {
     subcmd="$1"
     typeset label="$2"
 
-    if [[ -n "${_Dbg_command_help_set[$subcmd]}" ]] ; then 
-        if [[ -z $label ]] ; then 
+    if [[ -n "${_Dbg_command_help_set[$subcmd]}" ]] ; then
+        if [[ -z $label ]] ; then
             _Dbg_msg "${_Dbg_command_help_set[$subcmd]}"
             return 0
         else
             label=$(builtin printf "set %-12s-- " $subcmd)
         fi
     fi
-    
-    case $subcmd in 
+
+    case $subcmd in
         ar | arg | args )
             _Dbg_msg \
                 "${label}Set argument list to give program when restarted."
             return 0
             ;;
         an | ann | anno | annot | annota | annotat | annotate )
-            if [[ -z $label ]] ; then 
+            if [[ -z $label ]] ; then
                 typeset post_label='
 0 == normal;     1 == fullname (for use when running under emacs).'
             fi
@@ -119,7 +119,7 @@ _Dbg_help_set() {
                 "Set short filenames (the basename) in debug output"
             return 0
             ;;
-        deb|debu|debug )
+        de|deb|debu|debug )
             _Dbg_help_set_onoff 'debug' 'debug' \
               "Set debugging the debugger"
             return 0
@@ -138,7 +138,7 @@ _Dbg_help_set() {
         e | ed | edi | edit | editi | editin | editing )
             _Dbg_msg_nocr \
                 "${label}Set editing of command lines as they are typed is "
-            if [[ -z $_Dbg_edit ]] ; then 
+            if [[ -z $_Dbg_edit ]] ; then
                 _Dbg_msg 'off.'
             else
                 _Dbg_msg 'on.'
@@ -148,7 +148,7 @@ _Dbg_help_set() {
         high | highl | highlight )
             _Dbg_msg_nocr \
                 "${label}Set syntax highlighting of source listings is "
-            if [[ -z $_Dbg_edit ]] ; then 
+            if [[ -z $_Dbg_edit ]] ; then
                 _Dbg_msg 'off.'
             else
                 _Dbg_msg 'on.'
@@ -158,7 +158,7 @@ _Dbg_help_set() {
         his | hist | history )
             _Dbg_msg_nocr \
                 "${label}Set record command history is "
-            if [[ -z $_Dbg_set_edit ]] ; then 
+            if [[ -z $_Dbg_set_edit ]] ; then
                 _Dbg_msg 'off.'
             else
                 _Dbg_msg 'on.'
@@ -168,7 +168,7 @@ _Dbg_help_set() {
             eval "$_seteglob"
             if [[ -z $2 ]] ; then
                 _Dbg_errmsg "Argument required (integer to set it to.)."
-            elif [[ $2 != $int_pat ]] ; then 
+            elif [[ $2 != $int_pat ]] ; then
                 _Dbg_errmsg "Integer argument expected; got: $2"
                 eval "$_resteglob"
                 return 1
@@ -203,6 +203,16 @@ _Dbg_help_set() {
                 "${label}Set showing the command to execute is $_Dbg_set_show_command."
             return 0
             ;;
+        sty | style )
+            [[ -n $label ]] && label='set style       -- '
+            _Dbg_msg_nocr \
+                "${label}Set pygments highlighting style is "
+            if [[ -z $_Dbg_set_style ]] ; then
+                _Dbg_msg 'off.'
+            else
+		_Dbg_msg "${_Dbg_set_style}"
+            fi
+	    ;;
         t|tr|tra|trac|trace|trace-|tracec|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
             _Dbg_msg \
                 "${label}Set showing debugger commands is $_Dbg_set_trace_commands."
@@ -227,7 +237,7 @@ _Dbg_help_set() {
 }
 
 _Dbg_help_show() {
-    if (( $# == 0 )) ; then 
+    if (( $# == 0 )) ; then
         typeset -a list
         list=("${!_Dbg_command_help_show[@]}")
         sort_list 0 ${#list[@]}-1
@@ -237,20 +247,20 @@ _Dbg_help_show() {
         done
         return 0
     fi
-    
+
     typeset subcmd=$1
     typeset label="$2"
 
-    if [[ -n "${_Dbg_command_help_show[$subcmd]}" ]] ; then 
-        if [[ -z $label ]] ; then 
+    if [[ -n "${_Dbg_command_help_show[$subcmd]}" ]] ; then
+        if [[ -z $label ]] ; then
             _Dbg_msg "${_Dbg_command_help_show[$subcmd]}"
             return 0
         else
             label=$(builtin printf "show %-12s-- " $subcmd)
         fi
     fi
-    
-    case $subcmd in 
+
+    case $subcmd in
         al | ali | alia | alias | aliase | aliases )
             _Dbg_msg \
                 "${label}Show list of aliases currently in effect."
@@ -285,7 +295,7 @@ _Dbg_help_show() {
             _Dbg_msg \
                 "${label}commands [+|n] -- Show the history of commands you typed.
 You can supply a command number to start with, or a + to start after
-the previous command number shown. A negative number indicates the 
+the previous command number shown. A negative number indicates the
 number of lines to list."
             ;;
         cop | copy| copyi | copyin | copying )

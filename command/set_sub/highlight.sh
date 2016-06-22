@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set highlight" debugger command
 #
-#   Copyright (C) 2011, 2014, 2015 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011, 2014-2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,9 +18,11 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
+# If run standalone, pull in other files we need
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
-    [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
+    [[ $dirname == $0 ]] && top_dir='../..' || top_dir=${dirname}/../..
+    [[ -z $_Dbg_libdir ]] && _Dbg_libdir=$top_dir
     for file in help alias ; do source $top_dir/lib/${file}.sh; done
 fi
 
@@ -45,22 +47,26 @@ _Dbg_complete_highlight() {
 }
 
 _Dbg_do_set_highlight() {
-    if ( pygmentize --version || pygmentize -V ) 2>/dev/null 1>/dev/null ; then
-	:
-    else
-	_Dbg_errmsg "Can't run pygmentize. Setting forced off"
+    if (( ! _Dbg_working_term_highlight )) ; then
+	_Dbg_errmsg "Can't run term-highlight. Setting forced off"
 	return 1
     fi
     typeset onoff=${1:-'light'}
     case $onoff in
 	on | light )
 	    _Dbg_set_highlight='light'
+	    _Dbg_filecache_reset
+	    _Dbg_readin $_Dbg_frame_last_filename
 	    ;;
 	dark )
 	    _Dbg_set_highlight='dark'
+	    _Dbg_filecache_reset
+	    _Dbg_readin $_Dbg_frame_last_filename
 	    ;;
 	off | 0 )
 	    _Dbg_set_highlight=''
+	    _Dbg_filecache_reset
+	    _Dbg_readin $_Dbg_frame_last_filename
 	    ;;
 	reset )
 	    [[ -z $_Dbg_set_highlight ]] && _Dbg_set_highlight='light'

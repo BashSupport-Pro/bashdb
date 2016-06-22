@@ -1,16 +1,22 @@
 #!/usr/bin/env python
 # from trepan.api import debug
-# debug()
+# debug(start_opts={'startup-profile': True})
+from __future__ import print_function
+
 import warnings
-warnings.simplefilter("ignore")
+import os, sys
+
+from tempfile import mktemp
 from pygments import highlight
 from pygments.lexers import BashLexer
-from pygments.formatters import TerminalFormatter
+from pygments.formatters import TerminalFormatter, Terminal256Formatter
 from pygments.token import Keyword, Name, Comment, String, Error, \
-     Number, Operator, Generic, Token, Whitespace
-from tempfile import mktemp
-from getopt import getopt
-import os, sys
+    Number, Operator, Generic, Token, Whitespace
+
+from pygments.styles import STYLE_MAP
+style_names = sorted(list(STYLE_MAP.keys()))
+
+warnings.simplefilter("ignore")
 
 #: Map token types to a tuple of color values for light and dark
 #: backgrounds.
@@ -18,7 +24,7 @@ TERMINAL_COLORS = {
     Token:              ('',            ''),
 
     Whitespace:         ('lightgray',   'darkgray'),
-    Comment:            ('brown',       'brown'),
+    Comment:            ('brown',       'yellow'),
     Comment.Preproc:    ('teal',        'turquoise'),
     Keyword:            ('*darkgreen*',  'turquoise'),
     Keyword.Type:       ('teal',        'turquoise'),
@@ -30,11 +36,11 @@ TERMINAL_COLORS = {
     Name.Exception:     ('teal',        'turquoise'),
     Name.Decorator:     ('darkgray',    'lightgray'),
     Name.Variable:      ('darkblue',    'green'),
-    Name.Constant:      ('darkblue',    'orange'),
+    Name.Constant:      ('darkblue',    'yellow'),
     Name.Attribute:     ('teal',        'turquoise'),
-    Name.Tag:           ('blue',        'orange'),
-    String:             ('brown',       'brown'),
-    Number:             ('black',       'orange'),
+    Name.Tag:           ('blue',        'yellow'),
+    String:             ('brown',       'lightgray'),
+    Number:             ('black',       'yellow'),
 
     Generic.Deleted:    ('red',        'red'),
     Generic.Inserted:   ('darkgreen',  'green'),
@@ -46,34 +52,30 @@ TERMINAL_COLORS = {
 }
 
 
-def syntax_highlight_file(input_filename, to_stdout = False, bg='light', colors_file=None):
+def syntax_highlight_file(input_filename, to_stdout=False, bg='light',
+                          colors_file=None, style=None):
     if to_stdout:
         outfile = sys.stdout
         out_filename = None
     else:
         basename = os.path.basename(input_filename)
-        out_filename=mktemp('.term', basename + '_')
+        out_filename = mktemp('.term', basename + '_')
         try:
             outfile = open(out_filename, 'w')
-        except IOError, (errno, strerror):
-            print "I/O in opening debugger output file %s" % out_filename
-            print "error(%s): %s" % (errno, strerror)
-            sys.exit(1)
         except:
-            print "Unexpected error in opening output file %s" % out_filename
+            print("Unexpected error in opening output file %s" % out_filename)
             sys.exit(1)
             pass
         pass
 
     if input_filename:
+        if not os.path.exists(input_filename):
+            sys.stderr.write("input file %s doesn't exist\n" % input_filename)
+            sys.exit(2)
         try:
             infile = open(input_filename)
-        except IOError, (errno, strerror):
-            print "I/O in opening debugger input file %s" % input_filename
-            print "error(%s): %s" % (errno, strerror)
-            sys.exit(2)
         except:
-            print "Unexpected error in opening output file %s" % out_filename
+            print("Unexpected error in opening input file %s" % input_filename)
             sys.exit(2)
             pass
         pass
@@ -81,66 +83,102 @@ def syntax_highlight_file(input_filename, to_stdout = False, bg='light', colors_
         infile = sys.stdin
         pass
 
-    formatter = TerminalFormatter(bg=bg)
+    if style:
+        formatter = Terminal256Formatter(bg=bg, style=style)
+    else:
+        formatter = TerminalFormatter(bg=bg)
+        formatter.colorscheme = TERMINAL_COLORS
+
     if colors_file is not None and os.path.isfile(colors_file):
         try:
-            execfile(colors_file)
+            with open(colors_file) as f:
+                code = compile(f.read(), colors_file, 'exec')
+                exec(code)
         except:
             sys.exit(10)
             pass
         pass
-    formatter.colorscheme = TERMINAL_COLORS
+
+
     for code_line in infile.readlines():
         line = highlight(code_line, BashLexer(), formatter).strip("\r\n")
         outfile.write(line + "\n")
         # print line,
         pass
     outfile.close
-    if out_filename: print out_filename
+    if out_filename:
+        print(out_filename)
     sys.exit(0)
-    pass
 
+program = os.path.basename(__file__)
+def usage():
+    sys.stderr.write("""usage:
+%s [FILE | --tty]  [--bg {dark|light}] [color-file | --style *pygments-style-name*]]
+%s [--help | -h | --version | -V
+
+Runs pygmentize to prettyprint a file for terminal output
+""" % (program, program))
+    sys.exit(2)
+
+def version():
+    sys.stderr.write("%s version 1.0\n" % program)
+
+
+from getopt import getopt, GetoptError
 def main():
     try:
-        opts, args = getopt(sys.argv[1:], "hb:", ["help", "bg="])
+        opts, args = getopt(sys.argv[1:], "LTVhb:c:S:",
+                            ["list-styles", "tty", "help", "version",
+                             "bg=", "colors=", 'style='])
     except GetoptError as err:
         # print help information and exit:
-        print str(err) # will print something like "option -a not recognized"
+        print(str(err))  # will print something like "option -a not recognized"
         usage()
-        sys.exit(2)
-    output = None
-    verbose = False
     dark_light = 'light'
+    colors_file = None
+    style_name = None
+    to_stdout = False
     for o, a in opts:
         if o in ("-h", "--help"):
             usage()
             sys.exit()
+        if o in ("-V", "--version"):
+            version()
+            sys.exit()
+        elif o in ("-L", "--list-styles"):
+            print(' '.join(style_names))
+            sys.exit()
+        elif o in ("-T", '--tty'):
+            to_stdout = True
+        elif o in ("-S", "--style"):
+            if a not in style_names:
+                sys.stderr.write('style name %s not found. Valid sytle names are: ' % a)
+                sys.stderr.write(', '.join(style_names))
+                sys.exit(1)
+            style_name = a
         elif o in ("-b", "--bg"):
             if a in ['dark', 'light']:
                 dark_light = a
             else:
                 assert False, "expecting 'dark' or 'light'; got %s" % a
+        elif o in ("-c", "--colors"):
+            colors_file = a
         else:
-            assert False, "unhandled option"
+            assert False, "unhandled option %s" % o
         pass
-    colors_file = None
-    to_stdout = False
     if len(args) == 0:
         to_stdout = True
         filename = None
-    elif len(args) == 1:
+    elif len(args) >= 1:
         filename = args[0]
-    elif len(args) == 2:
-        filename = args[0]
-        colors_file = args[1]
     else:
-        print "usage: $0 [FILE [--bg {dark|light}] [color-file]]"
         sys.exit(3)
         pass
-    syntax_highlight_file(filename, to_stdout, bg=dark_light, colors_file=colors_file)
+    syntax_highlight_file(filename, to_stdout, bg=dark_light,
+                          colors_file=colors_file, style=style_name)
     pass
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
     pass

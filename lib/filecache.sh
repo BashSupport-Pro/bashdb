@@ -219,7 +219,11 @@ function _Dbg_readin {
 		-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 		$_Dbg_source_array_var < "$fullname"
 	    if [[ -n $_Dbg_set_highlight ]] ; then
-		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py --bg=${_Dbg_set_highlight} $fullname"
+		opts="--bg=${_Dbg_set_highlight}"
+		if [[ -n $_Dbg_set_style ]] ; then
+		    opts="--style=${_Dbg_set_style}"
+		fi
+		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py $opts $fullname"
 		tempfile=$($highlight_cmd 2>/dev/null)
 		if (( 0  == $? )) ; then
 		    builtin readarray -t -O 1 -c $BIGFILE \
