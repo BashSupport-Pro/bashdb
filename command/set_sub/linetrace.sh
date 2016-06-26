@@ -26,6 +26,17 @@ Set shell-like \"set -x\" line tracing' 1
 typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
 
+_Dbg_help_add_sub set basename \
+'**set linetrace** [**on**|**off**]
+
+Set xtrace-style line tracing
+
+See also:
+---------
+
+**show linetrace**
+'
+
 _Dbg_do_set_linetrace() {
     typeset onoff=${1:-'off'}
     case $onoff in 

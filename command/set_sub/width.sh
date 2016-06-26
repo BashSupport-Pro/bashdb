@@ -27,11 +27,9 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
 fi
 
 _Dbg_help_add_sub set width \
-'set width N
+'**set** **width** *width*
 
-Set maximum width of lines.
-
-See also: show width.
+Set maximum width of lines to *width*.
 ' 1
 
 typeset -i _Dbg_set_linewidth; _Dbg_set_linewidth=${COLUMNS:-80}

@@ -21,13 +21,13 @@
 #================ VARIABLE INITIALIZATIONS ====================#
 
 _Dbg_help_add edit \
-"edit [LOCATION]
+"**edit** [*line-number*]
 
-Edit specified file at LOCATION.
+Edit specified file at *line-number*.
 
-If LOCATION is not given, use the current location.
-Uses EDITOR environment variable contents as editor (or ex as default).
-Assumes the editor positions at a file using options +linenumber filename."
+If *line-number* is not given, use the current line number.
+Uses \"EDITOR\" environment variable contents as editor (or ex as default).
+Assumes the editor positions at a file using options \"+linenumber filename\"."
 
 _Dbg_do_edit() {
   if (($# > 2)) ; then

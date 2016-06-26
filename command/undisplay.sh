@@ -20,16 +20,21 @@
 #   MA 02111 USA.
 
 _Dbg_help_add undisplay \
-"undisplay NUM [NUM2 ...]
+"**undisplay** *display-number*...
 
-Remove display statement(s). When a 'display' statement is added it is
-given a number. Use that number to remove the display statement.
+Cancel some expressions to be displayed when program stops. Arguments are the code numbers
+of the expressions to stop displaying.
 
 Examples:
+---------
+
     undisplay 0     # Removes display statement 0
     undisplay 0 3 4 # Removes display statements 0, 3, and 4
 
-See also 'display' and 'info display'."
+See also:
+---------
+
+*display* and *info display*."
 
 _Dbg_do_undisplay() {
     typeset -i del

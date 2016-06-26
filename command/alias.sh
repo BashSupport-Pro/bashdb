@@ -18,10 +18,22 @@
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
 _Dbg_help_add alias \
-'alias NAME DEBUGGER-COMMAND -- Make NAME be an alias for DEBUGGER-COMMAND.
+'**alias** *alias-name* *debugger-command*
 
-Use "unalias" to remove an alias and "show aliases" to get a list the
-aliases in effect.'
+Make *alias-name* be an alias for *debugger-command*.
+
+Examples:
+---------
+
+    alias cat list   # "cat prog.py" is the same as "list prog.py"
+    alias s   step   # "s" is now an alias for "step".
+                     # The above example is done by default.
+
+See also:
+---------
+
+**unalias** and **show alias**.
+'
 
 _Dbg_do_alias() {
   if (($# != 2)) ; then
@@ -33,11 +45,12 @@ _Dbg_do_alias() {
 }
 
 _Dbg_help_add unalias \
-'unalias NAME
+'**unalias** *name*
 
-Remove debugger command alias NAME.
+Remove debugger command alias *name*.
 
-Use "show aliases" to get a list the aliases in effect.'
+Use **show aliases** to get a list the aliases in effect.
+' 1
 
 _Dbg_do_unalias() {
   if (($# != 1)) ; then

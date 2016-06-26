@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - Debugger Help Routines
 #
-#   Copyright (C) 2002-2008, 2010-2012
+#   Copyright (C) 2002-2008, 2010-2012, 2016
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ _Dbg_help_set() {
 
     if [[ -n "${_Dbg_command_help_set[$subcmd]}" ]] ; then
         if [[ -z $label ]] ; then
-            _Dbg_msg "${_Dbg_command_help_set[$subcmd]}"
+            _Dbg_msg_rst "${_Dbg_command_help_set[$subcmd]}"
             return 0
         else
             label=$(builtin printf "set %-12s-- " $subcmd)
@@ -253,7 +253,7 @@ _Dbg_help_show() {
 
     if [[ -n "${_Dbg_command_help_show[$subcmd]}" ]] ; then
         if [[ -z $label ]] ; then
-            _Dbg_msg "${_Dbg_command_help_show[$subcmd]}"
+            _Dbg_msg_rst "${_Dbg_command_help_show[$subcmd]}"
             return 0
         else
             label=$(builtin printf "show %-12s-- " $subcmd)
@@ -342,6 +342,10 @@ number of lines to list."
             _Dbg_msg \
                 "${label}Show debugger prompt."
             return 0
+            ;;
+        sty | style )
+            _Dbg_msg \
+                "show style       -- Show pygments style in source-code listings."
             ;;
         t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
             _Dbg_msg \
