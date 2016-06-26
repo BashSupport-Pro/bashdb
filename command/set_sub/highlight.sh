@@ -27,18 +27,22 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
 fi
 
 _Dbg_help_add_sub set highlight \
-'set highlight [dark|light|off|reset]
+'**set** **highlight** [**dark**|**light**|**off**|**reset**]
 
 Set using terminal highlight.
 
-Use "reset" to set highlighting on and force a redo of syntax
+Use **reset** to set highlighting on and force a redo of syntax
 highlighting of already cached files. This may be needed if the
 debugger was started without syntax highlighting initially.
 
-"dark" sets sets for highlighting for a terminal with a dark background and
-"light" set for highlighting for a terminal with a light background.
+**dark** sets sets for highlighting for a terminal with a dark background and
+**light** set for highlighting for a terminal with a light background.
 
-See also: show highlight.' 1
+See also:
+---------
+
+**show highlight**.
+'
 
 _Dbg_next_complete[set highlight]='_Dbg_complete_highlight'
 

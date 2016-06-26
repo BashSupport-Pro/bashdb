@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set editing" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,10 +19,15 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set editing \
-'set editing {on|off|emacs|vi}
+'**set editing** [**on**|**off**|**emacs**|**vi**]
 
-Readline editing of command lines and edit style.
-' 1
+Readline editing of command lines
+
+See also:
+---------
+
+**show editing**
+'
 
 _Dbg_next_complete[set editing]='_Dbg_complete_edit'
 
@@ -32,12 +37,12 @@ _Dbg_complete_edit() {
 
 _Dbg_do_set_editing() {
     typeset onoff=${1:-'on'}
-    case $onoff in 
-	e | em | ema | emac | emacs ) 
+    case $onoff in
+	e | em | ema | emac | emacs )
 	    _Dbg_edit='-e'
 	    _Dbg_edit_style='emacs'
 	    ;;
-	on | 1 ) 
+	on | 1 )
 	    _Dbg_edit='-e'
 	    _Dbg_edit_style='emacs'
 	    ;;
@@ -45,7 +50,7 @@ _Dbg_do_set_editing() {
 	    _Dbg_edit=''
 	    return 0
 	    ;;
-	v | vi ) 
+	v | vi )
 	    _Dbg_edit='-e'
 	    _Dbg_edit_style='vi'
 	    ;;

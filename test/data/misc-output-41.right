@@ -102,25 +102,42 @@ set width       -- Set maximum width of lines is 75.
 +help set ar
 Set argument list to give program when restarted.
 +help set annotate
+**set annotate** {**0**|**1**}
+
+Set annotation level.
+
+  0 - normal
+  1 - fullname (for use when running under emacs).
+
+See also:
+---------
+
+**show annotate**
 Set annotation level [N]
 
-Set the amount of output shown
-0 == normal;     1 == fullname (for use when running under emacs).
 +help set listsize
-set listsize N
+**set listsize** *number-of-lines*
 
-Set the number of source lines debugger will list by default
+Set the number of source lines debugger will list by default.
 
-See also: show width.
+See also:
+---------
+
+**show listsize**
 
 +help set prompt
 set prompt PROMPT-STRING
 
 Set the debugger prompt string.
 +help set editing
-set editing {on|off|emacs|vi}
+**set editing** [**on**|**off**|**emacs**|**vi**]
 
-Readline editing of command lines and edit style.
+Readline editing of command lines
+
+See also:
+---------
+
+**show editing**
 
 +help tty
 tty

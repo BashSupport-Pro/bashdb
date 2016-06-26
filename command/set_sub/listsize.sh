@@ -27,12 +27,15 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
 fi
 
 _Dbg_help_add_sub set listsize \
-'set listsize N
+'**set listsize** *number-of-lines*
 
-Set the number of source lines debugger will list by default
+Set the number of source lines debugger will list by default.
 
-See also: show width.
-' 1
+See also:
+---------
+
+**show listsize**
+'
 
 # How many lines in a "list" command?
 typeset -xi _Dbg_set_listsize=10
