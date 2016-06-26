@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set linetrace" debugger command
 #
-#   Copyright (C) 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2010, 2016 Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -26,7 +26,7 @@ Set shell-like \"set -x\" line tracing' 1
 typeset -i _Dbg_linetrace_expand=0 # expand variables in linetrace output
 typeset -i _Dbg_linetrace_delay=0  # sleep after linetrace
 
-_Dbg_help_add_sub set basename \
+_Dbg_help_add_sub set linetrace \
 '**set linetrace** [**on**|**off**]
 
 Set xtrace-style line tracing
@@ -39,8 +39,8 @@ See also:
 
 _Dbg_do_set_linetrace() {
     typeset onoff=${1:-'off'}
-    case $onoff in 
-	on | 1 ) 
+    case $onoff in
+	on | 1 )
 	    _Dbg_write_journal_eval "_Dbg_set_linetrace=1"
 	    ;;
 	off | 0 )
@@ -48,7 +48,7 @@ _Dbg_do_set_linetrace() {
 	    ;;
 	d | de | del | dela | delay )
 	    eval "$_seteglob"
-	    if [[ $2 != $int_pat ]] ; then 
+	    if [[ $2 != $int_pat ]] ; then
 		_Dbg_msg "Bad int parameter: $2"
 		eval "$_resteglob"
 		return 1
@@ -58,8 +58,8 @@ _Dbg_do_set_linetrace() {
 	    ;;
 	e | ex | exp | expa | expan | expand )
 	    typeset onoff=${2:-'on'}
-	    case $onoff in 
-		on | 1 ) 
+	    case $onoff in
+		on | 1 )
 		    _Dbg_write_journal_eval "_Dbg_linetrace_expand=1"
 		    ;;
 		off | 0 )
@@ -70,7 +70,7 @@ _Dbg_do_set_linetrace() {
 		    ;;
 	    esac
 	    ;;
-	
+
 	* )
 	    _Dbg_errmsg "\"expand\", \"on\" or \"off\" expected."
 	    return 1

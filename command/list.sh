@@ -1,8 +1,7 @@
 # -*- shell-script -*-
 # list.sh - Some listing commands
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010,
-#   2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002-2006, 2008-2011, 2016
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -20,39 +19,38 @@
 #   MA 02111 USA.
 
 _Dbg_help_add list \
-'list[>] [LOC|.|-] [NUMBER] 
+'**list**[**>**] [*location*|**.**|**-**] [*count*]
 
-LOC is the starting location or dot (.) for current file and
-line. Subsequent list commands continue from the last line
-listed. Frame switching however resets the line to dot. LOC can be a
-read-in function name or a filename and line number separated by a
-colon, e.g /etc/profile:5
+List source code.
 
-If NUMBER is omitted, use the LISTSIZE setting as a count. Use "set
-listsize" to change this setting. If NUMBER is given and is less than
-the starting line, then it is treated as a count. Otherwise it is
-treated as an ending line number.
+Without arguments, print lines centered around the current line. If
+*location* is given, that number of lines is shown.
 
-By default aliases "l>" and "list>" are set to list. In this case and
+*location* can be a read-in function name or a filename and line
+number separated by a colon, e.g /etc/profile:5
+
+If *count* is omitted, use the value in the **set listize** setting as
+a count. Use **set listsize** to change this setting. If *count* is
+given and is less than the starting line, then it is treated as a
+count. Otherwise it is treated as an ending line number.
+
 more generally when the alias ends in ">", rather than center lines
-around LOC that will be used as the starting point.
+around *location* that will be used as the starting point.
 
 Examples:
+---------
 
-list .      # List centered around the curent frame line
-list        # Same as above if the first time. Else start from where
-            # we last left off.
-list -      # list backwards from where we left off.
-list> .     # list starting from the current frame line.
-list  10 3  # list 3 lines centered around 10, lines 9-11
-list> 10 3  # list lines 10-12
-list  10 13 # list lines 10-13
-list  10 -5 # list from lines to 5 lines before teh end of the file
-list  /etc/profile:5  # List centered around line 5 of /etc/profile.
-list  /etc/profile 5  # Same as above.
-list usage  # list centered around function usage().
+    list              # List from current program position or where we last left off
+    list 5            # List starting from line 5
+    list 5 2          # List two lines starting from line 5
+    list .            # List lines centered from where we currently are stopped
+    list -            # List lines previous to those just shown
 
-See also "set autolist".
+See also:
+---------
+
+**set listsize** or **show listsize** to see or set the value;
+**set autolist**.
 '
 
 # l [start|.] [cnt] List cnt lines from line start.
@@ -83,10 +81,10 @@ _Dbg_do_list() {
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup "$first_arg"
-    
-    if [[ -n $full_filename ]] ; then 
+
+    if [[ -n $full_filename ]] ; then
 	(( line_number ==  0 )) && line_number=1
 	_Dbg_check_line $line_number "$full_filename"
 	(( $? == 0 )) && \

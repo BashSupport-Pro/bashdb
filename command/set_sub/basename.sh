@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set basename" debugger command
 #
-#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,7 +19,16 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set basename \
-'Set short filenames (the basename) in debug output.'
+'**set basename** [**on**|**off**]
+
+
+Set short filenames (the basename) in debug output
+
+See also:
+---------
+
+**show basename**
+'
 
 _Dbg_next_complete[set basename]='_Dbg_complete_onoff'
 

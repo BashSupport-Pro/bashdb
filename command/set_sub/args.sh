@@ -19,10 +19,11 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set args \
-'set args [arg1 arg2...]
+'**set args** *script-args*
 
 Set argument list to give program being debugged when it is started.
-Follow this command with any number of args, to be passed to the program.' 1
+Follow this command with any number of args, to be passed to the program.
+' 1
 
 _Dbg_do_set_args() {
     # We use the loop below rather than _Dbg_set_args="(@)" because
