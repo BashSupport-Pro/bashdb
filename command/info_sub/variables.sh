@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "info variables" debugger command
 #
-#   Copyright (C) 2010, 2014 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2010, 2014, 2016 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -22,7 +22,8 @@
 # match pat $1. If ! is used, list variables that *don't* match.
 # If pat ($1) is omitted, use * (everything) for the pattern.
 
-_Dbg_help_add_sub info program 'info variables
+_Dbg_help_add_sub info variables '
+**info variables**
 
 info variables -- All global and static variable names
 ' 1

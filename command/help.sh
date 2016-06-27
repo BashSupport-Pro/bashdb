@@ -86,6 +86,7 @@ function _Dbg_do_help {
 		case $dbg_cmd in
 		    i | in | inf | info )
 			_Dbg_info_help $2
+			return
 			;;
 		    sh | sho | show )
 			_Dbg_help_show $2

@@ -147,7 +147,7 @@ output to go to STDOUT.
 
 +help info
 List of info subcommands:
-
+-------------------------
 info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
 info breakpoints -- Status of user-settable breakpoints
 info display -- Show all display expressions
@@ -158,16 +158,13 @@ info program -- Execution status of the program.
 info signals -- What debugger does when program gets various signals
 info source -- Information about the current source file
 info stack -- Backtrace of the stack
-info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
-
-Aliases for info: i
 +info
 Info subcommands are:
-  args         files      line     source    watchpoints
-  breakpoints  functions  program  stack
-  display      handle     signals  warranty
+  args         files      line     source     warranty
+  breakpoints  functions  program  stack      watchpoints
+  display      handle     signals  variables
 +#### history...
 +H
 28: info
@@ -216,7 +213,7 @@ Info subcommands are:
 +!-3:p
 +! -2
 List of info subcommands:
-
+-------------------------
 info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
 info breakpoints -- Status of user-settable breakpoints
 info display -- Show all display expressions
@@ -227,11 +224,8 @@ info program -- Execution status of the program.
 info signals -- What debugger does when program gets various signals
 info source -- Information about the current source file
 info stack -- Backtrace of the stack
-info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
-
-Aliases for info: i
 +! 2
 +H -2
 28: info
@@ -270,7 +264,7 @@ Invalid history number: foo
 0: set trace-commands on
 +history -2
 List of info subcommands:
-
+-------------------------
 info args -- Argument variables (e.g. $1, $2, ...) of the current stack frame.
 info breakpoints -- Status of user-settable breakpoints
 info display -- Show all display expressions
@@ -281,11 +275,8 @@ info program -- Execution status of the program.
 info signals -- What debugger does when program gets various signals
 info source -- Information about the current source file
 info stack -- Backtrace of the stack
-info terminal -- Print terminal device
 info variables -- All global and static variable names
 info warranty -- Various kinds of warranty you do not have
-
-Aliases for info: i
 +history 10000
 ** Number 10000 (10000) should be less than 29
 +#### pwd/cd commands...

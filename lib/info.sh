@@ -13,30 +13,41 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-typeset -r _Dbg_info_cmds='args breakpoints display files functions line program signals source stack terminal variables warranty'
+typeset -r _Dbg_info_cmds='args breakpoints display files functions line program signals source stack variables warranty'
 
 _Dbg_info_help() {
-  local -r info_cmd=$1
-  local label=$2
 
-  if [[ -z $info_cmd ]] ; then 
-      local thing
-		_Dbg_msg \
-'List of info subcommands:
-'
-      for thing in $_Dbg_info_cmds ; do 
-	_Dbg_info_help $thing 1
-      done
-      return
+
+    if (( $# == 0 )) ; then
+        typeset -a list
+	_Dbg_section 'List of info subcommands:'
+
+	for thing in $_Dbg_info_cmds ; do
+	    _Dbg_info_help $thing 1
+	done
+        return 0
+    fi
+
+  typeset subcmd="$1"
+  typeset label="$2"
+
+  if [[ -n "${_Dbg_command_help_info[$subcmd]}" ]] ; then
+      if [[ -z $label ]] ; then
+          _Dbg_msg_rst "${_Dbg_command_help_info[$subcmd]}"
+          return 0
+      else
+          label=$(builtin printf "info %-12s-- " $subcmd)
+      fi
   fi
 
-  case $info_cmd in 
+
+  case $subcmd in
     ar | arg | args )
       _Dbg_msg \
 "info args -- Argument variables (e.g. \$1, \$2, ...) of the current stack frame."
@@ -48,7 +59,7 @@ _Dbg_info_help() {
 'info breakpoints -- Status of user-settable breakpoints'
       return 0
       ;;
-    disp | displ | displa | display ) 
+    disp | displ | displa | display )
       _Dbg_msg \
 'info display -- Show all display expressions'
       return 0
@@ -89,11 +100,6 @@ _Dbg_info_help() {
 'info stack -- Backtrace of the stack'
       return 0
       ;;
-    te | ter | term | termi | termin | termina | terminal | tt | tty )
-      _Dbg_msg \
-'info terminal -- Print terminal device'
-      return 0
-      ;;
     tr|tra|trac|trace|tracep | tracepo | tracepoi | tracepoint | tracepoints )
       _Dbg_msg \
 'info tracepoints -- Status of tracepoints'
@@ -111,6 +117,6 @@ _Dbg_info_help() {
       ;;
     * )
       _Dbg_errmsg \
-    "Undefined info command: \"$info_cmd\".  Try \"help info\"."
+    "Undefined info command: \"$subcmd\".  Try \"help info\"."
   esac
 }

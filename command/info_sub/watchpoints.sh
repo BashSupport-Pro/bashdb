@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "info breakpoints" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,11 +19,11 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub info watchpoints \
-"info watchpoints [NUM ...]
+"**info watchpoints** [*num* ...]
 
 Show status of watchpoints. If no watchpoint numbers are
 given, the show all watchpoints. Otherwise only those watchpoints
-listed are shown and the order given. 
+listed are shown and the order given.
 
 The \"Disp\" column contains one of \"keep\", \"del\", the disposition of
 the breakpoint after it gets hit.
@@ -33,7 +33,10 @@ The \"enb\" column indicates whether the breakpoint is enabled.
 The \"Where\" column indicates where the breakpoint is located.
 Info whether use short filenames
 
-See also \"break\", \"enable\", and \"disable\"." 1
+See also:
+---------
+
+**break**, **enable**, and **disable**." 1
 
 # list watchpoints
 # If $1 is given just list those associated for that line.

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "info signals" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,11 +19,14 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub info signals \
-"info signals 
+"**info signals**
 
 Show what debugger does when program gets various signals.
 
-See also \"signal\"." 1
+See also:
+---------
+
+ \"signal\"." 1
 
 # List signal handlers in effect.
 function _Dbg_do_info_signals {
