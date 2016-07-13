@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "return" (return from fn immediately) debugger command
 #
-#   Copyright (C) 2010 Rocky Bernstein
+#   Copyright (C) 2010, 2016 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,13 +19,18 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Move default values up $1 or one in the stack. 
+# Move default values up $1 or one in the stack.
 _Dbg_help_add return \
-'return
+'**return**
 
-Immediate return from a function.
+Force an immediate return from a function.
 
-See also "finish", "kill", and "quit".'
+The remainder of function will not be executed.
+
+See also:
+---------
+
+**finish**, **quit**, and **run**.'
 
 function _Dbg_do_return {
     _Dbg_step_ignore=1
@@ -36,4 +41,3 @@ function _Dbg_do_return {
     _Dbg_continue_rc=2
     return 0
 }
-

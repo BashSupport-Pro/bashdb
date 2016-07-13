@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2008, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008, 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,9 +18,11 @@
 #   MA 02111 USA.
 
 _Dbg_help_add trace \
-'trace FUNCTION
+'**trace** *function*
 
-Wrap FUNCTION in set -x .. set +x tracing.
+trace alias *alias*
+
+Set "xtrace" (set -x) tracing when *function is called.
 
 See also "untrace" and "debug".'
 
@@ -61,7 +63,7 @@ function _Dbg_do_trace {
 	_Dbg_errmsg "Error in renaming function \"$fn\" to \"old_${fn}\"."
 	return 5
     }
-    cmd="${fn}() { 
+    cmd="${fn}() {
     $save_clear_trap_cmd
     typeset -ri old_set_x=is_traced
     set -x

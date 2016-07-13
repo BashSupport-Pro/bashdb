@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "frame" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010, 2011 
+#   Copyright (C) 2002-2006, 2008, 2010-2011, 2016
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,17 +19,21 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Move default values down $1 or one in the stack. 
+# Move default values down $1 or one in the stack.
 
 _Dbg_help_add frame \
-'frame [FRAME-NUMBER]
+'**frame** [*frame-number*].
 
-Change the current frame to frame FRAME-NUMBER if specified, or the
+Change the current frame to frame *frame-numbrer* if specified, or the
 most-recent frame, 0, if no frame number specified.
 
-A negative number indicates the position from the other or 
-least-recently-entered end.  So "frame -1" moves to the oldest frame.
-' 1 _Dbg_complete_frame
+A negative number indicates the position from the other or
+least-recently-entered end.  So **frame -1** moves to the oldest frame.
+
+See also:
+---------
+
+**up**, **down**' 1 _Dbg_complete_frame
 
 # Command completion for a debugger "frame" command.
 _Dbg_complete_frame() {
@@ -41,7 +45,7 @@ _Dbg_complete_frame() {
 _Dbg_do_frame() {
     _Dbg_not_running && return 3
     typeset count=${1:-1}
-    _Dbg_is_signed_int $count 
+    _Dbg_is_signed_int $count
     if (( 0 == $? )) ; then
 	_Dbg_frame_adjust $count 0
 	typeset -i rc=$?
@@ -52,4 +56,3 @@ _Dbg_do_frame() {
     ((0 == rc)) && _Dbg_last_cmd='frame'
     return $rc
 }
-

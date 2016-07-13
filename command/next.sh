@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "next" (step through) commmand.
 #
-#   Copyright (C) 2008, 2010, 2015 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2008, 2010, 2015, 2016 Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -23,17 +23,22 @@
 # but the command is different.
 
 _Dbg_help_add next \
-"next [COUNT]
+"**next** [*count*]
 
 Single step an statement skipping functions. This is sometimes called
 'step over' or 'step through'.
 
-If COUNT is given, stepping occurs that many times before
-stopping. Otherwise COUNT is one. COUNT an be an arithmetic
+If *count* is given, stepping occurs that many times before
+stopping. Otherwise *count* is one. *count* an be an arithmetic
 expression.
 
 Functions and source'd files are not traced. This is in contrast to
-\"step\". See also \"step\", \"finish\" and \"skip\"."
+**step**.
+
+See also:
+---------
+
+**skip**." 1
 
 # Next command
 # $1 is command next+, next-, or next

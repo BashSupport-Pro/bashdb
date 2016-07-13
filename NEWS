@@ -1,3 +1,11 @@
+Version 4.3-0.93
+
+- Allow source-code colorization via pygments style.
+  use "set style"
+- Help text now formated via Rst.
+- Paragraph reflow adjusts to line width
+- Revise help docs
+
 Version 4.3-0.92
 May 30, 2016 Mom
 

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "Examine" debugger command.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2011 Rocky Bernstein 
+#   Copyright (C) 2002-2004, 2006, 2008, 2011, 2016 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,23 +19,26 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
     for lib_file in help alias ; do source $top_dir/lib/${lib_file}.sh; done
 fi
 
 _Dbg_help_add 'examine' \
-"examine EXPR 
+"**examine** *expr*
 
-Print value of an expression via \"typeset\", \"let\", and failing these, 
+Print value of an expression via \"typeset\", \"let\", and failing these,
 \"eval\".
 
 Single variables and arithmetic expressions do not need leading $ for
 their value is to be substituted. However if neither these, variables
 need $ to have their value substituted.
 
-See also \"eval\" and \"pr\"."
+See also:
+---------
+
+**eval** and **pr**."
 
 function _Dbg_do_examine {
     typeset -r _Dbg_expr=${@:-"$_Dbg_last_x_args"}
@@ -46,10 +49,10 @@ function _Dbg_do_examine {
     elif _Dbg_defined $_Dbg_expr ; then
 	_Dbg_result=$(typeset -p $_Dbg_expr)
 	_Dbg_msg "$_Dbg_result"
-    elif _Dbg_is_function "$_Dbg_expr" $_Dbg_set_debug; then 
+    elif _Dbg_is_function "$_Dbg_expr" $_Dbg_set_debug; then
 	_Dbg_result=$(typeset -f $_Dbg_expr)
 	_Dbg_msg "$_Dbg_result"
-    else 
+    else
 	typeset -i _Dbg_rc
 	eval let _Dbg_result=$_Dbg_expr 2>/dev/null; _Dbg_rc=$?
 	if (( _Dbg_rc != 0 )) ; then
@@ -65,12 +68,12 @@ function _Dbg_do_examine {
 _Dbg_alias_add 'x' 'examine'
 
 # Demo it.
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    for _Dbg_file in fns msg ; do 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
+    for _Dbg_file in fns msg ; do
 	source $top_dir/lib/${_Dbg_file}.sh
     done
     source $top_dir/command/help.sh
     _Dbg_args='examine'
     _Dbg_do_help x
     _Dbg_do_examine top_dir
-fi    
+fi

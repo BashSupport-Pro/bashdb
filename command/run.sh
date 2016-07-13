@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "run" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein 
+#   Copyright (C) 2002-2004, 2006, 2008-2010, 2016 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -23,16 +23,19 @@
 # ones as we were given before).
 
 _Dbg_help_add run \
-'run [args]
+'**run** [*args*]
 
 Attempt to restart the program.
 
-See also "set args", "kill" and "quit"'
+See also:
+---------
+
+**set args**, **kill** and **quit**'
 
 _Dbg_do_run() {
     typeset script_args
     # We need to escape any embedded blanks in script_args and such.
-    if (( $# == 0 )) ; then 
+    if (( $# == 0 )) ; then
 	printf -v script_args "%q " "${_Dbg_orig_script_args[@]}"
     else
 	printf -v script_args "%q " "$@"
@@ -62,7 +65,7 @@ _Dbg_do_run() {
     # first before we restart. The strategy is to write into persistent
     # storage the restart command, and issue a "quit." The quit should
     # discover the restart at the last minute and issue the restart.
-    if (( BASH_SUBSHELL > 0 )) ; then 
+    if (( BASH_SUBSHELL > 0 )) ; then
 	_Dbg_msg "Note you are in a subshell. We will need to leave that first."
 	_Dbg_write_journal "_Dbg_RESTART_COMMAND=\"$exec_cmd_prefix $script_args\""
 	_Dbg_do_quit 0
