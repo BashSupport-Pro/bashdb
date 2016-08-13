@@ -1,5 +1,5 @@
 \input texinfo      @c -*-texinfo-*-
-@c Copyright 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011
+@c Copyright 2002- 2004, 2006-2009, 2011, 2016
 @c Rocky Bernstein for the Free Software Foundation
 @c
 @c TODO:
@@ -719,9 +719,30 @@ first way is to pass the @samp{--debugger} option to bash with the
 name of your script the scripts arguments following that, or with a
 command string (@code{-c}).
 
+@menu
+* Debugging a bash string from the command line::
+* Having bash invoke the debugger and your shell script::
+* Having the debugger invoke your shell script::
+@end menu
+
+@node Debugging a bash string from the command line
+@subsection Debugging a bash string from the command line
+
+@example
+bash --debugger -c @var{command-string}...
+@end example
+
+This form can be used to get into the debugger without having to give
+a script name to debug. Sometimes you may want to do this just to see
+how the debugger works: try some debugger commands or maybe get online
+help. If you run @code{ddd --bash} without giving a script name, it in
+fact uses this form.
+
+@node Having bash invoke the debugger and your shell script
+@subsection Having bash invoke the debugger and your shell script
+
 @example
 bash --debugger @var{script} @var{script-arguments...}
-bash --debugger -c @var{command-string}...
 @end example
 
 This calls a debugger initialization script. It works much like a
@@ -733,32 +754,49 @@ redirection that the method described next doesn't have, it is
 expected that over time more features will be enabled in bash when the
 @samp{--debugger} option is in effect.
 
-The form @samp{bash --debugger -c ...} can be used to get into the
-debugger without having to give a script name to debug. Sometimes you
-may want to do this just to see how the debugger works: try some
-debugger commands or maybe get online help. If you run @code{ddd
---bash} without giving a script name, it in fact uses this form.
 
-In order for the @samp{--debugger} option to work however, you must
-have the debugger scripts installed in a place where @DBG can find
-them. For this reason, in developing @value{DBG}, I use a second
-method more often; it doesn't require the bash debugger to be
-installed. This method uses another script called @emph{bashdb} which
-allows for giving its own options, the final option is signaled by
-adding @code{--}). After this, the name of the script to debugged and
-any the arguments to pass to that script are given. Using this method,
-one would start the debugger like this:
+When you use @samp{bash --debugger} and the bash script you want to
+debug needs arguments, you need to disambiguate which place arguments
+are to be sent to: bash, or your program.
+
+To disambiguate add @samp{--} after your
+script name. For example:
 
 @example
-bash @var{path-to-bashdb}/bashdb @var{bashdb-options} -- @var{script} @var{script-arguments...}
+bash --debugger ~/path/to/my/myscript.sh -- -o sample.out --option2
 @end example
 
-If you don't need to pass dash options to your program which might get
-confused with the debugger options, then you don't need to add the
-@code{--}.@footnote{And in the interest of full disclosure, although
-this was not shown in the example it is possible to add the @code{--}
-@emph{after} the script name to be debugged but before the first
-program option with a dash.}
+Without the @samp{--}, bash will thing that `-o sample.out` is to be
+handled by bash, rather than @samp{myscript.sh}.
+
+Alternatively you can set arguments the debuggerd script using bash's
+@samp{set} command like this:
+
+@example
+set -o sample.out --option2
+@end example
+
+@node Having the debugger invoke your shell script
+@subsection Having the debugger invoke your shell script
+
+A downside of running script the way described in the previous
+section, via @samp{--debugger}, you must have the debugger scripts
+installed in a place where the installed bash can find them. For this
+reason, in developing @value{DBG}, I use a second method more often;
+it doesn't require the bash debugger to be installed. This method uses
+another script called @emph{bashdb} which allows for giving its own
+options, the final option is signaled by adding @code{--}). After
+this, the name of the script to debugged and any the arguments to pass
+to that script are given. Using this method, one would start the
+debugger like this:
+
+@example
+bash @var{path-to-bashdb}/bashdb @var{script} @var{bashdb-options} -- @var{script-arguments...}
+@end example
+
+If there is no possibilty of @value{DBG} confusing the program options
+with those used in your bash script, yyou don't need to pass dash
+options to your program.
 
 As with the first method, @code{bash} should be a debugger-enabled
 bash. If @emph{bashdb} has the path to bash in it at the top (e.g.@: via
@@ -809,7 +847,7 @@ following list.
 @end menu
 
 @node Options for the bashdb script
-@subsection Command-line options for @emph{bashdb} script
+@subsubsection Command-line options for @emph{bashdb} script
 
 You can run @DBG in various alternative modes---for example, in batch
 mode or quiet mode.
