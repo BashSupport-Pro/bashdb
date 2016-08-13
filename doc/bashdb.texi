@@ -177,7 +177,7 @@ This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
 This is the @value{EDITION} Edition, @value{UPDATED}, for BASH.
 
-Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009, 2011 Rocky Bernstein
+Copyright (C) 2002-2009, 2011, 2016 Rocky Bernstein
 
 @menu
 * Summary::                     Overview of Debugger with a sample session
