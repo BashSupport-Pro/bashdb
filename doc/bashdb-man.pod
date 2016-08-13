@@ -6,16 +6,16 @@ bashdb - bash debugger script
 
 =head1 SYNOPSIS
 
-B<bashdb> [I<options>] [--] I<script-name> [I<script options>]
+B<bashdb> [I<options>] I<script-name> [--] [I<script options>]
 
 B<bashdb> [I<options>] -c I<execution-string>
 
-B<bash --debugger> [I<bash-options>...] I<script-name> [I<script options>]
+B<bash --debugger> [I<bash-options>...] I<script-name> [[--] I<script options>]
 
 =head1 DESCRIPTION
 
 C<bashdb> is a bash script to which arranges for another bash script
-to be debugged. 
+to be debugged.
 
 =begin html
 
@@ -42,7 +42,7 @@ use the last form given above, C<bash --debugger> I<script-name>
 [I<script-options>].
 
 If you used bashdb script and need to pass options to the script to be
-debugged, add C<--> before the script name. That will tell bashdb not
+debugged, add C<--> after the script name. That will tell bashdb not
 to try to process any further options.
 
 See the reference manual L<http://bashdb.sourceforge.net/bashdb.html>
@@ -63,7 +63,7 @@ Z<>
 =item -A | --annotation I<level>
 
 Sets to output additional stack and status information which allows
-front-ends such as emacs to track what's going on without polling. 
+front-ends such as emacs to track what's going on without polling.
 
 This is needed in for regression testing. Using this
 option is equivalent to issuing:
@@ -80,7 +80,7 @@ In places where a filename appears in debugger output give just the
 basename only. This is needed in for regression testing. Using this
 option is equivalent to issuing:
 
-  set basename on 
+  set basename on
 
 inside the debugger.
 
@@ -96,7 +96,7 @@ add various user-specific customizations.
 
 Using the C<-n> option this initialization file will not be read. This
 is useful in regression testing or in tracking down a problem with
-one's C<.bashdbinit> profile. 
+one's C<.bashdbinit> profile.
 
 Z<>
 
@@ -214,7 +214,7 @@ code and access to internal structures would make this more efficient.
 
 =item *
 
-L<http://bashdb.sourceforge.net/bashdb.html> - an extensive reference manual. 
+L<http://bashdb.sourceforge.net/bashdb.html> - an extensive reference manual.
 
 =item *
 
@@ -233,7 +233,7 @@ The current version is maintained (or not) by Rocky Bernstein.
 
 =head1 COPYRIGHT
 
-  Copyright (C) 2003, 2006, 2007 Rocky Bernstein
+  Copyright (C) 2003, 2006-2007, 2016 Rocky Bernstein
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
@@ -248,6 +248,6 @@ The current version is maintained (or not) by Rocky Bernstein.
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-I<$Id: bashdb-man.pod,v 1.10 2009/06/22 22:41:10 rockyb Exp $>
+I<$Id: bashdb-man.pod 2016/08/13 16:30:00 rockyb Exp $>
 
 =cut
