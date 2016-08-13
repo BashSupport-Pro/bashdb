@@ -804,7 +804,7 @@ bash. If @emph{bashdb} has the path to bash in it at the top (e.g.@: via
 path, then this might be equivalent to the above:
 
 @example
-bashdb @var{bashdb-options} -- @var{script} @var{script-arguments...}
+bashdb @var{bashdb-options} @var{script} -- @var{script-arguments...}
 @end example
 
 There are two or three disadvantages however of running a debugger
