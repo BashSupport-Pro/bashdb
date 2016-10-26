@@ -2,15 +2,15 @@
 
 ## Prerequisites
 
-You'll need autotools
+You'll need autotools and related packages
 
 * autoconf
 * automake
 * autohheader
 
-You'll also need packages
+You'll also need packages:
 
-* textinfo
+* texinfo
 
 ## Get sources
 
