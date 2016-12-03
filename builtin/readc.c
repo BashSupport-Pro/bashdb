@@ -1,7 +1,7 @@
 /*This file is readc.c
 
 Copyright (C) 1987-2010 Free Software Foundation, Inc.
-Copyright (C) 2011 R. Bernstein <rocky@gnu.org>
+Copyright (C) 2011, 2016 R. Bernstein <rocky@gnu.org>
 
 This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -25,7 +25,7 @@ along with Bash.  If not, see <http://www.gnu.org/licenses/>.
 
   The code is a modification of bash's "read" builtin (builtins/read.def)
   and bash attempt_shell_completion() in bashline.c
-  
+
 To install after compiling:
    cd *this directory*  # or adjust filename below
    enable -f ./readc readc
@@ -33,13 +33,14 @@ To install after compiling:
 See
 http://stackoverflow.com/questions/4726695/bash-and-readline-tab-completion-in-a-user-input-loop
 
-See the help for bash's builtin read for a full description of 
-the read command, a list of options, what they do, and what return 
+See the help for bash's builtin read for a full description of
+the read command, a list of options, what they do, and what return
 values.
 */
 
 #include <config.h>
 
+#include "version.h"  // This is bash's version
 #include "builtins.h"
 #include "bashtypes.h"
 #include "posixstat.h"
@@ -77,12 +78,21 @@ values.
 #  include "input.h"
 #endif
 
+#if DEFAULT_COMPAT_LEVEL < 44
+# define VALID_ARRAY_REFERENCE(a) \
+  valid_array_reference((a))
+# else
+# define VALID_ARRAY_REFERENCE(a) \
+  valid_array_reference((a), 0)
+# endif
+
+
 #if !defined(errno)
 extern int errno;
 #endif
 extern char *current_prompt_string, *ps1_prompt;
 
-extern char **programmable_completions(const char *, const char *, 
+extern char **programmable_completions(const char *, const char *,
 				       int, int, int *);
 extern void pcomp_set_readline_variables(int, int);
 extern int progcomp_size(void);
@@ -200,7 +210,7 @@ prog_complete_return (text, matchnum)
 }
 
 /* Do some completion on TEXT.  The indices of TEXT in RL_LINE_BUFFER are
-   at START and END.  Return an array of matches, or NULL if none. 
+   at START and END.  Return an array of matches, or NULL if none.
    Adapted from bash's attempt_shell_completion.
 */
 static char **
@@ -232,7 +242,7 @@ attempt_bashdb_completion (text, start, end)
       while (ti > -1 && (whitespace (rl_line_buffer[ti])))
 	ti--;
     }
-      
+
   in_command_position = 0;
 
   /* Check that we haven't incorrectly flagged a closed command substitution
@@ -570,7 +580,7 @@ readc_builtin (list)
 	  ttgetattr (fd, &ttattrs);
 	  termsave.attrs = &ttattrs;
 
-	  ttset = ttattrs;	  
+	  ttset = ttattrs;
 	  i = silent ? ttfd_cbreak (fd, &ttset) : ttfd_onechar (fd, &ttset);
 	  if (i < 0)
 	    sh_ttyerror (1);
@@ -798,7 +808,7 @@ assign_vars:
       xfree (input_string);
       return (retval);
     }
-#endif /* ARRAY_VARS */ 
+#endif /* ARRAY_VARS */
 
   /* If there are no variables, save the text of the line read to the
      variable $REPLY.  ksh93 strips leading and trailing IFS whitespace,
@@ -845,7 +855,7 @@ assign_vars:
     {
       varname = list->word->word;
 #if defined (ARRAY_VARS)
-      if (legal_identifier (varname) == 0 && valid_array_reference (varname) == 0)
+      if (legal_identifier (varname) == 0 && VALID_ARRAY_REFERENCE(varname) == 0)
 #else
       if (legal_identifier (varname) == 0)
 #endif
@@ -893,7 +903,7 @@ assign_vars:
 
   /* Now assign the rest of the line to the last variable argument. */
 #if defined (ARRAY_VARS)
-  if (legal_identifier (list->word->word) == 0 && valid_array_reference (list->word->word) == 0)
+  if (legal_identifier (list->word->word) == 0 && VALID_ARRAY_REFERENCE(list->word->word) == 0)
 #else
   if (legal_identifier (list->word->word) == 0)
 #endif
@@ -955,7 +965,7 @@ bind_read_variable (name, value)
 {
   SHELL_VAR *v;
 #if defined (ARRAY_VARS)
-  if (valid_array_reference (name) == 0)
+  if (VALID_ARRAY_REFERENCE(name) == 0)
     v = bind_variable (name, value, 0);
   else
     v = assign_array_element (name, value, 0);
@@ -982,7 +992,7 @@ read_mbchar (fd, string, ind, ch, unbuffered)
 
   memset (&ps, '\0', sizeof (mbstate_t));
   memset (&ps_back, '\0', sizeof (mbstate_t));
-  
+
   mbchar[0] = ch;
   i = 1;
   for (n = 0; n <= MB_LEN_MAX; n++)
@@ -998,7 +1008,7 @@ read_mbchar (fd, string, ind, ch, unbuffered)
 	    r = zreadc (fd, &c);
 	  if (r < 0)
 	    goto mbchar_return;
-	  mbchar[i++] = c;	
+	  mbchar[i++] = c;
 	  continue;
 	}
       else if (ret == (size_t)-1 || ret == (size_t)0 || ret > (size_t)0)
@@ -1066,7 +1076,7 @@ edit_line (p, itext)
 
   old_attempted_completion_function = rl_attempted_completion_function;
   rl_attempted_completion_function = attempt_bashdb_completion;
-  
+
   if (itext)
     {
       old_startup_hook = rl_startup_hook;
@@ -1075,7 +1085,7 @@ edit_line (p, itext)
     }
 
   ret = readline (p);
-  
+
   rl_attempted_completion_function = old_attempted_completion_function;
   old_attempted_completion_function = (rl_completion_func_t *)NULL;
 

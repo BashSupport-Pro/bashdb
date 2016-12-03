@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002-2012
-# 2014-2015 Rocky Bernstein <rocky@gnu.org>
+# 2014-2016 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,14 +27,32 @@ define(OK_BASH_VERS, 4.4)
 define(relstatus, 0.92)
 
 AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
-# AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
 
 ##################################################################
 # See if --prefix was set. If not, set it to a reasonable default
 # based on where bash thinks bashdb is supposed to be installed.
 ##################################################################
+prefix='no'
+for ac_option
+do
+  # If the previous option needs an argument, assign it.
+  if test -n "$ac_prev"; then
+    eval $ac_prev=\$ac_option
+    ac_prev=
+    continue
+  fi
+
+  case $ac_option in
+  -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
+    ac_prev=prefix ;;
+  -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
+    prefix="$ac_optarg" ;;
+  esac
+done
 mydir=$(dirname $0)
-if [[ "$prefix" = NONE ]]; then
+if test "$prefix" == 'no' ; then
    prefix=$($SH_PROG $mydir/compute-prefix.sh)
 fi
 
@@ -53,8 +71,8 @@ AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src],
 		  [location of bash OK_BASH_VERS source code]),
 		  BASH_SRC=$withval)
 AC_SUBST(BASH_SRC)
+AC_PROG_CC
 if test x"$BASH_SRC" != x ; then
-   AC_PROG_CC
    if test ! -d $BASH_SRC ; then
      AC_MSG_ERROR([bash source directory ($BASH_SRC) does not seem to be a directory])
    else
@@ -66,8 +84,8 @@ if test x"$BASH_SRC" != x ; then
          build_set0=])
    fi
 fi
-AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 AM_PROG_LIBTOOL
+AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 PIC=$lt_prog_compiler_pic
 WL=$lt_prog_compiler_wl
 AC_SUBST(PIC)
@@ -81,16 +99,14 @@ AC_PROG_SED
 CMDLINE_INVOKED='$0 == ${BASH_SOURCE}'
 AC_SUBST(CMDLINE_INVOKED)
 
-AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
 dnl make sure we are using a recent autoconf version
-AC_PREREQ(2.53)
+AC_PREREQ(2.69)
 
 AC_ARG_PROGRAM
-AM_INIT_AUTOMAKE([no-define])
 
 AC_BASHDB_PACKAGE([bashdb])
 
@@ -108,6 +124,7 @@ fi
 AM_MISSING_PROG(GIT2CL, git2cl, $missing_dir)
 AC_PROG_LN_S
 AC_PATH_PROG(RM, rm, true)
+AC_PROG_MAKE_SET
 
 ## --with-bash can be used to tell the bashdb script and the regression
 ## test which bash to run. It can be omitted too in which case we'll
@@ -135,7 +152,7 @@ case "${bash_major}.${bash_minor}" in
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash 4.1-4.3.])
+    AC_MSG_ERROR([This package is only known to work with Bash 4.1-4.4.])
     ;;
 esac
 
@@ -194,6 +211,15 @@ else
       DIFF_OPTS="$DIFF_OPTS $diff_opt"
     fi
   done
+fi
+
+##################################################################
+# See if --prefix was set. If not, set it to a reasonable default
+# based on where bash thinks bashdb is supposed to be installed.
+##################################################################
+mydir=$(dirname $0)
+if [[ "$prefix" = NONE ]]; then
+   prefix=$($SH_PROG $mydir/compute-prefix.sh)
 fi
 
 #Makefiles
