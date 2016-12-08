@@ -31,9 +31,30 @@ _Dbg_help_add 'examine' \
 Print value of an expression via \"typeset\", \"let\", and failing these,
 \"eval\".
 
-Single variables and arithmetic expressions do not need leading $ for
-their value is to be substituted. However if neither these, variables
-need $ to have their value substituted.
+To see the structure of a variable do not prepeand a leading $.
+
+Arithmetic expressions also do not need leading $ for
+their value is to be substituted.
+
+However if *expr* falls into neither these, categories variables
+witih *expr* need $ to have their value substituted.
+
+Examples:
+---------
+
+   # code:
+   # typeset -a typeset -a x=(2 3 4)
+   # typeset -ir p=1
+   bashdb<1> examine x   # note no $
+   declare -a x='([0]="2" [1]="3" [2]="4")'
+   bashdb<2> examine $x  # note with $
+   1  # because this is how bash evaluates $x
+   bashdb<3> x p
+   declare -ir p="1"
+   bashdb<3> x p+2
+   3
+   bashdb<3> x $p+2
+   3
 
 See also:
 ---------

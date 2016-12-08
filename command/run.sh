@@ -25,7 +25,10 @@
 _Dbg_help_add run \
 '**run** [*args*]
 
-Attempt to restart the program.
+Attempt to restart the program via an exec call.
+
+Note: we always prepend bashdb along with debugging options
+to the front of the script name and args.
 
 See also:
 ---------
