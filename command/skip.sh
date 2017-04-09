@@ -27,8 +27,19 @@ If *count* is given, stepping occurs that many times before
 stopping. Otherwise *count* is one. *count* can be an arithmetic
 expression.
 
-Note that skipping doesn't change the value of $? which may
-cause some confusion.
+Note that skipping doesn't change the value of \$?. This has
+consequences in some compound statements that test on \$?. For example
+in:
+
+   if grep foo bar.txt ; then
+      echo not skipped
+   fi
+
+skipping the *if* statement will in effect skip running the *grep*
+command. Since the return code is 0 when skipped, the *if* body is
+entered. Similarly the same thing can  happen in a *while* statement
+test.
+
 See http://lists.gnu.org/archive/html/bug-bash/2017-04/msg00004.html
 
 See also:
