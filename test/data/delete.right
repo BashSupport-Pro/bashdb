@@ -13,11 +13,12 @@ Breakpoint 1 set in file stepping.sh, line 4.
 ** No breakpoint number 4.
 +info break
 Num Type       Disp Enb What
+----------------------------
 1   breakpoint keep y   stepping.sh:4
 +############################### 
 +# Should work
 +delete 1
-Removed 1 breakpoint(s).
+Deleted breakpoint 1
 +info break
 No breakpoints have been set.
 +############################### 
@@ -41,13 +42,15 @@ Breakpoint 2 hit (1 times).
 ->0 in file `stepping.sh' at line 5
 +info break
 Num Type       Disp Enb What
+----------------------------
 2   breakpoint keep y   stepping.sh:5
 +break 6
 Breakpoint 3 set in file stepping.sh, line 6.
 +############################### 
 +# try deleting multiple breakpoints
 +delete 2 3
-Removed 2 breakpoint(s).
+Deleted breakpoint 2
+Deleted breakpoint 3
 +info break
 No breakpoints have been set.
 +############################### 

@@ -1,5 +1,7 @@
 check_DATA =            \
 	bug-args.sh.in  \
+	bug-clear.sh    \
+	bug-loc.sh      \
 	bug-step.sh     \
 	bug-step-subshell.sh \
 	bugI.sh         \
@@ -8,8 +10,11 @@ check_DATA =            \
 	dbg-test1.sub   \
 	dbg-test2.sh    \
 	debug.sh        \
+	fib.sh          \
+	gcd.sh          \
 	hanoi.sh.in     \
 	interrupt.sh.in \
+	library.sh      \
 	multi.sh        \
 	nexting.sh      \
 	parm.sh         \

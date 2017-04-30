@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # step.sh - Debugger step ("step into") commmand.
 #
-#   Copyright (C) 2006, 2008, 2009, 2010 Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2006, 2008, 2009, 2010, 2015 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -12,7 +12,7 @@
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
@@ -21,13 +21,14 @@
 # If yes, always show. If auto, show only if the same line is to be run
 # but the command is different.
 
-# The default behavior of step_force. 
-typeset -i _Dbg_set_different=0  
+# The default behavior of step_force.
+typeset -i _Dbg_set_different=0
 
 _Dbg_help_add step \
 "step [COUNT]
 
-Single step an statement.
+Single step an statement. This is sometimes called 'step into'.
+
 
 If COUNT is given, stepping occurs that many times before
 stopping. Otherwise COUNT is one. COUNT an be an arithmetic
@@ -48,7 +49,7 @@ _Dbg_help_add 'step-' \
 "step- -- Single step a statement without the \`step force' setting.
 
 Set step force may have been set on. step- ensures we turn that off for
-this command. 
+this command.
 
 See also \"step\" and \"set force\"."
 
@@ -81,7 +82,7 @@ _Dbg_do_step() {
       return 2
   fi
   _Dbg_old_set_opts="$_Dbg_old_set_opts -o functrace"
-  
+
   _Dbg_write_journal "_Dbg_step_ignore=$_Dbg_step_ignore"
   _Dbg_write_journal "_Dbg_step_force=$_Dbg_step_force"
   _Dbg_write_journal "_Dbg_old_set_opts='$_Dbg_old_set_opts'"

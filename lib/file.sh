@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Things related to file handling.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010 Rocky Bernstein 
+#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2014 Rocky Bernstein
 #   rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
@@ -13,7 +13,7 @@
 #   WARRANTY; without even the implied warranty of MERCHANTABILITY or
 #   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 #   for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License along
 #   with bashdb; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
@@ -54,12 +54,11 @@ function _Dbg_file_canonic {
 }
 
 # $1 contains the name you want to glob. return 0 if exists and is
-# readable or 1 if not. 
-# The result will be in variable $filename which is assumed to be 
+# readable or 1 if not.
+# The result will be in variable $filename which is assumed to be
 # local'd by the caller
-_Dbg_glob_filename() {
-  printf -v filename "%q" "$1"
-  typeset cmd="filename=$filename"
+_Dbg_tilde_expand_filename() {
+  typeset cmd="filename=\$(builtin echo $1)"
   eval $cmd
   [[ -r $filename ]]
 }
@@ -88,7 +87,7 @@ function _Dbg_resolve_expand_filename {
     return 0
   fi
 
-  if [[ ${find_file:0:1} == '/' ]] ; then 
+  if [[ ${find_file:0:1} == '/' ]] ; then
     # Absolute file name
     full_find_file=$(_Dbg_expand_filename "$find_file")
     echo "$full_find_file"

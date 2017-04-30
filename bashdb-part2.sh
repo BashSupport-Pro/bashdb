@@ -1,4 +1,4 @@
-#   Copyright (C) 2008, 2009, 2010, 2011
+#   Copyright (C) 2008-2011, 2016
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -10,7 +10,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -22,7 +22,7 @@
 # it keeps line number the same more often in integration tests because
 # this code changes more often making code bashdb.in code change less.
 # It is the line numbers in that code that appear in tracebacks.
-# FIXME: should implement "set hidelevel"? 
+# FIXME: should implement "set hidelevel"?
 
 # Pull in the rest of the debugger code.
 . $_Dbg_main
@@ -35,9 +35,11 @@ if (($# == 0)) && [[ -z $_Dbg_EXECUTION_STRING ]] ; then
     echo >&2 "${_Dbg_pname}: need to give a script to debug or use the -c option."
     exit 1
 fi
-    
+
 _Dbg_script_file="$1"
 shift
+
+[[ $1 == '--' ]] && shift
 
 if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
   echo "${_Dbg_pname}: cannot write to temp directory $_Dbg_tmpdir." >&2
@@ -60,13 +62,13 @@ fi
 
 typeset -r _Dbg_Dbg_script_file=$(_Dbg_expand_filename $_Dbg_script_file)
 
-if ((_Dbg_set_linetrace)) ; then 
+if ((_Dbg_set_linetrace)) ; then
   # No stepping.
-    _Dbg_write_journal_eval "_Dbg_step_ignore=-1" 
+    _Dbg_write_journal_eval "_Dbg_step_ignore=-1"
     _Dbg_QUIT_ON_QUIT=1
-else 
+else
   # Set to skip over statements up to ". $_Dbg_script_file"
-    _Dbg_write_journal_eval "_Dbg_step_ignore=3" 
+    _Dbg_write_journal_eval "_Dbg_step_ignore=3"
 fi
 
 # The set0 can be loaded via commadn/set_sub/dollar0 or perhaps

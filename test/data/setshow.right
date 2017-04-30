@@ -293,12 +293,12 @@ of promoting the sharing and reuse of software generally.
 +show badcommand
 ** Unknown show subcommand: badcommand
 ** Show subcommands are:
-**   alias     autoeval  commands  different    highlight  prompt    width
-**   annotate  autolist  copying   directories  history    version 
-**   args      basename  debug     editing      listsize   warranty
-+another-bad-command 
+**   alias     autoeval  commands  different    highlight  prompt  version
+**   annotate  autolist  copying   directories  history    style   warranty
+**   args      basename  debug     editing      listsize   tty     width
++another-bad-command
 ** Undefined command "another-bad-command". Try "help".
-+show 
++show
 annotate    : Annotation_level is 0.
 args        : Argument list to give script when debugged program starts is:
        "-L data/setshow.cmd example/dbg-test2.sh testarg1 testarg2".
@@ -310,13 +310,15 @@ different   : Show stepping forces a new line is off.
 editing     : Editing of command lines as they are typed is on.
   Edit style is emacs.
 highlight   : Syntax highlight in source listings is off.
-history     -- 
+history     --
   filename: The filename in which to record the command history is
   save: Saving of history save is on.
   size: Debugger history size is 256
 listsize    : Number of source lines bashdb will list by default is 10.
 prompt      : bashdb's prompt is:
        "$_Dbg_debugger_name${_Dbg_less}${#_Dbg_history[@]}${_Dbg_greater}$_Dbg_space".
+style: Pygments terminal formatting style is off.
+show tty    : Debugger output goes to
 version     : bashdb, release 1.0
 width       : Line width is 80.
 +show args
@@ -360,28 +362,28 @@ Line width is 40.
 ** Argument required (integer to set it to.).
 +set history size 10
 +show history
-history     -- 
+history     --
   filename: The filename in which to record the command history is
   save: Saving of history save is on.
   size: Debugger history size is 10
 +show history save
-history     -- 
+history     --
   filename: The filename in which to record the command history is
   save: Saving of history save is on.
   size: Debugger history size is 10
 +set history save off
 +show history
-history     -- 
+history     --
   filename: The filename in which to record the command history is
   save: Saving of history save is off.
   size: Debugger history size is 10
 +set history save on
 +show history
-history     -- 
+history     --
   filename: The filename in which to record the command history is
   save: Saving of history save is on.
   size: Debugger history size is 10
-+######################### 
++#########################
 +#### Test 'show commands'...
 +show commands
 34: show commands
@@ -431,7 +433,7 @@ history     --
 29: show history save
 28: show history
 27: set history size 10
-+######################### 
++#########################
 +#### Test 'autoeval'...
 +set autoeval on
 Evaluate unrecognized commands is on.
@@ -442,5 +444,5 @@ $? is 0
 Evaluate unrecognized commands is off.
 +xx=1 ; declare -p xx
 ** Undefined command "xx=1". Try "help".
-+quit 
++quit
 bashdb: That's all, folks...

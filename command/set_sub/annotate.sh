@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set annotate" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,16 +19,25 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set annotate \
-'Set annotation level [N]
+'**set annotate** {**0**|**1**}
 
-Set the amount of output shown
-0 == normal;     1 == fullname (for use when running under emacs).' 1
+Set annotation level.
+
+  0 - normal
+  1 - fullname (for use when running under emacs).
+
+See also:
+---------
+
+**show annotate**
+''Set annotation level [N]
+' 1
 
 _Dbg_do_set_annotate() {
     eval "$_seteglob"
     if (( $# != 1 )) ; then
 	_Dbg_msg "A single argument is required (got $# arguments)."
-    elif [[ $1 == $int_pat ]] ; then 
+    elif [[ $1 == $int_pat ]] ; then
 	if (( $1 > 3 )) ; then
 	    _Dbg_msg "Annotation level must be between 0 and 3. Got: ${1}."
 	else

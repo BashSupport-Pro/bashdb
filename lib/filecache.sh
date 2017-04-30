@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein
+#   Copyright (C) 2008-2011, 2013-2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -13,7 +13,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License along
 #   with this program; see the file COPYING.  If not, write to the Free Software
 #   Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
@@ -38,7 +38,7 @@ _Dbg_filecache_reset() {
 }
 _Dbg_filecache_reset
 
-# Check that line $2 is not greater than the number of lines in 
+# Check that line $2 is not greater than the number of lines in
 # file $1
 _Dbg_check_line() {
     (( $# != 2 )) && return 1
@@ -51,7 +51,7 @@ _Dbg_check_line() {
 	return 1
     fi
 
-    if (( line_number >  max_line )) ; then 
+    if (( line_number >  max_line )) ; then
 	(( _Dbg_set_basename )) && filename=${filename##*/}
 	_Dbg_errmsg "Line $line_number is too large." \
 	    "File $filename has only $max_line lines."
@@ -87,9 +87,9 @@ function _Dbg_get_maxline {
 }
 
 # Return text for source line for line $1 of filename $2 in variable
-# $_Dbg_source_line. 
+# $_Dbg_source_line.
 
-# If $2 is omitted, use _Dbg_frame_filename, if $1 is omitted use 
+# If $2 is omitted, use _Dbg_frame_filename, if $1 is omitted use
 # _Dbg_frame_last_lineno. The return value is put in _Dbg_source_line.
 _Dbg_get_source_line() {
     typeset -i lineno
@@ -106,8 +106,13 @@ _Dbg_get_source_line() {
 	filename="$1"
     fi
     _Dbg_readin_if_new "$filename"
-    if (( _Dbg_set_highlight )) ; then
-	eval "_Dbg_source_line=\${$_Dbg_highlight_array_var[lineno]}"
+    if [[ -n $_Dbg_set_highlight ]] && [[ -n $_Dbg_highlight_array_var ]]; then
+	eval "typeset -i count=\${#$_Dbg_highlight_array_var[@]}"
+	if (( count  )) ; then
+	    eval "_Dbg_source_line=\${$_Dbg_highlight_array_var[lineno]}"
+	else
+	    eval "_Dbg_source_line=\${$_Dbg_source_array_var[$lineno]}"
+	fi
     else
 	eval "_Dbg_source_line=\${$_Dbg_source_array_var[$lineno]}"
     fi
@@ -130,7 +135,7 @@ function _Dbg_is_file {
     return 1
   fi
 
-  if [[ ${find_file:0:1} == '/' ]] ; then 
+  if [[ ${find_file:0:1} == '/' ]] ; then
       # Absolute file name
       try_find_file=$(_Dbg_expand_filename "$find_file")
       if [[ -n ${_Dbg_filenames[$try_find_file]} ]] ; then
@@ -174,7 +179,7 @@ function _Dbg_is_file {
 # 0 is returned if everything went ok.
 function _Dbg_readin {
     typeset filename
-    if (($# != 0)) ; then 
+    if (($# != 0)) ; then
 	filename="$1"
     else
 	_Dbg_frame_file
@@ -186,7 +191,7 @@ function _Dbg_readin {
     typeset -i next;
     next=${#_Dbg_filenames[@]}
     _Dbg_source_array_var="_Dbg_source_${next}"
-    if (( _Dbg_set_highlight )) ; then
+    if [[ -n $_Dbg_set_highlight ]] ; then
 	_Dbg_highlight_array_var="_Dbg_highlight_${next}"
     fi
 
@@ -194,9 +199,9 @@ function _Dbg_readin {
     typeset source_array
     typeset -ri NOT_SMALLFILE=1000
 
-    if [[ -z $filename ]] || [[ $filename == "$_Dbg_bogus_file" ]] ; then 
+    if [[ -z $filename ]] || [[ $filename == "$_Dbg_bogus_file" ]] ; then
 	eval "${_Dbg_source_array_var}[0]=\"$Dbg_EXECUTION_STRING\""
-  else 
+  else
 	fullname=$(_Dbg_resolve_expand_filename "$filename")
 	if [[ -r $fullname ]] ; then
 	    typeset -r progress_prefix="Reading $filename"
@@ -204,36 +209,40 @@ function _Dbg_readin {
 	    _Dbg_file2canonic[$fullname]="$fullname"
 	    # Use readarray which speeds up reading greatly.
 	    typeset -ri BIGFILE=30000
-	    if wc -l < /dev/null >/dev/null 2>&1 ; then 
+	    if wc -l < /dev/null >/dev/null 2>&1 ; then
 		line_count=$(wc -l < "${fullname}")
-		if (( line_count >= NOT_SMALLFILE )) ; then 
+		if (( line_count >= NOT_SMALLFILE )) ; then
 		    _Dbg_msg_nocr "${progress_prefix} "
 		fi
 	    fi
 	    builtin readarray -t -O 1 -c $BIGFILE \
 		-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 		$_Dbg_source_array_var < "$fullname"
-	    if (( _Dbg_set_highlight )) ; then
-		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py $fullname"
+	    if [[ -n $_Dbg_set_highlight ]] ; then
+		opts="--bg=${_Dbg_set_highlight}"
+		if [[ -n $_Dbg_set_style ]] ; then
+		    opts="--style=${_Dbg_set_style}"
+		fi
+		highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py $opts $fullname"
 		tempfile=$($highlight_cmd 2>/dev/null)
-		if (( 0  == $? )) ; then 
+		if (( 0  == $? )) ; then
 		    builtin readarray -t -O 1 -c $BIGFILE \
 			-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 			$_Dbg_highlight_array_var < "$tempfile"
 		fi
-		[[ -r $tempfile ]] && rm $tempfile 
+		[[ -r $tempfile ]] && rm $tempfile
 	    fi
 	    (( line_count > BIGFILE)) && _Dbg_progess_done
 	else
 	    return 1
 	fi
     fi
-    
+
     typeset -r line_count_cmd="line_count=\${#${_Dbg_source_array_var[@]}}"
     eval $line_count_cmd
-    
+
     (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
-    
+
     # Add $filename to list of all filenames
     _Dbg_filenames[$fullname]=$_Dbg_source_array_var;
     return 0
@@ -245,7 +254,7 @@ _Dbg_readin_if_new() {
     (( $# != 1 )) && return 1
     typeset filename="$1"
     _Dbg_set_source_array_var "$filename"
-    if [[ -z "$fullname" ]] ; then 
+    if [[ -z "$fullname" ]] ; then
 	_Dbg_readin "$filename"
 	typeset rc=$?
 	set +xv
@@ -268,6 +277,10 @@ _Dbg_set_source_array_var() {
 	fullname="$filename"
     }
     [[ -z $fullname ]] && return 2
+    _Dbg_source_array_var=${_Dbg_filenames[$fullname]}
+    if [[ -n $_Dbg_set_highlight ]] ; then
+	_Dbg_highlight_array_var="${_Dbg_source_array_var/_Dbg_source_/_Dbg_highlight_}"
+    fi
     _Dbg_source_array_var=${_Dbg_filenames[$fullname]}
     [[ -z $_Dbg_source_array_var ]] && return 2
     return 0

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # -*- shell-script -*-
 TEST_NAME='file with spaces'
 
@@ -9,4 +9,5 @@ if [[ -f "$top_srcdir/test/example/file with spaces.sh" ]] ; then
     run_test_check
 else
     echo "Skipping test due to autoconf problems"
+    exit 77
 fi

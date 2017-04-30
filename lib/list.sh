@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # debugger source-code listing routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2011
+#   Copyright (C) 2002-2004, 2006, 2008-2011, 2014
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -61,11 +61,11 @@ _Dbg_print_linetrace() {
   typeset filename=${2:-"$_Dbg_frame_last_filename"}
 
   # Remove main + sig-handler  + print_lintrace FUNCNAMES.
-  typeset -i depth=${#FUNCNAME[@]}-3  
+  typeset -i depth=${#FUNCNAME[@]}-3
 
-  # If called from bashdb script rather than via "bash --debugger", 
+  # If called from bashdb script rather than via "bash --debugger",
   # we are artificially nested one deeper because of the bashdb call.
-  if [[ -n $_Dbg_script ]] ; then 
+  if [[ -n $_Dbg_script ]] ; then
     ((depth--))
   fi
 
@@ -78,7 +78,7 @@ level $_Dbg_DEBUGGER_LEVEL, subshell $BASH_SUBSHELL, depth $depth:\t${_Dbg_sourc
 #   if (( _Dbg_linetrace_expand )) ; then
 # #    typeset expanded_source_line
 # #    # Replace all double quotes (") with and an escape (\")
-# #    typeset esc_source_line="${_Dbg_source_line//\"/\\\"}" 
+# #    typeset esc_source_line="${_Dbg_source_line//\"/\\\"}"
 #       _Dbg_do_eval "expanded_source_line=\"$esc_source_line\"" 2>/dev/null
 #      _Dbg_do_eval "expanded_source_line=\"$_Dbg_bash_command\"" 2>/dev/null
 #      _Dbg_msg "+ ${expanded_source_line}"
@@ -121,7 +121,7 @@ _Dbg_parse_list_args() {
     elif [[ $4 == '-' ]]; then
 	((_Dbg_listline=_Dbg_listline-2*_Dbg_set_listsize))
     elif [[ -n $4 ]] ; then
-	if (($4 < 0)) ; then 
+	if (($4 < 0)) ; then
 	    ((_Dbg_listline=$2+$4+1))
 	else
 	    ((_Dbg_listline=$4))
@@ -176,7 +176,7 @@ _Dbg_list() {
 
     typeset frame_fullfile
     frame_fullfile=${_Dbg_file2canonic[$_Dbg_frame_last_filename]}
-    
+
     for ((  ; _Dbg_listline <= end_line ; _Dbg_listline++ )) ; do
      typeset prefix='    '
      _Dbg_get_source_line $_Dbg_listline "$filename"
@@ -194,7 +194,7 @@ _Dbg_list_columns() {
     typeset -i linewidth
     # 2 below is the initial prefix
     if (($# > 0 )) ; then
-	((linewidth=$1-2)); 
+	((linewidth=$1-2));
 	shift
     else
 	((linewidth=_Dbg_set_linewidth-2))
@@ -202,7 +202,7 @@ _Dbg_list_columns() {
     (($# != 0)) && return 1
     typeset -a columnized; columnize $linewidth "$colsep"
     typeset -i i
-    for ((i=0; i<${#columnized[@]}; i++)) ; do 
+    for ((i=0; i<${#columnized[@]}; i++)) ; do
 	_Dbg_msg "  ${columnized[i]}"
     done
 

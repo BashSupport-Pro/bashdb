@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set listsize" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,17 +18,31 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub set listsize \
-'set listsize N
+# If run standalone, pull in other files we need
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
+    dirname=${BASH_SOURCE[0]%/*}
+    [[ $dirname == $0 ]] && top_dir='../..' || top_dir=${dirname}/../..
+    [[ -z $_Dbg_libdir ]] && _Dbg_libdir=$top_dir
+    for file in help alias ; do source $top_dir/lib/${file}.sh; done
+fi
 
-Set the number of source lines debugger will list by default' 1
+_Dbg_help_add_sub set listsize \
+'**set listsize** *number-of-lines*
+
+Set the number of source lines debugger will list by default.
+
+See also:
+---------
+
+**show listsize**
+'
 
 # How many lines in a "list" command?
-typeset -i _Dbg_set_listsize=10    
+typeset -xi _Dbg_set_listsize=10
 
 _Dbg_do_set_listsize() {
     eval "$_seteglob"
-    if [[ $1 == $int_pat ]] ; then 
+    if [[ $1 == $int_pat ]] ; then
 	_Dbg_write_journal_eval "_Dbg_set_listsize=$1"
     else
 	eval "$_resteglob"

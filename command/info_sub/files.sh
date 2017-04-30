@@ -19,7 +19,7 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub info files \
-'info files
+'**info files**
 
 show a list of files that have been read in and properties regarding them.
 ' 1
@@ -29,7 +29,7 @@ _Dbg_do_info_files() {
     typeset -a list=()
     typeset -i i=0
     typeset    key
-    for key in "${!_Dbg_file2canonic[@]}"; do 
+    for key in "${!_Dbg_file2canonic[@]}"; do
 	list[$i]="$key"
 	((i++))
     done
@@ -38,12 +38,12 @@ _Dbg_do_info_files() {
 	typeset -i lines=$(_Dbg_get_maxline "$file")
 	typeset canonic_file
 	canonic_file="${_Dbg_file2canonic[$file]}"
-	if (( _Dbg_set_basename )) ; then 
+	if (( _Dbg_set_basename )) ; then
 	    # Do the same with canonic_file ?
 	    file="${file##*/}"
 	    canonic_file="${canonic_file##*/}"
 	fi
 	_Dbg_msg "  ${file}: ${canonic_file}, $lines lines"
-    done        
+    done
     return 0
 }

@@ -12,14 +12,14 @@ file
 finish
 +complete set a
 set annotate
-set autoeval
 set args
+set autoeval
 set autolist
 +complete show a
 show alias
 show annotate
-show autoeval
 show args
+show autoeval
 show autolist
 +complete set an
 set annotate
@@ -27,8 +27,7 @@ set annotate
 set args
 +complete show args1
 +complete bogus command
+bogus commands
 +complete info f
-info files
-info functions
 
 bashdb: That's all, folks...

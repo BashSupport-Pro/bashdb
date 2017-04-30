@@ -1,6 +1,6 @@
 # complete.sh - gdb-like 'complete' command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -17,16 +17,17 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
     for lib_file in help alias ; do source $top_dir/lib/${lib_file}.sh; done
 fi
 
 _Dbg_help_add complete \
-'complete PREFIX-STR...
+'**complete** *prefix-str*...
 
-Show command completion strings for PREFIX-STR
+
+Show command completion strings for *prefix-str*
 '
 
 _Dbg_do_complete() {
@@ -34,23 +35,23 @@ _Dbg_do_complete() {
     _Dbg_matches=()
     if (( ${#args[@]} == 2 )) ; then
       _Dbg_subcmd_complete ${args[0]} ${args[1]}
-    elif (( ${#args[@]} == 1 )) ; then 
+    elif (( ${#args[@]} == 1 )) ; then
 	# FIXME: add in aliases
 	eval "builtin compgen -W \"${!_Dbg_debugger_commands[@]}\" -- ${args[0]}"
-    fi  
+    fi
     typeset -i i
-    for (( i=0;  i < ${#_Dbg_matches[@]}  ; i++ )) ; do 
+    for (( i=0;  i < ${#_Dbg_matches[@]}  ; i++ )) ; do
       _Dbg_msg ${_Dbg_matches[$i]}
     done
 }
 
 # Demo it.
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     source ${top_dir}/lib/msg.sh
-    for _Dbg_file in ${top_dir}/command/{c*,help}.sh ; do 
+    for _Dbg_file in ${top_dir}/command/{c*,help}.sh ; do
 	source $_Dbg_file
     done
-    
+
     _Dbg_args='complete'
     _Dbg_do_help complete
     _Dbg_do_complete c

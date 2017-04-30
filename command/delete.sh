@@ -1,7 +1,8 @@
 # -*- shell-script -*-
 # delete.sh - gdb-like "delete" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2011 Rocky Bernstein
+#   Copyright (C) 2002-2006, 2008, 2011, 2016 Rocky Bernstein
+
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -20,32 +21,36 @@
 #   MA 02111 USA.
 
 _Dbg_help_add delete \
-"delete {BRKPT-NUM}... 
+"**delete** {*brkpt-num*}...
 
-Delete the breakpoint entry or entries.
-With no BRKPT-NUM, delete all breakpoints." 1 _Dbg_complete_brkpt_range
+Delete some breakpoints.
+
+Arguments are breakpoint numbers with spaces in between. To delete all breakpoints, give
+no argument. Without arguments, clear all breaks (but first ask for confirmation).
+" 1 _Dbg_complete_brkpt_range
 
 # Routine to a delete breakpoint/watchpoint by entry numbers.
 _Dbg_do_delete() {
   typeset to_go; to_go=$@
   typeset -i  i
   typeset -i  tot_found=0
-  
+
   eval "$_seteglob"
-  for del in $to_go ; do 
+  for del in $to_go ; do
     case $del in
       $_Dbg_watch_pat )
-        _Dbg_delete_watch_entry ${del:0:${#del}-1}
-        ;;
+          _Dbg_delete_watch_entry ${del:0:${#del}-1}
+          ;;
       $int_pat )
-        _Dbg_delete_brkpt_entry $del
-        ((tot_found += $?))
-        ;;
+          if _Dbg_delete_brkpt_entry $del ; then
+	      _Dbg_msg "Deleted breakpoint ${del}"
+	      ((tot_found++))
+	  fi
+          ;;
       * )
         _Dbg_errmsg "Invalid entry number skipped: $del"
     esac
   done
   eval "$_resteglob"
-  (( tot_found != 0 )) && _Dbg_msg "Removed $tot_found breakpoint(s)."
   return $tot_found
 }

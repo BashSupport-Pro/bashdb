@@ -25,7 +25,7 @@ test_pre_do_show_version()
     # The release name we are configured to run under.
     typeset _Dbg_release='@PACKAGE_VERSION@'
 
-    version_string=$(_Dbg_do_show_version)
+    version_string=$(_Dbg_do_show_version 2>&1)
     assertEquals "@PACKAGE@, release @PACKAGE_VERSION@" "$version_string"
 }
 abs_top_srcdir=@abs_top_srcdir@

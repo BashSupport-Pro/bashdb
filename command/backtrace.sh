@@ -19,7 +19,7 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-# Print a stack backtrace.  
+# Print a stack backtrace.
 # $1 is an additional offset correction - this routine is called from two
 # different places and one routine has one more additional call on top.
 # $2 is the maximum number of entries to include.
@@ -30,13 +30,18 @@
 # not a variable.
 
 _Dbg_help_add backtrace \
-"backtrace [COUNT [FRAME-INDEX]] 
+"**backtrace** [*n*]
 
 Print a backtrace of calling functions and sourced files.
 
-The backtrace contains function names, arguments, line numbers, and
-files. If COUNT is given, list only COUNT calls. If IGNORE-TOP is
-given that many frame entries are ignored" 1 _Dbg_complete_backtrace
+files. If *n* is given, list only *n* calls.
+
+Examples:
+---------
+
+   backtrace    # Print a full stack trace
+   backtrace 2  # Print only the top two entries
+" 1 _Dbg_complete_backtrace
 
 # Command completion for a frame command
 _Dbg_complete_backtrace() {
@@ -50,24 +55,24 @@ _Dbg_complete_backtrace() {
 function _Dbg_do_backtrace {
 
     _Dbg_not_running && return 3
-    
+
     typeset -i count=${1:-$_Dbg_stack_size}
     $(_Dbg_is_int $count) || {
 	_Dbg_errmsg "Bad integer COUNT parameter: $count"
 	return 1
     }
-    
+
     typeset -i frame_start=${2:-0}
 
     $(_Dbg_is_int $frame_start) || {
 	_Dbg_errmsg "Bad integer parameter: $ignore_count"
 	return 1
     }
-    
+
     # i is the logical frame value - 0 most recent frame.
     typeset -i i=frame_start
     typeset -li adjusted_pos
-    
+
     ## DEBUG
     ## typeset -p pos
     ## typeset -p BASH_LINENO
@@ -79,7 +84,7 @@ function _Dbg_do_backtrace {
     # Position 0 is special in that get the line number not from the
     # stack but ultimately from LINENO which was saved in the hook call.
     if (( frame_start == 0 )) ; then
-	((count--)) ; 
+	((count--)) ;
 	adjusted_pos=$(_Dbg_frame_adjusted_pos 0)
 	filename=$(_Dbg_file_canonic "${BASH_SOURCE[$adjusted_pos]}")
 	_Dbg_frame_print $(_Dbg_frame_prefix 0) '0' '' "$filename" "$_Dbg_frame_last_lineno" ''
@@ -98,15 +103,15 @@ function _Dbg_do_backtrace {
     ## typeset -p _Dbg_next_argv
     ## echo "Adjusted pos $(_Dbg_frame_adjusted_pos 0)"
 
-    for ((  i=frame_start+1 ; 
+    for ((  i=frame_start+1 ;
 	    i <= _Dbg_stack_size && count > 0 ;
-	    i++ )) ; do 
+	    i++ )) ; do
 	typeset -i arg_count=${BASH_ARGC[$_Dbg_next_argc]}
 	adjusted_pos=$(_Dbg_frame_adjusted_pos $i)
 	_Dbg_msg_nocr $(_Dbg_frame_prefix $i)$i ${FUNCNAME[$adjusted_pos-1]}
-	
+
 	typeset parms=''
-	
+
 	# Print out parameter list.
 	if (( 0 != ${#BASH_ARGC[@]} )) ; then
 	    _Dbg_frame_fn_param_str

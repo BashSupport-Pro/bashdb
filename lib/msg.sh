@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009 Rocky Bernstein 
+#   Copyright (C) 2002-2004, 2006, 2008-2009, 2012, 2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -27,7 +27,7 @@ _Dbg_ansi_term_normal="[0m"
 # okay. `prompt' is printed, and "yes", or "no" is solicited.  The
 # user response is returned in variable $_Dbg_response and $? is set
 # to 0.  _Dbg_response is set to 'error' and $? set to 1 on an error.
-# 
+#
 _Dbg_confirm() {
     if (( $# < 1 || $# > 2 )) ; then
         _Dbg_response='error'
@@ -35,32 +35,32 @@ _Dbg_confirm() {
     fi
     _Dbg_confirm_prompt=$1
     typeset _Dbg_confirm_default=${2:-'no'}
-    while : ; do 
-	if ! read $_Dbg_edit -p "$_Dbg_confirm_prompt" _Dbg_response args \
-	    <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
-	    break
-	fi
+    while : ; do
+        if ! read $_Dbg_edit -p "$_Dbg_confirm_prompt" _Dbg_response args \
+            <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
+            break
+        fi
 
-	case "$_Dbg_response" in
-	    'y' | 'yes' | 'yeah' | 'ya' | 'ja' | 'si' | 'oui' | 'ok' | 'okay' )
-		_Dbg_response='y'
-		return 0
-		;;
-	    'n' | 'no' | 'nope' | 'nyet' | 'nein' | 'non' )
-		_Dbg_response='n'
-		return 0
-		;;
-	    *)
-		if [[ $_Dbg_response =~ '^[ \t]*$' ]] ; then
-		    set +x
-		    return 0
-		else
-		    _Dbg_msg "I don't understand \"$_Dbg_response\"."
-		    _Dbg_msg "Please try again entering 'yes' or 'no'."
-		    _Dbg_response=''
-		fi
-		;;
-	esac
+        case "$_Dbg_response" in
+            'y' | 'yes' | 'yeah' | 'ya' | 'ja' | 'si' | 'oui' | 'ok' | 'okay' )
+                _Dbg_response='y'
+                return 0
+                ;;
+            'n' | 'no' | 'nope' | 'nyet' | 'nein' | 'non' )
+                _Dbg_response='n'
+                return 0
+                ;;
+            *)
+                if [[ $_Dbg_response =~ '^[ \t]*$' ]] ; then
+                    set +x
+                    return 0
+                else
+                    _Dbg_msg "I don't understand \"$_Dbg_response\"."
+                    _Dbg_msg "Please try again entering 'yes' or 'no'."
+                    _Dbg_response=''
+                fi
+                ;;
+        esac
 
     done
 }
@@ -68,7 +68,7 @@ _Dbg_confirm() {
 # Print an error message
 function _Dbg_errmsg {
     typeset -r prefix='**'
-    if (( _Dbg_set_highlight )) ; then
+    if [[ -n $_Dbg_set_highlight ]] ; then
         _Dbg_msg "$prefix ${_Dbg_ansi_term_underline}$@${_Dbg_ansi_term_normal}"
     else
         _Dbg_msg "$prefix $@"
@@ -87,7 +87,7 @@ function _Dbg_msg {
         builtin echo -e "$@" >>$_Dbg_logfid
     fi
     if (( ! _Dbg_logging_redirect )) ; then
-        if [[ -n $_Dbg_tty  ]] ; then
+        if [[ -n $_Dbg_tty  ]] && [[ $_Dbg_tty != '&1' ]] ; then
             builtin echo -e "$@" >>$_Dbg_tty
         else
             builtin echo -e "$@"
@@ -123,7 +123,7 @@ function _Dbg_printf_nocr {
         builtin printf "$format" "$@" >>$_Dbg_logfid
     fi
     if (( ! _Dbg_logging_redirect )) ; then
-        if [[ -n $_Dbg_tty ]] ; then 
+        if [[ -n $_Dbg_tty ]] ; then
             builtin printf "$format" "$@" >>$_Dbg_tty
         else
             builtin printf "$format" "$@"
@@ -131,13 +131,31 @@ function _Dbg_printf_nocr {
     fi
 }
 
+typeset _Dbg_dashes='---------------------------------------------------'
+
 # print message to output device
 function _Dbg_section {
-    if (( _Dbg_set_highlight )) ; then
-        _Dbg_msg "$prefix ${_Dbg_ansi_term_bold}$@${_Dbg_ansi_term_normal}"
+    if [[ -n $_Dbg_set_highlight ]] ; then
+        _Dbg_msg "${_Dbg_ansi_term_bold}$@${_Dbg_ansi_term_normal}"
     else
-        _Dbg_msg "$prefix $@"
+	local -r msg="$@"
+        _Dbg_msg "$msg\n${_Dbg_dashes:0:${#msg}}"
     fi
+}
+
+function _Dbg_msg_rst {
+    local -r msg="$@"
+    if [[ -n $_Dbg_set_highlight ]] && (( _Dbg_working_term_highlight )) ; then
+	typeset opts="--rst --width=$_Dbg_set_linewidth"
+	typeset highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py"
+	typeset formatted_msg
+	formatted_msg=$(echo "$msg" | $highlight_cmd $opts)
+	if (( $? == 0 )) && [[ -n $formatted_msg ]] ; then
+	    _Dbg_msg "$formatted_msg"
+	    return
+	fi
+    fi
+    _Dbg_msg "$msg"
 }
 
 # Common funnel for "Undefined command" message

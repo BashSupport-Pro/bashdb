@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#   Copyright (C) 2008, 2009, 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008-2011, 2015-2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -17,17 +17,23 @@
 #   MA 02111 USA.
 
 _Dbg_help_add break \
-'break [LOCSPEC]
+'**break** [*loc-spec*]
 
-Set a breakpoint at LOCSPEC.
+Set a breakpoint at *loc-spec*.
 
 If no location specification is given, use the current line.
 
 Multiple breakpoints at one place are permitted, and useful if conditional.
-See also "tbreak" and "continue".'
+
+See also:
+---------
+
+"tbreak" and "continue"'
 
 _Dbg_help_add tbreak \
-'tbreak [LOCSPEC] -- Set a one-time breakpoint at LOCSPEC.
+'**tbreak* [*loc-spec*]
+
+Set a one-time breakpoint at *loc-spec*.
 
 Like "break" except the breakpoint is only temporary,
 so it will be deleted when hit.  Equivalent to "break" followed
@@ -54,13 +60,13 @@ _Dbg_do_break_common() {
     shift
 
     typeset linespec
-    if (( $# > 0 )) ; then 
+    if (( $# > 0 )) ; then
 	linespec="$1"
     else
 	linespec="$_Dbg_frame_last_lineno"
     fi
     shift
-    
+
     typeset condition=${1:-''}
     if [[ "$linespec" == 'if' ]]; then
 	linespec=$_Dbg_frame_last_lineno
@@ -71,21 +77,21 @@ _Dbg_do_break_common() {
     fi
     if [[ -z $condition ]] ; then
 	condition=1
-    else 
+    else
 	condition="$*"
     fi
-    
+
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup "$linespec"
-    
-    if [[ -n "$full_filename" ]]  ; then 
-	if (( line_number ==  0 )) ; then 
+
+    if [[ -n "$full_filename" ]]  ; then
+	if (( line_number ==  0 )) ; then
 	    _Dbg_errmsg 'There is no line 0 to break at.'
 	    return 1
-	else 
+	else
 	    _Dbg_check_line $line_number "$full_filename"
 	    (( $? == 0 )) && \
 		_Dbg_set_brkpt "$full_filename" "$line_number" $is_temp "$condition"
@@ -101,23 +107,23 @@ _Dbg_do_break_common() {
 # use the current file.
 _Dbg_do_clear_brkpt() {
     typeset -r n=${1:-$_Dbg_frame_lineno}
-    
+
     typeset filename
     typeset -i line_number
     typeset full_filename
-    
+
     _Dbg_linespec_setup $n
-    
-    if [[ -n $full_filename ]] ; then 
-	if (( line_number ==  0 )) ; then 
+
+    if [[ -n $full_filename ]] ; then
+	if (( line_number ==  0 )) ; then
 	    _Dbg_msg "There is no line 0 to clear."
 	    return 0
-	else 
+	else
 	    _Dbg_check_line $line_number "$full_filename"
 	    if (( $? == 0 )) ; then
 		_Dbg_unset_brkpt "$full_filename" "$line_number"
 		typeset -r found=$?
-		if [[ $found != 0 ]] ; then 
+		if [[ $found != 0 ]] ; then
 		    _Dbg_msg "Removed $found breakpoint(s)."
 		    return $found
 		fi
@@ -132,9 +138,9 @@ _Dbg_do_clear_brkpt() {
 # list breakpoints and break condition.
 # If $1 is given just list those associated for that line.
 _Dbg_do_list_brkpt() {
-    
+
     eval "$_seteglob"
-    if (( $# != 0  )) ; then 
+    if (( $# != 0  )) ; then
 	typeset brkpt_num="$1"
 	if [[ $brkpt_num != $int_pat ]]; then
 	    _Dbg_errmsg "Bad breakpoint number $brkpt_num."
@@ -144,7 +150,7 @@ _Dbg_do_list_brkpt() {
 	    typeset -r -i i=$brkpt_num
 	    typeset source_file=${_Dbg_brkpt_file[$i]}
 	    source_file=$(_Dbg_adjust_filename "$source_file")
-	    _Dbg_msg "Num Type       Disp Enb What"
+	    _Dbg_section "Num Type       Disp Enb What"
 	    _Dbg_printf "%-3d breakpoint %-4s %-3s %s:%s" $i \
 		${_Dbg_keep[${_Dbg_brkpt_onetime[$i]}]} \
 		${_Dbg_yn[${_Dbg_brkpt_enable[$i]}]} \
@@ -158,8 +164,8 @@ _Dbg_do_list_brkpt() {
 	return 0
     elif (( ${#_Dbg_brkpt_line[@]} != 0 )); then
 	typeset -i i
-	
-	_Dbg_msg "Num Type       Disp Enb What"
+
+	_Dbg_section "Num Type       Disp Enb What"
 	for (( i=1; i <= _Dbg_brkpt_max; i++ )) ; do
 	    typeset source_file=${_Dbg_brkpt_file[$i]}
 	    if [[ -n ${_Dbg_brkpt_line[$i]} ]] ; then

@@ -12,11 +12,11 @@ quitcmd="${top_srcdir}/test/data/quit.cmd"
 contcmd="${top_srcdir}/test/data/quit.cmd"
 debugged_script="${top_srcdir}/test/example/dbg-test1.sh"
 
-# $SH ${top_builddir}/bashdb --help -q -L ${top_builddir} 
+# $SH ${top_builddir}/bashdb --help -q -L ${top_builddir}
 $SH ${top_builddir}/bashdb --no-init --quiet -B --library ${top_builddir} \
   -x $quitcmd $debugged_script
 $SH ${top_builddir}/bashdb --nx --quiet --library ${top_builddir} --basename \
   -x $quitcmd $debugged_script
-$SH ${top_builddir}/bashdb -B -q -L ${top_builddir} --nx -x $contcmd --command 'builtin echo test1a'
+# $SH ${top_builddir}/bashdb -B -q -L ${top_builddir} --nx -x $contcmd --command 'builtin echo test1a'
 $SH ${top_builddir}/bashdb --basename --badopt -q -L ${top_builddir} \
   -x $contcmd --command 'echo test2a'

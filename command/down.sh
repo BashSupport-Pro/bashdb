@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "down" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,7 +18,7 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
     for lib_file in help alias ; do source $top_dir/lib/${lib_file}.sh; done
@@ -26,14 +26,17 @@ fi
 
 # Move default values down $1 or one in the stack.
 _Dbg_help_add down \
-'down [COUNT]
+'**down** [*count*]
 
 Move the current frame down in the stack trace (to an newer frame). 0 is
 the most recent frame.
 
-If COUNT is omitted, use 1. COUNT can be any arithmetic expression.
+If *count* is omitted, use 1.
 
-See also "up" and "frame".' 1 _Dbg_complete_down
+See also:
+---------
+
+**down** and **frame**.' 1 _Dbg_complete_down
 
 # Command completion for a frame command
 _Dbg_complete_down() {
@@ -58,8 +61,8 @@ function _Dbg_do_down {
 }
 
 # Demo it
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    for _Dbg_file in  help msg sort columnize ; do 
+if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
+    for _Dbg_file in  help msg sort columnize ; do
         source ${top_dir}/lib/${_Dbg_file}.sh
     done
     source ${top_dir}/command/help.sh

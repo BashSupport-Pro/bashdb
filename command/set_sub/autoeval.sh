@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set autoeval" debugger command
 #
-#   Copyright (C) 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,9 +19,15 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set autoeval \
-'set autoeval [on|off]
+'**set autoeval** [**on**|**off**]
 
-When set on, unrecognized commands are evaluated' 1 
+Evaluate unrecognized commands
+
+See also:
+---------
+
+**show autoeval**
+' 1
 
 _Dbg_next_complete[set autoeval]='_Dbg_complete_onoff'
 

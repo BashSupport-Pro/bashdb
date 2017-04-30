@@ -8,6 +8,7 @@
 Breakpoint 1 set in file dbg-test1.sh, line 22.
 +info break
 Num Type       Disp Enb What
+----------------------------
 1   breakpoint keep y   dbg-test1.sh:22
 +############################################################### 
 +#### Test enable/disable...
@@ -25,6 +26,7 @@ Breakpoint entry 1 disabled.
 +# list breakpoints
 +L 
 Num Type       Disp Enb What
+----------------------------
 1   breakpoint keep n   dbg-test1.sh:22
 No watch expressions have been set.
 No actions have been set.
@@ -36,13 +38,14 @@ There is no line 0 to clear.
 +############################################################### 
 +#### Test display status...
 +delete 1
-Removed 1 breakpoint(s).
+Deleted breakpoint 1
 +info break
 No breakpoints have been set.
 +break 22
 Breakpoint 2 set in file dbg-test1.sh, line 22.
 +info break
 Num Type       Disp Enb What
+----------------------------
 2   breakpoint keep y   dbg-test1.sh:22
 +############################################################### 
 +#### *** Test using file:line format on break...
@@ -56,11 +59,12 @@ Breakpoint 3 set in file dbg-test1.sh, line 23.
 Breakpoint 4 set in file dbg-test1.sh, line 23.
 +info break
 Num Type       Disp Enb What
+----------------------------
 2   breakpoint keep y   dbg-test1.sh:22
 3   breakpoint keep y   dbg-test1.sh:23
 4   breakpoint keep y   dbg-test1.sh:23
 +delete 3
-Removed 1 breakpoint(s).
+Deleted breakpoint 3
 +############################################################### 
 +#### Test breakpoints with conditions...
 +break 23 if x==0
@@ -69,6 +73,7 @@ Breakpoint 5 set in file dbg-test1.sh, line 23.
 Breakpoint 6 set in file dbg-test1.sh, line 24.
 +info break
 Num Type       Disp Enb What
+----------------------------
 2   breakpoint keep y   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
 5   breakpoint keep y   dbg-test1.sh:23
@@ -81,6 +86,7 @@ condition: Breakpoint entry 23 is not set. Condition not changed.
 ** condition: Argument required (breakpoint number).
 +info break
 Num Type       Disp Enb What
+----------------------------
 2   breakpoint keep y   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
 5   breakpoint keep y   dbg-test1.sh:23
@@ -100,6 +106,7 @@ Breakpoint entry 2 disabled.
 Breakpoint entry 5 disabled.
 +info break
 Num Type       Disp Enb What
+----------------------------
 2   breakpoint keep n   dbg-test1.sh:22
 4   breakpoint keep y   dbg-test1.sh:23
 5   breakpoint keep n   dbg-test1.sh:23
@@ -110,7 +117,8 @@ Num Type       Disp Enb What
 Breakpoint entry 2 enabled.
 ** Breakpoint entry 6 already enabled, so nothing done.
 +delete 2 6
-Removed 2 breakpoint(s).
+Deleted breakpoint 2
+Deleted breakpoint 6
 +#### Test info break...
 +info break 11
 ** Breakpoint entry 11 is not set.
@@ -118,6 +126,7 @@ Removed 2 breakpoint(s).
 ** Bad breakpoint number foo.
 +info break 5
 Num Type       Disp Enb What
+----------------------------
 5   breakpoint keep n   dbg-test1.sh:23
 	stop only if x==0
 +d 23

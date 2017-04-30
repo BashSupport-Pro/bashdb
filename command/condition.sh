@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # condition.sh - gdb-like "condition" debugger command
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2011
+#   Copyright (C) 2002-2006, 2008, 2009, 2011, 2016
 #   Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
@@ -13,19 +13,31 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
 _Dbg_help_add condition \
-"condition N COND
+"**condition** *bp_number* *zsh-cond*
 
-Break only if COND is true in breakpoint number N.
++Break only if *bassh-cond* is true in breakpoint number *bp_number*.
 
-N is an integer and COND is an expression to be evaluated whenever
-breakpoint N is reached." 1 _Dbg_complete_brkpt_range
+*bp_number* is an integer and *cond* is an zsh expression to be evaluated whenever
+breakpoint *bp_number* is reached.
+
+Examples:
+---------
+
+   condition 5 x > 10  # Breakpoint 5 now has condition x > 10
+   condition 5         # Remove above condition
+
+See also:
+---------
+
+*break*, *tbreak*.
+" 1 _Dbg_complete_brkpt_range
 
 # Set a condition for a given breakpoint $1 is a breakpoint number
 # $2 is a condition. If not given, set "unconditional" or 1.
@@ -38,7 +50,7 @@ function _Dbg_do_condition {
   fi
 
   typeset -r n=$1
-  shift 
+  shift
 
   eval "$_seteglob"
   if [[ $n != $int_pat ]]; then

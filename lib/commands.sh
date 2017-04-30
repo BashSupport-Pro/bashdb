@@ -1,6 +1,6 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2006, 2008, 2010 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2006, 2008, 2010, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -11,7 +11,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -24,21 +24,21 @@
 typeset -ai _Dbg_brkpt_commands_start=()
 typeset -ai _Dbg_brkpt_commands_end=()
 
-# The text strings for the *all* breakpoints. To get breakpoints for 
+# The text strings for the *all* breakpoints. To get breakpoints for
 # breakpoint i, this goies from _Dbg_brkpt_commands_start[i] to
 # _Dbg_brkpt_commands_end[i]
-# 
+#
 typeset -a _Dbg_brkpt_commands=()
 
 # For each breakpoint number, tells if the prompt must be displayed after
 # execing the command list
 
-typeset -ai _Dbg_brkpt_commands_doprompt=() 
+typeset -ai _Dbg_brkpt_commands_doprompt=()
 
 # For each breakpoint number, tells if the stack trace must be
 # displayed after execing the cmd list
 
-typeset -ai _Dbg_brkpt_commands_silent=() 
+typeset -ai _Dbg_brkpt_commands_silent=()
 
 typeset -i _Dbg_brkpt_commands_current=-1
 
@@ -59,15 +59,15 @@ _Dbg_bp_commands() {
     local -i i
     local -i start=${_Dbg_brkpt_commands_start[$currentbp]}
     local -i end=${_Dbg_brkpt_commands_end[$currentbp]}
-    for (( i=start ; (( i < end )) ; i++ )) ; do 
+    for (( i=start ; (( i < end )) ; i++ )) ; do
       local -a line=(${_Dbg_brkpt_commands[$i]})
       _Dbg_onecmd ${line[*]}
       _Dbg_brkpt_lastcmd=$lastcmd_back
       if (( _Dbg_brkpt_commands_doprompt[$currentbp] )) ; then
-	  ###??? What's this 
+	  ###??? What's this
 	  _Dbg_process_commands
 	  return 0
       fi
     done
     return 1
-}	  
+}

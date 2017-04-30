@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "info program" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,11 +18,15 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub info program 'info program
+_Dbg_help_add_sub info program '
+**info program**
 
 Information about debugged program stopping point.
 
-See also \"info line.\"' 1
+See also:
+---------
+
+\"info line\".' 1
 
 _Dbg_do_info_program() {
     if (( _Dbg_running )) ; then

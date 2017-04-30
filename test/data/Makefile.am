@@ -1,4 +1,4 @@
-# FIXME: we don't use a wildcard here because it messes up on 
+# FIXME: we don't use a wildcard here because it messes up on
 # file: file\ with\ spaces.cmd and file\ with\ spaces.right
 check_DATA = \
 	action.cmd \
@@ -11,6 +11,12 @@ check_DATA = \
 	brkpt3.right \
 	bug-args.cmd \
 	bug-args.right \
+	bug-break.cmd \
+	bug-break.right \
+	bug-clear.cmd \
+	bug-clear.right \
+	bug-loc.cmd \
+	bug-loc.right \
 	bug-source.cmd \
 	bug-source.right \
 	bug-step.cmd \
@@ -74,8 +80,11 @@ check_DATA = \
 	settrace.cmd \
 	settrace.right \
 	sig.cmd \
+	sig-43.cmd \
+	sig-43.right \
 	sig.right \
 	sig-Darwin.right \
+	sig-43.right \
 	skip.cmd \
 	skip.right \
 	sopts.right \

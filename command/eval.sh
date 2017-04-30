@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Eval and Print commands.
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2011 Rocky Bernstein 
+#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -23,11 +23,13 @@
 typeset _Dbg_evalfile=$(_Dbg_tempname eval)
 
 _Dbg_help_add eval \
-'eval CMD
-eval
-eval?
+'**eval** *cmd*
 
-In the first form CMD is a string CMD is a string sent to special
+**eval**
+
+**eval?**
+
+In the first form *cmd* is a string *cmd* is a string sent to special
 shell builtin eval.
 
 In the second form, use evaluate the current source line text.
@@ -38,22 +40,46 @@ statement, one wants to eval is just the expression portion.  For
 this, use eval?. Actually, any alias that ends in ? which is aliased
 to eval will do thie same thing.
 
-See also "print" and "set autoeval".'
+See also:
+---------
+
+**print** and **set autoeval**.' 1 _Dbg_complete_eval
 
 typeset -i _Dbg_show_eval_rc; _Dbg_show_eval_rc=1
+
+# Command completion for a debugger "eval" command.
+_Dbg_complete_eval() {
+    typeset -a words;
+    typeset subcmds
+    IFS=' ' words=( $COMP_LINE )
+    # If no
+    if (( ${#words[@]} == 1 )); then
+	if [[ ${words[0]} == 'eval?' ]] ; then
+	    typeset extracted
+	    _Dbg_eval_extract_condition "$_Dbg_source_line"
+	    COMPREPLY=("$extracted")
+	else
+            COMPREPLY=("$_Dbg_source_line")
+	fi
+    else
+	COMPREPLY=()
+    fi
+}
+
+complete -F _Dbg_complete_eval 'eval?'
 
 _Dbg_do_eval() {
 
   builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > $_Dbg_evalfile
    if (( $# == 0 )) ; then
-       # FIXME: add parameter to get unhighlighted line, or 
+       # FIXME: add parameter to get unhighlighted line, or
        # always save a copy of that in _Dbg_get_source_line
        typeset source_line_save="$_Dbg_source_line"
        typeset highlight_save=$_Dbg_set_highlight
-       _Dbg_set_highlight=0
+       _Dbg_set_highlight=''
        _Dbg_get_source_line
 
-       # Were we called via ? as the suffix? 
+       # Were we called via ? as the suffix?
        typeset suffix
        suffix=${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1}
        typeset source_line

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "info source" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,17 +19,20 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub info source \
-'info source
+'**info source**
 
 Information about the current source file.
 
-See also \"info program\", \"info file\" and \"info line\".' 1
+See also:
+---------
+
+ \"info program\", \"info file\" and \"info line\".' 1
 
 # list source and break condition.
 # If $1 is given just list those associated for that line.
 _Dbg_do_info_source() {
-    _Dbg_msg "Current script file is $_Dbg_frame_last_filename" 
-    _Dbg_msg "Located in ${_Dbg_file2canonic[$_Dbg_frame_last_filename]}" 
+    _Dbg_msg "Current script file is $_Dbg_frame_last_filename"
+    _Dbg_msg "Located in ${_Dbg_file2canonic[$_Dbg_frame_last_filename]}"
     typeset -i max_line
     max_line=$(_Dbg_get_maxline $_Dbg_frame_last_filename)
     _Dbg_msg "Contains $max_line lines."

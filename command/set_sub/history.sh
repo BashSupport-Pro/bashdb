@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set history" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,9 +19,18 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub set history \
-'set history {save [on off] | size N}
+'**set history save** [**on**|**off**]
 
-When set, record command history.' 1
+**set history size** *num*
+
+**set history filename** *path*
+
+In the first form, set whether to save history.
+
+In the second form, how many history lines to save is indicated.
+
+In the third form, the place to store the history file is given.
+'
 
 _Dbg_next_complete[set history]='_Dbg_complete_history'
 
@@ -50,7 +59,7 @@ _Dbg_do_set_history() {
             eval "$_seteglob"
             if [[ -z $2 ]] ; then
                 _Dbg_errmsg "Argument required (integer to set it to.)."
-            elif [[ $2 != $int_pat ]] ; then 
+            elif [[ $2 != $int_pat ]] ; then
                 _Dbg_errmsg "Integer argument expected; got: $2"
                 eval "$_resteglob"
                 return 1
