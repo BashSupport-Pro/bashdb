@@ -6,7 +6,7 @@ You'll need autotools and related packages
 
 * autoconf
 * automake
-* autohheader
+* autoheader
 
 You'll also need packages:
 
