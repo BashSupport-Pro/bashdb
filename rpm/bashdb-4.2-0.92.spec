@@ -112,4 +112,3 @@ rm -rf ${RPM_BUILD_ROOT}
 
 * Tue Nov 18 2008 Manfred Tremmel <Manfred.Tremmel@iiv.de>
 - update to 4.0-0.2
-b
