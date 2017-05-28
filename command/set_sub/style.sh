@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "set style" debugger command
 #
-#   Copyright (C) 2016 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2016-2017 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -44,36 +44,43 @@ Set the pygments style use in listings.
 See also: set highlight, show style, show highlight.
 ' 1
 
+_Dbg_list_styles() {
+    typeset -a list=( $_Dbg_pygments_styles )
+    sort_list 0 ${#list[@]}-1
+    typeset columnized=''
+    typeset -i width; ((width=_Dbg_set_linewidth-5))
+    typeset -a columnized; columnize $width
+    typeset -i i
+    _Dbg_msg "Valid styles are:"
+    for ((i=0; i<${#columnized[@]}; i++)) ; do
+	_Dbg_msg "  ${columnized[i]}"
+    done
+}
+
 
 _Dbg_do_set_style() {
     if (( ! _Dbg_working_term_highlight )) ; then
 	_Dbg_errmsg "Can't run term-highlight. Setting forced off"
 	return 1
     fi
-    style=${1:-'colorful'}
-    if [[ "${style}" == "off" ]] ; then
-	_Dbg_set_style=''
-	_Dbg_filecache_reset
-	_Dbg_readin $_Dbg_frame_last_filename
-	_Dbg_do_show style
-    elif [[ "${_Dbg_pygments_styles#*$style}" != "$_Dbg_pygments_styles" ]] ; then
-	_Dbg_set_style=$style
-	_Dbg_filecache_reset
-	_Dbg_readin $_Dbg_frame_last_filename
-	_Dbg_do_show style
+    if (( $# == 0 )) ; then
+	_Dbg_list_styles
     else
-	_Dbg_errmsg "Can't find style $style"
-	typeset -a list=( $_Dbg_pygments_styles )
-	sort_list 0 ${#list[@]}-1
-	typeset columnized=''
-	typeset -i width; ((width=_Dbg_set_linewidth-5))
-	typeset -a columnized; columnize $width
-	typeset -i i
-	_Dbg_msg "Valid styles are:"
-	for ((i=0; i<${#columnized[@]}; i++)) ; do
-	    _Dbg_msg "  ${columnized[i]}"
-	done
+	style=$1
+	if [[ "${style}" == "off" ]] ; then
+	    _Dbg_set_style=''
+	    _Dbg_filecache_reset
+	    _Dbg_readin $_Dbg_frame_last_filename
+	    _Dbg_do_show style
+	elif [[ "${_Dbg_pygments_styles#*$style}" != "$_Dbg_pygments_styles" ]] ; then
+	    _Dbg_set_style=$style
+	    _Dbg_filecache_reset
+	    _Dbg_readin $_Dbg_frame_last_filename
+	    _Dbg_do_show style
+	else
+	    _Dbg_errmsg "Can't find style $style"
+	    _Dbg_list_styles
+	fi
     fi
-
     return 0
 }
