@@ -18,7 +18,7 @@ disable 0W
 L
 ###  Try deleting nonexistent watchpoint...
 delete 10w
-# 
+#
 ###  Test display of watchpoints...
 watche y > 25
 info watch
@@ -28,5 +28,5 @@ delete 1w
 info watch
 step
 watch x
-restart -B --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
+restart -B --no-highlight --nx -L ../.. -q -x ../data/restart2.cmd ../example/dbg-test1.sh
 quit

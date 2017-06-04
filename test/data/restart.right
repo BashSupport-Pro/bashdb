@@ -1,34 +1,34 @@
 (restart.sh:4):
 4:	x=1
 +# Test Restart command
-+list> 
++list>
   4: => x=1
   5:    cd /
   6:    y=2
   7:    z=0
-+step 
++step
 (restart.sh:5):
 5:	cd /
-+step 
++step
 (restart.sh:6):
 6:	y=2
 +break 7
 Breakpoint 1 set in file restart.sh, line 7.
-+restart -B --no-init -q -L ... restart.sh
++restart -B --no-highlight --no-init -q -L ... restart.sh
 Restarting with ... restart.sh
 (restart.sh:4):
 4:	x=1
 +# 2nd part of Restart test
-+l> 
++l>
   4: => x=1
   5:    cd /
   6:    y=2
   7:    z=0
 +info watch
 No watch expressions have been set.
-+cont 
++cont
 Breakpoint 1 hit (1 times).
 (restart.sh:7):
 7:	z=0
-+quit 
++quit
 bashdb: That's all, folks...

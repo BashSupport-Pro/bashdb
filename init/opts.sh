@@ -83,9 +83,14 @@ typeset -i _Dbg_set_annotate=0
 # Simulate set -x?
 typeset -i _Dbg_set_linetrace=0
 typeset -i _Dbg_set_basename=0
-typeset    _Dbg_set_highlight='' # Initialized below
+typeset _Dbg_set_highlight # Set complicatedly below
 typeset -a _Dbg_o_init_files; _Dbg_o_init_files=()
 typeset -i _Dbg_o_nx=0
+typeset -i _Dbg_have_working_pygmentize=0
+
+if ( pygmentize --version || pygmentize -V ) 2>/dev/null 1>/dev/null ; then
+   _Dbg_have_working_pygmentize=1
+fi
 
 typeset -ix _Dbg_working_term_highlight
 
@@ -166,10 +171,9 @@ _Dbg_parse_options() {
 		    exit 2
 		esac
 
-		if ! ( pygmentize --version || pygmentize -V ) 2>/dev/null 1>/dev/null ; then
+		if (( ! _Dbg_have_working pygmentize )) ; then
                     print "Can't run pygmentize. --highight forced off" >&2
 		    _Dbg_set_highlight=''
-
                 fi
                 ;;
             no-highlight )
@@ -240,6 +244,23 @@ welcome to change it and/or distribute copies of it under certain conditions.
     unset _Dbg_o_annotate _Dbg_o_version _Dbg_o_quiet
     _Dbg_script_args=("$@")
 }
+
+if (( _Dbg_have_working_pygmentize )) && [[ -z "$_Dbg_set_highlight" ]] ; then
+    # Honor DARK_BG if already set. If not set, set it.
+    if [[ -z "$DARK_BG" ]] ; then
+	. ${_Dbg_libdir}/init/term-background.sh >/dev/null
+    fi
+
+    # DARK_BG is now either 0 or 1.
+    # Set _Dbg_set_highlight based on DARK_BG
+    # Note however that options processing has one more chance to
+    # change _Dbg_set_highlight
+    if (( $DARK_BG )); then
+	_Dbg_set_highlight="dark"
+    else
+	_Dbg_set_highlight="light"
+    fi
+fi
 
 
 # Stand-alone Testing.
