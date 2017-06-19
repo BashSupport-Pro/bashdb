@@ -198,7 +198,8 @@ AC_SUBST_DIR(PKGDATADIR, $pkgdatadir)
 
 dnl We use a diff in regression testing
 AC_PATH_PROG(DIFF, diff, no)
-DIFF_OPTS=
+# FIXME: check that option -b (ignore-whitspace) works
+DIFF_OPTS=-b
 
 if test "$DIFF" = no ; then
    AC_PATH_PROG(DIFF, cmp, no)
