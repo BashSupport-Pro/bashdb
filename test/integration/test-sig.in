@@ -17,7 +17,7 @@ if (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} == 3 )) ; then
     short_test_name='sig-43'
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-43.right"
 elif (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} >= 4 )) ; then
-    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}.right"
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-44.right"
 fi
 
 case $host_os in
@@ -42,6 +42,7 @@ typeset cmdfile="${top_srcdir}/test/data/${short_test_name}.cmd"
   | @SED@ -e "s:in file \`sig.sh' at line [0-9][0-9]*:in file \`sig.sh' at line 55:" \
   | @SED@ -e "s:in file \`eval.sh' at line [0-9][0-9]*:in file \`eval.sh' at line 55:" \
   | @SED@ -e "s:bashdb_eval_[0-9][0-9]*:bashdb_eval_5040:" \
+  | @SED@ -e "s:main(.*) called from file \`bashdb' at line 0:main() called from file \`bashdb' at line 0:" \
   | @GREP@ -v '^sig.tests: line 10:' | \
 @GREP@ -v '^SIGPIPE' | \
 @GREP@ -v '^SIGSYS' | \
