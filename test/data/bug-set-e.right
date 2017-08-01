@@ -1,0 +1,18 @@
+(bug-set-e.sh:2):
+2:	x=1
++# Debugger test to see that set -e is respected and we can step through it
++step 
+(bug-set-e.sh:4):
+4:	set -e
++step 
+(bug-set-e.sh:6):
+6:	echo hi
++step 
+hi
+(bug-set-e.sh:7):
+7:	(( 1 / 0))
++step 
+(bug-set-e.sh:1):
+1:	#!/bin/bash
++quit 
+bashdb: That's all, folks...

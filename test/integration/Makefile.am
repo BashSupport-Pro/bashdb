@@ -44,6 +44,7 @@ TESTS = \
 	test-bugI       \
 	test-bugIFS     \
 	test-bug-loc    \
+	test-bug-set-e  \
 	test-bug-source \
 	test-command    \
 	test-display    \

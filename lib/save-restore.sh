@@ -1,7 +1,8 @@
 # -*- shell-script -*-
 # save-restore.sh - saves, sets and restores debugger vars on hook entry
 #
-#   Copyright (C) 2002-2005, 2007-2011, 2014 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002-2005, 2007-2011,
+#   2014, 2017 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -27,10 +28,10 @@ function _Dbg_set_debugger_internal {
 
 function _Dbg_restore_user_vars {
   IFS="$_Dbg_space_IFS";
+  (( _Dbg_old_set_nullglob == 0 )) && shopt -s nullglob
   set -$_Dbg_old_set_opts
   IFS="$_Dbg_old_IFS";
   PS4="$_Dbg_old_PS4"
-  (( _Dbg_old_set_nullglob == 0 )) && shopt -s nullglob
 }
 
 _Dbg_save_args() {

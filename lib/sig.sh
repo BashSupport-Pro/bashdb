@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 #  Signal handling routines
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2010, 2011
+#   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2010, 2011, 2017
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -112,7 +112,7 @@ _Dbg_exit_handler() {
   typeset -i _Dbg_debugged_exit_code=$?
 
   # Turn off line and variable trace listing; allow unset parameter expansion.
-  set +x +v +u
+  set +x +v +u +e
 
   if [[ ${_Dbg_sig_print[0]} == "print" ]] ; then
     # Note: use the same message that gdb does for this.

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002-2011, 2014
+#   Copyright (C) 2002-2011, 2014, 2017
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -66,6 +66,7 @@ _Dbg_debug_trap_handler() {
     # Ditto for the restore environment
     typeset -i _Dbg_debugged_exit_code=$?
     _Dbg_old_set_opts=$-
+    set +e
     shopt nullglob > /dev/null
     typeset -i _Dbg_old_set_nullglob=$?
     shopt -u nullglob

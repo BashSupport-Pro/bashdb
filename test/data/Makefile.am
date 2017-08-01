@@ -17,6 +17,8 @@ check_DATA = \
 	bug-clear.right \
 	bug-loc.cmd \
 	bug-loc.right \
+	bug-set-e.cmd \
+	bug-set-e.right \
 	bug-source.cmd \
 	bug-source.right \
 	bug-step.cmd \
