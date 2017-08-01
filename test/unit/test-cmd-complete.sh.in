@@ -1,14 +1,23 @@
 #!@SH_PROG@
 # -*- shell-script -*-
 # Test command completion
+
+_Dbg_msg() {
+    echo $*
+}
+
 test_cmd_complete()
 {
     output=$(_Dbg_do_complete c)
-    assertEquals 'condition
-continue
-complete
+    assertEquals 'clear
 commands
-clear' "$output"
+complete
+condition
+continue' "$output"
+
+    output=$(_Dbg_do_complete com)
+    assertEquals 'commands
+complete' "$output"
 }
 
 if [ '@abs_top_srcdir@' = '' ] ; then
@@ -24,9 +33,11 @@ abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}lib/alias.sh
 . ${abs_top_srcdir}lib/complete.sh
 
-for _Dbg_file in ${abs_top_srcdir}command/c*.sh ; do 
+for _Dbg_file in ${abs_top_srcdir}command/c*.sh ; do
     source $_Dbg_file
 done
+
+source ${abs_top_srcdir}lib/sort.sh
 
 set -- # reset $# so shunit2 doesn't get confused.
 [[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}

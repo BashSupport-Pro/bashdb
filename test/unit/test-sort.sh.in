@@ -14,16 +14,16 @@ test_sort()
 
     # Some boundary cases first
     list=()
-    sort_list 0 0 
+    sort_list 0 0
     assertEquals "2" "$?"
     assertEquals "0" "${#list[@]}"
-    sort_list 1 1 
+    sort_list 1 1
     assertNotEquals "0" "$?"
 
     typeset -a check
     list=('one'); check=('one')
     do_one
-    list=('one' 'two' 'three') 
+    list=('one' 'two' 'three')
     check=('one' 'three' 'two')
     do_one
     list=(4 3 2 1)
@@ -37,7 +37,11 @@ test_sort()
     fi
     do_one
 
-    sort_list 0 10 
+    list=('complete' 'commands' 'continue' 'clear')
+    check=('clear' 'commands' 'complete' 'continue')
+    do_one
+
+    sort_list 0 10
     assertNotEquals "0" "$?"
 }
 

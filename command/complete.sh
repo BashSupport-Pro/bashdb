@@ -37,7 +37,10 @@ _Dbg_do_complete() {
       _Dbg_subcmd_complete ${args[0]} ${args[1]}
     elif (( ${#args[@]} == 1 )) ; then
 	# FIXME: add in aliases
-	eval "builtin compgen -W \"${!_Dbg_debugger_commands[@]}\" -- ${args[0]}"
+	typeset list; list=("${!_Dbg_debugger_commands[@]}")
+	sort_list 0 ${#list[@]}-1
+	cmd="builtin compgen -W \"${list[@]}\" -- ${args[0]}"
+	typeset -a _Dbg_matches=( $(eval $cmd) )
     fi
     typeset -i i
     for (( i=0;  i < ${#_Dbg_matches[@]}  ; i++ )) ; do

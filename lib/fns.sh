@@ -37,7 +37,13 @@ function _Dbg_copies {
 # _Dbg_defined returns 0 if $1 is a defined variable or nonzero otherwise.
 _Dbg_defined() {
     (( 0 == $# )) && return 1
-    typeset -p "$1" &> /dev/null
+
+    if (( (BASH_VERSINFO[0] > 4) ||
+          (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2) )); then
+	[[ -v $1 ]]
+    else
+	typeset -p "$1" &> /dev/null
+    fi
 }
 
 # Add escapes to a string $1 so that when it is read back via "$1"

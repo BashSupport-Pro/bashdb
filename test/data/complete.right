@@ -2,11 +2,11 @@
 22:	x=22
 +### Testing debugger 'complete' command...
 +complete e
-export
-examine
 edit
-eval
 enable
+eval
+examine
+export
 +complete fi
 file
 finish
