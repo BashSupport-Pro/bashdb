@@ -9,6 +9,7 @@ test_in_files = \
 	test-interrupt.in	\
 	test-misc.in		\
 	test-setshow.in		\
+	test-settrace.in        \
 	test-sig.in
 
 test_sources = \
@@ -32,6 +33,7 @@ check_DATA = \
 	lopts.tests        \
 	settrace.tests 	   \
 	sopts.tests        \
+	test-settrace.in   \
 	test-sig.in        \
 	trace.tests	   \
 	trace2.tests
