@@ -8,6 +8,7 @@ test_in_files = \
 	test-info-args.in	\
 	test-interrupt.in	\
 	test-misc.in		\
+	test-bug-break.in       \
 	test-setshow.in		\
 	test-settrace.in        \
 	test-sig.in
@@ -33,6 +34,7 @@ check_DATA = \
 	lopts.tests        \
 	settrace.tests 	   \
 	sopts.tests        \
+	test-bug-break.in  \
 	test-settrace.in   \
 	test-sig.in        \
 	trace.tests	   \

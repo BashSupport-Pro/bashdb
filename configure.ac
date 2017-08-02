@@ -296,6 +296,8 @@ AC_CONFIG_FILES([test/unit/test-sort.sh],
 AC_CONFIG_FILES([test/unit/test-validate.sh],
                 [chmod +x test/unit/test-validate.sh])
 
+AC_CONFIG_FILES([test/integration/test-bug-break],
+                [chmod +x test/integration/test-bug-break])
 AC_CONFIG_FILES([test/integration/test-bug-step-subshell],
                 [chmod +x test/integration/test-bug-step-subshell])
 AC_CONFIG_FILES([test/integration/test-complete],
