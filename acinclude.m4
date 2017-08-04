@@ -28,3 +28,7 @@ AC_DEFUN([AC_SUBST_DIR], [
         )`
         AC_SUBST($1)
 ])
+
+AC_DEFUN([AC_BASHDB_PREFIX_DEFAULT], [
+   ac_default_prefix=`eval (dirname= [$]0)`
+])

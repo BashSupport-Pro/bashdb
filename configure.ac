@@ -19,42 +19,32 @@ dnl Process this file with autoconf to produce a configure script.
 # Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
 # MA 02110-1301 USA.
 
-dnl TENTATIVE:
-dnl Use same version as in main bash configure.in
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.4)
 define(relstatus, 0.92)
 
-AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[bashdb-devel@lists.sourceforge.net])
-AM_INIT_AUTOMAKE
-AM_MAINTAINER_MODE
+AC_INIT([bashdb],
+  [OK_BASH_VERS-relstatus],
+  [https://sourceforge.net/p/bashdb/bugs/new/])
+
+dnl make sure we are using a recent autoconf version.
+dnl In particular we assume prefix will be set to "NONE" if --prefix
+dnl isn't given. Earlier autoconf' used "no" instead of "NONE".
+AC_PREREQ(2.69)
 
 ##################################################################
 # See if --prefix was set. If not, set it to a reasonable default
 # based on where bash thinks bashdb is supposed to be installed.
 ##################################################################
-prefix='no'
-for ac_option
-do
-  # If the previous option needs an argument, assign it.
-  if test -n "$ac_prev"; then
-    eval $ac_prev=\$ac_option
-    ac_prev=
-    continue
-  fi
-
-  case $ac_option in
-  -prefix | --prefix | --prefi | --pref | --pre | --pr | --p)
-    ac_prev=prefix ;;
-  -prefix=* | --prefix=* | --prefi=* | --pref=* | --pre=* | --pr=* | --p=*)
-    prefix="$ac_optarg" ;;
-  esac
-done
 mydir=$(dirname $0)
-if test "$prefix" == 'no' ; then
+if test "$prefix" == NONE ; then
    prefix=$($SH_PROG $mydir/compute-prefix.sh)
 fi
+
+AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
+
 
 # From fish's configure.ac
 #
@@ -102,9 +92,6 @@ AC_SUBST(CMDLINE_INVOKED)
 AM_CONFIG_HEADER(config.h)
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
-
-dnl make sure we are using a recent autoconf version
-AC_PREREQ(2.69)
 
 AC_ARG_PROGRAM
 
