@@ -1,4 +1,18 @@
-Version 4.3-0.93
+Version 4.4-0.93
+August 4, 2017
+
+- add "bash" as an alias for "shell"
+- Respect DARK_BG and use term-background.sh to detect it
+  Note: we are more aggressive now about setting highlghting
+- Fix debugging in the presense of "set -e"
+- Bash 4.4 test fixes
+- Sort completions
+- configure respects --prefix which was broken
+  in autoconf 2.69
+- change bug reporting address
+
+Version 4.2-0.92
+April 30, 2017
 
 - Allow source-code colorization via pygments style.
   use "set style"
