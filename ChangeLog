@@ -1,5 +1,9 @@
 2017-08-04  rocky <rocky@gnu.org>
 
+	* ChangeLog, NEWS, configure.ac: Get ready for release 4.4-0.93
+
+2017-08-04  rocky <rocky@gnu.org>
+
 	* acinclude.m4, configure.ac: configure respects --prefix again in autoconf 2.69 "NONE" (changed from "no") means a value like
 	--prefix is not set.  Fixes Issue #47 Also, change the bug reporting location.
 

@@ -338,7 +338,7 @@ echo "Prefix      : $prefix"
 if $($SH_PROG $mydir/check-prefix.sh $SH_PROG $prefix); then
     echo "prefix checks out"
 else
-    echo "Warning: prefix doesn't match what is in bash"
+    echo "Warning: prefix doesn't match what is in bash for 'bash --debugger ...' to work"
 fi
 
 if test x"$build_set0" != x; then
