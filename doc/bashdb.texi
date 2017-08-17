@@ -206,10 +206,10 @@ Indexes (nodes containing large menus)
 @node Summary
 @chapter Summary of the BASH Debugger
 
-The purpose of a debugger such as @DBG is to allow you to see what is
+The purpose of a debugger such as @DBG{} is to allow you to see what is
 going on ``inside'' a bash script while it executes.
 
-@DBG can do four main kinds of things (plus other things in support of
+@DBG{} can do four main kinds of things (plus other things in support of
 these) to help you catch bugs in the act:
 
 @itemize @bullet
@@ -710,7 +710,7 @@ which has @emph{bashdb} support among others is @url{https://github.com/rocky/em
 get an error message if the debugger is run under a version of BASH
 that does not have debugging support.}
 
-As mentioned above, one can enter @DBG via Emacs or
+As mentioned above, one can enter @DBG{} via Emacs or
 DDD. However you don't have to use either of these. And these still
 need a way on their own to get things started.
 
@@ -849,7 +849,7 @@ following list.
 @node Options for the bashdb script
 @subsubsection Command-line options for @emph{bashdb} script
 
-You can run @DBG in various alternative modes---for example, in batch
+You can run @DBG{} in various alternative modes---for example, in batch
 mode or quiet mode.
 
 @table @code
@@ -860,7 +860,7 @@ This option causes @value{DBG} to print some basic help and exit.
 
 @item -V | --version
 @cindex @code{-V}
-This option causes @DBG to print its version number,
+This option causes @DBG{} to print its version number,
 no-warranty blurb, and exit.
 
 @item -A | --annodate @var{level}
@@ -881,7 +881,7 @@ Run the string instead of running a script
 @item -B | --basename
 @cindex @code{-B}
 @cindex @code{--basename}
-This option causes @DBG to print its version number and
+This option causes @DBG{} to print its version number and
 no-warranty blurb, and exit.
 
 @item -n | --nx | --no-init
@@ -940,7 +940,7 @@ Set directory to use for writing temporary files.
 
 @cindex interrupt
 An interrupt (often @kbd{C-c}) does not exit from @value{DBG}, but
-rather terminates the action of any @DBG command that is in
+rather terminates the action of any @DBG{} command that is in
 progress and returns to @value{DBG} command level.  Inside a debugger
 command interpreter, use @code{quit} command (@pxref{Quit, ,Quitting
 the BASH debugger}).
@@ -1179,7 +1179,7 @@ environment variable starting with @code{BASHDB_}.
 @section Command files
 
 @cindex command files
-A command file for @DBG is a file of lines that are @DBG
+A command file for @DBG{} is a file of lines that are @DBG
 commands.  Comments (lines starting with @kbd{#}) may also be included.
 An empty line in a command file does nothing; it does not mean to repeat
 the last command, as it would from the terminal.
@@ -1189,9 +1189,9 @@ the last command, as it would from the terminal.
 @cindex @file{bashdb.ini}
 When you start @value{DBG}, it automatically executes commands from its
 @dfn{init files}, normally called @file{.bashdbinit}@footnote{The DJGPP
-port of @DBG uses the name @file{bashdb.ini} instead, due to the
+port of @DBG{} uses the name @file{bashdb.ini} instead, due to the
 limitations of file names imposed by DOS filesystems.}.
-During startup, @DBG does the following:
+During startup, @DBG{} does the following:
 
 @enumerate
 @item
@@ -1217,7 +1217,7 @@ option (@pxref{Options for the bashdb script, ,bashdb script options}).
 @cindex init file name
 On some configurations of @value{DBG}, the init file is known by a
 different name (these are typically environments where a specialized
-form of @DBG may need to coexist with other forms, hence a
+form of @DBG{} may need to coexist with other forms, hence a
 different name for the specialized version's init file).  These are the
 environments with special init file names:
 
@@ -1277,7 +1277,7 @@ the @samp{-t} option.
 @table @code
 @kindex info terminal
 @item info terminal
-Displays information recorded by @DBG about the terminal modes your
+Displays information recorded by @DBG{} about the terminal modes your
 program is using.
 @end table
 
@@ -1304,7 +1304,7 @@ terminal.
 
 When you use the @code{tty} command or redirect input in the @code{restart}
 command, only the input @emph{for your script} is affected.  The input
-for @DBG still comes from your terminal.
+for @DBG{} still comes from your terminal.
 
 @node Script/Debugger Interaction
 @section Script/Debugger Interaction
@@ -1315,7 +1315,7 @@ lexical hiding (yet) as is found in modern programming languages and
 in modern versions of the Korn shell. This then imposes some
 additional care and awareness.
 
-Most of the variables and functions used inside @DBG start
+Most of the variables and functions used inside @DBG{} start
 @code{_Dbg_}, so please don't use variables or functions with these
 names in your program.
 
@@ -1355,7 +1355,7 @@ information about signal handling, @pxref{Signals, ,Signals}
 @node Debugger Command Reference
 @chapter BASH Debugger Command Reference
 
-You can abbreviate the long name of @DBG command to the first
+You can abbreviate the long name of @DBG{} command to the first
 few letters of the command name, if that abbreviation is unambiguous;
 and you can repeat the @code{next} or @code{step} commands by typing
 just @key{RET}. Some commands which require a parameter, such as
@@ -1391,7 +1391,7 @@ arguments.
 
 @cindex repeating next/step commands
 @kindex RET @r{(repeat last command)}
-A blank line as input to @DBG (typing just @key{RET}) means to
+A blank line as input to @DBG{} (typing just @key{RET}) means to
 repeat the previous next or step command.
 
 @kindex # @r{(a comment)}
@@ -1454,7 +1454,7 @@ Aliases for list: l
 
 In addition to @code{help}, you can use the debugger command
 @code{info} to inquire about the state of your script, or the state of
-@DBG itself.  The listings under @code{info} in the Index
+@DBG{} itself.  The listings under @code{info} in the Index
 point to all the sub-commands.  @xref{Command Index}.
 @end table
 
@@ -1508,7 +1508,7 @@ Contains 34 lines.
 
 To exit @value{DBG}, use the @code{quit} command (abbreviated
 @code{q}), or type an end-of-file character (usually @kbd{C-d}).  If
-you do not supply @var{expression}, @DBG will try to terminate
+you do not supply @var{expression}, @DBG{} will try to terminate
 normally or with exit code 0. Otherwise it will terminate using the
 result of @var{expression} as the exit code.
 
@@ -1549,7 +1549,7 @@ of temporary files is done by the program.
 One important use of a debugger is to stop your program @emph{before} it
 terminates so that if your script might run into trouble, you can
 investigate and find out why. However should your script accidentally
-continue to termination, @DBG has arranged for it not to leave the
+continue to termination, @DBG{} has arranged for it not to leave the
 debugger without your explicit instruction. That way, you can restart
 the program using the same command arguments.
 
@@ -1612,7 +1612,7 @@ watchpoint; ``2W'' would work just as well.
 @ifset FINISHED
 @cindex breakpoint ranges
 @cindex ranges of breakpoints
-Some @DBG commands accept a range of breakpoints on which to
+Some @DBG{} commands accept a range of breakpoints on which to
 operate.  A breakpoint range is either a single breakpoint number, like
 @samp{5}, or two such numbers, in increasing order, separated by a
 hyphen, like @samp{5-7}.  When a breakpoint range is given to a command,
@@ -1660,7 +1660,7 @@ the next instruction to be executed in the selected stack frame
 (@pxref{Stack, ,Examining the Stack Frame}).  In any selected frame but the
 innermost, this makes your script stop as soon as control returns to
 that frame.  If you use @code{break} without an argument in the
-innermost frame, @DBG stops the next time it reaches the
+innermost frame, @DBG{} stops the next time it reaches the
 current location; this may be useful inside loops.
 @end ifset
 
@@ -1755,7 +1755,7 @@ was hit, and then run again, ignoring one less than that number.  This
 will get you quickly to the last hit of that breakpoint.
 @end ifset
 
-@DBG allows you to set any number of breakpoints at the same place in
+@DBG{} allows you to set any number of breakpoints at the same place in
 your script.  There is nothing silly or meaningless about this.  When
 the breakpoints are conditional, this is even useful
 (@pxref{Conditions, ,Break conditions}).
@@ -1779,13 +1779,13 @@ assignment to @code{foo} will have a value 0 when it is assigned via
 @table @code
 @kindex watch
 @item watch @var{var}
-Set a watchpoint for a variable.  @DBG will break when the
+Set a watchpoint for a variable.  @DBG{} will break when the
 value of @var{var} changes. In this command do not add a leading
 dollar symbol to @var{var}.
 
 @item watche @var{expr}
 Set a watchpoint for an expression via the builtin ``let'' command.
-@DBG will break when @var{expr} is written into by the program
+@DBG{} will break when @var{expr} is written into by the program
 and its value changes. Not that this may not work for tracking
 arbitrary string value changes. For that use @code{watch} described
 earlier.
@@ -1919,7 +1919,7 @@ Delete any breakpoints set at or within the code of the specified line.
 @item delete @ovar{breakpoints}
 Delete the breakpoints, watchpoints specified as arguments.
 
-If no argument is specified, delete all breakpoints (@DBG asks
+If no argument is specified, delete all breakpoints (@DBG{} asks
 confirmation, unless you have @code{set confirm off}).  You can
 abbreviate this command as @code{de}.
 
@@ -2038,11 +2038,11 @@ an ordinary unconditional breakpoint.
 @end table
 
 @ifset FINISHED
-When you use @code{condition}, @DBG checks @var{expression}
+When you use @code{condition}, @DBG{} checks @var{expression}
 immediately for syntactic correctness, and to determine whether
 symbols in it have referents in the context of your breakpoint.  If
 @var{expression} uses symbols not referenced in the context of the
-breakpoint, @DBG prints an error message:
+breakpoint, @DBG{} prints an error message:
 
 @example
 No symbol "foo" in current context.
@@ -2385,11 +2385,11 @@ this action is saved.  The call stack then is this a history of the
 calls that got you to the point that you are currently stopped at.
 
 @cindex selected frame
-One of the stack frames is @dfn{selected} by @DBG and many
-@DBG commands refer implicitly to the selected frame.  In
-particular, whenever you ask @DBG to list lines without giving
+One of the stack frames is @dfn{selected} by @DBG{} and many
+@DBG{} commands refer implicitly to the selected frame.  In
+particular, whenever you ask @DBG{} to list lines without giving
 a line number or location the value is found in the selected frame.
-There are special @DBG commands to select whichever frame you
+There are special @DBG{} commands to select whichever frame you
 are interested in. @xref{Selection, ,Selecting a frame}.
 
 When your program stops, @acronym{BASH} automatically selects the
@@ -3244,7 +3244,7 @@ Show whether logging overwrites or appends to the log file.
 @kindex show warranty
 @item show warranty
 Display the @sc{gnu} ``NO WARRANTY'' statement, or a warranty,
-if your version of @DBG comes with one.
+if your version of @DBG{} comes with one.
 
 @end table
 
