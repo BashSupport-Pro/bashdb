@@ -171,7 +171,7 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
 @ifnottex
 @node Top, Summary, (dir), (dir)
 
-@top Debugging with @DBG
+@top Debugging with @DBG{}
 
 This file describes @value{DBG}, the @sc{bash} symbolic debugger.
 
@@ -1179,7 +1179,7 @@ environment variable starting with @code{BASHDB_}.
 @section Command files
 
 @cindex command files
-A command file for @DBG{} is a file of lines that are @DBG
+A command file for @DBG{} is a file of lines that are @DBG{}
 commands.  Comments (lines starting with @kbd{#}) may also be included.
 An empty line in a command file does nothing; it does not mean to repeat
 the last command, as it would from the terminal.
@@ -1882,7 +1882,7 @@ delete individual breakpoints, or watchpoints by specifying their
 breakpoint numbers. @emph{Note: as described below under the ``clear''
 command, ``d'' is an alias for ``clear'', not ``delete''. }
 
-It is not necessary to delete a breakpoint to proceed past it.  @DBG
+It is not necessary to delete a breakpoint to proceed past it.  @DBG{}
 automatically ignores breakpoints on the first instruction to be executed
 when you continue execution.
 

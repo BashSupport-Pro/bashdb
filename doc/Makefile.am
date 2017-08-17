@@ -29,31 +29,37 @@ bashdb_TEXINFOS = fdl.texi gpl.texi copyright.texi
 
 all: $(INFO_DEPS) $(man1_MANS) html
 
+#: Unix Manual pages
 man: $(man1_MANS)
 
 html: @PACKAGE@.html @PACKAGE@-man.html
 
+# HTML format of texino doc
 @PACKAGE@.html: @PACKAGE@.texi
 	texi2html $(srcdir)/@PACKAGE@.texi || true
 
 @PACKAGE@-man.html: @PACKAGE@-man.pod
 	pod2html --infile=$(srcdir)/@PACKAGE@-man.pod --outfile=$@
 
+#: Unix Manual pages
 $(man1_MANS): @PACKAGE@-man.pod
 	pod2man --release=$(PACKAGE_VERSION) --name=@PACKAGE@ --center="GNU Tools" --section=$(EXT) $(srcdir)/@PACKAGE@-man.pod >$@
 
 #%.ps.gz: %.ps
 #	gzip -9c $< > $@
 
-.texi.pdf:
+.texi.pdf: version.texi
 	$(TEXI2PDF) -I $(srcdir) $< || true
 
-.texi.dvi:
+.texi.dvi: version.texi
 	$(TEXI2DVI) -I $(srcdir) $< || true
 
 .dvi.ps:
 	test -d $(docdir) || mkdir $(docdir)
 	$(DVIPS) $< -o $@
+
+version.texi:
+	$(MAKE) stamp-vti
 
 .texi.html:
 	texi2html $< || true
