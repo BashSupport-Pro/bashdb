@@ -68,7 +68,7 @@ PARENT_DIR = $(dir $(OLD_DIR))
 
 install-data-hook:
 	if [ "$(DESTDIR)$(OLD_DIR)" = "/"  -o  "$(DESTDIR)$(OLD_DIR)" = "" ]; then \
-	     echo "Woah - the destination directory (DESTDIR) is not set right" && false; \
+	     echo "Woah - the destination directory $(DESTDIR) is not set right" && false; \
 	elif test -d $(DESTDIR)$(OLD_DIR) ; then \
 	     $(RM) -f $(DESTDIR)$(OLD_DIR:/=)/* || true; \
 	     $(MAKE) $(AM_MAKEFLAGS) install-pkgdataDATA; \
