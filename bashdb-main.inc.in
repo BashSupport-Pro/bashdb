@@ -26,7 +26,7 @@ typeset _Dbg_shell='@SH_PROG@'
 typeset _Dbg_release='@PACKAGE_VERSION@'
 
 # Wrapper for debugger called from within bash via bash --debugger
-typeset _Dbg_bashdb_main='@BASHDB_MAIN@'
+typeset _Dbg_bashdb_main='@DBGR_MAIN@'
 
 # The short shell name. Helps keep code common in bash, zsh, and ksh debuggers.
 typeset _Dbg_shell_name=${_Dbg_shell##*/}  # Equivalent to basename(_Dbg_shell)
