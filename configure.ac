@@ -207,7 +207,8 @@ fi
 ##################################################################
 mydir=$(dirname $0)
 if [[ "$prefix" = NONE ]]; then
-   prefix=$($SH_PROG $mydir/compute-prefix.sh)
+   prefix=$($SH_PROG $mydir/compute-prefix.sh $SH_PROG)
+   ac_default_prefix=$prefix
 fi
 
 #Makefiles

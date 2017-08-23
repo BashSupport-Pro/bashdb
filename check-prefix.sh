@@ -16,8 +16,8 @@ if [[ -z $bash_loc ]] ; then
     echo  >&2 "Something went wrong in setting bash location from \$SHELL for $SH_PROG"
     exit 3
 fi
-bashdb_main=$(strings $bash_loc | grep bashdb)
-check_loc=$(dirname $(dirname $bashdb_main))
+
+check_loc=$(./compute-prefix.sh $SH_PROG)
 if [[ $PREFIX != $check_loc ]] ; then
     echo  >&2 "bash says prefix should be $check_loc. You gave $PREFIX"
     exit 4
