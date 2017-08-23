@@ -1,8 +1,13 @@
 #!/bin/bash
 typeset -i rc=0
-SH_PROG=${SH_PROG:-$SHELL}
-SH_PROG=${SH_PROG:-bash}
-bash_loc=$($SH_PROG -c 'echo ${SHELL}')
+if (( $# > 0 )); then
+    bash_loc="$1"
+elif [[ -n $SH_PROG ]] ; then
+    bash_loc=$SH_PROG
+else
+    SH_PROG=${SHELL:-bash}
+    bash_loc=$($SH_PROG -c 'echo ${SHELL}')
+fi
 rc=$?
 if (( rc != 0 )) ; then
     echo  >&2 "Something went wrong in getting \$SHELL for $SH_PROG"
