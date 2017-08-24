@@ -1,3 +1,48 @@
+2017-08-23  rocky <rocky@gnu.org>
+
+	* compute-prefix.sh: More compute-prefix.sh tweaking
+
+2017-08-22  rocky <rocky@gnu.org>
+
+	* check-prefix.sh, compute-prefix.sh, configure.ac: Better shell
+	script for setting/checking prefix
+
+2017-08-22  rocky <rocky@gnu.org>
+
+	* bashdb-main.inc.in: Another small bug
+
+2017-08-22  rocky <rocky@gnu.org>
+
+	* Makefile.am, check-prefix.sh: Some small prefix-checking bugs
+
+2017-08-20  rocky <rocky@gnu.org>
+
+	* bashdb-main.inc.in: Erroneous "print" changed to "echo"
+
+2017-08-17  rocky <rocky@gnu.org>
+
+	* test/data/sig-Darwin.right, test/integration/.gitignore: Fix
+	macox's version of test-sig
+
+2017-08-17  rocky <rocky@gnu.org>
+
+	* doc/Makefile.am, doc/bashdb.texi: doc Administrivia...  Makefile.am: comment some targets. Add version.texi target
+	bashdb.texi: texinfo now wants @DBG{} instead of @DBG
+
+2017-08-17  rocky <rocky@lexumo.com>
+
+	* : commit e711f27b796e172b2dc7e56a1272ec893f7aa4c6 Author: rocky
+	<rocky@gnu.org> Date:   Thu Aug 17 12:47:06 2017 -0400
+
+2017-08-17  rocky <rocky@lexumo.com>
+
+	* doc/bashdb.texi: texi lint
+
+2017-08-17  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac: More explicit error message setting
+	--prefix...  And why it should be set correctly
+
 2017-08-04  rocky <rocky@gnu.org>
 
 	* ChangeLog, NEWS, configure.ac: Get ready for release 4.4-0.93

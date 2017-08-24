@@ -37,11 +37,6 @@ AC_PREREQ(2.69)
 # See if --prefix was set. If not, set it to a reasonable default
 # based on where bash thinks bashdb is supposed to be installed.
 ##################################################################
-mydir=$(dirname $0)
-if test "$prefix" == NONE ; then
-   prefix=$($SH_PROG $mydir/compute-prefix.sh)
-fi
-
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
@@ -146,6 +141,11 @@ esac
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main],
                   [location of dbg-main.sh]), DBGR_MAIN=$withval)
 AC_SUBST(DBGR_MAIN)
+
+mydir=$(dirname $0)
+if test "$prefix" == NONE ; then
+   prefix=$($SH_PROG $mydir/compute-prefix.sh $SH_PROG)
+fi
 
 if test -z "$DBGR_MAIN" ; then
   DBGR_MAIN=`strings $SH_PROG$EXEEXT | grep bashdb-main.inc`
