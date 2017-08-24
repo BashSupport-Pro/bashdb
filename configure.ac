@@ -1,7 +1,7 @@
 # Configure script for bash debugger (bashdb)
 dnl Process this file with autoconf to produce a configure script.
 
-# Copyright (C) 2002-2012
+# Copyright (C) 2002-2012, 2017
 # 2014-2017 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@ dnl Process this file with autoconf to produce a configure script.
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 4.4)
-define(relstatus, 0.93)
+define(relstatus, 0.94)
 
 AC_INIT([bashdb],
   [OK_BASH_VERS-relstatus],

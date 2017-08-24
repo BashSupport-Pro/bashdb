@@ -1,6 +1,5 @@
 (settrace.sh:6):
 6:	  _Dbg_debugger; :
-Syntax highlight in source listings is off.
 +# Test set_trace call.
 +where
 ->0 in file `settrace.sh' at line 6

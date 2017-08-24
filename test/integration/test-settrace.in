@@ -9,7 +9,9 @@ FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"
 debugged_script="$top_builddir/test/example/settrace.sh"
 (cd $srcdir && $SH ${TEST_NAME}.tests > $TEST_FILE 2>&1 < /dev/null)
 
-cat $TEST_FILE | @SED@ -e "s:main(.*) called from file \`settrace.sh' at line 0:main() called from file \`settrace.sh' at line 0:" \
+@GREP@ -v "run term-highlight. Setting forced off" $TEST_FILE | \
+    @GREP@ -v "Syntax highlight in source listings is off.$"  | \
+    @SED@ -e "s:main(.*) called from file \`settrace.sh' at line 0:main() called from file \`settrace.sh' at line 0:" \
  >${FILTERED_TEST_FILE}
 
 check_output $FILTERED_TEST_FILE $RIGHT_FILE
