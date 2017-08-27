@@ -82,8 +82,10 @@ check_DATA = \
 	settrace.cmd \
 	settrace.right \
 	sig.cmd \
+	sig-41.right \
 	sig-43.cmd \
 	sig-43.right \
+	sig-44.right \
 	sig.right \
 	sig-Darwin.right \
 	sig-43.right \

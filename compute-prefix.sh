@@ -19,6 +19,10 @@ if [[ -z $bash_loc ]] ; then
 fi
 # export PATH=/usr/bin:/bin:/sbin
 bashdb_main=$(strings $bash_loc | grep bashdb)
+if (( $? != 0 )); then
+    echo  >&2 "Something went wrong in finding bashdb location from \$SHELL for $SH_PROG"
+    exit 4
+fi
 
 main_loc=$(dirname $bashdb_main)
 
