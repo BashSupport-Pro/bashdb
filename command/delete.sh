@@ -35,6 +35,19 @@ _Dbg_do_delete() {
   typeset -i  i
   typeset -i  tot_found=0
 
+  if (( $# == 0 )) ; then
+      _Dbg_confirm "Delete all breakpoints? (y/N): " 'N'
+      if [[ $_Dbg_response == [yY] ]] ; then
+	  typeset indices=${!_Dbg_brkpt_line[@]}
+	  typeset tot_found=${#_Dbg_brkpt_line[@]}
+	  _Dbg_clear_all_brkpt
+	  _Dbg_msg "Deleted breakpoints: $indices"
+	  return $tot_found
+      else
+	  return
+      fi
+  fi
+
   eval "$_seteglob"
   for del in $to_go ; do
     case $del in
