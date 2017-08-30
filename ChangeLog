@@ -1,6 +1,7 @@
 2017-08-24  rocky <rocky@gnu.org>
 
-	* configure.ac: Get ready for release 4.4-0.94
+	* ChangeLog, NEWS, configure.ac, test/data/settrace.right,
+	test/integration/test-settrace.in: Get ready for release 4.4-0.94 settrace: adjust for pygementize missing
 
 2017-08-24  rocky <rocky@gnu.org>
 

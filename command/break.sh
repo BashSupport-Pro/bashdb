@@ -106,11 +106,16 @@ _Dbg_do_break_common() {
 # delete brkpt(s) at given file:line numbers. If no file is given
 # use the current file.
 _Dbg_do_clear_brkpt() {
-    typeset -r n=${1:-$_Dbg_frame_lineno}
+    typeset -r n=${1:-$_Dbg_frame_last_lineno}
 
     typeset filename
     typeset -i line_number
     typeset full_filename
+
+    if [[ -z $n ]] ; then
+	_Dbg_errmsg "No line number given and no frame line number found"
+	return 0
+    fi
 
     _Dbg_linespec_setup $n
 
