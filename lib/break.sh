@@ -105,8 +105,8 @@ _Dbg_save_watchpoints() {
 
 # Enable/disable breakpoint or watchpoint by entry numbers.
 _Dbg_enable_disable() {
-    if (($# <= 2)) ; then
-	_Dbg_errmsg "_Dbg_enable_disable error - need at least 2 args, got $#"
+    if (($# <= 1)) ; then
+	_Dbg_errmsg "_Dbg_enable_disable error - need at least 1 arg, got $#"
 	return 1
     fi
     typeset -i on=$1
@@ -375,23 +375,32 @@ function _Dbg_enable_disable_action {
 
 # Enable/disable breakpoint(s) by entry numbers.
 function _Dbg_enable_disable_brkpt {
-    (($# != 3)) && return 1
+    (($# < 2)) && return 1
     typeset -i on=$1
     typeset en_dis=$2
-    typeset -i i=$3
-    if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
-	if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
-	    _Dbg_errmsg "Breakpoint entry $i already ${en_dis}, so nothing done."
-	    return 1
-	else
-	    _Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
-	    _Dbg_msg "Breakpoint entry $i $en_dis."
-	    return 0
-	fi
-    else
-	_Dbg_errmsg "Breakpoint entry $i doesn't exist, so nothing done."
-	return 1
+    typeset -a brkpts=($3)
+    typeset -i rc=0
+
+    if (( 0 == ${#brkpts[@]} )) ; then
+	brkpts=${!brkpts[@]}
     fi
+
+    for i in "${brkpts[@]}";  do
+	if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
+	    if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
+		_Dbg_errmsg "Breakpoint entry $i already ${en_dis}, so nothing done."
+		rc=1
+	    else
+		_Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
+		_Dbg_msg "Breakpoint entry $i $en_dis."
+	    fi
+	else
+	    _Dbg_errmsg "Breakpoint entry $i doesn't exist, so nothing done."
+	    rc=1
+	fi
+    done
+    return $rc
+
 }
 
 #======================== WATCHPOINTS  ============================#
