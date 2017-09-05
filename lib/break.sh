@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # break.sh - Debugger Break and Watch routines
 #
-#   Copyright (C) 2002-2003, 2006-2011, 2014-2016 Rocky Bernstein
+#   Copyright (C) 2002-2003, 2006-2011, 2014-2017 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -113,9 +113,10 @@ _Dbg_enable_disable() {
     typeset en_dis=$2
     shift; shift
 
+  typeset to_go
   if [[ $1 == 'display' ]] ; then
     shift
-    typeset to_go="$@"
+    to_go="$@"
     typeset i
     eval "$_seteglob"
     for i in $to_go ; do
@@ -131,7 +132,7 @@ _Dbg_enable_disable() {
     return 0
   elif [[ $1 == 'action' ]] ; then
     shift
-    typeset to_go="$@"
+    to_go="$@"
     typeset i
     eval "$_seteglob"
     for i in $to_go ; do
@@ -145,9 +146,19 @@ _Dbg_enable_disable() {
     done
     eval "$_resteglob"
     return 0
+  elif [[ $1 == 'breakpoints' ]] ; then
+    shift
+    to_go="$@"
+    if (( 0 == $# )) ; then
+	to_go=${!_Dbg_brkpt_enable[@]}
+    fi
+  else
+    to_go="$@"
+    if (( 0 == $# )) ; then
+	to_go=${!_Dbg_brkpt_enable[@]}
+    fi
   fi
 
-  typeset to_go; to_go="$@"
   typeset i
   eval "$_seteglob"
   for i in $to_go ; do
@@ -380,10 +391,6 @@ function _Dbg_enable_disable_brkpt {
     typeset en_dis=$2
     typeset -a brkpts=($3)
     typeset -i rc=0
-
-    if (( 0 == ${#brkpts[@]} )) ; then
-	brkpts=${!brkpts[@]}
-    fi
 
     for i in "${brkpts[@]}";  do
 	if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then

@@ -25,6 +25,10 @@ _Dbg_help_add disable \
 Disables breakopints *bpnum1*, *bpnum2*. Breakpoints numbers are given
 as a space-separated list of breakpoint numbers.
 
+To disable all breakpoints, give no argument.
+A disabled breakpoint is not forgotten, but has no effect until re-enabled.
+
+
 See also:
 ---------
 
@@ -33,10 +37,6 @@ See also:
 
 # Disable breakpoint(s)/watchpoint(s) by entry number(s).
 _Dbg_do_disable() {
-    if (($# == 0)) ; then
-	_Dbg_errmsg 'Expecting breakpoint/watchpoint numbers. Got none.'
-	return 1
-    fi
     _Dbg_enable_disable 0 'disabled' "$@"
     return $?
 }
