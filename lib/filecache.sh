@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2008-2011, 2013-2015 Rocky Bernstein
+#   Copyright (C) 2008-2011, 2013-2015, 2018 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -126,7 +126,10 @@ function _Dbg_is_file {
     echo ''
     return 1
   fi
-  typeset find_file="$1"
+
+  # first character might be encoded as \057 == '/',
+  # find_file:0:1 == "\" , true story
+  typeset find_file="$(printf "$1")"
   typeset try_find_file
 
   if [[ -z $find_file ]] ; then
