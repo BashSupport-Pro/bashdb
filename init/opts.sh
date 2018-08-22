@@ -171,7 +171,7 @@ _Dbg_parse_options() {
 		    exit 2
 		esac
 
-		if (( ! _Dbg_have_working pygmentize )) ; then
+		if (( ! _Dbg_have_working_pygmentize )) ; then
                     print "Can't run pygmentize. --highight forced off" >&2
 		    _Dbg_set_highlight=''
                 fi
