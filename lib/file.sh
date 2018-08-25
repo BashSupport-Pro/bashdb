@@ -49,7 +49,7 @@ function _Dbg_file_canonic {
     fi
     typeset filename="$1"
     (( _Dbg_set_basename )) && filename=${filename##*/}
-    echo $filename
+    echo "$filename"
     return 0
 }
 

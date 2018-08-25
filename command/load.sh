@@ -20,9 +20,12 @@
 #   MA 02111 USA.
 
 _Dbg_help_add load \
-'load SCRIPT
+'**load** SCRIPT
 
-Read in lines of a SCRIPT for use in listing.'
+Read in lines of a SCRIPT for use in listing.
+
+For paths with space characters please use octal escape, e.g.:
+load /some/path\\040with\\040spaces/script.sh'
 
 _Dbg_do_load() {
 

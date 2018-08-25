@@ -146,7 +146,7 @@ function _Dbg_process_commands {
         _Dbg_input_desc=${_Dbg_fd[_Dbg_fd_last]}
         if [[ $_Dbg_tty == '&1' ]] ; then
             echo -n "$_Dbg_prompt"
-            if ! read _Dbg_cmd args <&$_Dbg_input_desc 2>&1; then
+            if ! read -r _Dbg_cmd args <&$_Dbg_input_desc 2>&1; then
                 break
             fi
         else
@@ -155,7 +155,7 @@ function _Dbg_process_commands {
             else
                 _Dbg_read_fn='read'
             fi
-            if ! $_Dbg_read_fn $_Dbg_edit -p "$_Dbg_prompt" _Dbg_cmd args \
+            if ! $_Dbg_read_fn -r $_Dbg_edit -p "$_Dbg_prompt" _Dbg_cmd args \
                 <&$_Dbg_input_desc 2>>$_Dbg_prompt_output ; then
                 set +o history
                 break

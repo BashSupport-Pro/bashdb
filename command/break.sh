@@ -21,9 +21,12 @@ _Dbg_help_add break \
 
 Set a breakpoint at *loc-spec*.
 
-If no location specification is given, use the current line.
+If no location specification is given, the current line will be used.
 
 Multiple breakpoints at one place are permitted, and useful if conditional.
+
+For *loc-spec* paths with space characters please use octal escape, e.g.:
+break /some/path\\040with\\040spaces/script.sh:3
 
 See also:
 ---------
@@ -39,7 +42,10 @@ Like "break" except the breakpoint is only temporary,
 so it will be deleted when hit.  Equivalent to "break" followed
 by using "delete" on the breakpoint number.
 
-If no location specification is given, use the current line.'
+If no location specification is given, the current line will be used.
+
+For *loc-spec* paths with space characters please use octal escape, e.g.:
+break /some/path\\040with\\040spaces/script.sh:3'
 
 _Dbg_do_tbreak() {
     _Dbg_do_break_common 1 $@

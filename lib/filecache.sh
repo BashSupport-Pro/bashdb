@@ -126,7 +126,6 @@ function _Dbg_is_file {
     echo ''
     return 1
   fi
-
   # first character might be encoded as \057 == '/',
   # find_file:0:1 == "\" , true story
   typeset find_file="$(printf "$1")"
