@@ -201,14 +201,14 @@ function _Dbg_readin {
     typeset source_array
     typeset -ri NOT_SMALLFILE=1000
 
-    if [[ -z $filename ]] || [[ $filename == "$_Dbg_bogus_file" ]] ; then
-	eval "${_Dbg_source_array_var}[0]=\"$Dbg_EXECUTION_STRING\""
-  else
+    if [[ -z "$filename" ]] || [[ "$filename" == "$_Dbg_bogus_file" ]] ; then
+	  eval "${_Dbg_source_array_var}[0]=\"$Dbg_EXECUTION_STRING\""
+    else
 	fullname=$(_Dbg_resolve_expand_filename "$filename")
-	if [[ -r $fullname ]] ; then
+	if [[ -r "$fullname" ]] ; then
 	    typeset -r progress_prefix="Reading $filename"
-	    _Dbg_file2canonic[$filename]="$fullname"
-	    _Dbg_file2canonic[$fullname]="$fullname"
+	    _Dbg_file2canonic["$filename"]="$fullname"
+	    _Dbg_file2canonic["$fullname"]="$fullname"
 	    # Use readarray which speeds up reading greatly.
 	    typeset -ri BIGFILE=30000
 	    if wc -l < /dev/null >/dev/null 2>&1 ; then
@@ -239,9 +239,6 @@ function _Dbg_readin {
 	    return 1
 	fi
     fi
-
-    typeset -r line_count_cmd="line_count=\${#${_Dbg_source_array_var[@]}}"
-    eval $line_count_cmd
 
     (( line_count >= NOT_SMALLFILE )) && _Dbg_msg "done."
 

@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # set.sh - debugger settings
 #
-#   Copyright (C) 2002,2003,2006,2007,2008,2010,2011 Rocky Bernstein
-#   2018 <rocky@gnu.org>
+#   Copyright (C) 2002-2003, 2006-2008, 2010-2011, 2018
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -33,7 +33,7 @@ _Dbg_help_add set '' 1 _Dbg_complete_set
 
 # Load in "set" subcommands
 for _Dbg_file in "${_Dbg_libdir}/command/set_sub/"*.sh ; do
-    source $_Dbg_file
+    source "$_Dbg_file"
 done
 
 # Command completion for a condition command

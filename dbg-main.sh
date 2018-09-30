@@ -2,7 +2,7 @@
 # dbg-main.sh - debugger main include
 
 #   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2009, 2010,
-#   2011, 2018 Rocky Bernstein <rocky@gnu.org>
+#   2011 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -31,7 +31,7 @@ for _Dbg_file in require pre vars io ; do
     source "${_Dbg_libdir}/init/${_Dbg_file}.sh"
 done
 
-for _Dbg_file in ${_Dbg_libdir}/lib/*.sh ${_Dbg_libdir}/command/*.sh ; do
+for _Dbg_file in "${_Dbg_libdir}/lib/"*.sh "${_Dbg_libdir}/command/"*.sh ; do
     source "$_Dbg_file"
 done
 
@@ -71,7 +71,7 @@ fi
 
 if [[ ${_Dbg_libdir:0:1} == '.' ]] ; then
     # Relative file name
-    _Dbg_libdir=$(_Dbg_expand_filename ${_Dbg_init_cwd}/${_Dbg_libdir})
+    _Dbg_libdir="$(_Dbg_expand_filename "${_Dbg_init_cwd}/${_Dbg_libdir}")"
 fi
 
 for source_file in "${_Dbg_o_init_files[@]}" "$DBG_RESTART_FILE";  do

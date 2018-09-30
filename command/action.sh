@@ -50,7 +50,7 @@ _Dbg_do_action() {
 
   _Dbg_linespec_setup $n
 
-  if [[ -n $full_filename ]] ; then
+  if [[ -n "$full_filename" ]] ; then
       if (( line_number ==  0 )) ; then
           _Dbg_msg "There is no line 0 to set action at."
       else
@@ -59,7 +59,7 @@ _Dbg_do_action() {
               _Dbg_set_action "$full_filename" "$line_number" "$stmt"
       fi
   else
-      _Dbg_file_not_read_in $filename
+      _Dbg_file_not_read_in "$filename"
   fi
   return 0
 }
