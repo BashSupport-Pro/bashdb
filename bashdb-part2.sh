@@ -25,7 +25,7 @@
 # FIXME: should implement "set hidelevel"?
 
 # Pull in the rest of the debugger code.
-. $_Dbg_main
+. "$_Dbg_main"
 
 # I don't know why when this is done in dbg-opts.sh it doesn't have
 # an effect.
@@ -41,7 +41,7 @@ shift
 
 [[ $1 == '--' ]] && shift
 
-if [[ ! -d $_Dbg_tmpdir ]] && [[ ! -w $_Dbg_tmpdir ]] ; then
+if [[ ! -d "$_Dbg_tmpdir" ]] && [[ ! -w "$_Dbg_tmpdir" ]] ; then
   echo "${_Dbg_pname}: cannot write to temp directory $_Dbg_tmpdir." >&2
   echo "${_Dbg_pname}: Use -T try directory location." >&2
   exit 1
@@ -60,7 +60,7 @@ if [[ ! -r "$_Dbg_script_file" ]] ; then
     exit 1
 fi
 
-typeset -r _Dbg_Dbg_script_file=$(_Dbg_expand_filename $_Dbg_script_file)
+typeset -r _Dbg_Dbg_script_file="$(_Dbg_expand_filename "$_Dbg_script_file")"
 
 if ((_Dbg_set_linetrace)) ; then
   # No stepping.
@@ -71,7 +71,7 @@ else
     _Dbg_write_journal_eval "_Dbg_step_ignore=3"
 fi
 
-# The set0 can be loaded via commadn/set_sub/dollar0 or perhaps
+# The set0 can be loaded via command/set_sub/dollar0 or perhaps
 # it as done prior to running bashdb. But if we have set0, use it
 # to change $0 to the debugged script name rather than "@PACKAGE@".
 if enable -a set0 2>/dev/null ; then

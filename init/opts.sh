@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # debugger command options processing. The bane of programming.
 #
-#   Copyright (C) 2008-2012, 2014-2017 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008-2012, 2014-2018 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -94,7 +94,7 @@ fi
 
 typeset -ix _Dbg_working_term_highlight
 
-if ${_Dbg_libdir}/lib/term-highlight.py -V 2>/dev/null  1>/dev/null ; then
+if "${_Dbg_libdir}/lib/term-highlight.py" -V 2>/dev/null  1>/dev/null ; then
     _Dbg_working_term_highlight=1
 else
     _Dbg_working_term_highlight=0
@@ -102,29 +102,29 @@ fi
 
 typeset -x _Dbg_set_style=''
 # $_Dbg_tmpdir could have been set by the top-level debugger script.
-[[ -z $_Dbg_tmpdir ]] && typeset _Dbg_tmpdir=/tmp
+[[ -z "$_Dbg_tmpdir" ]] && typeset _Dbg_tmpdir=/tmp
 
 _Dbg_check_tty() {
     (( $# < 1 )) && return 1
     typeset tty=$1
     if [[ $tty != '&1' ]] ; then
-        if ! $(touch $tty >/dev/null 2>/dev/null); then
+        if ! $(touch "$tty" >/dev/null 2>/dev/null); then
             _Dbg_errmsg "Can't access $tty for writing."
             return 1
         fi
-        if [[ ! -w $tty ]] ; then
+        if [[ ! -w "$tty" ]] ; then
             _Dbg_errmsg "tty $tty needs to be writable"
             return 1
         fi
-        _Dbg_tty=$tty
-        _Dbg_prompt_output=$_Dbg_tty
+        _Dbg_tty="$tty"
+        _Dbg_prompt_output="$_Dbg_tty"
     fi
     return 0
 }
 
 _Dbg_parse_options() {
 
-    . ${_Dbg_libdir}/getopts_long.sh
+    . "${_Dbg_libdir}/getopts_long.sh"
 
     typeset -i _Dbg_o_quiet=0
     typeset -i _Dbg_o_version=0
@@ -193,8 +193,8 @@ _Dbg_parse_options() {
             tempdir)
                 _Dbg_tmpdir=$OPTLARG    ;;
             terminal | tty )
-                if _Dbg_check_tty $OPTLARG ; then
-                    _Dbg_tty=$OPTLARG
+                if _Dbg_check_tty "$OPTLARG" ; then
+                    _Dbg_tty="$OPTLARG"
                 else
                     _Dbg_errmsg '--tty option ignored'
                 fi
@@ -248,7 +248,7 @@ welcome to change it and/or distribute copies of it under certain conditions.
 if (( _Dbg_have_working_pygmentize )) && [[ -z "$_Dbg_set_highlight" ]] ; then
     # Honor DARK_BG if already set. If not set, set it.
     if [[ -z "$DARK_BG" ]] ; then
-	. ${_Dbg_libdir}/init/term-background.sh >/dev/null
+	. "${_Dbg_libdir}/init/term-background.sh" >/dev/null
     fi
 
     # DARK_BG is now either 0 or 1.

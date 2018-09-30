@@ -40,9 +40,9 @@ _Dbg_defined() {
 
     if (( (BASH_VERSINFO[0] > 4) ||
           (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 2) )); then
-	# WIthout the eval below, bash < 4.2 will barf. The quotes
+	# Without the eval below, bash > 4.2 will barf. The quotes
 	# hide invalid lingo for earlier bash..
-	eval "[[ -v $1 ]]"
+	eval "[[ -v \"$1\" ]]"
     else
 	typeset -p "$1" &> /dev/null
     fi

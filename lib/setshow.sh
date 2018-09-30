@@ -67,9 +67,9 @@ _Dbg_help_set_onoff() {
 }
 
 # Demo it
-if [[ ${BASH_SOURCE[0]} == $0 ]] ; then
+if [[ "${BASH_SOURCE[0]}" == "$0" ]] ; then
     _Dbg_msg() {
-	echo $*
+	echo "$@"
     }
 
     typeset -i _Dbg_foo

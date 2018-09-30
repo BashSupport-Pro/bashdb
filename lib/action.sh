@@ -1,6 +1,7 @@
 # -*- shell-script -*-
 #
-#   Copyright (C) 2010-2011, 2015 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2015, 2018 Rocky Bernstein
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -74,7 +75,7 @@ _Dbg_list_action() {
 	source_file=$(_Dbg_adjust_filename "$source_file")
 	_Dbg_printf "%-3d %3d %-18s %s:%s" $i ${_Dbg_action_enable[$i]} \
 	  "${_Dbg_action_stmt[$i]}" \
-	  $source_file ${_Dbg_action_line[$i]}
+	  "$source_file" "${_Dbg_action_line[$i]}"
       fi
     done
   else
@@ -131,7 +132,7 @@ _Dbg_unset_action() {
     $(_Dbg_is_int "$2") || return 1
     typeset -i  lineno=$2
     typeset     fullname
-    fullname=$(_Dbg_expand_filename "$filename")
+    fullname="$(_Dbg_expand_filename "$filename")"
 
     # FIXME: combine with something?
     typeset -a linenos
@@ -147,7 +148,7 @@ _Dbg_unset_action() {
 	    (( action_num = action_nos[i] ))
 	    _Dbg_unset_action_arrays $action_num
 	    unset linenos[i]
-	    _Dbg_action_file2linenos[$fullname]=${linenos[@]}
+	    _Dbg_action_file2linenos["$fullname"]=${linenos[@]}
 	    return 0
 	fi
     done

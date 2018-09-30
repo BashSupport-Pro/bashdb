@@ -19,8 +19,8 @@
 #   MA 02111 USA.
 
 # Load set0 if possible.
-if [[ -f $_Dbg_libdir/builtin/set0 ]] ; then
-    enable -f $_Dbg_libdir/builtin/set0 set0 2>/dev/null
+if [[ -f "$_Dbg_libdir/builtin/set0" ]] ; then
+    enable -f "$_Dbg_libdir/builtin/set0" set0 2>/dev/null
 fi
 
 # If it was set0 loaded, then we can add a debugger command "set dollar0"

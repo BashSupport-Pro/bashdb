@@ -32,7 +32,7 @@ typeset -A _Dbg_show_nolist
 _Dbg_help_add show '' 1 _Dbg_complete_show
 
 # Load in "show" subcommands
-for _Dbg_file in ${_Dbg_libdir}/command/show_sub/*.sh ; do
+for _Dbg_file in "${_Dbg_libdir}/command/show_sub/"*.sh ; do
     source $_Dbg_file
 done
 

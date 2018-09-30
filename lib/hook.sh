@@ -222,7 +222,7 @@ _Dbg_hook_action_hit() {
 	if (( linenos[_Dbg_i] == lineno )) ; then
 	    (( _Dbg_action_num = action_nos[_Dbg_i] ))
 	    stmt="${_Dbg_action_stmt[$_Dbg_action_num]}"
-  	    . ${_Dbg_libdir}/dbg-set-d-vars.inc
+  	    . "${_Dbg_libdir}/dbg-set-d-vars.inc"
   	    eval "$stmt"
 	    # We've reset some variables like IFS and PS4 to make eval look
 	    # like they were before debugger entry - so reset them now.
@@ -241,11 +241,11 @@ _Dbg_hook_breakpoint_hit() {
 
     # FIXME: combine with _Dbg_unset_brkpt
     typeset -a linenos
-    [[ -z $full_filename ]] && return 1
-    [[ -z ${_Dbg_brkpt_file2linenos[$full_filename]} ]] && return 1
-    eval "linenos=(${_Dbg_brkpt_file2linenos[$full_filename]})"
+    [[ -z "$full_filename" ]] && return 1
+    [[ -z "${_Dbg_brkpt_file2linenos["$full_filename"]}" ]] && return 1
+    eval "linenos=(${_Dbg_brkpt_file2linenos["$full_filename"]})"
     typeset -a brkpt_nos
-    eval "brkpt_nos=(${_Dbg_brkpt_file2brkpt[$full_filename]})"
+    eval "brkpt_nos=(${_Dbg_brkpt_file2brkpt["$full_filename"]})"
     typeset -i i
     # Check breakpoints within full_filename
     for ((i=0; i < ${#linenos[@]}; i++)); do
