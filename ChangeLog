@@ -1,3 +1,12 @@
+2018-09-30  rocky <rocky@gnu.org>
+
+	* : commit 0029671f5972e30df43b0b437943784d3150edc1 Author: rocky
+	<rocky@gnu.org> Date:   Sun Sep 30 12:52:37 2018 -0400
+
+2018-09-20  rocky <rocky@gnu.org>
+
+	* test/README, test/README.md: Use markdown for test readme
+
 2018-08-25  rocky <rocky@gnu.org>
 
 	* lib/processor.sh, test/integration/test-sig.in: Further tweaks lib/processor.sh: use "read" without "-r"

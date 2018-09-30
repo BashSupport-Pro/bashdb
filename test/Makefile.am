@@ -4,4 +4,4 @@ MOSTLYCLEANFILES = *.orig *.rej
 
 SUBDIRS = unit data example integration
 
-EXTRA_DIST = README
+EXTRA_DIST = README.md
