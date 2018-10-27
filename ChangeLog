@@ -1,5 +1,22 @@
 2018-09-30  rocky <rocky@gnu.org>
 
+	* init/opts.sh, test/Makefile.am: Small changes
+
+2018-09-30  rocky <rocky@gnu.org>
+
+	* bashdb-part2.sh, command/action.sh, command/break.sh,
+	command/eval.sh, command/examine.sh, command/load.sh,
+	command/set.sh, configure.ac, dbg-main.sh, init/opts.sh,
+	lib/filecache.sh, lib/fns.sh, lib/hook.sh, lib/processor.sh,
+	lib/setshow.sh, lib/unescape.sh: More rogalmic's changes...  for embedded spaces in variable/filenames He also added a --tty_in
+	option
+
+2018-09-30  rocky <rocky@gnu.org>
+
+	* ChangeLog, README, configure.ac, test/Makefile.am: Administrivia
+
+2018-09-30  rocky <rocky@gnu.org>
+
 	* : commit 0029671f5972e30df43b0b437943784d3150edc1 Author: rocky
 	<rocky@gnu.org> Date:   Sun Sep 30 12:52:37 2018 -0400
 

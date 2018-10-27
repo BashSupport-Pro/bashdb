@@ -1,3 +1,18 @@
+Version 4.4-1.0.0
+Oct 27, 2018 - 9 x 3 & 9 x 7
+
+- Untabify some sources
+- Better handling of paths with embedded blanks
+- add a --tty_in option
+- backtrace with more eatures
+     * Allow negative count.
+     * Option -s or --source show source-code line in backtrace
+- Document how to add embedded blanks in "load" and "break"
+- enable/disable compatibility:
+     * enable/disable with no args does all
+     * allow "enable breakpoints" a well as "enable".
+- delete all (no args) implemented
+
 Version 4.4-0.94
 August 24, 2017
 
