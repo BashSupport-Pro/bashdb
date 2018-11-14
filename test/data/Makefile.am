@@ -85,10 +85,11 @@ check_DATA = \
 	sig-41.right \
 	sig-43.cmd \
 	sig-43.right \
+	sig-44.cmd \
 	sig-44.right \
+	sig-bug.cmd \
 	sig.right \
 	sig-Darwin.right \
-	sig-43.right \
 	skip.cmd \
 	skip.right \
 	sopts.right \

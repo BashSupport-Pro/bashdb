@@ -1,3 +1,8 @@
+2018-11-04  rocky <rocky@gnu.org>
+
+	* ChangeLog, lib/hook.sh: Preserve BASH_REMATCH - adapted from
+	Micheal Wood, Bug #56
+
 2018-10-27  rocky <rocky@gnu.org>
 
 	* ChangeLog, NEWS, configure.ac: Get ready for release 4.4-1.0.0

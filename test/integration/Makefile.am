@@ -15,6 +15,7 @@ test_in_files = \
 
 test_sources = \
 	test-bug-step-subshell 	\
+	test-bug-set-e 		\
 	test-complete 		\
 	test-debug 		\
 	test-delete 		\
