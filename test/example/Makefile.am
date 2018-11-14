@@ -2,6 +2,7 @@ check_DATA =            \
 	bug-args.sh.in  \
 	bug-clear.sh    \
 	bug-loc.sh      \
+	bug-set-e.sh    \
 	bug-step.sh     \
 	bug-step-subshell.sh \
 	bugI.sh         \
@@ -21,6 +22,7 @@ check_DATA =            \
 	restart.sh      \
 	settrace.sh     \
 	sig.sh          \
+	sig-bug.sh      \
 	skip.sh         \
 	stepping.sh     \
 	subshell.sh
