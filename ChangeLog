@@ -1,3 +1,8 @@
+2018-11-15  rocky <rocky@gnu.org>
+
+	* ChangeLog, configure.ac, init/opts.sh: print -> printf and a typo.
+	Bug #53
+
 2018-11-14  rocky <rocky@gnu.org>
 
 	* ChangeLog, test/data/Makefile.am, test/example/Makefile.am,

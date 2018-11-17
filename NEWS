@@ -1,3 +1,22 @@
+Version 4.4-0.1.0.1  L'il sis 55
+Nov 17, 2018
+
+- Preserve BASH_REMATCH Bug #56
+- Add more of the test files added in git from 4.4.0-1.0.0 into the
+  tarball. Bug #52
+- Change some "print"s to "printf" and a fix typo Bug #53
+
+Version 4.4-0.1.0.0  Li'l sis 55
+Oct 27, 2018 - 7x9
+
+- Better handling of blanks in filenames
+- expand "backtrace": allow gdb negative count
+- Add -s/--source option
+- Fix test for working pygmentize. Bug #48
+- Allow gdb-compatible enable/disable with no args
+- gdb "delete" (no args - deletes all breakpoints) implemented
+- Fix "clear" command with no args
+
 Version 4.4-0.94
 August 24, 2017
 
