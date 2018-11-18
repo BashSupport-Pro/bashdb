@@ -37,7 +37,7 @@ AC_PREREQ(2.69)
 # See if --prefix was set. If not, set it to a reasonable default
 # based on where bash thinks bashdb is supposed to be installed.
 ##################################################################
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 
