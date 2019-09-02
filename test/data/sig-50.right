@@ -42,7 +42,7 @@ Program received signal SIGTERM (15)...
 ##10 _Dbg_process_commands() called from file `hook.sh' at line 267
 ##11 _Dbg_hook_enter_debugger("after being stepped") called from file `hook.sh' at line 183
 ##12 _Dbg_debug_trap_handler("0", "[[ "$1"x != x ]]") called from file `sig.sh' at line 7
-##13 source("sig.sh") called from file `bashdb' at line 127
+##13 source("sig.sh") called from file `bashdb' at line 99
 ##14 main() called from file `bashdb' at line 0
 +info signals
 Signal       Stop   Print   Stack     Value
@@ -59,11 +59,11 @@ $? is 0
 $? is 0
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 55
-##1 source("sig.sh") called from file `bashdb' at line 127
+##1 source("sig.sh") called from file `bashdb' at line 99
 ##2 main() called from file `bashdb' at line 0
 Program received signal SIGINT (2)...
 ->0 in file `sig.sh' at line 55
-##1 source("sig.sh") called from file `bashdb' at line 127
+##1 source("sig.sh") called from file `bashdb' at line 99
 ##2 main() called from file `bashdb' at line 0
 Debugged program terminated normally. Use q to quit or R to restart.
 +### Should have printed a stack trace above...

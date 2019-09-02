@@ -1,17 +1,54 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# ^^^^^^^^^^^^ Use env rather than assume we've got /bin/bash.
+# This works better on OSX where /bin/bash is brain dead.
+
+#   Copyright (C) 2019, Rocky Bernstein <rocky@gnu.org>
+#   This program is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License as
+#   published by the Free Software Foundation; either version 2, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#   General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; see the file COPYING.  If not, write to
+#   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
+#   MA 02111 USA.
+
 # Try to determine if we have dark or light terminal background
 
+# This file is copied from
+# https://github.com/rocky/bash-term-background If you have problems
+# with this script open an issue there.  Note: I use github project
+# ratings to help me determine if project issues are worth fixing when
+# (as usually the case), there are several issues I could be working on.
+
 typeset -i success=0
+typeset    method="xterm control"
 
 # On return, variable is_dark_bg is set
 # We follow Emacs logic (at least initially)
-set_default_bg() {
-    if [[ -n $TERM ]] ; then
+get_default_bg() {
+    if [[ -n $COLORFGBG ]] ; then
+	method="COLORFGBG"
+	is_dark_colorfgbg
+    elif [[ -n $TERM ]] ; then
 	case $TERM in
+	    xterm-256color )
+		# 382.5 = (* .6 (+ 255 255 255))
+		TERMINAL_COLOR_MIDPOINT=${TERMINAL_COLOR_MIDPOINT:-383}
+		;;
 	    xterm* | dtterm | eterm* )
+		# 117963 = (* .6 (+ 65535 65535 65535))
+		TERMINAL_COLOR_MIDPOINT=${TERMINAL_COLOR_MIDPOINT:-117963}
 		is_dark_bg=0
 		;;
+
 	    * )
+		TERMINAL_COLOR_MIDPOINT=${TERMINAL_COLOR_MIDPOINT:-117963}
 		is_dark_bg=1
 		;;
 	esac
@@ -23,8 +60,7 @@ set_default_bg() {
 is_dark_rgb() {
     typeset r g b
     r=$1; g=$2; b=$3
-    # 117963 = (* .6 (+ 65535 65535 65535))
-    if (( (16#$r + 16#$g + 16#$b) < 117963 )) ; then
+    if (( (16#$r + 16#$g + 16#$b) < $TERMINAL_COLOR_MIDPOINT )) ; then
 	is_dark_bg=1
     else
 	is_dark_bg=0
@@ -37,9 +73,11 @@ is_dark_colorfgbg() {
     case $COLORFGBG in
 	'15;0' | '15;default;0' )
 	    is_dark_bg=1
+	    success=1
 	    ;;
 	'0;15' | '0;default;15' )
 	    is_dark_bg=0
+	    success=1
 	    ;;
 	* )
 	    is_dark_bg=-1
@@ -91,13 +129,34 @@ xterm_compatible_fg_bg() {
     return 0
 }
 
+# From a comment left duthen in my StackOverflow answer cited above.
+osx_get_terminal_fg_bg() {
+    if [[ -n $COLORFGBG ]] ; then
+	method="COLORFGBG"
+	is_dark_colorfgbg
+    else
+	RGB_bg=($(osascript -e 'tell application "Terminal" to get the background color of the current settings of the selected tab of front window'))
+	# typeset -p RGB_bg
+	(($? != 0)) && return 1
+	TERMINAL_COLOR_MIDPOINT=117963
+	is_dark_rgb ${RGB_bg[@]}
+	method="OSX osascript"
+	success=1
+    fi
+}
+
+
 typeset -i success=0
 typeset -i is_dark_bg=0
 typeset -i exitrc=0
 
-set_default_bg
+get_default_bg
 
-if [[ -n $TERM ]] ; then
+if [[ ${BASH_VERSINFO[5]} == *"darwin"* ]] ; then
+    osx_get_terminal_fg_bg
+fi
+
+if (( !success )) && [[ -n $TERM ]] ; then
     case $TERM in
 	xterm* | gnome | rxvt* )
 	    typeset -a RGB_fg RGB_bg
@@ -111,11 +170,11 @@ if [[ -n $TERM ]] ; then
     esac
 fi
 
-if (( $success )) ; then
+if (( success )) ; then
     if (( is_dark_bg == 1 )) ; then
-	echo "Dark background from xterm control"
+	echo "Dark background from ${method}"
     else
-	echo "Light background from xterm control"
+	echo "Light background from ${method}"
     fi
 elif [[ -n $COLORFGBG ]] ; then
     # Note that this can be wrong if
@@ -140,14 +199,16 @@ fi
 
 # If we were sourced, then set
 # some environment variables
-if (( is_sourced )) ; then
+if is_sourced  ; then
     if (( exitrc == 0 )) ; then
 	if (( $is_dark_bg == 1 ))  ; then
 	    export DARK_BG=1
-	    export COLORFGBG='0;15'
+	    [[ -z $COLORFGBG ]] && export COLORFGBG='0;15'
 	else
 	    export DARK_BG=0
-	    export COLORFGBG='15;0'
+	    [[ -z $COLORFGBG ]] && export COLORFGBG='15;0'
 	fi
     fi
+else
+    exit 0
 fi

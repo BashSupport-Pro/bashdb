@@ -20,6 +20,8 @@ elif (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} == 3 )) ; then
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-43.right"
 elif (( ${BASH_VERSINFO[0]} == 4 && ${BASH_VERSINFO[1]} >= 4 )) ; then
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-44.right"
+elif (( ${BASH_VERSINFO[0]} == 5 && ${BASH_VERSINFO[0]} >= 0 )) ; then
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-50.right"
 fi
 
 case $host_os in
@@ -31,7 +33,7 @@ case $host_os in
     * )
 esac
 
-# This test has bee too much of a pain
+# This test has been too much of a pain
 exit 77
 
 FILTERED_TEST_FILE="/tmp/${TEST_NAME}-filtered.check"

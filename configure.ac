@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002-2012,
-# 2014-2018 Rocky Bernstein <rocky@gnu.org>
+# 2014-2019 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@ dnl Process this file with autoconf to produce a configure script.
 
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
-define(OK_BASH_VERS, 4.4)
-define(relstatus, 1.0.2git)
+define(OK_BASH_VERS, 5.0)
+define(relstatus, 1.1.0git)
 
 AC_INIT([bashdb],
   [OK_BASH_VERS-relstatus],
@@ -51,26 +51,7 @@ AC_SUBST(RELSTATUS)
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
 
-# See if we build set0.c
-AC_ARG_WITH(bash-src, AC_HELP_STRING([--with-bash-src],
-		  [location of bash OK_BASH_VERS source code]),
-		  BASH_SRC=$withval)
-AC_SUBST(BASH_SRC)
-AC_PROG_CC
-if test x"$BASH_SRC" != x ; then
-   if test ! -d $BASH_SRC ; then
-     AC_MSG_ERROR([bash source directory ($BASH_SRC) does not seem to be a directory])
-   else
-     AM_PROG_CC_C_O
-     dnl We run a C compiler to get macro EXEEXT set and possibly readarray.c.
-     build_set0=$BASH_SRC
-     AC_CHECK_HEADERS(unistd.h string.h,,
-         [AC_MSG_WARN([Missing some C headers. Disabling set0])
-         build_set0=])
-   fi
-fi
 AM_PROG_LIBTOOL
-AM_CONDITIONAL(BUILD_BUILTINS, test x"$build_set0" != x)
 PIC=$lt_prog_compiler_pic
 WL=$lt_prog_compiler_wl
 AC_SUBST(PIC)
@@ -214,7 +195,6 @@ fi
 #Makefiles
 AC_CONFIG_FILES([ \
         Makefile                  \
-        builtin/Makefile          \
         command/Makefile          \
         command/info_sub/Makefile \
         command/set_sub/Makefile  \

@@ -87,6 +87,8 @@ check_DATA = \
 	sig-43.right \
 	sig-44.cmd \
 	sig-44.right \
+	sig-50.cmd \
+	sig-50.right \
 	sig-bug.cmd \
 	sig.right \
 	sig-Darwin.right \

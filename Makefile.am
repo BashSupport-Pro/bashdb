@@ -1,4 +1,4 @@
-#   Copyright (C) 2002, 2004-2008, 2011-2012 Rocky Bernstein
+#   Copyright (C) 2002, 2004-2008, 2011-2012, 2019 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
 
 AUTOMAKE_OPTIONS = dist-bzip2
 
-SUBDIRS = command builtin init lib data doc test
+SUBDIRS = command init lib data doc test
 
 pkgdata_DATA =       \
        dbg-main.sh   \
