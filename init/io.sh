@@ -2,7 +2,7 @@
 # io.sh - Bourne Again Shell Debugger Input/Output routines
 #
 #   Copyright (C) 2002-2004, 2006, 2008-2009, 2011,
-#   2018 Rocky Bernstein <rocky@gnu.org>
+#   2018, 2019 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -44,9 +44,9 @@ function _Dbg_progess_show {
 
     if (( max_value == 0 )) ; then
 	# Avoid dividing by 0.
-	current_length=${max_length}
+	((current_length=max_length))
     else
-	current_length=$(( ${max_length} * ${current_value} / ${max_value} ))
+	((current_length=(max_length * current_value) / max_value))
     fi
 
     _Dbg_progess_show_internal "$1" ${max_length} ${current_length}
