@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # filecache.sh - cache file information
 #
-#   Copyright (C) 2008-2011, 2013-2015, 2018 Rocky Bernstein
+#   Copyright (C) 2008-2011, 2013-2015, 2018-2019 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -217,7 +217,7 @@ function _Dbg_readin {
 		    _Dbg_msg_nocr "${progress_prefix} "
 		fi
 	    fi
-	    builtin readarray -t -O 1 -c $BIGFILE \
+	    builtin mapfile -t -O 1 -c $BIGFILE \
 		-C "_Dbg_progess_show \"${progress_prefix}\" ${line_count}" \
 		$_Dbg_source_array_var < "$fullname"
 	    if [[ -n $_Dbg_set_highlight ]] ; then
