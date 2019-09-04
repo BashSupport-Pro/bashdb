@@ -71,6 +71,16 @@ _Dbg_do_info_variables() {
 
     for (( i=0; (( i < ${#_Dbg_list[@]} )) ; i++ )) ; do
 	_Dbg_item=${_Dbg_list[$i]}
+
+
+	# Ignore all _Dbg_ variables here because the following
+	# substitutions takes a long while when it encounters
+	# a big _Dbg_source_
+	if [[ ${_Dbg_item} =~ "_Dbg_" ]] ; then
+	    continue;
+	fi
+
+
 	case ${_Dbg_item} in
 	    *\ \(\)\ )
 		_Dbg_skip=1
@@ -82,16 +92,6 @@ _Dbg_do_info_variables() {
 	if [[ _Dbg_skip -eq 1 ]]; then
 	    continue
 	fi
-
-	# Ignore all _Dbg_ variables here because the following
-	# substitutions takes a long while when it encounters
-	# a big _Dbg_source_
-	case ${_Dbg_item} in
-	    _Dbg_*)  # Hide/ignore debugger variables.
-		continue;
-		;;
-	esac
-
 	_Dbg_item=${_Dbg_item/=/==/}
 	_Dbg_item=${_Dbg_item%%=[^=]*}
 	case ${_Dbg_item} in
