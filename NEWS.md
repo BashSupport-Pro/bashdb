@@ -1,3 +1,12 @@
+Version 5.0-0.1.1.0 Labor Day
+------------------------------
+
+Sept 3, 2019
+
+* Revise for Bash 5.0
+* Use BASH_ARGV0
+* remove custom builtins; all of our internal bash fns are now bash internal functions
+
 Version 4.4-0.1.0.1  L'il sis 55
 --------------------------------
 

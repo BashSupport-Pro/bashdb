@@ -22,7 +22,7 @@ dnl Process this file with autoconf to produce a configure script.
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 5.0)
-define(relstatus, 1.1.0git)
+define(relstatus, 1.1.0)
 
 AC_INIT([bashdb],
   [OK_BASH_VERS-relstatus],
@@ -97,7 +97,8 @@ AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL],
 
 if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
 then
-  AC_PATH_PROG(SH_PROG, POSIXSHELL, no)
+  bash_shell_dir=$(dirname $SHELL)
+  AC_PATH_PROG(SH_PROG, POSIXSHELL, no, PATH="$bash_shell_dir:$PATH")
 fi
 
 if test "$SH_PROG" = no; then
@@ -108,14 +109,14 @@ fi
 bash_version=`$SH_PROG --version`
 [bash_major=`$SH_PROG -c 'echo ${BASH_VERSINFO[0]}'`]
 [bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
-bash_4_or_greater=no
+bash_5_or_greater=no
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS' | '4.1' | '4.2' | '4.3')
-    bash_4_or_greater=yes
+  'OK_BASH_VERS' | '5.0')
+    bash_5_or_greater=yes
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash 4.1-4.4.])
+    AC_MSG_ERROR([This package is only known to work with Bash 5.0])
     ;;
 esac
 
