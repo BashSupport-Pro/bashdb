@@ -6,13 +6,16 @@ The version of *bashdb* to use has to be compatible with the version
 of bash used. Run `bash --version` to see what version of *bash* you
 are using.
 
-* If your version of bash is 3.0 or higher but less than 3.1, use the folder [3.00-0.05](https://sourceforge.net/projects/bashdb/files/bashdb/3.00-0.05/).
-* If your version of bash is 3.1 or higher and less than 4.0, use folder [3.1-0.09](https://sourceforge.net/projects/bashdb/files/bashdb/3.1-0.09/).
-* If your version of bash is 4.0 or higher but less than 4.1 use folder [4.0-0.4](https://sourceforge.net/projects/bashdb/files/bashdb/3.1-0.09/)
-* If your version of bash is 4.1 or higher but less than 4.2 use folder [4.1-0.5](https://sourceforge.net/projects/bashdb/files/bashdb/4.1-0.5/)
+* If your version of bash is 5.0 or higher, use folder [5.0-1.1.0](https://sourceforge.net/projects/bashdb/files/bashdb/5.0-1.1.0/)
+* If your version of bash is 4.4 or higher, use folder [4.4-1.0.1](https://sourceforge.net/projects/bashdb/files/bashdb/4.4-1.0.1/)
+* If your version of bash is 4.3 or higher, use folder [4.3-0.91](https://sourceforge.net/projects/bashdb/files/bashdb/4.3-0.91/)
 * If your version of bash is 4.2 or higher, use folder [4.2-0.8](https://sourceforge.net/projects/bashdb/files/bashdb/4.1-0.5/)
+* If your version of bash is 4.1 or higher but less than 4.2 use folder [4.1-0.5](https://sourceforge.net/projects/bashdb/files/bashdb/4.1-0.5/)
+* If your version of bash is 4.0 or higher but less than 4.1 use folder [4.0-0.4](https://sourceforge.net/projects/bashdb/files/bashdb/3.1-0.09/)
+* If your version of bash is 3.1 or higher and less than 4.0, use folder [3.1-0.09](https://sourceforge.net/projects/bashdb/files/bashdb/3.1-0.09/).
+* If your version of bash is 3.0 or higher but less than 3.1, use the folder [3.00-0.05](https://sourceforge.net/projects/bashdb/files/bashdb/3.00-0.05/).
 
-As seen from the above, the first part of the version in the *bashdb* version name matches the major version number of *bash*. This is intentional.
+As you might guess from the above, the first part of the version in the *bashdb* version name matches the major version number of *bash*. This is intentional.
 
 See file file *INSTALL* in the distribution for detailed installation
 instructions.
@@ -73,4 +76,4 @@ switch:
     BASHDB_INSTALLATION=/usr/share/bashdb # ADJUST THIS!
     source ${BASHDB_INSTALL}/bashdb-trace -L $BASHDB_INSTALL -x /tmp/bashdb-configure
 
-[![endorse](https://api.coderwall.com/rocky/endorsecount.png)](https://coderwall.com/rocky)
+[codewall](https://coderwall.com/rocky)
