@@ -17,13 +17,13 @@ test_columnized()
 	fi
 	typeset size=${#columnized[@]}
 # 	typeset -i i
-# 	for ((i=0; i<${#columnized[@]}; i++)) ; do 
+# 	for ((i=0; i<${#columnized[@]}; i++)) ; do
 # 	    print "  ${columnized[i]}"
 # 	done
 	assertEquals "$cols" "$size"
 	assertEquals "$last_line" "${columnized[$size-1]}"
     }
-    do_one 1 '<empty>' '' 
+    do_one 1 '<empty>' ''
     do_one 1 'a,2,c' 'a 2 c' 10 ','
     do_one 4 'for    8  ' \
 ' 1   two three
@@ -43,7 +43,7 @@ if [ '@abs_top_srcdir@' = '' ] ; then
  exit 1
 fi
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure $abs_top_srcrdir has a trailing slash
+# Make sure $abs_top_srcdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 . $abs_top_srcdir/lib/columnize.sh

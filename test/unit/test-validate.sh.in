@@ -2,8 +2,8 @@
 # -*- shell-script -*-
 test_validate_is_function()
 {
-    _Dbg_is_function 
-    assertFalse 'No function given; is_function should report false' $? 
+    _Dbg_is_function
+    assertFalse 'No function given; is_function should report false' $?
 
     unset -f function_test
     _Dbg_is_function function_test
@@ -22,10 +22,10 @@ test_validate_is_function()
 
     _function_test() { :; }
     _Dbg_is_function _function_test
-    assertFalse 'fn _function_test is system fn; is_function should report false' $? 
+    assertFalse 'fn _function_test is system fn; is_function should report false' $?
 
-    _Dbg_is_function _function_test 1 
-    assertTrue 'fn _function_test is system fn which we want; should report true' $? 
+    _Dbg_is_function _function_test 1
+    assertTrue 'fn _function_test is system fn which we want; should report true' $?
 
 }
 
@@ -33,25 +33,25 @@ test_validate_is_function()
 test_validate_is_integer()
 {
     _Dbg_is_int
-    assertFalse 'No integer given; is_int should report false' $? 
+    assertFalse 'No integer given; is_int should report false' $?
 
     for arg in a a1 '-+-' ; do
 	_Dbg_is_int $arg
-	assertFalse "$arg is not an integer; is_int should report false" $? 
+	assertFalse "$arg is not an integer; is_int should report false" $?
     done
 
     for arg in 0 123 9999999 ; do
 	_Dbg_is_int $arg
-	assertTrue "$arg is an integer; is_int should report true" $? 
+	assertTrue "$arg is an integer; is_int should report true" $?
 	_Dbg_is_signed_int $arg
-	assertTrue "$arg is a signed integer; is_int should report true" $? 
+	assertTrue "$arg is a signed integer; is_int should report true" $?
     done
 
     for arg in +0 -123 ; do
 	_Dbg_is_signed_int $arg
-	assertTrue "$arg is not a signed integer; is_int should report true" $? 
+	assertTrue "$arg is not a signed integer; is_int should report true" $?
 	_Dbg_is_int $arg
-	assertFalse "$arg is not an integer; is_int should report true" $? 
+	assertFalse "$arg is not an integer; is_int should report true" $?
     done
 
 }
@@ -62,7 +62,7 @@ if [ '@abs_top_srcdir@' = '' ] ; then
  exit 1
 fi
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure $abs_top_srcr has a trailing slash
+# Make sure $abs_top_srcdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 . ${abs_top_srcdir}init/vars.sh

@@ -232,6 +232,8 @@ AC_CONFIG_FILES([test/unit/test-break.sh],
                 [chmod +x test/unit/test-break.sh])
 AC_CONFIG_FILES([test/unit/test-cmd-complete.sh],
                 [chmod +x test/unit/test-cmd-complete.sh])
+AC_CONFIG_FILES([test/unit/test-cmd-info-variables.sh],
+                [chmod +x test/unit/test-cmd-info-variables.sh])
 AC_CONFIG_FILES([test/unit/test-cmd-eval.sh],
                 [chmod +x test/unit/test-cmd-eval.sh])
 AC_CONFIG_FILES([test/unit/test-columns.sh],

@@ -49,8 +49,8 @@ test_fns_esc_dq()
 
 test_fns_is_function()
 {
-    _Dbg_is_function 
-    assertFalse 'No function given; is_function should report false' $? 
+    _Dbg_is_function
+    assertFalse 'No function given; is_function should report false' $?
 
     unset -f function_test
     _Dbg_is_function function_test
@@ -69,22 +69,22 @@ test_fns_is_function()
 
     _function_test() { :; }
     _Dbg_is_function _function_test
-    assertFalse 'fn _function_test is system fn; is_function should report false' $? 
+    assertFalse 'fn _function_test is system fn; is_function should report false' $?
 
-    _Dbg_is_function _function_test 1 
-    assertTrue 'fn _function_test is system fn which we want; should report true' $? 
+    _Dbg_is_function _function_test 1
+    assertTrue 'fn _function_test is system fn which we want; should report true' $?
 
 }
 
 test_fns_traced()
 {
     set +x
-    _Dbg_is_traced 
+    _Dbg_is_traced
     assertFalse 'is_traced should be false' "$?"
 
-    { 
+    {
       set -x
-      _Dbg_is_traced 
+      _Dbg_is_traced
       rc=$?
       set +x
     } 2>/dev/null
@@ -137,17 +137,17 @@ test_set_debugger_internal()
 # Test _Dbg_set_dol_q
 test_fns_set_q()
 {
-    _Dbg_set_dol_q 1 
-    assertFalse '$? should have been set to 1==false' $? 
-    _Dbg_set_dol_q 0 
-    assertTrue '$? should have been set to 0==true' $? 
+    _Dbg_set_dol_q 1
+    assertFalse '$? should have been set to 1==false' $?
+    _Dbg_set_dol_q 0
+    assertTrue '$? should have been set to 0==true' $?
     # Test without giving a parameter
     local _Ddg_debugged_exit_code=0
-    _Dbg_set_dol_q 
-    assertTrue '$? should be set true via _Dbg_debugged_exit_code' $? 
+    _Dbg_set_dol_q
+    assertTrue '$? should be set true via _Dbg_debugged_exit_code' $?
     _Ddg_debugged_exit_code=1
     # _Dbg_set_dol_q
-    # assertFalse '$? should be set false via _Dbg_debugged_exit_code' $? 
+    # assertFalse '$? should be set false via _Dbg_debugged_exit_code' $?
 }
 
 test_fns_split()
@@ -161,7 +161,7 @@ test_fns_split()
 }
 
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure $abs_top_srcrdir has a trailing slash
+# Make sure $abs_top_srcdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 . ${abs_top_srcdir}init/pre.sh

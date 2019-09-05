@@ -16,7 +16,7 @@ test_frame_adjust()
     _Dbg_stack_size=${#FUNCNAME[@]}
     typeset -a errmsg=()
     typeset -i i
-    
+
     # Test frame_adjust parameter checking
     _Dbg_frame_adjust a
     assertNotEquals "Invalid frame_adjust 'a'" 0 "$?"
@@ -34,7 +34,7 @@ test_frame_adjust()
     done
 
     # Test invalid values
-    for pair in '4 0' '5 -1' '3 +1' '-6 0'; do 
+    for pair in '4 0' '5 -1' '3 +1' '-6 0'; do
     	unset errmsg; errmsg=()
     	typeset _Dbg_stack_pos=2
     	_Dbg_frame_adjust $pair
@@ -43,7 +43,7 @@ test_frame_adjust()
     done
 }
 
-test_frame_adjusted_pos() 
+test_frame_adjusted_pos()
 {
     _Dbg_running=1
     _Dbg_stack_size=0
@@ -55,13 +55,13 @@ test_frame_adjusted_pos()
     assertEquals "_Dbg_frame_adjusted_pos -1 should be _Dbg_stack_size-1" $pos $pos2
 }
 
-get_parms() 
+get_parms()
 {
     ## typeset -p BASH_ARGV
     ## typeset -p BASH_ARGC
     ## typeset -p FUNCNAME
     _Dbg_frame_fn_param_str
-    if [[ "$1" == "test-two" ]] ; then 
+    if [[ "$1" == "test-two" ]] ; then
 	_Dbg_frame_fn_param_str
     fi
 }
@@ -70,7 +70,7 @@ double_call()
 {
     _Dbg_next_argc=0
     _Dbg_next_argv=0
-    get_parms test-two a b 
+    get_parms test-two a b
     assertEquals 2 $_Dbg_next_argc
     assertEquals 6 $_Dbg_next_argv
     assertEquals '"d", "e", "f"' "$_Dbg_parm_str"
@@ -156,7 +156,7 @@ test_frame_print()
     function _Dbg_msg {
 	msg=$1
     }
-    
+
     msg=''
     _Dbg_frame_print '->' 0 '' dbg-cmds.sh 2 ''
 
@@ -168,7 +168,7 @@ if [ '@abs_top_srcdir@' = '' ] ; then
  exit 1
 fi
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure $abs_top_srcrdir has a trailing slash
+# Make sure $abs_top_srcdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 . ${abs_top_srcdir}init/vars.sh

@@ -96,7 +96,7 @@ test_file_resolve_expand_filename()
 }
 
 abs_top_srcdir=@abs_top_srcdir@
-# Make sure $abs_top_srcrdir has a trailing slash
+# Make sure $abs_top_srcdir has a trailing slash
 abs_top_srcdir=${abs_top_srcdir%%/}/
 . ${abs_top_srcdir}test/unit/helper.sh
 
