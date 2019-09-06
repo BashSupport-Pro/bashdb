@@ -36,14 +36,19 @@ Options:
     -x | --exports restricted to exported variables
 
 If multiple flags are given, variables matching *any* of the flags are included.
-Note. Bashdb debugger variables, those that start with `_Dbg_` are excluded.
+Note. Bashdb debugger variables, those that start with \`_Dbg_\` are excluded.
 
 Examples:
 ---------
 
-    info variables   # show all variabls
-    alias s   step   # "s" is now an alias for "step".
-                     # The above example is done by default.
+    info variables       # show all variables
+    info variables -r    # show only read-only variables
+    info variables -r -i # show either read-only variables, or integer variables
+
+See also:
+---------
+
+*info* *functions*.
 
 ' 1
 

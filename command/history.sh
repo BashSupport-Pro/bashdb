@@ -21,7 +21,7 @@
 _Dbg_help_add history \
 "history [N]
 
-Rerun a debugger command from the debugger history. 
+Rerun a debugger command from the debugger history.
 
 See also H to list the history. If N is negative you are you going
 back that many items from the end rather specifying an absolute history number."
@@ -30,12 +30,13 @@ _Dbg_do_history() {
   typeset -i history_num
   _Dbg_history_parse $@
   _Dbg_history_remove_item
-  if (( history_num >= 0 )) ; then 
-      if (( history_num < ${#_Dbg_history[@]} )) ; then 
+  if (( history_num >= 0 )) ; then
+      if (( history_num < ${#_Dbg_history[@]} )) ; then
 	  set ${_Dbg_history[$history_num]}
 	  _Dbg_cmd=$1
 	  shift
 	  _Dbg_args="$@"
+	  _Dbg_msg $_Dbg_cmd "$@"
 	  _Dbg_redo=1;
       else
 	  _Dbg_errmsg \
@@ -52,7 +53,7 @@ _Dbg_do_history() {
 _Dbg_do_history_list() {
 
   eval "$_seteglob"
-  if [[ $1 != $int_pat ]] && [[ $1 != -$int_pat ]] && [[ -n $1 ]] ; then 
+  if [[ $1 != $int_pat ]] && [[ $1 != -$int_pat ]] && [[ -n $1 ]] ; then
     _Dbg_msg "Invalid history number: $1"
     eval "$_resteglob"
     return 1
@@ -64,7 +65,7 @@ _Dbg_do_history_list() {
   local -i stop=${2:0}
   local -i i
 
-  # Were we given a count rather than a starting history number? 
+  # Were we given a count rather than a starting history number?
   if (( n<0 )) ; then
     ((stop=_Dbg_hi+n))
     ((n=_Dbg_hi-1))

@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # condition.sh - gdb-like "condition" debugger command
 #
-#   Copyright (C) 2002-2006, 2008, 2009, 2011, 2016
+#   Copyright (C) 2002-2006, 2008, 2009, 2011, 2016, 2019
 #   Rocky Bernstein rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
@@ -20,9 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add condition \
-"**condition** *bp_number* *zsh-cond*
+"**condition** *bp_number* *bash-cond*
 
-+Break only if *bassh-cond* is true in breakpoint number *bp_number*.
+Break only if *bash-cond* is true in breakpoint number *bp_number*.
 
 *bp_number* is an integer and *cond* is an zsh expression to be evaluated whenever
 breakpoint *bp_number* is reached.
