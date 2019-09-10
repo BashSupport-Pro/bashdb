@@ -807,13 +807,9 @@ path, then this might be equivalent to the above:
 bashdb @var{bashdb-options} @var{script} -- @var{script-arguments...}
 @end example
 
-There are two or three disadvantages however of running a debugger
-this way. First @code{$0} will have the value @emph{bashdb} rather
-than the script you are trying to run. For some scripts this may
-change the behavior of the debugged script. Second a traceback will
-contain additional lines showing the ``source''-ing of the debugged
-script from @emph{bashdb}. And third, although this way works better
-than the first method, over time this way may come into disuse.
+There is a slight disadvantage to running a debugger this
+way: a traceback will contain additional lines showing the
+``source''-ing of the debugged script from @emph{bashdb}.
 
 An option that you'll probably need to use if bashdb isn't installed
 but run out of the source code directory is @samp{-L} which specifies
