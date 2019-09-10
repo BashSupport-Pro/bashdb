@@ -1,3 +1,15 @@
+Version 5.0-0.1.1.1
+--------------------
+
+* Document "condition" better
+* Show history before running it
+* Document "info variables" better.
+* Remove markdown bug.
+* Add -x, -r, -i flags to info `show variables`, and add est
+* Fix some small typos in comments
+* Properly filter `_Dbg_` variables out of "info var"
+* Update docs remove mention of $0 not set. In bash 5.0 $0 is set.
+
 Version 5.0-0.1.1.0 Labor Day
 ------------------------------
 
