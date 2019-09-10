@@ -6,7 +6,7 @@ The version of *bashdb* to use has to be compatible with the version
 of bash used. Run `bash --version` to see what version of *bash* you
 are using.
 
-* If your version of bash is 5.0 or higher, use folder [5.0-1.1.0](https://sourceforge.net/projects/bashdb/files/bashdb/5.0-1.1.0/)
+* If your version of bash is 5.0 or higher, use folder [5.0-1.1.1](https://sourceforge.net/projects/bashdb/files/bashdb/5.0-1.1.1/)
 * If your version of bash is 4.4 or higher, use folder [4.4-1.0.1](https://sourceforge.net/projects/bashdb/files/bashdb/4.4-1.0.1/)
 * If your version of bash is 4.3 or higher, use folder [4.3-0.91](https://sourceforge.net/projects/bashdb/files/bashdb/4.3-0.91/)
 * If your version of bash is 4.2 or higher, use folder [4.2-0.8](https://sourceforge.net/projects/bashdb/files/bashdb/4.1-0.5/)
