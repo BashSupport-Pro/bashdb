@@ -57,6 +57,7 @@ check_DATA = \
 	lopts.right \
 	misc-output.right \
 	misc-output-41.right \
+	misc-output-50.right \
 	misc.cmd \
 	misc.right \
 	multi1.cmd \
