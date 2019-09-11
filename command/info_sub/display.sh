@@ -1,7 +1,8 @@
 # -*- shell-script -*-
 # gdb-like "info display" debugger command
 #
-#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016, 2019 Rocky Bernstein
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -18,8 +19,15 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-_Dbg_help_add_sub info display \
-"**info display**" 1
+_Dbg_help_add_sub info display '
+"**info display**
+
+Show all display expressions.
+
+See also:
+---------
+*display*
+' 1
 
 # List display command(s)
 _Dbg_do_info_display() {
