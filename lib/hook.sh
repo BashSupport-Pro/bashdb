@@ -97,8 +97,9 @@ _Dbg_debug_trap_handler() {
 
      # Check whether the last command was a regular expression match
      if [[ "${_Dbg_bash_command}" != "${_Dbg_bash_command#* =~ }" ]]; then
-         # Save a flattened copy of the command string to freeze it in time
-         _Dbg_last_regmatch_command=$(eval echo \"$_Dbg_bash_command\")
+         # Save a copy of the command string to be able to run to restore read-only
+	 # variable BASH_REMATCH
+         _Dbg_last_regmatch_command=$_Dbg_bash_command
      fi
 
     _Dbg_bash_command=$1
