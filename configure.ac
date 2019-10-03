@@ -41,15 +41,16 @@ AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
 
-# From fish's configure.ac
-#
 # List of output variables produced by this configure script
 #
 AC_SUBST(BASHVERS)
 AC_SUBST(RELSTATUS)
 
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
-		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
+		  [location of bashdb-main.inc]),
+		  BASHDB_MAIN=$withval,
+		  ${prefix}/bashdb/bashdb-main.inc)
+AC_SUBST(BASHDB_MAIN)
 
 AM_PROG_LIBTOOL
 PIC=$lt_prog_compiler_pic
@@ -121,7 +122,8 @@ case "${bash_major}.${bash_minor}" in
 esac
 
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main],
-                  [location of dbg-main.sh]), DBGR_MAIN=$withval)
+                  [location of dbg-main.sh]),
+		  DBGR_MAIN=$withval)
 AC_SUBST(DBGR_MAIN)
 
 mydir=$(dirname $0)

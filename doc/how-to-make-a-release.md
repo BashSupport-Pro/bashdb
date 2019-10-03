@@ -12,8 +12,8 @@ $ make ChangeLog
 * Go over `Changelog` and add `NEWS.md`. Update date of release.
 
 ```
-  export BASHDB_MAJOR=4.4   # adjust
-  export BASHDB_MINOR=1.0.1 # adjust
+  export BASHDB_MAJOR=5.0   # adjust
+  export BASHDB_MINOR=1.1.1 # adjust
   export BASHDB_VERSION=${BASHDB_MAJOR}-${BASHDB_MINOR} # adjust
 ```
 
