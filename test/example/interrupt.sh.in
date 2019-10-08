@@ -25,7 +25,7 @@ source ${top_builddir}bashdb-trace --no-init -q -B -L @top_builddir@
 ## echo "stop: " ${_Dbg_sig_stop[2]}
 
 _Dbg_QUIT_ON_QUIT=1
-for i in {0,1,2,3,4,5,6,7,9,9}{0,1,2,3,4,5,6,7,8,9} ; do
+for i in {1..100} ; do
    touch $1
    sleep 5
 done
