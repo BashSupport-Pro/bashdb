@@ -21,6 +21,7 @@
 /configure
 /configure.lineno
 /depcomp
+/dist
 /elisp-comp
 /install-sh
 /libtool
