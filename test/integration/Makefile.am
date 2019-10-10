@@ -1,4 +1,5 @@
 test_in_files = \
+	test-bash-rematch.in \
 	test-bug-step-subshell.in \
 	test-complete.in 	\
 	test-debug.in 		\
@@ -14,6 +15,7 @@ test_in_files = \
 	test-sig.in
 
 test_sources = \
+	test-bash-rematch 	\
 	test-bug-step-subshell 	\
 	test-bug-set-e 		\
 	test-complete 		\
