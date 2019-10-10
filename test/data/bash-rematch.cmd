@@ -4,12 +4,20 @@ set trace-commands on
 #
 b 7
 display $BASH_REMATCH
+s
 c
+s
 c
+s
 c
+s
 c
+s
 c
+s
 c
+s
 c
+s
 c
 quit
