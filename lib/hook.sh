@@ -90,7 +90,7 @@ _Dbg_debug_trap_handler() {
     # other things.
     _Dbg_set_debugger_entry
 
-    _Dbg_continue_rc=_Dbg_inside_skip
+    ((_Dbg_continue_rc=_Dbg_inside_skip))
 
     # Shift off "RETURN";  we do not need that any more.
     shift
