@@ -8,6 +8,7 @@
 /test-break.sh
 /test-cmd-complete.sh
 /test-cmd-eval.sh
+/test-cmd-info-variables.sh
 /test-columns.sh
 /test-eval.sh
 /test-file.sh
