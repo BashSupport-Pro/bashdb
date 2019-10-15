@@ -3,6 +3,7 @@
 /Makefile
 /Makefile.in
 /aclocal.m4
+/autogen.sh.log
 /autom4te.cache
 /bashdb
 /bashdb-4.*tar.bz2

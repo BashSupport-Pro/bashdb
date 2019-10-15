@@ -1,0 +1,90 @@
+(bash-rematch.sh:2):
+2:	readonly REGEX='aa(b{2,3}[xyz])cc'
++#
++# Test that BASH_REMATCH is saved and restored properly
++#
++b 7
+Breakpoint 1 set in file bash-rematch.sh, line 7.
++display $BASH_REMATCH
+ 0: $BASH_REMATCH
++s
+(bash-rematch.sh:3):
+3:	readonly DEF_VALID_ID='^[0-9]*$'
+ 0: $BASH_REMATCH =
++c
+Breakpoint 1 hit (1 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH =
++s
+(bash-rematch.sh:16):
+16:	    echo "${!i} does not match"
+ 0: $BASH_REMATCH =
++c
+.123 does not match
+Breakpoint 1 hit (2 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH =
++s
+(bash-rematch.sh:8):
+8:	    echo "${!i} matches"
+ 0: $BASH_REMATCH = 456
++c
+456 matches
+Breakpoint 1 hit (3 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH = 456
++s
+(bash-rematch.sh:16):
+16:	    echo "${!i} does not match"
+ 0: $BASH_REMATCH =
++c
+.789 does not match
+Breakpoint 1 hit (4 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH =
++s
+(bash-rematch.sh:16):
+16:	    echo "${!i} does not match"
+ 0: $BASH_REMATCH =
++c
+aab does not match
+Breakpoint 1 hit (5 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH =
++s
+(bash-rematch.sh:8):
+8:	    echo "${!i} matches"
+ 0: $BASH_REMATCH = aabbxcc
++c
+aabbxcc matches
+  capture[1]: bbx
+Breakpoint 1 hit (6 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH = aabbxcc
++s
+(bash-rematch.sh:16):
+16:	    echo "${!i} does not match"
+ 0: $BASH_REMATCH =
++c
+aabbcc does not match
+Breakpoint 1 hit (7 times).
+(bash-rematch.sh:7):
+7:	  if [[ "${!i}" =~ $DEF_VALID_ID || "${!i}" =~ $REGEX || "${!i}" =~ $DEF_REGEX_2 ]];then
+ 0: $BASH_REMATCH =
++s
+(bash-rematch.sh:8):
+8:	    echo "${!i} matches"
+ 0: $BASH_REMATCH = = asd
++c
+= asd matches
+  capture[1]: asd
+Debugged program terminated normally. Use q to quit or R to restart.
+ 0: $BASH_REMATCH = = asd
++quit
+bashdb: That's all, folks...
