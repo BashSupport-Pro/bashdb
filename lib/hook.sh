@@ -48,7 +48,7 @@ typeset -i _Dbg_inside_skip=0
 typeset -i _Dbg_continue_rc=-1
 
 # Variable used to check whether BASH_REMATCH was previously set.
-typeset _Dbg_bash_rematch=$BASH_REMATCH
+typeset -a _Dbg_bash_rematch=$BASH_REMATCH
 
 # If BASH_REMATCH is set then we'll use _Dbg_last_rematch_command to try
 # to set to on exit of the hook. Note that this presumes that when
@@ -294,8 +294,15 @@ _Dbg_hook_enter_debugger() {
     # hook annihilated it.  Note this might fail is we didn't capture
     # _Dbg_last_rematch_command properly.
     if [[ $_Dbg_bash_rematch != '' ]]; then
+	# FIXME generalize this and put in a library for eval.
+	local _Dbg_set_str='set --'
+	local -i _Dbg__i
+	for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
+	    local dq_argi=$(_Dbg_esc_dq "${_Dbg_arg[$_Dbg__i]}")
+	    _Dbg_set_str="$_Dbg_set_str \"$dq_argi\""
+	done
+	eval "$_Dbg_set_str"
 	eval $_Dbg_last_rematch_command
-	_Dbg_last_rematch_command=''
     fi
     return $_Dbg_continue_rc
 }
