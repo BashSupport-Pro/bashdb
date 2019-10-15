@@ -48,7 +48,7 @@ typeset -i _Dbg_inside_skip=0
 typeset -i _Dbg_continue_rc=-1
 
 # Variable used to check whether BASH_REMATCH was previously set.
-typeset -a _Dbg_bash_rematch=$BASH_REMATCH
+typeset -a _Dbg_bash_rematch=()
 
 # If BASH_REMATCH is set then we'll use _Dbg_last_rematch_command to try
 # to set to on exit of the hook. Note that this presumes that when
@@ -101,13 +101,17 @@ _Dbg_debug_trap_handler() {
     # Shift off "RETURN";  we do not need that any more.
     shift
 
-     # Check whether BASH_REMATCH is set and changed.
-     if [[ $BASH_REMATCH != '' ]] && [[ $_Dbg_bash_rematch != $BASH_REMATCH ]]; then
-         # Save a copy of the command string to be able to run to restore read-only
-	 # variable BASH_REMATCH
-	 _Dbg_bash_rematch=$BASH_REMATCH
-         _Dbg_last_rematch_command=$_Dbg_bash_command
-     fi
+    # Check whether BASH_REMATCH is set and changed.
+    if (( ${#BASH_REMATCH[@]} > 0 )) && [[ "${_Dbg_bash_rematch[@]}" != "${BASH_REMATCH[@]}" ]]; then
+        # Save a copy of the command string to be able to run to restore read-only
+	# variable BASH_REMATCH
+        typeset -a _Dbg_args=( "$@" )
+        shift
+	_Dbg_bash_rematch=${BASH_REMATCH[@]}
+        _Dbg_last_rematch_args=( "$@" )
+        _Dbg_last_rematch_command=$_Dbg_bash_command
+        set -- "${_Dbg_args[@]}"
+    fi
 
     _Dbg_bash_command=$1
     shift
@@ -293,16 +297,13 @@ _Dbg_hook_enter_debugger() {
     # program using _Dbg_last_rematch_command.  Executing the debug
     # hook annihilated it.  Note this might fail is we didn't capture
     # _Dbg_last_rematch_command properly.
-    if [[ $_Dbg_bash_rematch != '' ]]; then
+    if (( ${#_Dbg_bash_rematch[@]} > 0 )); then
 	# FIXME generalize this and put in a library for eval.
-	local _Dbg_set_str='set --'
-	local -i _Dbg__i
-	for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
-	    local dq_argi=$(_Dbg_esc_dq "${_Dbg_arg[$_Dbg__i]}")
-	    _Dbg_set_str="$_Dbg_set_str \"$dq_argi\""
-	done
-	eval "$_Dbg_set_str"
+	set -- "${_Dbg_last_rematch_args[@]}"
 	eval $_Dbg_last_rematch_command
+    elif (( ${#BASH_REMATCH[@]} > 0 )) ; then
+	# Set BASH_REMATCH to ()
+	[[ 'this' =~ 'that' ]]
     fi
     return $_Dbg_continue_rc
 }
