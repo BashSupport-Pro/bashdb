@@ -294,9 +294,15 @@ _Dbg_hook_enter_debugger() {
     # hook annihilated it.  Note this might fail is we didn't capture
     # _Dbg_last_rematch_command properly.
     if [[ $_Dbg_bash_rematch != '' ]]; then
-	# FIXME run in eval environment that sets $1 and so on
+	# FIXME generalize this and put in a library for eval.
+	local _Dbg_set_str='set --'
+	local -i _Dbg__i
+	for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
+	    local dq_argi=$(_Dbg_esc_dq "${_Dbg_arg[$_Dbg__i]}")
+	    _Dbg_set_str="$_Dbg_set_str \"$dq_argi\""
+	done
+	eval "$_Dbg_set_str"
 	eval $_Dbg_last_rematch_command
-	_Dbg_last_rematch_command=''
     fi
     return $_Dbg_continue_rc
 }
