@@ -9,6 +9,7 @@ check_DATA = \
 	brkpt2.right \
 	brkpt3.cmd \
 	brkpt3.right \
+	bash-rematch.cmd \
 	bug-args.cmd \
 	bug-args.right \
 	bug-break.cmd \

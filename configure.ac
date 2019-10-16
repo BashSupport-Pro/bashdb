@@ -2,7 +2,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 # Copyright (C) 2002-2012,
-# 2014-2018 Rocky Bernstein <rocky@gnu.org>
+# 2014-2019 Rocky Bernstein <rocky@gnu.org>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ AC_SUBST(RELSTATUS)
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 		  [location of bashdb-main.inc]),
 		  BASHDB_MAIN=$withval,
-		  ${prefix}/bashdb/bashdb-main.inc)
+		  ${ac_default_prefix/prefix}/bashdb/bashdb-main.inc)
 AC_SUBST(BASHDB_MAIN)
 
 # See if we build set0.c
@@ -117,7 +117,8 @@ AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL],
 
 if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
 then
-  AC_PATH_PROG(SH_PROG, POSIXSHELL, no)
+  bash_shell_dir=$(dirname $SHELL)
+  AC_PATH_PROG(SH_PROG, POSIXSHELL, no, PATH="$bash_shell_dir:$PATH")
 fi
 
 if test "$SH_PROG" = no; then
@@ -253,6 +254,8 @@ AC_CONFIG_FILES([test/unit/test-break.sh],
                 [chmod +x test/unit/test-break.sh])
 AC_CONFIG_FILES([test/unit/test-cmd-complete.sh],
                 [chmod +x test/unit/test-cmd-complete.sh])
+AC_CONFIG_FILES([test/unit/test-cmd-info-variables.sh],
+                [chmod +x test/unit/test-cmd-info-variables.sh])
 AC_CONFIG_FILES([test/unit/test-cmd-eval.sh],
                 [chmod +x test/unit/test-cmd-eval.sh])
 AC_CONFIG_FILES([test/unit/test-columns.sh],
@@ -286,6 +289,8 @@ AC_CONFIG_FILES([test/unit/test-sort.sh],
 AC_CONFIG_FILES([test/unit/test-validate.sh],
                 [chmod +x test/unit/test-validate.sh])
 
+AC_CONFIG_FILES([test/integration/test-bash-rematch],
+                [chmod +x test/integration/test-bash-rematch])
 AC_CONFIG_FILES([test/integration/test-bug-break],
                 [chmod +x test/integration/test-bug-break])
 AC_CONFIG_FILES([test/integration/test-bug-step-subshell],

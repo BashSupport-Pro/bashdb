@@ -18,6 +18,11 @@
 # set dollar variables ($1, $2, ... $?)
 # to their values in the debugged environment before we entered the debugger.
 
+if (( ${#_Dbg_bash_rematch[@]} > 0 )) && [[ "${_Dbg_bash_rematch[@]}" != "${BASH_REMATCH[@]}" ]]; then
+    set -- "${_Dbg_last_rematch_args[@]}"
+    eval $_Dbg_last_rematch_command
+fi
+
 local _Dbg_set_str='set --'
 local -i _Dbg__i
 for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
@@ -28,16 +33,6 @@ eval "$_Dbg_set_str"
 
 PS4="$_Dbg_old_PS4"
 IFS="$_Dbg_old_IFS"
-
-if (( ${#_Dbg_bash_rematch[@]} > 0 )); then
-    # FIXME generalize this and put in a library for eval.
-    set -- "${_Dbg_last_rematch_args[@]}"
-    eval $_Dbg_last_rematch_command
-elif (( ${#BASH_REMATCH[@]} > 0 )) ; then
-    # The debugger set BASH_REMATCH, but it should be set to ().
-    # The below is one of many ways to force BASH_REMATCH to ''.
-    [[ 'this' =~ 'that' ]]
-fi
 
 # Setting $? has to be done last.
 _Dbg_set_dol_q
