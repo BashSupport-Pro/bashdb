@@ -30,6 +30,9 @@ Breakpoint 1 hit (2 times).
 (bash-rematch.sh:8):
 8:	    echo "${!i} matches"
  0: $BASH_REMATCH = 456
++eval typeset -p BASH_REMATCH
+declare -ar BASH_REMATCH=([0]="456")
+$? is 0
 +c 
 456 matches
 Breakpoint 1 hit (3 times).

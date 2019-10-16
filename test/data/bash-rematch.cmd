@@ -9,6 +9,7 @@ c
 s
 c
 s
+eval typeset -p BASH_REMATCH
 c
 s
 c

@@ -49,7 +49,7 @@ AC_SUBST(RELSTATUS)
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 		  [location of bashdb-main.inc]),
 		  BASHDB_MAIN=$withval,
-		  ${prefix}/bashdb/bashdb-main.inc)
+		  ${ac_default_prefix/prefix}/bashdb/bashdb-main.inc)
 AC_SUBST(BASHDB_MAIN)
 
 AM_PROG_LIBTOOL

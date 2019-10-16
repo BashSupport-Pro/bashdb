@@ -105,12 +105,13 @@ _Dbg_debug_trap_handler() {
     if (( ${#BASH_REMATCH[@]} > 0 )) && [[ "${_Dbg_bash_rematch[@]}" != "${BASH_REMATCH[@]}" ]]; then
         # Save a copy of the command string to be able to run to restore read-only
 	# variable BASH_REMATCH
-        typeset -a _Dbg_args=( "$@" )
-        shift
 	_Dbg_bash_rematch=${BASH_REMATCH[@]}
         _Dbg_last_rematch_args=( "$@" )
         _Dbg_last_rematch_command=$_Dbg_bash_command
-        set -- "${_Dbg_args[@]}"
+        unset _Dbg_last_rematch_args[0]
+    elif ((!${#BASH_REMATCH[@]} && ${#_Dbg_bash_rematch[@]})); then
+        _Dbg_bash_rematch=()
+        _Dbg_last_rematch_command=''
     fi
 
     _Dbg_bash_command=$1
