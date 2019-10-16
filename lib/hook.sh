@@ -105,12 +105,13 @@ _Dbg_debug_trap_handler() {
     if (( ${#BASH_REMATCH[@]} > 0 )) && [[ "${_Dbg_bash_rematch[@]}" != "${BASH_REMATCH[@]}" ]]; then
         # Save a copy of the command string to be able to run to restore read-only
 	# variable BASH_REMATCH
-        typeset -a _Dbg_args=( "$@" )
-        shift
 	_Dbg_bash_rematch=${BASH_REMATCH[@]}
         _Dbg_last_rematch_args=( "$@" )
         _Dbg_last_rematch_command=$_Dbg_bash_command
-        set -- "${_Dbg_args[@]}"
+        unset _Dbg_last_rematch_args[0]
+    elif ((!${#BASH_REMATCH[@]} && ${#_Dbg_bash_rematch[@]})); then
+        _Dbg_bash_rematch=()
+        _Dbg_last_rematch_command=''
     fi
 
     _Dbg_bash_command=$1
@@ -302,7 +303,8 @@ _Dbg_hook_enter_debugger() {
 	set -- "${_Dbg_last_rematch_args[@]}"
 	eval $_Dbg_last_rematch_command
     elif (( ${#BASH_REMATCH[@]} > 0 )) ; then
-	# Set BASH_REMATCH to ()
+	# The debugger set BASH_REMATCH, but it should be set to ().
+	 # The below is one of many ways to force BASH_REMATCH to ''.
 	[[ 'this' =~ 'that' ]]
     fi
     return $_Dbg_continue_rc
