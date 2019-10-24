@@ -20,7 +20,7 @@
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
-    for lib_file in help alias ; do source $top_dir/lib/${lib_file}.sh; done
+    for lib_file in help alias ; do source "$top_dir/lib/${lib_file}.sh"; done
 fi
 
 _Dbg_help_add complete \
@@ -50,9 +50,9 @@ _Dbg_do_complete() {
 
 # Demo it.
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
-    source ${top_dir}/lib/msg.sh
+    source "${top_dir}/lib/msg.sh"
     for _Dbg_file in ${top_dir}/command/{c*,help}.sh ; do
-	source $_Dbg_file
+	    source "$_Dbg_file"
     done
 
     _Dbg_args='complete'

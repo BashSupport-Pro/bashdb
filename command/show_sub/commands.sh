@@ -19,7 +19,7 @@
 #   MA 02111 USA.
 
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
-    source ${BASH_SOURCE[0]%/*}/../../lib/help.sh
+    source "${BASH_SOURCE[0]%/*}/../../lib/help.sh"
 fi
 
 _Dbg_help_add_sub show commands \
