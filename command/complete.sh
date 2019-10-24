@@ -52,7 +52,7 @@ _Dbg_do_complete() {
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     source ${top_dir}/lib/msg.sh
     for _Dbg_file in ${top_dir}/command/{c*,help}.sh ; do
-	source $_Dbg_file
+	    source "$_Dbg_file"
     done
 
     _Dbg_args='complete'
