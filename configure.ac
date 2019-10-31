@@ -136,7 +136,7 @@ case "${bash_major}.${bash_minor}" in
     ;;
   *)
     AC_MSG_WARN([You have Bash $bash_version installed.])
-    AC_MSG_ERROR([This package is only known to work with Bash 4.1-4.4.])
+    # AC_MSG_ERROR([This package is only known to work with Bash 4.1-4.4.])
     ;;
 esac
 
