@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # gdb-like "backtrace" debugger command
 #
-#   Copyright (C) 2002-2006, 2008, 2010, 2011, 2018
+#   Copyright (C) 2002-2006, 2008, 2010-2011, 2018-2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -32,9 +32,9 @@
 _Dbg_help_add backtrace \
 '**backtrace** [*opts*] [*count*]
 
-Print backtrace of all stack frames, or innermost *count* frames.
+Print backtrace of all stack frames, or inner-most *count* frames.
 
-With a negative argument, print outermost -*count* frames.
+With a negative argument, print outer-most -*count* frames.
 
 An arrow indicates the "current frame". The current frame determines
 the context used for many debugger commands such as expression

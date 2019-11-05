@@ -50,6 +50,6 @@ See also:
 
 _Dbg_do_skip() {
     _Dbg_last_cmd='skip'
-    _Dbg_next_skip_common 1 $*
+    _Dbg_next_skip_common 1 $@
     return $?
 }
