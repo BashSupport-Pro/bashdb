@@ -2,25 +2,25 @@
 22:	x=22
 +set basename on
 Show short filenames (the basename) in debug output is on.
-+# Debugger test of action command
-+#
++# Debugger test of action command, and some $ vars
++# 
 +# Show actions
-+a
++a 
 No actions have been set.
 +# Delete actions when there are none
-+A
++A 
 ** No actions to delete.
 +# Try a simple action action...
 +a 23 x=60
 Action 1 set in file dbg-test1.sh, line 23.
-+L
++L 
 No breakpoints have been set.
 No watch expressions have been set.
 Actions at following places:
 Num Enb Stmt               file:line
 ------------------------------------
 1     1 x=60               dbg-test1.sh:23
-+a
++a 
 Actions at following places:
 Num Enb Stmt               file:line
 ------------------------------------
@@ -31,5 +31,9 @@ One-time breakpoint 1 set in file dbg-test1.sh, line 24.
 24:	for i in 0 1 3 ; do
 +print "value of x is now $x"
 value of x is now 60
-+quit
++# Check $0
++eval echo dollar 0 is $(basename $0)
+dollar 0 is dbg-test1.sh
+$? is 0
++quit 
 bashdb: That's all, folks...

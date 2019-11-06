@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Enter nested shell
 #
-#   Copyright (C) 2011, 2016-2017 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2011, 2016-2017, 2019 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -106,9 +106,10 @@ _Dbg_do_shell() {
     _Dbg_shell_new_shell_profile $_Dbg_o_vars $_Dbg_o_fns
 
     # Set prompt in new shell
-    echo "PS1='${_Dbg_debugger_name} $ '" >>$_Dbg_shell_temp_profile
+    builtin echo "PS1='${_Dbg_debugger_name} $ '" >> "$_Dbg_shell_temp_profile"
+    builtin echo "BASH_ARGV0=$_Dbg_dollar_0" >> "$_Dbg_shell_temp_profile"
 
-    $shell --init-file $_Dbg_shell_temp_profile $_Dbg_shell_opts
+    $shell --init-file "$_Dbg_shell_temp_profile" $_Dbg_shell_opts
     rc=$?
     _Dbg_restore_from_nested_shell
     # FIXME: put in _Dbg_restore_from_nested_shell

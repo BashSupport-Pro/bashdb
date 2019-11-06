@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Eval and Print commands.
 #
-#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015 Rocky Bernstein
-#   <rocky@gnu.org>
+#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015, 2019 Rocky
+#   Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -70,47 +70,48 @@ complete -F _Dbg_complete_eval 'eval?'
 
 _Dbg_do_eval() {
 
-  builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > "$_Dbg_evalfile"
-   if (( $# == 0 )) ; then
-       # FIXME: add parameter to get unhighlighted line, or
-       # always save a copy of that in _Dbg_get_source_line
-       typeset source_line_save="$_Dbg_source_line"
-       typeset highlight_save=$_Dbg_set_highlight
-       _Dbg_set_highlight=''
-       _Dbg_get_source_line
+    builtin echo ". ${_Dbg_libdir}/dbg-set-d-vars.inc" > "$_Dbg_evalfile"
+    if (( $# == 0 )) ; then
+	# FIXME: add parameter to get unhighlighted line, or
+	# always save a copy of that in _Dbg_get_source_line
+	typeset source_line_save="$_Dbg_source_line"
+	typeset highlight_save=$_Dbg_set_highlight
+	_Dbg_set_highlight=''
+	_Dbg_get_source_line
 
-       # Were we called via ? as the suffix?
-       typeset suffix
-       suffix=${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1}
-       typeset source_line
-       if [[ '?' == "$suffix" ]] ; then
-	   typeset extracted
-	   _Dbg_eval_extract_condition "$_Dbg_source_line"
-	   source_line="$extracted"
-	   source_line_save="$extracted"
-       else
-	   source_line="$_Dbg_bash_command"
-       fi
+	# Were we called via ? as the suffix?
+	typeset suffix
+	suffix=${_Dbg_orig_cmd:${#_Dbg_orig_cmd}-1:1}
+	typeset source_line
+	if [[ '?' == "$suffix" ]] ; then
+	    typeset extracted
+	    _Dbg_eval_extract_condition "$_Dbg_source_line"
+	    source_line="$extracted"
+	    source_line_save="$extracted"
+	else
+	    source_line="$_Dbg_bash_command"
+	fi
 
-       builtin echo "$source_line" >> "$_Dbg_evalfile"
-       _Dbg_msg "eval: ${source_line}"
-       _Dbg_source_line="$source_line_save"
-       _Dbg_set_highlight=$_Dbg_highlight_save
-   else
-       builtin echo -e "$@" >> "$_Dbg_evalfile"
-   fi
-  if [[ -n "$_Dbg_tty"  ]] ; then
-    . "$_Dbg_evalfile" >>"$_Dbg_tty"
-  else
-    . "$_Dbg_evalfile"
-  fi
-  _Dbg_rc=$?
-  (( _Dbg_show_eval_rc )) && _Dbg_msg "\$? is $_Dbg_rc"
-  # We've reset some variables like IFS and PS4 to make eval look
-  # like they were before debugger entry - so reset them now.
-  _Dbg_set_debugger_internal
-  _Dbg_last_cmd='eval'
-  return 0
+	builtin echo "$source_line" >> "$_Dbg_evalfile"
+	_Dbg_msg "eval: ${source_line}"
+	_Dbg_source_line="$source_line_save"
+	_Dbg_set_highlight=$_Dbg_highlight_save
+    else
+	builtin echo -e "$@" >> "$_Dbg_evalfile"
+    fi
+    builtin echo "BASH_ARGV0=$_Dbg_dollar_0" >> "$_Dbg_evalfile"
+    if [[ -n "$_Dbg_tty"  ]] ; then
+	. "$_Dbg_evalfile" >>"$_Dbg_tty"
+    else
+	. "$_Dbg_evalfile"
+    fi
+    _Dbg_rc=$?
+    (( _Dbg_show_eval_rc )) && _Dbg_msg "\$? is $_Dbg_rc"
+    # We've reset some variables like IFS and PS4 to make eval look
+    # like they were before debugger entry - so reset them now.
+    _Dbg_set_debugger_internal
+    _Dbg_last_cmd='eval'
+    return 0
 }
 
 _Dbg_alias_add 'ev' 'eval'
