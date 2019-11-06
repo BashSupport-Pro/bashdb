@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Debugger load SCRIPT command.
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2006, 2008, 2010,
-#   2011, 2018 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002-2006, 2008, 2010-2011, 2018-2019 Rocky
+#   Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -20,12 +20,17 @@
 #   MA 02111 USA.
 
 _Dbg_help_add load \
-'**load** SCRIPT
+'**load** *bash-script*
 
-Read in lines of a SCRIPT for use in listing.
+Read in lines of a *bash-script*.
 
 For paths with space characters please use octal escape, e.g.:
-load /some/path\\0400with\\0400spaces/script.sh'
+load /some/path\\0400with\\0400spaces/script.sh
+
+See also:
+---------
+**info files**
+'
 
 _Dbg_do_load() {
 

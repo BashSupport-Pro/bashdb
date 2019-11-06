@@ -6,7 +6,7 @@ The version of *bashdb* to use has to be compatible with the version
 of bash used. Run `bash --version` to see what version of *bash* you
 are using.
 
-* If your version of bash is 5.0 or higher, use folder [5.0-1.1.0](https://sourceforge.net/projects/bashdb/files/bashdb/5.0-1.1.0/)
+* If your version of bash is 5.0 or higher, use folder [5.0-1.1.1](https://sourceforge.net/projects/bashdb/files/bashdb/5.0-1.1.1/)
 * If your version of bash is 4.4 or higher, use folder [4.4-1.0.1](https://sourceforge.net/projects/bashdb/files/bashdb/4.4-1.0.1/)
 * If your version of bash is 4.3 or higher, use folder [4.3-0.91](https://sourceforge.net/projects/bashdb/files/bashdb/4.3-0.91/)
 * If your version of bash is 4.2 or higher, use folder [4.2-0.8](https://sourceforge.net/projects/bashdb/files/bashdb/4.1-0.5/)
@@ -35,8 +35,7 @@ If bash isn't installed in a way that will find bashdb, then:
 
     bashdb [bashdb-opts] -- bash-script-name script-arg1 script-arg2...
 
-The downside here is that $0 will be "bashdb" not
-bash-script-name. Also call stack will show the invocation to bashdb.
+Note that the call stack will show the invocation to bashdb.
 
 Finally, to invoke the debugger from the script
 

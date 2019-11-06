@@ -16,8 +16,9 @@ cat ${TEST_FILE} | @SED@ -e "s:1 = .*/dbg-test2.sh:1 = ./example/dbg-test2.sh:" 
 | @SED@ -e 's:step-:step+:' \
 | @GREP@ -v '^set dollar0' > ${TEST_FILTERED_FILE}
 
-if (( BASH_VERSINFO[0] > 4 || \
-    (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1) )) ; then 
+if (( BASH_VERSINFO[0] == 5 )) ; then
+    RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-output-50.right"
+elif (( (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] >= 1) )) ; then
     RIGHT_FILE="${top_srcdir}/test/data/${TEST_NAME}-output-41.right"
 fi
 

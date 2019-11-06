@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # fns.sh - Debugger Utility Functions
 #
-#   Copyright (C) 2002, 2003, 2004, 2005, 2007, 2008, 2009, 2010, 2011
+#   Copyright (C) 2002-2011 2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -262,4 +262,21 @@ function _Dbg_set_ftrace {
 	  declare -f $opt $func
 	  # _Dbg_msg "Tracing $tmsg for function $func"
   done
+}
+
+# Adapted from
+# https://stackoverflow.com/questions/14525296/bash-check-if-variable-is-array
+function _Dbg_is_readonly_array() {
+    # no argument passed
+    if [[ $# -ne 1 ]]; then
+	return 1
+    fi
+    typeset var=$1
+    # use a variable to avoid having to escape spaces
+    regex="^declare -ar ${var}(=|$)"
+    if [[ $(declare -p "$var" 2> /dev/null) =~ $regex ]]; then
+	return 0
+    else
+	return 1
+    fi
 }

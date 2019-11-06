@@ -1,3 +1,0 @@
-This directory has the more coarse-grain integration tests which work
-by running the full debugger. You might also want to check out the
-unit tests which handle smaller components of the debugger.

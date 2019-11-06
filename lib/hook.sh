@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002-2011, 2014, 2017-2018
+#   Copyright (C) 2002-2011, 2014, 2017-2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -47,8 +47,14 @@ typeset -i _Dbg_inside_skip=0
 # - A set return code 0 continues execution.
 typeset -i _Dbg_continue_rc=-1
 
-# Used to check whether the last command was a regular expression match
-typeset _Dbg_last_regmatch_command=''
+# Variable used to check whether BASH_REMATCH was previously set.
+typeset -a _Dbg_bash_rematch=()
+
+# If BASH_REMATCH is set then we'll use _Dbg_last_rematch_command to try
+# to set to on exit of the hook. Note that this presumes that when
+# the value of BASH_REMATCH was noticed to have changed it was because
+# of the current bash command, which might not always be true.
+typeset _Dbg_last_rematch_command=''
 
 # ===================== FUNCTIONS =======================================
 
@@ -90,16 +96,23 @@ _Dbg_debug_trap_handler() {
     # other things.
     _Dbg_set_debugger_entry
 
-    _Dbg_continue_rc=_Dbg_inside_skip
+    ((_Dbg_continue_rc=_Dbg_inside_skip))
 
     # Shift off "RETURN";  we do not need that any more.
     shift
 
-     # Check whether the last command was a regular expression match
-     if [[ "${_Dbg_bash_command}" != "${_Dbg_bash_command#* =~ }" ]]; then
-         # Save a flattened copy of the command string to freeze it in time
-         _Dbg_last_regmatch_command=$(eval echo \"$_Dbg_bash_command\")
-     fi
+    # Check whether BASH_REMATCH is set and changed.
+    if (( ${#BASH_REMATCH[@]} > 0 )) && [[ "${_Dbg_bash_rematch[@]}" != "${BASH_REMATCH[@]}" ]]; then
+        # Save a copy of the command string to be able to run to restore read-only
+	# variable BASH_REMATCH
+	_Dbg_bash_rematch=${BASH_REMATCH[@]}
+        _Dbg_last_rematch_args=( "$@" )
+        _Dbg_last_rematch_command=$_Dbg_bash_command
+        unset _Dbg_last_rematch_args[0]
+    elif ((!${#BASH_REMATCH[@]} && ${#_Dbg_bash_rematch[@]})); then
+        _Dbg_bash_rematch=()
+        _Dbg_last_rematch_command=''
+    fi
 
     _Dbg_bash_command=$1
     shift
@@ -281,8 +294,18 @@ _Dbg_hook_enter_debugger() {
     [[ 'noprint' != $2 ]] && _Dbg_print_location_and_command
     _Dbg_process_commands
     _Dbg_set_to_return_from_debugger 1
-    # Persist the user-space value of BASH_REMATCH in user space
-    eval $_Dbg_last_regmatch_command
+    # Try to Persist the user-space value of BASH_REMATCH in debugged
+    # program using _Dbg_last_rematch_command.  Executing the debug
+    # hook annihilated it.  Note this might fail is we didn't capture
+    # _Dbg_last_rematch_command properly.
+    if (( ${#_Dbg_bash_rematch[@]} > 0 )); then
+	# FIXME generalize this and put in a library for eval.
+	set -- "${_Dbg_last_rematch_args[@]}"
+	eval $_Dbg_last_rematch_command
+    elif (( ${#BASH_REMATCH[@]} > 0 )) ; then
+	# Set BASH_REMATCH to ()
+	[[ 'this' =~ 'that' ]]
+    fi
     return $_Dbg_continue_rc
 }
 
