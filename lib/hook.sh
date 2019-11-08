@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # hook.sh - Debugger trap hook
 #
-#   Copyright (C) 2002-2011, 2014, 2017-2018
+#   Copyright (C) 2002-2011, 2014, 2017-2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -231,7 +231,7 @@ _Dbg_hook_action_hit() {
 	if (( linenos[_Dbg_i] == lineno )) ; then
 	    (( _Dbg_action_num = action_nos[_Dbg_i] ))
 	    stmt="${_Dbg_action_stmt[$_Dbg_action_num]}"
-  	    . "${_Dbg_libdir}/dbg-set-d-vars.inc"
+  	    . "${_Dbg_libdir}/set-d-vars.sh"
   	    eval "$stmt"
 	    # We've reset some variables like IFS and PS4 to make eval look
 	    # like they were before debugger entry - so reset them now.

@@ -51,11 +51,6 @@ AC_SUBST(RELSTATUS)
 AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 		  [location of bashdb-main.inc]), BASHDB_MAIN=$withval)
 
-AM_PROG_LIBTOOL
-PIC=$lt_prog_compiler_pic
-WL=$lt_prog_compiler_wl
-AC_SUBST(PIC)
-AC_SUBST(WL)
 AC_SUBST(DIFF)
 AC_SUBST(DIFF_OPTS)
 AC_PATH_PROG(PERL, perl, false)

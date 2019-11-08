@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # break.sh - Debugger Break and Watch routines
 #
-#   Copyright (C) 2002-2003, 2006-2011, 2014-2018 Rocky Bernstein
+#   Copyright (C) 2002-2003, 2006-2011, 2014-2019 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -417,13 +417,13 @@ _Dbg_get_watch_exp_eval() {
   typeset new_val
 
   if [[ $(eval echo \"${_Dbg_watch_exp[$i]}\") == "" ]]; then
-    new_val=''
+      new_val=''
   elif (( _Dbg_watch_arith[$i] == 1 )) ; then
-    . "${_Dbg_libdir}/dbg-set-d-vars.inc"
-    eval let new_val=\"${_Dbg_watch_exp[$i]}\"
+      . "${_Dbg_libdir}/set-d-vars.sh"
+      eval let new_val=\"${_Dbg_watch_exp[$i]}\"
   else
-    . "${_Dbg_libdir}/dbg-set-d-vars.inc"
-    eval new_val="${_Dbg_watch_exp[$i]}"
+      . "${_Dbg_libdir}/set-d-vars.sh"
+      eval new_val="${_Dbg_watch_exp[$i]}"
   fi
   echo $new_val
 }
