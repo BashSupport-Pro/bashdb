@@ -18,6 +18,11 @@
 # set dollar variables ($1, $2, ... $?)
 # to their values in the debugged environment before we entered the debugger.
 
+if (( ${#_Dbg_bash_rematch[@]} > 0 )) &&  [[ "${_Dbg_bash_rematch[@]}" != "${BASH_REMATCH[@]}" ]]; then
+    set -- "${_Dbg_last_rematch_args[@]}"
+    eval $_Dbg_last_rematch_command
+fi
+
 local _Dbg_set_str='set --'
 local -i _Dbg__i
 for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do

@@ -50,6 +50,7 @@ _Dbg_save_args() {
 	unset _Dbg_arg[$_Dbg_i]
     done
 
+    _Dbg_dollar_0=$0
     # Populate _Dbg_arg with $1, $2, etc.
     for (( _Dbg_i=1 ; _Dbg_n > 0; _Dbg_n-- )) ; do
 	_Dbg_arg[$_Dbg_i]="$1"

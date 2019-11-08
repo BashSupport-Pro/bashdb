@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Set up to Debug into another script...
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2011
+#   Copyright (C) 2002-2004, 2006, 2008-2011, 2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -20,9 +20,9 @@
 #   MA 02111 USA.
 
 _Dbg_help_add debug \
-"debug [*script*]
+"debug [*bash-script* [*args*...]]
 
-Recursively debug into *zsh-script*.
+Recursively debug into *bash-script*.
 
 If *script* is not given, take the script name from the command that
 is about to be executed. Note that when the nested debug finished, you

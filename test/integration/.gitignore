@@ -5,6 +5,7 @@
 /Makefile
 /Makefile.in
 /check-common.sh
+/test-bash-rematch
 /test-bug-break
 /test-bug-step-subshell
 /test-complete

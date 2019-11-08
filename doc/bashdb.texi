@@ -807,13 +807,9 @@ path, then this might be equivalent to the above:
 bashdb @var{bashdb-options} @var{script} -- @var{script-arguments...}
 @end example
 
-There are two or three disadvantages however of running a debugger
-this way. First @code{$0} will have the value @emph{bashdb} rather
-than the script you are trying to run. For some scripts this may
-change the behavior of the debugged script. Second a traceback will
-contain additional lines showing the ``source''-ing of the debugged
-script from @emph{bashdb}. And third, although this way works better
-than the first method, over time this way may come into disuse.
+There is a slight disadvantage to running a debugger this
+way: a traceback will contain additional lines showing the
+``source''-ing of the debugged script from @emph{bashdb}.
 
 An option that you'll probably need to use if bashdb isn't installed
 but run out of the source code directory is @samp{-L} which specifies
@@ -1372,7 +1368,7 @@ just @key{RET}. Some commands which require a parameter, such as
 * Search::               Searching source files (/pat/ ?pat?)
 * Data::                 Examining data (print, examine, info variables)
 * Auto Display::         Executing expressions on stop (display, undisplay)
-* Evaluation/Execution:: Arbitrary execution (eval, eval? shell)
+* Evaluation/Execution:: Arbitrary execution (eval, eval? shell, debug)
 * Interfacing to the OS:: Interfacing to the OS (cd, pwd)
 * Information and Settings::  Status and Debugger settings (info, show)
 * Controlling bashdb::   Controlling bashdb (annotate, file, prompt, history...)
@@ -2196,13 +2192,44 @@ exit also functions like a return.
 @table @code
 @kindex debug
 @item debug @ovar{script-name}
-Debug into @var{script-name}. If no name is given the current source line
+Debug into @var{bash-script-name}. If no name is given the current source line
 is used. In either case the options are prepended to cause the
 debugger to run.
 
-The nesting level of the debugger is saved inside environment variable
+A separate bash shell is run for @code{debug} invocation. Therefore,
+generally debugger settings, in particular those that are not
+@code{export}'ed from one session don't bleed into the next.
+
+One environment variable that is exported is The nesting level of the debugger,
 @code{_Dbg_DEBUGGER_LEVEL}. The debugger prompt indicates the level of nesting
 by enclosing the history in that many nestings of @code{<>} symbols.
+
+Here is an example session of using the @code{debug} command:
+
+@smallexample
+$ bashdb /etc/profile
+bash debugger, bashdb, ...
+bashdb<1> break 14
+Breakpoint 1 set in file /etc/profile, line 14.
+bashdb<2> info break
+Num Type       Disp Enb What
+1   breakpoint keep y   /etc/profile:14
+bashdb<3> debug /etc/profile.d/01-locale-fix.sh
+Debugging new script with /bin/bash /usr/bin/bashdb -q -L /usr/share/bashdb /etc/profile.d/01-locale-fix.sh
+(/etc/profile.d/01-locale-fix.sh:2):
+2:	eval $(/usr/bin/locale-check C.UTF-8)
+bashdb<<0>> info break
+No breakpoints have been set.
+bashdb<<1>> x _Dbg_DEBUGGER_LEVEL
+declare -ix _Dbg_DEBUGGER_LEVEL="2"
+bashdb<<2>> quit
+bashdb: That's all, folks...
+bashdb<4> info break
+Num Type       Disp Enb What
+1   breakpoint keep y   /etc/profile:14
+bashdb<5> x _Dbg_DEBUGGER_LEVEL
+declare -ix _Dbg_DEBUGGER_LEVEL="1"
+@end smallexample
 
 @end table
 
@@ -2960,7 +2987,7 @@ because they refer to automatic variables not currently available.
 @section Running Arbitrary BASH and Shell commands (@samp{eval}, @samp{shell})
 
 The two most general commands and most ``low-level'' are @code{eval}
-and @code{shell}.
+and @code{shell}; @code{debug} allows will run a recusive debugger while stepping a shell script.
 
 @table @code
 @item eval @r{[} bash-code @r{]}
