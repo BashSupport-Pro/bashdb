@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Set up to Debug into another script...
 #
-#   Copyright (C) 2002, 2003, 2004, 2006, 2008, 2009, 2010, 2011
+#   Copyright (C) 2002-2004, 2006, 2008-2011, 2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -13,19 +13,25 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
 _Dbg_help_add debug \
-"debug [SCRIPT]
+"debug [*bash-script* [*args*...]]
 
-Set up SCRIPT for debugging. 
+Recursively debug into *bash-script*.
 
-If SCRIPT is not given, take the script name from the command that is
-about to be executed."
+If *script* is not given, take the script name from the command that
+is about to be executed. Note that when the nested debug finished, you
+are still where you were prior to entering the debugger.
+
+See also:
+---------
+
+**skip** and **run**."
 
 # TODO: would work better if instead of using $source_line below
 # which might have several statements, we could just pick up the next
@@ -35,13 +41,13 @@ _Dbg_do_debug() {
     _Dbg_shell_new_shell_profile
 
     typeset script_cmd=${@:-$_Dbg_bash_command}
-    
+
     # We need to expand variables that might be in $script_cmd.
     # set_Dbg_nested_debug_cmd is set up to to be eval'd below.
     typeset set_Dbg_debug_cmd="typeset _Dbg_debug_cmd=\"$script_cmd\"";
-    
+
     [[ -z $BASH ]] && BASH='bash'
-    
+
     eval "$_seteglob"
     # Add appropriate bash debugging options
     if (( ! _Dbg_script )) ; then
@@ -53,8 +59,8 @@ _Dbg_do_debug() {
     fi
     eval "$_resteglob"
     eval $set_Dbg_debug_cmd
-    
-    if (( _Dbg_set_basename )) ; then 
+
+    if (( _Dbg_set_basename )) ; then
 	_Dbg_msg "Debugging new script with $script_cmd"
     else
 	_Dbg_msg "Debugging new script with $_Dbg_debug_cmd"
@@ -65,6 +71,6 @@ _Dbg_do_debug() {
     ((_Dbg_DEBUGGER_LEVEL++))
     $_Dbg_debug_cmd
     ((_Dbg_DEBUGGER_LEVEL--))
-    _Dbg_restore_from_nested_shell    
+    _Dbg_restore_from_nested_shell
     export _Dbg_QUIT_ON_QUIT=$old_quit_on_quit
 }

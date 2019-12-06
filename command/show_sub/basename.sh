@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "show basename" debugger command
 #
-#   Copyright (C) 2010, 2011 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2019 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -19,16 +19,18 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub show basename \
-'show basename
+'**show basename**
 
-Show whether use short filenames
+Show whether file basenames are in effect.
 
-See also \"set basename\".' 1
+See also:
+---------
+**set basename**.' 1
 
 _Dbg_do_show_basename() {
     [[ -n $1 ]] && label=$(_Dbg_printf_nocr "%-12s: " basename)
     _Dbg_msg \
-	"${label}Show short filenames (the basename) in debug output is" $(_Dbg_onoff $_Dbg_set_basename)
+	"${label}Show short filenames (the basename) in is" $(_Dbg_onoff $_Dbg_set_basename)
     typeset onoff="on."
     [[ -z ${_Dbg_cmdloop_hooks["list"]} ]] && onoff='off.'
     return 0

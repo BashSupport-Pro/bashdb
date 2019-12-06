@@ -9,7 +9,7 @@ fn1 here
 (dbg-test1.sh:34):
 34:	source ../example/dbg-test1.sub
 +# It is important to "next" rather than "step"
-+next
++next 
 SOURCED LINENO 19
 SOURCED BASH_SOURCE[0] dbg-test1.sub
 SOURCED FN LINENO 5
@@ -28,5 +28,5 @@ Source files which we have recorded info about:
   dbg-test1.sub: dbg-test1.sub, 28 lines
   dbg-test1.sh: dbg-test1.sh, 35 lines
   dbg-test1.sub: dbg-test1.sub, 28 lines
-+quit
++quit 
 bashdb: That's all, folks...

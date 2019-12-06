@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # unescape.sh - info help Routines
 
-#   Copyright (C) 2018
+#   Copyright (C) 2018, 2019
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -19,6 +19,6 @@
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
 #   MA 02111 USA.
 
-function _Dbg_unescape_arg() {
+_Dbg_unescape_arg() {
     builtin echo -n -e "$@"
 }
