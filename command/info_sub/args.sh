@@ -27,7 +27,7 @@
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='../..' || top_dir=${dirname}/../..
-    source ${top_dir}/lib/help.sh
+    source "${top_dir}/lib/help.sh"
 fi
 
 _Dbg_help_add_sub info args \
