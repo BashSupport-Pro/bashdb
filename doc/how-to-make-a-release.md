@@ -41,7 +41,7 @@ git checkout master
 git merge <branch>
 ```
 
-Use the GUI
+Use the GUI https://sourceforge.net/projects/bashdb/files/bashdb
 
 create new folder, right click to set place to upload and
 hit upload button.
