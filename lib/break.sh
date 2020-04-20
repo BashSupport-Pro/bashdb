@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # break.sh - Debugger Break and Watch routines
 #
-#   Copyright (C) 2002-2003, 2006-2011, 2014-2018 Rocky Bernstein
+#   Copyright (C) 2002-2003, 2006-2011, 2014-2019 Rocky Bernstein
 #   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or

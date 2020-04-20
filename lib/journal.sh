@@ -70,7 +70,7 @@ _Dbg_erase_journals() {
 _Dbg_source_journal() {
 
   if [ -r $_Dbg_journal ] ; then 
-    . $_Dbg_journal
+    . "$_Dbg_journal"
     (( BASH_SUBSHELL == 0 )) && _Dbg_erase_journals
   fi
 }
