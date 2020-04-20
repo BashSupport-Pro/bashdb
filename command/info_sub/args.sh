@@ -98,12 +98,12 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     # FIXME: put some of this into a mock
     _Dbg_libdir=${top_dir}
     for _Dbg_file in pre vars ; do
-	source ${top_dir}/init/${_Dbg_file}.sh
+	source "${top_dir}/init/${_Dbg_file}.sh"
     done
     for _Dbg_file in frame msg file journal save-restore alias ; do
-	source ${top_dir}/lib/${_Dbg_file}.sh
+	source "${top_dir}/lib/${_Dbg_file}.sh"
     done
-    source ${top_dir}/command/help.sh
+    source "${top_dir}/command/help.sh"
     _Dbg_set_debugger_entry
     _Dbg_frame_adjusted_pos() {
 	typeset -i i=${1:-0}

@@ -2,7 +2,7 @@
 # vars.sh - Bourne Again Shell Debugger Global Variables
 #
 #   Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008, 2009 Rocky Bernstein 
-#   2011 <rocky@gnu.org>
+#   2011, 2019 <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
