@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # Eval and Print commands.
 #
-#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015, 2019 Rocky
-#   Bernstein <rocky@gnu.org>
+#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015, 2019-2020
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -99,7 +99,7 @@ _Dbg_do_eval() {
     else
 	builtin echo -e "$@" >> "$_Dbg_evalfile"
     fi
-    builtin echo "BASH_ARGV0=$_Dbg_dollar_0" >> "$_Dbg_evalfile"
+    builtin echo "BASH_ARGV0=\"$_Dbg_dollar_0\"" >> "$_Dbg_evalfile"
     if [[ -n "$_Dbg_tty"  ]] ; then
 	. "$_Dbg_evalfile" >>"$_Dbg_tty"
     else
