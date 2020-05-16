@@ -1,7 +1,7 @@
 (hanoi.sh:30):
 30:	typeset -i max=3
 +set basename on
-Show short filenames (the basename) in debug output is on.
+Show short filenames (the basename) in is on.
 +c 7
 One-time breakpoint 1 set in file hanoi.sh, line 7.
 (hanoi.sh:7):
@@ -11,7 +11,7 @@ Argument count is 0 for this call.
 +c hanoi
 One-time breakpoint 2 set in file hanoi.sh, line 12.
 (hanoi.sh:12):
-12:	hanoi() { 
+12:	hanoi() {
 +info args
 $1 = 3
 $2 = a

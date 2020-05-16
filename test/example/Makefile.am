@@ -1,4 +1,5 @@
 check_DATA =            \
+	bash-rematch.sh \
 	bug-args.sh.in  \
 	bug-clear.sh    \
 	bug-loc.sh      \

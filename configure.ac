@@ -22,7 +22,7 @@ dnl Process this file with autoconf to produce a configure script.
 define(DEBUGGER, bashdb)
 define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 5.0)
-define(relstatus, 1.1.1)
+define(relstatus, 1.1.2)
 
 AC_INIT([bashdb],
   [OK_BASH_VERS-relstatus],
@@ -52,11 +52,6 @@ AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
 		  ${ac_default_prefix/prefix}/bashdb/bashdb-main.inc)
 AC_SUBST(BASHDB_MAIN)
 
-AM_PROG_LIBTOOL
-PIC=$lt_prog_compiler_pic
-WL=$lt_prog_compiler_wl
-AC_SUBST(PIC)
-AC_SUBST(WL)
 AC_SUBST(DIFF)
 AC_SUBST(DIFF_OPTS)
 AC_PATH_PROG(PERL, perl, false)
@@ -262,8 +257,6 @@ AC_CONFIG_FILES([test/unit/test-require.sh],
 AC_CONFIG_FILES([test/unit/test-run.sh], [chmod +x test/unit/test-run.sh])
 AC_CONFIG_FILES([test/unit/test-save-restore.sh],
                 [chmod +x test/unit/test-save-restore.sh])
-AC_CONFIG_FILES([test/unit/test-set0.sh],
-                [chmod +x test/unit/test-set0.sh])
 AC_CONFIG_FILES([test/unit/test-sort.sh],
                 [chmod +x test/unit/test-sort.sh])
 AC_CONFIG_FILES([test/unit/test-validate.sh],

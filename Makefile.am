@@ -22,7 +22,7 @@ SUBDIRS = command init lib data doc test
 
 pkgdata_DATA =       \
        dbg-main.sh   \
-       dbg-set-d-vars.inc  \
+       set-d-vars.sh  \
        bashdb-main.inc     \
        bashdb-trace        \
        bashdb-part2.sh     \

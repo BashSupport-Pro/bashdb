@@ -1,5 +1,5 @@
 # -*- shell-script -*-
-#   Copyright (C) 2002, 2003, 2004, 2007, 2008, 2019  Rocky Bernstein rocky@gnu.org
+#   Copyright (C) 2002-2004, 2007-2008, 2019 Rocky Bernstein rocky@gnu.org
 #
 #   bashdb is free software; you can redistribute it and/or modify it under
 #   the terms of the GNU General Public License as published by the Free
@@ -26,8 +26,8 @@ fi
 local _Dbg_set_str='set --'
 local -i _Dbg__i
 for (( _Dbg__i=1 ; _Dbg__i<=${#_Dbg_arg[@]}; _Dbg__i++ )) ; do
-  local dq_argi=$(_Dbg_esc_dq "${_Dbg_arg[$_Dbg__i]}")
-  _Dbg_set_str="$_Dbg_set_str \"$dq_argi\""
+    local dq_argi=$(_Dbg_esc_dq "${_Dbg_arg[$_Dbg__i]}")
+    _Dbg_set_str="$_Dbg_set_str \"$dq_argi\""
 done
 eval "$_Dbg_set_str"
 

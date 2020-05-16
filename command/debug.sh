@@ -28,10 +28,10 @@ If *script* is not given, take the script name from the command that
 is about to be executed. Note that when the nested debug finished, you
 are still where you were prior to entering the debugger.
 
-See Also:
+See also:
 ---------
 
-**skip** and **run**"
+**skip** and **run**."
 
 # TODO: would work better if instead of using $source_line below
 # which might have several statements, we could just pick up the next
