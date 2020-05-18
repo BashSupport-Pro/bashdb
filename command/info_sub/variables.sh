@@ -183,10 +183,10 @@ function _Dbg_do_info_variables {
 			    _Dbg_var=${_Dbg_var//\\\\n/\\\\\\n}
 			    _Dbg_var=${_Dbg_var//
 				/\\n}
-				if [ $_Dbg_typeset_filtered -eq 1 ]; then
-			    _Dbg_var=${_Dbg_var#* * }
+			    if (( _Dbg_typeset_filtered == 1 )); then
+				_Dbg_var=${_Dbg_var#* * }
 			    else
-			    _Dbg_var=${_Dbg_var#* }
+				_Dbg_var=${_Dbg_var#* }
 			    fi
 			    _Dbg_msg ${_Dbg_var}
 			fi
