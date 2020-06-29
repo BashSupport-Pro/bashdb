@@ -56,7 +56,7 @@ $ cd doc
 $ rm *.html
 $ make
 $ scp *.html rockyb,bashdb@web.sourceforge.net:htdocs
-$ # scp *.html rockyb,bashdb@web.sourceforge.net:/home/groups/b/ba/bashdb/htdocs/
+$ # scp -i ~/.ssh/id_rsa_sourceforge *.html rockyb,bashdb@web.sourceforge.net:/home/groups/b/ba/bashdb/htdocs/
 ```
 
 * Bump version in configure.ac and add "dev". See place above in
