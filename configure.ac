@@ -107,7 +107,7 @@ bash_version=`$SH_PROG --version`
 [bash_minor=`$SH_PROG -c 'echo ${BASH_VERSINFO[1]}'`]
 bash_5_or_greater=no
 case "${bash_major}.${bash_minor}" in
-  'OK_BASH_VERS' | '5.0')
+  'OK_BASH_VERS' | '5.0' | '5.1')
     bash_5_or_greater=yes
     ;;
   *)
@@ -118,7 +118,8 @@ esac
 
 AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main],
                   [location of dbg-main.sh]),
-		  DBGR_MAIN=$withval)
+		  [DBGR_MAIN=$withval]
+		  [DBGR_MAIN=${ac_default_prefix/prefix}/bashdb/bashdb-main.inc])
 AC_SUBST(DBGR_MAIN)
 
 mydir=$(dirname $0)

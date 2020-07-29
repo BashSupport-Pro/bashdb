@@ -87,6 +87,7 @@ set basename    -- Set short filenames (the basename) in debug output is on.
 set debug       -- Set debugging the debugger is off.
 set different   -- Set to stop at a different line is different
 set editing     -- Set editing of command lines as they are typed is on.
+set filename-display--  absolute.
 set highlight   -- Set syntax highlighting of source listings is on.
 set history     -- Set record command history is off.
 set linetrace   -- Set tracing execution of lines before executed is off.

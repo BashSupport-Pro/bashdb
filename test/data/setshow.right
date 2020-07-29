@@ -293,9 +293,10 @@ of promoting the sharing and reuse of software generally.
 +show badcommand
 ** Unknown show subcommand: badcommand
 ** Show subcommands are:
-**   alias     autoeval  commands  different    highlight  prompt  version
-**   annotate  autolist  copying   directories  history    style   warranty
-**   args      basename  debug     editing      listsize   tty     width
+**   alias     autolist  debug        filename-display  prompt   warranty
+**   annotate  basename  different    highlight         style    width
+**   args      commands  directories  history           tty
+**   autoeval  copying   editing      listsize          version
 +another-bad-command
 ** Undefined command "another-bad-command". Try "help".
 +show

@@ -29,5 +29,6 @@ set args
 +complete bogus command
 bogus commands
 +complete info f
+info filename-display
 
 bashdb: That's all, folks...

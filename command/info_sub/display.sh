@@ -20,7 +20,7 @@
 #   MA 02111 USA.
 
 _Dbg_help_add_sub info display '
-"**info display**
+**info display**
 
 Show all display expressions.
 

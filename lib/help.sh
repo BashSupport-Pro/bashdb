@@ -46,9 +46,11 @@ function _Dbg_help_add {
 function _Dbg_help_add_sub {
     add_command=${4:-1}
     (($# != 3)) && (($# != 4))  && return 1
+    typeset -i add_command; add_command=${4:-1}
     eval "_Dbg_command_help_$1[$2]=\"$3\""
     if (( add_command )) ; then
-        eval "_Dbg_debugger_${1}_commands[$2]=\"_Dbg_do_${1}_${2}\""
+	subcmd=${2//[-]/_}
+        eval "_Dbg_debugger_${1}_commands[$2]=\"_Dbg_do_${1}_${subcmd}\""
     fi
     return 0
 }
@@ -144,6 +146,14 @@ _Dbg_help_set() {
                 _Dbg_msg 'on.'
             fi
             return 0
+            ;;
+        filename-display )
+	    _Dbg_msg_nocr "${label} "
+	    if (( _Dbg_set_basename == 0 )) ; then
+		_Dbg_msg 'basename.'
+	    else
+		_Dbg_msg 'absolute.'
+	    fi
             ;;
         high | highl | highlight )
             _Dbg_msg_nocr \
@@ -320,6 +330,12 @@ number of lines to list."
             _Dbg_msg \
                 "${label}Show editing of command lines and edit style."
             ;;
+
+        filename-display )
+            _Dbg_msg \
+                "${label}display filenames as absolute or basename paths."
+            ;;
+
         highlight )
             _Dbg_msg \
                 "${label}Show if we syntax highlight source listings."
