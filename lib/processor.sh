@@ -115,15 +115,15 @@ function _Dbg_process_commands {
     # Set up prompt to show shell and subshell levels.
     typeset _Dbg_greater=''
     typeset _Dbg_less=''
-    typeset result  # Used by copies to return a value.
+    typeset _Dbg_result  # Used by _Dbg_copies to return a value.
 
     if _Dbg_copies '>' $_Dbg_DEBUGGER_LEVEL ; then
-        _Dbg_greater=$result
-        _Dbg_less=${result//>/<}
+        _Dbg_greater=$_Dbg_result
+        _Dbg_less=${_Dbg_result//>/<}
     fi
     if _Dbg_copies ')' $BASH_SUBSHELL ; then
-        _Dbg_greater="${result}${_Dbg_greater}"
-        _Dbg_less="${_Dbg_less}${result//)/(}"
+        _Dbg_greater="${_Dbg_result}${_Dbg_greater}"
+        _Dbg_less="${_Dbg_less}${_Dbg_result//)/(}"
     fi
 
     # Loop over debugger commands. But before reading a debugger
