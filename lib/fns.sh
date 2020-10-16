@@ -22,15 +22,15 @@
 typeset -a _Dbg_yn; _Dbg_yn=("n" "y")
 
 # Return $2 copies of $1. If successful, $? is 0 and the return value
-# is in result.  Otherwise $? is 1 and result ''
+# is in _Dbg_result.  Otherwise $? is 1 and _Dbg_result ''
 function _Dbg_copies {
-    result=''
+    _Dbg_result=''
     (( $# < 2 )) && return 1
     typeset -r string="$1"
     typeset -i count=$2 || return 2
     (( count > 0 )) || return 3
-    builtin printf -v result "%${count}s" ' ' || return 3
-    result=${result// /$string}
+    builtin printf -v _Dbg_result "%${count}s" ' ' || return 3
+    _Dbg_result=${_Dbg_result// /$string}
     return 0
 }
 
