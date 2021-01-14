@@ -102,7 +102,7 @@ function _Dbg_do_info_variables {
 "
     local _Dbg_temp=${_Dbg_list}
     _Dbg_list=""
-    local -i i=0
+    local -i _Dbg_i=0
     local -a _Dbg_list
 
     # GLOBIGNORE protects us against using the result of
@@ -112,8 +112,8 @@ function _Dbg_do_info_variables {
     # So here we disable globbing momentarily
     set -o noglob
     for _Dbg_item in ${_Dbg_temp}; do
-	_Dbg_list[${i}]="${_Dbg_item}"
-	i=${i}+1
+	_Dbg_list[${_Dbg_i}]="${_Dbg_item}"
+	_Dbg_i=${_Dbg_i}+1
     done
     set +o noglob
     IFS=${_Dbg_old_ifs}
@@ -122,8 +122,8 @@ function _Dbg_do_info_variables {
     local _Dbg_show_cmd=""
     _Dbg_show_cmd=`echo -e "case \\${_Dbg_item} in \n${_Dbg_match})\n echo yes;;\n*)\necho no;; esac"`
 
-    for (( i=0; (( i < ${#_Dbg_list[@]} )) ; i++ )) ; do
-	_Dbg_item=${_Dbg_list[$i]}
+    for (( _Dbg_i=0; (( _Dbg_i < ${#_Dbg_list[@]} )) ; _Dbg_i++ )) ; do
+	_Dbg_item=${_Dbg_list[$_Dbg_i]}
 
 
 	# Ignore all _Dbg_ variables here because the following
