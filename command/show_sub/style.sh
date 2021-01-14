@@ -23,7 +23,7 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='../..' || top_dir=${dirname}/../..
     [[ -z $_Dbg_libdir ]] && _Dbg_libdir=$top_dir
-    for file in help alias ; do source $top_dir/lib/${file}.sh; done
+    for file in help alias ; do source "$top_dir/lib/${file}.sh"; done
 fi
 
 _Dbg_help_add_sub show style \

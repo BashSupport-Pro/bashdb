@@ -22,7 +22,7 @@
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     dirname=${BASH_SOURCE[0]%/*}
     [[ $dirname == $0 ]] && top_dir='..' || top_dir=${dirname}/..
-    for file in help alias ; do source $top_dir/lib/${file}.sh; done
+    for file in help alias ; do source "$top_dir/lib/${file}.sh"; done
 fi
 
 _Dbg_help_add help \
@@ -132,7 +132,7 @@ _Dbg_alias_add '?' help
 # Demo it.
 if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
     for file in sort columnize list msg ; do
-	source $top_dir/lib/${file}.sh;
+	source "$top_dir/lib/${file}.sh";
     done
     # source /usr/local/share/bashdb/bashdb-trace
     # _Dbg_debugger
