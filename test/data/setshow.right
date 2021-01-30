@@ -310,6 +310,7 @@ debug       : Allow debugging the debugger is off.
 different   : Stepping forces stopping at a new line is off.
 editing     : Editing of command lines as they are typed is on.
   Edit style is emacs.
+filename-display: is basename.
 highlight   : Syntax highlight in source listings is off.
 history     --
   filename: The filename in which to record the command history is

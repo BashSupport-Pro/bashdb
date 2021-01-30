@@ -7,6 +7,8 @@
 /auto*.log
 /autom4te.cache
 /bashdb
+/bashdb-5.*.tar.bz2
+/bashdb-5.*.tar.gz
 /bashdb-main.inc
 /bashdb-trace
 /builtin

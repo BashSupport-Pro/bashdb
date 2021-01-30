@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # "show filename-display" debugger command
 #
-#   Copyright (C) 2014, 2019, 2020 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2014, 2019-2021 Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -27,9 +27,9 @@ _Dbg_do_show_filename_display() {
     if [[ -n $1 ]]; then
 	label=$(_Dbg_printf_nocr "%-12s: " "filename-display")
 	if (( _Dbg_set_basename == 0 )) ; then
-            _Dbg_msg 'is absolute.'
+            _Dbg_msg $label 'is absolute.'
 	else
-            _Dbg_msg 'is basename.'
+            _Dbg_msg $label 'is basename.'
 	fi
     else
         _Dbg_msg_nocr 'Filenames are displayed as '
