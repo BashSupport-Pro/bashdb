@@ -1,7 +1,8 @@
+/*~
 /Makefile
 /Makefile.in
 /bug-args.sh
 /bugIFS.sh
+/false.sh
 /hanoi.sh
 /interrupt.sh
-/*~
