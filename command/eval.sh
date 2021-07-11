@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # Eval and Print commands.
 #
-#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015, 2019-2020
+#   Copyright (C) 2002, 2003-2004, 2006, 2008, 2011, 2015, 2019-2021
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -71,6 +71,7 @@ complete -F _Dbg_complete_eval 'eval?'
 _Dbg_do_eval() {
 
     builtin echo ". ${_Dbg_libdir}/set-d-vars.sh" > "$_Dbg_evalfile"
+    builtin echo "BASH_ARGV0=\"$_Dbg_dollar_0\"" >> "$_Dbg_evalfile"
     if (( $# == 0 )) ; then
 	# FIXME: add parameter to get unhighlighted line, or
 	# always save a copy of that in _Dbg_get_source_line
@@ -99,7 +100,6 @@ _Dbg_do_eval() {
     else
 	builtin echo -e "$@" >> "$_Dbg_evalfile"
     fi
-    builtin echo "BASH_ARGV0=\"$_Dbg_dollar_0\"" >> "$_Dbg_evalfile"
     if [[ -n "$_Dbg_tty"  ]] ; then
 	. "$_Dbg_evalfile" >>"$_Dbg_tty"
     else

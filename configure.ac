@@ -214,6 +214,8 @@ AC_CONFIG_FILES([ \
 AC_CONFIG_FILES([bashdb], [chmod +x DEBUGGER])
 AC_CONFIG_FILES([test/example/bugIFS.sh],
                 [chmod +x test/example/bugIFS.sh])
+AC_CONFIG_FILES([test/example/false.sh],
+                [chmod +x test/example/false.sh])
 AC_CONFIG_FILES([test/example/hanoi.sh],
                 [chmod +x test/example/hanoi.sh])
 AC_CONFIG_FILES([test/example/interrupt.sh],

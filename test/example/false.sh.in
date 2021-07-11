@@ -1,0 +1,3 @@
+#!@SH_PROG@
+# A portable to /bin/false
+exit 1
