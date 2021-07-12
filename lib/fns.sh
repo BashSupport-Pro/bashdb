@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # fns.sh - Debugger Utility Functions
 #
-#   Copyright (C) 2002-2011 2019
+#   Copyright (C) 2002-2011 2019 2021
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -58,11 +58,11 @@ function _Dbg_esc_dq {
 # gives syntax errors when this is put in place.
 typeset -a _Dbg_eval_re;
 _Dbg_eval_re=(
-    '^[ \t]*(if|elif)[ \t]+([^;]*)((;[ \t]*then?)?|$)'
-    '^[ \t]*return[ \t]+(.*)$'
-    '^[ \t]*while[ \t]+([^;]*)((;[ \t]*do?)?|$)'
-    '^[ \t]*[A-Za-z_][A-Za-z_0-9_]*[+-]?=(.*$)'
-    "^[ \t]*[A-Za-z_][A-Za-z_0-9_]*\[[0-9]+\][+-]?=(.*\$)"
+    '^[[:blank:]]*(if|elif)[[:blank:]]+([^;]*)((;[[:blank:]]*then?)?|$)'
+    '^[[:blank:]]*return[[:blank:]]+(.*)$'
+    '^[[:blank:]]*while[[:blank:]]+([^;]*)((;[[:blank:]]*do?)?|$)'
+    '^[[:blank:]]*[A-Za-z_][A-Za-z_0-9_]*[+-]?=(.*$)'
+    "^[[:blank:]]*[A-Za-z_][A-Za-z_0-9_]*\[[0-9]+\][+-]?=(.*\$)"
 )
 
 # Removes "[el]if" .. "; then" or "while" .. "; do" or "return .."
