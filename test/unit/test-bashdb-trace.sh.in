@@ -24,7 +24,7 @@ test_preserve_set_opts()
 	echo 'Skipping test - building outside of source complications'
     fi
 
-    (. ${top_builddir}/bashdb-trace -L $libdir/init/opts.sh)
+    (. ${top_builddir}/bashdb-trace -L $libdir/init/opts.sh) 2> /dev/null
     assertEquals $? 1
     set +u
 }

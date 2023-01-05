@@ -1,7 +1,8 @@
 # -*- shell-script -*-
 # debugger command options processing. The bane of programming.
 #
-#   Copyright (C) 2008-2012, 2014-2019, 2021 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2008-2012, 2014-2019, 2021, 2023
+#   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -226,7 +227,7 @@ _Dbg_parse_options() {
         [[ -n $_Dbg_release ]] ; then
         echo "$_Dbg_shell_name debugger, $_Dbg_debugger_name, release $_Dbg_release"
         printf '
-Copyright 2002-2004, 2006-2012, 2014, 2016-2019, 2021 Rocky Bernstein
+Copyright 2002-2004, 2006-2012, 2014, 2016-2019, 2021, 2023 Rocky Bernstein
 This is free software, covered by the GNU General Public License, and you are
 welcome to change it and/or distribute copies of it under certain conditions.
 

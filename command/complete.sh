@@ -1,6 +1,7 @@
 # complete.sh - gdb-like 'complete' command
 #
-#   Copyright (C) 2010-2011, 2016 Rocky Bernstein <rocky@gnu.org>
+#   Copyright (C) 2010-2011, 2016, 2023 Rocky Bernstein
+#   <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -31,20 +32,20 @@ Show command completion strings for *prefix-str*
 '
 
 _Dbg_do_complete() {
-    typeset -a args; args=($@)
+    typeset -a _Dbg_args; _Dbg_args=($@)
     _Dbg_matches=()
-    if (( ${#args[@]} == 2 )) ; then
-      _Dbg_subcmd_complete ${args[0]} ${args[1]}
-    elif (( ${#args[@]} == 1 )) ; then
+    if (( ${#_Dbg_args[@]} == 2 )) ; then
+      _Dbg_subcmd_complete ${_Dbg_args[0]} ${_Dbg_args[1]}
+    elif (( ${#_Dbg_args[@]} == 1 )) ; then
 	# FIXME: add in aliases
 	typeset list; list=("${!_Dbg_debugger_commands[@]}")
 	sort_list 0 ${#list[@]}-1
-	cmd="builtin compgen -W \"${list[@]}\" -- ${args[0]}"
-	typeset -a _Dbg_matches=( $(eval $cmd) )
+	_Dbg_cmd="builtin compgen -W \"${list[@]}\" -- ${_Dbg_args[0]}"
+	typeset -a _Dbg_matches=( $(eval $_Dbg_cmd) )
     fi
-    typeset -i i
-    for (( i=0;  i < ${#_Dbg_matches[@]}  ; i++ )) ; do
-      _Dbg_msg ${_Dbg_matches[$i]}
+    typeset -i _Dbg_i
+    for (( i=0;  _Dbg_i < ${#_Dbg_matches[@]}  ; _Dbg_i++ )) ; do
+      _Dbg_msg ${_Dbg_matches[$_Dbg_i]}
     done
 }
 
