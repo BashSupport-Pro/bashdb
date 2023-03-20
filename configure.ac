@@ -24,14 +24,12 @@ define(POSIXSHELL, bash)
 define(OK_BASH_VERS, 5.1)
 define(relstatus, 1.1.2)
 
-AC_INIT([bashdb],
-  [OK_BASH_VERS-relstatus],
-  [https://sourceforge.net/p/bashdb/bugs/new/])
+AC_INIT([bashdb],[OK_BASH_VERS-relstatus],[https://sourceforge.net/p/bashdb/bugs/new/])
 
 dnl make sure we are using a recent autoconf version.
 dnl In particular we assume prefix will be set to "NONE" if --prefix
 dnl isn't given. Earlier autoconf' used "no" instead of "NONE".
-AC_PREREQ(2.69)
+AC_PREREQ([2.71])
 
 ##################################################################
 # See if --prefix was set. If not, set it to a reasonable default
@@ -46,8 +44,7 @@ AM_MAINTAINER_MODE
 AC_SUBST(BASHVERS)
 AC_SUBST(RELSTATUS)
 
-AC_ARG_WITH(bashdb-main, AC_HELP_STRING([--with-bashdb-main],
-		  [location of bashdb-main.inc]),
+AC_ARG_WITH(bashdb-main, AS_HELP_STRING([--with-bashdb-main],[location of bashdb-main.inc]),
 		  BASHDB_MAIN=$withval,
 		  ${ac_default_prefix/prefix}/bashdb/bashdb-main.inc)
 AC_SUBST(BASHDB_MAIN)
@@ -88,8 +85,7 @@ AC_PROG_MAKE_SET
 ## --with-bash can be used to tell the bashdb script and the regression
 ## test which bash to run. It can be omitted too in which case we'll
 ## look for a bash binary.
-AC_ARG_WITH(POSIXSHELL, AC_HELP_STRING([--with-POSIXSHELL],
-                  [location of POSIXSHELL program]), SH_PROG=$withval)
+AC_ARG_WITH(POSIXSHELL, AS_HELP_STRING([--with-POSIXSHELL],[location of POSIXSHELL program]), SH_PROG=$withval)
 
 if test "$SH_PROG" = "yes" || test "$SH_PROG" = "no" || test -z "$SH_PROG"
 then
@@ -116,8 +112,7 @@ case "${bash_major}.${bash_minor}" in
     ;;
 esac
 
-AC_ARG_WITH(dbg-main, AC_HELP_STRING([--with-dbg-main],
-                  [location of dbg-main.sh]),
+AC_ARG_WITH(dbg-main, AS_HELP_STRING([--with-dbg-main],[location of dbg-main.sh]),
 		  [DBGR_MAIN=$withval]
 		  [DBGR_MAIN=${ac_default_prefix/prefix}/bashdb/bashdb-main.inc])
 AC_SUBST(DBGR_MAIN)
