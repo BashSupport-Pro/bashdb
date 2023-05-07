@@ -84,7 +84,7 @@ function _Dbg_errmsg_no_cr {
 # print message to output device
 function _Dbg_msg {
     if (( _Dbg_logging )) ; then
-        builtin echo -e "$@" >>$_Dbg_logfid
+        builtin echo -e "$@" >>$_Dbg_logging_file
     fi
     if (( ! _Dbg_logging_redirect )) ; then
         if [[ -n $_Dbg_tty  ]] && [[ $_Dbg_tty != '&1' ]] ; then
@@ -98,7 +98,7 @@ function _Dbg_msg {
 # print message to output device without a carriage return at the end
 function _Dbg_msg_nocr {
     if (( _Dbg_logging )) ; then
-        builtin echo -n -e "$@" >>$_Dbg_logfid
+        builtin echo -n -e "$@" >>$_Dbg_logging_file
     fi
     if (( ! _Dbg_logging_redirect )) ; then
         if [[ -n $_Dbg_tty  ]] ; then
@@ -120,7 +120,7 @@ function _Dbg_printf_nocr {
     typeset format=$1
     shift
     if (( _Dbg_logging )) ; then
-        builtin printf "$format" "$@" >>$_Dbg_logfid
+        builtin printf "$format" "$@" >>$_Dbg_logging_file
     fi
     if (( ! _Dbg_logging_redirect )) ; then
         if [[ -n $_Dbg_tty ]] ; then

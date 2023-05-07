@@ -34,6 +34,15 @@ typeset _Dbg_logging_overwrite=0
 # If 1, log file is sufficient, don't also print to stdout. 
 typeset _Dbg_logging_redirect=0
 
+_usage_logging() 
+{
+	_Dbg_msg "Usage: set logging on"
+	_Dbg_msg "set logging off"
+	_Dbg_msg "set logging file FILENAME"
+	_Dbg_msg "set logging overwrite [on|off]"
+	_Dbg_msg "set logging redirect [on|off]"
+}
+
 _Dbg_do_set_logging()
 {
     typeset -a args=($@)
@@ -87,13 +96,11 @@ _Dbg_do_set_logging()
 		fi
 		;;
 	    * )
-		_Dbg_msg "Usage: set logging on"
-		_Dbg_msg "set logging off"
-		_Dbg_msg "set logging file FILENAME"
-		_Dbg_msg "set logging overwrite [on|off]"
-		_Dbg_msg "set logging redirect [on|off]"
+	    	_usage_logging
 		;;
 	esac
+	else
+		_usage_logging
     fi
     return 0
 }

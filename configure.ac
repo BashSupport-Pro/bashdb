@@ -237,6 +237,8 @@ AC_CONFIG_FILES([test/unit/test-file.sh],
                 [chmod +x test/unit/test-file.sh])
 AC_CONFIG_FILES([test/unit/test-filecache.sh],
                 [chmod +x test/unit/test-filecache.sh])
+AC_CONFIG_FILES([test/unit/test-logging.sh],
+                [chmod +x test/unit/test-logging.sh])
 AC_CONFIG_FILES([test/unit/test-get-sourceline.sh],
                 [chmod +x test/unit/test-get-sourceline.sh])
 AC_CONFIG_FILES([test/unit/test-fns.sh], [chmod +x test/unit/test-fns.sh])

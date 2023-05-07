@@ -62,7 +62,7 @@ _Dbg_do_set() {
 	    return $?
 	    ;;
 	lo | log | logg | loggi | loggin | logging )
-	    _Dbg_cmd_set_logging $@
+	    _Dbg_do_set_logging $@
 	    ;;
 	t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
 	    _Dbg_do_set_trace_commands $@

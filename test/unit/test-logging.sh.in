@@ -1,0 +1,97 @@
+#!@SH_PROG@
+# -*- shell-script -*-
+
+_check_usage()
+{
+    assertEquals "Usage: set logging on"		"${msgs[0]}"
+    assertEquals "set logging off" 			"${msgs[1]}"
+    assertEquals "set logging file FILENAME" 		"${msgs[2]}"
+    assertEquals "set logging overwrite [on|off]"	"${msgs[3]}"
+    assertEquals "set logging redirect [on|off]" 	"${msgs[4]}"
+}
+
+test_set_logging()
+{
+    _Dbg_msg() {
+		msgs+=("$@")
+    }
+
+    typeset -a msgs
+    msgs=()
+
+	_Dbg_do_set_logging
+    assertEquals "Running 'set logging' failed" '0' "$?"
+    assertEquals "Number of messages should be 5" '5' "${#msgs[@]}"
+    _check_usage
+
+}
+
+test_set_logging_on()
+{
+    _Dbg_msg() {
+		msgs+=("$@")
+    }
+
+    typeset -a msgs
+    msgs=()
+
+	_Dbg_do_set_logging on
+    assertEquals "Running 'set logging on' failed" '0' "$?"
+    assertEquals "Running 'set logging on' should not produce any messages" 0 ${#msgs[@]}
+}
+
+test_set_logging_foo()
+{
+    _Dbg_msg() {
+		msgs+=("$@")
+    }
+
+    typeset -a msgs
+    msgs=()
+
+	_Dbg_do_set_logging foo
+    assertEquals "Running 'set logging foo' failed" '0' "$?"
+    assertEquals "Number of messages should be 5" '5' "${#msgs[@]}"
+    _check_usage
+}
+
+test_set_logging_empty()
+{
+    _Dbg_msg() {
+		msgs+=("$@")
+    }
+
+    typeset -a msgs
+    msgs=()
+
+	_Dbg_do_set_logging ''
+    assertEquals "Running 'set logging foo' failed" '0' "$?"
+    assertEquals "Number of messages should be 5" '5' "${#msgs[@]}"
+    _check_usage
+}
+test_set_logging_off()
+{
+	_Dbg_do_set_logging	off
+    assertEquals "Running 'set logging off' failed" '0' "$?"
+}
+
+
+abs_top_srcdir=@abs_top_srcdir@
+# Make sure $abs_top_srcdir has a trailing slash
+abs_top_srcdir=${abs_top_srcdir%%/}/
+. ${abs_top_srcdir}test/unit/helper.sh
+. ${abs_top_srcdir}/init/pre.sh
+. ${abs_top_srcdir}/lib/msg.sh
+. ${abs_top_srcdir}/lib/help.sh
+. ${abs_top_srcdir}/lib/alias.sh
+. ${abs_top_srcdir}/lib/file.sh
+. ${abs_top_srcdir}/lib/fns.sh
+. ${abs_top_srcdir}/lib/journal.sh
+. ${abs_top_srcdir}/lib/break.sh
+. ${abs_top_srcdir}/init/io.sh
+. ${abs_top_srcdir}/command/log.sh
+. ${abs_top_srcdir}/command/break.sh
+_Dbg_set_highlight=''
+set -- # reset $# so shunit2 doesn't get confused.
+
+[[ @CMDLINE_INVOKED@ ]] && . ${shunit_file}
