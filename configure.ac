@@ -58,7 +58,7 @@ AC_PROG_SED
 CMDLINE_INVOKED='$0 == ${BASH_SOURCE}'
 AC_SUBST(CMDLINE_INVOKED)
 
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
 AC_DEFINE([PACKAGE], [bashdb], [Bash Debugger])
 AC_DEFINE([VERSION], [OK_BASH_VERS-relstatus], [version string])
 
