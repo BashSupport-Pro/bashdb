@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # help.sh - Debugger Help Routines
 #
-#   Copyright (C) 2002-2008, 2010-2012, 2016
+#   Copyright (C) 2002-2008, 2010-2012, 2016, 2023
 #   Rocky Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
@@ -71,8 +71,8 @@ _Dbg_help_set() {
         typeset -a list
         list=("${!_Dbg_command_help_set[@]}")
         sort_list 0 ${#list[@]}-1
-        for subcmd in ${list[@]}; do
-            _Dbg_help_set $subcmd 1
+        for subcmd in "${list[@]}"; do
+            _Dbg_help_set "$subcmd" 1
         done
         return 0
     fi
@@ -252,8 +252,8 @@ _Dbg_help_show() {
         list=("${!_Dbg_command_help_show[@]}")
         sort_list 0 ${#list[@]}-1
         typeset subcmd
-        for subcmd in ${list[@]}; do
-            [[ $subcmd != 'version' ]] && _Dbg_help_show $subcmd 1
+        for subcmd in "${list[@]}"; do
+            [[ $subcmd != 'version' ]] && _Dbg_help_show "$subcmd" 1
         done
         return 0
     fi
@@ -266,7 +266,7 @@ _Dbg_help_show() {
             _Dbg_msg_rst "${_Dbg_command_help_show[$subcmd]}"
             return 0
         else
-            label=$(builtin printf "show %-12s-- " $subcmd)
+            label=$(builtin printf "show %-12s-- " "$subcmd")
         fi
     fi
 
