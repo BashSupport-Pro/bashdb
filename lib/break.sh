@@ -1,8 +1,8 @@
 # -*- shell-script -*-
 # break.sh - Debugger Break and Watch routines
 #
-#   Copyright (C) 2002-2003, 2006-2011, 2014-2019 Rocky Bernstein
-#   <rocky@gnu.org>
+#   Copyright (C) 2002-2003, 2006-2011, 2014-2019, 2023 Rocky
+#   Bernstein <rocky@gnu.org>
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -116,13 +116,13 @@ _Dbg_enable_disable() {
   typeset to_go
   if [[ $1 == 'display' ]] ; then
     shift
-    to_go="$@"
+    to_go="$*"
     typeset i
     eval "$_seteglob"
     for i in $to_go ; do
       case $i in
 	$int_pat )
-	  _Dbg_enable_disable_display $on $en_dis $i
+	  _Dbg_enable_disable_display $on "$en_dis" $i
 	;;
 	* )
 	  _Dbg_errmsg "Invalid entry number skipped: $i"
@@ -132,13 +132,13 @@ _Dbg_enable_disable() {
     return 0
   elif [[ $1 == 'action' ]] ; then
     shift
-    to_go="$@"
+    to_go="$*"
     typeset i
     eval "$_seteglob"
     for i in $to_go ; do
       case $i in
 	$int_pat )
-	  _Dbg_enable_disable_action $on $en_dis $i
+	  _Dbg_enable_disable_action $on "$en_dis" $i
 	;;
 	* )
 	  _Dbg_errmsg "Invalid entry number skipped: $i"
@@ -167,7 +167,7 @@ _Dbg_enable_disable() {
         _Dbg_enable_disable_watch $on $en_dis ${del:0:${#del}-1}
         ;;
       $int_pat )
-        _Dbg_enable_disable_brkpt $on $en_dis $i
+        _Dbg_enable_disable_brkpt $on "$en_dis" $i
 	;;
       * )
       _Dbg_errmsg "Invalid entry number skipped: $i"
@@ -220,12 +220,12 @@ _Dbg_set_brkpt() {
     ((_Dbg_brkpt_max++))
     ((_Dbg_brkpt_count++))
 
-    _Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno
-    _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
-    _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
-    _Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp
-    _Dbg_brkpt_counts[$_Dbg_brkpt_max]=0
-    _Dbg_brkpt_enable[$_Dbg_brkpt_max]=1
+    _Dbg_brkpt_line[_Dbg_brkpt_max]=$lineno
+    _Dbg_brkpt_file[_Dbg_brkpt_max]="$source_file"
+    _Dbg_brkpt_cond[_Dbg_brkpt_max]="$condition"
+    _Dbg_brkpt_onetime[_Dbg_brkpt_max]=$is_temp
+    _Dbg_brkpt_counts[_Dbg_brkpt_max]=0
+    _Dbg_brkpt_enable[_Dbg_brkpt_max]=1
 
     typeset dq_source_file
     dq_source_file=$(_Dbg_esc_dq "$source_file")
@@ -389,12 +389,12 @@ function _Dbg_enable_disable_brkpt {
     (($# < 2)) && return 1
     typeset -i on=$1
     typeset en_dis=$2
-    typeset -a brkpts=($3)
+    typeset -a brkpts=("$3")
     typeset -i rc=0
 
     for i in "${brkpts[@]}";  do
 	if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
-	    if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
+	    if [[ ${_Dbg_brkpt_enable[$i]} == "$on" ]] ; then
 		_Dbg_errmsg "Breakpoint entry $i already ${en_dis}, so nothing done."
 		rc=1
 	    else
@@ -492,7 +492,7 @@ _Dbg_clear_watch() {
   fi
 
   eval "$_seteglob"
-  if [[ $1 == $int_pat ]]; then
+  if [[ $1 == "$int_pat" ]]; then
     _Dbg_write_journal_eval "unset _Dbg_watch_exp[$1]"
     _msg "Watchpoint $i has been cleared"
   else
