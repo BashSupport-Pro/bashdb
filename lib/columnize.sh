@@ -1,5 +1,7 @@
 # -*- shell-script -*-
-#   Copyright (C) 2008, 2010, 2011 Rocky Bernstein rocky@gnu.org
+#
+#   Copyright (C) 2008, 2010, 2011, 2023 Rocky Bernstein
+#   rocky@gnu.org
 #
 #   This program is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License as
@@ -10,7 +12,7 @@
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 #   General Public License for more details.
-#   
+#
 #   You should have received a copy of the GNU General Public License
 #   along with this program; see the file COPYING.  If not, write to
 #   the Free Software Foundation, 59 Temple Place, Suite 330, Boston,
@@ -35,19 +37,19 @@ columnize() {
     fi
     if ((1 == list_size)); then
 	columnized=("${list[0]}")
-	return 
+	return
     fi
     # Consider arranging list in 1 rows total, then 2 rows...
     # Stop when at the smallest number of rows which
     # can be arranged less than the display width.
-    typeset -i nrows=0 
+    typeset -i nrows=0
     typeset -i ncols=0
     typeset -a colwidths=()
     typeset -i i=0
-    for (( i=0; i<list_size; i++ )) ; do 
+    for (( i=0; i<list_size; i++ )) ; do
       typeset -a colwidths=()
       ((nrows++))
-      
+
       ((ncols=(list_size + nrows-1) / nrows))
       typeset -i totwidth=-${#colsep}
       typeset -i col
@@ -88,13 +90,13 @@ columnize() {
             else
 		item="${list[i]}"
 	    fi
-	    
-	    texts[$text_size]="$item"
+
+	    texts[text_size]="$item"
 	    ((text_size++))
 	done
-	while (( text_size > 0 )) && [[ ${texts[text_size-1]} == '' ]] ; do 
+	while (( text_size > 0 )) && [[ ${texts[text_size-1]} == '' ]] ; do
 	    ((text_size--))
-	    unset texts[$text_size]
+	    unset "texts[$text_size]"
 	done
 	text_row=''
 	text_cell=''
@@ -108,7 +110,7 @@ columnize() {
     done
 }
 
-if [[ $0 == ${BASH_SOURCE[0]} ]] ; then 
+if [[ $0 == "${BASH_SOURCE[0]}" ]] ; then
     #
     print_columns() {
 	unset columnized
@@ -118,7 +120,7 @@ if [[ $0 == ${BASH_SOURCE[0]} ]] ; then
 	columnize $2 $3
 	typeset -i i
 	echo '==============='
-	for ((i=0; i<${#columnized[@]}; i++)) ; do 
+	for ((i=0; i<${#columnized[@]}; i++)) ; do
 	    printf "${columnized[$i]}\n"
 	done
     }
