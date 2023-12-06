@@ -1,5 +1,8 @@
 (bug-loc.sh:5):
 5:	[31mdirname[39;49;00m=[33m${[39;49;00m[31mBASH_SOURCE[39;49;00m%/*[33m}[39;49;00m   [37m# equivalent to dirname($0)[39;49;00m
++set editing emacs
+Editing of command lines as they are typed is on.
+  Edit style is emacs.
 +# Test to see that we read in files that mentioned in breakpoints
 +# but we don't step into.
 +step

@@ -40,7 +40,7 @@ typeset _Dbg_space=' '
 # Should we allow editing of debugger commands?
 # The value should either be '-e' or ''. And if it is
 # on, the edit style indicates what style edit keystrokes.
-typeset _Dbg_edit='-e'
+typeset _Dbg_edit='' # BashSupport Pro: removed '-e' to disable readline support because it may break with custom inputrc settings
 typeset _Dbg_edit_style='emacs'  # or vi
 set -o $_Dbg_edit_style
 
