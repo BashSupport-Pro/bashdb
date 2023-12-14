@@ -105,7 +105,8 @@ function _Dbg_info_variables_parse_options {
     _Dbg_typeset_filtered=1
 
     typeset -i _Dbg_rc=0
-    typeset OPTLIND=''
+    typeset -i OPTLIND=1
+    typeset OPTLARG OPTLERR OPTLPENDING opt
     while getopts_long irxaAtp opt \
         integer no_argument \
         readonly no_argument \
